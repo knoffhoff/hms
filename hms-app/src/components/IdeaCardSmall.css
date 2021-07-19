@@ -1,0 +1,96 @@
+.canvas-card {
+	background: #fff;
+	border-radius: 5px;
+	/*display: inline-block;*/
+	position: relative;
+	box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+}
+
+.idea {
+	width: 100%;
+	border: 2px solid #eeeeee;
+	background: #333;
+	color: white !important;
+	padding: 40px;
+	border-radius: 25px;
+	cursor: pointer;
+}
+
+.idea p {
+	color: white !important;
+}
+
+.idea-name {
+	display: inline-block;
+	width: 75%;
+	line-height: 2em;
+	margin: 0 0 1em 0;
+	overflow: hidden;
+	position: relative;
+	height: 4em; /* exactly three lines */
+}
+
+.idea-name p {
+	margin: 0;
+	font-size: 2rem;
+}
+
+.idea-name::after {
+	content: "";
+	text-align: right;
+	position: absolute;
+	bottom: 0;
+	right: 0;
+	width: 30%;
+	height: 2em;
+	background: linear-gradient(to right, rgba(255, 255, 255, 0), #333 50%);
+}
+
+.user-name {
+	color: #cccccc;
+	font-style: italic;
+}
+
+.idea-description {
+	line-height: 1.5em;
+	width: 100%;
+	margin: 0 0 1em 0;
+	overflow: hidden;
+	position: relative;
+	height: 4.5em; /* exactly three lines */
+}
+
+.idea-description p {
+	margin: 0;
+}
+
+.idea-description:after {
+	content: "";
+	text-align: right;
+	position: absolute;
+	bottom: 0;
+	right: 0;
+	width: 50%;
+	height: 1.5em;
+	background: linear-gradient(to right, rgba(255, 255, 255, 0), #333 50%);
+}
+
+.category {
+	display: inline-block;
+	font-weight: lighter;
+	background: #555555 !important;
+	color: #eeeeee;
+	border-radius: 50px;
+	padding: 5px 15px;
+	margin: 20px auto 15px auto;
+}
+
+.votes {
+	display: inline-block;
+	font-weight: bold;
+	background: #00FFD0 !important;
+	color: #333333;
+	border-radius: 50px;
+	padding: 10px 20px;
+	margin: 15px auto;
+}
