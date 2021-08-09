@@ -1,53 +1,54 @@
-import React, { useEffect, useState } from 'react'
+import React, {useEffect, useState} from 'react'
 
-const Timer = ({ countDownDateTime }) => {
-	let countDownDate = countDownDateTime ? new Date(countDownDateTime).getTime() : ''
+const MILLIS_PER_MINUTE = 1000 * 60;
+const MILLIS_PER_HOUR = MILLIS_PER_MINUTE * 60;
+const MILLIS_PER_DAY = MILLIS_PER_HOUR * 24;
 
-	const [timeLeft, setTimeLeft] = useState(countDownDate);
+function getFormattedCountdown(countDownDate) {
+    let millisRemaining = countDownDate - new Date().getTime();
 
-	useEffect(() => {
-		// exit early when we reach 0
-		if (!timeLeft) return;
+    if (millisRemaining <= 0) {
+        return "0:00:00:00";
+    }
 
-		let now = new Date().getTime();
-		let distance = countDownDate - now;
-		let days = Math.floor(distance / (1000 * 60 * 60 * 24));
-		let hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-		let minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-		let seconds = Math.floor((distance % (1000 * 60)) / 1000);
+    let days = Math.floor(millisRemaining / MILLIS_PER_DAY);
 
-		if (distance <= 0) {
-			days = 0;
-			hours = 0;
-			minutes = 0;
-			seconds = 0;
-		}
+    let hours = Math.floor((millisRemaining % MILLIS_PER_DAY) / MILLIS_PER_HOUR);
+    hours = hours < 10 ? "0" + hours : hours
 
-		if (hours < 10) {
-			hours = "0" + hours
-		}
-		if (minutes < 10) {
-			minutes = "0" + minutes
-		}
-		if (seconds < 10) {
-			seconds = "0" + seconds
-		}
+    let minutes = Math.floor((millisRemaining % MILLIS_PER_HOUR) / MILLIS_PER_MINUTE);
+    minutes = minutes < 10 ? "0" + minutes : minutes
 
-		// save intervalId to clear the interval when the
-		// component re-renders
-		const intervalId = setInterval(() => {
-			setTimeLeft(days + ":" + hours + ":" + minutes + ":" + seconds);
-		}, 1000);
+    let seconds = Math.floor((millisRemaining % MILLIS_PER_MINUTE) / 1000);
+    seconds = seconds < 10 ? "0" + seconds : seconds
 
-		// clear interval on re-render to avoid memory leaks
-		return () => clearInterval(intervalId);
-		// add timeLeft as a dependency to re-rerun the effect
-		// when we update it
-	}, [timeLeft]);
+    return days + ":" + hours + ":" + minutes + ":" + seconds;
+}
 
-	return (
-		<span>{timeLeft}</span>
-	);
+const Timer = ({countDownDateTime}) => {
+    let countDownDate = countDownDateTime ? new Date(countDownDateTime).getTime() : ''
+
+    const [timeLeft, setTimeLeft] = useState(getFormattedCountdown(countDownDate));
+
+    useEffect(() => {
+        // exit early when we reach 0
+        if (!timeLeft) return;
+
+        // save intervalId to clear the interval when the
+        // component re-renders
+        const intervalId = setInterval(() => {
+            setTimeLeft(getFormattedCountdown(countDownDate));
+        }, 1000);
+
+        // clear interval on re-render to avoid memory leaks
+        return () => clearInterval(intervalId);
+        // add timeLeft as a dependency to re-rerun the effect
+        // when we update it
+    }, [timeLeft]);
+
+    return (
+        <span>{timeLeft}</span>
+    );
 };
 
 export default Timer
