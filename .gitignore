@@ -3,6 +3,7 @@
 
 # HMS API ignore
 /hms-api/node_modules
+/hms-api/build
 
 # HMS APP ignore
 /hms-app/node_modules
