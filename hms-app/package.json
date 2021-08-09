@@ -14,14 +14,14 @@
     "@testing-library/user-event": "^7.2.1",
     "date-fns": "^2.0.0-beta.5",
     "dotenv": "^8.2.0",
-    "isomorphic-fetch": "^2.2.1",
+    "isomorphic-fetch": "^3.0.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-photo-gallery": "^8.0.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "^4.0.3",
-    "react-select": "^3.1.0",
-    "string-strip-html": "^4.5.0"
+    "react-select": "^4.3.1",
+    "string-strip-html": "^8.3.0"
   },
   "scripts": {
     "start": "react-scripts start",
