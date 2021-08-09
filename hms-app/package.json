@@ -20,7 +20,7 @@
     "react-photo-gallery": "^8.0.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "^3.4.3",
-    "react-select": "^3.1.0",
+    "react-select": "^4.3.1",
     "string-strip-html": "^8.3.0"
   },
   "scripts": {
