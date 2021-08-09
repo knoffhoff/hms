@@ -13,7 +13,7 @@
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
     "date-fns": "^2.0.0-beta.5",
-    "dotenv": "^8.2.0",
+    "dotenv": "^10.0.0",
     "isomorphic-fetch": "^2.2.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
