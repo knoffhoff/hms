@@ -1,1 +1,9 @@
+# Root ignore
 .idea
+
+# HMS API ignore
+/hms-api/node_modules
+
+# HMS APP ignore
+/hms-app/node_modules
+/hms-app/build
