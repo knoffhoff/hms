@@ -21,7 +21,7 @@
     "react-router-dom": "5.3.0",
     "react-scripts": "4.0.3",
     "react-select": "5.1.0",
-    "string-strip-html": "9.0.2"
+    "string-strip-html": "9.1.1"
   },
   "scripts": {
     "start": "react-scripts start",
