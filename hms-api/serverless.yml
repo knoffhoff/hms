@@ -1,4 +1,4 @@
-service: hackweek-api
+service: hms-api
 
 frameworkVersion: ">=1.1.0 <2.0.0"
 
