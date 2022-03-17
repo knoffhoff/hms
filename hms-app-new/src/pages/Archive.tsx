@@ -1,9 +1,7 @@
-import React from "react";
+import React from 'react'
 
-function Archive(){
-    return(
-        <h1>this is the Archive</h1>
-    )
+function Archive() {
+  return <h1>this is the Archive</h1>
 }
 
 export default Archive

@@ -1,12 +1,12 @@
-import React from 'react';
-import {Route, Routes} from "react-router-dom";
-import Layout from "./pages/Layout";
-import './App.css';
-import Home from "./pages/Home";
-import IdeaPortal from "./pages/IdeaPortal";
-import YourIdea from "./pages/YourIdea";
-import Archive from "./pages/Archive";
-import NoPage from "./pages/NoPage";
+import React from 'react'
+import { Route, Routes } from 'react-router-dom'
+import Layout from './pages/Layout'
+import './App.css'
+import Home from './pages/Home'
+import IdeaPortal from './pages/IdeaPortal'
+import YourIdea from './pages/YourIdea'
+import Archive from './pages/Archive'
+import NoPage from './pages/NoPage'
 
 function App() {
   return (
@@ -19,7 +19,7 @@ function App() {
         <Route path="*" element={<NoPage />} />
       </Route>
     </Routes>
-  );
+  )
 }
 
-export default App;
+export default App

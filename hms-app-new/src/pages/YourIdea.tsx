@@ -1,9 +1,7 @@
-import React from "react";
+import React from 'react'
 
-function YourIdea(){
-    return(
-        <h1>this is the your idea page</h1>
-    )
+function YourIdea() {
+  return <h1>this is the your idea page</h1>
 }
 
 export default YourIdea
