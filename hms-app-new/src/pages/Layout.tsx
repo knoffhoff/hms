@@ -4,10 +4,10 @@ import Header from "../components/Header";
 
 const Layout = () => {
     return (
-        <>
+        <div style={{margin: "20px"}}>
             <Header />
             <Outlet />
-        </>
+        </div>
     )
 }
 
