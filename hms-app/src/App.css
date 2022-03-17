@@ -1,35 +1,38 @@
-body {
-	background-color: #333333;
-	color: white;
+.App {
+  text-align: center;
 }
 
-#date-background {
-	height: 186px;
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
 }
 
-#date-background p {
-	font-size: 7rem;
-	color: #333333;
-	font-weight: bold;
-	line-height: 17rem;
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
 }
 
-#countdown {
-	/*color: #CCFFF6;*/
-	font-size: 2rem;
-	font-family: 'Roboto Mono', monospace;
-	font-weight: 300;
-	display: inline;
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
 }
 
-#hw-title {
-	font-size: 8rem;
-	line-height: 8rem;
+.App-link {
+  color: #61dafb;
 }
 
-@media only screen and (max-width: 740px) {
-	#hw-title {
-		font-size: 5rem;
-		line-height: 5rem;
-	}
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
