@@ -5,5 +5,5 @@
 /hms-api/node_modules
 
 # HMS APP ignore
-/hms-app/node_modules
-/hms-app/build
+/hms-app-old/node_modules
+/hms-app-old/build
