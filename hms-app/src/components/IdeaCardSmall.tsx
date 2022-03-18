@@ -1,5 +1,5 @@
-import React from "react";
-import favIcon from "../images/favIcon.png"
+import React from 'react'
+import favIcon from '../images/favIcon.png'
 
 function IdeaCardSmall(idea: any){
     return(
