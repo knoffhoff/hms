@@ -1,6 +1,7 @@
 import React from 'react'
 import IdeaCardSmall from '../components/IdeaCardSmall'
 import ideaData from '../TestIdeaData'
+import CatDropdown from '../components/CatDropdown'
 
 function IdeaPortal() {
   const ideas = ideaData.map((idea) => {
@@ -21,10 +22,10 @@ function IdeaPortal() {
           <input />
           <p>Sort by: </p>
           <input />
-          <p>categorie: </p>
-          <input />
+          <CatDropdown />
         </div>
       </div>
+      <h3>chosen categorie is: </h3>
       <div className="idea-list">{ideas}</div>
     </>
   )

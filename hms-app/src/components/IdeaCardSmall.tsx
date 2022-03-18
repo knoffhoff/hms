@@ -2,7 +2,6 @@ import React from 'react'
 import favIcon from '../images/favIcon.png'
 
 function IdeaCardSmall(idea: any) {
-
   return (
     <>
       <h3>{idea.titel}</h3>
