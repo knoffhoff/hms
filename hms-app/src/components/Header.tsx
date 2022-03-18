@@ -7,7 +7,10 @@ const Header = () => {
       <nav className="nav">
         <div className="nav-items">
           <li>
-            <Link to="/">HOME</Link>
+            <Link to="/">Log In</Link>
+          </li>
+          <li>
+            <a href="/Home">Home</a>
           </li>
           <li>
             <a href="/Idea_Portal">Idea Portal</a>

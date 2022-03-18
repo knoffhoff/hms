@@ -1,6 +1,17 @@
 import React from "react";
+import IdeaCardBig from "../components/IdeaCardBig";
+import ideaData from "../TestIdeaData";
 
 function Home(){
+
+    const ideas = ideaData.map(idea => {
+        return (
+            <IdeaCardBig
+                {...idea} //spreads the item in its components in 1 line of code
+            />
+        )
+    })
+
     return(
         <>
             <h1>this is the Startpage</h1>
@@ -15,6 +26,10 @@ function Home(){
                 sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.
                 Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
             </p>
+            <h2>Idea card big:</h2>
+            <div className="big-idea-list">
+                {ideas}
+            </div>
         </>
 
     )
