@@ -17,7 +17,7 @@ function CatDropdown() {
 
   return (
     <label>
-      {'Categorie: '}
+      {'Category: '}
       <select value={value} onChange={handleChange}>
         {options.map((option: any) => (
           <option value={option.value}>{option.label}</option>
