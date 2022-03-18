@@ -3,6 +3,7 @@ import IdeaCardBig from '../components/IdeaCardBig'
 import ideaData from '../TestIdeaData'
 
 function Home() {
+  
   const ideas = ideaData.map((idea) => {
     return (
       <IdeaCardBig
@@ -11,6 +12,7 @@ function Home() {
     )
   })
 
+function Home() {
   return (
     <>
       <h1>this is the Startpage</h1>
@@ -28,6 +30,7 @@ function Home() {
       </p>
       <h2>Idea card big:</h2>
       <div className="big-idea-list">{ideas}</div>
+
     </>
   )
 }
