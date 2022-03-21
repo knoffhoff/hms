@@ -1,19 +1,14 @@
 # HMS API
-
-The HMS Serverless API is written in TypeScript. Its function is to store/update/retrieve the Hackathon data in a AWS DynamoDB.
-TypeScript (ts) offers type safety which is helpful when working with the AWS SDK, which comes with ts definitions (d.ts)
+The HMS Serverless API is written in TypeScript. Its function is to store/update/retrieve the Hackathon data in an AWS DynamoDB.
 
 ## Get started
-
-After cloning the project you need to install typescript to be able to compile the .ts files to .js
-
-`npm install -g typescript`
-
-Next you need to run the node module installation:
-
-`npm i`
-
-If you need to make further adjustments to eg. AWS region take a look into the *serverless.yaml*
+### Things to Install
+- NVM -- https://github.com/nvm-sh/nvm
+- Node.js/NPM -- https://docs.npmjs.com/downloading-and-installing-node-js-and-npm
+- Serverless -- https://www.serverless.com/framework/docs/getting-started
+- Python3 and PIP -- https://www.python.org/downloads/
+- Localstack -- https://github.com/localstack/localstack
+- AWS CLI -- https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html
 
 ## compiling
 

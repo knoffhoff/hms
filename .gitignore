@@ -2,7 +2,9 @@
 .idea
 
 # HMS API ignore
-/hms-api/node_modules
+hms-api/node_modules
+hms-api/.build
+hms-api/.serverless
 
 # HMS APP ignore
 /hms-app-old/node_modules
