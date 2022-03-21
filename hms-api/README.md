@@ -1,4 +1,7 @@
+[//]: # (Anytime that you do something and go "that wasn't in the documentation"...
+ you should obviously update this or any other README, doc file, or comment in the code!)
 # HMS API
+[//]: # (TODO I feel like there is a good bit more "general" information we could include here)
 The HMS API functions as the backend of the HMS System.  It is meant to handle requests from the frontend and manages the storage of data and executes any long-running operations.
 
 
@@ -29,19 +32,43 @@ In order to develop for the HMS API one will need a number of tools and language
 | AWS CLI     | https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html | Making requests to LocalStack/AWS   |
 
 
-## Compiling
-There isn't a way to do this currently but maybe SLS has a way to trigger only up to a certain step
+## Testing
+### Running Unit Tests
+[//]: # (TODO need to add information about testing here likely add Jest and run tests using NPM)
+**THIS SECTION IS INCOMPLETE AND NEEDS SOME WORK**
+
+### Manual Testing with Serverless
+Functions can be manually tested by invoking the function directly from the Serverless CLI.  Documentation for this call can be found [here](https://www.serverless.com/framework/docs/providers/aws/cli-reference/invoke), however the call is a shell command similar to:
+
+```shell
+sls invoke local --function <function_name>
+```
+
+### Manual Testing with Jetbrains IDEs
+[//]: # (TODO expand this section when the client.http file is fuller)
+**THIS SECTION IS INCOMPLETE AND NEEDS SOME WORK**
+
+To make HTTP requests to the HMS API while using a Jetbrains IDE you can make use of the [client.http](dev/client.http) file included in this repository.
 
 
 ## Deploying
-### Deploying in Production
-```sls deploy```
+The HMS API is deployed both locally and into "production" by using the Serverless framework.  When developing and testing the HMS API it should be deployed locally.  Documentation for deploying with Serverless can be found [here](https://www.serverless.com/framework/docs/providers/aws/cli-reference/deploy).
+
+### In Production
+[//]: # (TODO we will need some information about getting login credentials here eventually)
+**THIS SECTION IS INCOMPLETE AND NEEDS SOME WORK**
+
+```shell
+sls deploy
+```
 
 
-### Deploying Locally
-```sls deploy --stage local```
+### Locally
+[//]: # (TODO Likely this section is a bit lacking and could include more about how this works)
+**THIS SECTION IS INCOMPLETE AND NEEDS SOME WORK**
 
-
-## Development And Testing
-- client.http (for intelliJ IDEA)
-- calling a function with sls
+[//]: # (TODO currently this needs to be run twice... it is like Serverless doesn't wait for LocalStack to be running properly :shrug:)
+In order to start up the LocalStack environment and deploy the HMS API locally you can run:
+```shell
+sls deploy --stage local
+```
