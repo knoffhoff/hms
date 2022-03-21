@@ -1,6 +1,6 @@
 import React from 'react'
 
-function CatDropdown() {
+function CategoryDropdown() {
   const options = [
     { label: 'All', value: 'all' },
     { label: 'Freetime', value: 'freetime' },
@@ -27,4 +27,4 @@ function CatDropdown() {
   )
 }
 
-export default CatDropdown
+export default CategoryDropdown

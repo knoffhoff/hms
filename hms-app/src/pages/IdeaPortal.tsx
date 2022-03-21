@@ -1,7 +1,7 @@
 import React from 'react'
 import IdeaCardSmall from '../components/IdeaCardSmall'
 import ideaData from '../TestIdeaData'
-import CatDropdown from '../components/CatDropdown'
+import CategoryDropdown from '../components/CategoryDropdown'
 
 function IdeaPortal() {
   const ideas = ideaData.map((idea) => {
@@ -22,7 +22,7 @@ function IdeaPortal() {
           <input />
           <p>Sort by: </p>
           <input />
-          <CatDropdown />
+          <CategoryDropdown />
         </div>
       </div>
       <h3>chosen categorie is: </h3>
