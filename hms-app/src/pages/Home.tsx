@@ -1,6 +1,6 @@
 import React from 'react'
 import IdeaCardBig from '../components/IdeaCardBig'
-import ideaData from '../TestIdeaData'
+import ideaData from '../test/TestIdeaData'
 
 function Home() {
   const ideas = ideaData.map((idea) => {
