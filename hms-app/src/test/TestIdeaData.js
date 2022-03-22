@@ -1,6 +1,6 @@
 export default [
   {
-    id: 1,
+    id: 0,
     titel: 'idea 1',
     description: 'really a good idea ',
     favNumber: 2,
@@ -13,7 +13,7 @@ export default [
     aws: 'need aws yes/no',
   },
   {
-    id: 2,
+    id: 1,
     titel: 'idea 2',
     description: 'just a better idea ',
     favNumber: 8,
@@ -26,7 +26,7 @@ export default [
     aws: 'need aws yes/no',
   },
   {
-    id: 3,
+    id: 2,
     titel: 'idea 3',
     description: 'absolute the best idea in the world ',
     favNumber: 5,
