@@ -1,9 +1,10 @@
 import React from 'react'
 import IdeaCardSmall from '../components/IdeaCardSmall'
-import ideaData from '../TestIdeaData'
+import ideaData from '../test/TestIdeaData'
+import CategoryDropdown from '../components/CategoryDropdown'
 
 function IdeaPortal() {
-  const ideas = ideaData.map((idea) => {
+  const IdeasList = ideaData.map((idea) => {
     return (
       <IdeaCardSmall
         {...idea} //spreads the item in its components in 1 line of code
@@ -21,11 +22,11 @@ function IdeaPortal() {
           <input />
           <p>Sort by: </p>
           <input />
-          <p>categorie: </p>
-          <input />
+          <CategoryDropdown />
         </div>
       </div>
-      <div className="idea-list">{ideas}</div>
+      <h3>chosen categorie is: </h3>
+      <div className="idea-list">{IdeasList}</div>
     </>
   )
 }

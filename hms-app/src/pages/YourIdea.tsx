@@ -1,5 +1,5 @@
 import React from 'react'
-import ideaData from '../TestIdeaData'
+import ideaData from '../test/TestIdeaData'
 import IdeaCardSmall from '../components/IdeaCardSmall'
 
 function YourIdea() {
