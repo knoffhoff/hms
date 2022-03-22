@@ -17,7 +17,7 @@ The creation of the AWS stack and deploying of the HMS API is handled by the [Se
 When running on the HMS API locally for development and testing purposes, the AWS resources are mocked using [LocalStack](https://localstack.cloud/) inside of [Docker](https://docs.docker.com/get-started/).  This allows for developers to work and test in a realistic environment without occurring any additional costs.
 
 
-## Getting started
+## Getting Started
 In order to develop for the HMS API one will need a number of tools and languages installed on their system:
 
 | Tool        | Installation Instructions                                                     | Purpose                             |
@@ -31,6 +31,14 @@ In order to develop for the HMS API one will need a number of tools and language
 | Localstack  | https://github.com/localstack/localstack#installing                           | Mocking AWS resources               |
 | AWS CLI     | https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html | Making requests to LocalStack/AWS   |
 
+### First Time Setup
+After all (or at least Node.js and NPM) of the tools have been installed, you will need to install all the required Node.js packages.  This can be accomplished by running the following from within the hms-api folder:
+
+```shell
+npm install
+```
+
+Anytime a package in [package.json](package.json) is added or updated this should be run again to keep [package-lock.json](package-lock.json) and your development environment up to date.
 
 ## Testing
 ### Running Unit Tests
