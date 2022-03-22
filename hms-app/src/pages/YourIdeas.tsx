@@ -2,7 +2,7 @@ import React from 'react'
 import ideaData from '../test/TestIdeaData'
 import IdeaCardSmall from '../components/IdeaCardSmall'
 
-function YourIdea() {
+function YourIdeas() {
   const ideas = ideaData.map((idea) => {
     return (
       <IdeaCardSmall
@@ -20,4 +20,4 @@ function YourIdea() {
   )
 }
 
-export default YourIdea
+export default YourIdeas
