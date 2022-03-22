@@ -20,7 +20,7 @@ function NewIdea() {
   }
   function submitForm(event: any) {
     event.preventDefault()
-    alert({ ideaText } + JSON.stringify(ideaText))
+    alert(JSON.stringify(ideaText))
   }
 
   return (
