@@ -14,7 +14,7 @@ function YourIdea() {
   return (
     <>
       <h1>this is the your idea page</h1>
-      <a href="/Idea_Portal/Create_New_Idea">Create new idea</a>
+      <a href="/Your_Idea/Create_New_Idea">Create new idea</a>
       <h2>Your Ideas:</h2>
       <div className="idea-list">{ideas}</div>
     </>

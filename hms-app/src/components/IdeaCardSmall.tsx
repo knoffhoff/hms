@@ -2,6 +2,8 @@ import React from 'react'
 import favIcon from '../images/favIcon.png'
 
 function IdeaCardSmall(idea: any) {
+  function handleClick() {}
+
   return (
     <>
       <h3>{idea.titel}</h3>
@@ -10,6 +12,9 @@ function IdeaCardSmall(idea: any) {
         <img src={favIcon} style={{ width: '30px', height: '30px' }} />
         <p>number of favs: {idea.favNumber}</p>
       </div>
+      <a href="/Idea_Portal/IdeaDetails" onClick={handleClick}>
+        see details
+      </a>
     </>
   )
 }
