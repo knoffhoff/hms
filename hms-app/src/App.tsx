@@ -15,8 +15,8 @@ function App() {
       <Route path="/" element={<Layout />}>
         <Route index element={<LogInPage />} />
         <Route path="home" element={<Home />} />
-        <Route path="ideaPortal" element={<IdeaPortal />} />
-        <Route path="yourIdeas" element={<YourIdeas />} />
+        <Route path="idea-portal" element={<IdeaPortal />} />
+        <Route path="your-ideas" element={<YourIdeas />} />
         <Route path="archive" element={<Archive />} />
         <Route path="*" element={<NoPage />} />
       </Route>

@@ -8,20 +8,23 @@ const Layout = () => {
       <HeaderMenu
         links={[
           { link: 'home', label: 'Home' },
-          { link: 'ideaPortal', label: 'Idea Portal' },
-          { link: 'yourIdeas', label: 'Your Ideas' },
+          {
+            link: 'idea-portal',
+            label: 'Idea Portal',
+          },
+          { link: 'your-ideas', label: 'Your Ideas' },
           {
             link: 'archive',
             label: 'Archive',
             links: [
-              { link: 'Dec 2021', label: 'Dec 2021' },
-              { link: 'Jun 2021', label: 'Jun 2021' },
+              { link: 'dec-2021', label: 'Dec 2021' },
+              { link: 'jun-2021', label: 'Jun 2021' },
             ],
           },
           {
             link: 'admin',
             label: 'Admin',
-            links: [{ link: 'Manage Ideas', label: 'Manage Ideas' }],
+            links: [{ link: 'manage-ideas', label: 'Manage Ideas' }],
           },
         ]}
       />
