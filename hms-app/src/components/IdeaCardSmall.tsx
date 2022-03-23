@@ -1,6 +1,13 @@
 import React from 'react'
 import { Heart } from 'tabler-icons-react'
-import { Card, Text, Button, useMantineTheme, Group } from '@mantine/core'
+import {
+  Card,
+  Text,
+  Button,
+  useMantineTheme,
+  Group,
+  ActionIcon,
+} from '@mantine/core'
 
 function IdeaCardSmall(idea: any) {
   const theme = useMantineTheme()
@@ -10,9 +17,17 @@ function IdeaCardSmall(idea: any) {
 
   return (
     <Card shadow="sm" p="lg">
-      <Text size={'xl'} weight={500}>
-        {idea.title}
-      </Text>
+      <Group
+        position="apart"
+        style={{ marginBottom: 5, marginTop: theme.spacing.sm }}
+      >
+        <Text size={'xl'} weight={500}>
+          {idea.title}
+        </Text>
+        <ActionIcon variant="light" color={'red'}>
+          <Heart size={16} />
+        </ActionIcon>
+      </Group>
 
       <Text size="sm" style={{ color: secondaryColor, lineHeight: 1.5 }}>
         {idea.description}
@@ -21,13 +36,6 @@ function IdeaCardSmall(idea: any) {
       <Group style={{ marginTop: 14 }}>
         <Button variant="filled" color="blue">
           More information
-        </Button>
-        <Button
-          variant="light"
-          color="gray"
-          leftIcon={<Heart color={'#FA5252'} />}
-        >
-          Add to watchlist
         </Button>
       </Group>
     </Card>

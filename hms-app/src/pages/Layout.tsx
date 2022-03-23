@@ -39,7 +39,7 @@ const Layout = () => {
         },
       })}
     >
-      <Container size={'lg'}>
+      <Container size={'xl'}>
         <Outlet />
       </Container>
     </AppShell>
