@@ -8,6 +8,7 @@ import YourIdea from './pages/YourIdea'
 import Archive from './pages/Archive'
 import NoPage from './pages/NoPage'
 import LogInPage from './pages/LogInPage'
+import CreateNewIdea from './pages/CreateNewIdea'
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
         <Route path="Home" element={<Home />} />
         <Route path="Idea_Portal" element={<IdeaPortal />} />
         <Route path="Your_Idea" element={<YourIdea />} />
+        <Route path="Your_Idea/Create_New_Idea" element={<CreateNewIdea />} />
         <Route path="Archive" element={<Archive />} />
         <Route path="*" element={<NoPage />} />
       </Route>
