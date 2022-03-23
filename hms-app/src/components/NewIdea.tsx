@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 function NewIdea() {
   //TODO automaticly add ID and owner for a idea
   const [ideaText, setIdeaText] = useState({
-    titel: '',
+    title: '',
     description: '',
     reason: '',
     problem: '',
@@ -27,7 +27,7 @@ function NewIdea() {
   return (
     <div>
       <form onSubmit={submitForm}>
-        <div className="titel">
+        <div className="title">
           <h3>title</h3>
           <input
             type="text"
