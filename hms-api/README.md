@@ -1,43 +1,82 @@
+[//]: # (Anytime that you do something and go "that wasn't in the documentation"...
+ you should obviously update this or any other README, doc file, or comment in the code!)
 # HMS API
+[//]: # (TODO I feel like there is a good bit more "general" information we could include here)
+The HMS API functions as the backend of the HMS System.  It is meant to handle requests from the frontend and manages the storage of data and executes any long-running operations.
 
-The HMS Serverless API is written in TypeScript. Its function is to store/update/retrieve the Hackathon data in a AWS DynamoDB.
-TypeScript (ts) offers type safety which is helpful when working with the AWS SDK, which comes with ts definitions (d.ts)
 
-## Get started
+## Application Information
+The HMS API is meant to run in [AWS Cloud](https://aws.amazon.com/getting-started/?ref=docs_gateway) as a collection of [Lambda](https://docs.aws.amazon.com/lambda/latest/dg/welcome.html) functions.  These lambda functions are written in the [TypeScript](https://www.typescriptlang.org/) language using [NPM](https://docs.npmjs.com/about-npm) as their package manager.  The storage for the HMS API is done using collection of [DynamoDB](https://aws.amazon.com/dynamodb/) tables.
 
-After cloning the project you need to install typescript to be able to compile the .ts files to .js
+The HMS API is modeled using a microservice style architecture. This allows for the HMS API to run using minimal resources and scale effectively during periods of high load.  This should allow for costs to remain low for those hosting the HMS API.
 
-`npm install -g typescript`
+The creation of the AWS stack and deploying of the HMS API is handled by the [Serverless](https://www.serverless.com/framework/docs) framework.
 
-Next you need to run the node module installation:
 
-`npm i`
+### Running Locally
+When running on the HMS API locally for development and testing purposes, the AWS resources are mocked using [LocalStack](https://localstack.cloud/) inside of [Docker](https://docs.docker.com/get-started/).  This allows for developers to work and test in a realistic environment without occurring any additional costs.
 
-If you need to make further adjustments to eg. AWS region take a look into the *serverless.yaml*
 
-## compiling
+## Getting Started
+In order to develop for the HMS API one will need a number of tools and languages installed on their system:
 
-You can then run the compiler by running `tsc` in this directory. It will pull the settings from .tsconfig and extra @types
-from package.json. The output .js files is what will be uploaded by serverless.
+| Tool        | Installation Instructions                                                     | Purpose                             |
+|-------------|-------------------------------------------------------------------------------|-------------------------------------|
+| NVM         | https://github.com/nvm-sh/nvm#installing-and-updating                         | Installing and managing Node.js/NPM |
+| Node.js     | https://github.com/nvm-sh/nvm#usage                                           | Writing code                        |
+| NPM         | https://github.com/nvm-sh/nvm#usage                                           | Node package management             |
+| Serverless  | https://www.serverless.com/framework/docs/getting-started                     | Building and deploying code         |
+| Docker      | https://docs.docker.com/get-docker                                            | Running LocalStack                  |
+| Python3/PIP | https://www.python.org/downloads                                              | Installing LocalStack               |
+| Localstack  | https://github.com/localstack/localstack#installing                           | Mocking AWS resources               |
+| AWS CLI     | https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html | Making requests to LocalStack/AWS   |
 
-## deploying
+### First Time Setup
+After all (or at least Node.js and NPM) of the tools have been installed, you will need to install all the required Node.js packages.  This can be accomplished by running the following from within the hms-api folder:
 
-For deployment you need to be logged in to AWS with scloud so that serverless knows who is deploying to where.
-Just run `sls deploy` and you get a invoke URL to call your endpoints in case of success.
+```shell
+npm install
+```
 
-## local development
+Anytime a package in [package.json](package.json) is added or updated this should be run again to keep [package-lock.json](package-lock.json) and your development environment up to date.
 
-For development purposes it can be useful to invoke your function locally by the CLI command:
+## Testing
+### Running Unit Tests
+[//]: # (TODO need to add information about testing here likely add Jest and run tests using NPM)
+**THIS SECTION IS INCOMPLETE AND NEEDS SOME WORK**
 
-`sls invoke local -f FUNCTION_NAME`
+### Manual Testing with Serverless
+Functions can be manually tested by invoking the function directly from the Serverless CLI.  Documentation for this call can be found [here](https://www.serverless.com/framework/docs/providers/aws/cli-reference/invoke), however the call is a shell command similar to:
 
-Also you can invoke the deployed function the same way leaving out the local keyword:
+```shell
+sls invoke local --function <function_name>
+```
 
-`sls invoke -f FUNCTION_NAME`
+### Manual Testing with Jetbrains IDEs
+[//]: # (TODO expand this section when the client.http file is fuller)
+**THIS SECTION IS INCOMPLETE AND NEEDS SOME WORK**
 
-For detailed debug information add a flag to the command:
+To make HTTP requests to the HMS API while using a Jetbrains IDE you can make use of the [client.http](dev/client.http) file included in this repository.
 
-`sls invoke local -f FUNCTION_NAME -e "SLS_DEBUG=*"`
 
-For further commands refer to the serverless docs cli-reference at:
-https://www.serverless.com/framework/docs/providers/aws/cli-reference
+## Deploying
+The HMS API is deployed both locally and into "production" by using the Serverless framework.  When developing and testing the HMS API it should be deployed locally.  Documentation for deploying with Serverless can be found [here](https://www.serverless.com/framework/docs/providers/aws/cli-reference/deploy).
+
+### In Production
+[//]: # (TODO we will need some information about getting login credentials here eventually)
+**THIS SECTION IS INCOMPLETE AND NEEDS SOME WORK**
+
+```shell
+sls deploy
+```
+
+
+### Locally
+[//]: # (TODO Likely this section is a bit lacking and could include more about how this works)
+**THIS SECTION IS INCOMPLETE AND NEEDS SOME WORK**
+
+[//]: # (TODO currently this needs to be run twice... it is like Serverless doesn't wait for LocalStack to be running properly :shrug:)
+In order to start up the LocalStack environment and deploy the HMS API locally you can run:
+```shell
+sls deploy --stage local
+```
