@@ -18,13 +18,14 @@ function NewIdea() {
       [event.target.name]: event.target.value,
     }))
   }
+
   function submitForm(event: any) {
     event.preventDefault()
     alert(JSON.stringify(ideaText))
   }
 
   return (
-    <>
+    <div>
       <form onSubmit={submitForm}>
         <div className="titel">
           <h3>titel</h3>
@@ -86,7 +87,7 @@ function NewIdea() {
             value={ideaText.skills}
           />
         </div>
-        <div className="aws_needed">
+        <div className="aws-needed">
           <h3>aws needed?</h3>
           <input
             type="text"
@@ -96,11 +97,9 @@ function NewIdea() {
             value={ideaText.aws_needed}
           />
         </div>
-
-        <h3></h3>
         <button type="submit">Create new idea</button>
       </form>
-    </>
+    </div>
   )
 }
 
