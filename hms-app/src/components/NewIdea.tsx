@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 function NewIdea() {
   //TODO automaticly add ID and owner for a idea
   const [ideaText, setIdeaText] = useState({
-    titel: '',
+    title: '',
     description: '',
     reason: '',
     problem: '',
@@ -18,22 +18,23 @@ function NewIdea() {
       [event.target.name]: event.target.value,
     }))
   }
+
   function submitForm(event: any) {
     event.preventDefault()
     alert(JSON.stringify(ideaText))
   }
 
   return (
-    <>
+    <div>
       <form onSubmit={submitForm}>
-        <div className="titel">
-          <h3>titel</h3>
+        <div className="title">
+          <h3>title</h3>
           <input
             type="text"
-            placeholder="titel"
+            placeholder="title"
             onChange={handleChange}
-            name="titel"
-            value={ideaText.titel}
+            name="title"
+            value={ideaText.title}
           />
         </div>
         <div className="description">
@@ -47,20 +48,20 @@ function NewIdea() {
           />
         </div>
         <div className="reason">
-          <h3>why you chosed it?</h3>
+          <h3>why you chose it?</h3>
           <input
             type="text"
-            placeholder="why you chosed it?"
+            placeholder="why you chose it?"
             onChange={handleChange}
             name="reason"
             value={ideaText.reason}
           />
         </div>
         <div className="problem">
-          <h3>what problem solves it?</h3>
+          <h3>what problem does it solve?</h3>
           <input
             type="text"
-            placeholder="what problem solves it?"
+            placeholder="what problem does it solve?"
             onChange={handleChange}
             name="problem"
             value={ideaText.problem}
@@ -86,7 +87,7 @@ function NewIdea() {
             value={ideaText.skills}
           />
         </div>
-        <div className="aws_needed">
+        <div className="aws-needed">
           <h3>aws needed?</h3>
           <input
             type="text"
@@ -96,11 +97,9 @@ function NewIdea() {
             value={ideaText.aws_needed}
           />
         </div>
-
-        <h3></h3>
         <button type="submit">Create new idea</button>
       </form>
-    </>
+    </div>
   )
 }
 
