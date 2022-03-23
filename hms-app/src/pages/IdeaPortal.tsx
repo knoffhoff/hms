@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import IdeaCardSmall from '../components/IdeaCardSmall'
 import ideaData from '../test/TestIdeaData'
-import CategoryDropdown from '../components/CategoryDropdown'
 import { Modal } from '@mantine/core'
 import IdeaCardBig from '../components/IdeaCardBig'
 
@@ -9,22 +8,32 @@ function IdeaPortal() {
   const [opened, setOpened] = useState(false)
   const [ideaDetailsClicked, setIdeaDetailsClicked] = useState(ideaData[0])
 
+  //TODO functions should only be callable if theres an existing prev/next idea
+  function decreaseIdeaIndex() {
+    const index = ideaDetailsClicked.id
+    setIdeaDetailsClicked(ideaData[index - 1])
+  }
+  function increaseIdeaIndex() {
+    const index = ideaDetailsClicked.id
+    setIdeaDetailsClicked(ideaData[index + 1])
+  }
+
   const IdeasList = ideaData.map((idea, index) => {
     return (
       <div key={idea.id}>
         <IdeaCardSmall
           {...idea} //spreads the item in its components in 1 line of code
         />
-        <div className="modal-with-button">
+        <div className="modal">
           <Modal
             centered
             withCloseButton={false}
             opened={opened}
             onClose={() => setOpened(false)}
           >
-            <button>prev idea</button>
+            <button onClick={decreaseIdeaIndex}>prev idea</button>
             <IdeaCardBig {...ideaDetailsClicked} />
-            <button>next idea</button>
+            <button onClick={increaseIdeaIndex}>next idea</button>
           </Modal>
           <button
             onClick={() => {
