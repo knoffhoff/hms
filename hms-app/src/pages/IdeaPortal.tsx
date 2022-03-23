@@ -12,15 +12,6 @@ function IdeaPortal() {
   return (
     <>
       <h1>All ideas</h1>
-      <div>
-        <div style={{ display: 'flex', gap: '10px' }}>
-          <p>Search for: </p>
-          <input />
-          <p>Sort by: </p>
-          <input />
-          <CategoryDropdown />
-        </div>
-      </div>
       <Group position={'right'} py={20}>
         <Input variant="default" placeholder="Search..." />
       </Group>

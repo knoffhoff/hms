@@ -1,5 +1,4 @@
 import React from 'react'
-import { Heart } from 'tabler-icons-react'
 import {
   Card,
   Text,
@@ -17,17 +16,17 @@ function IdeaCardSmall(idea: any) {
 
   return (
     <Card shadow="sm" p="lg">
-      <Group
-        position="apart"
-        style={{ marginBottom: 5, marginTop: theme.spacing.sm }}
-      >
-        <Text size={'xl'} weight={500}>
-          {idea.title}
-        </Text>
-        <ActionIcon variant="light" color={'red'}>
-          <Heart size={16} />
-        </ActionIcon>
-      </Group>
+      <ActionIcon variant="light" color={'yellow'}>
+        {/*TODO: check for like*/}
+        {false ? (
+          <span className="material-icons">star</span>
+        ) : (
+          <span className="material-icons">star_outline</span>
+        )}
+      </ActionIcon>
+      <Text size={'xl'} weight={500}>
+        {idea.title}
+      </Text>
 
       <Text size="sm" style={{ color: secondaryColor, lineHeight: 1.5 }}>
         {idea.description}

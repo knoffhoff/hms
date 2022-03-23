@@ -8,6 +8,7 @@ import {
   Center,
   Burger,
   Container,
+  Avatar,
 } from '@mantine/core'
 import { useBooleanToggle } from '@mantine/hooks'
 import { ChevronDown } from 'tabler-icons-react'
@@ -112,6 +113,9 @@ export default function HeaderMenu({ links }: HeaderSearchProps) {
           <h1>HMS</h1>
           <Group spacing={5} className={classes.links}>
             {items}
+            <Avatar color="gray" radius="xl">
+              JP
+            </Avatar>
           </Group>
           <Burger
             opened={opened}
