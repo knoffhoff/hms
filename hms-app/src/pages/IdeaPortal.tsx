@@ -20,7 +20,7 @@ function IdeaPortal() {
 
   const IdeasList = ideaData.map((idea, index) => {
     return (
-      <div key={idea.id}>
+      <div>
         <IdeaCardSmall
           {...idea} //spreads the item in its components in 1 line of code
         />
