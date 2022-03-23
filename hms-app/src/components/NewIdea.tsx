@@ -28,13 +28,13 @@ function NewIdea() {
     <div>
       <form onSubmit={submitForm}>
         <div className="titel">
-          <h3>titel</h3>
+          <h3>title</h3>
           <input
             type="text"
-            placeholder="titel"
+            placeholder="title"
             onChange={handleChange}
-            name="titel"
-            value={ideaText.titel}
+            name="title"
+            value={ideaText.title}
           />
         </div>
         <div className="description">
@@ -48,20 +48,20 @@ function NewIdea() {
           />
         </div>
         <div className="reason">
-          <h3>why you chosed it?</h3>
+          <h3>why you chose it?</h3>
           <input
             type="text"
-            placeholder="why you chosed it?"
+            placeholder="why you chose it?"
             onChange={handleChange}
             name="reason"
             value={ideaText.reason}
           />
         </div>
         <div className="problem">
-          <h3>what problem solves it?</h3>
+          <h3>what problem does it solve?</h3>
           <input
             type="text"
-            placeholder="what problem solves it?"
+            placeholder="what problem does it solve?"
             onChange={handleChange}
             name="problem"
             value={ideaText.problem}
