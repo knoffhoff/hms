@@ -24,7 +24,9 @@ function IdeaCardSmall(idea: any) {
         >
           <IdeaCardBig {...ideaData[idea.id]} />
         </Modal>
-        <button onClick={() => setOpened(true)}>see details</button>
+        <button onClick={() => setOpened(true)}>
+          see details(in small card component)
+        </button>
       </div>
     </div>
   )
