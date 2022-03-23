@@ -8,8 +8,8 @@ function IdeaCardSmall(idea: any) {
   const [opened, setOpened] = useState(false)
 
   return (
-    <div style={{ border: '2px solid #00FFD0' }}>
-      <h3>{idea.titel}</h3>
+    <>
+      <h3>{idea.title}</h3>
       <p>{idea.description}</p>
       <div style={{ display: 'flex', gap: '5px' }}>
         <img src={favIcon} style={{ width: '30px', height: '30px' }} />

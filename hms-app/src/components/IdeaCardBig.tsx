@@ -5,7 +5,7 @@ function IdeaCardBig(idea: any) {
   return (
     <div style={{ border: '2px solid #00FFD0' }}>
       <div style={{ display: 'flex', gap: '5px' }}>
-        <h3>{idea.titel}</h3>
+        <h3>{idea.title}</h3>
         <h3>( {idea.favNumber} )</h3>
         <img
           src={favIcon}
