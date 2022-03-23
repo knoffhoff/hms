@@ -106,7 +106,7 @@ export default function HeaderMenu({ links }: HeaderSearchProps) {
   })
 
   return (
-    <Header height={56} mb={120}>
+    <Header height={56}>
       <Container>
         <div className={classes.inner}>
           <h1>HMS</h1>

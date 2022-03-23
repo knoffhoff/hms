@@ -1,16 +1,36 @@
 import React from 'react'
-import favIcon from '../images/favIcon.png'
+import { Heart } from 'tabler-icons-react'
+import { Card, Text, Button, useMantineTheme, Group } from '@mantine/core'
 
 function IdeaCardSmall(idea: any) {
+  const theme = useMantineTheme()
+
+  const secondaryColor =
+    theme.colorScheme === 'dark' ? theme.colors.dark[1] : theme.colors.gray[7]
+
   return (
-    <>
-      <h3>{idea.title}</h3>
-      <p>{idea.description}</p>
-      <div style={{ display: 'flex', gap: '5px' }}>
-        <img src={favIcon} style={{ width: '30px', height: '30px' }} />
-        <p>number of favs: {idea.favNumber}</p>
-      </div>
-    </>
+    <Card shadow="sm" p="lg">
+      <Text size={'xl'} weight={500}>
+        {idea.title}
+      </Text>
+
+      <Text size="sm" style={{ color: secondaryColor, lineHeight: 1.5 }}>
+        {idea.description}
+      </Text>
+
+      <Group style={{ marginTop: 14 }}>
+        <Button variant="filled" color="blue">
+          More information
+        </Button>
+        <Button
+          variant="light"
+          color="gray"
+          leftIcon={<Heart color={'#FA5252'} />}
+        >
+          Add to watchlist
+        </Button>
+      </Group>
+    </Card>
   )
 }
 

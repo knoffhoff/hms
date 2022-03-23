@@ -7,9 +7,9 @@ import { Grid } from '@mantine/core'
 function IdeaPortal() {
   const IdeasList = ideaData.map((idea) => {
     return (
-      <IdeaCardSmall
-        {...idea} //spreads the item in its components in 1 line of code
-      />
+      <Grid.Col span={4}>
+        <IdeaCardSmall {...idea} />
+      </Grid.Col>
     )
   })
 
@@ -28,11 +28,7 @@ function IdeaPortal() {
       </div>
       <h3>chosen categorie is: </h3>
       <div className="idea-list">
-        <Grid>
-          <Grid.Col span={4}>1</Grid.Col>
-          <Grid.Col span={4}>2</Grid.Col>
-          <Grid.Col span={4}>3</Grid.Col>
-        </Grid>
+        <Grid>{IdeasList}</Grid>
       </div>
     </>
   )
