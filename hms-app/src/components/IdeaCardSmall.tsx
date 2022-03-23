@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import {
   Card,
   Text,
@@ -6,9 +6,13 @@ import {
   useMantineTheme,
   Group,
   ActionIcon,
+  Modal
 } from '@mantine/core'
+import IdeaCardBig from './IdeaCardBig'
+import ideaData from '../test/TestIdeaData'
 
 function IdeaCardSmall(idea: any) {
+  const [opened, setOpened] = useState(false)
   const theme = useMantineTheme()
 
   const secondaryColor =
@@ -36,6 +40,15 @@ function IdeaCardSmall(idea: any) {
         <Button variant="filled" color="blue">
           More information
         </Button>
+        <Modal
+          centered
+          withCloseButton={false}
+          opened={opened}
+          onClose={() => setOpened(false)}
+        >
+          <IdeaCardBig {...ideaData[idea.id]} />
+        </Modal>
+        <button onClick={() => setOpened(true)}>see details</button>
       </Group>
     </Card>
   )
