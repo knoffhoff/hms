@@ -8,7 +8,7 @@ function IdeaCardSmall(idea: any) {
   const [opened, setOpened] = useState(false)
 
   return (
-    <>
+    <div>
       <h3>{idea.title}</h3>
       <p>{idea.description}</p>
       <div style={{ display: 'flex', gap: '5px' }}>
