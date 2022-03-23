@@ -1,15 +1,11 @@
 {
   "name": "hms-api",
   "version": "0.0.0",
-  "description": "",
-  "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "watch": "tsc -w",
-    "lint": "tslint '*.ts'"
+    "deploy": "serverless deploy --stage local",
+    "watch": "nodemon -w src -e '.*' -x 'npm run build'",
+    "start": "npm run deploy && npm run watch"
   },
-  "keywords": [],
-  "author": "",
   "license": "ISC",
   "devDependencies": {
     "@types/aws-sdk": "2.7.0",
@@ -18,6 +14,9 @@
     "@typescript-eslint/parser": "5.14.0",
     "eslint": "8.11.0",
     "eslint-config-google": "0.14.0",
+    "nodemon": "2.0.15",
+    "serverless-localstack": "0.4.35",
+    "serverless-plugin-typescript": "2.1.1",
     "typescript": "4.6.2"
   },
   "dependencies": {

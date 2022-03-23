@@ -1,34 +1,50 @@
 service: hms-api
 
-frameworkVersion: ">=1.1.0 <2.0.0"
+plugins:
+  - serverless-plugin-typescript
+  - serverless-localstack
+
+custom:
+  localstack:
+    debug: true
+    stages: [ local ]
+    host: http://localhost
+    edgePort: 4566
+    autostart: true
+    lambda:
+      mountCode: false
+    docker:
+      sudo: false
 
 provider:
   name: aws
-  runtime: nodejs12.x
+  runtime: nodejs14.x
   region: eu-central-1
   environment:
     HACKATHON_TABLE: hackathon
     IDEA_TABLE: idea
     USER_TABLE: user
     CATEGORY_TABLE: category
-  iamRoleStatements:
-    - Effect: Allow
-      Action:
-        - dynamodb:Query
-        - dynamodb:Scan
-        - dynamodb:GetItem
-        - dynamodb:PutItem
-        - dynamodb:UpdateItem
-        - dynamodb:DeleteItem
-      Resource:
-        - "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.HACKATHON_TABLE}"
-        - "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.IDEA_TABLE}"
-        - "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.USER_TABLE}"
-        - "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.CATEGORY_TABLE}"
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - dynamodb:Query
+            - dynamodb:Scan
+            - dynamodb:GetItem
+            - dynamodb:PutItem
+            - dynamodb:UpdateItem
+            - dynamodb:DeleteItem
+          Resource:
+            - 'arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.HACKATHON_TABLE}'
+            - 'arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.IDEA_TABLE}'
+            - 'arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.USER_TABLE}'
+            - 'arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.CATEGORY_TABLE}'
 
 functions:
   createHackathon:
-    handler: hackathon/create.create
+    handler: src/hackathon/create.create
     events:
       - http:
           path: hackathon
@@ -58,7 +74,7 @@ functions:
             allowCredentials: false
 
   listAllHackathons:
-    handler: hackathon/list.list
+    handler: src/hackathon/list.list
     events:
       - http:
           path: hackathon
@@ -75,7 +91,7 @@ functions:
             allowCredentials: false
 
   getHackathon:
-    handler: hackathon/get.get
+    handler: src/hackathon/get.get
     events:
       - http:
           path: hackathon/{id}
@@ -92,7 +108,7 @@ functions:
             allowCredentials: false
 
   deleteHackathon:
-    handler: hackathon/delete.delete
+    handler: src/hackathon/delete.delete
     events:
       - http:
           path: hackathon/{id}
@@ -109,7 +125,7 @@ functions:
             allowCredentials: false
 
   createIdea:
-    handler: idea/create.create
+    handler: src/idea/create.create
     events:
       - http:
           path: idea
@@ -139,7 +155,7 @@ functions:
             allowCredentials: false
 
   listAllIdea:
-    handler: idea/list.list
+    handler: src/idea/list.list
     events:
       - http:
           path: idea
@@ -156,7 +172,7 @@ functions:
             allowCredentials: false
 
   getIdea:
-    handler: idea/get.get
+    handler: src/idea/get.get
     events:
       - http:
           path: idea/{id}
@@ -173,7 +189,7 @@ functions:
             allowCredentials: false
 
   deleteIdea:
-    handler: idea/delete.delete
+    handler: src/idea/delete.delete
     events:
       - http:
           path: idea/{id}
@@ -190,7 +206,7 @@ functions:
             allowCredentials: false
 
   createUser:
-    handler: user/create.create
+    handler: src/user/create.create
     events:
       - http:
           path: user
@@ -220,7 +236,7 @@ functions:
             allowCredentials: false
 
   listAllUser:
-    handler: user/list.list
+    handler: src/user/list.list
     events:
       - http:
           path: user
@@ -237,7 +253,7 @@ functions:
             allowCredentials: false
 
   getUser:
-    handler: user/get.get
+    handler: src/user/get.get
     events:
       - http:
           path: user/{id}
@@ -254,7 +270,7 @@ functions:
             allowCredentials: false
 
   deleteUser:
-    handler: user/delete.delete
+    handler: src/user/delete.delete
     events:
       - http:
           path: user/{id}
@@ -271,7 +287,7 @@ functions:
             allowCredentials: false
 
   createCategory:
-    handler: category/create.create
+    handler: src/category/create.create
     events:
       - http:
           path: category
@@ -301,7 +317,7 @@ functions:
             allowCredentials: false
 
   listAllCategory:
-    handler: category/list.list
+    handler: src/category/list.list
     events:
       - http:
           path: category
@@ -318,7 +334,7 @@ functions:
             allowCredentials: false
 
   getCategory:
-    handler: category/get.get
+    handler: src/category/get.get
     events:
       - http:
           path: category/{id}
@@ -335,7 +351,7 @@ functions:
             allowCredentials: false
 
   deleteCategory:
-    handler: category/delete.delete
+    handler: src/category/delete.delete
     events:
       - http:
           path: category/{id}
@@ -359,12 +375,10 @@ resources:
       Properties:
         TableName: hackathon
         AttributeDefinitions:
-          -
-            AttributeName: id
+          - AttributeName: id
             AttributeType: S
         KeySchema:
-          -
-            AttributeName: id
+          - AttributeName: id
             KeyType: HASH
         ProvisionedThroughput:
           ReadCapacityUnits: 1
@@ -411,8 +425,3 @@ resources:
         ProvisionedThroughput:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
-
-custom:
-  dynamodb:
-    stages:
-      - dev
