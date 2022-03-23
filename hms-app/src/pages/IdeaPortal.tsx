@@ -10,19 +10,20 @@ function IdeaPortal() {
 
   //TODO functions should only be callable if theres an existing prev/next idea
   function decreaseIdeaIndex() {
-    const index = ideaDetailsClicked.id
-    setIdeaDetailsClicked(ideaData[index - 1])
+    if (ideaDetailsClicked.id > 0)
+      setIdeaDetailsClicked(ideaData[ideaDetailsClicked.id - 1])
   }
   function increaseIdeaIndex() {
-    const index = ideaDetailsClicked.id
-    setIdeaDetailsClicked(ideaData[index + 1])
+    if (ideaDetailsClicked.id < ideaData.length - 1)
+      setIdeaDetailsClicked(ideaData[ideaDetailsClicked.id + 1])
   }
 
   const IdeasList = ideaData.map((idea, index) => {
     return (
       <div>
         <IdeaCardSmall
-          {...idea} //spreads the item in its components in 1 line of code
+          {...idea}
+          index //spreads the item in its components in 1 line of code
         />
         <div className="modal">
           <Modal
