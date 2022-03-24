@@ -4,8 +4,7 @@ import ideaData from '../test/TestIdeaData'
 
 function IdeaPortal() {
   const [searchedString, setSearchString] = useState('')
-  const ideas = ideaData.map((idea) => idea)
-  const filteredIdeas = ideas.filter((item) => {
+  const filteredIdeas = ideaData.filter((item) => {
     return item.title.includes(searchedString)
   })
   const filteredIdeaList = filteredIdeas.map((idea, index) => {
