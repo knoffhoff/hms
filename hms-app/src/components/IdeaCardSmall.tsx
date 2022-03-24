@@ -8,12 +8,12 @@ function IdeaCardSmall(props: any) {
   const [opened, setOpened] = useState(false)
   const [ideaDetailsClicked, setIdeaDetailsClicked] = useState(ideaData[0])
 
-  //TODO functions should only be callable if theres an existing prev/next idea
   function decreaseIdeaIndex() {
     if (ideaDetailsClicked.id > 0)
       setIdeaDetailsClicked(ideaData[ideaDetailsClicked.id - 1])
   }
   function increaseIdeaIndex() {
+    //TODO change ideadata into index.length
     if (ideaDetailsClicked.id < ideaData.length - 1)
       setIdeaDetailsClicked(ideaData[ideaDetailsClicked.id + 1])
   }

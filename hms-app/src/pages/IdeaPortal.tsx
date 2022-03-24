@@ -1,18 +1,25 @@
 import React, { useState } from 'react'
 import IdeaCardSmall from '../components/IdeaCardSmall'
 import ideaData from '../test/TestIdeaData'
-import { Modal } from '@mantine/core'
-import IdeaCardBig from '../components/IdeaCardBig'
 
 function IdeaPortal() {
-  const IdeasList = ideaData.map((idea, index) => {
-    let props = { ...idea, index }
+  const [searchedString, setSearchString] = useState('')
+  const ideas = ideaData.map((idea) => idea)
+  const filteredIdeas = ideas.filter((item) => {
+    return item.title.includes(searchedString)
+  })
+  const filteredIdeaList = filteredIdeas.map((idea, index) => {
+    const props = { ...idea, index }
     return (
       <div>
         <IdeaCardSmall {...props} />
       </div>
     )
   })
+
+  function handleChange(event: any) {
+    setSearchString(event.target.value)
+  }
 
   return (
     <>
@@ -21,10 +28,13 @@ function IdeaPortal() {
         <h2>Ideas List:</h2>
         <div style={{ display: 'flex', gap: '10px' }}>
           <p>Search for: </p>
-          <input />
+          <input type="text" onChange={handleChange} />
         </div>
       </div>
-      <div className="idea-list">{IdeasList}</div>
+      <div className="filter">
+        <h2>below is the searched idea title</h2>
+        {filteredIdeaList}
+      </div>
     </>
   )
 }
