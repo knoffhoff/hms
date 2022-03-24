@@ -25,10 +25,13 @@ function IdeaPortal() {
     <>
       <Title order={1}>All ideas</Title>
       <Group position={'right'} py={20}>
-        <Input variant="default" placeholder="Search..." />
-        <p>Search for: </p>
-          <input type="text" onChange={handleChange} />
+        <Input
+          variant="default"
+          placeholder="Search..."
+          onChange={handleChange}
+        />
       </Group>
+      <h2>below is the searched idea title</h2>
       <div className="idea-list">
         <SimpleGrid
           cols={3}
@@ -39,7 +42,6 @@ function IdeaPortal() {
             { maxWidth: 600, cols: 1, spacing: 'sm' },
           ]}
         >
-          <h2>below is the searched idea title</h2>
           {filteredIdeaList}
         </SimpleGrid>
       </div>
