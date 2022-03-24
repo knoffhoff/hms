@@ -16,14 +16,17 @@ function IdeaCardSmall(idea: any) {
 
   return (
     <Card shadow="sm" p="lg">
-      <ActionIcon variant="light" color={'yellow'}>
+      <Group align={'center'} position={'right'}>
         {/*TODO: check for like*/}
-        {false ? (
-          <span className="material-icons">star</span>
-        ) : (
-          <span className="material-icons">star_outline</span>
-        )}
-      </ActionIcon>
+        <ActionIcon variant="hover" color={false ? 'yellow' : 'gray'}>
+          {/*TODO: check for like*/}
+          {false ? (
+            <span className="material-icons">star</span>
+          ) : (
+            <span className="material-icons">star_outline</span>
+          )}
+        </ActionIcon>
+      </Group>
       <Text size={'xl'} weight={500}>
         {idea.title}
       </Text>

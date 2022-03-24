@@ -2,7 +2,7 @@ import React from 'react'
 import IdeaCardSmall from '../components/IdeaCardSmall'
 import ideaData from '../test/TestIdeaData'
 import CategoryDropdown from '../components/CategoryDropdown'
-import { SimpleGrid, Input, Group } from '@mantine/core'
+import { SimpleGrid, Input, Group, Title } from '@mantine/core'
 
 function IdeaPortal() {
   const IdeasList = ideaData.map((idea) => {
@@ -11,7 +11,7 @@ function IdeaPortal() {
 
   return (
     <>
-      <h1>All ideas</h1>
+      <Title order={1}>All ideas</Title>
       <Group position={'right'} py={20}>
         <Input variant="default" placeholder="Search..." />
       </Group>
