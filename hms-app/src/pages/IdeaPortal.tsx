@@ -1,31 +1,37 @@
-import React from 'react'
+import React, { useState } from 'react'
 import IdeaCardSmall from '../components/IdeaCardSmall'
 import ideaData from '../test/TestIdeaData'
-import { SimpleGrid, Input, Group, Title } from '@mantine/core'
+import { Grid, SimpleGrid, Input, Group, Title } from '@mantine/core'
+import { Search } from 'tabler-icons-react'
 
 function IdeaPortal() {
+  const [searchTerm, setSearchTerm] = useState('')
+
+  const handleChangeSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(event.target.value)
+  }
+
   const IdeasList = ideaData.map((idea) => {
-    return <IdeaCardSmall {...idea} />
+    return (
+      <Grid.Col sm={6} lg={4}>
+        <IdeaCardSmall {...idea} />
+      </Grid.Col>
+    )
   })
 
   return (
     <>
       <Title order={1}>All ideas</Title>
       <Group position={'right'} py={20}>
-        <Input variant="default" placeholder="Search..." />
+        <Input
+          variant="default"
+          placeholder="Search for idea title..."
+          icon={<Search />}
+          onChange={handleChangeSearch}
+        />
       </Group>
       <div className="idea-list">
-        <SimpleGrid
-          cols={3}
-          spacing={'lg'}
-          breakpoints={[
-            { maxWidth: 980, cols: 3, spacing: 'md' },
-            { maxWidth: 755, cols: 2, spacing: 'sm' },
-            { maxWidth: 600, cols: 1, spacing: 'sm' },
-          ]}
-        >
-          {IdeasList}
-        </SimpleGrid>
+        <Grid gutter={'lg'}>{IdeasList}</Grid>
       </div>
     </>
   )
