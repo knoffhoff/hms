@@ -1,7 +1,6 @@
 import React from 'react'
 import IdeaCardSmall from '../components/IdeaCardSmall'
 import ideaData from '../test/TestIdeaData'
-import CategoryDropdown from '../components/CategoryDropdown'
 import { SimpleGrid, Input, Group, Title } from '@mantine/core'
 
 function IdeaPortal() {
