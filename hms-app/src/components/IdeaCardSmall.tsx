@@ -1,7 +1,14 @@
 import React, { useState } from 'react'
-import favIcon from '../images/favIcon.png'
+import {
+  Card,
+  Text,
+  Button,
+  useMantineTheme,
+  Group,
+  ActionIcon,
+  Modal
+} from '@mantine/core'
 import ideaData from '../test/TestIdeaData'
-import { Modal } from '@mantine/core'
 import IdeaCardBig from './IdeaCardBig'
 
 function IdeaCardSmall(props: any) {
@@ -18,15 +25,33 @@ function IdeaCardSmall(props: any) {
       setIdeaDetailsClicked(ideaData[ideaDetailsClicked.id + 1])
   }
 
+  const theme = useMantineTheme()
+
+  const secondaryColor =
+    theme.colorScheme === 'dark' ? theme.colors.dark[1] : theme.colors.gray[7]
+
   return (
-    <div style={{ border: '2px solid #00FFD0' }}>
-      <h3>{props.title}</h3>
-      <p>{props.description}</p>
-      <div style={{ display: 'flex', gap: '5px' }}>
-        <img src={favIcon} style={{ width: '30px', height: '30px' }} />
-        <p>number of favs: {props.favNumber}</p>
-      </div>
-      <div className="modal">
+    <Card shadow="sm" p="lg">
+      <ActionIcon variant="light" color={'yellow'}>
+        {/*TODO: check for like*/}
+        {false ? (
+          <span className="material-icons">star</span>
+        ) : (
+          <span className="material-icons">star_outline</span>
+        )}
+      </ActionIcon>
+      <Text size={'xl'} weight={500}>
+        {idea.title}
+      </Text>
+
+      <Text size="sm" style={{ color: secondaryColor, lineHeight: 1.5 }}>
+        {idea.description}
+      </Text>
+
+      <Group style={{ marginTop: 14 }}>
+        <Button variant="filled" color="blue">
+          More information
+        </Button>
         <Modal
           centered
           withCloseButton={false}
@@ -47,6 +72,9 @@ function IdeaCardSmall(props: any) {
         </button>
       </div>
     </div>
+        <button onClick={() => setOpened(true)}>see details</button>
+      </Group>
+    </Card>
   )
 }
 
