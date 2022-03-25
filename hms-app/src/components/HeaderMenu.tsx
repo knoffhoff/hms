@@ -8,9 +8,12 @@ import {
   Center,
   Burger,
   Container,
+  Avatar,
+  useMantineColorScheme,
 } from '@mantine/core'
 import { useBooleanToggle } from '@mantine/hooks'
 import { ChevronDown } from 'tabler-icons-react'
+import { SwitchToggle } from './ThemeSwitchToggle'
 
 const useStyles = createStyles((theme) => ({
   inner: {
@@ -67,6 +70,8 @@ interface HeaderSearchProps {
 }
 
 export default function HeaderMenu({ links }: HeaderSearchProps) {
+  const { colorScheme, toggleColorScheme } = useMantineColorScheme()
+  const dark = colorScheme === 'dark'
   const [opened, toggleOpened] = useBooleanToggle(false)
   const { classes } = useStyles()
 
@@ -106,12 +111,16 @@ export default function HeaderMenu({ links }: HeaderSearchProps) {
   })
 
   return (
-    <Header height={56} mb={120}>
+    <Header height={56}>
       <Container>
         <div className={classes.inner}>
           <h1>HMS</h1>
           <Group spacing={5} className={classes.links}>
+            <SwitchToggle></SwitchToggle>
             {items}
+            <Avatar color="indigo" radius="xl">
+              JP
+            </Avatar>
           </Group>
           <Burger
             opened={opened}

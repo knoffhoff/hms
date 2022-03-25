@@ -1,30 +1,32 @@
-import React, { useState } from 'react'
+import React from 'react'
 import IdeaCardSmall from '../components/IdeaCardSmall'
 import ideaData from '../test/TestIdeaData'
-import { Modal } from '@mantine/core'
-import IdeaCardBig from '../components/IdeaCardBig'
+import { SimpleGrid, Input, Group, Title } from '@mantine/core'
 
 function IdeaPortal() {
-  const IdeasList = ideaData.map((idea, index) => {
-    let props = { ...idea, index }
-    return (
-      <div>
-        <IdeaCardSmall {...props} />
-      </div>
-    )
+  const IdeasList = ideaData.map((idea) => {
+    return <IdeaCardSmall {...idea} />
   })
 
   return (
     <>
-      <h1>this is the IdeaPortal</h1>
-      <div>
-        <h2>Ideas List:</h2>
-        <div style={{ display: 'flex', gap: '10px' }}>
-          <p>Search for: </p>
-          <input />
-        </div>
+      <Title order={1}>All ideas</Title>
+      <Group position={'right'} py={20}>
+        <Input variant="default" placeholder="Search..." />
+      </Group>
+      <div className="idea-list">
+        <SimpleGrid
+          cols={3}
+          spacing={'lg'}
+          breakpoints={[
+            { maxWidth: 980, cols: 3, spacing: 'md' },
+            { maxWidth: 755, cols: 2, spacing: 'sm' },
+            { maxWidth: 600, cols: 1, spacing: 'sm' },
+          ]}
+        >
+          {IdeasList}
+        </SimpleGrid>
       </div>
-      <div className="idea-list">{IdeasList}</div>
     </>
   )
 }
