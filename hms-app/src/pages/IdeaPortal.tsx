@@ -1,19 +1,39 @@
 import React from 'react'
+import { useState } from 'react'
 import IdeaCardSmall from '../components/IdeaCardSmall'
 import ideaData from '../test/TestIdeaData'
 import { SimpleGrid, Input, Group, Title } from '@mantine/core'
 
 function IdeaPortal() {
-  const IdeasList = ideaData.map((idea) => {
-    return <IdeaCardSmall {...idea} />
+  const [searchedString, setSearchString] = useState('')
+
+  const filteredIdeas = ideaData.filter((item) => {
+    return item.title.includes(searchedString)
   })
+
+  const filteredIdeaList = filteredIdeas.map((idea, index) => {
+    const props = { ...idea, index }
+    return (
+      <div>
+        <IdeaCardSmall {...props} />
+      </div>
+    )
+  })
+
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) =>
+    setSearchString(event.target.value)
 
   return (
     <>
       <Title order={1}>All ideas</Title>
       <Group position={'right'} py={20}>
-        <Input variant="default" placeholder="Search..." />
+        <Input
+          variant="default"
+          placeholder="Search..."
+          onChange={handleSearchChange}
+        />
       </Group>
+      <h2>below is the searched idea title</h2>
       <div className="idea-list">
         <SimpleGrid
           cols={3}
@@ -24,7 +44,7 @@ function IdeaPortal() {
             { maxWidth: 600, cols: 1, spacing: 'sm' },
           ]}
         >
-          {IdeasList}
+          {filteredIdeaList}
         </SimpleGrid>
       </div>
     </>
