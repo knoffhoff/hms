@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import IdeaCardSmall from '../components/IdeaCardSmall'
 import ideaData from '../test/TestIdeaData'
+import { SimpleGrid, Input, Group, Title } from '@mantine/core'
 
 function IdeaPortal() {
   const [searchedString, setSearchString] = useState('')
@@ -22,17 +23,27 @@ function IdeaPortal() {
 
   return (
     <>
-      <h1>this is the IdeaPortal</h1>
-      <div>
-        <h2>Ideas List:</h2>
-        <div style={{ display: 'flex', gap: '10px' }}>
-          <p>Search for: </p>
-          <input type="text" onChange={handleChange} />
-        </div>
-      </div>
-      <div className="filter">
-        <h2>below is the searched idea title</h2>
-        {filteredIdeaList}
+      <Title order={1}>All ideas</Title>
+      <Group position={'right'} py={20}>
+        <Input
+          variant="default"
+          placeholder="Search..."
+          onChange={handleChange}
+        />
+      </Group>
+      <h2>below is the searched idea title</h2>
+      <div className="idea-list">
+        <SimpleGrid
+          cols={3}
+          spacing={'lg'}
+          breakpoints={[
+            { maxWidth: 980, cols: 3, spacing: 'md' },
+            { maxWidth: 755, cols: 2, spacing: 'sm' },
+            { maxWidth: 600, cols: 1, spacing: 'sm' },
+          ]}
+        >
+          {filteredIdeaList}
+        </SimpleGrid>
       </div>
     </>
   )
