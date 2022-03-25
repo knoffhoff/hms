@@ -25,6 +25,7 @@ const menuLinks = [
       { link: 'jun-2021', label: 'Jun 2021' },
     ],
   },
+  { link: 'voting', label: 'Voting' },
   {
     link: 'admin',
     label: 'Admin',
