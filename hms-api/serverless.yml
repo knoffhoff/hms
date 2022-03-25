@@ -44,7 +44,7 @@ provider:
 
 functions:
   createHackathon:
-    handler: src/hackathon/create
+    handler: src/hackathon/create.create
     events:
       - http:
           path: hackathon
@@ -74,7 +74,7 @@ functions:
             allowCredentials: false
 
   listAllHackathons:
-    handler: src/hackathon/list
+    handler: src/hackathon/list.list
     events:
       - http:
           path: hackathon
@@ -91,7 +91,7 @@ functions:
             allowCredentials: false
 
   getHackathon:
-    handler: src/hackathon/get
+    handler: src/hackathon/get.get
     events:
       - http:
           path: hackathon/{id}
@@ -108,7 +108,7 @@ functions:
             allowCredentials: false
 
   deleteHackathon:
-    handler: src/hackathon/delete
+    handler: src/hackathon/delete.delete
     events:
       - http:
           path: hackathon/{id}
@@ -125,7 +125,7 @@ functions:
             allowCredentials: false
 
   createIdea:
-    handler: src/idea/create
+    handler: src/idea/create.create
     events:
       - http:
           path: idea
@@ -155,7 +155,7 @@ functions:
             allowCredentials: false
 
   listAllIdea:
-    handler: src/idea/list
+    handler: src/idea/list.list
     events:
       - http:
           path: idea
@@ -172,7 +172,7 @@ functions:
             allowCredentials: false
 
   getIdea:
-    handler: src/idea/get
+    handler: src/idea/get.get
     events:
       - http:
           path: idea/{id}
@@ -189,7 +189,7 @@ functions:
             allowCredentials: false
 
   deleteIdea:
-    handler: src/idea/delete
+    handler: src/idea/delete.delete
     events:
       - http:
           path: idea/{id}
@@ -206,7 +206,7 @@ functions:
             allowCredentials: false
 
   createUser:
-    handler: src/user/create
+    handler: src/user/create.create
     events:
       - http:
           path: user
@@ -236,7 +236,7 @@ functions:
             allowCredentials: false
 
   listAllUser:
-    handler: src/user/list
+    handler: src/user/list.list
     events:
       - http:
           path: user
@@ -253,7 +253,7 @@ functions:
             allowCredentials: false
 
   getUser:
-    handler: src/user/get
+    handler: src/user/get.get
     events:
       - http:
           path: user/{id}
@@ -270,7 +270,7 @@ functions:
             allowCredentials: false
 
   deleteUser:
-    handler: src/user/delete
+    handler: src/user/delete.delete
     events:
       - http:
           path: user/{id}
@@ -287,7 +287,7 @@ functions:
             allowCredentials: false
 
   createCategory:
-    handler: src/category/create
+    handler: src/category/create.create
     events:
       - http:
           path: category
@@ -317,7 +317,7 @@ functions:
             allowCredentials: false
 
   listAllCategory:
-    handler: src/category/list
+    handler: src/category/list.list
     events:
       - http:
           path: category
@@ -334,7 +334,7 @@ functions:
             allowCredentials: false
 
   getCategory:
-    handler: src/category/get
+    handler: src/category/get.get
     events:
       - http:
           path: category/{id}
@@ -351,7 +351,7 @@ functions:
             allowCredentials: false
 
   deleteCategory:
-    handler: src/category/delete
+    handler: src/category/delete.delete
     events:
       - http:
           path: category/{id}
