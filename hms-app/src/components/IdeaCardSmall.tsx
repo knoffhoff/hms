@@ -13,10 +13,21 @@ import ideaData from '../test/TestIdeaData'
 
 function IdeaCardSmall(idea: any) {
   const [opened, setOpened] = useState(false)
+  const [ideaDetailsClicked, setIdeaDetailsClicked] = useState(ideaData[0])
   const theme = useMantineTheme()
 
   const secondaryColor =
     theme.colorScheme === 'dark' ? theme.colors.dark[1] : theme.colors.gray[7]
+
+  //TODO functions should only be callable if theres an existing prev/next idea
+  function decreaseIdeaIndex() {
+    if (ideaDetailsClicked.id > 0)
+      setIdeaDetailsClicked(ideaData[ideaDetailsClicked.id - 1])
+  }
+  function increaseIdeaIndex() {
+    if (ideaDetailsClicked.id < ideaData.length - 1)
+      setIdeaDetailsClicked(ideaData[ideaDetailsClicked.id + 1])
+  }
 
   return (
     <Card shadow="sm" p="lg">
@@ -46,7 +57,9 @@ function IdeaCardSmall(idea: any) {
           opened={opened}
           onClose={() => setOpened(false)}
         >
-          <IdeaCardBig {...ideaData[idea.id]} />
+          <button onClick={decreaseIdeaIndex}>prev idea</button>
+          <IdeaCardBig {...ideaDetailsClicked} />
+          <button onClick={increaseIdeaIndex}>next idea</button>
         </Modal>
         <button onClick={() => setOpened(true)}>see details</button>
       </Group>

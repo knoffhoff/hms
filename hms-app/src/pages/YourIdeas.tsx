@@ -3,11 +3,12 @@ import ideaData from '../test/TestIdeaData'
 import IdeaCardSmall from '../components/IdeaCardSmall'
 
 function YourIdeas() {
-  const ideas = ideaData.map((idea) => {
+  const ideas = ideaData.map((idea, index) => {
+    let props = { ...idea, index }
     return (
-      <IdeaCardSmall
-        {...idea} //spreads the item in its components in 1 line of code
-      />
+      <div>
+        <IdeaCardSmall {...props} />
+      </div>
     )
   })
 

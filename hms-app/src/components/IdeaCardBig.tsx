@@ -2,6 +2,16 @@ import React from 'react'
 import favIcon from '../images/favIcon.png'
 
 function IdeaCardBig(idea: any) {
+  function addFavorite() {
+    //TODO add a favorite flag that connect user and idea
+    alert('added to favorites')
+  }
+
+  function addParticipant() {
+    //TODO if number of max participants is not reached add user to participants, otherwise add user to waitlist
+    alert('you are now a participant')
+  }
+
   return (
     <div style={{ border: '2px solid #00FFD0' }}>
       <div style={{ display: 'flex', gap: '5px' }}>
@@ -39,6 +49,10 @@ function IdeaCardBig(idea: any) {
       <div>
         <h4>participants</h4>
         <p>{idea.participants}</p>
+      </div>
+      <div className="big-card-buttons">
+        <button onClick={addFavorite}>add favorite</button>
+        <button onClick={addParticipant}>participate</button>
       </div>
     </div>
   )
