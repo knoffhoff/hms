@@ -1,181 +1,135 @@
-import React, { useCallback, useReducer, useState } from 'react'
+import React, { useState } from 'react'
+import { Title } from '@mantine/core'
+import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd'
 import IdeaCardSmall from '../components/IdeaCardSmall'
 import ideaData from '../test/TestIdeaData'
-import { SimpleGrid, Input, Group, Title } from '@mantine/core'
-import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd'
-import produce from 'immer'
 
-function Voting() {
-  const [searchedString, setSearchString] = useState('')
+const columnsFromBackend = {
+  ['1']: {
+    name: 'All ideas',
+    items: [...ideaData],
+  },
+  ['2']: {
+    name: 'Voting',
+    items: [],
+  },
+}
 
-  const filteredIdeas = ideaData.filter((item) => {
-    return item.title.includes(searchedString)
-  })
-  function handleSearchChange(event: any) {
-    setSearchString(event.target.value)
+const onDragEnd = (result: any, columns: any, setColumns: any) => {
+  if (!result.destination) return
+  const { source, destination } = result
+
+  if (source.droppableId !== destination.droppableId) {
+    const sourceColumn = columns[source.droppableId]
+    const destColumn = columns[destination.droppableId]
+    const sourceItems = [...sourceColumn.items]
+    const destItems = [...destColumn.items]
+    const [removed] = sourceItems.splice(source.index, 1)
+    destItems.splice(destination.index, 0, removed)
+    setColumns({
+      ...columns,
+      [source.droppableId]: {
+        ...sourceColumn,
+        items: sourceItems,
+      },
+      [destination.droppableId]: {
+        ...destColumn,
+        items: destItems,
+      },
+    })
+  } else {
+    const column = columns[source.droppableId]
+    const copiedItems = [...column.items]
+    const [removed] = copiedItems.splice(source.index, 1)
+    copiedItems.splice(destination.index, 0, removed)
+    setColumns({
+      ...columns,
+      [source.droppableId]: {
+        ...column,
+        items: copiedItems,
+      },
+    })
   }
+}
 
-  const [ideaOrder, setIdeaOrder] = useState(filteredIdeas)
-  const [votingOrder, setVotingOrder] = useState([])
-
-  // console.log('votingOrder')
-  // console.log(votingOrder)
-
-  function handleOnDragEnd(result: any) {
-    if (!result.destination) return
-
-    const items = Array.from(ideaOrder)
-    const [reorderedItem] = items.splice(result.source.index, 1)
-    items.splice(result.destination.index, 0, reorderedItem)
-    setIdeaOrder(items)
-
-    // const votedItems = Array.from(votingOrder)
-    // const [reorderedVotes] = votedItems.splice(result.source.index, 1)
-    // votedItems.splice(result.destination.index, 0, reorderedVotes)
-    // @ts-ignore
-    setVotingOrder((votingOrder) => [...votingOrder, reorderedItem])
-
-    console.log('reorderedItem')
-    console.log(reorderedItem)
-    console.log('items')
-    console.log(items)
-
-    // setVotingOrder(votedItems)
-
-    console.log('votingOrder')
-    console.log(votingOrder)
-  }
-  console.log('votingOrder')
-  console.log(votingOrder)
-
-  const filteredIdeaList = ideaOrder.map((idea, index) => {
-    const props = { ...idea, index }
-    return (
-      <Draggable key={idea.id} draggableId={idea.id.toString()} index={index}>
-        {(provided) => (
-          <div
-            {...provided.draggableProps}
-            {...provided.dragHandleProps}
-            ref={provided.innerRef}
-          >
-            <IdeaCardSmall {...props} />
-          </div>
-        )}
-      </Draggable>
-    )
-  })
-  const votedIdeaList = votingOrder.map((idea: any, index) => {
-    const props = { ...idea, index }
-    return (
-      <Draggable key={idea.id} draggableId={idea.id.toString()} index={index}>
-        {(provided) => (
-          <div
-            ref={provided.innerRef}
-            {...provided.draggableProps}
-            {...provided.dragHandleProps}
-          >
-            <IdeaCardSmall {...props} />
-          </div>
-        )}
-      </Draggable>
-    )
-  })
+export default function Voting2() {
+  const [columns, setColumns] = useState(columnsFromBackend)
 
   function submitVote() {
     console.log('voting submit is: ')
-    console.log(votingOrder)
+    console.log(columns['2'].items)
   }
 
   return (
-    <div>
-      <Title order={1}>All ideas</Title>
-
-      <Group position={'right'} py={20}>
-        <Input
-          variant="default"
-          placeholder="Search..."
-          onChange={handleSearchChange}
-        />
-      </Group>
-
-      <h2>below is the test version</h2>
-      <div
-        style={{
-          display: 'flex',
-          border: '2px solid #00FFD0',
-        }}
+    <div style={{ display: 'flex', justifyContent: 'center', height: '100%' }}>
+      <button onClick={submitVote}> submit vote</button>
+      <DragDropContext
+        onDragEnd={(result) => onDragEnd(result, columns, setColumns)}
       >
-        <DragDropContext onDragEnd={handleOnDragEnd}>
-          <Droppable droppableId="idealist" type="IDEA">
-            {(provided) => {
-              return (
-                <div
-                  ref={provided.innerRef}
-                  {...provided.droppableProps}
-                  style={{
-                    width: 340,
-                    margin: 'auto',
-                    border: '2px solid #00FFD0',
-                  }}
-                >
-                  {filteredIdeaList}
-                  {provided.placeholder}
-                </div>
-              )
-            }}
-          </Droppable>
-          <button onClick={submitVote}> submit vote</button>
-          <Droppable droppableId="votinglist" type="IDEA">
-            {(provided) => {
-              return (
-                <div
-                  ref={provided.innerRef}
-                  {...provided.droppableProps}
-                  style={{
-                    width: 340,
-                    minHeight: 500,
-                    margin: 'auto',
-                    border: '2px solid #00FFD0',
-                  }}
-                >
-                  {votedIdeaList}
-                  {provided.placeholder}
-                </div>
-              )
-            }}
-          </Droppable>
-        </DragDropContext>
-      </div>
-
-      <h2>working 1 list version below</h2>
-      <DragDropContext onDragEnd={handleOnDragEnd}>
-        <Droppable droppableId="idealist">
-          {(provided) => (
+        {Object.entries(columns).map(([columnId, column], index) => {
+          return (
             <div
-              {...provided.droppableProps}
-              ref={provided.innerRef}
-              style={{ border: '2px solid #00FFD0' }}
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+              }}
+              key={columnId}
             >
-              <div
-                className="idea-list"
-                style={{
-                  width: 340,
-                  margin: 'auto',
-                  border: '2px solid #00FFD0',
-                }}
-              >
-                <h3>all ideas list</h3>
-                <SimpleGrid cols={1} spacing={'lg'}>
-                  {filteredIdeaList}
-                </SimpleGrid>
+              <Title order={2}>{column.name}</Title>
+              <div style={{ margin: 8 }}>
+                <Droppable droppableId={columnId} key={columnId}>
+                  {(provided, snapshot) => {
+                    return (
+                      <div
+                        {...provided.droppableProps}
+                        ref={provided.innerRef}
+                        style={{
+                          background: snapshot.isDraggingOver
+                            ? 'lightblue'
+                            : 'lightgrey',
+                          padding: 4,
+                          width: 340,
+                          minHeight: 500,
+                        }}
+                      >
+                        {column.items.map((item, index) => {
+                          return (
+                            <Draggable
+                              key={item.id}
+                              draggableId={item.id.toString()}
+                              index={index}
+                            >
+                              {(provided, snapshot) => {
+                                return (
+                                  <div
+                                    ref={provided.innerRef}
+                                    {...provided.draggableProps}
+                                    {...provided.dragHandleProps}
+                                    style={{
+                                      userSelect: 'none',
+                                      margin: '10px',
+                                      minHeight: '50px',
+                                      ...provided.draggableProps.style,
+                                    }}
+                                  >
+                                    <IdeaCardSmall {...item} />
+                                  </div>
+                                )
+                              }}
+                            </Draggable>
+                          )
+                        })}
+                        {provided.placeholder}
+                      </div>
+                    )
+                  }}
+                </Droppable>
               </div>
-              {provided.placeholder}
             </div>
-          )}
-        </Droppable>
+          )
+        })}
       </DragDropContext>
     </div>
   )
 }
-
-export default Voting
