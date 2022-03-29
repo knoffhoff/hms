@@ -13,7 +13,7 @@ import { useColorScheme } from '@mantine/hooks'
 const menuLinks = [
   { link: 'home', label: 'Home' },
   {
-    link: 'idea-portal',
+    link: 'ideas',
     label: 'Idea Portal',
   },
   { link: 'your-ideas', label: 'Your Ideas' },

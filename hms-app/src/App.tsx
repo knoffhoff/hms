@@ -10,6 +10,7 @@ import NoPage from './pages/NoPage'
 import LogInPage from './pages/LogInPage'
 import CreateNewIdea from './pages/CreateNewIdea'
 import Voting from './pages/Voting'
+import SingleIdeaPage from './pages/SingleIdeaPage'
 
 function App() {
   return (
@@ -17,7 +18,8 @@ function App() {
       <Route path="/" element={<Layout />}>
         <Route index element={<LogInPage />} />
         <Route path="home" element={<Home />} />
-        <Route path="idea-portal" element={<IdeaPortal />} />
+        <Route path="ideas" element={<IdeaPortal />} />
+        <Route path="ideas/:ideaId" element={<SingleIdeaPage />} />
         <Route path="your-ideas" element={<YourIdeas />} />
         <Route path="your-ideas/create" element={<CreateNewIdea />} />
         <Route path="archive" element={<Archive />} />
