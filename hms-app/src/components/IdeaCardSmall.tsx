@@ -10,13 +10,21 @@ import {
 } from '@mantine/core'
 import ideaData from '../test/TestIdeaData'
 import IdeaCardBig from './IdeaCardBig'
+import { Idea } from '../common/types'
 
-function IdeaCardSmall(props: any) {
+type IProps = {
+  idea: Idea
+  index: number
+}
+
+function IdeaCardSmall(props: IProps) {
   const [opened, setOpened] = useState(false)
   const [ideaDetailsClicked, setIdeaDetailsClicked] = useState(ideaData[0])
   const theme = useMantineTheme()
   const secondaryColor =
     theme.colorScheme === 'dark' ? theme.colors.dark[1] : theme.colors.gray[7]
+
+  const { idea, index } = props
 
   function decreaseIdeaIndex() {
     if (ideaDetailsClicked.id > 0)
@@ -40,11 +48,11 @@ function IdeaCardSmall(props: any) {
           )}
         </ActionIcon>
         <Text size={'xl'} weight={500}>
-          {props.title}
+          {idea.title}
         </Text>
 
         <Text size="sm" style={{ color: secondaryColor, lineHeight: 1.5 }}>
-          {props.description}
+          {idea.description}
         </Text>
 
         <Group style={{ marginTop: 14 }}>
@@ -63,7 +71,7 @@ function IdeaCardSmall(props: any) {
             color="blue"
             onClick={() => {
               setOpened(true)
-              setIdeaDetailsClicked(ideaData[props.index])
+              setIdeaDetailsClicked(ideaData[index])
             }}
           >
             More information

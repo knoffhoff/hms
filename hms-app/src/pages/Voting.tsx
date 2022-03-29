@@ -52,7 +52,7 @@ const onDragEnd = (result: any, columns: any, setColumns: any) => {
   }
 }
 
-export default function Voting2() {
+export default function Voting() {
   const [columns, setColumns] = useState(columnsFromBackend)
 
   function submitVote() {
@@ -112,7 +112,7 @@ export default function Voting2() {
                                       ...provided.draggableProps.style,
                                     }}
                                   >
-                                    <IdeaCardSmall {...item} />
+                                    <IdeaCardSmall idea={item} index={index} />
                                   </div>
                                 )
                               }}
@@ -129,7 +129,10 @@ export default function Voting2() {
           )
         })}
       </DragDropContext>
-      <button onClick={submitVote} style={{height: 100}}> submit vote</button>
+      <button onClick={submitVote} style={{ height: 100 }}>
+        {' '}
+        submit vote
+      </button>
     </div>
   )
 }
