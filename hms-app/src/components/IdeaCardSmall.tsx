@@ -69,7 +69,7 @@ function IdeaCardSmall(props: IProps) {
       setIdeaDetailsClicked(ideaData[ideaDetailsClicked.id + 1])
   }
 
-  const skillBadges = skills.map((skill) => (
+  const skillBadges = idea.skills.map((skill) => (
     <Badge color={theme.colorScheme === 'dark' ? 'dark' : 'gray'} key={skill}>
       {skill}
     </Badge>
@@ -77,48 +77,6 @@ function IdeaCardSmall(props: IProps) {
 
   return (
     <>
-      <Card shadow="sm" p="lg">
-        <ActionIcon variant="light" color={'yellow'}>
-          {/*TODO: check for like*/}
-          {false ? (
-            <span className="material-icons">star</span>
-          ) : (
-            <span className="material-icons">star_outline</span>
-          )}
-        </ActionIcon>
-        <Text size={'xl'} weight={500}>
-          {idea.title}
-        </Text>
-
-        <Text size="sm" style={{ color: secondaryColor, lineHeight: 1.5 }}>
-          {idea.description}
-        </Text>
-
-        <Group style={{ marginTop: 14 }}>
-          <Modal
-            centered
-            withCloseButton={false}
-            opened={opened}
-            onClose={() => setOpened(false)}
-          >
-            <button onClick={decreaseIdeaIndex}>prev idea</button>
-            <IdeaCardBig {...ideaDetailsClicked} />
-            <button onClick={increaseIdeaIndex}>next idea</button>
-          </Modal>
-          <Button
-            variant="filled"
-            color="blue"
-            onClick={() => {
-              setOpened(true)
-              setIdeaDetailsClicked(ideaData[index])
-            }}
-          >
-            More information
-          </Button>
-        </Group>
-      </Card>
-
-
       <Card withBorder radius="md" p="md" className={classes.card}>
         <Card.Section className={classes.section} mt="md">
           <Text size="lg" weight={500}>
@@ -148,12 +106,12 @@ function IdeaCardSmall(props: IProps) {
             {/*TODO: check for like*/}
             {false ? (
               <span className="material-icons" style={{ color: '#f1c40f' }}>
-              star
-            </span>
+                star
+              </span>
             ) : (
               <span className="material-icons" style={{ color: '#f1c40f' }}>
-              star_outline
-            </span>
+                star_outline
+              </span>
             )}
           </ActionIcon>
         </Group>

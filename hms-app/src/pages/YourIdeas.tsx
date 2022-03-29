@@ -1,9 +1,8 @@
 import React from 'react'
 import ideaData from '../test/TestIdeaData'
-import IdeaCardSmall from '../components/IdeaCardSmall'
 import IdeaCardList from '../components/IdeaCardList'
 
-function YourIdeas() {
+export default function YourIdeas() {
   return (
     <>
       <h1>this is the your idea page</h1>
@@ -13,5 +12,3 @@ function YourIdeas() {
     </>
   )
 }
-
-export default YourIdeas

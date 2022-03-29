@@ -9,7 +9,7 @@ export default [
     goal: 'the goal for the hackweek is...',
     skills: ['frontend', 'backend', 'design'],
     category: 'testdata',
-    participants: [],
+    participants: ['Jakob', 'Johannes', 'Anna'],
     aws: true,
   },
   {
@@ -22,7 +22,7 @@ export default [
     goal: 'the goal for the hackweek is...',
     skills: ['frontend', 'backend'],
     category: 'testdata',
-    participants: [],
+    participants: ['Jakob', 'Johannes', 'Anna'],
     aws: true,
   },
   {
