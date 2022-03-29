@@ -14,7 +14,6 @@ import IdeaCardBig from './IdeaCardBig'
 function IdeaCardSmall(props: any) {
   const [opened, setOpened] = useState(false)
   const [ideaDetailsClicked, setIdeaDetailsClicked] = useState(ideaData[0])
-
   const theme = useMantineTheme()
   const secondaryColor =
     theme.colorScheme === 'dark' ? theme.colors.dark[1] : theme.colors.gray[7]
