@@ -62,7 +62,6 @@ export default function Voting2() {
 
   return (
     <div style={{ display: 'flex', justifyContent: 'center', height: '100%' }}>
-      <button onClick={submitVote}> submit vote</button>
       <DragDropContext
         onDragEnd={(result) => onDragEnd(result, columns, setColumns)}
       >
@@ -130,6 +129,7 @@ export default function Voting2() {
           )
         })}
       </DragDropContext>
+      <button onClick={submitVote} style={{height: 100}}> submit vote</button>
     </div>
   )
 }
