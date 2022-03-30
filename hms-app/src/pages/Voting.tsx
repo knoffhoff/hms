@@ -96,7 +96,9 @@ export default function Voting() {
                           {...provided.droppableProps}
                           ref={provided.innerRef}
                           style={{
-                            background: backgroundColor,
+                            background: snapshot.isDraggingOver
+                              ? 'lightgrey'
+                              : backgroundColor,
                             padding: 4,
                             width: 340,
                             minHeight: 500,
