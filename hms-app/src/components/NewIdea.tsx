@@ -1,15 +1,42 @@
+import {
+  Textarea,
+  Group,
+  Button,
+  useMantineTheme,
+  CheckboxGroup,
+  Checkbox,
+  createStyles,
+  Card,
+} from '@mantine/core'
 import React, { useState } from 'react'
 
+const useStyles = createStyles((theme) => ({
+  card: {
+    backgroundColor:
+      theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.white,
+  },
+  section: {
+    borderBottom: `1px solid ${
+      theme.colorScheme === 'dark' ? theme.colors.dark[4] : theme.colors.gray[3]
+    }`,
+    paddingLeft: theme.spacing.md,
+    paddingRight: theme.spacing.md,
+    paddingBottom: theme.spacing.md,
+    textTransform: 'uppercase',
+    fontSize: theme.fontSizes.md,
+    fontWeight: 500,
+  },
+}))
+
 function NewIdea() {
-  //TODO automaticly add ID and owner for a idea
+  const { classes } = useStyles()
+  const [skills, setSkills] = useState<string[]>([])
   const [ideaText, setIdeaText] = useState({
     title: '',
     description: '',
     reason: '',
     problem: '',
     goal: '',
-    skills: '',
-    aws_needed: '',
   })
 
   function handleChange(event: { target: { name: any; value: any } }) {
@@ -21,85 +48,95 @@ function NewIdea() {
 
   function submitForm(event: any) {
     event.preventDefault()
-    alert(JSON.stringify(ideaText))
+    alert(JSON.stringify(ideaText) + 'skills: ' + JSON.stringify(skills))
   }
 
   return (
-    <div>
-      <form onSubmit={submitForm}>
-        <div className="title">
-          <h3>title</h3>
-          <input
-            type="text"
-            placeholder="title"
+    <>
+      <Card withBorder radius="md" p="md" className={classes.card}>
+        <Card.Section className={classes.section}>
+          <Textarea
+            label="Title"
+            mt="sm"
+            required
+            placeholder="Title"
+            maxRows={1}
+            autosize
             onChange={handleChange}
             name="title"
-            value={ideaText.title}
           />
-        </div>
-        <div className="description">
-          <h3>description</h3>
-          <input
-            type="text"
-            placeholder="description"
+        </Card.Section>
+        <Card.Section className={classes.section}>
+          <Textarea
+            mt="sm"
+            label="Description"
+            required
+            placeholder="Description"
+            minRows={2}
+            maxRows={3}
+            autosize
             onChange={handleChange}
             name="description"
-            value={ideaText.description}
           />
-        </div>
-        <div className="reason">
-          <h3>why you chose it?</h3>
-          <input
-            type="text"
-            placeholder="why you chose it?"
+        </Card.Section>
+        <Card.Section className={classes.section}>
+          <Textarea
+            label="Reason"
+            mt="sm"
+            placeholder="Descripe how you got this idea (optional)"
+            minRows={2}
+            maxRows={3}
+            autosize
             onChange={handleChange}
             name="reason"
-            value={ideaText.reason}
           />
-        </div>
-        <div className="problem">
-          <h3>what problem does it solve?</h3>
-          <input
-            type="text"
-            placeholder="what problem does it solve?"
+        </Card.Section>
+        <Card.Section className={classes.section}>
+          <Textarea
+            label="Problem"
+            mt="sm"
+            placeholder="which problelm does it solve (optional)"
+            minRows={2}
+            maxRows={3}
+            autosize
             onChange={handleChange}
             name="problem"
-            value={ideaText.problem}
           />
-        </div>
-        <div className="goal">
-          <h3>goal?</h3>
-          <input
-            type="text"
-            placeholder="goal?"
+        </Card.Section>
+        <Card.Section className={classes.section}>
+          <Textarea
+            label="Goal"
+            mt="sm"
+            placeholder="the goal for the hackweek is... (optional)"
+            minRows={2}
+            maxRows={3}
+            autosize
             onChange={handleChange}
             name="goal"
-            value={ideaText.goal}
           />
-        </div>
-        <div className="skills">
-          <h3>skills needed?</h3>
-          <input
-            type="text"
-            placeholder="skills?"
-            onChange={handleChange}
-            name="skills"
-            value={ideaText.skills}
-          />
-        </div>
-        <div className="aws-needed">
-          <h3>aws needed?</h3>
-          <input
-            type="text"
-            placeholder="aws needed?"
-            onChange={handleChange}
-            name="aws_needed"
-            value={ideaText.aws_needed}
-          />
-        </div>
-        <button type="submit">Create new idea</button>
-      </form>
-    </div>
+        </Card.Section>
+        <Card.Section className={classes.section}>
+          <CheckboxGroup
+            mt="sm"
+            color="gray"
+            label="Skills"
+            description="chose one or more needed skills"
+            spacing="md"
+            onChange={setSkills}
+          >
+            <Checkbox value="frontend" label="frontend" />
+            <Checkbox value="backend" label="backend" />
+            <Checkbox value="design" label="design" />
+            <Checkbox value="infrastructure" label="infrastructure" />
+            <Checkbox value="aws" label="aws" />
+          </CheckboxGroup>
+        </Card.Section>
+
+        <Group position="right" mt="xl">
+          <Button onClick={submitForm}>Submit idea</Button>
+        </Group>
+      </Card>
+    </>
   )
 }
 

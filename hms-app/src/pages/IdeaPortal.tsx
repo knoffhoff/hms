@@ -17,7 +17,7 @@ function IdeaPortal() {
 
   const IdeasList = filteredIdeas.map((idea, index) => {
     return (
-      <Grid.Col sm={6} lg={4}>
+      <Grid.Col sm={6} lg={6}>
         <IdeaCardSmall idea={idea} index={index} />
       </Grid.Col>
     )
