@@ -1,25 +1,15 @@
 import React from 'react'
 import ideaData from '../test/TestIdeaData'
-import IdeaCardSmall from '../components/IdeaCardSmall'
+import IdeaCardList from '../components/IdeaCardList'
+import { Idea } from '../common/types'
 
-function YourIdeas() {
-  const ideas = ideaData.map((idea, index) => {
-    let props = { ...idea, index }
-    return (
-      <div>
-        <IdeaCardSmall {...props} />
-      </div>
-    )
-  })
-
+export default function YourIdeas() {
   return (
     <>
       <h1>this is the your idea page</h1>
       <a href="/your-ideas/create">Create new idea</a>
       <h2>Your Ideas:</h2>
-      <div className="idea-list">{ideas}</div>
+      <IdeaCardList ideas={ideaData as Idea[]}></IdeaCardList>
     </>
   )
 }
-
-export default YourIdeas

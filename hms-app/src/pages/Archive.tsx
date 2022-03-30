@@ -1,25 +1,14 @@
 import React from 'react'
 import ideaData from '../test/TestIdeaData'
-import IdeaCardSmall from '../components/IdeaCardSmall'
-import CategoryDropdown from '../components/CategoryDropdown'
+import IdeaCardList from '../components/IdeaCardList'
+import { Idea } from '../common/types'
 
-function Archive() {
-  const ideas = ideaData.map((idea) => {
-    return (
-      <IdeaCardSmall
-        {...idea} //spreads the item in its components in 1 line of code
-      />
-    )
-  })
-
+export default function Archive() {
   return (
     <>
       <h1>this is the Archive</h1>
-      <CategoryDropdown />
       <h2>Ideas List:</h2>
-      <div className="idea-list">{ideas}</div>
+      <IdeaCardList ideas={ideaData as Idea[]}></IdeaCardList>
     </>
   )
 }
-
-export default Archive
