@@ -1,4 +1,4 @@
-import { Accordion, Text } from '@mantine/core'
+import { Accordion, Grid, Text } from '@mantine/core'
 import ideaData from '../test/TestIdeaData'
 import { Idea } from '../common/types'
 import IdeaCardList from '../components/IdeaCardList'
@@ -19,17 +19,24 @@ function YourIdeas() {
         >
           <NewIdea />
         </Accordion.Item>
-        <Accordion.Item
-          label={
-            <Text size="lg" weight={500}>
-              Your ideas:
-            </Text>
-          }
-        >
-          <IdeaCardList ideas={ideaData as Idea[]}></IdeaCardList>
-        </Accordion.Item>
+        {/*<Accordion.Item*/}
+        {/*  label={*/}
+        {/*    <Text size="lg" weight={500}>*/}
+        {/*      Your ideas:*/}
+        {/*    </Text>*/}
+        {/*  }*/}
+        {/*>*/}
+        {/*  <IdeaCardList ideas={ideaData as Idea[]}></IdeaCardList>*/}
+        {/*</Accordion.Item>*/}
       </Accordion>
-      <IdeaCardList ideas={ideaData as Idea[]}></IdeaCardList>
+
+      <Grid gutter={'lg'}>
+        <Grid.Col sm={0.6} lg={0.6}></Grid.Col>
+        <Grid.Col sm={11} lg={11}>
+          <IdeaCardList ideas={ideaData as Idea[]}></IdeaCardList>
+        </Grid.Col>
+        {/*<Grid.Col sm={0.5} lg={0.5}></Grid.Col>*/}
+      </Grid>
     </>
   )
 }

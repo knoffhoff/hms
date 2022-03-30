@@ -12,7 +12,9 @@ export default function IdeaCardList(props: IProps) {
   return (
     <>
       {ideas.map((idea, index) => (
-        <IdeaCardSmall idea={idea} index={index} key={idea.id} />
+        <div style={{ padding: 10 }}>
+          <IdeaCardSmall idea={idea} index={index} key={idea.id} />
+        </div>
       ))}
     </>
   )
