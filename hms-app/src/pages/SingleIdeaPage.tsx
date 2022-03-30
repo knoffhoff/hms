@@ -46,7 +46,7 @@ const useStyles = createStyles((theme) => ({
   },
 }))
 
-function IdeaPortal() {
+export default function SingleIdeaPage() {
   const params = useParams()
   const theme = useMantineTheme()
   const { classes } = useStyles()
@@ -149,5 +149,3 @@ function IdeaPortal() {
     </>
   )
 }
-
-export default IdeaPortal
