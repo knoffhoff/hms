@@ -30,12 +30,10 @@ function YourIdeas() {
         {/*</Accordion.Item>*/}
       </Accordion>
 
-      <Grid gutter={'lg'}>
-        <Grid.Col sm={0.6} lg={0.6}></Grid.Col>
+      <Grid justify="center" gutter={'lg'}>
         <Grid.Col sm={11} lg={11}>
           <IdeaCardList ideas={ideaData as Idea[]}></IdeaCardList>
         </Grid.Col>
-        {/*<Grid.Col sm={0.5} lg={0.5}></Grid.Col>*/}
       </Grid>
     </>
   )
