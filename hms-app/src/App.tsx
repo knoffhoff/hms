@@ -8,7 +8,6 @@ import YourIdeas from './pages/YourIdeas'
 import Archive from './pages/Archive'
 import NoPage from './pages/NoPage'
 import LogInPage from './pages/LogInPage'
-import CreateNewIdea from './pages/CreateNewIdea'
 import Voting from './pages/Voting'
 import SingleIdeaPage from './pages/SingleIdeaPage'
 
@@ -21,7 +20,6 @@ function App() {
         <Route path="ideas" element={<IdeaPortal />} />
         <Route path="ideas/:ideaId" element={<SingleIdeaPage />} />
         <Route path="your-ideas" element={<YourIdeas />} />
-        <Route path="your-ideas/create" element={<CreateNewIdea />} />
         <Route path="archive" element={<Archive />} />
         <Route path="voting" element={<Voting />} />
         <Route path="*" element={<NoPage />} />

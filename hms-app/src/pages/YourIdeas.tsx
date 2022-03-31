@@ -1,15 +1,32 @@
-import React from 'react'
+import { Accordion, Button } from '@mantine/core'
 import ideaData from '../test/TestIdeaData'
-import IdeaCardList from '../components/IdeaCardList'
 import { Idea } from '../common/types'
+import IdeaCardList from '../components/IdeaCardList'
+import React from 'react'
+import NewIdea from '../components/NewIdea'
 
-export default function YourIdeas() {
+function YourIdeas() {
+  const ideas = ideaData as Idea[]
+
   return (
     <>
       <h1>this is the your idea page</h1>
-      <a href="/your-ideas/create">Create new idea</a>
-      <h2>Your Ideas:</h2>
-      <IdeaCardList ideas={ideaData as Idea[]}></IdeaCardList>
+      <Accordion mb={30} icon={false} iconPosition="right">
+        <Accordion.Item
+          style={{ border: 'none' }}
+          label={
+            <Button radius="md" size="md">
+              Create new idea
+            </Button>
+          }
+        >
+          <NewIdea />
+        </Accordion.Item>
+      </Accordion>
+
+      <IdeaCardList ideas={ideas} columnSize={6}></IdeaCardList>
     </>
   )
 }
+
+export default YourIdeas
