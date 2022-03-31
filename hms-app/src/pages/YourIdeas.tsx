@@ -6,10 +6,12 @@ import React from 'react'
 import NewIdea from '../components/NewIdea'
 
 function YourIdeas() {
+  const ideas = ideaData as Idea[]
+
   return (
     <>
       <h1>this is the your idea page</h1>
-      <Accordion initialItem={1}>
+      <Accordion initialItem={1} mb={30}>
         <Accordion.Item
           label={
             <Text size="lg" weight={500}>
@@ -19,22 +21,9 @@ function YourIdeas() {
         >
           <NewIdea />
         </Accordion.Item>
-        {/*<Accordion.Item*/}
-        {/*  label={*/}
-        {/*    <Text size="lg" weight={500}>*/}
-        {/*      Your ideas:*/}
-        {/*    </Text>*/}
-        {/*  }*/}
-        {/*>*/}
-        {/*  <IdeaCardList ideas={ideaData as Idea[]}></IdeaCardList>*/}
-        {/*</Accordion.Item>*/}
       </Accordion>
 
-      <Grid justify="center" gutter={'lg'}>
-        <Grid.Col sm={11} lg={11}>
-          <IdeaCardList ideas={ideaData as Idea[]}></IdeaCardList>
-        </Grid.Col>
-      </Grid>
+      <IdeaCardList ideas={ideas} columnSize={6}></IdeaCardList>
     </>
   )
 }
