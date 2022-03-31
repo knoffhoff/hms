@@ -61,10 +61,6 @@ export default function IdeaCardFoldable(props: IProps) {
     </Badge>
   ))
 
-  useEffect(() => {
-    console.log('accordionState', accordionState)
-  }, [accordionState])
-
   const participantAvatars = idea.participants.map((participant) => (
     <Avatar key={participant.name} src={participant.avatar} />
   ))
