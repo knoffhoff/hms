@@ -75,9 +75,14 @@ export default function IdeaCardFoldable(props: IProps) {
                 width: '20%',
               }}
             >
-              <Avatar color="indigo" radius="xl" size="md">
-                MM
-              </Avatar>
+              <Avatar
+                color="indigo"
+                radius="xl"
+                size="md"
+                src={
+                  'https://avatars.githubusercontent.com/u/10353856?s=460&u=88394dfd67727327c1f7670a1764dc38a8a24831&v=4'
+                }
+              />
               <Badge size="sm" my={15}>
                 {idea.author?.name}
               </Badge>
@@ -106,6 +111,8 @@ export default function IdeaCardFoldable(props: IProps) {
 
         <Accordion icon={false} iconPosition="right">
           <Accordion.Item
+            mt="sm"
+            style={{ border: 'none' }}
             label={
               <Button radius="md" style={{ flex: 1, width: '100%' }}>
                 Show details
