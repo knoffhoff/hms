@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import {
   Card,
   Text,
@@ -11,6 +11,7 @@ import {
   Avatar,
   Grid,
   AvatarsGroup,
+  useAccordionState,
 } from '@mantine/core'
 import { Idea } from '../common/types'
 
@@ -47,6 +48,10 @@ const useStyles = createStyles((theme) => ({
 export default function IdeaCardFoldable(props: IProps) {
   const { classes } = useStyles()
   const theme = useMantineTheme()
+  const [accordionState, setAccordionState] = useAccordionState({
+    total: 1,
+    initialItem: -1,
+  })
 
   const { idea } = props
 
@@ -55,6 +60,10 @@ export default function IdeaCardFoldable(props: IProps) {
       {skill}
     </Badge>
   ))
+
+  useEffect(() => {
+    console.log('accordionState', accordionState)
+  }, [accordionState])
 
   const participantAvatars = idea.participants.map((participant) => (
     <Avatar key={participant.name} src={participant.avatar} />
@@ -68,12 +77,12 @@ export default function IdeaCardFoldable(props: IProps) {
           mt="md"
           style={{ minHeight: 150 }}
         >
-          <Group>
-            <Grid
-              justify="center"
-              style={{
-                width: '20%',
-              }}
+          <Group noWrap>
+            <Group
+              direction={'column'}
+              align={'center'}
+              position={'center'}
+              spacing={'xs'}
             >
               <Avatar
                 color="indigo"
@@ -83,10 +92,8 @@ export default function IdeaCardFoldable(props: IProps) {
                   'https://avatars.githubusercontent.com/u/10353856?s=460&u=88394dfd67727327c1f7670a1764dc38a8a24831&v=4'
                 }
               />
-              <Badge size="sm" my={15}>
-                {idea.author?.name}
-              </Badge>
-            </Grid>
+              <Badge size="sm">{idea.author?.name}</Badge>
+            </Group>
 
             <Text size="lg" weight={500}>
               {idea.title.slice(0, MAX_TITLE_LENGTH)}
@@ -109,15 +116,11 @@ export default function IdeaCardFoldable(props: IProps) {
           </Group>
         </Card.Section>
 
-        <Accordion icon={false} iconPosition="right">
+        <Accordion state={accordionState} onChange={setAccordionState.setState}>
           <Accordion.Item
             mt="sm"
             style={{ border: 'none' }}
-            label={
-              <Button radius="md" style={{ flex: 1, width: '100%' }}>
-                Show details
-              </Button>
-            }
+            label={!accordionState['0'] ? 'Show details' : 'Hide details'}
           >
             <Card.Section className={classes.section}>
               <Text mt="md" className={classes.label} color="dimmed">
