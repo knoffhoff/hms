@@ -1,8 +1,7 @@
 import React, { useState } from 'react'
 import ideaData from '../test/TestIdeaData'
-import { Grid, Input, Group, Title } from '@mantine/core'
+import { Input, Group, Title } from '@mantine/core'
 import { Search } from 'tabler-icons-react'
-import IdeaCardFoldable from '../components/IdeaCardFoldable'
 import IdeaCardList from '../components/IdeaCardList'
 
 function IdeaPortal() {
@@ -14,14 +13,6 @@ function IdeaPortal() {
 
   const filteredIdeas = ideaData.filter((item) => {
     return item.title.includes(searchTerm)
-  })
-
-  const IdeasList = filteredIdeas.map((idea, index) => {
-    return (
-      <Grid.Col sm={6} lg={6}>
-        <IdeaCardFoldable idea={idea} index={index} />
-      </Grid.Col>
-    )
   })
 
   return (
@@ -36,7 +27,7 @@ function IdeaPortal() {
         />
       </Group>
       <div className="idea-list">
-        <IdeaCardList ideas={filteredIdeas} columnSize={6}></IdeaCardList>
+        <IdeaCardList ideas={filteredIdeas} columnSize={6} />
       </div>
     </>
   )
