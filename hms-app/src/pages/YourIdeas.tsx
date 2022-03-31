@@ -1,4 +1,4 @@
-import { Accordion, Grid, Text } from '@mantine/core'
+import { Accordion, Button, Grid, Text } from '@mantine/core'
 import ideaData from '../test/TestIdeaData'
 import { Idea } from '../common/types'
 import IdeaCardList from '../components/IdeaCardList'
@@ -11,12 +11,12 @@ function YourIdeas() {
   return (
     <>
       <h1>this is the your idea page</h1>
-      <Accordion initialItem={1} mb={30}>
+      <Accordion mb={30} icon={false} iconPosition="right">
         <Accordion.Item
           label={
-            <Text size="lg" weight={500}>
+            <Button radius="md" size="md">
               Create new idea
-            </Text>
+            </Button>
           }
         >
           <NewIdea />
