@@ -1,7 +1,7 @@
 import React from 'react'
-import IdeaCardSmall from './IdeaCardSmall'
 import { Idea } from '../common/types'
 import { Grid } from '@mantine/core'
+import IdeaCardFoldable from './IdeaCardFoldable'
 
 type IProps = {
   ideas: Idea[]
@@ -15,7 +15,7 @@ export default function IdeaCardList(props: IProps) {
     return (
       <Grid.Col sm={columnSize} lg={columnSize}>
         <div style={{ padding: 10 }}>
-          <IdeaCardSmall idea={idea} index={index} key={idea.id} />
+          <IdeaCardFoldable idea={idea} index={index} key={idea.id} />
         </div>
       </Grid.Col>
     )

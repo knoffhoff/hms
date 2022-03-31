@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import { Button, Title, useMantineTheme } from '@mantine/core'
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd'
-import IdeaCardSmall from '../components/IdeaCardSmall'
 import ideaData from '../test/TestIdeaData'
+import IdeaCardFoldable from '../components/IdeaCardFoldable'
 
 const columnsFromBackend = {
   ['1']: {
@@ -125,12 +125,9 @@ export default function Voting() {
                                         ...provided.draggableProps.style,
                                       }}
                                     >
-                                      <IdeaCardSmall
+                                      <IdeaCardFoldable
                                         idea={item}
                                         index={index}
-                                        hasBottomButtons={false}
-                                        hasSkillsSection={false}
-                                        hasDescription={false}
                                       />
                                     </div>
                                   )

@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import ideaData from '../test/TestIdeaData'
-import { Grid, Input, Group, Title } from '@mantine/core'
+import { Input, Group, Title } from '@mantine/core'
 import { Search } from 'tabler-icons-react'
 import IdeaCardList from '../components/IdeaCardList'
 
@@ -27,7 +27,7 @@ function IdeaPortal() {
         />
       </Group>
       <div className="idea-list">
-        <IdeaCardList ideas={filteredIdeas} columnSize={6}></IdeaCardList>
+        <IdeaCardList ideas={filteredIdeas} columnSize={6} />
       </div>
     </>
   )
