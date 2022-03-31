@@ -9,7 +9,6 @@ import {
   createStyles,
   Accordion,
   Avatar,
-  Grid,
   AvatarsGroup,
   useAccordionState,
 } from '@mantine/core'
