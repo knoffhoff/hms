@@ -7,6 +7,8 @@ import {
   Checkbox,
   createStyles,
   Card,
+  SimpleGrid,
+  Select,
 } from '@mantine/core'
 import React, { useState } from 'react'
 
@@ -37,16 +39,18 @@ function NewIdea() {
     reason: '',
     problem: '',
     goal: '',
+    minimumParticipants: '',
+    awsNeeded: '',
   })
 
-  function handleChange(event: { target: { name: any; value: any } }) {
+  function handleChange(event: React.ChangeEvent<HTMLTextAreaElement>) {
     setIdeaText((prevIdeaText) => ({
       ...prevIdeaText,
       [event.target.name]: event.target.value,
     }))
   }
 
-  function submitForm(event: any) {
+  function submitForm(event: React.MouseEvent<HTMLButtonElement>) {
     event.preventDefault()
     alert(JSON.stringify(ideaText) + 'skills: ' + JSON.stringify(skills))
   }
@@ -116,11 +120,27 @@ function NewIdea() {
           />
         </Card.Section>
         <Card.Section className={classes.section}>
+          <SimpleGrid cols={2} breakpoints={[{ maxWidth: 'sm', cols: 1 }]}>
+            <Select
+              label="minimum participants"
+              data={['1', '2', '3', '4', '5']}
+            />
+            <Select
+              required
+              label="AWS account required?"
+              data={[
+                { value: 'yes', label: 'Yes' },
+                { value: 'no', label: 'No' },
+              ]}
+            />
+          </SimpleGrid>
+        </Card.Section>
+        <Card.Section className={classes.section}>
           <CheckboxGroup
             mt="sm"
             color="gray"
-            label="Skills"
-            description="chose one or more needed skills"
+            label="Required skills"
+            description="chose one or more required skills"
             spacing="md"
             onChange={setSkills}
           >
@@ -128,7 +148,6 @@ function NewIdea() {
             <Checkbox value="backend" label="backend" />
             <Checkbox value="design" label="design" />
             <Checkbox value="infrastructure" label="infrastructure" />
-            <Checkbox value="aws" label="aws" />
           </CheckboxGroup>
         </Card.Section>
 
