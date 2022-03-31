@@ -123,7 +123,9 @@ function NewIdea() {
             description="chose one or more needed skills"
             spacing="md"
             onChange={setSkills}
+            required
           >
+            <Checkbox value="none" label="none" />
             <Checkbox value="frontend" label="frontend" />
             <Checkbox value="backend" label="backend" />
             <Checkbox value="design" label="design" />

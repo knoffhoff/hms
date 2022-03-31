@@ -13,14 +13,10 @@ import {
   AvatarsGroup,
 } from '@mantine/core'
 import { Idea } from '../common/types'
-import { useNavigate } from 'react-router-dom'
 
 type IProps = {
   idea: Idea
   index: number
-  hasBottomButtons?: boolean
-  hasSkillsSection?: boolean
-  hasDescription?: boolean
 }
 
 const MAX_TITLE_LENGTH = 45
@@ -41,10 +37,6 @@ const useStyles = createStyles((theme) => ({
     paddingBottom: theme.spacing.md,
   },
 
-  like: {
-    color: theme.colors.red[6],
-  },
-
   label: {
     textTransform: 'uppercase',
     fontSize: theme.fontSizes.xs,
@@ -57,15 +49,13 @@ export default function IdeaCardFoldable(props: IProps) {
   const theme = useMantineTheme()
 
   const { idea } = props
-  const hasBottomButtons = props.hasBottomButtons ?? true
-  const hasSkillsSection = props.hasSkillsSection ?? true
-  const hasDescription = props.hasDescription ?? true
 
   const skillBadges = idea.skills.map((skill) => (
     <Badge color={theme.colorScheme === 'dark' ? 'dark' : 'gray'} key={skill}>
       {skill}
     </Badge>
   ))
+
   const participantAvatars = idea.participants.map((participant) => (
     <Avatar key={participant.name} src={participant.avatar} />
   ))
@@ -99,88 +89,83 @@ export default function IdeaCardFoldable(props: IProps) {
             </Text>
           </Group>
 
-          {hasDescription && (
-            <Text size="sm" mt="xs">
-              {idea.description.slice(0, MAX_DESCRIPTION_LENGTH)}
-              {idea.description.length > MAX_DESCRIPTION_LENGTH ? '...' : ''}
-            </Text>
-          )}
+          <Text size="sm" mt="xs">
+            {idea.description.slice(0, MAX_DESCRIPTION_LENGTH)}
+            {idea.description.length > MAX_DESCRIPTION_LENGTH ? '...' : ''}
+          </Text>
         </Card.Section>
 
-        {hasSkillsSection && (
-          <Card.Section className={classes.section}>
-            <Text mt="md" className={classes.label} color="dimmed">
-              Skills required
-            </Text>
-            <Group spacing={7} mt={5}>
-              {skillBadges}
+        <Card.Section className={classes.section}>
+          <Text mt="md" className={classes.label} color="dimmed">
+            Skills required
+          </Text>
+          <Group spacing={7} mt={5}>
+            {skillBadges}
+          </Group>
+        </Card.Section>
+
+        <Accordion icon={false} iconPosition="right">
+          <Accordion.Item
+            label={
+              <Button radius="md" style={{ flex: 1, width: '100%' }}>
+                Show details
+              </Button>
+            }
+          >
+            <Card.Section className={classes.section}>
+              <Text mt="md" className={classes.label} color="dimmed">
+                Reason
+              </Text>
+              <Text size="sm" mt="xs">
+                {idea.reason}
+              </Text>
+            </Card.Section>
+
+            <Card.Section className={classes.section}>
+              <Text mt="md" className={classes.label} color="dimmed">
+                Problem
+              </Text>
+              <Text size="sm" mt="xs">
+                {idea.problem}
+              </Text>
+            </Card.Section>
+
+            <Card.Section className={classes.section}>
+              <Text mt="md" className={classes.label} color="dimmed">
+                Goal
+              </Text>
+              <Text size="sm" mt="xs">
+                {idea.goal}
+              </Text>
+            </Card.Section>
+
+            <Accordion iconPosition="right">
+              <Accordion.Item
+                label={
+                  <div>
+                    <Text className={classes.label} color="dimmed">
+                      Current participants
+                    </Text>
+                    <Group spacing={7} mt={5}>
+                      <AvatarsGroup limit={5}>
+                        {participantAvatars}
+                      </AvatarsGroup>
+                    </Group>
+                  </div>
+                }
+              >
+                {participantAvatars}
+              </Accordion.Item>
+            </Accordion>
+
+            <Group mt="xs" position={'right'} style={{ paddingTop: 5 }}>
+              <Button variant={'outline'} color={'yellow'}>
+                Add to Favorites
+              </Button>
+              <Button>Participate</Button>
             </Group>
-          </Card.Section>
-        )}
-
-        {hasBottomButtons && (
-          <Accordion icon={false} iconPosition="right">
-            <Accordion.Item
-              label={
-                <Button radius="md" style={{ flex: 1, width: '100%' }}>
-                  Show details
-                </Button>
-              }
-            >
-              <Card.Section className={classes.section}>
-                <Text mt="md" className={classes.label} color="dimmed">
-                  Reason
-                </Text>
-                <Text size="sm" mt="xs">
-                  {idea.reason}
-                </Text>
-              </Card.Section>
-              <Card.Section className={classes.section}>
-                <Text mt="md" className={classes.label} color="dimmed">
-                  Problem
-                </Text>
-                <Text size="sm" mt="xs">
-                  {idea.problem}
-                </Text>
-              </Card.Section>
-
-              <Card.Section className={classes.section}>
-                <Text mt="md" className={classes.label} color="dimmed">
-                  Goal
-                </Text>
-                <Text size="sm" mt="xs">
-                  {idea.goal}
-                </Text>
-              </Card.Section>
-
-              <Accordion iconPosition="right">
-                <Accordion.Item
-                  label={
-                    <div>
-                      <Text mt="md" className={classes.label} color="dimmed">
-                        Current participants
-                      </Text>
-                      <Group spacing={7} mt={5}>
-                        <AvatarsGroup limit={5}>
-                          {participantAvatars}
-                        </AvatarsGroup>
-                      </Group>
-                    </div>
-                  }
-                >
-                  {participantAvatars}
-                </Accordion.Item>
-              </Accordion>
-
-              <Group mt="xs" position={'right'} style={{ paddingTop: 5 }}>
-                <Button variant={'outline'} color={'yellow'}>
-                  Add to Favorites
-                </Button>
-                <Button>Participate</Button>
-              </Group>
-            </Accordion.Item>
-          </Accordion>
-        )}
+          </Accordion.Item>
+        </Accordion>
       </Card>
     </>
   )
