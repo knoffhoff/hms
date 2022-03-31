@@ -130,7 +130,7 @@ export default [
     id: '5',
     title: 'Implement a new way of doing bla to achieve more bla',
     description:
-      'Dolores numquam accusamus incidunt omnis fuga laboriosam occaecati. Aut aut dolor fugit eum reprehenderit aut voluptates minus. Ea sint corrupti qui explicabo. Eum perspiciatis suscipit et deleniti non ut et.',
+      'Dolores numquam accusamus incidunt omnis fuga laboriosam occaecati. Aut aut dolor fugit eum reprehenderit aut voluptates minus. Ea sint corrupti qui explicabo. Eum perspiciatis suscipit et deleniti non ut et. Dolores numquam accusamus incidunt omnis fuga laboriosam occaecati. Aut aut dolor fugit eum reprehenderit aut voluptates minus. Ea sint corrupti qui explicabo. Eum perspiciatis suscipit et deleniti non ut et.',
     author: {
       name: 'Max Muster',
     },
