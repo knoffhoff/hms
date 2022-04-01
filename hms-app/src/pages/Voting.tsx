@@ -104,71 +104,143 @@ export default function Voting() {
             <DragDropContext
               onDragEnd={(result) => onDragEnd(result, columns, setColumns)}
             >
-              {Object.entries(columns).map(([columnId, column], index) => {
-                return (
-                  <Grid.Col span={4}>
-                    <div
-                      style={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                      }}
-                      key={columnId}
-                    >
-                      <div>
-                        <Title order={2} align={'center'}>
-                          {column.name}
-                        </Title>
-                        <Droppable droppableId={columnId} key={columnId}>
-                          {(provided, snapshot) => (
-                            <div
-                              {...provided.droppableProps}
-                              ref={provided.innerRef}
-                              style={{
-                                background: snapshot.isDraggingOver
-                                  ? 'grey'
-                                  : backgroundColor,
-                                minHeight: 500,
-                                maxHeight: 750,
-                                borderRadius: 15,
-                                overflowY: 'scroll',
-                                scrollbarWidth: 'none',
-                              }}
-                            >
-                              {column.items.map((item, index) => {
-                                return (
-                                  <Draggable
-                                    key={item.id}
-                                    draggableId={item.id.toString()}
-                                    index={index}
+              <Grid.Col span={4}>
+                <div
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                  }}
+                >
+                  <div>
+                    <Title order={2} align={'center'}>
+                      {columns['1'].name}
+                    </Title>
+                    <Droppable droppableId={'1'} key={'1'}>
+                      {(provided, snapshot) => (
+                        <div
+                          {...provided.droppableProps}
+                          ref={provided.innerRef}
+                          style={{
+                            background: snapshot.isDraggingOver
+                              ? 'grey'
+                              : backgroundColor,
+                            minHeight: 500,
+                            maxHeight: 750,
+                            borderRadius: 15,
+                            overflowY: 'scroll',
+                            scrollbarWidth: 'none',
+                            border: '10px solid',
+                            borderColor: backgroundColor,
+                          }}
+                        >
+                          {columns['1'].items.map((item, index) => {
+                            return (
+                              <Draggable
+                                key={item.id}
+                                draggableId={item.id.toString()}
+                                index={index}
+                              >
+                                {(provided, snapshot) => (
+                                  <div
+                                    ref={provided.innerRef}
+                                    {...provided.draggableProps}
+                                    {...provided.dragHandleProps}
+                                    style={{
+                                      marginBottom: '10px',
+                                      marginTop: '5px',
+                                      ...provided.draggableProps.style,
+                                    }}
                                   >
-                                    {(provided, snapshot) => (
-                                      <div
-                                        ref={provided.innerRef}
-                                        {...provided.draggableProps}
-                                        {...provided.dragHandleProps}
-                                        style={{
-                                          margin: '10px',
-                                          ...provided.draggableProps.style,
-                                        }}
-                                      >
-                                        <IdeaCardVotingPage
-                                          idea={item}
-                                          index={index}
-                                        />
-                                      </div>
-                                    )}
-                                  </Draggable>
-                                )
-                              })}
-                              {provided.placeholder}
-                            </div>
-                          )}
-                        </Droppable>
+                                    <IdeaCardVotingPage
+                                      idea={item}
+                                      index={index}
+                                    />
+                                  </div>
+                                )}
+                              </Draggable>
+                            )
+                          })}
+                          {provided.placeholder}
+                        </div>
+                      )}
+                    </Droppable>
+                  </div>
+                </div>
+              </Grid.Col>
+
+              <Grid.Col span={2}>
+                <div
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'flex-end',
+                    justifyItems: 'space-between',
+                  }}
+                >
+                  <Text>1.</Text>
+                  <Text>2.</Text>
+                  <Text>3.</Text>
+                </div>
+              </Grid.Col>
+
+              <Grid.Col span={4}>
+                <div>
+                  <Title order={2} align={'center'}>
+                    {columns['2'].name}
+                  </Title>
+                  <Droppable droppableId={'2'} key={'2'}>
+                    {(provided, snapshot) => (
+                      <div
+                        {...provided.droppableProps}
+                        ref={provided.innerRef}
+                        style={{
+                          background: snapshot.isDraggingOver
+                            ? 'grey'
+                            : backgroundColor,
+                          minHeight: 500,
+                          maxHeight: 750,
+                          borderRadius: 15,
+                          overflowY: 'scroll',
+                          scrollbarWidth: 'none',
+                          margin: '10px',
+                          //ToDO ask which border version is better
+
+                          // border: '10px solid',
+                          // borderColor: backgroundColor,
+                        }}
+                      >
+                        {columns['2'].items.map((item, index) => {
+                          return (
+                            <Draggable
+                              key={item}
+                              draggableId={index.toString()}
+                              index={index}
+                            >
+                              {(provided, snapshot) => (
+                                <div
+                                  ref={provided.innerRef}
+                                  {...provided.draggableProps}
+                                  {...provided.dragHandleProps}
+                                  style={{
+                                    margin: '10px',
+                                    ...provided.draggableProps.style,
+                                  }}
+                                >
+                                  <IdeaCardVotingPage
+                                    idea={item}
+                                    index={index}
+                                  />
+                                </div>
+                              )}
+                            </Draggable>
+                          )
+                        })}
+                        {provided.placeholder}
                       </div>
-                    </div>
-                  </Grid.Col>
-                )
-              })}
+                    )}
+                  </Droppable>
+                </div>
+              </Grid.Col>
             </DragDropContext>
           </div>
         </Grid.Col>
