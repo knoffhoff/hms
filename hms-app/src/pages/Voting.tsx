@@ -52,8 +52,16 @@ const onDragEnd = (result: any, columns: any, setColumns: any) => {
   }
 }
 
+const onDragStart = (result: any, columns: any, setCanVote: any) => {
+  if (columns['2'].items.length === 3 && result.source.droppableId === '1')
+    setCanVote(false)
+  else setCanVote(true)
+}
+
 export default function Voting() {
   const [columns, setColumns] = useState(columnsFromBackend)
+  const [canVote, setCanVote] = useState(true)
+
   const theme = useMantineTheme()
 
   const backgroundColor =
@@ -110,6 +118,7 @@ export default function Voting() {
       >
         <DragDropContext
           onDragEnd={(result) => onDragEnd(result, columns, setColumns)}
+          onDragStart={(result) => onDragStart(result, columns, setCanVote)}
         >
           {Object.entries(columns).map(([columnId, column], index) => {
             return (
@@ -151,10 +160,7 @@ export default function Voting() {
                   <Droppable
                     droppableId={columnId}
                     key={columnId}
-                    isDropDisabled={
-                      //ToDo find a way to allow cards being reordered if there are 3 cards in the voting list
-                      columns['2'].items.length > 2 && columnId === '2'
-                    }
+                    isDropDisabled={!canVote}
                   >
                     {(provided, snapshot) => {
                       return (
