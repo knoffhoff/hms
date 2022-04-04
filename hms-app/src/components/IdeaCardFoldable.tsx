@@ -20,9 +20,6 @@ type IProps = {
   type: string
 }
 
-const MAX_TITLE_LENGTH = 45
-const MAX_DESCRIPTION_LENGTH = 200
-
 const useStyles = createStyles((theme) => ({
   card: {
     backgroundColor:
@@ -54,6 +51,9 @@ export default function IdeaCardFoldable(props: IProps) {
   })
 
   const { idea, type } = props
+
+  const MAX_TITLE_LENGTH = 45
+  const MAX_DESCRIPTION_LENGTH = type === 'voting' ? 200 : 245
 
   const skillBadges = idea.skills.map((skill) => (
     <Badge color={theme.colorScheme === 'dark' ? 'dark' : 'gray'} key={skill}>
