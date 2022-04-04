@@ -130,8 +130,6 @@ export default function Voting() {
                 }}
                 key={columnId}
               >
-                <Title order={2}>{column.name}</Title>
-
                 <div
                   style={{
                     margin: 8,
@@ -158,62 +156,71 @@ export default function Voting() {
                     <div>2.</div>
                     <div>3.</div>
                   </div>
-                  <Droppable
-                    droppableId={columnId}
-                    key={columnId}
-                    isDropDisabled={!canVote && columnId !== '1'}
-                  >
-                    {(provided, snapshot) => {
-                      return (
-                        <div
-                          {...provided.droppableProps}
-                          ref={provided.innerRef}
-                          style={{
-                            background: snapshot.isDraggingOver
-                              ? 'grey'
-                              : backgroundColor,
-                            borderRadius: 10,
-                            height: 680,
-                            width: 425,
-                            overflowY: 'scroll',
-                            scrollbarWidth: 'none',
-                          }}
-                        >
-                          {column.items.map((item, index) => {
-                            return (
-                              <Draggable
-                                key={item.id}
-                                draggableId={item.id.toString()}
-                                index={index}
-                              >
-                                {(provided, snapshot) => {
-                                  return (
-                                    <div
-                                      ref={provided.innerRef}
-                                      {...provided.draggableProps}
-                                      {...provided.dragHandleProps}
-                                      style={{
-                                        userSelect: 'none',
-                                        margin: '10px',
-                                        ...provided.draggableProps.style,
-                                      }}
-                                    >
-                                      <IdeaCardFoldable
-                                        idea={item}
-                                        index={index}
-                                        type={'voting'}
-                                      />
-                                    </div>
-                                  )
-                                }}
-                              </Draggable>
-                            )
-                          })}
-                          {provided.placeholder}
-                        </div>
-                      )
+                  <div
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      alignItems: 'center',
                     }}
-                  </Droppable>
+                  >
+                    <Title order={2}>{column.name}</Title>
+                    <Droppable
+                      droppableId={columnId}
+                      key={columnId}
+                      isDropDisabled={!canVote && columnId !== '1'}
+                    >
+                      {(provided, snapshot) => {
+                        return (
+                          <div
+                            {...provided.droppableProps}
+                            ref={provided.innerRef}
+                            style={{
+                              background: snapshot.isDraggingOver
+                                ? 'grey'
+                                : backgroundColor,
+                              borderRadius: 10,
+                              height: 680,
+                              width: 425,
+                              overflowY: 'scroll',
+                              scrollbarWidth: 'none',
+                            }}
+                          >
+                            {column.items.map((item, index) => {
+                              return (
+                                <Draggable
+                                  key={item.id}
+                                  draggableId={item.id.toString()}
+                                  index={index}
+                                >
+                                  {(provided, snapshot) => {
+                                    return (
+                                      <div
+                                        ref={provided.innerRef}
+                                        {...provided.draggableProps}
+                                        {...provided.dragHandleProps}
+                                        style={{
+                                          userSelect: 'none',
+                                          margin: '10px',
+                                          ...provided.draggableProps.style,
+                                        }}
+                                      >
+                                        <IdeaCardFoldable
+                                          idea={item}
+                                          index={index}
+                                          type={'voting'}
+                                        />
+                                      </div>
+                                    )
+                                  }}
+                                </Draggable>
+                              )
+                            })}
+                            {provided.placeholder}
+                          </div>
+                        )
+                      }}
+                    </Droppable>
+                  </div>
                 </div>
               </div>
             )
