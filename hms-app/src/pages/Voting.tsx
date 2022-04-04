@@ -1,33 +1,8 @@
 import React, { useState } from 'react'
-import {
-  Button,
-  Title,
-  useMantineTheme,
-  Text,
-  Grid,
-  createStyles,
-} from '@mantine/core'
+import { Button, Title, useMantineTheme, Text, Group } from '@mantine/core'
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd'
 import ideaData from '../test/TestIdeaData'
 import IdeaCardFoldable from '../components/IdeaCardFoldable'
-
-const useStyles = createStyles((theme, _params, getRef) => ({
-  list: {
-    height: 750,
-    borderRadius: 15,
-    overflowY: 'scroll',
-    scrollbarWidth: 'none',
-    border: '10px solid',
-    borderColor:
-      theme.colorScheme === 'dark'
-        ? theme.colors.gray[7]
-        : theme.colors.dark[1],
-  },
-  cards: {
-    marginBottom: '10px',
-    marginTop: '5px',
-  },
-}))
 
 const columnsFromBackend = {
   ['1']: {
@@ -79,7 +54,6 @@ const onDragEnd = (result: any, columns: any, setColumns: any) => {
 
 export default function Voting() {
   const [columns, setColumns] = useState(columnsFromBackend)
-  const { classes } = useStyles()
   const theme = useMantineTheme()
 
   const backgroundColor =
@@ -92,175 +66,172 @@ export default function Voting() {
 
   return (
     <div>
-      <Grid>
-        <Grid.Col span={12}>
-          <Title pl={'sm'}>and the winner is...</Title>
-        </Grid.Col>
-        <Grid.Col span={12}>
-          <Text size="lg" weight={600} pl={'sm'}>
-            Welcome! here you will be able to vote for your favorite ideas
-          </Text>
-        </Grid.Col>
-        <Grid.Col span={11}>
-          <Text size="md" pl={'sm'}>
-            Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
-            nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam
-            erat, sed diam voluptua. At vero eos et accusam et justo duo dolores
-            et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est
-            Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur
-            sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore
-            et dolore magna aliquyam erat, sed diam voluptua. At vero eos et
-            accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren,
-            no sea takimata sanctus est Lorem ipsum dolor sit amet.
-          </Text>
-        </Grid.Col>
-        <Grid.Col span={12}>
-          <Button color={'green'} size={'lg'} ml={'sm'} onClick={submitVote}>
-            Submit vote
-          </Button>
-        </Grid.Col>
+      <Group
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'start',
+        }}
+      >
+        <Title pl={'sm'}>and the winner is...</Title>
 
-        <Grid.Col span={12}>
-          <div
-            style={{
-              display: 'flex',
-              justifyContent: 'flex-start',
-            }}
-          >
-            <DragDropContext
-              onDragEnd={(result) => onDragEnd(result, columns, setColumns)}
-            >
-              <Grid.Col span={4}>
+        <Text size="lg" weight={600} pl={'sm'}>
+          Welcome! here you will be able to vote for your favorite ideas
+        </Text>
+
+        <Text size="md" pl={'sm'}>
+          Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
+          nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat,
+          sed diam voluptua. At vero eos et accusam et justo duo dolores et ea
+          rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem
+          ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur
+          sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et
+          dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam
+          et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea
+          takimata sanctus est Lorem ipsum dolor sit amet.
+        </Text>
+
+        <Button
+          color={'green'}
+          size={'lg'}
+          ml={'sm'}
+          onClick={submitVote}
+          style={{ width: 175 }}
+        >
+          Submit vote
+        </Button>
+      </Group>
+
+      <div
+        style={{
+          display: 'flex',
+          paddingTop: '25px',
+        }}
+      >
+        <DragDropContext
+          onDragEnd={(result) => onDragEnd(result, columns, setColumns)}
+        >
+          {Object.entries(columns).map(([columnId, column], index) => {
+            return (
+              <div
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                }}
+                key={columnId}
+              >
+                <Title order={2}>{column.name}</Title>
+
                 <div
                   style={{
+                    margin: 8,
                     display: 'flex',
-                    flexDirection: 'column',
+                    flexDirection: 'row',
                   }}
                 >
-                  <div>
-                    <Title order={2} align={'center'}>
-                      {columns['1'].name}
-                    </Title>
-                    <Droppable droppableId={'1'} key={'1'}>
-                      {(provided, snapshot) => (
+                  <div
+                    style={
+                      columnId === '1'
+                        ? { display: 'none' }
+                        : {
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'flex-end',
+                            justifyContent: 'space-around',
+                            fontSize: '500%',
+                            paddingLeft: '100px',
+                          }
+                    }
+                  >
+                    <div
+                      style={
+                        columns['2'].items.length < 1 ? { display: 'none' } : {}
+                      }
+                    >
+                      1.
+                    </div>
+                    <div
+                      style={
+                        columns['2'].items.length < 2 ? { display: 'none' } : {}
+                      }
+                    >
+                      2.
+                    </div>
+                    <div
+                      style={
+                        columns['2'].items.length < 3 ? { display: 'none' } : {}
+                      }
+                    >
+                      3.
+                    </div>
+                  </div>
+                  <Droppable
+                    droppableId={columnId}
+                    key={columnId}
+                    isDropDisabled={
+                      //ToDo find a way to allow cards being reordered if there are 3 cards in the voting list
+                      columns['2'].items.length > 2 && columnId === '2'
+                    }
+                  >
+                    {(provided, snapshot) => {
+                      return (
                         <div
                           {...provided.droppableProps}
                           ref={provided.innerRef}
-                          className={classes.list}
-                          typeof={'list'}
                           style={{
                             background: snapshot.isDraggingOver
                               ? 'grey'
                               : backgroundColor,
+                            borderRadius: 10,
+                            minHeight: 200,
+                            maxHeight: 750,
+                            width: 425,
+                            overflowY: 'scroll',
+                            scrollbarWidth: 'none',
                           }}
                         >
-                          {columns['1'].items.map((item, index) => {
+                          {column.items.map((item, index) => {
                             return (
                               <Draggable
                                 key={item.id}
                                 draggableId={item.id.toString()}
                                 index={index}
                               >
-                                {(provided, snapshot) => (
-                                  <div
-                                    ref={provided.innerRef}
-                                    {...provided.draggableProps}
-                                    {...provided.dragHandleProps}
-                                    className={classes.cards}
-                                  >
-                                    <IdeaCardFoldable
-                                      idea={item}
-                                      index={index}
-                                      type={'voting'}
-                                    />
-                                  </div>
-                                )}
+                                {(provided, snapshot) => {
+                                  return (
+                                    <div
+                                      ref={provided.innerRef}
+                                      {...provided.draggableProps}
+                                      {...provided.dragHandleProps}
+                                      style={{
+                                        userSelect: 'none',
+                                        margin: '10px',
+                                        ...provided.draggableProps.style,
+                                      }}
+                                    >
+                                      <IdeaCardFoldable
+                                        idea={item}
+                                        index={index}
+                                        type={'voting'}
+                                      />
+                                    </div>
+                                  )
+                                }}
                               </Draggable>
                             )
                           })}
                           {provided.placeholder}
                         </div>
-                      )}
-                    </Droppable>
-                  </div>
-                </div>
-              </Grid.Col>
-
-              <Grid.Col span={2}>
-                <div
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'flex-end',
-                    justifyContent: 'space-around',
-                    fontSize: '500%',
-                    paddingTop: 75,
-                    height: 750,
-                  }}
-                >
-                  <div>1.</div>
-                  <div>2.</div>
-                  <div>3.</div>
-                </div>
-              </Grid.Col>
-
-              <Grid.Col span={4}>
-                <div>
-                  <Title order={2} align={'center'}>
-                    {columns['2'].name}
-                  </Title>
-                  <Droppable
-                    droppableId={'2'}
-                    key={'2'}
-                    isDropDisabled={columns['2'].items.length > 2}
-                  >
-                    {(provided, snapshot) => (
-                      <div
-                        {...provided.droppableProps}
-                        ref={provided.innerRef}
-                        className={classes.list}
-                        style={{
-                          background: snapshot.isDraggingOver
-                            ? 'grey'
-                            : backgroundColor,
-                        }}
-                      >
-                        {columns['2'].items.map((item, index) => {
-                          return (
-                            <Draggable
-                              // @ts-ignore
-                              key={item.id}
-                              // @ts-ignore
-                              draggableId={item.id.toString()}
-                              index={index}
-                            >
-                              {(provided, snapshot) => (
-                                <div
-                                  ref={provided.innerRef}
-                                  {...provided.draggableProps}
-                                  {...provided.dragHandleProps}
-                                  className={classes.cards}
-                                >
-                                  <IdeaCardFoldable
-                                    idea={item}
-                                    index={index}
-                                    type={'voting'}
-                                  />
-                                </div>
-                              )}
-                            </Draggable>
-                          )
-                        })}
-                        {provided.placeholder}
-                      </div>
-                    )}
+                      )
+                    }}
                   </Droppable>
                 </div>
-              </Grid.Col>
-            </DragDropContext>
-          </div>
-        </Grid.Col>
-      </Grid>
+              </div>
+            )
+          })}
+        </DragDropContext>
+      </div>
     </div>
   )
 }
