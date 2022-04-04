@@ -144,29 +144,9 @@ export default function Voting() {
                           }
                     }
                   >
-                    <div
-                      style={
-                        columns['2'].items.length < 1
-                          ? { visibility: 'hidden' }
-                          : {}
-                      }
-                    >
-                      1.
-                    </div>
-                    <div
-                      style={
-                        columns['2'].items.length < 2 ? { display: 'none' } : {}
-                      }
-                    >
-                      2.
-                    </div>
-                    <div
-                      style={
-                        columns['2'].items.length < 3 ? { display: 'none' } : {}
-                      }
-                    >
-                      3.
-                    </div>
+                    <div>1.</div>
+                    <div>2.</div>
+                    <div>3.</div>
                   </div>
                   <Droppable
                     droppableId={columnId}
@@ -186,8 +166,7 @@ export default function Voting() {
                               ? 'grey'
                               : backgroundColor,
                             borderRadius: 10,
-                            minHeight: 200,
-                            maxHeight: 750,
+                            height: 680,
                             width: 425,
                             overflowY: 'scroll',
                             scrollbarWidth: 'none',

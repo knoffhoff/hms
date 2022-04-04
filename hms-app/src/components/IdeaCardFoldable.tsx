@@ -21,7 +21,7 @@ type IProps = {
 }
 
 const MAX_TITLE_LENGTH = 45
-const MAX_DESCRIPTION_LENGTH = 245
+const MAX_DESCRIPTION_LENGTH = 200
 
 const useStyles = createStyles((theme) => ({
   card: {
@@ -71,7 +71,7 @@ export default function IdeaCardFoldable(props: IProps) {
         <Card.Section
           className={classes.section}
           mt="md"
-          style={{ minHeight: 150 }}
+          style={{ height: 180 }}
         >
           <Group noWrap>
             <Group
