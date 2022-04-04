@@ -188,7 +188,11 @@ export default function Voting() {
                   <Title order={2} align={'center'}>
                     {columns['2'].name}
                   </Title>
-                  <Droppable droppableId={'2'} key={'2'}>
+                  <Droppable
+                    droppableId={'2'}
+                    key={'2'}
+                    isDropDisabled={columns['2'].items.length > 2}
+                  >
                     {(provided, snapshot) => (
                       <div
                         {...provided.droppableProps}
@@ -202,19 +206,18 @@ export default function Voting() {
                           borderRadius: 15,
                           overflowY: 'scroll',
                           scrollbarWidth: 'none',
-                          margin: '10px',
-                          //ToDO ask which border version is better
-
-                          // border: '10px solid',
-                          // borderColor: backgroundColor,
+                          border: '10px solid',
+                          borderColor: backgroundColor,
                         }}
                       >
                         {columns['2'].items.map((item, index) => {
                           return (
                             <Draggable
-                              key={item}
+                              // @ts-ignore
+                              key={item.id}
                               //ToDo should be item.id.toString() but doesnt work with this initialisation
-                              draggableId={index.toString()}
+                              // @ts-ignore
+                              draggableId={item.id.toString()}
                               index={index}
                             >
                               {(provided, snapshot) => (
@@ -223,7 +226,8 @@ export default function Voting() {
                                   {...provided.draggableProps}
                                   {...provided.dragHandleProps}
                                   style={{
-                                    margin: '10px',
+                                    marginBottom: '10px',
+                                    marginTop: '5px',
                                     ...provided.draggableProps.style,
                                   }}
                                 >
