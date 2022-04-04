@@ -17,10 +17,8 @@ import { Idea } from '../common/types'
 type IProps = {
   idea: Idea
   index: number
+  type: string
 }
-
-const MAX_TITLE_LENGTH = 45
-const MAX_DESCRIPTION_LENGTH = 245
 
 const useStyles = createStyles((theme) => ({
   card: {
@@ -52,7 +50,10 @@ export default function IdeaCardFoldable(props: IProps) {
     initialItem: -1,
   })
 
-  const { idea } = props
+  const { idea, type } = props
+
+  const MAX_TITLE_LENGTH = 45
+  const MAX_DESCRIPTION_LENGTH = type === 'voting' ? 200 : 245
 
   const skillBadges = idea.skills.map((skill) => (
     <Badge color={theme.colorScheme === 'dark' ? 'dark' : 'gray'} key={skill}>
@@ -70,7 +71,7 @@ export default function IdeaCardFoldable(props: IProps) {
         <Card.Section
           className={classes.section}
           mt="md"
-          style={{ minHeight: 150 }}
+          style={{ height: 180 }}
         >
           <Group noWrap>
             <Group
@@ -102,75 +103,82 @@ export default function IdeaCardFoldable(props: IProps) {
           </Text>
         </Card.Section>
 
-        <Card.Section className={classes.section}>
-          <Text mt="md" className={classes.label} color="dimmed">
-            Skills required
-          </Text>
-          <Group spacing={7} mt={5}>
-            {skillBadges}
-          </Group>
-        </Card.Section>
-
-        <Accordion state={accordionState} onChange={setAccordionState.setState}>
-          <Accordion.Item
-            mt="sm"
-            style={{ border: 'none' }}
-            label={!accordionState['0'] ? 'Show details' : 'Hide details'}
-          >
+        {type !== 'voting' && (
+          <>
             <Card.Section className={classes.section}>
               <Text mt="md" className={classes.label} color="dimmed">
-                Reason
+                Skills required
               </Text>
-              <Text size="sm" mt="xs">
-                {idea.reason}
-              </Text>
+              <Group spacing={7} mt={5}>
+                {skillBadges}
+              </Group>
             </Card.Section>
 
-            <Card.Section className={classes.section}>
-              <Text mt="md" className={classes.label} color="dimmed">
-                Problem
-              </Text>
-              <Text size="sm" mt="xs">
-                {idea.problem}
-              </Text>
-            </Card.Section>
-
-            <Card.Section className={classes.section}>
-              <Text mt="md" className={classes.label} color="dimmed">
-                Goal
-              </Text>
-              <Text size="sm" mt="xs">
-                {idea.goal}
-              </Text>
-            </Card.Section>
-
-            <Accordion iconPosition="right">
+            <Accordion
+              state={accordionState}
+              onChange={setAccordionState.setState}
+            >
               <Accordion.Item
-                label={
-                  <div>
-                    <Text className={classes.label} color="dimmed">
-                      Current participants
-                    </Text>
-                    <Group spacing={7} mt={5}>
-                      <AvatarsGroup limit={5}>
-                        {participantAvatars}
-                      </AvatarsGroup>
-                    </Group>
-                  </div>
-                }
+                mt="sm"
+                style={{ border: 'none' }}
+                label={!accordionState['0'] ? 'Show details' : 'Hide details'}
               >
-                {participantAvatars}
+                <Card.Section className={classes.section}>
+                  <Text mt="md" className={classes.label} color="dimmed">
+                    Reason
+                  </Text>
+                  <Text size="sm" mt="xs">
+                    {idea.reason}
+                  </Text>
+                </Card.Section>
+
+                <Card.Section className={classes.section}>
+                  <Text mt="md" className={classes.label} color="dimmed">
+                    Problem
+                  </Text>
+                  <Text size="sm" mt="xs">
+                    {idea.problem}
+                  </Text>
+                </Card.Section>
+
+                <Card.Section className={classes.section}>
+                  <Text mt="md" className={classes.label} color="dimmed">
+                    Goal
+                  </Text>
+                  <Text size="sm" mt="xs">
+                    {idea.goal}
+                  </Text>
+                </Card.Section>
+
+                <Accordion iconPosition="right">
+                  <Accordion.Item
+                    label={
+                      <div>
+                        <Text className={classes.label} color="dimmed">
+                          Current participants
+                        </Text>
+                        <Group spacing={7} mt={5}>
+                          <AvatarsGroup limit={5}>
+                            {participantAvatars}
+                          </AvatarsGroup>
+                        </Group>
+                      </div>
+                    }
+                  >
+                    {participantAvatars}
+                  </Accordion.Item>
+                </Accordion>
+
+                <Group mt="xs" position={'right'} style={{ paddingTop: 5 }}>
+                  <Button variant={'outline'} color={'yellow'}>
+                    Add to Favorites
+                  </Button>
+                  <Button>Participate</Button>
+                </Group>
               </Accordion.Item>
             </Accordion>
-
-            <Group mt="xs" position={'right'} style={{ paddingTop: 5 }}>
-              <Button variant={'outline'} color={'yellow'}>
-                Add to Favorites
-              </Button>
-              <Button>Participate</Button>
-            </Group>
-          </Accordion.Item>
-        </Accordion>
+          </>
+        )}
       </Card>
     </>
   )

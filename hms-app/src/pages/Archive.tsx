@@ -8,7 +8,11 @@ export default function Archive() {
     <>
       <h1>this is the Archive</h1>
       <h2>Ideas List:</h2>
-      <IdeaCardList ideas={ideaData as Idea[]} columnSize={6}></IdeaCardList>
+      <IdeaCardList
+        ideas={ideaData as Idea[]}
+        columnSize={6}
+        type={'archive'}
+      />
     </>
   )
 }

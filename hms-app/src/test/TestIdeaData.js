@@ -2,8 +2,7 @@ export default [
   {
     id: '1',
     title: 'Implement a new way of doing bla to achieve more bla',
-    description:
-      'Dolores numquam accusamus incidunt omnis fuga laboriosam occaecati. Aut aut dolor fugit eum reprehenderit aut voluptates minus. Ea sint corrupti qui explicabo. Eum perspiciatis suscipit et deleniti non ut et.',
+    description: 'short description for testing',
     author: {
       name: 'Max Muster',
     },
