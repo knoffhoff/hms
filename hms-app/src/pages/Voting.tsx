@@ -213,6 +213,7 @@ export default function Voting() {
                           return (
                             <Draggable
                               key={item}
+                              //ToDo should be item.id.toString() but doesnt work with this initialisation
                               draggableId={index.toString()}
                               index={index}
                             >
