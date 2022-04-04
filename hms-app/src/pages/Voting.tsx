@@ -160,7 +160,7 @@ export default function Voting() {
                   <Droppable
                     droppableId={columnId}
                     key={columnId}
-                    isDropDisabled={!canVote}
+                    isDropDisabled={!canVote && columnId !== '1'}
                   >
                     {(provided, snapshot) => {
                       return (
