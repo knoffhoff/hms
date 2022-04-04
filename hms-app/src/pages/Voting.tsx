@@ -146,7 +146,9 @@ export default function Voting() {
                   >
                     <div
                       style={
-                        columns['2'].items.length < 1 ? { display: 'none' } : {}
+                        columns['2'].items.length < 1
+                          ? { visibility: 'hidden' }
+                          : {}
                       }
                     >
                       1.
