@@ -1,8 +1,33 @@
 import React, { useState } from 'react'
-import { Button, Title, useMantineTheme, Text, Grid } from '@mantine/core'
+import {
+  Button,
+  Title,
+  useMantineTheme,
+  Text,
+  Grid,
+  createStyles,
+} from '@mantine/core'
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd'
 import ideaData from '../test/TestIdeaData'
 import IdeaCardVotingPage from '../components/IdeaCardVotingPage'
+
+const useStyles = createStyles((theme, _params, getRef) => ({
+  list: {
+    height: 750,
+    borderRadius: 15,
+    overflowY: 'scroll',
+    scrollbarWidth: 'none',
+    border: '10px solid',
+    borderColor:
+      theme.colorScheme === 'dark'
+        ? theme.colors.gray[7]
+        : theme.colors.dark[1],
+  },
+  cards: {
+    marginBottom: '10px',
+    marginTop: '5px',
+  },
+}))
 
 const columnsFromBackend = {
   ['1']: {
@@ -54,6 +79,7 @@ const onDragEnd = (result: any, columns: any, setColumns: any) => {
 
 export default function Voting() {
   const [columns, setColumns] = useState(columnsFromBackend)
+  const { classes } = useStyles()
   const theme = useMantineTheme()
 
   const backgroundColor =
@@ -120,17 +146,12 @@ export default function Voting() {
                         <div
                           {...provided.droppableProps}
                           ref={provided.innerRef}
+                          className={classes.list}
+                          typeof={'list'}
                           style={{
                             background: snapshot.isDraggingOver
                               ? 'grey'
                               : backgroundColor,
-                            minHeight: 500,
-                            maxHeight: 750,
-                            borderRadius: 15,
-                            overflowY: 'scroll',
-                            scrollbarWidth: 'none',
-                            border: '10px solid',
-                            borderColor: backgroundColor,
                           }}
                         >
                           {columns['1'].items.map((item, index) => {
@@ -145,11 +166,7 @@ export default function Voting() {
                                     ref={provided.innerRef}
                                     {...provided.draggableProps}
                                     {...provided.dragHandleProps}
-                                    style={{
-                                      marginBottom: '10px',
-                                      marginTop: '5px',
-                                      ...provided.draggableProps.style,
-                                    }}
+                                    className={classes.cards}
                                   >
                                     <IdeaCardVotingPage
                                       idea={item}
@@ -174,12 +191,15 @@ export default function Voting() {
                     display: 'flex',
                     flexDirection: 'column',
                     alignItems: 'flex-end',
-                    justifyItems: 'space-between',
+                    justifyContent: 'space-around',
+                    fontSize: '500%',
+                    paddingTop: 75,
+                    height: 750,
                   }}
                 >
-                  <Text>1.</Text>
-                  <Text>2.</Text>
-                  <Text>3.</Text>
+                  <div>1.</div>
+                  <div>2.</div>
+                  <div>3.</div>
                 </div>
               </Grid.Col>
 
@@ -197,17 +217,11 @@ export default function Voting() {
                       <div
                         {...provided.droppableProps}
                         ref={provided.innerRef}
+                        className={classes.list}
                         style={{
                           background: snapshot.isDraggingOver
                             ? 'grey'
                             : backgroundColor,
-                          minHeight: 500,
-                          maxHeight: 750,
-                          borderRadius: 15,
-                          overflowY: 'scroll',
-                          scrollbarWidth: 'none',
-                          border: '10px solid',
-                          borderColor: backgroundColor,
                         }}
                       >
                         {columns['2'].items.map((item, index) => {
@@ -215,7 +229,6 @@ export default function Voting() {
                             <Draggable
                               // @ts-ignore
                               key={item.id}
-                              //ToDo should be item.id.toString() but doesnt work with this initialisation
                               // @ts-ignore
                               draggableId={item.id.toString()}
                               index={index}
@@ -225,11 +238,7 @@ export default function Voting() {
                                   ref={provided.innerRef}
                                   {...provided.draggableProps}
                                   {...provided.dragHandleProps}
-                                  style={{
-                                    marginBottom: '10px',
-                                    marginTop: '5px',
-                                    ...provided.draggableProps.style,
-                                  }}
+                                  className={classes.cards}
                                 >
                                   <IdeaCardVotingPage
                                     idea={item}
