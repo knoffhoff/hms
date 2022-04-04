@@ -24,7 +24,7 @@ function YourIdeas() {
         </Accordion.Item>
       </Accordion>
 
-      <IdeaCardList ideas={ideas} columnSize={6}></IdeaCardList>
+      <IdeaCardList ideas={ideas} columnSize={6} type={'your-ideas'} />
     </>
   )
 }

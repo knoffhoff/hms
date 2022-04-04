@@ -27,7 +27,11 @@ function IdeaPortal() {
         />
       </Group>
       <div className="idea-list">
-        <IdeaCardList ideas={filteredIdeas} columnSize={6} />
+        <IdeaCardList
+          ideas={filteredIdeas}
+          columnSize={6}
+          type={'idea-portal'}
+        />
       </div>
     </>
   )

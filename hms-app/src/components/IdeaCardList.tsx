@@ -6,16 +6,22 @@ import IdeaCardFoldable from './IdeaCardFoldable'
 type IProps = {
   ideas: Idea[]
   columnSize: number
+  type: string
 }
 
 export default function IdeaCardList(props: IProps) {
-  const { ideas, columnSize } = props
+  const { ideas, columnSize, type } = props
 
   const IdeasList = ideas.map((idea, index) => {
     return (
       <Grid.Col sm={columnSize} lg={columnSize}>
         <div style={{ padding: 10 }}>
-          <IdeaCardFoldable idea={idea} index={index} key={idea.id} />
+          <IdeaCardFoldable
+            idea={idea}
+            index={index}
+            key={idea.id}
+            type={type}
+          />
         </div>
       </Grid.Col>
     )

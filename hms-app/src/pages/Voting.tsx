@@ -9,7 +9,7 @@ import {
 } from '@mantine/core'
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd'
 import ideaData from '../test/TestIdeaData'
-import IdeaCardVotingPage from '../components/IdeaCardVotingPage'
+import IdeaCardFoldable from '../components/IdeaCardFoldable'
 
 const useStyles = createStyles((theme, _params, getRef) => ({
   list: {
@@ -168,9 +168,10 @@ export default function Voting() {
                                     {...provided.dragHandleProps}
                                     className={classes.cards}
                                   >
-                                    <IdeaCardVotingPage
+                                    <IdeaCardFoldable
                                       idea={item}
                                       index={index}
+                                      type={'voting'}
                                     />
                                   </div>
                                 )}
@@ -240,9 +241,10 @@ export default function Voting() {
                                   {...provided.dragHandleProps}
                                   className={classes.cards}
                                 >
-                                  <IdeaCardVotingPage
+                                  <IdeaCardFoldable
                                     idea={item}
                                     index={index}
+                                    type={'voting'}
                                   />
                                 </div>
                               )}
