@@ -148,8 +148,9 @@ export default function Voting() {
                             flexDirection: 'column',
                             alignItems: 'flex-end',
                             justifyContent: 'space-around',
-                            fontSize: '500%',
-                            paddingLeft: '100px',
+                            fontSize: '5rem',
+                            marginLeft: '100px',
+                            marginRight: '10px',
                           }
                     }
                   >
