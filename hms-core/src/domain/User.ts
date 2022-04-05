@@ -13,5 +13,6 @@ export class User {
   roles: Set<Role>;
   skills: Set<Skill>;
   imageUrl: string;
+  creationDate: Date;
 }
 
