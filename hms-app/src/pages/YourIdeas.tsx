@@ -1,22 +1,30 @@
-import React from 'react'
+import { Accordion, Button } from '@mantine/core'
 import ideaData from '../test/TestIdeaData'
-import IdeaCardSmall from '../components/IdeaCardSmall'
+import { Idea } from '../common/types'
+import IdeaCardList from '../components/IdeaCardList'
+import React from 'react'
+import NewIdea from '../components/NewIdea'
 
 function YourIdeas() {
-  const ideas = ideaData.map((idea) => {
-    return (
-      <IdeaCardSmall
-        {...idea} //spreads the item in its components in 1 line of code
-      />
-    )
-  })
+  const ideas = ideaData as Idea[]
 
   return (
     <>
       <h1>this is the your idea page</h1>
-      <a href="/your-ideas/create">Create new idea</a>
-      <h2>Your Ideas:</h2>
-      <div className="idea-list">{ideas}</div>
+      <Accordion mb={30} icon={false} iconPosition="right">
+        <Accordion.Item
+          style={{ border: 'none' }}
+          label={
+            <Button radius="md" size="md">
+              Create new idea
+            </Button>
+          }
+        >
+          <NewIdea />
+        </Accordion.Item>
+      </Accordion>
+
+      <IdeaCardList ideas={ideas} columnSize={6} type={'your-ideas'} />
     </>
   )
 }
