@@ -95,7 +95,7 @@ functions:
             allowCredentials: false
 
   deleteHackathon:
-    handler: src/hackathon/delete.delete
+    handler: src/hackathon/remove.remove
     events:
       - http:
           path: hackathon/{id}
@@ -163,7 +163,7 @@ functions:
             allowCredentials: false
 
   deleteIdea:
-    handler: src/idea/delete.delete
+    handler: src/idea/remove.remove
     events:
       - http:
           path: idea/{id}
@@ -231,7 +231,7 @@ functions:
             allowCredentials: false
 
   deleteUser:
-    handler: src/user/delete.delete
+    handler: src/user/remove.remove
     events:
       - http:
           path: user/{id}
@@ -299,7 +299,7 @@ functions:
             allowCredentials: false
 
   deleteCategory:
-    handler: src/category/delete.delete
+    handler: src/category/remove.remove
     events:
       - http:
           path: category/{id}
