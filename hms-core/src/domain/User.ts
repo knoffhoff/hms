@@ -1,4 +1,4 @@
-import {Uuid} from './uuid_help';
+import {Uuid} from '../uuids';
 import {Role} from './Role';
 import {Skill} from './Skill';
 
@@ -12,5 +12,6 @@ export class User {
   emailAddress: string;
   roles: Set<Role>;
   skills: Set<Skill>;
+  imageUrl: string;
 }
 

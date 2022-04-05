@@ -59,19 +59,6 @@ functions:
               - X-Amz-Security-Token
               - X-Amz-User-Agent
             allowCredentials: false
-      - http:
-          path: hackathon
-          method: put
-          cors:
-            origin: '*'
-            headers:
-              - Content-Type
-              - X-Amz-Date
-              - Authorization
-              - X-Api-Key
-              - X-Amz-Security-Token
-              - X-Amz-User-Agent
-            allowCredentials: false
 
   listAllHackathons:
     handler: src/hackathon/list.list
@@ -140,25 +127,12 @@ functions:
               - X-Amz-Security-Token
               - X-Amz-User-Agent
             allowCredentials: false
-      - http:
-          path: idea
-          method: put
-          cors:
-            origin: '*'
-            headers:
-              - Content-Type
-              - X-Amz-Date
-              - Authorization
-              - X-Api-Key
-              - X-Amz-Security-Token
-              - X-Amz-User-Agent
-            allowCredentials: false
 
   listAllIdea:
     handler: src/idea/list.list
     events:
       - http:
-          path: idea
+          path: hackathon/{id}/ideas
           method: get
           cors:
             origin: '*'
@@ -211,19 +185,6 @@ functions:
       - http:
           path: user
           method: post
-          cors:
-            origin: '*'
-            headers:
-              - Content-Type
-              - X-Amz-Date
-              - Authorization
-              - X-Api-Key
-              - X-Amz-Security-Token
-              - X-Amz-User-Agent
-            allowCredentials: false
-      - http:
-          path: user
-          method: put
           cors:
             origin: '*'
             headers:
@@ -302,25 +263,12 @@ functions:
               - X-Amz-Security-Token
               - X-Amz-User-Agent
             allowCredentials: false
-      - http:
-          path: category
-          method: put
-          cors:
-            origin: '*'
-            headers:
-              - Content-Type
-              - X-Amz-Date
-              - Authorization
-              - X-Api-Key
-              - X-Amz-Security-Token
-              - X-Amz-User-Agent
-            allowCredentials: false
 
   listAllCategory:
     handler: src/category/list.list
     events:
       - http:
-          path: category
+          path: hackathon/{id}/categories
           method: get
           cors:
             origin: '*'

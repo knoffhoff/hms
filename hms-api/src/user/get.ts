@@ -1,35 +1,20 @@
 'use strict';
 
-import {DynamoDB} from 'aws-sdk';
+import {Uuid} from '../core';
+import {getUser} from '../mock/user';
 
-const dynamoDb = new DynamoDB.DocumentClient();
+// eslint-disable-next-line require-jsdoc
+export function get(event, context, callback) {
+  const id: Uuid = event.pathParameters.id;
 
-module.exports.get = (event, context, callback) => {
-  const params = {
-    TableName: 'user',
-    Key: {
-      id: event.pathParameters.id,
+  const response = {
+    statusCode: 200,
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Credentials': true,
     },
+    body: JSON.stringify(getUser(id)),
   };
 
-  // get the user by id
-  dynamoDb.get(params, (error, result) => {
-    // handle potential errors
-    if (error) {
-      console.error(error);
-      callback(new Error('Couldn\'t get user.'));
-      return;
-    }
-
-    // create a response
-    const response = {
-      statusCode: 200,
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Credentials': true,
-      },
-      body: JSON.stringify(result.Item),
-    };
-    callback(null, response);
-  });
-};
+  callback(null, response);
+}

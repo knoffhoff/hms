@@ -1,0 +1,2 @@
+GET http://localhost:4566/restapis/p7rrc52j16/local/_user_request_/hackathon/{{uuid}}
+

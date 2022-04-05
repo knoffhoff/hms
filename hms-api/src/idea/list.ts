@@ -1,31 +1,20 @@
 'use strict';
 
-import {DynamoDB} from 'aws-sdk';
+import {Uuid} from '../core';
+import {getIdeas} from '../mock/idea';
 
-const dynamoDb = new DynamoDB.DocumentClient();
+// eslint-disable-next-line require-jsdoc
+export function list(event, context, callback) {
+  const id: Uuid = event.pathParameters.id;
 
-module.exports.list = (event, context, callback) => {
-  const params = {
-    TableName: 'idea',
+  const response = {
+    statusCode: 200,
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Credentials': true,
+    },
+    body: JSON.stringify(getIdeas(id)),
   };
 
-  // get all ideas
-  dynamoDb.scan(params, (error, result) => {
-    // handle potential errors
-    if (error) {
-      console.error(error);
-      callback(new Error('Couldn\'t get ideas.'));
-      return;
-    }
-    // create a response
-    const response = {
-      statusCode: 200,
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Credentials': true,
-      },
-      body: JSON.stringify(result.Items),
-    };
-    callback(null, response);
-  });
-};
+  callback(null, response);
+}
