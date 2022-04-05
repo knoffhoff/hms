@@ -6,7 +6,9 @@ The HMS API functions as the backend of the HMS System.  It is meant to handle r
 
 
 ## Application Information
-The HMS API is meant to run in [AWS Cloud](https://aws.amazon.com/getting-started/?ref=docs_gateway) as a collection of [Lambda](https://docs.aws.amazon.com/lambda/latest/dg/welcome.html) functions.  These lambda functions are written in the [TypeScript](https://www.typescriptlang.org/) language using [NPM](https://docs.npmjs.com/about-npm) as their package manager.  The storage for the HMS API is done using collection of [DynamoDB](https://aws.amazon.com/dynamodb/) tables.
+The HMS API is meant to run in [AWS Cloud](https://aws.amazon.com/getting-started/?ref=docs_gateway) as a collection of [Lambda](https://docs.aws.amazon.com/lambda/latest/dg/welcome.html) functions.  These lambda functions are written in the [TypeScript](https://www.typescriptlang.org/) language using [NPM](https://docs.npmjs.com/about-npm) as their package manager.  In order to make the setup of TypeScript transpiler easier a Serverless plugin called [serverless-plugin-typescript](https://github.com/serverless/serverless-plugin-typescript) is used.
+
+The storage for the HMS API is done using collection of [DynamoDB](https://aws.amazon.com/dynamodb/) tables.
 
 The HMS API is modeled using a microservice style architecture. This allows for the HMS API to run using minimal resources and scale effectively during periods of high load.  This should allow for costs to remain low for those hosting the HMS API.
 
@@ -25,6 +27,7 @@ In order to develop for the HMS API one will need a number of tools and language
 | NVM         | https://github.com/nvm-sh/nvm#installing-and-updating                         | Installing and managing Node.js/NPM |
 | Node.js     | https://github.com/nvm-sh/nvm#usage                                           | Writing code                        |
 | NPM         | https://github.com/nvm-sh/nvm#usage                                           | Node package management             |
+| Jest        | `npm install jest --global`                                                   | Running unit tests                  |
 | Serverless  | https://www.serverless.com/framework/docs/getting-started                     | Building and deploying code         |
 | Docker      | https://docs.docker.com/get-docker                                            | Running LocalStack                  |
 | Python3/PIP | https://www.python.org/downloads                                              | Installing LocalStack               |
@@ -41,9 +44,16 @@ npm install
 Anytime a package in [package.json](package.json) is added or updated this should be run again to keep [package-lock.json](package-lock.json) and your development environment up to date.
 
 ## Testing
-### Running Unit Tests
-[//]: # (TODO need to add information about testing here likely add Jest and run tests using NPM)
-**THIS SECTION IS INCOMPLETE AND NEEDS SOME WORK**
+### Writing/Running Unit Tests
+Unit tests are run written and orchestrated using the [Jest](https://jestjs.io/) framework.  Unit tests are located in the `__test__` folder and can be run from the root directory using the `jest` CLI command (Jest must be installed globally by NPM for this to work).
+
+To run a single test execute a shell command similar to:
+
+```shell
+jest <text_name> 
+```
+
+Full CLI documenation for Jest can be found [here](https://jestjs.io/docs/cli)
 
 ### Manual Testing with Serverless
 Functions can be manually tested by invoking the function directly from the Serverless CLI.  Documentation for this call can be found [here](https://www.serverless.com/framework/docs/providers/aws/cli-reference/invoke), however the call is a shell command similar to:
