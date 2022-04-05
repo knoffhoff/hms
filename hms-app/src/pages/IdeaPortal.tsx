@@ -1,32 +1,38 @@
-import React from 'react'
-import IdeaCardSmall from '../components/IdeaCardSmall'
+import React, { useState } from 'react'
 import ideaData from '../test/TestIdeaData'
-import CategoryDropdown from '../components/CategoryDropdown'
+import { Input, Group, Title } from '@mantine/core'
+import { Search } from 'tabler-icons-react'
+import IdeaCardList from '../components/IdeaCardList'
 
 function IdeaPortal() {
-  const IdeasList = ideaData.map((idea) => {
-    return (
-      <IdeaCardSmall
-        {...idea} //spreads the item in its components in 1 line of code
-      />
-    )
+  const [searchTerm, setSearchTerm] = useState('')
+
+  const handleChangeSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(event.target.value)
+  }
+
+  const filteredIdeas = ideaData.filter((item) => {
+    return item.title.includes(searchTerm)
   })
 
   return (
     <>
-      <h1>this is the IdeaPortal</h1>
-      <div>
-        <h2>Ideas List:</h2>
-        <div style={{ display: 'flex', gap: '10px' }}>
-          <p>Search for: </p>
-          <input />
-          <p>Sort by: </p>
-          <input />
-          <CategoryDropdown />
-        </div>
+      <Title order={1}>All ideas</Title>
+      <Group position={'right'} py={20}>
+        <Input
+          variant="default"
+          placeholder="Search for idea title..."
+          icon={<Search />}
+          onChange={handleChangeSearch}
+        />
+      </Group>
+      <div className="idea-list">
+        <IdeaCardList
+          ideas={filteredIdeas}
+          columnSize={6}
+          type={'idea-portal'}
+        />
       </div>
-      <h3>chosen categorie is: </h3>
-      <div className="idea-list">{IdeasList}</div>
     </>
   )
 }
