@@ -6,6 +6,9 @@ hms-api/node_modules
 hms-api/.build
 hms-api/.serverless
 
+# HMS Core ignore
+hms-core/node_modules
+
 # HMS APP ignore
 /hms-app-old/node_modules
 /hms-app-old/build
