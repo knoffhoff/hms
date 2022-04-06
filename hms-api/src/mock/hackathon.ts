@@ -38,7 +38,7 @@ export const nextHackathon = new HackathonResponse(
 );
 
 // eslint-disable-next-line require-jsdoc
-export function getHackathon(id: Uuid): HackathonResponse {
+export function getHackathon(id: Uuid): HackathonResponse | null {
   switch (id) {
     case prevHackathonId:
       return prevHackathon;

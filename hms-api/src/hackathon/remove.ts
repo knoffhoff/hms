@@ -1,6 +1,7 @@
 'use strict';
 
-import {HackathonDeleteResponse, Uuid} from '../core';
+import {Uuid} from '../uuids';
+import {HackathonDeleteResponse} from '../rest/hackathon';
 
 // eslint-disable-next-line require-jsdoc
 export function remove(event, context, callback) {

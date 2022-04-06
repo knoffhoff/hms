@@ -349,7 +349,7 @@ export const currIdeaIds = [
 export const nextIdeaIds = [];
 
 // eslint-disable-next-line require-jsdoc
-export function getIdeas(hackathonId: Uuid): IdeaListResponse {
+export function getIdeas(hackathonId: Uuid): IdeaListResponse | null {
   switch (hackathonId) {
     case prevHackathonId:
       return new IdeaListResponse(prevIdeaIds, hackathonId);
@@ -363,7 +363,7 @@ export function getIdeas(hackathonId: Uuid): IdeaListResponse {
 }
 
 // eslint-disable-next-line require-jsdoc
-export function getIdea(id: Uuid): IdeaResponse {
+export function getIdea(id: Uuid): IdeaResponse | null {
   switch (id) {
     case prevIdeaId1:
       return prevIdea1;

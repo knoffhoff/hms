@@ -1,6 +1,7 @@
 'use strict';
 
-import {IdeaDeletionResponse, Uuid} from '../core';
+import {Uuid} from '../uuids';
+import {IdeaDeletionResponse} from '../rest/idea';
 
 // eslint-disable-next-line require-jsdoc
 export function remove(event, context, callback) {

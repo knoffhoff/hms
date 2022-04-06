@@ -64,7 +64,8 @@ export const nextCategoryIds = [
 ];
 
 // eslint-disable-next-line require-jsdoc
-export function getCategories(hackathonId: Uuid): CategoryListResponse {
+export function getCategories(hackathonId: Uuid)
+    : CategoryListResponse | null {
   switch (hackathonId) {
     case prevHackathonId:
       return new CategoryListResponse(prevCategoryIds, hackathonId);
@@ -78,7 +79,7 @@ export function getCategories(hackathonId: Uuid): CategoryListResponse {
 }
 
 // eslint-disable-next-line require-jsdoc
-export function getCategory(id: Uuid): CategoryResponse {
+export function getCategory(id: Uuid): CategoryResponse | null {
   switch (id) {
     case prevCategoryId1: return prevCategory1;
     case prevCategoryId2: return prevCategory2;

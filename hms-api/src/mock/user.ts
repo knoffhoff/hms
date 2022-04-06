@@ -76,7 +76,7 @@ export const user6 = new UserResponse(
 );
 
 // eslint-disable-next-line require-jsdoc
-export function getUser(id: Uuid): UserResponse {
+export function getUser(id: Uuid): UserResponse | null {
   switch (id) {
     case userId1:
       return user1;
@@ -90,8 +90,16 @@ export function getUser(id: Uuid): UserResponse {
       return user5;
     case userId6:
       return user6;
+    default:
+      return null;
   }
 }
 
-export const userIds = new UserListResponse(
-    [userId1, userId2, userId3, userId4, userId5, userId6]);
+export const userIds = new UserListResponse([
+  userId1,
+  userId2,
+  userId3,
+  userId4,
+  userId5,
+  userId6,
+]);

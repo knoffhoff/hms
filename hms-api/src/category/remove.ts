@@ -1,6 +1,7 @@
 'use strict';
 
-import {CategoryDeleteResponse, Uuid} from '../core';
+import {Uuid} from '../uuids';
+import {CategoryDeleteResponse} from '../rest/category';
 
 // eslint-disable-next-line require-jsdoc
 export function remove(event, context, callback) {

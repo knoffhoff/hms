@@ -1,6 +1,6 @@
 'use strict';
 
-import {Uuid} from '../core';
+import {Uuid} from '../uuids';
 import {getIdea} from '../mock/idea';
 
 // eslint-disable-next-line require-jsdoc

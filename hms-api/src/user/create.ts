@@ -1,6 +1,7 @@
 'use strict';
 
-import {UserCreateRequest, UserCreateResponse, uuid} from '../core';
+import {uuid} from '../uuids';
+import {UserCreateRequest, UserCreateResponse} from '../rest/user';
 
 // eslint-disable-next-line require-jsdoc
 export function create(event, context, callback) {

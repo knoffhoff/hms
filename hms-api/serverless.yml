@@ -49,16 +49,7 @@ functions:
       - http:
           path: hackathon
           method: post
-          cors:
-            origin: '*'
-            headers:
-              - Content-Type
-              - X-Amz-Date
-              - Authorization
-              - X-Api-Key
-              - X-Amz-Security-Token
-              - X-Amz-User-Agent
-            allowCredentials: false
+          cors: true
 
   listAllHackathons:
     handler: src/hackathon/list.list
@@ -66,16 +57,7 @@ functions:
       - http:
           path: hackathons
           method: get
-          cors:
-            origin: '*'
-            headers:
-              - Content-Type
-              - X-Amz-Date
-              - Authorization
-              - X-Api-Key
-              - X-Amz-Security-Token
-              - X-Amz-User-Agent
-            allowCredentials: false
+          cors: true
 
   getHackathon:
     handler: src/hackathon/get.get
@@ -83,16 +65,7 @@ functions:
       - http:
           path: hackathon/{id}
           method: get
-          cors:
-            origin: '*'
-            headers:
-              - Content-Type
-              - X-Amz-Date
-              - Authorization
-              - X-Api-Key
-              - X-Amz-Security-Token
-              - X-Amz-User-Agent
-            allowCredentials: false
+          cors: true
 
   deleteHackathon:
     handler: src/hackathon/remove.remove
@@ -100,16 +73,7 @@ functions:
       - http:
           path: hackathon/{id}
           method: delete
-          cors:
-            origin: '*'
-            headers:
-              - Content-Type
-              - X-Amz-Date
-              - Authorization
-              - X-Api-Key
-              - X-Amz-Security-Token
-              - X-Amz-User-Agent
-            allowCredentials: false
+          cors: true
 
   createIdea:
     handler: src/idea/create.create
@@ -117,16 +81,7 @@ functions:
       - http:
           path: idea
           method: post
-          cors:
-            origin: '*'
-            headers:
-              - Content-Type
-              - X-Amz-Date
-              - Authorization
-              - X-Api-Key
-              - X-Amz-Security-Token
-              - X-Amz-User-Agent
-            allowCredentials: false
+          cors: true
 
   listAllIdea:
     handler: src/idea/list.list
@@ -134,16 +89,7 @@ functions:
       - http:
           path: hackathon/{id}/ideas
           method: get
-          cors:
-            origin: '*'
-            headers:
-              - Content-Type
-              - X-Amz-Date
-              - Authorization
-              - X-Api-Key
-              - X-Amz-Security-Token
-              - X-Amz-User-Agent
-            allowCredentials: false
+          cors: true
 
   getIdea:
     handler: src/idea/get.get
@@ -151,16 +97,7 @@ functions:
       - http:
           path: idea/{id}
           method: get
-          cors:
-            origin: '*'
-            headers:
-              - Content-Type
-              - X-Amz-Date
-              - Authorization
-              - X-Api-Key
-              - X-Amz-Security-Token
-              - X-Amz-User-Agent
-            allowCredentials: false
+          cors: true
 
   deleteIdea:
     handler: src/idea/remove.remove
@@ -168,16 +105,7 @@ functions:
       - http:
           path: idea/{id}
           method: delete
-          cors:
-            origin: '*'
-            headers:
-              - Content-Type
-              - X-Amz-Date
-              - Authorization
-              - X-Api-Key
-              - X-Amz-Security-Token
-              - X-Amz-User-Agent
-            allowCredentials: false
+          cors: true
 
   createUser:
     handler: src/user/create.create
@@ -185,16 +113,7 @@ functions:
       - http:
           path: user
           method: post
-          cors:
-            origin: '*'
-            headers:
-              - Content-Type
-              - X-Amz-Date
-              - Authorization
-              - X-Api-Key
-              - X-Amz-Security-Token
-              - X-Amz-User-Agent
-            allowCredentials: false
+          cors: true
 
   listAllUser:
     handler: src/user/list.list
@@ -202,16 +121,7 @@ functions:
       - http:
           path: users
           method: get
-          cors:
-            origin: '*'
-            headers:
-              - Content-Type
-              - X-Amz-Date
-              - Authorization
-              - X-Api-Key
-              - X-Amz-Security-Token
-              - X-Amz-User-Agent
-            allowCredentials: false
+          cors: true
 
   getUser:
     handler: src/user/get.get
@@ -219,16 +129,7 @@ functions:
       - http:
           path: user/{id}
           method: get
-          cors:
-            origin: '*'
-            headers:
-              - Content-Type
-              - X-Amz-Date
-              - Authorization
-              - X-Api-Key
-              - X-Amz-Security-Token
-              - X-Amz-User-Agent
-            allowCredentials: false
+          cors: true
 
   deleteUser:
     handler: src/user/remove.remove
@@ -236,16 +137,7 @@ functions:
       - http:
           path: user/{id}
           method: delete
-          cors:
-            origin: '*'
-            headers:
-              - Content-Type
-              - X-Amz-Date
-              - Authorization
-              - X-Api-Key
-              - X-Amz-Security-Token
-              - X-Amz-User-Agent
-            allowCredentials: false
+          cors: true
 
   createCategory:
     handler: src/category/create.create
@@ -253,16 +145,7 @@ functions:
       - http:
           path: category
           method: post
-          cors:
-            origin: '*'
-            headers:
-              - Content-Type
-              - X-Amz-Date
-              - Authorization
-              - X-Api-Key
-              - X-Amz-Security-Token
-              - X-Amz-User-Agent
-            allowCredentials: false
+          cors: true
 
   listAllCategory:
     handler: src/category/list.list
@@ -270,16 +153,7 @@ functions:
       - http:
           path: hackathon/{id}/categories
           method: get
-          cors:
-            origin: '*'
-            headers:
-              - Content-Type
-              - X-Amz-Date
-              - Authorization
-              - X-Api-Key
-              - X-Amz-Security-Token
-              - X-Amz-User-Agent
-            allowCredentials: false
+          cors: true
 
   getCategory:
     handler: src/category/get.get
@@ -287,16 +161,7 @@ functions:
       - http:
           path: category/{id}
           method: get
-          cors:
-            origin: '*'
-            headers:
-              - Content-Type
-              - X-Amz-Date
-              - Authorization
-              - X-Api-Key
-              - X-Amz-Security-Token
-              - X-Amz-User-Agent
-            allowCredentials: false
+          cors: true
 
   deleteCategory:
     handler: src/category/remove.remove
@@ -304,16 +169,7 @@ functions:
       - http:
           path: category/{id}
           method: delete
-          cors:
-            origin: '*'
-            headers:
-              - Content-Type
-              - X-Amz-Date
-              - Authorization
-              - X-Api-Key
-              - X-Amz-Security-Token
-              - X-Amz-User-Agent
-            allowCredentials: false
+          cors: true
 
 resources:
   Resources:

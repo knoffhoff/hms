@@ -1,6 +1,7 @@
 'use strict';
 
-import {UserDeleteResponse, Uuid} from '../core';
+import {Uuid} from '../uuids';
+import {UserDeleteResponse} from '../rest/user';
 
 // eslint-disable-next-line require-jsdoc
 export function remove(event, context, callback) {

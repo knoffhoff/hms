@@ -1,6 +1,7 @@
 'use strict';
 
-import {HackathonCreateRequest, HackathonCreateResponse, uuid,} from '../core';
+import {uuid} from '../uuids';
+import {HackathonCreateRequest, HackathonCreateResponse,} from '../rest/hackathon';
 
 // eslint-disable-next-line require-jsdoc
 export function create(event, context, callback) {
