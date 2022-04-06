@@ -1,6 +1,7 @@
-import {HackathonListResponse, HackathonResponse, Uuid} from '../core';
+import {Uuid} from '../uuids';
+import {HackathonListResponse, HackathonResponse} from '../rest/hackathon';
 import {currParticipantIds, nextParticipantIds, prevParticipantIds,} from './participant';
-import {currCategoryIds, nextCategoryIds, prevCategoryIds,} from './category';
+import {currCategoryIds, nextCategoryIds, prevCategoryIds} from './category';
 import {currIdeaIds, nextIdeaIds, prevIdeaIds} from './idea';
 
 export const prevHackathonId: Uuid = 'e955fe4b-7ce7-4904-ae6f-22a8985f74a8';
@@ -39,15 +40,19 @@ export const nextHackathon = new HackathonResponse(
 // eslint-disable-next-line require-jsdoc
 export function getHackathon(id: Uuid): HackathonResponse {
   switch (id) {
-    case prevHackathonId: return prevHackathon;
-    case currHackathonId: return currHackathon;
-    case nextHackathonId: return nextHackathon;
-    default: return null;
+    case prevHackathonId:
+      return prevHackathon;
+    case currHackathonId:
+      return currHackathon;
+    case nextHackathonId:
+      return nextHackathon;
+    default:
+      return null;
   }
 }
 
-export const hackathonIds = new HackathonListResponse(new Set<Uuid>([
+export const hackathonIds = new HackathonListResponse([
   prevHackathonId,
   currHackathonId,
   nextHackathonId,
-]));
+]);

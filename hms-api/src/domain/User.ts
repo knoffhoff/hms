@@ -10,8 +10,8 @@ export class User {
   lastName: string;
   firstName: string;
   emailAddress: string;
-  roles: Set<Role>;
-  skills: Set<Skill>;
+  roles: Role[];
+  skills: Skill[];
   imageUrl: string;
   creationDate: Date;
 }

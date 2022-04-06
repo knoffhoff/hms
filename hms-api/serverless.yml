@@ -64,7 +64,7 @@ functions:
     handler: src/hackathon/list.list
     events:
       - http:
-          path: hackathon
+          path: hackathons
           method: get
           cors:
             origin: '*'
@@ -200,7 +200,7 @@ functions:
     handler: src/user/list.list
     events:
       - http:
-          path: user
+          path: users
           method: get
           cors:
             origin: '*'

@@ -1,4 +1,5 @@
-import {IdeaListResponse, IdeaResponse, Uuid} from '../core';
+import {Uuid} from '../uuids';
+import {IdeaListResponse, IdeaResponse} from '../rest/idea';
 import {currHackathonId, nextHackathonId, prevHackathonId,} from './hackathon';
 import {
   currParticipantId1,
@@ -18,7 +19,7 @@ export const prevIdea1 = new IdeaResponse(
     prevIdeaId1,
     prevParticipantId1,
     prevHackathonId,
-    new Set<Uuid>([prevParticipantId1]),
+    [prevParticipantId1],
     'A really cool idea about bears!',
     'Ulysses, Ulysses — Soaring through all the galaxies. ' +
     'In search of Earth, flying in to the night. Ulysses, Ulysses — ' +
@@ -28,7 +29,7 @@ export const prevIdea1 = new IdeaResponse(
     'the evil forces bringing peace and justice to all.',
     'Not enough bears',
     'Have more bears',
-    new Set<string>([bearHandling.name]),
+    [bearHandling.name],
     prevCategoryId1,
     new Date('2021-12-01'),
 );
@@ -38,7 +39,7 @@ export const prevIdea2 = new IdeaResponse(
     prevIdeaId2,
     prevParticipantId1,
     prevHackathonId,
-    new Set<Uuid>([prevParticipantId1, prevParticipantId2]),
+    [prevParticipantId1, prevParticipantId2],
     'A really cool idea about bees!',
     'One for all and all for one, Muskehounds are always ready. ' +
     'One for all and all for one, helping everybody. One for all and all ' +
@@ -49,7 +50,7 @@ export const prevIdea2 = new IdeaResponse(
     'chum, think how it could be.',
     'Too many bees',
     'Have less bees',
-    new Set<string>([beeHandling.name]),
+    [beeHandling.name],
     prevCategoryId1,
     new Date('2021-12-04'),
 );
@@ -59,7 +60,7 @@ export const prevIdea3 = new IdeaResponse(
     prevIdeaId3,
     prevParticipantId2,
     prevHackathonId,
-    new Set<Uuid>([prevParticipantId2]),
+    [prevParticipantId2],
     'A really cool bleeding edge tech idea!',
     'Hey there where ya goin’, not exactly knowin’, who says you ' +
     'have to call just one place home. He’s goin’ everywhere, B.J. McKay ' +
@@ -71,7 +72,7 @@ export const prevIdea3 = new IdeaResponse(
     'best friend Bear.',
     'Wanna do something with ML',
     'Obviously have another pointless ML project',
-    new Set<string>([frontend.name, backend.name]),
+    [frontend.name, backend.name],
     prevCategoryId2,
     new Date('2021-12-05'),
 );
@@ -81,7 +82,7 @@ export const prevIdea4 = new IdeaResponse(
     prevIdeaId4,
     prevParticipantId3,
     prevHackathonId,
-    new Set<Uuid>([prevParticipantId3, prevParticipantId1]),
+    [prevParticipantId3, prevParticipantId1],
     'One of those ones that is really just a presentation',
     'There’s a voice that keeps on calling me. Down the road, ' +
     'that’s where I’ll always be. Every stop I make, I make a new friend. ' +
@@ -90,7 +91,7 @@ export const prevIdea4 = new IdeaResponse(
     'moving on.',
     'Not enough nice powerpoints',
     'Make a kickass powerpoint',
-    new Set<string>([frontend.name, design.name]),
+    [frontend.name, design.name],
     prevCategoryId2,
     new Date('2021-12-06'),
 );
@@ -100,7 +101,7 @@ export const prevIdea5 = new IdeaResponse(
     prevIdeaId5,
     prevParticipantId2,
     prevHackathonId,
-    new Set<Uuid>([prevParticipantId3, prevParticipantId2]),
+    [prevParticipantId3, prevParticipantId2],
     'Write software for a thing',
     'Mutley, you snickering, floppy eared hound. When courage is ' +
     'needed, you’re never around. Those medals you wear on your moth-eaten ' +
@@ -110,25 +111,25 @@ export const prevIdea5 = new IdeaResponse(
     'jab him, tab him, grab him, stop that pigeon now.',
     'They don\'t make software like they did in my day',
     'Have nice software',
-    new Set<string>([frontend.name]),
+    [frontend.name],
     prevCategoryId1,
     new Date('2021-12-09'),
 );
 
-export const prevIdeaIds = new Set<Uuid>([
+export const prevIdeaIds = [
   prevIdeaId1,
   prevIdeaId2,
   prevIdeaId3,
   prevIdeaId4,
   prevIdeaId5,
-]);
+];
 
 export const currIdeaId1: Uuid = 'cd760a62-6c79-44f0-96f0-f2e87bd5f169';
 export const currIdea1 = new IdeaResponse(
     currIdeaId1,
     currParticipantId1,
     currHackathonId,
-    new Set<Uuid>([currParticipantId1, currParticipantId2, currParticipantId5]),
+    [currParticipantId1, currParticipantId2, currParticipantId5],
     'Making sweet party hats for bees',
     'Hong Kong Phooey, number one super guy. Hong Kong Phooey, ' +
     'quicker than the human eye. He’s got style, a groovy style, and a car ' +
@@ -138,7 +139,7 @@ export const currIdea1 = new IdeaResponse(
     'Phooey, he’s fan-riffic!',
     'Bees like to party but have no hats',
     'Have tiny hats for bees',
-    new Set<string>([design.name, beeHandling.name]),
+    [design.name, beeHandling.name],
     currCategoryId1,
     new Date('2022-03-28'),
 );
@@ -148,12 +149,12 @@ export const currIdea2 = new IdeaResponse(
     currIdeaId2,
     currParticipantId2,
     currHackathonId,
-    new Set<Uuid>([
+    [
       currParticipantId1,
       currParticipantId2,
       currParticipantId4,
       currParticipantId5,
-    ]),
+    ],
     'Bears that look like bees',
     'Children of the sun, see your time has just begun, searching ' +
     'for your ways, through adventures every day. Every day and night, with ' +
@@ -164,7 +165,7 @@ export const currIdea2 = new IdeaResponse(
     'Ah-ah-ah-ah-ah… some day we will find The Cities of Gold.',
     'Bears don\'t look like bees',
     'Make bears that look like bees',
-    new Set<string>([beeHandling.name, bearHandling.name]),
+    [beeHandling.name, bearHandling.name],
     currCategoryId1,
     new Date('2022-03-29'),
 );
@@ -174,11 +175,11 @@ export const currIdea3 = new IdeaResponse(
     currIdeaId3,
     currParticipantId3,
     currHackathonId,
-    new Set<Uuid>([
+    [
       currParticipantId1,
       currParticipantId2,
       currParticipantId3,
-    ]),
+    ],
     'Bees that look like bears',
     '80 days around the world, we’ll find a pot of gold just sitting ' +
     'where the rainbow’s ending. Time — we’ll fight against the time, and ' +
@@ -188,7 +189,7 @@ export const currIdea3 = new IdeaResponse(
     'world. Round, all around the world.',
     'Bees aren\'t nearly scary enough',
     'Have horrifying bear like bees',
-    new Set<string>([beeHandling.name, bearHandling.name]),
+    [beeHandling.name, bearHandling.name],
     currCategoryId1,
     new Date('2022-04-01'),
 );
@@ -198,10 +199,10 @@ export const currIdea4 = new IdeaResponse(
     currIdeaId4,
     currParticipantId4,
     currHackathonId,
-    new Set<Uuid>([
+    [
       currParticipantId1,
       currParticipantId4,
-    ]),
+    ],
     'Backend software for feet',
     'Thundercats are on the move, Thundercats are loose. Feel the ' +
     'magic, hear the roar, Thundercats are loose. Thunder, thunder, thunder, ' +
@@ -210,7 +211,7 @@ export const currIdea4 = new IdeaResponse(
     'Thundercats!',
     'Feet don\'t have enough purpose built software',
     'Make a cool app for feet',
-    new Set<string>([backend.name]),
+    [backend.name],
     currCategoryId1,
     new Date('2022-04-01'),
 );
@@ -220,10 +221,10 @@ export const currIdea5 = new IdeaResponse(
     currIdeaId5,
     currParticipantId4,
     currHackathonId,
-    new Set<Uuid>([
+    [
       currParticipantId2,
       currParticipantId4,
-    ]),
+    ],
     'Frontend software for hands',
     'There’s a voice that keeps on calling me. Down the road, ' +
     'that’s where I’ll always be. Every stop I make, I make a new friend. ' +
@@ -232,7 +233,7 @@ export const currIdea5 = new IdeaResponse(
     'moving on.',
     'Hands don\'t have enough purpose built software',
     'Make a cool app for hands',
-    new Set<string>([frontend.name]),
+    [frontend.name],
     currCategoryId1,
     new Date('2022-04-01'),
 );
@@ -242,9 +243,9 @@ export const currIdea6 = new IdeaResponse(
     currIdeaId6,
     currParticipantId5,
     currHackathonId,
-    new Set<Uuid>([
+    [
       currParticipantId5,
-    ]),
+    ],
     'Just like mock data idk',
     'Mutley, you snickering, floppy eared hound. When courage ' +
     'is needed, you’re never around. Those medals you wear on your ' +
@@ -254,7 +255,7 @@ export const currIdea6 = new IdeaResponse(
     'Nab him, jab him, tab him, grab him, stop that pigeon now.',
     'We need test data',
     'We will have test data',
-    new Set<string>([design.name, backend.name, frontend.name]),
+    [design.name, backend.name, frontend.name],
     currCategoryId1,
     new Date('2022-04-02'),
 );
@@ -264,11 +265,11 @@ export const currIdea7 = new IdeaResponse(
     currIdeaId7,
     currParticipantId2,
     currHackathonId,
-    new Set<Uuid>([
+    [
       currParticipantId2,
       currParticipantId3,
       currParticipantId4,
-    ]),
+    ],
     'Always good do have more test data',
     'One for all and all for one, Muskehounds are always ready. One for ' +
     'all and all for one, helping everybody. One for all and all for one, ' +
@@ -279,7 +280,7 @@ export const currIdea7 = new IdeaResponse(
     'could be.',
     'We REALLY need test data',
     'We will have test data',
-    new Set<string>([bearHandling.name, design.name, frontend.name]),
+    [bearHandling.name, design.name, frontend.name],
     currCategoryId1,
     new Date('2022-04-03'),
 );
@@ -289,27 +290,26 @@ export const currIdea8 = new IdeaResponse(
     currIdeaId8,
     currParticipantId1,
     currHackathonId,
-    new Set<Uuid>([
+    [
       currParticipantId1,
       currParticipantId2,
       currParticipantId3,
       currParticipantId4,
       currParticipantId5,
-    ]),
+    ],
     'Really cool software headbands for animals',
     'Knight Rider, a shadowy flight into the dangerous world of a man who ' +
     'does not exist. Michael Knight, a young loner on a crusade to champion ' +
     'the cause of the innocent, the helpless in a world of criminals who ' +
     'operate above the law.',
     'Animals don\'t have cool enough headbands',
-    'Really stylish animals',
-    new Set<string>([
+    'Really stylish animals', [
       bearHandling.name,
       beeHandling.name,
       design.name,
       backend.name,
       frontend.name,
-    ]),
+    ],
     currCategoryId1,
     new Date('2022-04-03'),
 );
@@ -319,9 +319,9 @@ export const currIdea9 = new IdeaResponse(
     currIdeaId9,
     currParticipantId1,
     currHackathonId,
-    new Set<Uuid>([
+    [
       currParticipantId1,
-    ]),
+    ],
     'Just a task no one wants to do',
     'There’s a voice that keeps on calling me. Down the road, that’s where ' +
     'I’ll always be. Every stop I make, I make a new friend. Can’t stay for ' +
@@ -329,12 +329,12 @@ export const currIdea9 = new IdeaResponse(
     'to settle down, Until tomorrow, I’ll just keep moving on.',
     'Just like whatever',
     'Just stuff',
-    new Set<string>([frontend.name]),
+    [frontend.name],
     currCategoryId1,
     new Date('2022-04-04'),
 );
 
-export const currIdeaIds = new Set<Uuid>([
+export const currIdeaIds = [
   currIdeaId1,
   currIdeaId2,
   currIdeaId3,
@@ -344,9 +344,9 @@ export const currIdeaIds = new Set<Uuid>([
   currIdeaId7,
   currIdeaId8,
   currIdeaId9,
-]);
+];
 
-export const nextIdeaIds = new Set<Uuid>([]);
+export const nextIdeaIds = [];
 
 // eslint-disable-next-line require-jsdoc
 export function getIdeas(hackathonId: Uuid): IdeaListResponse {

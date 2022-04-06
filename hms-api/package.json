@@ -3,10 +3,11 @@
   "version": "0.0.0",
   "scripts": {
     "test": "jest",
-    "build": "",
-    "deploy": "serverless deploy --stage local",
+    "build": "sls package",
+    "deploy": "sls deploy --stage local",
     "watch": "nodemon -w src -e '.*' -x 'npm run build'",
-    "start": "npm run deploy && npm run watch"
+    "start": "npm run deploy && npm run watch",
+    "stop": "sls remove --stage local"
   },
   "license": "ISC",
   "devDependencies": {
@@ -21,7 +22,10 @@
     "nodemon": "2.0.15",
     "serverless-localstack": "0.4.35",
     "serverless-plugin-typescript": "2.1.1",
-    "typescript": "4.6.2"
+    "ts-jest": "27.1.4",
+    "ts-node": "10.7.0",
+    "typescript": "4.6.2",
+    "uuid": "8.3.2"
   },
   "dependencies": {
     "aws-sdk": "2.1100.0"

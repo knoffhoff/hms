@@ -6,8 +6,8 @@ export class UserCreateRequest {
   lastName: string;
   firstName: string;
   emailAddress: string;
-  roles: Set<Role>;
-  skills: Set<string>;
+  roles: Role[];
+  skills: string[];
   imageUrl: string;
 
   // eslint-disable-next-line require-jsdoc
@@ -15,8 +15,8 @@ export class UserCreateRequest {
       lastName: string,
       firstName: string,
       emailAddress: string,
-      roles: Set<Role>,
-      skills: Set<string>,
+      roles: Role[],
+      skills: string[],
       imageUrl: string,
   ) {
     this.lastName = lastName;
@@ -34,8 +34,8 @@ export class UserCreateResponse {
   lastName: string;
   firstName: string;
   emailAddress: string;
-  roles: Set<Role>;
-  skills: Set<string>;
+  roles: Role[];
+  skills: string[];
   imageUrl: string;
   creationDate: Date;
 
@@ -45,8 +45,8 @@ export class UserCreateResponse {
       lastName: string,
       firstName: string,
       emailAddress: string,
-      roles: Set<Role>,
-      skills: Set<string>,
+      roles: Role[],
+      skills: string[],
       imageUrl: string,
       creationDate: Date,
   ) {
@@ -63,10 +63,10 @@ export class UserCreateResponse {
 
 // eslint-disable-next-line require-jsdoc
 export class UserListResponse {
-  ids: Set<Uuid>;
+  ids: Uuid[];
 
   // eslint-disable-next-line require-jsdoc
-  constructor(ids: Set<Uuid>) {
+  constructor(ids: Uuid[]) {
     this.ids = ids;
   }
 }
@@ -77,8 +77,8 @@ export class UserResponse {
   lastName: string;
   firstName: string;
   emailAddress: string;
-  roles: Set<Role>;
-  skills: Set<string>;
+  roles: Role[];
+  skills: string[];
   imageUrl: string;
   creationDate: Date;
 
@@ -88,8 +88,8 @@ export class UserResponse {
       lastName: string,
       firstName: string,
       emailAddress: string,
-      roles: Set<Role>,
-      skills: Set<string>,
+      roles: Role[],
+      skills: string[],
       imageUrl: string,
       creationDate: Date,
   ) {

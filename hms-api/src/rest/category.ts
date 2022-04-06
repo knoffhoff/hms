@@ -41,12 +41,12 @@ export class CategoryCreateResponse {
 
 // eslint-disable-next-line require-jsdoc
 export class CategoryListResponse {
-  ids: Set<Uuid>;
+  ids: Uuid[];
   hackathonId: Uuid;
 
   // eslint-disable-next-line require-jsdoc
   constructor(
-      ids: Set<Uuid>,
+      ids: Uuid[],
       hackathonId: Uuid,
   ) {
     this.ids = ids;

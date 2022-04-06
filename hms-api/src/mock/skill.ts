@@ -1,4 +1,4 @@
-import {Skill} from '../core';
+import {Skill} from '../domain/Skill';
 
 export const frontend = new Skill(
     'frontend',

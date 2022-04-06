@@ -12,9 +12,9 @@ export class Hackathon {
   startDate: Date;
   endDate: Date;
   creationDate: Date;
-  participants: Set<Participant>;
-  categories: Set<Category>;
-  ideas: Set<Idea>;
+  participants: Participant[];
+  categories: Category[];
+  ideas: Idea[];
 
   // eslint-disable-next-line require-jsdoc
   constructor(

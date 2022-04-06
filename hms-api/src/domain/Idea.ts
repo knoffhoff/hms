@@ -11,12 +11,12 @@ export class Idea {
   id: Uuid;
   owner: Participant;
   hackathon: Hackathon;
-  participants: Set<Participant>;
+  participants: Participant[];
   title: string;
   description: string;
   problem: string;
   goal: string;
-  requiredSkills: Set<Skill>;
+  requiredSkills: Skill[];
   category: Category;
   creationDate: Date;
 
@@ -24,12 +24,12 @@ export class Idea {
   constructor(
       owner: Participant,
       hackathon: Hackathon,
-      participants: Set<Participant>,
+      participants: Participant[],
       title: string,
       description: string,
       problem: string,
       goal: string,
-      requiredSkills: Set<Skill>,
+      requiredSkills: Skill[],
       category: Category,
   ) {
     this.id = uuid();

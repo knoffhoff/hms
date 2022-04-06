@@ -1,2 +1,5 @@
-GET http://localhost:4566/restapis/p7rrc52j16/local/_user_request_/hackathon/{{uuid}}
+### List all Hackathons
+GET {{host}}/restapis/{{random_path_part}}/local/_user_request_/hackathons
 
+### List all Users
+GET {{host}}/restapis/{{random_path_part}}/local/_user_request_/users

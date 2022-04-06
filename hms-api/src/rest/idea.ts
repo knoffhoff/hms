@@ -4,24 +4,24 @@ import {Uuid} from '../uuids';
 export class IdeaCreateRequest {
   ownerId: Uuid;
   hackathonId: Uuid;
-  participantIds: Set<Uuid>;
+  participantIds: Uuid[];
   title: string;
   description: string;
   problem: string;
   goal: string;
-  requiredSkills: Set<string>;
+  requiredSkills: string[];
   categoryId: Uuid;
 
   // eslint-disable-next-line require-jsdoc
   constructor(
       ownerId: Uuid,
       hackathonId: Uuid,
-      participantIds: Set<Uuid>,
+      participantIds: Uuid[],
       title: string,
       description: string,
       problem: string,
       goal: string,
-      requiredSkills: Set<string>,
+      requiredSkills: string[],
       categoryId: Uuid,
   ) {
     this.ownerId = ownerId;
@@ -41,12 +41,12 @@ export class IdeaCreateResponse {
   id: Uuid;
   ownerId: Uuid;
   hackathonId: Uuid;
-  participantIds: Set<Uuid>;
+  participantIds: Uuid[];
   title: string;
   description: string;
   problem: string;
   goal: string;
-  requiredSkills: Set<string>;
+  requiredSkills: string[];
   categoryId: Uuid;
   creationDate: Date;
 
@@ -55,12 +55,12 @@ export class IdeaCreateResponse {
       id: Uuid,
       ownerId: Uuid,
       hackathonId: Uuid,
-      participantIds: Set<Uuid>,
+      participantIds: Uuid[],
       title: string,
       description: string,
       problem: string,
       goal: string,
-      requiredSkills: Set<string>,
+      requiredSkills: string[],
       categoryId: Uuid,
       creationDate: Date,
   ) {
@@ -83,12 +83,12 @@ export class IdeaResponse {
   id: Uuid;
   ownerId: Uuid;
   hackathonId: Uuid;
-  participantIds: Set<Uuid>;
+  participantIds: Uuid[];
   title: string;
   description: string;
   problem: string;
   goal: string;
-  requiredSkills: Set<string>;
+  requiredSkills: string[];
   categoryId: Uuid;
   creationDate: Date;
 
@@ -97,12 +97,12 @@ export class IdeaResponse {
       id: Uuid,
       ownerId: Uuid,
       hackathonId: Uuid,
-      participantIds: Set<Uuid>,
+      participantIds: Uuid[],
       title: string,
       description: string,
       problem: string,
       goal: string,
-      requiredSkills: Set<string>,
+      requiredSkills: string[],
       categoryId: Uuid,
       creationDate: Date,
   ) {
@@ -122,12 +122,12 @@ export class IdeaResponse {
 
 // eslint-disable-next-line require-jsdoc
 export class IdeaListResponse {
-  ids: Set<Uuid>;
+  ids: Uuid[];
   hackathonId: Uuid;
 
   // eslint-disable-next-line require-jsdoc
   constructor(
-      ids: Set<Uuid>,
+      ids: Uuid[],
       hackathonId: Uuid,
   ) {
     this.ids = ids;

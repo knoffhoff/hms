@@ -33,10 +33,10 @@ export class HackathonCreateResponse {
 
 // eslint-disable-next-line require-jsdoc
 export class HackathonListResponse {
-  ids: Set<Uuid>;
+  ids: Uuid[];
 
   // eslint-disable-next-line require-jsdoc
-  constructor(ids: Set<Uuid>) {
+  constructor(ids: Uuid[]) {
     this.ids = ids;
   }
 }
@@ -49,9 +49,9 @@ export class HackathonResponse {
   endDate: Date;
   creationDate: Date;
   // Just going to set all of these as Uuids for right now
-  participantIds: Set<Uuid>;
-  categoryIds: Set<Uuid>;
-  ideaIds: Set<Uuid>;
+  participantIds: Uuid[];
+  categoryIds: Uuid[];
+  ideaIds: Uuid[];
 
   // eslint-disable-next-line require-jsdoc
   constructor(
@@ -59,9 +59,9 @@ export class HackathonResponse {
       title: string,
       startDate: Date,
       endDate: Date,
-      participantIds: Set<Uuid>,
-      categoryIds: Set<Uuid>,
-      ideaIds: Set<Uuid>,
+      participantIds: Uuid[],
+      categoryIds: Uuid[],
+      ideaIds: Uuid[],
   ) {
     this.id = id;
     this.title = title;

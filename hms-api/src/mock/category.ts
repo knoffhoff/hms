@@ -1,4 +1,5 @@
-import {CategoryListResponse, CategoryResponse, Uuid} from '../core';
+import {Uuid} from '../uuids';
+import {CategoryListResponse, CategoryResponse} from '../rest/category';
 import {currHackathonId, nextHackathonId, prevHackathonId} from './hackathon';
 
 export const prevCategoryId1 = '7f38993d-073a-4932-af79-07440012f268';
@@ -17,10 +18,10 @@ export const prevCategory2 = new CategoryResponse(
     prevHackathonId,
 );
 
-export const prevCategoryIds = new Set<Uuid>([
+export const prevCategoryIds = [
   prevCategoryId1,
   prevCategoryId2,
-]);
+];
 
 export const currCategoryId1 = '52c0bbde-6360-451c-bf50-b56694f56053';
 export const currCategory1 = new CategoryResponse(
@@ -30,7 +31,7 @@ export const currCategory1 = new CategoryResponse(
     currHackathonId,
 );
 
-export const currCategoryIds = new Set<Uuid>([currCategoryId1]);
+export const currCategoryIds = [currCategoryId1];
 
 export const nextCategoryId1 = 'e499b34e-fda9-4f66-949a-46e0300b9d08';
 export const nextCategory1 = new CategoryResponse(
@@ -56,11 +57,11 @@ export const nextCategory3 = new CategoryResponse(
     nextHackathonId,
 );
 
-export const nextCategoryIds = new Set<Uuid>([
+export const nextCategoryIds = [
   nextCategoryId1,
   nextCategoryId2,
   nextCategoryId3,
-]);
+];
 
 // eslint-disable-next-line require-jsdoc
 export function getCategories(hackathonId: Uuid): CategoryListResponse {
