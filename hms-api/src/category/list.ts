@@ -1,31 +1,20 @@
 'use strict';
 
-import {DynamoDB} from 'aws-sdk';
+import {Uuid} from '../core';
+import {getCategories} from '../mock/category';
 
-const dynamoDb = new DynamoDB.DocumentClient();
+// eslint-disable-next-line require-jsdoc
+export function list(event, context, callback) {
+  const id: Uuid = event.pathParameters.id;
 
-module.exports.list = (event, context, callback) => {
-  const params = {
-    TableName: 'category',
+  const response = {
+    statusCode: 200,
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Credentials': true,
+    },
+    body: JSON.stringify(getCategories(id)),
   };
 
-  // get all categories
-  dynamoDb.scan(params, (error, result) => {
-    // handle potential errors
-    if (error) {
-      console.error(error);
-      callback(new Error('Couldn\'t get categories.'));
-      return;
-    }
-    // create a response
-    const response = {
-      statusCode: 200,
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Credentials': true,
-      },
-      body: JSON.stringify(result.Items),
-    };
-    callback(null, response);
-  });
-};
+  callback(null, response);
+}

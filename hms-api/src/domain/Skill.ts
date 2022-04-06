@@ -5,4 +5,13 @@
 export class Skill {
   name: string;
   description: string;
+
+  // eslint-disable-next-line require-jsdoc
+  constructor(
+      name: string,
+      description: string,
+  ) {
+    this.name = name;
+    this.description = description;
+  }
 }

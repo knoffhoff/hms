@@ -1,60 +1,24 @@
 'use strict';
 
-import {DynamoDB} from 'aws-sdk';
+import {HackathonCreateRequest, HackathonCreateResponse, uuid,} from '../core';
 
-const dynamoDb = new DynamoDB.DocumentClient();
+// eslint-disable-next-line require-jsdoc
+export function create(event, context, callback) {
+  const request: HackathonCreateRequest = JSON.parse(event.body);
 
-module.exports.create = (event, context, callback) => {
-  const timestamp = new Date().getTime();
-
-  const data = JSON.parse(event.body);
-
-  if (typeof data.title !== 'string') {
-    console.error('Validation Failed');
-    callback(null, {
-      statusCode: 400,
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Credentials': true,
-      },
-      body: 'Couldn\'t create/update hackathon.',
-    });
-    return;
-  }
-
-  const params = {
-    TableName: 'hackathon',
-    Item: {
-      id: data.id,
-      title: data.title,
-      description: data.description,
-      startDate: data.startDate,
-      endDate: data.endDate,
-      maxPitchTime: data.maxPitchTime,
-      categories: data.categories,
-      createdAt: timestamp,
-      updatedAt: timestamp,
+  const response = {
+    statusCode: 201,
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Credentials': true,
     },
+    body: JSON.stringify(new HackathonCreateResponse(
+        uuid(),
+        request.title,
+        request.startDate,
+        request.endDate,
+        new Date(),
+    )),
   };
-
-  // write the hackathon to the database
-  dynamoDb.put(params, (error) => {
-    // handle potential errors
-    if (error) {
-      console.error(error);
-      callback(new Error('Couldn\'t create hackathon.'));
-      return;
-    }
-
-    // create a response
-    const response = {
-      statusCode: 200,
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Credentials': true,
-      },
-      body: 'successfully created/updated hackathon',
-    };
-    callback(null, response);
-  });
-};
+  callback(null, response);
+}

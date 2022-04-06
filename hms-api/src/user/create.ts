@@ -1,57 +1,28 @@
 'use strict';
 
-import {DynamoDB} from 'aws-sdk';
+import {UserCreateRequest, UserCreateResponse, uuid} from '../core';
 
-const dynamoDb = new DynamoDB.DocumentClient();
+// eslint-disable-next-line require-jsdoc
+export function create(event, context, callback) {
+  const request: UserCreateRequest = JSON.parse(event.body);
 
-module.exports.create = (event, context, callback) => {
-  const timestamp = new Date().getTime();
-
-  const data = JSON.parse(event.body);
-
-  if (typeof data.email !== 'string') {
-    console.error('Validation Failed');
-    callback(null, {
-      statusCode: 400,
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Credentials': true,
-      },
-      body: 'Couldn\'t create/update user.',
-    });
-    return;
-  }
-
-  const params = {
-    TableName: 'user',
-    Item: {
-      id: JSON.parse(data.id),
-      email: data.email,
-      name: data.name,
-      auth_info: data.auth_info,
-      createdAt: timestamp,
-      updatedAt: timestamp,
+  // create a response
+  const response = {
+    statusCode: 200,
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Credentials': true,
     },
+    body: JSON.stringify(new UserCreateResponse(
+        uuid(),
+        request.lastName,
+        request.firstName,
+        request.emailAddress,
+        request.roles,
+        request.skills,
+        request.imageUrl,
+        new Date(),
+    )),
   };
-
-  // write the user to the database
-  dynamoDb.put(params, (error, _) => {
-    // handle potential errors
-    if (error) {
-      console.error(error);
-      callback(new Error('Couldn\'t create user.'));
-      return;
-    }
-
-    // create a response
-    const response = {
-      statusCode: 200,
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Credentials': true,
-      },
-      body: 'successfully created/updated user',
-    };
-    callback(null, response);
-  });
-};
+  callback(null, response);
+}
