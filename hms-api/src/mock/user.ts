@@ -1,4 +1,4 @@
-import {Uuid} from '../uuids';
+import {Uuid} from '../util/uuids';
 import {Role} from '../domain/Role';
 import {UserListResponse, UserResponse} from '../rest/user';
 import {backend, bearHandling, beeHandling, design, frontend} from './skill';

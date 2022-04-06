@@ -1,4 +1,4 @@
-import {Uuid} from '../uuids';
+import {Uuid} from '../util/uuids';
 
 export const prevParticipantId1: Uuid = '16a43590-c7ba-4bb1-81d0-b726dea47b6e';
 export const prevParticipantId2: Uuid = '4e80138c-ed15-4947-ad18-15afa6af4adf';

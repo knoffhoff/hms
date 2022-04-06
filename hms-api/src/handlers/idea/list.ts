@@ -1,7 +1,7 @@
 'use strict';
 
-import {Uuid} from '../uuids';
-import {getIdeas} from '../mock/idea';
+import {Uuid} from '../../util/uuids';
+import {getIdeas} from '../../mock/idea';
 
 // eslint-disable-next-line require-jsdoc
 export function list(event, context, callback) {

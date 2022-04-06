@@ -1,10 +1,10 @@
 'use strict';
 
-import {Uuid} from '../uuids';
-import {HackathonDeleteResponse} from '../rest/hackathon';
+import {Uuid} from '../../util/uuids';
+import {getCategory} from '../../mock/category';
 
 // eslint-disable-next-line require-jsdoc
-export function remove(event, context, callback) {
+export function get(event, context, callback) {
   const id: Uuid = event.pathParameters.id;
 
   const response = {
@@ -13,7 +13,7 @@ export function remove(event, context, callback) {
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Credentials': true,
     },
-    body: JSON.stringify(new HackathonDeleteResponse(id)),
+    body: JSON.stringify(getCategory(id)),
   };
 
   callback(null, response);

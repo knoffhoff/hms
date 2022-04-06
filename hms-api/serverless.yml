@@ -44,7 +44,7 @@ provider:
 
 functions:
   createHackathon:
-    handler: src/hackathon/create.create
+    handler: src/handlers/hackathon/create.create
     events:
       - http:
           path: hackathon
@@ -52,7 +52,7 @@ functions:
           cors: true
 
   listAllHackathons:
-    handler: src/hackathon/list.list
+    handler: src/handlers/hackathon/list.list
     events:
       - http:
           path: hackathons
@@ -60,7 +60,7 @@ functions:
           cors: true
 
   getHackathon:
-    handler: src/hackathon/get.get
+    handler: src/handlers/hackathon/get.get
     events:
       - http:
           path: hackathon/{id}
@@ -68,7 +68,7 @@ functions:
           cors: true
 
   deleteHackathon:
-    handler: src/hackathon/remove.remove
+    handler: src/handlers/hackathon/remove.remove
     events:
       - http:
           path: hackathon/{id}
@@ -76,7 +76,7 @@ functions:
           cors: true
 
   createIdea:
-    handler: src/idea/create.create
+    handler: src/handlers/idea/create.create
     events:
       - http:
           path: idea
@@ -84,7 +84,7 @@ functions:
           cors: true
 
   listAllIdea:
-    handler: src/idea/list.list
+    handler: src/handlers/idea/list.list
     events:
       - http:
           path: hackathon/{id}/ideas
@@ -92,7 +92,7 @@ functions:
           cors: true
 
   getIdea:
-    handler: src/idea/get.get
+    handler: src/handlers/idea/get.get
     events:
       - http:
           path: idea/{id}
@@ -100,7 +100,7 @@ functions:
           cors: true
 
   deleteIdea:
-    handler: src/idea/remove.remove
+    handler: src/handlers/idea/remove.remove
     events:
       - http:
           path: idea/{id}
@@ -108,7 +108,7 @@ functions:
           cors: true
 
   createUser:
-    handler: src/user/create.create
+    handler: src/handlers/user/create.create
     events:
       - http:
           path: user
@@ -116,7 +116,7 @@ functions:
           cors: true
 
   listAllUser:
-    handler: src/user/list.list
+    handler: src/handlers/user/list.list
     events:
       - http:
           path: users
@@ -124,7 +124,7 @@ functions:
           cors: true
 
   getUser:
-    handler: src/user/get.get
+    handler: src/handlers/user/get.get
     events:
       - http:
           path: user/{id}
@@ -132,7 +132,7 @@ functions:
           cors: true
 
   deleteUser:
-    handler: src/user/remove.remove
+    handler: src/handlers/user/remove.remove
     events:
       - http:
           path: user/{id}
@@ -140,7 +140,7 @@ functions:
           cors: true
 
   createCategory:
-    handler: src/category/create.create
+    handler: src/handlers/category/create.create
     events:
       - http:
           path: category
@@ -148,7 +148,7 @@ functions:
           cors: true
 
   listAllCategory:
-    handler: src/category/list.list
+    handler: src/handlers/category/list.list
     events:
       - http:
           path: hackathon/{id}/categories
@@ -156,7 +156,7 @@ functions:
           cors: true
 
   getCategory:
-    handler: src/category/get.get
+    handler: src/handlers/category/get.get
     events:
       - http:
           path: category/{id}
@@ -164,7 +164,7 @@ functions:
           cors: true
 
   deleteCategory:
-    handler: src/category/remove.remove
+    handler: src/handlers/category/remove.remove
     events:
       - http:
           path: category/{id}

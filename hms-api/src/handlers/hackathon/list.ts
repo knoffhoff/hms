@@ -1,19 +1,16 @@
 'use strict';
 
-import {Uuid} from '../uuids';
-import {getCategories} from '../mock/category';
+import {hackathonIds} from '../../mock/hackathon';
 
 // eslint-disable-next-line require-jsdoc
 export function list(event, context, callback) {
-  const id: Uuid = event.pathParameters.id;
-
   const response = {
     statusCode: 200,
     headers: {
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Credentials': true,
     },
-    body: JSON.stringify(getCategories(id)),
+    body: JSON.stringify(hackathonIds),
   };
 
   callback(null, response);

@@ -1,4 +1,4 @@
-import {Uuid} from '../uuids';
+import {Uuid} from '../util/uuids';
 import {CategoryListResponse, CategoryResponse} from '../rest/category';
 import {currHackathonId, nextHackathonId, prevHackathonId} from './hackathon';
 

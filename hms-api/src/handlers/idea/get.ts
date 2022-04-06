@@ -1,16 +1,19 @@
 'use strict';
 
-import {userIds} from '../mock/user';
+import {Uuid} from '../../util/uuids';
+import {getIdea} from '../../mock/idea';
 
 // eslint-disable-next-line require-jsdoc
-export function list(event, context, callback) {
+export function get(event, context, callback) {
+  const id: Uuid = event.pathParameters.id;
+
   const response = {
     statusCode: 200,
     headers: {
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Credentials': true,
     },
-    body: JSON.stringify(userIds),
+    body: JSON.stringify(getIdea(id)),
   };
 
   callback(null, response);

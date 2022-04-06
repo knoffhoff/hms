@@ -1,5 +1,5 @@
 import {Role} from '../domain/Role';
-import {Uuid} from '../uuids';
+import {Uuid} from '../util/uuids';
 
 // eslint-disable-next-line require-jsdoc
 export class UserCreateRequest {

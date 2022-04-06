@@ -1,4 +1,4 @@
-import {uuid, Uuid} from '../uuids';
+import {uuid, Uuid} from '../util/uuids';
 import {Participant} from './Participant';
 import {Hackathon} from './Hackathon';
 import {Skill} from './Skill';

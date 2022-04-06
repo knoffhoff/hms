@@ -1,7 +1,7 @@
 'use strict';
 
-import {Uuid} from '../uuids';
-import {getCategory} from '../mock/category';
+import {Uuid} from '../../util/uuids';
+import {getUser} from '../../mock/user';
 
 // eslint-disable-next-line require-jsdoc
 export function get(event, context, callback) {
@@ -13,7 +13,7 @@ export function get(event, context, callback) {
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Credentials': true,
     },
-    body: JSON.stringify(getCategory(id)),
+    body: JSON.stringify(getUser(id)),
   };
 
   callback(null, response);
