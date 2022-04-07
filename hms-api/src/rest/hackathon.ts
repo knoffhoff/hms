@@ -1,3 +1,5 @@
+'use strict';
+
 import {Uuid} from '../util/uuids';
 
 // eslint-disable-next-line require-jsdoc

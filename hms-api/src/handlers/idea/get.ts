@@ -2,19 +2,13 @@
 
 import {Uuid} from '../../util/uuids';
 import {getIdea} from '../../mock/idea';
+import {buildResponse} from '../../rest/responses';
 
 // eslint-disable-next-line require-jsdoc
 export function get(event, context, callback) {
   const id: Uuid = event.pathParameters.id;
 
-  const response = {
-    statusCode: 200,
-    headers: {
-      'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Credentials': true,
-    },
-    body: JSON.stringify(getIdea(id)),
-  };
+  const response = buildResponse(200, getIdea(id));
 
   callback(null, response);
 }

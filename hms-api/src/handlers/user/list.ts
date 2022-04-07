@@ -1,17 +1,11 @@
 'use strict';
 
 import {userIds} from '../../mock/user';
+import {buildResponse} from '../../rest/responses';
 
 // eslint-disable-next-line require-jsdoc
 export function list(event, context, callback) {
-  const response = {
-    statusCode: 200,
-    headers: {
-      'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Credentials': true,
-    },
-    body: JSON.stringify(userIds),
-  };
+  const response = buildResponse(200, userIds);
 
   callback(null, response);
 }
