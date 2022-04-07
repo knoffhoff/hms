@@ -1,6 +1,8 @@
 'use strict';
 
 /* eslint-disable require-jsdoc */
+// TODO add error handling
+// TODO add paging for lists
 
 import {
   AttributeValue,
@@ -20,8 +22,6 @@ const client = new DynamoDBClient({
 });
 const hackathonTable: string | undefined = process.env.HACKATHON_TABLE_NAME;
 
-// TODO Should this should eventually page?
-// TODO add error handling
 export async function getHackathons(): Promise<Hackathon[]> {
   const output = await client.send(new ScanCommand({
     TableName: hackathonTable,
@@ -30,7 +30,6 @@ export async function getHackathons(): Promise<Hackathon[]> {
   return output.Items.map((item) => itemToHackathon(item));
 }
 
-// TODO add error handling
 export async function createHackathon(hackathon: Hackathon) {
   await client.send(new PutItemCommand({
     TableName: hackathonTable,
@@ -58,6 +57,7 @@ export async function getHackathon(id: Uuid): Promise<Hackathon | undefined> {
 }
 
 export async function removeHackathon(id: Uuid) {
+  // TODO determine if something was actually deleted
   await client.send(new DeleteItemCommand({
     TableName: hackathonTable,
     Key: {id: {S: id}},
