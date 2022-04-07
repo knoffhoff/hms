@@ -10,11 +10,8 @@ export async function get(event, context, callback) {
   const id: Uuid = event.pathParameters.id;
 
   const hackathon = await getHackathon(id);
-
-  // TODO better way to handle missing value
-  let responseBody = {};
   if (hackathon) {
-    responseBody = new HackathonResponse(
+    const responseBody = new HackathonResponse(
         hackathon.id,
         hackathon.title,
         hackathon.startDate,
@@ -23,9 +20,9 @@ export async function get(event, context, callback) {
         hackathon.categoryIds,
         hackathon.ideaIds,
     );
+
+    callback(null, buildResponse(200, responseBody));
+  } else {
+    callback(null, buildResponse(404, {}));
   }
-
-  const response = buildResponse(200, responseBody);
-
-  callback(null, response);
 }
