@@ -1,3 +1,7 @@
+export type Hackathon = {
+  id: string[]
+}
+
 export type Idea = {
   id: string
   title: string
