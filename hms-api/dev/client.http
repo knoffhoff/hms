@@ -1,23 +1,32 @@
-### List all Hackathons
+###
+# @name List all Hackathons
 GET {{host}}/restapis/{{api_id}}/local/_user_request_/hackathons
 
-### List all Users
+
+
+###
+# @name List all Users
 GET {{host}}/restapis/{{api_id}}/local/_user_request_/users
 
-### List all Skills
+
+###
+# @name List all Skills
 GET {{host}}/restapis/{{api_id}}/local/_user_request_/skills
 
-### Create Skill
+###
+# @name Create Skill
 POST {{host}}/restapis/{{api_id}}/local/_user_request_/skill
 Content-Type: application/json
 
 {
-  "name": "<name>",
-  "description": "<description>"
+  "name": "...",
+  "description": "..."
 }
 
-### Get Skill
-GET {{host}}/restapis/{{api_id}}/local/_user_request_/skill/<name>
+###
+# @name Get Skill
+GET {{host}}/restapis/{{api_id}}/local/_user_request_/skill/{{skill_name}}
 
-### Remove Skill
-DELETE {{host}}/restapis/{{api_id}}/local/_user_request_/skill/<name>
+###
+# @name Remove Skill
+DELETE {{host}}/restapis/{{api_id}}/local/_user_request_/skill/{{skill_name}}

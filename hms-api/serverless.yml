@@ -83,7 +83,7 @@ functions:
     handler: src/handlers/idea/list.list
     events:
       - http:
-          path: hackathon/{id}/ideas
+          path: hackathon/{hackathonId}/ideas
           method: get
           cors: true
   getIdea:
@@ -130,6 +130,35 @@ functions:
           method: delete
           cors: true
 
+  createParticipant:
+    handler: src/handlers/participant/create.create
+    events:
+      - http:
+          path: participant
+          method: post
+          cors: true
+  listAllParticipant:
+    handler: src/handlers/participant/list.list
+    events:
+      - http:
+          path: hackathon/{hackathonId}/participants
+          method: get
+          cors: true
+  getParticipant:
+    handler: src/handlers/participant/get.get
+    events:
+      - http:
+          path: participant/{id}
+          method: get
+          cors: true
+  deleteParticipant:
+    handler: src/handlers/participant/remove.remove
+    events:
+      - http:
+          path: participant/{id}
+          method: delete
+          cors: true
+
   createCategory:
     handler: src/handlers/category/create.create
     events:
@@ -141,7 +170,7 @@ functions:
     handler: src/handlers/category/list.list
     events:
       - http:
-          path: hackathon/{id}/categories
+          path: hackathon/{hackathonId}/categories
           method: get
           cors: true
   getCategory:
