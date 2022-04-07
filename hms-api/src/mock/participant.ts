@@ -79,7 +79,7 @@ export const currParticipantIds = [
 export const nextParticipantIds = [];
 
 // eslint-disable-next-line require-jsdoc
-export function getParticipant(id: Uuid): ParticipantResponse {
+export function getParticipant(id: Uuid): ParticipantResponse | null {
   switch (id) {
     case prevParticipantId1:
       return prevParticipant1;
@@ -97,11 +97,14 @@ export function getParticipant(id: Uuid): ParticipantResponse {
       return currParticipant4;
     case currParticipantId5:
       return currParticipant5;
+    default:
+      return null;
   }
 }
 
 // eslint-disable-next-line require-jsdoc
-export function getParticipantIds(hackathonId: Uuid): ParticipantListResponse {
+export function getParticipantIds(hackathonId: Uuid)
+    : ParticipantListResponse | null {
   switch (hackathonId) {
     case prevHackathonId:
       return new ParticipantListResponse(prevParticipantIds);
@@ -109,5 +112,7 @@ export function getParticipantIds(hackathonId: Uuid): ParticipantListResponse {
       return new ParticipantListResponse(currParticipantIds);
     case nextHackathonId:
       return new ParticipantListResponse(nextParticipantIds);
+    default:
+      return null;
   }
 }
