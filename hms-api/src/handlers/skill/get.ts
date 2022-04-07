@@ -1,14 +1,13 @@
 'use strict';
 
-import {Uuid} from '../../util/uuids';
-import {getUser} from '../../mock/user';
+import {getSkill} from '../../mock/skill';
 import {buildResponse} from '../../rest/responses';
 
 // eslint-disable-next-line require-jsdoc
 export function get(event, context, callback) {
-  const id: Uuid = event.pathParameters.id;
+  const name: string = event.pathParameters.id;
 
-  const response = buildResponse(200, getUser(id));
+  const response = buildResponse(200, getSkill(name));
 
   callback(null, response);
 }
