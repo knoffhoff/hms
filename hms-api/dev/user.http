@@ -1,0 +1,21 @@
+###
+# @name List all Users
+GET {{host}}/restapis/{{api_id}}/local/_user_request_/users
+
+###
+# @name Create User
+POST {{host}}/restapis/{{api_id}}/local/_user_request_/user
+Content-Type: application/json
+
+{
+  "name": "...",
+  "description": "..."
+}
+
+###
+# @name Get User
+GET {{host}}/restapis/{{api_id}}/local/_user_request_/user/{{user_id}}
+
+###
+# @name Remove User
+DELETE {{host}}/restapis/{{api_id}}/local/_user_request_/user/{{user_id}}

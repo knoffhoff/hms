@@ -1,0 +1,22 @@
+###
+# @name List all Categories
+GET {{host}}/restapis/{{api_id}}/local/_user_request_/hackathon/{{hackathon_id}}/categories
+
+###
+# @name Create Category
+POST {{host}}/restapis/{{api_id}}/local/_user_request_/category
+Content-Type: application/json
+
+{
+  "title": "...",
+  "description": "...",
+  "hackathonId": "..."
+}
+
+###
+# @name Get Category
+GET {{host}}/restapis/{{api_id}}/local/_user_request_/category/{{category_id}}
+
+###
+# @name Remove Category
+DELETE {{host}}/restapis/{{api_id}}/local/_user_request_/category/{{category_id}}

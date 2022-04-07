@@ -1,0 +1,21 @@
+###
+# @name List all Skills
+GET {{host}}/restapis/{{api_id}}/local/_user_request_/skills
+
+###
+# @name Create Skill
+POST {{host}}/restapis/{{api_id}}/local/_user_request_/skill
+Content-Type: application/json
+
+{
+  "name": "...",
+  "description": "..."
+}
+
+###
+# @name Get Skill
+GET {{host}}/restapis/{{api_id}}/local/_user_request_/skill/{{skill_name}}
+
+###
+# @name Remove Skill
+DELETE {{host}}/restapis/{{api_id}}/local/_user_request_/skill/{{skill_name}}

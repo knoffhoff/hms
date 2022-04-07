@@ -9,4 +9,5 @@ export class Participant {
   id: Uuid;
   user: User;
   hackathon: Hackathon;
+  creationDate: Date;
 }
