@@ -2,31 +2,26 @@
 
 import {uuid} from '../../util/uuids';
 import {IdeaCreateRequest, IdeaCreateResponse} from '../../rest/idea';
+import {buildResponse} from '../../rest/responses';
 
 // eslint-disable-next-line require-jsdoc
 export function create(event, context, callback) {
   const request: IdeaCreateRequest = JSON.parse(event.body);
 
-  const response = {
-    statusCode: 201,
-    headers: {
-      'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Credentials': true,
-    },
-    body: JSON.stringify(new IdeaCreateResponse(
-        uuid(),
-        request.ownerId,
-        request.hackathonId,
-        request.participantIds,
-        request.title,
-        request.description,
-        request.problem,
-        request.goal,
-        request.requiredSkills,
-        request.categoryId,
-        new Date(),
-    )),
-  };
+  const ideaCreateResponse = new IdeaCreateResponse(
+      uuid(),
+      request.ownerId,
+      request.hackathonId,
+      request.participantIds,
+      request.title,
+      request.description,
+      request.problem,
+      request.goal,
+      request.requiredSkills,
+      request.categoryId,
+      new Date(),
+  );
+  const response = buildResponse(201, ideaCreateResponse);
 
   callback(null, response);
 }

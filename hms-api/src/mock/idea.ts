@@ -1,6 +1,6 @@
 import {Uuid} from '../util/uuids';
 import {IdeaListResponse, IdeaResponse} from '../rest/idea';
-import {currHackathonId, nextHackathonId, prevHackathonId,} from './hackathon';
+import {currHackathonId, nextHackathonId, prevHackathonId} from './hackathon';
 import {
   currParticipantId1,
   currParticipantId2,
@@ -11,7 +11,13 @@ import {
   prevParticipantId2,
   prevParticipantId3,
 } from './participant';
-import {backend, bearHandling, beeHandling, design, frontend} from './skill';
+import {
+  backendName,
+  bearHandlingName,
+  beeHandlingName,
+  designName,
+  frontendName,
+} from './skill';
 import {currCategoryId1, prevCategoryId1, prevCategoryId2} from './category';
 
 export const prevIdeaId1: Uuid = 'e1e24282-b98a-4b8a-95e8-d08ea8400061';
@@ -29,7 +35,7 @@ export const prevIdea1 = new IdeaResponse(
     'the evil forces bringing peace and justice to all.',
     'Not enough bears',
     'Have more bears',
-    [bearHandling.name],
+    [bearHandlingName],
     prevCategoryId1,
     new Date('2021-12-01'),
 );
@@ -50,7 +56,7 @@ export const prevIdea2 = new IdeaResponse(
     'chum, think how it could be.',
     'Too many bees',
     'Have less bees',
-    [beeHandling.name],
+    [beeHandlingName],
     prevCategoryId1,
     new Date('2021-12-04'),
 );
@@ -72,7 +78,7 @@ export const prevIdea3 = new IdeaResponse(
     'best friend Bear.',
     'Wanna do something with ML',
     'Obviously have another pointless ML project',
-    [frontend.name, backend.name],
+    [frontendName, backendName],
     prevCategoryId2,
     new Date('2021-12-05'),
 );
@@ -91,7 +97,7 @@ export const prevIdea4 = new IdeaResponse(
     'moving on.',
     'Not enough nice powerpoints',
     'Make a kickass powerpoint',
-    [frontend.name, design.name],
+    [frontendName, designName],
     prevCategoryId2,
     new Date('2021-12-06'),
 );
@@ -111,7 +117,7 @@ export const prevIdea5 = new IdeaResponse(
     'jab him, tab him, grab him, stop that pigeon now.',
     'They don\'t make software like they did in my day',
     'Have nice software',
-    [frontend.name],
+    [frontendName],
     prevCategoryId1,
     new Date('2021-12-09'),
 );
@@ -139,7 +145,7 @@ export const currIdea1 = new IdeaResponse(
     'Phooey, he’s fan-riffic!',
     'Bees like to party but have no hats',
     'Have tiny hats for bees',
-    [design.name, beeHandling.name],
+    [designName, beeHandlingName],
     currCategoryId1,
     new Date('2022-03-28'),
 );
@@ -165,7 +171,7 @@ export const currIdea2 = new IdeaResponse(
     'Ah-ah-ah-ah-ah… some day we will find The Cities of Gold.',
     'Bears don\'t look like bees',
     'Make bears that look like bees',
-    [beeHandling.name, bearHandling.name],
+    [beeHandlingName, bearHandlingName],
     currCategoryId1,
     new Date('2022-03-29'),
 );
@@ -189,7 +195,7 @@ export const currIdea3 = new IdeaResponse(
     'world. Round, all around the world.',
     'Bees aren\'t nearly scary enough',
     'Have horrifying bear like bees',
-    [beeHandling.name, bearHandling.name],
+    [beeHandlingName, bearHandlingName],
     currCategoryId1,
     new Date('2022-04-01'),
 );
@@ -211,7 +217,7 @@ export const currIdea4 = new IdeaResponse(
     'Thundercats!',
     'Feet don\'t have enough purpose built software',
     'Make a cool app for feet',
-    [backend.name],
+    [backendName],
     currCategoryId1,
     new Date('2022-04-01'),
 );
@@ -233,7 +239,7 @@ export const currIdea5 = new IdeaResponse(
     'moving on.',
     'Hands don\'t have enough purpose built software',
     'Make a cool app for hands',
-    [frontend.name],
+    [frontendName],
     currCategoryId1,
     new Date('2022-04-01'),
 );
@@ -255,7 +261,7 @@ export const currIdea6 = new IdeaResponse(
     'Nab him, jab him, tab him, grab him, stop that pigeon now.',
     'We need test data',
     'We will have test data',
-    [design.name, backend.name, frontend.name],
+    [designName, backendName, frontendName],
     currCategoryId1,
     new Date('2022-04-02'),
 );
@@ -280,7 +286,7 @@ export const currIdea7 = new IdeaResponse(
     'could be.',
     'We REALLY need test data',
     'We will have test data',
-    [bearHandling.name, design.name, frontend.name],
+    [bearHandlingName, designName, frontendName],
     currCategoryId1,
     new Date('2022-04-03'),
 );
@@ -304,11 +310,11 @@ export const currIdea8 = new IdeaResponse(
     'operate above the law.',
     'Animals don\'t have cool enough headbands',
     'Really stylish animals', [
-      bearHandling.name,
-      beeHandling.name,
-      design.name,
-      backend.name,
-      frontend.name,
+      bearHandlingName,
+      beeHandlingName,
+      designName,
+      backendName,
+      frontendName,
     ],
     currCategoryId1,
     new Date('2022-04-03'),
@@ -329,7 +335,7 @@ export const currIdea9 = new IdeaResponse(
     'to settle down, Until tomorrow, I’ll just keep moving on.',
     'Just like whatever',
     'Just stuff',
-    [frontend.name],
+    [frontendName],
     currCategoryId1,
     new Date('2022-04-04'),
 );

@@ -1,3 +1,5 @@
+'use strict';
+
 import {Role} from '../domain/Role';
 import {Uuid} from '../util/uuids';
 
