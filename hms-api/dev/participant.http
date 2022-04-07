@@ -1,0 +1,21 @@
+###
+# @name List all Participants
+GET {{host}}/restapis/{{api_id}}/local/_user_request_/hackathon/{{hackathon_id}}/participants
+
+###
+# @name Create Participant
+POST {{host}}/restapis/{{api_id}}/local/_user_request_/participant
+Content-Type: application/json
+
+{
+  "userId": "...",
+  "hackathonId": "..."
+}
+
+###
+# @name Get Participant
+GET {{host}}/restapis/{{api_id}}/local/_user_request_/participant/{{participant_id}}
+
+###
+# @name Remove Participant
+DELETE {{host}}/restapis/{{api_id}}/local/_user_request_/participant/{{participant_id}}

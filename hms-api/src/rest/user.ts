@@ -1,9 +1,10 @@
 'use strict';
 
+/* eslint-disable require-jsdoc */
+
 import {Role} from '../domain/Role';
 import {Uuid} from '../util/uuids';
 
-// eslint-disable-next-line require-jsdoc
 export class UserCreateRequest {
   lastName: string;
   firstName: string;
@@ -12,7 +13,6 @@ export class UserCreateRequest {
   skills: string[];
   imageUrl: string;
 
-  // eslint-disable-next-line require-jsdoc
   constructor(
       lastName: string,
       firstName: string,
@@ -30,7 +30,6 @@ export class UserCreateRequest {
   }
 }
 
-// eslint-disable-next-line require-jsdoc
 export class UserCreateResponse {
   id: Uuid;
   lastName: string;
@@ -41,7 +40,6 @@ export class UserCreateResponse {
   imageUrl: string;
   creationDate: Date;
 
-  // eslint-disable-next-line require-jsdoc
   constructor(
       id: Uuid,
       lastName: string,
@@ -63,17 +61,14 @@ export class UserCreateResponse {
   }
 }
 
-// eslint-disable-next-line require-jsdoc
 export class UserListResponse {
   ids: Uuid[];
 
-  // eslint-disable-next-line require-jsdoc
   constructor(ids: Uuid[]) {
     this.ids = ids;
   }
 }
 
-// eslint-disable-next-line require-jsdoc
 export class UserResponse {
   id: Uuid;
   lastName: string;
@@ -84,7 +79,6 @@ export class UserResponse {
   imageUrl: string;
   creationDate: Date;
 
-  // eslint-disable-next-line require-jsdoc
   constructor(
       id: Uuid,
       lastName: string,
@@ -106,11 +100,9 @@ export class UserResponse {
   }
 }
 
-// eslint-disable-next-line require-jsdoc
 export class UserDeleteResponse {
   id: Uuid;
 
-  // eslint-disable-next-line require-jsdoc
   constructor(id: Uuid) {
     this.id = id;
   }

@@ -1,0 +1,32 @@
+###
+# @name List all Ideas
+GET {{host}}/restapis/{{api_id}}/local/_user_request_/hackathon/{{hackathon_id}}/ideas
+
+###
+# @name Create Idea
+POST {{host}}/restapis/{{api_id}}/local/_user_request_/idea
+Content-Type: application/json
+
+{
+  "ownerId": "...",
+  "hackathonId": "...",
+  "participantIds": [
+    "..."
+  ],
+  "title": "...",
+  "description": "...",
+  "problem": "...",
+  "goal": "...",
+  "requiredSkills": [
+    "..."
+  ],
+  "categoryId": "..."
+}
+
+###
+# @name Get Idea
+GET {{host}}/restapis/{{api_id}}/local/_user_request_/idea/{{idea_id}}
+
+###
+# @name Remove Idea
+DELETE {{host}}/restapis/{{api_id}}/local/_user_request_/idea/{{idea_id}}

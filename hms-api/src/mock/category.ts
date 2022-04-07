@@ -81,12 +81,19 @@ export function getCategories(hackathonId: Uuid)
 // eslint-disable-next-line require-jsdoc
 export function getCategory(id: Uuid): CategoryResponse | null {
   switch (id) {
-    case prevCategoryId1: return prevCategory1;
-    case prevCategoryId2: return prevCategory2;
-    case currCategoryId1: return currCategory1;
-    case nextCategoryId1: return nextCategory1;
-    case nextCategoryId2: return nextCategory2;
-    case nextCategoryId3: return nextCategory3;
-    default: return null;
+    case prevCategoryId1:
+      return prevCategory1;
+    case prevCategoryId2:
+      return prevCategory2;
+    case currCategoryId1:
+      return currCategory1;
+    case nextCategoryId1:
+      return nextCategory1;
+    case nextCategoryId2:
+      return nextCategory2;
+    case nextCategoryId3:
+      return nextCategory3;
+    default:
+      return null;
   }
 }

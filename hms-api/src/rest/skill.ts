@@ -1,4 +1,5 @@
 'use strict';
+
 /* eslint-disable require-jsdoc */
 
 export class CreateSkillRequest {
