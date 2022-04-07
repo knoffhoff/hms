@@ -1,15 +1,4 @@
 ###
-# @name List all Hackathons
-GET {{host}}/restapis/{{api_id}}/local/_user_request_/hackathons
-
-
-
-###
-# @name List all Users
-GET {{host}}/restapis/{{api_id}}/local/_user_request_/users
-
-
-###
 # @name List all Skills
 GET {{host}}/restapis/{{api_id}}/local/_user_request_/skills
 

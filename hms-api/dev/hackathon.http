@@ -1,0 +1,22 @@
+###
+# @name List all Hackathons
+GET {{host}}/restapis/{{api_id}}/local/_user_request_/hackathons
+
+###
+# @name Create Hackathon
+POST {{host}}/restapis/{{api_id}}/local/_user_request_/hackathon
+Content-Type: application/json
+
+{
+  "title": "...",
+  "startDate": "...",
+  "endDate": "..."
+}
+
+###
+# @name Get Hackathon
+GET {{host}}/restapis/{{api_id}}/local/_user_request_/hackathon/{{hackathon_id}}
+
+###
+# @name Remove Hackathon
+DELETE {{host}}/restapis/{{api_id}}/local/_user_request_/hackathon/{{hackathon_id}}

@@ -1,6 +1,7 @@
 'use strict';
 
-// eslint-disable-next-line require-jsdoc
+/* eslint-disable require-jsdoc */
+
 export function buildResponse(statusCode: number, bodyObject: any): Object {
   return {
     statusCode: statusCode,

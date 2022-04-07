@@ -66,7 +66,7 @@ sls invoke local --function <function_name>
 [//]: # (TODO expand this section when the client.http file is fuller)
 **THIS SECTION IS INCOMPLETE AND NEEDS SOME WORK**
 
-To make HTTP requests to the HMS API while using a Jetbrains IDE you can make use of the [client.http](dev/client.http) file included in this repository.
+To make HTTP requests to the HMS API while using a Jetbrains IDE you can make use of the [client.http](dev/hackathon.http) file included in this repository.
 
 
 ## Deploying

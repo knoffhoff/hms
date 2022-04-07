@@ -1,8 +1,9 @@
 'use strict';
 
+/* eslint-disable require-jsdoc */
+
 import {Uuid} from '../util/uuids';
 
-// eslint-disable-next-line require-jsdoc
 export class IdeaCreateRequest {
   ownerId: Uuid;
   hackathonId: Uuid;
@@ -14,7 +15,6 @@ export class IdeaCreateRequest {
   requiredSkills: string[];
   categoryId: Uuid;
 
-  // eslint-disable-next-line require-jsdoc
   constructor(
       ownerId: Uuid,
       hackathonId: Uuid,
@@ -38,7 +38,6 @@ export class IdeaCreateRequest {
   }
 }
 
-// eslint-disable-next-line require-jsdoc
 export class IdeaCreateResponse {
   id: Uuid;
   ownerId: Uuid;
@@ -52,7 +51,6 @@ export class IdeaCreateResponse {
   categoryId: Uuid;
   creationDate: Date;
 
-  // eslint-disable-next-line require-jsdoc
   constructor(
       id: Uuid,
       ownerId: Uuid,
@@ -80,7 +78,6 @@ export class IdeaCreateResponse {
   }
 }
 
-// eslint-disable-next-line require-jsdoc
 export class IdeaResponse {
   id: Uuid;
   ownerId: Uuid;
@@ -94,7 +91,6 @@ export class IdeaResponse {
   categoryId: Uuid;
   creationDate: Date;
 
-  // eslint-disable-next-line require-jsdoc
   constructor(
       id: Uuid,
       ownerId: Uuid,
@@ -122,12 +118,10 @@ export class IdeaResponse {
   }
 }
 
-// eslint-disable-next-line require-jsdoc
 export class IdeaListResponse {
   ids: Uuid[];
   hackathonId: Uuid;
 
-  // eslint-disable-next-line require-jsdoc
   constructor(
       ids: Uuid[],
       hackathonId: Uuid,
@@ -137,11 +131,9 @@ export class IdeaListResponse {
   }
 }
 
-// eslint-disable-next-line require-jsdoc
 export class IdeaDeletionResponse {
   id: Uuid;
 
-  // eslint-disable-next-line require-jsdoc
   constructor(id: Uuid) {
     this.id = id;
   }

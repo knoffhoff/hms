@@ -1,15 +1,25 @@
 'use strict';
 
+/* eslint-disable require-jsdoc */
+
 import {Uuid} from '../util/uuids';
 
-// eslint-disable-next-line require-jsdoc
 export class HackathonCreateRequest {
   title: string;
   startDate: Date;
   endDate: Date;
+
+  constructor(
+      title: string,
+      startDate: Date,
+      endDate: Date,
+  ) {
+    this.title = title;
+    this.startDate = startDate;
+    this.endDate = endDate;
+  }
 }
 
-// eslint-disable-next-line require-jsdoc
 export class HackathonCreateResponse {
   id: Uuid;
   title: string;
@@ -17,7 +27,6 @@ export class HackathonCreateResponse {
   endDate: Date;
   creationDate: Date;
 
-  // eslint-disable-next-line require-jsdoc
   constructor(
       id: Uuid,
       title: string,
@@ -33,17 +42,14 @@ export class HackathonCreateResponse {
   }
 }
 
-// eslint-disable-next-line require-jsdoc
 export class HackathonListResponse {
   ids: Uuid[];
 
-  // eslint-disable-next-line require-jsdoc
   constructor(ids: Uuid[]) {
     this.ids = ids;
   }
 }
 
-// eslint-disable-next-line require-jsdoc
 export class HackathonResponse {
   id: Uuid;
   title: string;
@@ -55,7 +61,6 @@ export class HackathonResponse {
   categoryIds: Uuid[];
   ideaIds: Uuid[];
 
-  // eslint-disable-next-line require-jsdoc
   constructor(
       id: Uuid,
       title: string,
@@ -75,11 +80,9 @@ export class HackathonResponse {
   }
 }
 
-// eslint-disable-next-line require-jsdoc
 export class HackathonDeleteResponse {
   id: Uuid;
 
-  // eslint-disable-next-line require-jsdoc
   constructor(id: Uuid) {
     this.id = id;
   }

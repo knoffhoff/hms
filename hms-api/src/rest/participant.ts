@@ -1,13 +1,14 @@
 'use strict';
 
+/* eslint-disable require-jsdoc */
+
 import {Uuid} from '../util/uuids';
 
-// eslint-disable-next-line require-jsdoc
+
 export class ParticipantCreateRequest {
   userId: Uuid;
   hackathonId: Uuid;
 
-  // eslint-disable-next-line require-jsdoc
   constructor(
       userId: Uuid,
       hackathonId: Uuid,
@@ -17,14 +18,12 @@ export class ParticipantCreateRequest {
   }
 }
 
-// eslint-disable-next-line require-jsdoc
 export class ParticipantCreateResponse {
   id: Uuid;
   userId: Uuid;
   hackathonId: Uuid;
   creationDate: Date;
 
-  // eslint-disable-next-line require-jsdoc
   constructor(
       id: Uuid,
       userId: Uuid,
@@ -38,24 +37,20 @@ export class ParticipantCreateResponse {
   }
 }
 
-// eslint-disable-next-line require-jsdoc
 export class ParticipantListResponse {
   ids: Uuid[];
 
-  // eslint-disable-next-line require-jsdoc
   constructor(ids: Uuid[]) {
     this.ids = ids;
   }
 }
 
-// eslint-disable-next-line require-jsdoc
 export class ParticipantResponse {
   id: Uuid;
   userId: Uuid;
   hackathonId: Uuid;
   creationDate: Date;
 
-  // eslint-disable-next-line require-jsdoc
   constructor(
       id: Uuid,
       userId: Uuid,
@@ -69,11 +64,9 @@ export class ParticipantResponse {
   }
 }
 
-// eslint-disable-next-line require-jsdoc
 export class ParticipantDeleteResponse {
   id: Uuid;
 
-  // eslint-disable-next-line require-jsdoc
   constructor(id: Uuid) {
     this.id = id;
   }
