@@ -50,7 +50,6 @@ functions:
           path: hackathon
           method: post
           cors: true
-
   listAllHackathons:
     handler: src/handlers/hackathon/list.list
     events:
@@ -58,7 +57,6 @@ functions:
           path: hackathons
           method: get
           cors: true
-
   getHackathon:
     handler: src/handlers/hackathon/get.get
     events:
@@ -66,7 +64,6 @@ functions:
           path: hackathon/{id}
           method: get
           cors: true
-
   deleteHackathon:
     handler: src/handlers/hackathon/remove.remove
     events:
@@ -82,7 +79,6 @@ functions:
           path: idea
           method: post
           cors: true
-
   listAllIdea:
     handler: src/handlers/idea/list.list
     events:
@@ -90,7 +86,6 @@ functions:
           path: hackathon/{id}/ideas
           method: get
           cors: true
-
   getIdea:
     handler: src/handlers/idea/get.get
     events:
@@ -98,7 +93,6 @@ functions:
           path: idea/{id}
           method: get
           cors: true
-
   deleteIdea:
     handler: src/handlers/idea/remove.remove
     events:
@@ -114,7 +108,6 @@ functions:
           path: user
           method: post
           cors: true
-
   listAllUser:
     handler: src/handlers/user/list.list
     events:
@@ -122,7 +115,6 @@ functions:
           path: users
           method: get
           cors: true
-
   getUser:
     handler: src/handlers/user/get.get
     events:
@@ -130,7 +122,6 @@ functions:
           path: user/{id}
           method: get
           cors: true
-
   deleteUser:
     handler: src/handlers/user/remove.remove
     events:
@@ -146,7 +137,6 @@ functions:
           path: category
           method: post
           cors: true
-
   listAllCategory:
     handler: src/handlers/category/list.list
     events:
@@ -154,7 +144,6 @@ functions:
           path: hackathon/{id}/categories
           method: get
           cors: true
-
   getCategory:
     handler: src/handlers/category/get.get
     events:
@@ -162,12 +151,40 @@ functions:
           path: category/{id}
           method: get
           cors: true
-
   deleteCategory:
     handler: src/handlers/category/remove.remove
     events:
       - http:
           path: category/{id}
+          method: delete
+          cors: true
+
+  createSkill:
+    handler: src/handlers/skill/create.create
+    events:
+      - http:
+          path: skill
+          method: post
+          cors: true
+  listAllSkill:
+    handler: src/handlers/skill/list.list
+    events:
+      - http:
+          path: skills
+          method: get
+          cors: true
+  getSkill:
+    handler: src/handlers/skill/get.get
+    events:
+      - http:
+          path: skill/{name}
+          method: get
+          cors: true
+  deleteSkill:
+    handler: src/handlers/skill/remove.remove
+    events:
+      - http:
+          path: skill/{name}
           method: delete
           cors: true
 

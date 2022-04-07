@@ -5,7 +5,7 @@ import {buildResponse} from '../../rest/responses';
 
 // eslint-disable-next-line require-jsdoc
 export function get(event, context, callback) {
-  const name: string = event.pathParameters.id;
+  const name: string = event.pathParameters.name;
 
   const response = buildResponse(200, getSkill(name));
 
