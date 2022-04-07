@@ -1,25 +1,17 @@
 import React, { useEffect, useState } from 'react'
-import ideaData from '../test/TestIdeaData'
-import IdeaCardList from '../components/IdeaCardList'
-import { Idea, Hackathon } from '../common/types'
-import { Button } from '@mantine/core'
+import { Button, Select } from '@mantine/core'
 import { getListOfHackathons } from '../actions/GetBackendData'
 
 export default function Archive() {
-  type Hackathon = {
-    error: boolean
-    isLoading: boolean
-    hackathons: string[]
-    pagination: string
-  }
-  const [values, setValues] = useState<Hackathon>({
-    error: false,
-    isLoading: true,
+  const [hackweek, setHackweek] = useState('placeholder')
+  const [hackathonList, setHackathonList] = useState({
+    errorhackathonList: false,
+    isLoadinghackathonList: true,
     hackathons: [],
-    pagination: '',
   })
 
-  const { error, isLoading, hackathons, pagination } = values
+  const { errorhackathonList, isLoadinghackathonList, hackathons } =
+    hackathonList
 
   useEffect(() => {
     loadHackathons()
@@ -28,65 +20,72 @@ export default function Archive() {
   const loadHackathons = () => {
     getListOfHackathons('hackathons').then(
       (data) => {
-        setValues({
-          ...values,
-          hackathons: data,
-          error: false,
-          isLoading: false,
+        setHackathonList({
+          ...hackathonList,
+          hackathons: data.ids,
+          errorhackathonList: false,
+          isLoadinghackathonList: false,
         })
       },
       () => {
-        setValues({ ...values, error: true, isLoading: false })
+        setHackathonList({
+          ...hackathonList,
+          errorhackathonList: true,
+          isLoadinghackathonList: false,
+        })
       }
     )
   }
 
   const listHackathons = () => {
-    return JSON.stringify(values.hackathons)
+    return hackathonList.hackathons.map((hackathon, index) => {
+      return <div key={index}>{hackathon}</div>
+    })
   }
 
-  const listHackathons2 = () => {
-    return Object.entries(hackathons).map((hackathon, index) => {
-      return <div key={index}>{hackathon[1][index]}</div>
-    })
+  const selectChange = (event: { target: { value: any } }) => {
+    const value = event.target.value
+    setHackweek(value)
   }
 
   function printHackathons() {
     console.log('hackathons')
-    console.log(values)
+    console.log(hackathonList)
     console.log(hackathons)
-    console.log(values.hackathons)
-    console.log({ hackathons }.hackathons)
+    /*console.log('1 hackathon')
+    console.log(hackathonDetailsList)
+    console.log(hackathonTitle)*/
   }
 
   return (
     <>
-      <h1>this is the Archive</h1>
+      <h1>Selected Hackweek:</h1>
+      <h2>{hackweek}</h2>
+
+      <select onChange={selectChange}>
+        <option value={hackathons[0]}>last hackweek</option>
+        <option value={hackathons[1]}>Current Hackathon</option>
+        <option value={hackathons[2]}>next hackweek</option>
+      </select>
+
       <Button onClick={printHackathons}>list hackathons</Button>
+
       <div>
-        {error && (
+        <h2> hackathon id list (with loading delay)</h2>
+        {errorhackathonList && (
           <div>
             <h3>Error loading hackathons</h3>
             <p>something went wrong.</p>
           </div>
         )}
-        {isLoading && (
+        {isLoadinghackathonList && (
           <div>
             <h3>Loading...</h3>
             <p>Data is coming.</p>
           </div>
         )}
-        <div>List hackathons mit stringify values.hackathons</div>
         <div>{hackathons && listHackathons()}</div>
-        <div>try to map the hackathons and show every id alone</div>
-        <div>{hackathons && listHackathons2()}</div>
       </div>
-
-      {/*<IdeaCardList
-        ideas={ideaData as Idea[]}
-        columnSize={6}
-        type={'archive'}
-      />*/}
     </>
   )
 }
