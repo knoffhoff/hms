@@ -18,12 +18,9 @@ import {Uuid} from '../util/uuids';
 import isLocal from '../util/isLocal';
 
 const client = new DynamoDBClient(isLocal() ?
-    {
-      region: process.env.AWS_REGION,
-      endpoint: 'http://' + process.env.LOCALSTACK_HOSTNAME + ':4566',
-    } :
+    {endpoint: 'http://' + process.env.LOCALSTACK_HOSTNAME + ':4566'} :
     {});
-const hackathonTable: string | undefined = process.env.HACKATHON_TABLE_NAME;
+const hackathonTable = process.env.HACKATHON_TABLE_NAME;
 
 export async function getHackathons(): Promise<Hackathon[]> {
   const output = await client.send(new ScanCommand({
