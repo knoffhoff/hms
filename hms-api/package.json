@@ -4,9 +4,7 @@
   "scripts": {
     "test": "jest",
     "build": "sls package",
-    "deploy": "sls deploy --stage local",
-    "watch": "nodemon -w src -e '.*' -x 'npm run build'",
-    "start": "npm run deploy && npm run watch",
+    "start": "sls deploy --stage local",
     "stop": "sls remove --stage local"
   },
   "license": "ISC",
@@ -19,7 +17,6 @@
     "eslint": "8.11.0",
     "eslint-config-google": "0.14.0",
     "jest": "27.5.1",
-    "nodemon": "2.0.15",
     "serverless-localstack": "0.4.35",
     "serverless-plugin-typescript": "2.1.1",
     "ts-jest": "27.1.4",
