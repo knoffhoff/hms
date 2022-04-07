@@ -3,6 +3,7 @@
 /* eslint-disable require-jsdoc */
 // TODO add error handling
 // TODO add paging for lists
+// TODO the way the endpoint is set is... hacky
 
 import {
   AttributeValue,
@@ -14,12 +15,14 @@ import {
 } from '@aws-sdk/client-dynamodb';
 import {Hackathon} from './domain/Hackathon';
 import {Uuid} from '../util/uuids';
+import {isLocal} from '../util/local';
 
-const client = new DynamoDBClient({
-  region: process.env.AWS_REGION,
-  // TODO fix this ins some env var
-  endpoint: 'http://' + process.env.LOCALSTACK_HOSTNAME + ':4566',
-});
+const client = new DynamoDBClient(isLocal() ?
+    {
+      region: process.env.AWS_REGION,
+      endpoint: 'http://' + process.env.LOCALSTACK_HOSTNAME + ':4566',
+    } :
+    {});
 const hackathonTable: string | undefined = process.env.HACKATHON_TABLE_NAME;
 
 export async function getHackathons(): Promise<Hackathon[]> {
@@ -64,7 +67,7 @@ export async function removeHackathon(id: Uuid) {
   }));
 }
 
-function itemToHackathon(item :{[key: string]: AttributeValue}): Hackathon {
+function itemToHackathon(item: { [key: string]: AttributeValue }): Hackathon {
   return new Hackathon(
       item.title.S,
       new Date(item.startDate.S),

@@ -21,6 +21,7 @@ provider:
   runtime: nodejs14.x
   region: eu-central-1
   environment:
+    STAGE: ${opt:stage}
     HACKATHON_TABLE_NAME: hackathon
   iam:
     role:
