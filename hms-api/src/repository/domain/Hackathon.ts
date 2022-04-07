@@ -1,9 +1,9 @@
 import {uuid, Uuid} from '../../util/uuids';
 
 /**
- * Representation of a hackathon
+ * Representation of a hackathon within the Database
  */
-export class Hackathon {
+export default class {
   id: Uuid;
   title: string;
   startDate: Date;

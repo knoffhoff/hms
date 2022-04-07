@@ -13,9 +13,9 @@ import {
   PutItemCommand,
   ScanCommand,
 } from '@aws-sdk/client-dynamodb';
-import {Hackathon} from './domain/Hackathon';
+import Hackathon from './domain/Hackathon';
 import {Uuid} from '../util/uuids';
-import {isLocal} from '../util/local';
+import isLocal from '../util/isLocal';
 
 const client = new DynamoDBClient(isLocal() ?
     {
