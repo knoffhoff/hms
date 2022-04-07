@@ -22,23 +22,11 @@ export class HackathonCreateRequest {
 
 export class HackathonCreateResponse {
   id: Uuid;
-  title: string;
-  startDate: Date;
-  endDate: Date;
-  creationDate: Date;
 
   constructor(
       id: Uuid,
-      title: string,
-      startDate: Date,
-      endDate: Date,
-      creationDate: Date,
   ) {
     this.id = id;
-    this.title = title;
-    this.startDate = startDate;
-    this.endDate = endDate;
-    this.creationDate = creationDate;
   }
 }
 

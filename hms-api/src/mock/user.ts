@@ -1,5 +1,5 @@
 import {Uuid} from '../util/uuids';
-import {Role} from '../domain/Role';
+import {Role} from '../repository/domain/Role';
 import {UserListResponse, UserResponse} from '../rest/user';
 import {backend, bearHandling, beeHandling, design, frontend} from './skill';
 

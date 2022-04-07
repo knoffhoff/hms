@@ -1,23 +1,25 @@
 'use strict';
 
-import {uuid} from '../../util/uuids';
 import {
   HackathonCreateRequest,
   HackathonCreateResponse,
 } from '../../rest/hackathon';
 import {buildResponse} from '../../rest/responses';
+import {createHackathon} from '../../repository/dynamoDb';
+import {Hackathon} from '../../repository/domain/Hackathon';
 
 // eslint-disable-next-line require-jsdoc
-export function create(event, context, callback) {
+export async function create(event, context, callback) {
   const request: HackathonCreateRequest = JSON.parse(event.body);
 
-  const hackathonCreateResponse = new HackathonCreateResponse(
-      uuid(),
+  const hackathon = new Hackathon(
       request.title,
       request.startDate,
       request.endDate,
-      new Date(),
   );
+  await createHackathon(hackathon);
+
+  const hackathonCreateResponse = new HackathonCreateResponse(hackathon.id);
   const response = buildResponse(201, hackathonCreateResponse);
 
   callback(null, response);

@@ -1,4 +1,4 @@
-import {uuid, Uuid} from '../util/uuids';
+import {uuid, Uuid} from '../../util/uuids';
 import {Hackathon} from './Hackathon';
 
 /**
