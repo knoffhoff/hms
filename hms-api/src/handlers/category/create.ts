@@ -1,7 +1,10 @@
 'use strict';
 
 import {uuid} from '../../util/uuids';
-import {CategoryCreateRequest, CategoryCreateResponse,} from '../../rest/category';
+import {
+  CategoryCreateRequest,
+  CategoryCreateResponse,
+} from '../../rest/category';
 import {buildResponse} from '../../rest/responses';
 
 // eslint-disable-next-line require-jsdoc

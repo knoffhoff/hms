@@ -1,7 +1,10 @@
 'use strict';
 
 import {uuid} from '../../util/uuids';
-import {HackathonCreateRequest, HackathonCreateResponse,} from '../../rest/hackathon';
+import {
+  HackathonCreateRequest,
+  HackathonCreateResponse,
+} from '../../rest/hackathon';
 import {buildResponse} from '../../rest/responses';
 
 // eslint-disable-next-line require-jsdoc

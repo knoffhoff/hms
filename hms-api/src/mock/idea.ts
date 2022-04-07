@@ -1,6 +1,6 @@
 import {Uuid} from '../util/uuids';
 import {IdeaListResponse, IdeaResponse} from '../rest/idea';
-import {currHackathonId, nextHackathonId, prevHackathonId,} from './hackathon';
+import {currHackathonId, nextHackathonId, prevHackathonId} from './hackathon';
 import {
   currParticipantId1,
   currParticipantId2,
@@ -11,7 +11,13 @@ import {
   prevParticipantId2,
   prevParticipantId3,
 } from './participant';
-import {backendName, bearHandlingName, beeHandlingName, designName, frontendName,} from './skill';
+import {
+  backendName,
+  bearHandlingName,
+  beeHandlingName,
+  designName,
+  frontendName,
+} from './skill';
 import {currCategoryId1, prevCategoryId1, prevCategoryId2} from './category';
 
 export const prevIdeaId1: Uuid = 'e1e24282-b98a-4b8a-95e8-d08ea8400061';
