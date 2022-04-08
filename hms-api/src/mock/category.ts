@@ -3,7 +3,7 @@ import {CategoryListResponse, CategoryResponse} from '../rest/category';
 import {
   currHackathonId,
   nextHackathonId,
-  prevHackathonId
+  prevHackathonId,
 } from './hackathon-data';
 
 export const prevCategoryId1 = '7f38993d-073a-4932-af79-07440012f268';
