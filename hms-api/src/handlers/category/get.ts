@@ -13,7 +13,7 @@ export async function get(event, context, callback) {
         category.hackathonId,
     );
 
-    callback(null, buildResponse(2200, responseBody));
+    callback(null, buildResponse(200, responseBody));
   } else {
     callback(null, buildResponse(404, {}));
   }

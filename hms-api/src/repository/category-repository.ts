@@ -14,7 +14,7 @@ import {getClient} from './dynamo-db';
 import Category from './domain/Category';
 
 const tableName = process.env.CATEGORY_TABLE_NAME;
-const byHackathonIdIndexName = process.env.CATEGORY_TABLE_NAME;
+const byHackathonIdIndexName = process.env.CATEGORY_BY_HACKATHON_ID_INDEX_NAME;
 const dynamoDBClient = getClient();
 
 export async function listCategories(hackathonId: Uuid): Promise<Category[]> {

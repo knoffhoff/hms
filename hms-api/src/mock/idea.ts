@@ -22,7 +22,11 @@ import {
   designName,
   frontendName,
 } from './skill';
-import {currCategoryId1, prevCategoryId1, prevCategoryId2} from './category';
+import {
+  currCategoryId1,
+  prevCategoryId1,
+  prevCategoryId2,
+} from './category-data';
 
 export const prevIdeaId1: Uuid = 'e1e24282-b98a-4b8a-95e8-d08ea8400061';
 export const prevIdea1 = new IdeaResponse(
