@@ -6,7 +6,7 @@ import {
 } from '../actions/GetBackendData'
 
 export default function Archive() {
-  const [selectedHackweek, setSelectedHackweek] = useState('placeholder')
+  const [selectedHackweek, setSelectedHackweek] = useState()
   const [hackathonList, setHackathonList] = useState({
     errorhackathonList: false,
     isLoadinghackathonList: true,
@@ -16,8 +16,8 @@ export default function Archive() {
     errorhackathonData: false,
     isLoadinghackathonData: true,
     title: 'string',
-    startDate: 'start Date',
-    endDate: 'end Date',
+    startDate: '',
+    endDate: '',
     participantIds: [],
     categoryIds: [],
     ideaIds: [],
@@ -35,11 +35,6 @@ export default function Archive() {
     categoryIds,
     ideaIds,
   } = hackathonData
-
-  useEffect(() => {
-    loadHackathons()
-    loadSelectedHackathon()
-  }, [])
 
   const loadHackathons = () => {
     getListOfHackathons('hackathons').then(
@@ -71,7 +66,6 @@ export default function Archive() {
     getHackathonDetails(selectedHackweek).then(
       (data) => {
         setHackathonData({
-          ...hackathonData,
           title: data.title,
           startDate: data.startDate,
           endDate: data.endDate,
@@ -95,22 +89,34 @@ export default function Archive() {
   const selectChange = (event: { target: { value: any } }) => {
     const value = event.target.value
     setSelectedHackweek(value)
+
+    //Todo find another place to call this function because it gets called before the hackathon changed
+    loadSelectedHackathon()
   }
+
+  useEffect(() => {
+    loadHackathons()
+  }, [])
 
   function printHackathons() {
     console.log('hackathons')
     console.log(hackathonList)
     console.log(hackathons)
-    /*console.log('1 hackathon')
-    console.log(hackathonDetailsList)
-    console.log(hackathonTitle)*/
+    console.log('1 hackathon')
+    console.log(hackathonData)
+    console.log(title)
   }
 
   return (
     <>
       <h1>Selected Hackweek:</h1>
-      <h2>ID: {selectedHackweek}</h2>
-      <h2>title: {hackathonData.title}</h2>
+      <h3>ID: {selectedHackweek}</h3>
+      <h2>Title: {title}</h2>
+      {startDate && (
+        <h2>
+          Date from: {startDate.slice(0, 10)} to: {endDate.slice(0, 10)}
+        </h2>
+      )}
 
       <select onChange={selectChange}>
         <option value={hackathons[0]}>last hackweek</option>
