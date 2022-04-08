@@ -1,1 +1,1 @@
-export default (): boolean => process.env.LOCALSTACK_HOSTNAME !== undefined;
+export default (): boolean => !!process.env.LOCALSTACK_HOSTNAME;
