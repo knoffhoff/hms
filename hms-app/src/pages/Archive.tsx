@@ -1,20 +1,44 @@
 import React, { useEffect, useState } from 'react'
 import { Button, Select } from '@mantine/core'
-import { getListOfHackathons } from '../actions/GetBackendData'
+import {
+  getHackathonDetails,
+  getListOfHackathons,
+} from '../actions/GetBackendData'
 
 export default function Archive() {
-  const [hackweek, setHackweek] = useState('placeholder')
+  const [selectedHackweek, setSelectedHackweek] = useState('placeholder')
   const [hackathonList, setHackathonList] = useState({
     errorhackathonList: false,
     isLoadinghackathonList: true,
     hackathons: [],
   })
+  const [hackathonData, setHackathonData] = useState({
+    errorhackathonData: false,
+    isLoadinghackathonData: true,
+    title: 'string',
+    startDate: 'start Date',
+    endDate: 'end Date',
+    participantIds: [],
+    categoryIds: [],
+    ideaIds: [],
+  })
 
   const { errorhackathonList, isLoadinghackathonList, hackathons } =
     hackathonList
+  const {
+    errorhackathonData,
+    isLoadinghackathonData,
+    title,
+    startDate,
+    endDate,
+    participantIds,
+    categoryIds,
+    ideaIds,
+  } = hackathonData
 
   useEffect(() => {
     loadHackathons()
+    loadSelectedHackathon()
   }, [])
 
   const loadHackathons = () => {
@@ -43,9 +67,34 @@ export default function Archive() {
     })
   }
 
+  const loadSelectedHackathon = () => {
+    getHackathonDetails(selectedHackweek).then(
+      (data) => {
+        setHackathonData({
+          ...hackathonData,
+          title: data.title,
+          startDate: data.startDate,
+          endDate: data.endDate,
+          participantIds: data.participantIds,
+          categoryIds: data.categoryIds,
+          ideaIds: data.ideaIds,
+          errorhackathonData: false,
+          isLoadinghackathonData: false,
+        })
+      },
+      () => {
+        setHackathonData({
+          ...hackathonData,
+          errorhackathonData: true,
+          isLoadinghackathonData: false,
+        })
+      }
+    )
+  }
+
   const selectChange = (event: { target: { value: any } }) => {
     const value = event.target.value
-    setHackweek(value)
+    setSelectedHackweek(value)
   }
 
   function printHackathons() {
@@ -60,7 +109,8 @@ export default function Archive() {
   return (
     <>
       <h1>Selected Hackweek:</h1>
-      <h2>{hackweek}</h2>
+      <h2>ID: {selectedHackweek}</h2>
+      <h2>title: {hackathonData.title}</h2>
 
       <select onChange={selectChange}>
         <option value={hackathons[0]}>last hackweek</option>
