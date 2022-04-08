@@ -1,5 +1,3 @@
-'use strict';
-
 /* eslint-disable require-jsdoc */
 
 export function buildResponse(statusCode: number, bodyObject: any): Object {

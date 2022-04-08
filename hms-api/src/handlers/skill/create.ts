@@ -1,5 +1,3 @@
-'use strict';
-
 import {CreateSkillRequest, CreateSkillResponse} from '../../rest/skill';
 import {buildResponse} from '../../rest/responses';
 

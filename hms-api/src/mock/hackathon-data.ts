@@ -1,5 +1,4 @@
 import {Uuid} from '../util/uuids';
-import {HackathonListResponse, HackathonResponse} from '../rest/hackathon';
 import {
   currParticipantIds,
   nextParticipantIds,
@@ -7,6 +6,8 @@ import {
 } from './participant';
 import {currCategoryIds, nextCategoryIds, prevCategoryIds} from './category';
 import {currIdeaIds, nextIdeaIds, prevIdeaIds} from './idea';
+import HackathonResponse from '../rest/HackathonResponse';
+import HackathonListResponse from '../rest/HackathonListResponse';
 
 export const prevHackathonId: Uuid = 'e955fe4b-7ce7-4904-ae6f-22a8985f74a8';
 export const prevHackathon = new HackathonResponse(

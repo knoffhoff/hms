@@ -1,5 +1,3 @@
-'use strict';
-
 import {Uuid} from '../../util/uuids';
 import {CategoryDeleteResponse} from '../../rest/category';
 import {buildResponse} from '../../rest/responses';

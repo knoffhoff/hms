@@ -1,8 +1,6 @@
-'use strict';
-
 /* eslint-disable require-jsdoc */
 
-import {Role} from '../domain/Role';
+import {Role} from '../repository/domain/Role';
 import {Uuid} from '../util/uuids';
 
 export class UserCreateRequest {

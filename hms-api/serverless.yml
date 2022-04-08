@@ -8,8 +8,6 @@ custom:
   localstack:
     debug: true
     stages: [ local ]
-    host: http://localhost
-    edgePort: 4566
     autostart: true
     lambda:
       mountCode: false
@@ -21,10 +19,8 @@ provider:
   runtime: nodejs14.x
   region: eu-central-1
   environment:
-    HACKATHON_TABLE: hackathon
-    IDEA_TABLE: idea
-    USER_TABLE: user
-    CATEGORY_TABLE: category
+    STAGE: ${opt:stage}
+    HACKATHON_TABLE_NAME: hackathon
   iam:
     role:
       statements:
@@ -37,10 +33,7 @@ provider:
             - dynamodb:UpdateItem
             - dynamodb:DeleteItem
           Resource:
-            - 'arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.HACKATHON_TABLE}'
-            - 'arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.IDEA_TABLE}'
-            - 'arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.USER_TABLE}'
-            - 'arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.CATEGORY_TABLE}'
+            - 'arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.HACKATHON_TABLE_NAME}'
 
 functions:
   createHackathon:
@@ -219,59 +212,15 @@ functions:
 
 resources:
   Resources:
-    HackathonsDynamoDbTable:
-      Type: 'AWS::DynamoDB::Table'
+    hackathonTable:
+      Type: AWS::DynamoDB::Table
       DeletionPolicy: Retain
       Properties:
         TableName: hackathon
+        BillingMode: PAY_PER_REQUEST
         AttributeDefinitions:
           - AttributeName: id
             AttributeType: S
         KeySchema:
           - AttributeName: id
             KeyType: HASH
-        ProvisionedThroughput:
-          ReadCapacityUnits: 1
-          WriteCapacityUnits: 1
-    IdeasDynamoDbTable:
-      Type: 'AWS::DynamoDB::Table'
-      DeletionPolicy: Retain
-      Properties:
-        TableName: idea
-        AttributeDefinitions:
-          - AttributeName: id
-            AttributeType: S
-        KeySchema:
-          - AttributeName: id
-            KeyType: HASH
-        ProvisionedThroughput:
-          ReadCapacityUnits: 1
-          WriteCapacityUnits: 1
-    CategoriesDynamoDbTable:
-      Type: 'AWS::DynamoDB::Table'
-      DeletionPolicy: Retain
-      Properties:
-        TableName: category
-        AttributeDefinitions:
-          - AttributeName: id
-            AttributeType: S
-        KeySchema:
-          - AttributeName: id
-            KeyType: HASH
-        ProvisionedThroughput:
-          ReadCapacityUnits: 1
-          WriteCapacityUnits: 1
-    UsersDynamoDbTable:
-      Type: 'AWS::DynamoDB::Table'
-      DeletionPolicy: Retain
-      Properties:
-        TableName: user
-        AttributeDefinitions:
-          - AttributeName: id
-            AttributeType: N
-        KeySchema:
-          - AttributeName: id
-            KeyType: HASH
-        ProvisionedThroughput:
-          ReadCapacityUnits: 1
-          WriteCapacityUnits: 1

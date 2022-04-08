@@ -53,7 +53,7 @@ To run a single test execute a shell command similar to:
 jest <text_name> 
 ```
 
-Full CLI documenation for Jest can be found [here](https://jestjs.io/docs/cli)
+Full CLI documentation for Jest can be found [here](https://jestjs.io/docs/cli)
 
 ### Manual Testing with Serverless
 Functions can be manually tested by invoking the function directly from the Serverless CLI.  Documentation for this call can be found [here](https://www.serverless.com/framework/docs/providers/aws/cli-reference/invoke), however the call is a shell command similar to:
@@ -63,10 +63,48 @@ sls invoke local --function <function_name>
 ```
 
 ### Manual Testing with Jetbrains IDEs
-[//]: # (TODO expand this section when the client.http file is fuller)
-**THIS SECTION IS INCOMPLETE AND NEEDS SOME WORK**
-
 To make HTTP requests to the HMS API while using a Jetbrains IDE you can make use of the `xxx.http` files in the [dev](dev) folder in this repository.
+
+#### Local Testing
+In order for the `xxx.http` files to run properly using the `local` environment they need to have the correct `api_id` set.  This is a value from API gateway and is regenerated for every new localstack docker container that is started.  The value is printed out during the startup of the localstack image, but can be retrieved at any time using the AWS CLI.  To do so run the following AWS CLI command in your terminal:
+
+```shell
+aws --endpoint-url=http://localhost:4566 --region eu-central-1 apigateway get-rest-apis
+```
+
+That should output something like:
+```json
+{
+  "items": [
+    {
+      "id": "wvba2myirg",
+      "name": "local-hms-api",
+      "description": "",
+      "createdDate": 1649401759,
+      "version": "V1",
+      "binaryMediaTypes": [],
+      "apiKeySource": "HEADER",
+      "endpointConfiguration": {
+        "types": [
+          "EDGE"
+        ]
+      },
+      "tags": {},
+      "disableExecuteApiEndpoint": false
+    }
+  ]
+}
+```
+
+The value needed is the one in the `id` field.  Copy that value and paste it into the [http-client.env.json](dev/http-client.env.json) file in the `local.api_id` field:
+
+```json
+{
+  "local": {
+    "api_id": "wvba2myirg"
+  }
+}
+```
 
 
 ## Deploying

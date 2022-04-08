@@ -1,4 +1,4 @@
-import {Uuid} from '../util/uuids';
+import {Uuid} from '../../util/uuids';
 import {Role} from './Role';
 import {Skill} from './Skill';
 
