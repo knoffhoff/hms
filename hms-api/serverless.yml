@@ -8,8 +8,6 @@ custom:
   localstack:
     debug: true
     stages: [ local ]
-    host: http://localhost
-    edgePort: 4566
     autostart: true
     lambda:
       mountCode: false
