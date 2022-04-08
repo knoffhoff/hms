@@ -126,7 +126,7 @@ That should output something like:
 ```
 
 The value needed is the one in the `id` field. Copy that value and paste it into
-the [http-client.env.json](dev/http-client.env.json) file in the `local.api_id` field:
+the [http-client.env.json](dev/http/http-client.env.json) file in the `local.api_id` field:
 
 ```json
 {
