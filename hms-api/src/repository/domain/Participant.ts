@@ -1,6 +1,6 @@
 import {Uuid} from '../../util/uuids';
 import {User} from './User';
-import {Hackathon} from './Hackathon';
+import Hackathon from './Hackathon';
 
 /**
  * A single User participating in a Hackathon

@@ -1,8 +1,6 @@
-'use strict';
-
 import {buildResponse} from '../../rest/responses';
-import {getHackathons} from '../../repository/dynamoDb';
-import {HackathonListResponse} from '../../rest/hackathon';
+import {getHackathons} from '../../repository/hackathon-repository';
+import HackathonListResponse from '../../rest/HackathonListResponse';
 
 // eslint-disable-next-line require-jsdoc
 export async function list(event, context, callback) {

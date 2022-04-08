@@ -1,5 +1,3 @@
-'use strict';
-
 import {getSkill} from '../../mock/skill';
 import {buildResponse} from '../../rest/responses';
 

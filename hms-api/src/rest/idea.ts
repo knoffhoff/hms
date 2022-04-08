@@ -1,5 +1,3 @@
-'use strict';
-
 /* eslint-disable require-jsdoc */
 
 import {Uuid} from '../util/uuids';

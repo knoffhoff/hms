@@ -1,9 +1,7 @@
-'use strict';
-
 import {Uuid} from '../../util/uuids';
 import {buildResponse} from '../../rest/responses';
-import {getHackathon} from '../../repository/dynamoDb';
-import {HackathonResponse} from '../../rest/hackathon';
+import {getHackathon} from '../../repository/hackathon-repository';
+import HackathonResponse from '../../rest/HackathonResponse';
 
 // eslint-disable-next-line require-jsdoc
 export async function get(event, context, callback) {

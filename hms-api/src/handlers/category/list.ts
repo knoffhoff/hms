@@ -1,5 +1,3 @@
-'use strict';
-
 import {Uuid} from '../../util/uuids';
 import {getCategories} from '../../mock/category';
 import {buildResponse} from '../../rest/responses';

@@ -1,38 +1,31 @@
-'use strict';
-
 /* eslint-disable require-jsdoc */
 // TODO add error handling
 // TODO add paging for lists
-// TODO the way the endpoint is set is... hacky
 
+import Hackathon from './domain/Hackathon';
 import {
   AttributeValue,
   DeleteItemCommand,
-  DynamoDBClient,
   GetItemCommand,
   PutItemCommand,
   ScanCommand,
 } from '@aws-sdk/client-dynamodb';
-import Hackathon from './domain/Hackathon';
 import {Uuid} from '../util/uuids';
-import isLocal from '../util/isLocal';
+import {dynamoDBClient, nullOrEmpty} from './dynamo-db';
 
-const client = new DynamoDBClient(isLocal() ?
-    {endpoint: 'http://' + process.env.LOCALSTACK_HOSTNAME + ':4566'} :
-    {});
-const hackathonTable = process.env.HACKATHON_TABLE_NAME;
+const tableName = process.env.HACKATHON_TABLE_NAME;
 
 export async function getHackathons(): Promise<Hackathon[]> {
-  const output = await client.send(new ScanCommand({
-    TableName: hackathonTable,
+  const output = await dynamoDBClient.send(new ScanCommand({
+    TableName: tableName,
   }));
 
   return output.Items.map((item) => itemToHackathon(item));
 }
 
 export async function createHackathon(hackathon: Hackathon) {
-  await client.send(new PutItemCommand({
-    TableName: hackathonTable,
+  await dynamoDBClient.send(new PutItemCommand({
+    TableName: tableName,
     Item: {
       title: {S: hackathon.title},
       startDate: {S: hackathon.startDate.toString()},
@@ -47,8 +40,8 @@ export async function createHackathon(hackathon: Hackathon) {
 }
 
 export async function getHackathon(id: Uuid): Promise<Hackathon | undefined> {
-  const output = await client.send(new GetItemCommand({
-    TableName: hackathonTable,
+  const output = await dynamoDBClient.send(new GetItemCommand({
+    TableName: tableName,
     Key: {id: {S: id}},
   }));
 
@@ -58,8 +51,8 @@ export async function getHackathon(id: Uuid): Promise<Hackathon | undefined> {
 
 export async function removeHackathon(id: Uuid) {
   // TODO determine if something was actually deleted
-  await client.send(new DeleteItemCommand({
-    TableName: hackathonTable,
+  await dynamoDBClient.send(new DeleteItemCommand({
+    TableName: tableName,
     Key: {id: {S: id}},
   }));
 }
@@ -75,10 +68,4 @@ function itemToHackathon(item: { [key: string]: AttributeValue }): Hackathon {
       item.categories.SS,
       item.ideas.SS,
   );
-}
-
-function nullOrEmpty(a: string[]):
-    AttributeValue.SSMember |
-    AttributeValue.NULLMember {
-  return a.length > 0 ? {SS: a} : {NULL: true};
 }

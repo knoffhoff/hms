@@ -1,12 +1,8 @@
-'use strict';
-
-import {
-  HackathonCreateRequest,
-  HackathonCreateResponse,
-} from '../../rest/hackathon';
 import {buildResponse} from '../../rest/responses';
-import {createHackathon} from '../../repository/dynamoDb';
-import {Hackathon} from '../../repository/domain/Hackathon';
+import {createHackathon} from '../../repository/hackathon-repository';
+import Hackathon from '../../repository/domain/Hackathon';
+import HackathonCreateRequest from '../../rest/HackathonCreateRequest';
+import HackathonCreateResponse from '../../rest/HackathonCreateResponse';
 
 // eslint-disable-next-line require-jsdoc
 export async function create(event, context, callback) {

@@ -1,5 +1,3 @@
-'use strict';
-
 /* eslint-disable require-jsdoc */
 
 import {Role} from '../repository/domain/Role';

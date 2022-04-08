@@ -1,9 +1,7 @@
-'use strict';
-
 import {Uuid} from '../../util/uuids';
-import {HackathonDeleteResponse} from '../../rest/hackathon';
 import {buildResponse} from '../../rest/responses';
-import {removeHackathon} from '../../repository/dynamoDb';
+import {removeHackathon} from '../../repository/hackathon-repository';
+import HackathonDeleteResponse from '../../rest/HackathonDeleteResponse';
 
 // eslint-disable-next-line require-jsdoc
 export async function remove(event, context, callback) {

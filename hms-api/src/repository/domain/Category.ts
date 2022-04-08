@@ -1,5 +1,5 @@
 import {uuid, Uuid} from '../../util/uuids';
-import {Hackathon} from './Hackathon';
+import Hackathon from './Hackathon';
 
 /**
  * Each Hackathon has a number of Categories and each Category has a number of
