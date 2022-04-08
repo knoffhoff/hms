@@ -1,7 +1,7 @@
-import {getClient} from '../../src/repository/dynamo-db';
+import {getClient, safeTransformArray} from '../../src/repository/dynamo-db';
 import * as RunningLocalStack from '../../src/util/running-localstack';
 
-describe('Detecting Running LocalStack', () => {
+describe('getClient()', () => {
   const hostname = 'localstack';
 
   beforeAll(() => {
@@ -29,5 +29,24 @@ describe('Detecting Running LocalStack', () => {
     expect(endpoint.port).toBe(undefined);
     expect(endpoint.path).toBe('/');
     expect(endpoint.query).toBe(undefined);
+  });
+});
+
+describe('safeTransformArray', () => {
+  test('Array with values transformed to SS AttributeValue', () => {
+    const array = ['thing1', 'thing2', 'thing3'];
+    expect(safeTransformArray(array)).toStrictEqual({SS: array});
+  });
+
+  test('Empty array is transformed to NULL AttributeValue', () => {
+    expect(safeTransformArray([])).toStrictEqual({NULL: true});
+  });
+
+  test('null is transformed to NULL AttributeValue', () => {
+    expect(safeTransformArray(null)).toStrictEqual({NULL: true});
+  });
+
+  test('undefined is transformed to NULL AttributeValue', () => {
+    expect(safeTransformArray(undefined)).toStrictEqual({NULL: true});
   });
 });

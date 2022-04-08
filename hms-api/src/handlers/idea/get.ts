@@ -1,12 +1,28 @@
-import {Uuid} from '../../util/uuids';
-import {getIdea} from '../../mock/idea';
 import {buildResponse} from '../../rest/responses';
+import {getIdea} from '../../repository/idea-repository';
+import IdeaResponse from '../../rest/IdeaResponse';
 
 // eslint-disable-next-line require-jsdoc
-export function get(event, context, callback) {
-  const id: Uuid = event.pathParameters.id;
+export async function get(event, context, callback) {
+  const idea = await getIdea(event.pathParameters.id);
 
-  const response = buildResponse(200, getIdea(id));
+  if (idea) {
+    const responseBody = new IdeaResponse(
+        idea.id,
+        idea.ownerId,
+        idea.hackathonId,
+        idea.participantIds,
+        idea.title,
+        idea.description,
+        idea.problem,
+        idea.goal,
+        idea.requiredSkills,
+        idea.categoryId,
+        idea.creationDate,
+    );
 
-  callback(null, response);
+    callback(null, buildResponse(200, responseBody));
+  } else {
+    callback(null, buildResponse(404, {}));
+  }
 }

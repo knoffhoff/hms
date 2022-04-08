@@ -11,7 +11,7 @@ import {
   ScanCommand,
 } from '@aws-sdk/client-dynamodb';
 import {Uuid} from '../util/uuids';
-import {getClient, nullOrEmpty} from './dynamo-db';
+import {getClient, safeTransformArray} from './dynamo-db';
 
 const tableName = process.env.HACKATHON_TABLE_NAME;
 const dynamoDBClient = getClient();
@@ -33,9 +33,9 @@ export async function createHackathon(hackathon: Hackathon) {
       endDate: {S: hackathon.endDate.toString()},
       id: {S: hackathon.id},
       creationDate: {S: hackathon.creationDate.toString()},
-      participants: nullOrEmpty(hackathon.participantIds),
-      categories: nullOrEmpty(hackathon.categoryIds),
-      ideas: nullOrEmpty(hackathon.ideaIds),
+      participants: safeTransformArray(hackathon.participantIds),
+      categories: safeTransformArray(hackathon.categoryIds),
+      ideas: safeTransformArray(hackathon.ideaIds),
     },
   }));
 }
