@@ -1,5 +1,3 @@
-'use strict';
-
 import {userIds} from '../../mock/user';
 import {buildResponse} from '../../rest/responses';
 

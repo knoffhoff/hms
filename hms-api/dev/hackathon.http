@@ -8,9 +8,9 @@ POST {{host}}/restapis/{{api_id}}/local/_user_request_/hackathon
 Content-Type: application/json
 
 {
-  "title": "...",
-  "startDate": "...",
-  "endDate": "..."
+  "title": "whatever",
+  "startDate": "2022-09-01",
+  "endDate": "2022-09-05"
 }
 
 ###

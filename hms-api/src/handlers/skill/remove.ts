@@ -1,6 +1,3 @@
-'use strict';
-
-// eslint-disable-next-line require-jsdoc
 import {buildResponse} from '../../rest/responses';
 import {SkillDeleteResponse} from '../../rest/skill';
 

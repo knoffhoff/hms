@@ -1,5 +1,3 @@
-'use strict';
-
 import {uuid} from '../../util/uuids';
 import {
   ParticipantCreateRequest,

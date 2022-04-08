@@ -1,5 +1,3 @@
-'use strict';
-
 import {uuid} from '../../util/uuids';
 import {UserCreateRequest, UserCreateResponse} from '../../rest/user';
 import {buildResponse} from '../../rest/responses';

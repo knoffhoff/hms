@@ -1,5 +1,3 @@
-'use strict';
-
 import {Uuid} from '../../util/uuids';
 import {getParticipant} from '../../mock/participant';
 import {buildResponse} from '../../rest/responses';

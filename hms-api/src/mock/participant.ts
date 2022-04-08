@@ -3,7 +3,11 @@ import {
   ParticipantListResponse,
   ParticipantResponse,
 } from '../rest/participant';
-import {currHackathonId, nextHackathonId, prevHackathonId} from './hackathon';
+import {
+  currHackathonId,
+  nextHackathonId,
+  prevHackathonId,
+} from './hackathon-data';
 import {userId1, userId2, userId3, userId4, userId5, userId6} from './user';
 
 export const prevParticipantId1: Uuid = '16a43590-c7ba-4bb1-81d0-b726dea47b6e';
