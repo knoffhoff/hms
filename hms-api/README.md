@@ -101,7 +101,7 @@ The value needed is the one in the `id` field.  Copy that value and paste it int
 ```json
 {
   "local": {
-    "api_id": "wvba2myirg",
+    "api_id": "wvba2myirg"
   }
 }
 ```
