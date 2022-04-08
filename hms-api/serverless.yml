@@ -6,13 +6,13 @@ plugins:
 
 custom:
   localstack:
-    debug: True
+    debug: true
     stages: [ local ]
-    autostart: True
+    autostart: true
     lambda:
-      mountCode: False
+      mountCode: false
     docker:
-      sudo: False
+      sudo: false
 
 provider:
   name: aws
