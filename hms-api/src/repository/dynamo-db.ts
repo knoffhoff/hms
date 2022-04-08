@@ -1,12 +1,16 @@
 /* eslint-disable require-jsdoc */
-// TODO the way the endpoint is set is... hacky
 
 import {AttributeValue, DynamoDBClient} from '@aws-sdk/client-dynamodb';
-import isLocal from '../util/isLocal';
+import runningLocalStack from '../util/running-localstack';
 
-export const dynamoDBClient = new DynamoDBClient(isLocal() ?
-    {endpoint: 'http://' + process.env.LOCALSTACK_HOSTNAME + ':4566'} :
-    {});
+export function getClient(): DynamoDBClient {
+  if (runningLocalStack()) {
+    const endpoint = 'http://' + process.env.LOCALSTACK_HOSTNAME + ':4566';
+    return new DynamoDBClient({endpoint: endpoint});
+  } else {
+    return new DynamoDBClient({});
+  }
+}
 
 export function nullOrEmpty(a: string[]):
     AttributeValue.SSMember |

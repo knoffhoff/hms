@@ -11,9 +11,10 @@ import {
   ScanCommand,
 } from '@aws-sdk/client-dynamodb';
 import {Uuid} from '../util/uuids';
-import {dynamoDBClient, nullOrEmpty} from './dynamo-db';
+import {getClient, nullOrEmpty} from './dynamo-db';
 
 const tableName = process.env.HACKATHON_TABLE_NAME;
+const dynamoDBClient = getClient();
 
 export async function getHackathons(): Promise<Hackathon[]> {
   const output = await dynamoDBClient.send(new ScanCommand({
