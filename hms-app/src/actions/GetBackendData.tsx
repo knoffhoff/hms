@@ -1,6 +1,6 @@
 export const getListOfHackathons = (endpoint: any) => {
   return fetch(
-    `${'http://localhost:4566/restapis/7s7hkibztq/local/_user_request_'}/${endpoint}`,
+    `${'http://localhost:4566/restapis/cqkxf2m0vy/local/_user_request_'}/${endpoint}`,
     {
       method: 'GET',
       headers: {
@@ -17,7 +17,7 @@ export const getListOfHackathons = (endpoint: any) => {
 
 export const getHackathonDetails = (endpoint: any) => {
   return fetch(
-    `${'http://localhost:4566/restapis/7s7hkibztq/local/_user_request_/hackathon'}/${endpoint}`,
+    `${'http://localhost:4566/restapis/cqkxf2m0vy/local/_user_request_/hackathon'}/${endpoint}`,
     {
       method: 'GET',
       headers: {
