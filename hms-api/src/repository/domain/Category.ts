@@ -1,25 +1,37 @@
 import {uuid, Uuid} from '../../util/uuids';
-import Hackathon from './Hackathon';
 
 /**
  * Each Hackathon has a number of Categories and each Category has a number of
  * Ideas
  */
-export class Category {
+export default class {
   id: Uuid;
   title: string;
   description: string;
-  hackathon: Hackathon;
+  hackathonId: Uuid;
+
+  constructor(
+      title: string,
+      description: string,
+      hackathonId: Uuid,
+  );
+  constructor(
+      title: string,
+      description: string,
+      hackathonId: Uuid,
+      id: Uuid,
+  );
 
   // eslint-disable-next-line require-jsdoc
   constructor(
       title: string,
       description: string,
-      hackathon: Hackathon,
+      hackathonId: Uuid,
+      id: Uuid = uuid(),
   ) {
-    this.id = uuid();
+    this.id = id;
     this.title = title;
     this.description = description;
-    this.hackathon = hackathon;
+    this.hackathonId = hackathonId;
   }
 }

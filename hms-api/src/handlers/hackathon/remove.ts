@@ -9,7 +9,5 @@ export async function remove(event, context, callback) {
 
   await removeHackathon(id);
 
-  const response = buildResponse(200, new HackathonDeleteResponse(id));
-
-  callback(null, response);
+  callback(null, buildResponse(200, new HackathonDeleteResponse(id)));
 }

@@ -15,8 +15,5 @@ export async function create(event, context, callback) {
   );
   await createHackathon(hackathon);
 
-  const hackathonCreateResponse = new HackathonCreateResponse(hackathon.id);
-  const response = buildResponse(201, hackathonCreateResponse);
-
-  callback(null, response);
+  callback(null, buildResponse(201, new HackathonCreateResponse(hackathon.id)));
 }

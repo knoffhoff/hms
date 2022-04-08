@@ -1,15 +1,12 @@
 import {buildResponse} from '../../rest/responses';
-import {getHackathons} from '../../repository/hackathon-repository';
+import {listHackathons} from '../../repository/hackathon-repository';
 import HackathonListResponse from '../../rest/HackathonListResponse';
 
 // eslint-disable-next-line require-jsdoc
 export async function list(event, context, callback) {
-  const hackathons = await getHackathons();
+  const hackathons = await listHackathons();
 
-  const hackathonIds = hackathons.map((hackathon) => {
-    return hackathon.id;
-  });
-
+  const hackathonIds = hackathons.map((hackathon) => hackathon.id);
   const response = buildResponse(200, new HackathonListResponse(hackathonIds));
 
   callback(null, response);

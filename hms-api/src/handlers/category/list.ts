@@ -1,12 +1,17 @@
 import {Uuid} from '../../util/uuids';
-import {getCategories} from '../../mock/category';
 import {buildResponse} from '../../rest/responses';
+import {listCategories} from '../../repository/category-repository';
+import CategoryListResponse from '../../rest/CategoryListResponse';
 
 // eslint-disable-next-line require-jsdoc
-export function list(event, context, callback) {
+export async function list(event, context, callback) {
   const hackathonId: Uuid = event.pathParameters.hackathonId;
+  const categories = await listCategories(hackathonId);
 
-  const response = buildResponse(200, getCategories(hackathonId));
+  const categoryIds = categories.map((category) => category.id);
+  const response = buildResponse(
+      200,
+      new CategoryListResponse(categoryIds, hackathonId));
 
   callback(null, response);
 }

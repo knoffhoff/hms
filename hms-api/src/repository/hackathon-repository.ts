@@ -16,7 +16,7 @@ import {getClient, nullOrEmpty} from './dynamo-db';
 const tableName = process.env.HACKATHON_TABLE_NAME;
 const dynamoDBClient = getClient();
 
-export async function getHackathons(): Promise<Hackathon[]> {
+export async function listHackathons(): Promise<Hackathon[]> {
   const output = await dynamoDBClient.send(new ScanCommand({
     TableName: tableName,
   }));
