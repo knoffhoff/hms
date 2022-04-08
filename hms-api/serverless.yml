@@ -6,20 +6,19 @@ plugins:
 
 custom:
   localstack:
-    debug: true
+    debug: True
     stages: [ local ]
-    autostart: true
+    autostart: True
     lambda:
-      mountCode: false
+      mountCode: False
     docker:
-      sudo: false
+      sudo: False
 
 provider:
   name: aws
   runtime: nodejs14.x
   region: eu-central-1
   environment:
-    STAGE: ${opt:stage}
     HACKATHON_TABLE_NAME: hackathon
   iam:
     role:
