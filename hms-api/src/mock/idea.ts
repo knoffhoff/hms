@@ -3,7 +3,7 @@ import {IdeaListResponse, IdeaResponse} from '../rest/idea';
 import {
   currHackathonId,
   nextHackathonId,
-  prevHackathonId
+  prevHackathonId,
 } from './hackathon-data';
 import {
   currParticipantId1,
