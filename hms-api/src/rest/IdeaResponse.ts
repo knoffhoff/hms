@@ -1,8 +1,7 @@
-import {uuid, Uuid} from '../../util/uuids';
+/* eslint-disable require-jsdoc */
 
-/**
- * An Idea is... well an Idea idk it's a thing people work on
- */
+import {Uuid} from '../util/uuids';
+
 export default class {
   id: Uuid;
   ownerId: Uuid;
@@ -17,32 +16,7 @@ export default class {
   creationDate: Date;
 
   constructor(
-      ownerId: Uuid,
-      hackathonId: Uuid,
-      participantIds: Uuid[],
-      title: string,
-      description: string,
-      problem: string,
-      goal: string,
-      requiredSkills: string[],
-      categoryId: Uuid,
-  );
-  constructor(
-      ownerId: Uuid,
-      hackathonId: Uuid,
-      participantIds: Uuid[],
-      title: string,
-      description: string,
-      problem: string,
-      goal: string,
-      requiredSkills: string[],
-      categoryId: Uuid,
       id: Uuid,
-      creationDate: Date,
-  );
-
-  // eslint-disable-next-line require-jsdoc
-  constructor(
       ownerId: Uuid,
       hackathonId: Uuid,
       participantIds: Uuid[],
@@ -52,8 +26,7 @@ export default class {
       goal: string,
       requiredSkills: string[],
       categoryId: Uuid,
-      id: Uuid = uuid(),
-      creationDate: Date = new Date(),
+      creationDate: Date,
   ) {
     this.id = id;
     this.ownerId = ownerId;

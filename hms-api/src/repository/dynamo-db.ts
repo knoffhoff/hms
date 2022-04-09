@@ -1,6 +1,6 @@
 /* eslint-disable require-jsdoc */
 
-import {AttributeValue, DynamoDBClient} from '@aws-sdk/client-dynamodb';
+import {AttributeValue as AV, DynamoDBClient} from '@aws-sdk/client-dynamodb';
 import runningLocalStack from '../util/running-localstack';
 
 export function getClient(): DynamoDBClient {
@@ -12,8 +12,5 @@ export function getClient(): DynamoDBClient {
   }
 }
 
-export function nullOrEmpty(a: string[]):
-    AttributeValue.SSMember |
-    AttributeValue.NULLMember {
-  return a.length > 0 ? {SS: a} : {NULL: true};
-}
+export const safeTransformArray = (a: string[]): AV.SSMember | AV.NULLMember =>
+    !!a && a.length > 0 ? {SS: a} : {NULL: true};
