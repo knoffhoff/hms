@@ -20,6 +20,8 @@ provider:
   region: eu-central-1
   environment:
     HACKATHON_TABLE_NAME: hackathon
+    CATEGORY_TABLE_NAME: category
+    CATEGORY_BY_HACKATHON_ID_INDEX_NAME: by-hackathonId
   iam:
     role:
       statements:
@@ -32,7 +34,9 @@ provider:
             - dynamodb:UpdateItem
             - dynamodb:DeleteItem
           Resource:
-            - 'arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.HACKATHON_TABLE_NAME}'
+            - arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.HACKATHON_TABLE_NAME}
+            - arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.CATEGORY_TABLE_NAME}
+            - arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.CATEGORY_TABLE_NAME}/index/*
 
 functions:
   createHackathon:
@@ -215,7 +219,7 @@ resources:
       Type: AWS::DynamoDB::Table
       DeletionPolicy: Retain
       Properties:
-        TableName: hackathon
+        TableName: ${self:provider.environment.HACKATHON_TABLE_NAME}
         BillingMode: PAY_PER_REQUEST
         AttributeDefinitions:
           - AttributeName: id
@@ -223,3 +227,27 @@ resources:
         KeySchema:
           - AttributeName: id
             KeyType: HASH
+
+    categoryTable:
+      Type: AWS::DynamoDB::Table
+      DeletionPolicy: Retain
+      Properties:
+        TableName: ${self:provider.environment.CATEGORY_TABLE_NAME}
+        BillingMode: PAY_PER_REQUEST
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+          - AttributeName: hackathonId
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        GlobalSecondaryIndexes:
+          - IndexName: ${self:provider.environment.CATEGORY_BY_HACKATHON_ID_INDEX_NAME}
+            KeySchema:
+              - AttributeName: hackathonId
+                KeyType: HASH
+              - AttributeName: id
+                KeyType: RANG
+            Projection:
+              ProjectionType: ALL

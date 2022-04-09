@@ -1,13 +1,10 @@
-import {Uuid} from '../../util/uuids';
 import {buildResponse} from '../../rest/responses';
 import {getHackathon} from '../../repository/hackathon-repository';
 import HackathonResponse from '../../rest/HackathonResponse';
 
 // eslint-disable-next-line require-jsdoc
 export async function get(event, context, callback) {
-  const id: Uuid = event.pathParameters.id;
-
-  const hackathon = await getHackathon(id);
+  const hackathon = await getHackathon(event.pathParameters.id);
   if (hackathon) {
     const responseBody = new HackathonResponse(
         hackathon.id,
