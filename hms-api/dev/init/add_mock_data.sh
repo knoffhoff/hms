@@ -308,3 +308,59 @@ $PUT --table-name idea --item '{
     "categoryId": {"S": "52c0bbde-6360-451c-bf50-b56694f56053"},
     "creationDate": {"S": "2022-04-04"}
 }'
+
+$PUT --table-name participant --item '{
+  "id": {"S": "16a43590-c7ba-4bb1-81d0-b726dea47b6e"},
+  "userId": {"S": "629f52c9-df29-491b-82a4-bdd80806338d"},
+  "hackathonId": {"S": "e955fe4b-7ce7-4904-ae6f-22a8985f74a8"},
+  "creationDate": {"S": "2021-03-02"}
+}'
+
+$PUT --table-name participant --item '{
+  "id": {"S": "4e80138c-ed15-4947-ad18-15afa6af4adf"},
+  "userId": {"S": "c3480d57-5670-4364-b0cc-9038a83de628"},
+  "hackathonId": {"S": "e955fe4b-7ce7-4904-ae6f-22a8985f74a8"},
+  "creationDate": {"S": "2021-03-03"}
+}'
+
+$PUT --table-name participant --item '{
+  "id": {"S": "bc7edc4c-d840-4521-8666-505946ff6ecf"},
+  "userId": {"S": "c16785af-d7bd-442c-b3f5-257fad9ad2ac"},
+  "hackathonId": {"S": "e955fe4b-7ce7-4904-ae6f-22a8985f74a8"},
+  "creationDate": {"S": "2021-03-03"}
+}'
+
+$PUT --table-name participant --item '{
+  "id": {"S": "e27fb873-fd63-4c43-a00b-4593a3662953"},
+  "userId": {"S": "629f52c9-df29-491b-82a4-bdd80806338d"},
+  "hackathonId": {"S": "4eb2d486-c786-431e-a4fd-4c093ed30642"},
+  "creationDate": {"S": "2022-02-01"}
+}'
+
+$PUT --table-name participant --item '{
+  "id": {"S": "d73e9d79-7ebb-400c-ac3a-5de35c509eb9"},
+  "userId": {"S": "c3480d57-5670-4364-b0cc-9038a83de628"},
+  "hackathonId": {"S": "4eb2d486-c786-431e-a4fd-4c093ed30642"},
+  "creationDate": {"S": "2022-02-01"}
+}'
+
+$PUT --table-name participant --item '{
+  "id": {"S": "fdc15363-ef3c-4ffa-a764-34ca3b4f5bd8"},
+  "userId": {"S": "c34a519a-be46-410c-828e-0f806cfca620"},
+  "hackathonId": {"S": "4eb2d486-c786-431e-a4fd-4c093ed30642"},
+  "creationDate": {"S": "2022-02-21"}
+}'
+
+$PUT --table-name participant --item '{
+  "id": {"S": "dd4596c0-911a-49a9-826f-0b6ec8a2d0b6"},
+  "userId": {"S": "f6fa2b8e-68ed-4486-b8df-f93b87ff23e5"},
+  "hackathonId": {"S": "4eb2d486-c786-431e-a4fd-4c093ed30642"},
+  "creationDate": {"S": "2022-02-24"}
+}'
+
+$PUT --table-name participant --item '{
+  "id": {"S": "403d2770-f7d2-4aa0-8c58-b711ad09f169"},
+  "userId": {"S": "9b184ff3-8b63-4807-a3c6-89973c126d75"},
+  "hackathonId": {"S": "4eb2d486-c786-431e-a4fd-4c093ed30642"},
+  "creationDate": {"S": "2022-03-07"}
+}'

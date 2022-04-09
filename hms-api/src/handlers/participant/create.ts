@@ -1,21 +1,17 @@
-import {uuid} from '../../util/uuids';
-import {
-  ParticipantCreateRequest,
-  ParticipantCreateResponse,
-} from '../../rest/participant';
 import {buildResponse} from '../../rest/responses';
+import ParticipantCreateRequest from '../../rest/ParticipantCreateRequest';
+import ParticipantCreateResponse from '../../rest/ParticipantCreateResponse';
+import Participant from '../../repository/domain/Participant';
+import {createParticipant} from '../../repository/participant-repository';
 
 // eslint-disable-next-line require-jsdoc
-export function create(event, context, callback) {
+export async function create(event, context, callback) {
   const request: ParticipantCreateRequest = JSON.parse(event.body);
 
-  const userCreateResponse = new ParticipantCreateResponse(
-      uuid(),
-      request.userId,
-      request.hackathonId,
-      new Date(),
-  );
-  const response = buildResponse(200, userCreateResponse);
+  const participant = new Participant(request.userId, request.hackathonId);
+  await createParticipant(participant);
 
-  callback(null, response);
+  callback(null, buildResponse(
+      200,
+      new ParticipantCreateResponse(participant.id)));
 }

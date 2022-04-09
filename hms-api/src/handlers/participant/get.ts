@@ -1,12 +1,21 @@
-import {Uuid} from '../../util/uuids';
-import {getParticipant} from '../../mock/participant';
 import {buildResponse} from '../../rest/responses';
+import {getParticipant} from '../../repository/participant-repository';
+import ParticipantResponse from '../../rest/ParticipantResponse';
 
 // eslint-disable-next-line require-jsdoc
-export function get(event, context, callback) {
-  const id: Uuid = event.pathParameters.id;
+export async function get(event, context, callback) {
+  const participant = await getParticipant(event.pathParameters.id);
 
-  const response = buildResponse(200, getParticipant(id));
+  if (participant) {
+    const responseBody = new ParticipantResponse(
+        participant.userId,
+        participant.hackathonId,
+        participant.id,
+        participant.creationDate,
+    );
 
-  callback(null, response);
+    callback(null, buildResponse(200, responseBody));
+  } else {
+    callback(null, buildResponse(404, {}));
+  }
 }

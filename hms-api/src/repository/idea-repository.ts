@@ -13,14 +13,14 @@ import {Uuid} from '../util/uuids';
 import {getClient, safeTransformArray} from './dynamo-db';
 import Idea from './domain/Idea';
 
-const tableName = process.env.IDEA_TABLE_NAME;
-const byHackathonIdIndexName = process.env.IDEA_BY_HACKATHON_ID_INDEX_NAME;
+const table = process.env.IDEA_TABLE;
+const byHackathonIdIndex = process.env.IDEA_BY_HACKATHON_ID_INDEX;
 const dynamoDBClient = getClient();
 
 export async function listIdeas(hackathonId: Uuid): Promise<Idea[]> {
   const output = await dynamoDBClient.send(new QueryCommand({
-    TableName: tableName,
-    IndexName: byHackathonIdIndexName,
+    TableName: table,
+    IndexName: byHackathonIdIndex,
     KeyConditionExpression: 'hackathonId = :hId',
     ExpressionAttributeValues: {':hId': {'S': hackathonId}},
   }));
@@ -30,7 +30,7 @@ export async function listIdeas(hackathonId: Uuid): Promise<Idea[]> {
 
 export async function createIdea(idea: Idea) {
   await dynamoDBClient.send(new PutItemCommand({
-    TableName: tableName,
+    TableName: table,
     Item: {
       owner: {S: idea.ownerId},
       hackathonId: {S: idea.hackathonId},
@@ -49,7 +49,7 @@ export async function createIdea(idea: Idea) {
 
 export async function getIdea(id: Uuid): Promise<Idea | undefined> {
   const output = await dynamoDBClient.send(new GetItemCommand({
-    TableName: tableName,
+    TableName: table,
     Key: {id: {S: id}},
   }));
 
@@ -59,7 +59,7 @@ export async function getIdea(id: Uuid): Promise<Idea | undefined> {
 
 export async function removeIdea(id: Uuid) {
   await dynamoDBClient.send(new DeleteItemCommand({
-    TableName: tableName,
+    TableName: table,
     Key: {id: {S: id}},
   }));
 }

@@ -11,13 +11,14 @@ import {
 } from '@aws-sdk/client-dynamodb';
 import {Uuid} from '../util/uuids';
 import {getClient} from './dynamo-db';
-import Category from './domain/Category';
+import Participant from './domain/Participant';
 
-const table = process.env.CATEGORY_TABLE;
-const byHackathonIdIndex = process.env.CATEGORY_BY_HACKATHON_ID_INDEX;
+const table = process.env.PARTICIPANT_TABLE;
+const byHackathonIdIndex = process.env.PARTICIPANT_BY_HACKATHON_ID_INDEX;
 const dynamoDBClient = getClient();
 
-export async function listCategories(hackathonId: Uuid): Promise<Category[]> {
+export async function listParticipants(hackathonId: Uuid)
+    : Promise<Participant[]> {
   const output = await dynamoDBClient.send(new QueryCommand({
     TableName: table,
     IndexName: byHackathonIdIndex,
@@ -25,43 +26,45 @@ export async function listCategories(hackathonId: Uuid): Promise<Category[]> {
     ExpressionAttributeValues: {':hId': {'S': hackathonId}},
   }));
 
-  return output.Items.map((item) => itemToCategory(item));
+  return output.Items.map((item) => itemToParticipant(item));
 }
 
-export async function createCategory(category: Category) {
+export async function createParticipant(participant: Participant) {
   await dynamoDBClient.send(new PutItemCommand({
     TableName: table,
     Item: {
-      title: {S: category.title},
-      description: {S: category.description},
-      hackathonId: {S: category.hackathonId},
-      id: {S: category.id},
+      userId: {S: participant.userId},
+      hackathonId: {S: participant.hackathonId},
+      id: {S: participant.id},
+      creationDate: {S: participant.creationDate.toString()},
     },
   }));
 }
 
-export async function getCategory(id: Uuid): Promise<Category | undefined> {
+export async function getParticipant(id: Uuid)
+    : Promise<Participant | undefined> {
   const output = await dynamoDBClient.send(new GetItemCommand({
     TableName: table,
     Key: {id: {S: id}},
   }));
 
   const item = output.Item;
-  return item ? itemToCategory(item) : undefined;
+  return item ? itemToParticipant(item) : undefined;
 }
 
-export async function removeCategory(id: Uuid) {
+export async function removeParticipant(id: Uuid) {
   await dynamoDBClient.send(new DeleteItemCommand({
     TableName: table,
     Key: {id: {S: id}},
   }));
 }
 
-function itemToCategory(item: { [key: string]: AttributeValue }): Category {
-  return new Category(
-      item.title.S,
-      item.description.S,
+function itemToParticipant(item: { [key: string]: AttributeValue })
+    : Participant {
+  return new Participant(
+      item.userId.S,
       item.hackathonId.S,
       item.id.S,
+      new Date(item.creationDate.S),
   );
 }
