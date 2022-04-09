@@ -1,22 +1,23 @@
-import {uuid} from '../../util/uuids';
-import {UserCreateRequest, UserCreateResponse} from '../../rest/user';
 import {buildResponse} from '../../rest/responses';
+import UserCreateRequest from '../../rest/UserCreateRequest';
+import UserCreateResponse from '../../rest/UserCreateResponse';
+import User from '../../repository/domain/User';
+import {createUser} from '../../repository/user-repository';
+import {mapStringToRoles} from '../../repository/domain/Role';
 
 // eslint-disable-next-line require-jsdoc
-export function create(event, context, callback) {
+export async function create(event, context, callback) {
   const request: UserCreateRequest = JSON.parse(event.body);
 
-  const userCreateResponse = new UserCreateResponse(
-      uuid(),
+  const user = new User(
       request.lastName,
       request.firstName,
       request.emailAddress,
-      request.roles,
+      mapStringToRoles(request.roles),
       request.skills,
       request.imageUrl,
-      new Date(),
   );
-  const response = buildResponse(200, userCreateResponse);
+  await createUser(user);
 
-  callback(null, response);
+  callback(null, buildResponse(200, new UserCreateResponse(user.id)));
 }
