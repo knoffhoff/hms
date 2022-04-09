@@ -1,11 +1,13 @@
 /* eslint-disable require-jsdoc */
 
+import {Uuid} from '../util/uuids';
+
 export default class {
   lastName: string;
   firstName: string;
   emailAddress: string;
   roles: string[];
-  skills: string[];
+  skills: Uuid[];
   imageUrl: string;
 
   constructor(
@@ -13,7 +15,7 @@ export default class {
       firstName: string,
       emailAddress: string,
       roles: string[],
-      skills: string[],
+      skills: Uuid[],
       imageUrl: string,
   ) {
     this.lastName = lastName;

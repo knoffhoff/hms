@@ -21,6 +21,7 @@ provider:
   environment:
     HACKATHON_TABLE: hackathon
     USER_TABLE: user
+    SKILL_TABLE: skill
     CATEGORY_TABLE: category
     CATEGORY_BY_HACKATHON_ID_INDEX: by-hackathonId
     IDEA_TABLE: idea
@@ -41,6 +42,7 @@ provider:
           Resource:
             - arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.HACKATHON_TABLE}
             - arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.USER_TABLE}
+            - arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.SKILL_TABLE}
             - arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.CATEGORY_TABLE}
             - arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.CATEGORY_TABLE}/index/*
             - arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.IDEA_TABLE}
@@ -212,14 +214,14 @@ functions:
     handler: src/handlers/skill/get.get
     events:
       - http:
-          path: skill/{name}
+          path: skill/{id}
           method: get
           cors: true
   deleteSkill:
     handler: src/handlers/skill/remove.remove
     events:
       - http:
-          path: skill/{name}
+          path: skill/{id}
           method: delete
           cors: true
 
@@ -243,6 +245,19 @@ resources:
       DeletionPolicy: Retain
       Properties:
         TableName: ${self:provider.environment.USER_TABLE}
+        BillingMode: PAY_PER_REQUEST
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+
+    skillTable:
+      Type: AWS::DynamoDB::Table
+      DeletionPolicy: Retain
+      Properties:
+        TableName: ${self:provider.environment.SKILL_TABLE}
         BillingMode: PAY_PER_REQUEST
         AttributeDefinitions:
           - AttributeName: id

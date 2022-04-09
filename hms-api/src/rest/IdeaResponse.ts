@@ -1,6 +1,7 @@
 /* eslint-disable require-jsdoc */
 
 import {Uuid} from '../util/uuids';
+import SkillPreviewResponse from './SkillPreviewResponse';
 
 export default class {
   id: Uuid;
@@ -11,7 +12,7 @@ export default class {
   description: string;
   problem: string;
   goal: string;
-  requiredSkills: string[];
+  requiredSkills: SkillPreviewResponse[];
   categoryId: Uuid;
   creationDate: Date;
 
@@ -24,7 +25,7 @@ export default class {
       description: string,
       problem: string,
       goal: string,
-      requiredSkills: string[],
+      requiredSkills: SkillPreviewResponse[],
       categoryId: Uuid,
       creationDate: Date,
   ) {

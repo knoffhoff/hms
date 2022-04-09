@@ -1,15 +1,19 @@
-import {CreateSkillRequest, CreateSkillResponse} from '../../rest/skill';
 import {buildResponse} from '../../rest/responses';
+import SkillCreateRequest from '../../rest/SkillCreateRequest';
+import SkillCreateResponse from '../../rest/SkillCreateResponse';
+import Skill from '../../repository/domain/Skill';
+import {createSkill} from '../../repository/skill-repository';
 
 // eslint-disable-next-line require-jsdoc
-export function create(event, context, callback) {
-  const request: CreateSkillRequest = JSON.parse(event.body);
+export async function create(event, context, callback) {
+  const request: SkillCreateRequest = JSON.parse(event.body);
 
-  const createSkillResponse = new CreateSkillResponse(
+  const skill = new Skill(
       request.name,
       request.description,
   );
-  const response = buildResponse(201, createSkillResponse);
 
-  callback(null, response);
+  await createSkill(skill);
+
+  callback(null, buildResponse(201, new SkillCreateResponse(skill.id)));
 }

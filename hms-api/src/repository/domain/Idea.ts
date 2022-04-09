@@ -12,7 +12,7 @@ export default class {
   description: string;
   problem: string;
   goal: string;
-  requiredSkills: string[];
+  requiredSkills: Uuid[];
   categoryId: Uuid;
   creationDate: Date;
 
@@ -24,7 +24,7 @@ export default class {
       description: string,
       problem: string,
       goal: string,
-      requiredSkills: string[],
+      requiredSkills: Uuid[],
       categoryId: Uuid,
   );
   constructor(
@@ -35,7 +35,7 @@ export default class {
       description: string,
       problem: string,
       goal: string,
-      requiredSkills: string[],
+      requiredSkills: Uuid[],
       categoryId: Uuid,
       id: Uuid,
       creationDate: Date,
@@ -50,7 +50,7 @@ export default class {
       description: string,
       problem: string,
       goal: string,
-      requiredSkills: string[],
+      requiredSkills: Uuid[],
       categoryId: Uuid,
       id: Uuid = uuid(),
       creationDate: Date = new Date(),

@@ -8,14 +8,14 @@ POST {{host}}/restapis/{{api_id}}/local/_user_request_/skill
 Content-Type: application/json
 
 {
-  "name": "...",
-  "description": "..."
+  "name": "video games",
+  "description": "I'm basically a pro gamer"
 }
 
 ###
 # @name Get Skill
-GET {{host}}/restapis/{{api_id}}/local/_user_request_/skill/{{skill_name}}
+GET {{host}}/restapis/{{api_id}}/local/_user_request_/skill/{{skill_id}}
 
 ###
 # @name Remove Skill
-DELETE {{host}}/restapis/{{api_id}}/local/_user_request_/skill/{{skill_name}}
+DELETE {{host}}/restapis/{{api_id}}/local/_user_request_/skill/{{skill_id}}

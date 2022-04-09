@@ -122,7 +122,7 @@ $PUT --table-name idea --item '{
     "description": {"S": "Ulysses, Ulysses — Soaring through all the galaxies. In search of Earth, flying in to the night. Ulysses, Ulysses — Fighting evil and tyranny, with all his power, and with all of his might. Ulysses — no-one else can do the things you do. Ulysses — like a bolt of thunder from the blue. Ulysses — always fighting all the evil forces bringing peace and justice to all."},
     "problem": {"S": "Not enough bears"},
     "goal": {"S": "Have more bears"},
-    "requiredSkills": {"SS": ["bear handling"]},
+    "requiredSkills": {"SS": ["0c27e6c6-4a33-4b1f-a15e-46a8bed218e8"]},
     "categoryId": {"S": "7f38993d-073a-4932-af79-07440012f268"},
     "creationDate": {"S": "2021-12-01"}
 }'
@@ -136,7 +136,7 @@ $PUT --table-name idea --item '{
     "description": {"S": "One for all and all for one, Muskehounds are always ready. One for all and all for one, helping everybody. One for all and all for one, it'"'"'s a pretty story. Sharing everything with fun, that'"'"'s the way to be. One for all and all for one, Muskehounds are always ready. One for all and all for one, helping everybody. One for all and all for one, can sound pretty corny. If you'"'"'ve got a problem chum, think how it could be."},
     "problem": {"S": "Too many bees"},
     "goal": {"S": "Have less bees"},
-    "requiredSkills": {"SS": ["bee handling"]},
+    "requiredSkills": {"SS": ["7242a9e2-8af9-40c1-aa4c-af76faa013ca"]},
     "categoryId": {"S": "7f38993d-073a-4932-af79-07440012f268"},
     "creationDate": {"S": "2021-12-04"}
 }'
@@ -150,7 +150,7 @@ $PUT --table-name idea --item '{
     "description": {"S": "Hey there where ya goin'"'"', not exactly knowin'"'"', who says you have to call just one place home. He'"'"'s goin'"'"' everywhere, B.J. McKay and his best friend Bear. He just keeps on movin'"'"', ladies keep improvin'"'"', every day is better than the last. New dreams and better scenes, and best of all I don'"'"'t pay property tax. Rollin'"'"' down to Dallas, who'"'"'s providin'"'"' my palace, off to New Orleans or who knows where. Places new and ladies, too, I'"'"'m B.J. McKay and this is my best friend Bear."},
     "problem": {"S": "Wanna do something with ML"},
     "goal": {"S": "Obviously have another pointless ML project"},
-    "requiredSkills": {"SS": ["frontend", "backend"]},
+    "requiredSkills": {"SS": ["c02e0957-610e-43eb-8c37-651afc208c8f", "5e283cba-3ed6-4c2a-ad11-4d269fce3d43"]},
     "categoryId": {"S": "a8ce5468-ec97-4b99-acea-511c54817956"},
     "creationDate": {"S": "2021-12-05"}
 }'
@@ -164,7 +164,7 @@ $PUT --table-name idea --item '{
     "description": {"S": "There'"'"'s a voice that keeps on calling me. Down the road, that'"'"'s where I'"'"'ll always be. Every stop I make, I make a new friend. Can'"'"'t stay for long, just turn around and I'"'"'m gone again. Maybe tomorrow, I'"'"'ll want to settle down, Until tomorrow, I'"'"'ll just keep moving on."},
     "problem": {"S": "Not enough nice powerpoints"},
     "goal": {"S": "Make a kickass powerpoint"},
-    "requiredSkills": {"SS": ["frontend", "design"]},
+    "requiredSkills": {"SS": ["c02e0957-610e-43eb-8c37-651afc208c8f", "dc6a6f0b-06bf-46cb-b8b1-1c3c17db197c"]},
     "categoryId": {"S": "a8ce5468-ec97-4b99-acea-511c54817956"},
     "creationDate": {"S": "2021-12-06"}
 }'
@@ -178,7 +178,7 @@ $PUT --table-name idea --item '{
     "description": {"S": "Mutley, you snickering, floppy eared hound. When courage is needed, you'"'"'re never around. Those medals you wear on your moth-eaten chest should be there for bungling at which you are best. So, stop that pigeon, stop that pigeon, stop that pigeon, stop that pigeon, stop that pigeon, stop that pigeon, stop that pigeon. Howwww! Nab him, jab him, tab him, grab him, stop that pigeon now."},
     "problem": {"S": "They don'"'"'t make software like they did in my day"},
     "goal": {"S": "Have nice software"},
-    "requiredSkills": {"SS": ["frontend"]},
+    "requiredSkills": {"SS": ["c02e0957-610e-43eb-8c37-651afc208c8f"]},
     "categoryId": {"S": "7f38993d-073a-4932-af79-07440012f268"},
     "creationDate": {"S": "2021-12-09"}
 }'
@@ -192,7 +192,7 @@ $PUT --table-name idea --item '{
     "description": {"S": "Hong Kong Phooey, number one super guy. Hong Kong Phooey, quicker than the human eye. He'"'"'s got style, a groovy style, and a car that just won'"'"'t stop. When the going gets tough, he'"'"'s really rough, with a Hong Kong Phooey chop (Hi-Ya!). Hong Kong Phooey, number one super guy. Hong Kong Phooey, quicker than the human eye. Hong Kong Phooey, he'"'"'s fan-riffic!"},
     "problem": {"S": "Bees like to party but have no hats"},
     "goal": {"S": "Have tiny hats for bees"},
-    "requiredSkills": {"SS": ["design", "bee handling"]},
+    "requiredSkills": {"SS": ["dc6a6f0b-06bf-46cb-b8b1-1c3c17db197c", "7242a9e2-8af9-40c1-aa4c-af76faa013ca"]},
     "categoryId": {"S": "52c0bbde-6360-451c-bf50-b56694f56053"},
     "creationDate": {"S": "2022-03-28"}
 }'
@@ -206,7 +206,7 @@ $PUT --table-name idea --item '{
     "description": {"S": "Children of the sun, see your time has just begun, searching for your ways, through adventures every day. Every day and night, with the condor in flight, with all your friends in tow, you search for the Cities of Gold. Ah-ah-ah-ah-ah… wishing for The Cities of Gold. Ah-ah-ah-ah-ah… some day we will find The Cities of Gold. Do-do-do-do ah-ah-ah, do-do-do-do, Cities of Gold. Do-do-do-do, Cities of Gold. Ah-ah-ah-ah-ah… some day we will find The Cities of Gold."},
     "problem": {"S": "Bears don'"'"'t look like bees"},
     "goal": {"S": "Make bears that look like bees"},
-    "requiredSkills": {"SS": ["bee handling", "bear handling"]},
+    "requiredSkills": {"SS": ["7242a9e2-8af9-40c1-aa4c-af76faa013ca", "0c27e6c6-4a33-4b1f-a15e-46a8bed218e8"]},
     "categoryId": {"S": "52c0bbde-6360-451c-bf50-b56694f56053"},
     "creationDate": {"S": "2022-03-29"}
 }'
@@ -220,7 +220,7 @@ $PUT --table-name idea --item '{
     "description": {"S": "80 days around the world, we'"'"'ll find a pot of gold just sitting where the rainbow'"'"'s ending. Time — we'"'"'ll fight against the time, and we'"'"'ll fly on the white wings of the wind. 80 days around the world, no we won'"'"'t say a word before the ship is really back. Round, round, all around the world. Round, all around the world. Round, all around the world. Round, all around the world."},
     "problem": {"S": "Bees aren'"'"'t nearly scary enough"},
     "goal": {"S": "Have horrifying bear like bees"},
-    "requiredSkills": {"SS": ["bee handling", "bear handling"]},
+    "requiredSkills": {"SS": ["7242a9e2-8af9-40c1-aa4c-af76faa013ca", "0c27e6c6-4a33-4b1f-a15e-46a8bed218e8"]},
     "categoryId": {"S": "52c0bbde-6360-451c-bf50-b56694f56053"},
     "creationDate": {"S": "2022-04-01"}
 }'
@@ -234,7 +234,7 @@ $PUT --table-name idea --item '{
     "description": {"S": "Thundercats are on the move, Thundercats are loose. Feel the magic, hear the roar, Thundercats are loose. Thunder, thunder, thunder, Thundercats! Thunder, thunder, thunder, Thundercats! Thunder, thunder, thunder, Thundercats! Thunder, thunder, thunder, Thundercats! Thundercats!"},
     "problem": {"S": "Feet don'"'"'t have enough purpose built software"},
     "goal": {"S": "Make a cool app for feet"},
-    "requiredSkills": {"SS": ["backend"]},
+    "requiredSkills": {"SS": ["5e283cba-3ed6-4c2a-ad11-4d269fce3d43"]},
     "categoryId": {"S": "52c0bbde-6360-451c-bf50-b56694f56053"},
     "creationDate": {"S": "2022-04-01"}
 }'
@@ -248,7 +248,7 @@ $PUT --table-name idea --item '{
     "description": {"S": "There'"'"'s a voice that keeps on calling me. Down the road, that'"'"'s where I'"'"'ll always be. Every stop I make, I make a new friend. Can'"'"'t stay for long, just turn around and I'"'"'m gone again. Maybe tomorrow, I'"'"'ll want to settle down, Until tomorrow, I'"'"'ll just keep moving on."},
     "problem": {"S": "Hands don'"'"'t have enough purpose built software"},
     "goal": {"S": "Make a cool app for hands"},
-    "requiredSkills": {"SS": ["frontend"]},
+    "requiredSkills": {"SS": ["c02e0957-610e-43eb-8c37-651afc208c8f"]},
     "categoryId": {"S": "52c0bbde-6360-451c-bf50-b56694f56053"},
     "creationDate": {"S": "2022-04-01"}
 }'
@@ -262,7 +262,7 @@ $PUT --table-name idea --item '{
     "description": {"S": "Mutley, you snickering, floppy eared hound. When courage is needed, you'"'"'re never around. Those medals you wear on your moth-eaten chest should be there for bungling at which you are best. So, stop that pigeon, stop that pigeon, stop that pigeon, stop that pigeon, stop that pigeon, stop that pigeon, stop that pigeon. Howwww! Nab him, jab him, tab him, grab him, stop that pigeon now."},
     "problem": {"S": "We need test data"},
     "goal": {"S": "We will have test data"},
-    "requiredSkills": {"SS": ["design", "backend", "frontend"]},
+    "requiredSkills": {"SS": ["dc6a6f0b-06bf-46cb-b8b1-1c3c17db197c", "5e283cba-3ed6-4c2a-ad11-4d269fce3d43", "c02e0957-610e-43eb-8c37-651afc208c8f"]},
     "categoryId": {"S": "52c0bbde-6360-451c-bf50-b56694f56053"},
     "creationDate": {"S": "2022-04-02"}
 }'
@@ -276,7 +276,7 @@ $PUT --table-name idea --item '{
     "description": {"S": "One for all and all for one, Muskehounds are always ready. One for all and all for one, helping everybody. One for all and all for one, it'"'"'s a pretty story. Sharing everything with fun, that'"'"'s the way to be. One for all and all for one, Muskehounds are always ready. One for all and all for one, helping everybody. One for all and all for one, can sound pretty corny. If you'"'"'ve got a problem chum, think how it could be."},
     "problem": {"S": "We REALLY need test data"},
     "goal": {"S": "We will have test data"},
-    "requiredSkills": {"SS": ["bear handling", "design", "frontend"]},
+    "requiredSkills": {"SS": ["0c27e6c6-4a33-4b1f-a15e-46a8bed218e8", "dc6a6f0b-06bf-46cb-b8b1-1c3c17db197c", "c02e0957-610e-43eb-8c37-651afc208c8f"]},
     "categoryId": {"S": "52c0bbde-6360-451c-bf50-b56694f56053"},
     "creationDate": {"S": "2022-04-03"}
 }'
@@ -290,7 +290,7 @@ $PUT --table-name idea --item '{
     "description": {"S": "Knight Rider, a shadowy flight into the dangerous world of a man who does not exist. Michael Knight, a young loner on a crusade to champion the cause of the innocent, the helpless in a world of criminals who operate above the law."},
     "problem": {"S": "Animals don'"'"'t have cool enough headbands"},
     "goal": {"S": "Really stylish animals"},
-    "requiredSkills": {"SS": ["bear handling", "bee handling", "design", "backend", "frontend"]},
+    "requiredSkills": {"SS": ["0c27e6c6-4a33-4b1f-a15e-46a8bed218e8", "7242a9e2-8af9-40c1-aa4c-af76faa013ca", "dc6a6f0b-06bf-46cb-b8b1-1c3c17db197c", "5e283cba-3ed6-4c2a-ad11-4d269fce3d43", "c02e0957-610e-43eb-8c37-651afc208c8f"]},
     "categoryId": {"S": "52c0bbde-6360-451c-bf50-b56694f56053"},
     "creationDate": {"S": "2022-04-03"}
 }'
@@ -304,7 +304,7 @@ $PUT --table-name idea --item '{
     "description": {"S": "There'"'"'s a voice that keeps on calling me. Down the road, that'"'"'s where I'"'"'ll always be. Every stop I make, I make a new friend. Can'"'"'t stay for long, just turn around and I'"'"'m gone again. Maybe tomorrow, I'"'"'ll want to settle down, Until tomorrow, I'"'"'ll just keep moving on."},
     "problem": {"S": "Just like whatever"},
     "goal": {"S": "Just stuff"},
-    "requiredSkills": {"SS": ["frontend"]},
+    "requiredSkills": {"SS": ["c02e0957-610e-43eb-8c37-651afc208c8f"]},
     "categoryId": {"S": "52c0bbde-6360-451c-bf50-b56694f56053"},
     "creationDate": {"S": "2022-04-04"}
 }'
@@ -371,7 +371,7 @@ $PUT --table-name user --item '{
   "lastName": {"S": "Greggson"},
   "emailAddress": {"S": "greg.greggson@internet.com"},
   "roles": {"SS": ["Admin", "Participant"]},
-  "skills": {"SS": ["frontend", "backend"]},
+  "skills": {"SS": ["c02e0957-610e-43eb-8c37-651afc208c8f", "5e283cba-3ed6-4c2a-ad11-4d269fce3d43"]},
   "imageUrl": {"S": ""},
   "creationDate": {"S": "2021-03-01"}
 }'
@@ -382,7 +382,7 @@ $PUT --table-name user --item '{
   "lastName": {"S": "Q"},
   "emailAddress": {"S": "susy.q@internet.com"},
   "roles": {"SS": ["Participant"]},
-  "skills": {"SS": ["bear handling", "backend"]},
+  "skills": {"SS": ["0c27e6c6-4a33-4b1f-a15e-46a8bed218e8", "5e283cba-3ed6-4c2a-ad11-4d269fce3d43"]},
   "imageUrl": {"S": ""},
   "creationDate": {"S": "2021-03-02"}
 }'
@@ -393,7 +393,7 @@ $PUT --table-name user --item '{
   "lastName": {"S": "Mouth"},
   "emailAddress": {"S": "dart.mouth@internet.com"},
   "roles": {"SS": ["Participant"]},
-  "skills": {"SS": ["design", "frontend", "backend"]},
+  "skills": {"SS": ["dc6a6f0b-06bf-46cb-b8b1-1c3c17db197c", "c02e0957-610e-43eb-8c37-651afc208c8f", "5e283cba-3ed6-4c2a-ad11-4d269fce3d43"]},
   "imageUrl": {"S": ""},
   "creationDate": {"S": "2021-03-03"}
 }'
@@ -404,7 +404,7 @@ $PUT --table-name user --item '{
   "lastName": {"S": "Nell"},
   "emailAddress": {"S": "cor.nell@internet.com"},
   "roles": {"SS": ["Participant"]},
-  "skills": {"SS": ["bee handling", "beer handling", "design"]},
+  "skills": {"SS": ["7242a9e2-8af9-40c1-aa4c-af76faa013ca", "beer handling", "dc6a6f0b-06bf-46cb-b8b1-1c3c17db197c"]},
   "imageUrl": {"S": ""},
   "creationDate": {"S": "2021-03-03"}
 }'
@@ -415,7 +415,7 @@ $PUT --table-name user --item '{
   "lastName": {"S": "McBaldhead"},
   "emailAddress": {"S": "baldy.mcbaldhead@internet.com"},
   "roles": {"SS": ["Participant"]},
-  "skills": {"SS": ["bee handling", "design"]},
+  "skills": {"SS": ["7242a9e2-8af9-40c1-aa4c-af76faa013ca", "dc6a6f0b-06bf-46cb-b8b1-1c3c17db197c"]},
   "imageUrl": {"S": ""},
   "creationDate": {"S": "2021-03-05"}
 }'
@@ -430,3 +430,34 @@ $PUT --table-name user --item '{
   "imageUrl": {"S": ""},
   "creationDate": {"S": "2021-03-06"}
 }'
+
+$PUT --table-name skill --item '{
+  "id": {"S": "c02e0957-610e-43eb-8c37-651afc208c8f"},
+  "name": {"S": "frontend"},
+  "description": {"S": "Pretty programming"}
+}'
+
+$PUT --table-name skill --item '{
+  "id": {"S": "5e283cba-3ed6-4c2a-ad11-4d269fce3d43"},
+  "name": {"S": "backend"},
+  "description": {"S": "Programming for the basement kids"}
+}'
+
+$PUT --table-name skill --item '{
+  "id": {"S": "dc6a6f0b-06bf-46cb-b8b1-1c3c17db197c"},
+  "name": {"S": "design"},
+  "description": {"S": "Designing things and making them pretty"}
+}'
+
+$PUT --table-name skill --item '{
+  "id": {"S": "0c27e6c6-4a33-4b1f-a15e-46a8bed218e8"},
+  "name": {"S": "bear handling"},
+  "description": {"S": "You can handle bears... without getting eaten"}
+}'
+
+$PUT --table-name skill --item '{
+  "id": {"S": "7242a9e2-8af9-40c1-aa4c-af76faa013ca"},
+  "name": {"S": "bee handling"},
+  "description": {"S": "You can handle bees... and not get stung too much"}
+}'
+
