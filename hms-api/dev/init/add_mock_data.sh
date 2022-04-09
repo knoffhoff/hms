@@ -1,7 +1,7 @@
 #!/bin/bash
 # TODO make it so this script also clears out the DB before putting data in
 
-PUT='aws --endpoint-url=http://localhost:4566 --region eu-central-1 dynamodb put-item'
+PUT='aws --endpoint-url=http://localhost:4566 --region eu-central-1 dynamodb put-item '
 
 $PUT --table-name hackathon --item '{
     "id": {"S": "e955fe4b-7ce7-4904-ae6f-22a8985f74a8"},
@@ -363,4 +363,70 @@ $PUT --table-name participant --item '{
   "userId": {"S": "9b184ff3-8b63-4807-a3c6-89973c126d75"},
   "hackathonId": {"S": "4eb2d486-c786-431e-a4fd-4c093ed30642"},
   "creationDate": {"S": "2022-03-07"}
+}'
+
+$PUT --table-name user --item '{
+  "id": {"S": "629f52c9-df29-491b-82a4-bdd80806338d"},
+  "firstName": {"S": "Greg"},
+  "lastName": {"S": "Greggson"},
+  "emailAddress": {"S": "greg.greggson@internet.com"},
+  "roles": {"SS": ["Admin", "Participant"]},
+  "skills": {"SS": ["frontend", "backend"]},
+  "imageUrl": {"S": ""},
+  "creationDate": {"S": "2021-03-01"}
+}'
+
+$PUT --table-name user --item '{
+  "id": {"S": "c3480d57-5670-4364-b0cc-9038a83de628"},
+  "firstName": {"S": "Susy"},
+  "lastName": {"S": "Q"},
+  "emailAddress": {"S": "susy.q@internet.com"},
+  "roles": {"SS": ["Participant"]},
+  "skills": {"SS": ["bear handling", "backend"]},
+  "imageUrl": {"S": ""},
+  "creationDate": {"S": "2021-03-02"}
+}'
+
+$PUT --table-name user --item '{
+  "id": {"S": "c16785af-d7bd-442c-b3f5-257fad9ad2ac"},
+  "firstName": {"S": "Dart"},
+  "lastName": {"S": "Mouth"},
+  "emailAddress": {"S": "dart.mouth@internet.com"},
+  "roles": {"SS": ["Participant"]},
+  "skills": {"SS": ["design", "frontend", "backend"]},
+  "imageUrl": {"S": ""},
+  "creationDate": {"S": "2021-03-03"}
+}'
+
+$PUT --table-name user --item '{
+  "id": {"S": "c34a519a-be46-410c-828e-0f806cfca620"},
+  "firstName": {"S": "Cor"},
+  "lastName": {"S": "Nell"},
+  "emailAddress": {"S": "cor.nell@internet.com"},
+  "roles": {"SS": ["Participant"]},
+  "skills": {"SS": ["bee handling", "beer handling", "design"]},
+  "imageUrl": {"S": ""},
+  "creationDate": {"S": "2021-03-03"}
+}'
+
+$PUT --table-name user --item '{
+  "id": {"S": "f6fa2b8e-68ed-4486-b8df-f93b87ff23e5"},
+  "firstName": {"S": "Baldy"},
+  "lastName": {"S": "McBaldhead"},
+  "emailAddress": {"S": "baldy.mcbaldhead@internet.com"},
+  "roles": {"SS": ["Participant"]},
+  "skills": {"SS": ["bee handling", "design"]},
+  "imageUrl": {"S": ""},
+  "creationDate": {"S": "2021-03-05"}
+}'
+
+$PUT --table-name user --item '{
+  "id": {"S": "9b184ff3-8b63-4807-a3c6-89973c126d75"},
+  "firstName": {"S": "Micheal"},
+  "lastName": {"S": "Scott"},
+  "emailAddress": {"S": "m.g.s@internet.com"},
+  "roles": {"SS": ["Participant"]},
+  "skills": {"NULL": true},
+  "imageUrl": {"S": ""},
+  "creationDate": {"S": "2021-03-06"}
 }'

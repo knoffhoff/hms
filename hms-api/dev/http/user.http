@@ -8,8 +8,12 @@ POST {{host}}/restapis/{{api_id}}/local/_user_request_/user
 Content-Type: application/json
 
 {
-  "name": "...",
-  "description": "..."
+  "lastName": "Musterdude",
+  "firstName": "Matthew",
+  "emailAddress": "musty.matt@inter.net",
+  "roles": ["Participant"],
+  "skills": ["bee handling", "frontend"],
+  "imageUrl": ""
 }
 
 ###
