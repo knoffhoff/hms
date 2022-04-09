@@ -136,6 +136,20 @@ the [http-client.env.json](dev/http/http-client.env.json) file in the `local.api
 }
 ```
 
+##### Mock Data
+
+To facilitate manual testing of the HMS-App and HMS-API mock data can be loaded into the database. This is performed by
+using the [add_mock_data.sh](dev/init/add_mock_data.sh) script. This should be done **AFTER** starting up the HMS-API
+locally and will make requests using the AWS CLI.
+
+On Linux/OSX run:
+
+```shell
+./add_mock_data.sh
+```
+
+At present there is no Windows version of this file, but can be added when the need arises.
+
 ## Deploying
 
 The HMS API is deployed both locally and into "production" by using the Serverless framework. When developing and
@@ -147,10 +161,6 @@ found [here](https://www.serverless.com/framework/docs/providers/aws/cli-referen
 [//]: # (TODO we will need some information about getting login credentials here eventually)
 **THIS SECTION IS INCOMPLETE AND NEEDS SOME WORK**
 
-```shell
-sls deploy
-```
-
 ### Locally
 
 [//]: # (TODO Likely this section is a bit lacking and could include more about how this works)
@@ -160,5 +170,5 @@ sls deploy
 In order to start up the LocalStack environment and deploy the HMS API locally you can run:
 
 ```shell
-sls deploy --stage local
+npm start
 ```

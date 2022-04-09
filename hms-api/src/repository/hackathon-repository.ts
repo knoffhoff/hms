@@ -13,12 +13,12 @@ import {
 import {Uuid} from '../util/uuids';
 import {getClient, safeTransformArray} from './dynamo-db';
 
-const tableName = process.env.HACKATHON_TABLE_NAME;
+const table = process.env.HACKATHON_TABLE;
 const dynamoDBClient = getClient();
 
 export async function listHackathons(): Promise<Hackathon[]> {
   const output = await dynamoDBClient.send(new ScanCommand({
-    TableName: tableName,
+    TableName: table,
   }));
 
   return output.Items.map((item) => itemToHackathon(item));
@@ -26,7 +26,7 @@ export async function listHackathons(): Promise<Hackathon[]> {
 
 export async function createHackathon(hackathon: Hackathon) {
   await dynamoDBClient.send(new PutItemCommand({
-    TableName: tableName,
+    TableName: table,
     Item: {
       title: {S: hackathon.title},
       startDate: {S: hackathon.startDate.toString()},
@@ -42,7 +42,7 @@ export async function createHackathon(hackathon: Hackathon) {
 
 export async function getHackathon(id: Uuid): Promise<Hackathon | undefined> {
   const output = await dynamoDBClient.send(new GetItemCommand({
-    TableName: tableName,
+    TableName: table,
     Key: {id: {S: id}},
   }));
 
@@ -53,7 +53,7 @@ export async function getHackathon(id: Uuid): Promise<Hackathon | undefined> {
 export async function removeHackathon(id: Uuid) {
   // TODO determine if something was actually deleted
   await dynamoDBClient.send(new DeleteItemCommand({
-    TableName: tableName,
+    TableName: table,
     Key: {id: {S: id}},
   }));
 }
