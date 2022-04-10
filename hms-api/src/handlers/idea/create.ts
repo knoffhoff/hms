@@ -1,13 +1,14 @@
-import {uuid} from '../../util/uuids';
-import {IdeaCreateRequest, IdeaCreateResponse} from '../../rest/idea';
 import {buildResponse} from '../../rest/responses';
+import IdeaCreateRequest from '../../rest/IdeaCreateRequest';
+import IdeaCreateResponse from '../../rest/IdeaCreateResponse';
+import Idea from '../../repository/domain/Idea';
+import {createIdea} from '../../repository/idea-repository';
 
 // eslint-disable-next-line require-jsdoc
-export function create(event, context, callback) {
+export async function create(event, context, callback) {
   const request: IdeaCreateRequest = JSON.parse(event.body);
 
-  const ideaCreateResponse = new IdeaCreateResponse(
-      uuid(),
+  const idea = new Idea(
       request.ownerId,
       request.hackathonId,
       request.participantIds,
@@ -17,9 +18,8 @@ export function create(event, context, callback) {
       request.goal,
       request.requiredSkills,
       request.categoryId,
-      new Date(),
   );
-  const response = buildResponse(201, ideaCreateResponse);
+  await createIdea(idea);
 
-  callback(null, response);
+  callback(null, buildResponse(201, new IdeaCreateResponse(idea.id)));
 }

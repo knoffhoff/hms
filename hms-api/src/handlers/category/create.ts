@@ -1,21 +1,19 @@
-import {uuid} from '../../util/uuids';
-import {
-  CategoryCreateRequest,
-  CategoryCreateResponse,
-} from '../../rest/category';
 import {buildResponse} from '../../rest/responses';
+import CategoryCreateRequest from '../../rest/CategoryCreateRequest';
+import CategoryCreateResponse from '../../rest/CategoryCreateResponse';
+import Category from '../../repository/domain/Category';
+import {createCategory} from '../../repository/category-repository';
 
 // eslint-disable-next-line require-jsdoc
-export function create(event, context, callback) {
+export async function create(event, context, callback) {
   const request: CategoryCreateRequest = JSON.parse(event.body);
 
-  const categoryCreateResponse = new CategoryCreateResponse(
-      uuid(),
+  const category = new Category(
       request.title,
       request.description,
       request.hackathonId,
   );
-  const response = buildResponse(200, categoryCreateResponse);
+  await createCategory(category);
 
-  callback(null, response);
+  callback(null, buildResponse(200, new CategoryCreateResponse(category.id)));
 }

@@ -1,12 +1,32 @@
 import {Uuid} from '../../util/uuids';
-import {getUser} from '../../mock/user';
 import {buildResponse} from '../../rest/responses';
+import {getUser} from '../../repository/user-repository';
+import UserResponse from '../../rest/UserResponse';
+import {mapRolesToStrings} from '../../repository/domain/Role';
+import {mapSkillToSkillPreview} from '../../rest/SkillPreviewResponse';
+import {getSkills} from '../../repository/skill-repository';
 
 // eslint-disable-next-line require-jsdoc
-export function get(event, context, callback) {
+export async function get(event, context, callback) {
   const id: Uuid = event.pathParameters.id;
+  const user = await getUser(id);
 
-  const response = buildResponse(200, getUser(id));
+  if (user) {
+    const skills = await getSkills(user.skills);
 
-  callback(null, response);
+    const responseBody = new UserResponse(
+        user.id,
+        user.lastName,
+        user.firstName,
+        user.emailAddress,
+        mapRolesToStrings(user.roles),
+        skills.map((skill) => mapSkillToSkillPreview(skill)),
+        user.imageUrl,
+        user.creationDate,
+    );
+
+    callback(null, buildResponse(200, responseBody));
+  } else {
+    callback(null, buildResponse(404, {}));
+  }
 }

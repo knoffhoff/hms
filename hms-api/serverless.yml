@@ -19,8 +19,15 @@ provider:
   runtime: nodejs14.x
   region: eu-central-1
   environment:
-    STAGE: ${opt:stage}
-    HACKATHON_TABLE_NAME: hackathon
+    HACKATHON_TABLE: hackathon
+    USER_TABLE: user
+    SKILL_TABLE: skill
+    CATEGORY_TABLE: category
+    CATEGORY_BY_HACKATHON_ID_INDEX: by-hackathonId
+    IDEA_TABLE: idea
+    IDEA_BY_HACKATHON_ID_INDEX: by-hackathonId
+    PARTICIPANT_TABLE: participant
+    PARTICIPANT_BY_HACKATHON_ID_INDEX: by-hackathonId
   iam:
     role:
       statements:
@@ -33,7 +40,15 @@ provider:
             - dynamodb:UpdateItem
             - dynamodb:DeleteItem
           Resource:
-            - 'arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.HACKATHON_TABLE_NAME}'
+            - arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.HACKATHON_TABLE}
+            - arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.USER_TABLE}
+            - arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.SKILL_TABLE}
+            - arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.CATEGORY_TABLE}
+            - arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.CATEGORY_TABLE}/index/*
+            - arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.IDEA_TABLE}
+            - arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.IDEA_TABLE}/index/*
+            - arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.PARTICIPANT_TABLE}
+            - arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.PARTICIPANT_BY_HACKATHON_ID_INDEX}/index/*
 
 functions:
   createHackathon:
@@ -199,14 +214,14 @@ functions:
     handler: src/handlers/skill/get.get
     events:
       - http:
-          path: skill/{name}
+          path: skill/{id}
           method: get
           cors: true
   deleteSkill:
     handler: src/handlers/skill/remove.remove
     events:
       - http:
-          path: skill/{name}
+          path: skill/{id}
           method: delete
           cors: true
 
@@ -216,7 +231,7 @@ resources:
       Type: AWS::DynamoDB::Table
       DeletionPolicy: Retain
       Properties:
-        TableName: hackathon
+        TableName: ${self:provider.environment.HACKATHON_TABLE}
         BillingMode: PAY_PER_REQUEST
         AttributeDefinitions:
           - AttributeName: id
@@ -224,3 +239,101 @@ resources:
         KeySchema:
           - AttributeName: id
             KeyType: HASH
+
+    userTable:
+      Type: AWS::DynamoDB::Table
+      DeletionPolicy: Retain
+      Properties:
+        TableName: ${self:provider.environment.USER_TABLE}
+        BillingMode: PAY_PER_REQUEST
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+
+    skillTable:
+      Type: AWS::DynamoDB::Table
+      DeletionPolicy: Retain
+      Properties:
+        TableName: ${self:provider.environment.SKILL_TABLE}
+        BillingMode: PAY_PER_REQUEST
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+
+    categoryTable:
+      Type: AWS::DynamoDB::Table
+      DeletionPolicy: Retain
+      Properties:
+        TableName: ${self:provider.environment.CATEGORY_TABLE}
+        BillingMode: PAY_PER_REQUEST
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+          - AttributeName: hackathonId
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        GlobalSecondaryIndexes:
+          - IndexName: ${self:provider.environment.CATEGORY_BY_HACKATHON_ID_INDEX}
+            KeySchema:
+              - AttributeName: hackathonId
+                KeyType: HASH
+              - AttributeName: id
+                KeyType: RANG
+            Projection:
+              ProjectionType: ALL
+
+    ideaTable:
+      Type: AWS::DynamoDB::Table
+      DeletionPolicy: Retain
+      Properties:
+        TableName: ${self:provider.environment.IDEA_TABLE}
+        BillingMode: PAY_PER_REQUEST
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+          - AttributeName: hackathonId
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        GlobalSecondaryIndexes:
+          - IndexName: ${self:provider.environment.IDEA_BY_HACKATHON_ID_INDEX}
+            KeySchema:
+              - AttributeName: hackathonId
+                KeyType: HASH
+              - AttributeName: id
+                KeyType: RANG
+            Projection:
+              ProjectionType: ALL
+
+    participantTable:
+      Type: AWS::DynamoDB::Table
+      DeletionPolicy: Retain
+      Properties:
+        TableName: ${self:provider.environment.PARTICIPANT_TABLE}
+        BillingMode: PAY_PER_REQUEST
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+          - AttributeName: hackathonId
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        GlobalSecondaryIndexes:
+          - IndexName: ${self:provider.environment.PARTICIPANT_BY_HACKATHON_ID_INDEX}
+            KeySchema:
+              - AttributeName: hackathonId
+                KeyType: HASH
+              - AttributeName: id
+                KeyType: RANG
+            Projection:
+              ProjectionType: ALL

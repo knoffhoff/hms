@@ -1,47 +1,70 @@
 import {uuid, Uuid} from '../../util/uuids';
-import {Participant} from './Participant';
-import Hackathon from './Hackathon';
-import {Skill} from './Skill';
-import {Category} from './Category';
 
 /**
  * An Idea is... well an Idea idk it's a thing people work on
  */
-export class Idea {
+export default class {
   id: Uuid;
-  owner: Participant;
-  hackathon: Hackathon;
-  participants: Participant[];
+  ownerId: Uuid;
+  hackathonId: Uuid;
+  participantIds: Uuid[];
   title: string;
   description: string;
   problem: string;
   goal: string;
-  requiredSkills: Skill[];
-  category: Category;
+  requiredSkills: Uuid[];
+  categoryId: Uuid;
   creationDate: Date;
 
-  // eslint-disable-next-line require-jsdoc
   constructor(
-      owner: Participant,
-      hackathon: Hackathon,
-      participants: Participant[],
+      ownerId: Uuid,
+      hackathonId: Uuid,
+      participantIds: Uuid[],
       title: string,
       description: string,
       problem: string,
       goal: string,
-      requiredSkills: Skill[],
-      category: Category,
+      requiredSkills: Uuid[],
+      categoryId: Uuid,
+  );
+  constructor(
+      ownerId: Uuid,
+      hackathonId: Uuid,
+      participantIds: Uuid[],
+      title: string,
+      description: string,
+      problem: string,
+      goal: string,
+      requiredSkills: Uuid[],
+      categoryId: Uuid,
+      id: Uuid,
+      creationDate: Date,
+  );
+
+  // eslint-disable-next-line require-jsdoc
+  constructor(
+      ownerId: Uuid,
+      hackathonId: Uuid,
+      participantIds: Uuid[],
+      title: string,
+      description: string,
+      problem: string,
+      goal: string,
+      requiredSkills: Uuid[],
+      categoryId: Uuid,
+      id: Uuid = uuid(),
+      creationDate: Date = new Date(),
   ) {
-    this.id = uuid();
-    this.owner = owner;
-    this.hackathon = hackathon;
-    this.participants = participants;
+    this.id = id;
+    this.ownerId = ownerId;
+    this.hackathonId = hackathonId;
+    this.participantIds = participantIds;
     this.title = title;
     this.description = description;
     this.problem = problem;
     this.goal = goal;
     this.requiredSkills = requiredSkills;
-    this.category = category;
-    this.creationDate = new Date();
+    this.categoryId = categoryId;
+    this.creationDate = creationDate;
   }
 }

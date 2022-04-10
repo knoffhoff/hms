@@ -1,11 +1,12 @@
 import {buildResponse} from '../../rest/responses';
-import {SkillDeleteResponse} from '../../rest/skill';
+import SkillDeleteResponse from '../../rest/SkillDeleteResponse';
+import {removeSkill} from '../../repository/skill-repository';
 
 // eslint-disable-next-line require-jsdoc
-export function remove(event, context, callback) {
-  const name: string = event.pathParameters.name;
+export async function remove(event, context, callback) {
+  const id: string = event.pathParameters.id;
 
-  const response = buildResponse(200, new SkillDeleteResponse(name));
+  await removeSkill(id);
 
-  callback(null, response);
+  callback(null, buildResponse(200, new SkillDeleteResponse(id)));
 }

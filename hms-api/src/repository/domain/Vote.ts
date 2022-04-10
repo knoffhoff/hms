@@ -1,13 +1,10 @@
-import {Participant} from './Participant';
-import {Category} from './Category';
-import {Idea} from './Idea';
-import Hackathon from './Hackathon';
+import {Uuid} from '../../util/uuids';
 
 // eslint-disable-next-line require-jsdoc
-export class Vote {
-  participant: Participant;
-  category: Category;
-  idea: Idea;
-  hackathon: Hackathon;
-  rank: Number;
+export default class {
+  participant: Uuid;
+  category: Uuid;
+  idea: Uuid;
+  hackathon: Uuid;
+  rank: number;
 }
