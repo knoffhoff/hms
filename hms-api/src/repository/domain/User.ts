@@ -10,7 +10,7 @@ export default class {
   firstName: string;
   emailAddress: string;
   roles: Role[];
-  skills: string[];
+  skills: Uuid[];
   imageUrl: string;
   creationDate: Date;
 
@@ -19,7 +19,7 @@ export default class {
       firstName: string,
       emailAddress: string,
       roles: Role[],
-      skills: string[],
+      skills: Uuid[],
       imageUrl: string,
   );
   constructor(
@@ -27,7 +27,7 @@ export default class {
       firstName: string,
       emailAddress: string,
       roles: Role[],
-      skills: string[],
+      skills: Uuid[],
       imageUrl: string,
       id: Uuid,
       creationDate: Date,
@@ -39,7 +39,7 @@ export default class {
       firstName: string,
       emailAddress: string,
       roles: Role[],
-      skills: string[],
+      skills: Uuid[],
       imageUrl: string,
       id: Uuid = uuid(),
       creationDate: Date = new Date(),

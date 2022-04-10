@@ -10,7 +10,7 @@ export default class {
   description: string;
   problem: string;
   goal: string;
-  requiredSkills: string[];
+  requiredSkills: Uuid[];
   categoryId: Uuid;
 
   constructor(
@@ -21,7 +21,7 @@ export default class {
       description: string,
       problem: string,
       goal: string,
-      requiredSkills: string[],
+      requiredSkills: Uuid[],
       categoryId: Uuid,
   ) {
     this.ownerId = ownerId;
