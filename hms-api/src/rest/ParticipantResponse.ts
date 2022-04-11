@@ -1,22 +1,24 @@
 /* eslint-disable require-jsdoc */
 
 import {Uuid} from '../util/uuids';
+import UserPreviewResponse from './UserPreviewResponse';
+import HackathonPreviewResponse from './HackathonPreviewResponse';
 
 export default class {
   id: Uuid;
-  userId: Uuid;
-  hackathonId: Uuid;
+  user: UserPreviewResponse;
+  hackathon: HackathonPreviewResponse;
   creationDate: Date;
 
   constructor(
       id: Uuid,
-      userId: Uuid,
-      hackathonId: Uuid,
+      user: UserPreviewResponse,
+      hackathon: HackathonPreviewResponse,
       creationDate: Date,
   ) {
     this.id = id;
-    this.userId = userId;
-    this.hackathonId = hackathonId;
+    this.user = user;
+    this.hackathon = hackathon;
     this.creationDate = creationDate;
   }
 }

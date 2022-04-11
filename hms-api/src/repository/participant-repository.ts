@@ -52,6 +52,15 @@ export async function getParticipant(id: Uuid)
   return item ? itemToParticipant(item) : undefined;
 }
 
+export async function getParticipants(ids: Uuid[])
+    : Promise<Participant[]> {
+  const participants: Participant[] = [];
+  for (const id of ids) {
+    participants.push(await getParticipant(id));
+  }
+  return participants;
+}
+
 export async function removeParticipant(id: Uuid) {
   await dynamoDBClient.send(new DeleteItemCommand({
     TableName: table,

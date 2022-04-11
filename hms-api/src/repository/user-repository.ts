@@ -51,6 +51,14 @@ export async function getUser(id: Uuid): Promise<User | undefined> {
   return item ? itemToUser(item) : undefined;
 }
 
+export async function getUsers(ids: Uuid[]): Promise<User[]> {
+  const users: User[] = [];
+  for (const id of ids) {
+    users.push(await getUser(id));
+  }
+  return users;
+}
+
 export async function removeUser(id: Uuid) {
   // TODO determine if something was actually deleted
   await dynamoDBClient.send(new DeleteItemCommand({

@@ -3,7 +3,7 @@ import {buildResponse} from '../../rest/responses';
 import {getUser} from '../../repository/user-repository';
 import UserResponse from '../../rest/UserResponse';
 import {mapRolesToStrings} from '../../repository/domain/Role';
-import {mapSkillToSkillPreview} from '../../rest/SkillPreviewResponse';
+import SkillPreviewResponse from '../../rest/SkillPreviewResponse';
 import {getSkills} from '../../repository/skill-repository';
 
 // eslint-disable-next-line require-jsdoc
@@ -12,15 +12,13 @@ export async function get(event, context, callback) {
   const user = await getUser(id);
 
   if (user) {
-    const skills = await getSkills(user.skills);
-
     const responseBody = new UserResponse(
         user.id,
         user.lastName,
         user.firstName,
         user.emailAddress,
         mapRolesToStrings(user.roles),
-        skills.map((skill) => mapSkillToSkillPreview(skill)),
+        SkillPreviewResponse.fromArray(await getSkills(user.skills)),
         user.imageUrl,
         user.creationDate,
     );

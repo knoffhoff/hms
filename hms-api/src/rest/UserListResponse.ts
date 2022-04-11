@@ -1,11 +1,11 @@
 /* eslint-disable require-jsdoc */
 
-import {Uuid} from '../util/uuids';
+import UserPreviewResponse from './UserPreviewResponse';
 
 export default class {
-  ids: Uuid[];
+  users: UserPreviewResponse[];
 
-  constructor(ids: Uuid[]) {
-    this.ids = ids;
+  constructor(users: UserPreviewResponse[]) {
+    this.users = users;
   }
 }
