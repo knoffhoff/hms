@@ -37,7 +37,7 @@ export default function HackathonDetails(props: IProps) {
   } = hackathonData
 
   const loadSelectedHackathon = () => {
-    getHackathonDetails(hackathonID.hackathonID).then(
+    getHackathonDetails(hackathonID.hackathonID.toString()).then(
       (data) => {
         setHackathonData({
           title: data.title,
@@ -59,10 +59,6 @@ export default function HackathonDetails(props: IProps) {
       }
     )
   }
-
-  useEffect(() => {
-    loadSelectedHackathon()
-  }, [])
 
   loadSelectedHackathon()
 

@@ -8,16 +8,16 @@ import HackathonDetails from '../components/HackathonDetails'
 
 export default function Archive() {
   const [selectedHackweek, setSelectedHackweek] = useState(
-    '5b0f96f1-1056-4e62-9abd-0b12ab66bb19'
+    '8a3a2bd9-c32a-47d9-a925-c14405e6a51a'
   )
   const [hackathonList, setHackathonList] = useState({
     errorhackathonList: false,
     isLoadinghackathonList: true,
-    hackathons: [],
-    hackathontitles: [],
+    id: [],
+    title: [],
   })
 
-  const { errorhackathonList, isLoadinghackathonList, hackathons } =
+  const { errorhackathonList, isLoadinghackathonList, id, title } =
     hackathonList
 
   const loadHackathons = () => {
@@ -25,8 +25,8 @@ export default function Archive() {
       (data) => {
         setHackathonList({
           ...hackathonList,
-          hackathons: data.ids,
-          hackathontitles: data.title,
+          id: data.hackathons.id,
+          title: data.title,
           errorhackathonList: false,
           isLoadinghackathonList: false,
         })
@@ -37,13 +37,14 @@ export default function Archive() {
           errorhackathonList: true,
           isLoadinghackathonList: false,
         })
+        console.log('fuuuuuuuck')
       }
     )
   }
 
   const optionsList = () => {
-    return hackathons.map((hackathon, index) => {
-      return <option value={hackathons[index]}>{hackathon}</option>
+    return hackathonList.id.map((hackathon, index) => {
+      return <option value={id[index]}>{hackathon}</option>
     })
   }
 
@@ -57,20 +58,32 @@ export default function Archive() {
   }, [])
 
   function printHackathons() {
-    console.log('hackathons')
+    console.log('hackathonList')
     console.log(hackathonList)
-    console.log(hackathons)
+    console.log(id)
+    console.log(title)
     console.log('1 hackathon')
   }
 
+  console.log('hackathonList')
+  console.log(hackathonList)
+  console.log('hackathonIDs')
+  console.log(id)
+  console.log('hackathontitles')
+  console.log(title)
+  loadHackathons()
+
   return (
     <>
-      <select onChange={selectChange}>{optionsList()}</select>
+      {/*{isLoadinghackathonList && <div>is loading</div>}
+      {!isLoadinghackathonList && (
+        <select onChange={selectChange}>{optionsList()}</select>
+      )}*/}
 
       <Button onClick={printHackathons}>list hackathons</Button>
 
       <h1>Selected Hackweek:</h1>
-      <HackathonDetails hackathonID={selectedHackweek} />
+      <HackathonDetails hackathonID={selectedHackweek.toString()} />
     </>
   )
 }
