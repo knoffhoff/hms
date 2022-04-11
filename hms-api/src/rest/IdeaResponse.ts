@@ -2,43 +2,46 @@
 
 import {Uuid} from '../util/uuids';
 import SkillPreviewResponse from './SkillPreviewResponse';
+import HackathonPreviewResponse from './HackathonPreviewResponse';
+import CategoryPreviewResponse from './CategoryPreviewResponse';
+import ParticipantPreviewResponse from './ParticipantPreviewResponse';
 
 export default class {
   id: Uuid;
-  ownerId: Uuid;
-  hackathonId: Uuid;
-  participantIds: Uuid[];
+  owner: ParticipantPreviewResponse;
+  hackathon: HackathonPreviewResponse;
+  participants: ParticipantPreviewResponse[];
   title: string;
   description: string;
   problem: string;
   goal: string;
   requiredSkills: SkillPreviewResponse[];
-  categoryId: Uuid;
+  category: CategoryPreviewResponse;
   creationDate: Date;
 
   constructor(
       id: Uuid,
-      ownerId: Uuid,
-      hackathonId: Uuid,
-      participantIds: Uuid[],
+      owner: ParticipantPreviewResponse,
+      hackathon: HackathonPreviewResponse,
+      participants: ParticipantPreviewResponse[],
       title: string,
       description: string,
       problem: string,
       goal: string,
       requiredSkills: SkillPreviewResponse[],
-      categoryId: Uuid,
+      category: CategoryPreviewResponse,
       creationDate: Date,
   ) {
     this.id = id;
-    this.ownerId = ownerId;
-    this.hackathonId = hackathonId;
-    this.participantIds = participantIds;
+    this.owner = owner;
+    this.hackathon = hackathon;
+    this.participants = participants;
     this.title = title;
     this.description = description;
     this.problem = problem;
     this.goal = goal;
     this.requiredSkills = requiredSkills;
-    this.categoryId = categoryId;
+    this.category = category;
     this.creationDate = creationDate;
   }
 }

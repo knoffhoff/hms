@@ -14,9 +14,20 @@ class SkillPreviewResponse {
     this.id = id;
     this.name = name;
   }
-}
 
-export const mapSkillToSkillPreview = (skill: Skill) =>
-  new SkillPreviewResponse(skill.id, skill.name);
+  static from = (skill: Skill): SkillPreviewResponse =>
+    new SkillPreviewResponse(
+        skill.id,
+        skill.name,
+    );
+
+  static fromArray(skills: Skill[]): SkillPreviewResponse[] {
+    const previews: SkillPreviewResponse[] = [];
+    for (const skill of skills) {
+      previews.push(SkillPreviewResponse.from(skill));
+    }
+    return previews;
+  }
+}
 
 export default SkillPreviewResponse;
