@@ -1,10 +1,11 @@
 /* eslint-disable require-jsdoc */
-import {Uuid} from '../util/uuids';
+
+import HackathonPreviewResponse from './HackathonPreviewResponse';
 
 export default class {
-  ids: Uuid[];
+  hackathons: HackathonPreviewResponse[];
 
-  constructor(ids: Uuid[]) {
-    this.ids = ids;
+  constructor(hackathons: HackathonPreviewResponse[]) {
+    this.hackathons = hackathons;
   }
 }

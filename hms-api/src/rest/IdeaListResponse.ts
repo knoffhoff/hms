@@ -1,16 +1,17 @@
 /* eslint-disable require-jsdoc */
 
+import IdeaPreviewResponse from './IdeaPreviewResponse';
 import {Uuid} from '../util/uuids';
 
 export default class {
-  ids: Uuid[];
+  ideas: IdeaPreviewResponse[];
   hackathonId: Uuid;
 
   constructor(
-      ids: Uuid[],
+      ideas: IdeaPreviewResponse[],
       hackathonId: Uuid,
   ) {
-    this.ids = ids;
+    this.ideas = ideas;
     this.hackathonId = hackathonId;
   }
 }
