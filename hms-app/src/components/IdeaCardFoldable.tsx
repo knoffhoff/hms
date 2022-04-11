@@ -61,8 +61,8 @@ export default function IdeaCardFoldable(props: IProps) {
     </Badge>
   ))
 
-  const participantAvatars = idea.participants.map((participant) => (
-    <Avatar key={participant.name} src={participant.avatar} />
+  const participantAvatars = idea.participants.map((participant, index) => (
+    <Avatar key={index} src={participant.avatar} />
   ))
 
   return (

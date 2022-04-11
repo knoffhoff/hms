@@ -1,5 +1,5 @@
 export type Hackathon = {
-  id: string[]
+  id: string
 }
 
 export type Idea = {

@@ -9,11 +9,11 @@ Content-Type: application/json
 
 {
   "ownerId": "...",
-  "hackathonId": "...",
+  "hackathonId": "5b0f96f1-1056-4e62-9abd-0b12ab66bb19",
   "participantIds": [
     "..."
   ],
-  "title": "...",
+  "title": "testidea",
   "description": "...",
   "problem": "...",
   "goal": "...",
