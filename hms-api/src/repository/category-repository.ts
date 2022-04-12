@@ -69,9 +69,9 @@ export async function removeCategory(id: Uuid) {
 
 function itemToCategory(item: { [key: string]: AttributeValue }): Category {
   return new Category(
-      item.title.S!,
-      item.description.S!,
-      item.hackathonId.S!,
+      item.title.S,
+      item.description.S,
+      item.hackathonId.S,
       item.id.S!,
   );
 }

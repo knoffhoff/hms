@@ -82,7 +82,7 @@ function itemToParticipant(item: { [key: string]: AttributeValue })
   return new Participant(
       item.userId.S,
       item.hackathonId.S,
-      item.id.S,
+      item.id.S!,
       new Date(item.creationDate.S),
   );
 }

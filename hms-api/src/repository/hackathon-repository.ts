@@ -72,7 +72,7 @@ function itemToHackathon(item: { [key: string]: AttributeValue }): Hackathon {
       item.title.S,
       new Date(item.startDate.S),
       new Date(item.endDate.S),
-      item.id.S,
+      item.id.S!,
       new Date(item.creationDate.S),
       item.participantIds.SS,
       item.categoryIds.SS,

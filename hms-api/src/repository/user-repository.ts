@@ -85,7 +85,7 @@ function itemToUser(item: { [key: string]: AttributeValue }): User {
       mapStringToRoles(item.roles.SS),
       item.skills.SS,
       item.imageUrl.S,
-      item.id.S,
+      item.id.S!,
       new Date(item.creationDate.S),
   );
 }

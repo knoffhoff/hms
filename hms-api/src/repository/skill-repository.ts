@@ -75,6 +75,6 @@ function itemToSkill(item: { [key: string]: AttributeValue }): Skill {
   return new Skill(
       item.name.S,
       item.description.S,
-      item.id.S,
+      item.id.S!,
   );
 }
