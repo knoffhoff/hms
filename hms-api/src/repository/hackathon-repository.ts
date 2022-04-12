@@ -21,7 +21,7 @@ export async function listHackathons(): Promise<Hackathon[]> {
     TableName: table,
   }));
 
-  return output.Items.map((item) => itemToHackathon(item));
+  return output.Items!.map((item) => itemToHackathon(item));
 }
 
 export async function createHackathon(hackathon: Hackathon) {
@@ -40,14 +40,13 @@ export async function createHackathon(hackathon: Hackathon) {
   }));
 }
 
-export async function getHackathon(id: Uuid): Promise<Hackathon | undefined> {
+export async function getHackathon(id: Uuid): Promise<Hackathon> {
   const output = await dynamoDBClient.send(new GetItemCommand({
     TableName: table,
     Key: {id: {S: id}},
   }));
 
-  const item = output.Item;
-  return item ? itemToHackathon(item) : undefined;
+  return itemToHackathon(output.Item!);
 }
 
 export async function removeHackathon(id: Uuid) {
@@ -60,13 +59,13 @@ export async function removeHackathon(id: Uuid) {
 
 function itemToHackathon(item: { [key: string]: AttributeValue }): Hackathon {
   return new Hackathon(
-      item.title.S,
-      new Date(item.startDate.S),
-      new Date(item.endDate.S),
-      item.id.S,
-      new Date(item.creationDate.S),
-      item.participants.SS,
-      item.categories.SS,
-      item.ideas.SS,
+      item.title.S!,
+      new Date(item.startDate.S!),
+      new Date(item.endDate.S!),
+      item.id.S!,
+      new Date(item.creationDate.S!),
+      item.participants.SS!,
+      item.categories.SS!,
+      item.ideas.SS!,
   );
 }

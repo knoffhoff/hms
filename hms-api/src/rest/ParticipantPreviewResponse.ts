@@ -4,6 +4,7 @@ import {Uuid} from '../util/uuids';
 import UserPreviewResponse from './UserPreviewResponse';
 import Participant from '../repository/domain/Participant';
 import User from '../repository/domain/User';
+import {extractUser} from '../service/user-service';
 
 class ParticipantPreviewResponse {
   id: Uuid;
@@ -30,7 +31,7 @@ class ParticipantPreviewResponse {
     for (const participant of participants) {
       previews.push(ParticipantPreviewResponse.from(
           participant,
-          users.find((user) => user.id === participant.userId)));
+          extractUser(users, participant)));
     }
     return previews;
   }

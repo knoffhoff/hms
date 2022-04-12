@@ -25,7 +25,7 @@ export async function listIdeas(hackathonId: Uuid): Promise<Idea[]> {
     ExpressionAttributeValues: {':hId': {'S': hackathonId}},
   }));
 
-  return output.Items.map((item) => itemToIdea(item));
+  return output.Items!.map((item) => itemToIdea(item));
 }
 
 export async function createIdea(idea: Idea) {
@@ -47,14 +47,13 @@ export async function createIdea(idea: Idea) {
   }));
 }
 
-export async function getIdea(id: Uuid): Promise<Idea | undefined> {
+export async function getIdea(id: Uuid): Promise<Idea> {
   const output = await dynamoDBClient.send(new GetItemCommand({
     TableName: table,
     Key: {id: {S: id}},
   }));
 
-  const item = output.Item;
-  return item ? itemToIdea(item) : undefined;
+  return itemToIdea(output.Item!);
 }
 
 export async function removeIdea(id: Uuid) {
@@ -66,16 +65,16 @@ export async function removeIdea(id: Uuid) {
 
 function itemToIdea(item: { [key: string]: AttributeValue }): Idea {
   return new Idea(
-      item.ownerId.S,
-      item.hackathonId.S,
-      item.participantIds.SS,
-      item.title.S,
-      item.description.S,
-      item.problem.S,
-      item.goal.S,
-      item.requiredSkills.SS,
-      item.categoryId.S,
-      item.id.S,
-      new Date(item.creationDate.S),
+      item.ownerId.S!,
+      item.hackathonId.S!,
+      item.participantIds.SS!,
+      item.title.S!,
+      item.description.S!,
+      item.problem.S!,
+      item.goal.S!,
+      item.requiredSkills.SS!,
+      item.categoryId.S!,
+      item.id.S!,
+      new Date(item.creationDate.S!),
   );
 }

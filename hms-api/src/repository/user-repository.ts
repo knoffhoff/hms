@@ -22,7 +22,7 @@ export async function listUsers(): Promise<User[]> {
     TableName: table,
   }));
 
-  return output.Items.map((item) => itemToUser(item));
+  return output.Items!.map((item) => itemToUser(item));
 }
 
 export async function createUser(user: User) {
@@ -41,14 +41,13 @@ export async function createUser(user: User) {
   }));
 }
 
-export async function getUser(id: Uuid): Promise<User | undefined> {
+export async function getUser(id: Uuid): Promise<User> {
   const output = await dynamoDBClient.send(new GetItemCommand({
     TableName: table,
     Key: {id: {S: id}},
   }));
 
-  const item = output.Item;
-  return item ? itemToUser(item) : undefined;
+  return itemToUser(output.Item!);
 }
 
 export async function getUsers(ids: Uuid[]): Promise<User[]> {
@@ -69,13 +68,13 @@ export async function removeUser(id: Uuid) {
 
 function itemToUser(item: { [key: string]: AttributeValue }): User {
   return new User(
-      item.lastName.S,
-      item.firstName.S,
-      item.emailAddress.S,
-      mapStringToRoles(item.roles.SS),
-      item.skills.SS,
-      item.imageUrl.S,
-      item.id.S,
-      new Date(item.creationDate.S),
+      item.lastName.S!,
+      item.firstName.S!,
+      item.emailAddress.S!,
+      mapStringToRoles(item.roles.SS!),
+      item.skills.SS!,
+      item.imageUrl.S!,
+      item.id.S!,
+      new Date(item.creationDate.S!),
   );
 }

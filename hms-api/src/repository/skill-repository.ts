@@ -21,7 +21,7 @@ export async function listSkills(): Promise<Skill[]> {
     TableName: table,
   }));
 
-  return output.Items.map((item) => itemToSkill(item));
+  return output.Items!.map((item) => itemToSkill(item));
 }
 
 export async function createSkill(skill: Skill) {
@@ -35,14 +35,13 @@ export async function createSkill(skill: Skill) {
   }));
 }
 
-export async function getSkill(id: Uuid): Promise<Skill | undefined> {
+export async function getSkill(id: Uuid): Promise<Skill> {
   const output = await dynamoDBClient.send(new GetItemCommand({
     TableName: table,
     Key: {id: {S: id}},
   }));
 
-  const item = output.Item;
-  return item ? itemToSkill(item) : undefined;
+  return itemToSkill(output.Item!);
 }
 
 export async function getSkills(ids: Uuid[]): Promise<Skill[]> {
@@ -64,8 +63,8 @@ export async function removeSkill(id: Uuid) {
 
 function itemToSkill(item: { [key: string]: AttributeValue }): Skill {
   return new Skill(
-      item.name.S,
-      item.description.S,
-      item.id.S,
+      item.name.S!,
+      item.description.S!,
+      item.id.S!,
   );
 }
