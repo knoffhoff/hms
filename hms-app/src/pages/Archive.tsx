@@ -1,32 +1,32 @@
-import React, { useEffect, useState } from 'react'
-import { Button, Select } from '@mantine/core'
-import {
-  getHackathonDetails,
-  getListOfHackathons,
-} from '../actions/GetBackendData'
+import React, {useEffect, useState} from 'react'
+import {Button} from '@mantine/core'
+import {getListOfHackathons,} from '../actions/GetBackendData'
 import HackathonDetails from '../components/HackathonDetails'
+
+interface HackathonPreview {
+  id: string;
+  title: string;
+}
 
 export default function Archive() {
   const [selectedHackweek, setSelectedHackweek] = useState(
-    '8a3a2bd9-c32a-47d9-a925-c14405e6a51a'
+    '4eb2d486-c786-431e-a4fd-4c093ed30642'
   )
   const [hackathonList, setHackathonList] = useState({
     errorhackathonList: false,
     isLoadinghackathonList: true,
-    id: [],
-    title: [],
+    hackathons: [] as HackathonPreview[],
   })
 
-  const { errorhackathonList, isLoadinghackathonList, id, title } =
-    hackathonList
+  const { errorhackathonList, isLoadinghackathonList, hackathons }
+      = hackathonList
 
   const loadHackathons = () => {
     getListOfHackathons('hackathons').then(
       (data) => {
         setHackathonList({
           ...hackathonList,
-          id: data.hackathons.id,
-          title: data.title,
+          hackathons: data.hackathons,
           errorhackathonList: false,
           isLoadinghackathonList: false,
         })
@@ -43,8 +43,8 @@ export default function Archive() {
   }
 
   const optionsList = () => {
-    return hackathonList.id.map((hackathon, index) => {
-      return <option value={id[index]}>{hackathon}</option>
+    return hackathonList.hackathons.map((hackathon, index) => {
+      return <option value={hackathon.id}>{hackathon.id}</option>
     })
   }
 
@@ -60,25 +60,21 @@ export default function Archive() {
   function printHackathons() {
     console.log('hackathonList')
     console.log(hackathonList)
-    console.log(id)
-    console.log(title)
     console.log('1 hackathon')
   }
 
   console.log('hackathonList')
   console.log(hackathonList)
   console.log('hackathonIDs')
-  console.log(id)
   console.log('hackathontitles')
-  console.log(title)
   loadHackathons()
 
   return (
     <>
-      {/*{isLoadinghackathonList && <div>is loading</div>}
+      {isLoadinghackathonList && <div>is loading</div>}
       {!isLoadinghackathonList && (
         <select onChange={selectChange}>{optionsList()}</select>
-      )}*/}
+      )}
 
       <Button onClick={printHackathons}>list hackathons</Button>
 
