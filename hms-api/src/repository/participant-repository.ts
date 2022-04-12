@@ -12,7 +12,7 @@ import {
 import {Uuid} from '../util/uuids';
 import {getClient} from './dynamo-db';
 import Participant from './domain/Participant';
-import NotFoundException from './exception/NotFoundException';
+import NotFoundError from './error/NotFoundError';
 
 const table = process.env.PARTICIPANT_TABLE;
 const byHackathonIdIndex = process.env.PARTICIPANT_BY_HACKATHON_ID_INDEX;
@@ -32,7 +32,7 @@ export async function listParticipants(hackathonId: Uuid)
     return items.map((item) => itemToParticipant(item));
   }
 
-  throw new NotFoundException(
+  throw new NotFoundError(
       `Participants for Hackathon with id: ${hackathonId} not found`);
 }
 
@@ -59,7 +59,7 @@ export async function getParticipant(id: Uuid): Promise<Participant> {
     return itemToParticipant(item);
   }
 
-  throw new NotFoundException(`Participant with id: ${id} not found`);
+  throw new NotFoundError(`Participant with id: ${id} not found`);
 }
 
 export async function getParticipants(ids: Uuid[]): Promise<Participant[]> {

@@ -4,8 +4,7 @@ import {
   listCategories,
 } from '../../src/repository/category-repository';
 import {uuid} from '../../src/util/uuids';
-import NotFoundException
-  from '../../src/repository/exception/NotFoundException';
+import NotFoundError from '../../src/repository/error/NotFoundError';
 import {
   CategoryData,
   makeCategory,
@@ -19,7 +18,7 @@ describe('Get Category', () => {
     const id = uuid();
     mockGetItem(null);
 
-    await expect(getCategory(id)).rejects.toThrow(NotFoundException);
+    await expect(getCategory(id)).rejects.toThrow(NotFoundError);
   });
 
   test('Category exists', async () => {
@@ -37,7 +36,7 @@ describe('List Categories', () => {
 
     await expect(listCategories(hackathonId))
         .rejects
-        .toThrow(NotFoundException);
+        .toThrow(NotFoundError);
   });
 
   test('0 Categories exist', async () => {

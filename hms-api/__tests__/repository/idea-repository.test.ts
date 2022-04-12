@@ -1,8 +1,7 @@
 import {mockGetItem, mockQuery} from './dynamo-db-mock';
 import {getIdea, listIdeas} from '../../src/repository/idea-repository';
 import {uuid} from '../../src/util/uuids';
-import NotFoundException
-  from '../../src/repository/exception/NotFoundException';
+import NotFoundError from '../../src/repository/error/NotFoundError';
 import {IdeaData, makeIdea, randomIdea} from './domain/idea-maker';
 import Idea from '../../src/repository/domain/Idea';
 import {AttributeValue} from '@aws-sdk/client-dynamodb';
@@ -18,7 +17,7 @@ describe('Get Idea', () => {
     const id = uuid();
     mockGetItem(null);
 
-    await expect(getIdea(id)).rejects.toThrow(NotFoundException);
+    await expect(getIdea(id)).rejects.toThrow(NotFoundError);
   });
 
   test('Idea exists', async () => {
@@ -36,7 +35,7 @@ describe('List Ideas', () => {
 
     await expect(listIdeas(hackathonId))
         .rejects
-        .toThrow(NotFoundException);
+        .toThrow(NotFoundError);
   });
 
   test('0 Ideas exist', async () => {

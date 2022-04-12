@@ -5,8 +5,7 @@ import {
   listUsers,
 } from '../../src/repository/user-repository';
 import {uuid} from '../../src/util/uuids';
-import NotFoundException
-  from '../../src/repository/exception/NotFoundException';
+import NotFoundError from '../../src/repository/error/NotFoundError';
 import {randomUser} from './domain/user-maker';
 import User from '../../src/repository/domain/User';
 import {AttributeValue} from '@aws-sdk/client-dynamodb';
@@ -17,7 +16,7 @@ describe('Get User', () => {
     const id = uuid();
     mockGetItem(null);
 
-    await expect(getUser(id)).rejects.toThrow(NotFoundException);
+    await expect(getUser(id)).rejects.toThrow(NotFoundError);
   });
 
   test('User exists', async () => {
@@ -34,7 +33,7 @@ describe('Get Users', () => {
     mockGetItemOnce(null);
     await expect(getUsers([uuid(), uuid()]))
         .rejects
-        .toThrow(NotFoundException);
+        .toThrow(NotFoundError);
   });
 
   test('1 user missing', async () => {
@@ -43,7 +42,7 @@ describe('Get Users', () => {
     mockGetItemOnce(null);
     await expect(getUsers([user1.id, uuid()]))
         .rejects
-        .toThrow(NotFoundException);
+        .toThrow(NotFoundError);
   });
 
   test('0 users missing', async () => {
@@ -60,7 +59,7 @@ describe('List Users', () => {
   test('Query returns null', async () => {
     mockQuery(null);
 
-    await expect(listUsers()).rejects.toThrow(NotFoundException);
+    await expect(listUsers()).rejects.toThrow(NotFoundError);
   });
 
   test('0 Users exist', async () => {

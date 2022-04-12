@@ -11,7 +11,7 @@ import {
 import {Uuid} from '../util/uuids';
 import {getClient, safeTransformArray} from './dynamo-db';
 import Idea from './domain/Idea';
-import NotFoundException from './exception/NotFoundException';
+import NotFoundError from './error/NotFoundError';
 
 const dynamoDBClient = getClient();
 
@@ -28,7 +28,7 @@ export async function listIdeas(hackathonId: Uuid): Promise<Idea[]> {
     return items.map((item) => itemToIdea(item));
   }
 
-  throw new NotFoundException(
+  throw new NotFoundError(
       `Ideas for Hackathon with id: ${hackathonId} not found`);
 }
 
@@ -62,7 +62,7 @@ export async function getIdea(id: Uuid): Promise<Idea> {
     return itemToIdea(item);
   }
 
-  throw new NotFoundException(`Idea with id: ${id} not found`);
+  throw new NotFoundError(`Idea with id: ${id} not found`);
 }
 
 export async function removeIdea(id: Uuid) {

@@ -13,7 +13,7 @@ import {
 import {Uuid} from '../util/uuids';
 import {getClient, safeTransformArray} from './dynamo-db';
 import {mapRolesToStrings, mapStringToRoles} from './domain/Role';
-import NotFoundException from './exception/NotFoundException';
+import NotFoundError from './error/NotFoundError';
 
 const table = process.env.USER_TABLE;
 const dynamoDBClient = getClient();
@@ -28,7 +28,7 @@ export async function listUsers(): Promise<User[]> {
     return items.map((item) => itemToUser(item));
   }
 
-  throw new NotFoundException(`Failed to list any users`);
+  throw new NotFoundError(`Failed to list any users`);
 }
 
 export async function createUser(user: User) {
@@ -58,7 +58,7 @@ export async function getUser(id: Uuid): Promise<User> {
     return itemToUser(item);
   }
 
-  throw new NotFoundException(`User with id ${id} not found`);
+  throw new NotFoundError(`User with id ${id} not found`);
 }
 
 export async function getUsers(ids: Uuid[]): Promise<User[]> {

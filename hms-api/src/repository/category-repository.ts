@@ -11,7 +11,7 @@ import {
 import {Uuid} from '../util/uuids';
 import {getClient} from './dynamo-db';
 import Category from './domain/Category';
-import NotFoundException from './exception/NotFoundException';
+import NotFoundError from './error/NotFoundError';
 
 const table = process.env.CATEGORY_TABLE;
 const byHackathonIdIndex = process.env.CATEGORY_BY_HACKATHON_ID_INDEX;
@@ -30,7 +30,7 @@ export async function listCategories(hackathonId: Uuid): Promise<Category[]> {
     return items.map((item) => itemToCategory(item));
   }
 
-  throw new NotFoundException(
+  throw new NotFoundError(
       `Categories for Hackathon with id: ${hackathonId} not found`);
 }
 
@@ -57,7 +57,7 @@ export async function getCategory(id: Uuid): Promise<Category> {
     return itemToCategory(item);
   }
 
-  throw new NotFoundException(`Category with id: ${id} not found`);
+  throw new NotFoundError(`Category with id: ${id} not found`);
 }
 
 export async function removeCategory(id: Uuid) {

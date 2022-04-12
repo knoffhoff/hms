@@ -4,8 +4,7 @@ import {
   listHackathons,
 } from '../../src/repository/hackathon-repository';
 import {uuid} from '../../src/util/uuids';
-import NotFoundException
-  from '../../src/repository/exception/NotFoundException';
+import NotFoundError from '../../src/repository/error/NotFoundError';
 import {randomHackathon} from './domain/hackathon-maker';
 import Hackathon from '../../src/repository/domain/Hackathon';
 import {AttributeValue} from '@aws-sdk/client-dynamodb';
@@ -15,7 +14,7 @@ describe('Get Hackathon', () => {
     const id = uuid();
     mockGetItem(null);
 
-    await expect(getHackathon(id)).rejects.toThrow(NotFoundException);
+    await expect(getHackathon(id)).rejects.toThrow(NotFoundError);
   });
 
   test('Hackathon exists', async () => {
@@ -30,7 +29,7 @@ describe('List Hackathons', () => {
   test('Query returns null', async () => {
     mockQuery(null);
 
-    await expect(listHackathons()).rejects.toThrow(NotFoundException);
+    await expect(listHackathons()).rejects.toThrow(NotFoundError);
   });
 
   test('0 Hackathons exist', async () => {

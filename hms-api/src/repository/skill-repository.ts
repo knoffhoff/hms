@@ -11,7 +11,7 @@ import {
 } from '@aws-sdk/client-dynamodb';
 import {Uuid} from '../util/uuids';
 import {getClient} from './dynamo-db';
-import NotFoundException from './exception/NotFoundException';
+import NotFoundError from './error/NotFoundError';
 
 const table = process.env.SKILL_TABLE;
 const dynamoDBClient = getClient();
@@ -26,7 +26,7 @@ export async function listSkills(): Promise<Skill[]> {
     return items.map((item) => itemToSkill(item));
   }
 
-  throw new NotFoundException(`Failed to list any Skills`);
+  throw new NotFoundError(`Failed to list any Skills`);
 }
 
 export async function createSkill(skill: Skill) {
@@ -51,7 +51,7 @@ export async function getSkill(id: Uuid): Promise<Skill> {
     return itemToSkill(item);
   }
 
-  throw new NotFoundException(`Skill with id: ${id} not found`);
+  throw new NotFoundError(`Skill with id: ${id} not found`);
 }
 
 export async function getSkills(ids: Uuid[]): Promise<Skill[]> {

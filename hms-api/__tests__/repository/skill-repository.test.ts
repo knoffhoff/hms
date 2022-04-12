@@ -5,8 +5,7 @@ import {
   listSkills,
 } from '../../src/repository/skill-repository';
 import {uuid} from '../../src/util/uuids';
-import NotFoundException
-  from '../../src/repository/exception/NotFoundException';
+import NotFoundError from '../../src/repository/error/NotFoundError';
 import {randomSkill} from './domain/skill-maker';
 import Skill from '../../src/repository/domain/Skill';
 import {AttributeValue} from '@aws-sdk/client-dynamodb';
@@ -16,7 +15,7 @@ describe('Get Skill', () => {
     const id = uuid();
     mockGetItem(null);
 
-    await expect(getSkill(id)).rejects.toThrow(NotFoundException);
+    await expect(getSkill(id)).rejects.toThrow(NotFoundError);
   });
 
   test('Skill exists', async () => {
@@ -33,7 +32,7 @@ describe('Get Skills', () => {
     mockGetItemOnce(null);
     await expect(getSkills([uuid(), uuid()]))
         .rejects
-        .toThrow(NotFoundException);
+        .toThrow(NotFoundError);
   });
 
   test('1 skill missing', async () => {
@@ -42,7 +41,7 @@ describe('Get Skills', () => {
     mockGetItemOnce(null);
     await expect(getSkills([skill1.id, uuid()]))
         .rejects
-        .toThrow(NotFoundException);
+        .toThrow(NotFoundError);
   });
 
   test('0 skills missing', async () => {
@@ -59,7 +58,7 @@ describe('List Skills', () => {
   test('Query returns null', async () => {
     mockQuery(null);
 
-    await expect(listSkills()).rejects.toThrow(NotFoundException);
+    await expect(listSkills()).rejects.toThrow(NotFoundError);
   });
 
   test('0 Skills exist', async () => {

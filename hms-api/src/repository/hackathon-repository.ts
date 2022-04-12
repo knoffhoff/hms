@@ -11,7 +11,7 @@ import {
 } from '@aws-sdk/client-dynamodb';
 import {Uuid} from '../util/uuids';
 import {getClient, safeTransformArray} from './dynamo-db';
-import NotFoundException from './exception/NotFoundException';
+import NotFoundError from './error/NotFoundError';
 
 const table = process.env.HACKATHON_TABLE;
 const dynamoDBClient = getClient();
@@ -26,7 +26,7 @@ export async function listHackathons(): Promise<Hackathon[]> {
     return items.map((item) => itemToHackathon(item));
   }
 
-  throw new NotFoundException(`Failed to list any Hackathons`);
+  throw new NotFoundError(`Failed to list any Hackathons`);
 }
 
 export async function createHackathon(hackathon: Hackathon) {
@@ -56,7 +56,7 @@ export async function getHackathon(id: Uuid): Promise<Hackathon> {
     return itemToHackathon(item);
   }
 
-  throw new NotFoundException(`Hackathon with id: ${id} not found`);
+  throw new NotFoundError(`Hackathon with id: ${id} not found`);
 }
 
 export async function removeHackathon(id: Uuid) {

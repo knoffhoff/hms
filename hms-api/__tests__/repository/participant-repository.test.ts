@@ -5,8 +5,7 @@ import {
   listParticipants,
 } from '../../src/repository/participant-repository';
 import {uuid} from '../../src/util/uuids';
-import NotFoundException
-  from '../../src/repository/exception/NotFoundException';
+import NotFoundError from '../../src/repository/error/NotFoundError';
 import {
   makeParticipant,
   ParticipantData,
@@ -20,7 +19,7 @@ describe('Get Participant', () => {
     const id = uuid();
     mockGetItem(null);
 
-    await expect(getParticipant(id)).rejects.toThrow(NotFoundException);
+    await expect(getParticipant(id)).rejects.toThrow(NotFoundError);
   });
 
   test('Participant exists', async () => {
@@ -37,7 +36,7 @@ describe('Get Participants', () => {
     mockGetItemOnce(null);
     await expect(getParticipants([uuid(), uuid()]))
         .rejects
-        .toThrow(NotFoundException);
+        .toThrow(NotFoundError);
   });
 
   test('1 participant missing', async () => {
@@ -46,7 +45,7 @@ describe('Get Participants', () => {
     mockGetItemOnce(null);
     await expect(getParticipants([participant1.id, uuid()]))
         .rejects
-        .toThrow(NotFoundException);
+        .toThrow(NotFoundError);
   });
 
   test('0 participants missing', async () => {
@@ -66,7 +65,7 @@ describe('List Participants', () => {
 
     await expect(listParticipants(hackathonId))
         .rejects
-        .toThrow(NotFoundException);
+        .toThrow(NotFoundError);
   });
 
   test('0 Participants exist', async () => {
