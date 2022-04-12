@@ -1,5 +1,4 @@
 /* eslint-disable require-jsdoc */
-// TODO add error handling
 // TODO add paging for lists
 
 import Skill from './domain/Skill';
@@ -12,6 +11,7 @@ import {
 } from '@aws-sdk/client-dynamodb';
 import {Uuid} from '../util/uuids';
 import {getClient} from './dynamo-db';
+import NotFoundException from './exception/NotFoundException';
 
 const table = process.env.SKILL_TABLE;
 const dynamoDBClient = getClient();
@@ -21,7 +21,12 @@ export async function listSkills(): Promise<Skill[]> {
     TableName: table,
   }));
 
-  return output.Items!.map((item) => itemToSkill(item));
+  const items = output.Items;
+  if (items) {
+    return items.map((item) => itemToSkill(item));
+  }
+
+  throw new NotFoundException(`Failed to list any Skills`);
 }
 
 export async function createSkill(skill: Skill) {
@@ -41,7 +46,12 @@ export async function getSkill(id: Uuid): Promise<Skill> {
     Key: {id: {S: id}},
   }));
 
-  return itemToSkill(output.Item!);
+  const item = output.Item;
+  if (item) {
+    return itemToSkill(item);
+  }
+
+  throw new NotFoundException(`Skill with id: ${id} not found`);
 }
 
 export async function getSkills(ids: Uuid[]): Promise<Skill[]> {
@@ -63,8 +73,8 @@ export async function removeSkill(id: Uuid) {
 
 function itemToSkill(item: { [key: string]: AttributeValue }): Skill {
   return new Skill(
-      item.name.S!,
-      item.description.S!,
-      item.id.S!,
+      item.name.S,
+      item.description.S,
+      item.id.S,
   );
 }

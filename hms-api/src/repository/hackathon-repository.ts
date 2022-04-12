@@ -1,5 +1,4 @@
 /* eslint-disable require-jsdoc */
-// TODO add error handling
 // TODO add paging for lists
 
 import Hackathon from './domain/Hackathon';
@@ -12,6 +11,7 @@ import {
 } from '@aws-sdk/client-dynamodb';
 import {Uuid} from '../util/uuids';
 import {getClient, safeTransformArray} from './dynamo-db';
+import NotFoundException from './exception/NotFoundException';
 
 const table = process.env.HACKATHON_TABLE;
 const dynamoDBClient = getClient();
@@ -21,7 +21,12 @@ export async function listHackathons(): Promise<Hackathon[]> {
     TableName: table,
   }));
 
-  return output.Items!.map((item) => itemToHackathon(item));
+  const items = output.Items;
+  if (items) {
+    return items.map((item) => itemToHackathon(item));
+  }
+
+  throw new NotFoundException(`Failed to list any Hackathons`);
 }
 
 export async function createHackathon(hackathon: Hackathon) {
@@ -29,13 +34,13 @@ export async function createHackathon(hackathon: Hackathon) {
     TableName: table,
     Item: {
       title: {S: hackathon.title},
-      startDate: {S: hackathon.startDate.toString()},
-      endDate: {S: hackathon.endDate.toString()},
+      startDate: {S: hackathon.startDate.toISOString()},
+      endDate: {S: hackathon.endDate.toISOString()},
       id: {S: hackathon.id},
-      creationDate: {S: hackathon.creationDate.toString()},
-      participants: safeTransformArray(hackathon.participantIds),
-      categories: safeTransformArray(hackathon.categoryIds),
-      ideas: safeTransformArray(hackathon.ideaIds),
+      creationDate: {S: hackathon.creationDate.toISOString()},
+      participantIds: safeTransformArray(hackathon.participantIds),
+      categoryIds: safeTransformArray(hackathon.categoryIds),
+      ideaId: safeTransformArray(hackathon.ideaIds),
     },
   }));
 }
@@ -46,7 +51,12 @@ export async function getHackathon(id: Uuid): Promise<Hackathon> {
     Key: {id: {S: id}},
   }));
 
-  return itemToHackathon(output.Item!);
+  const item = output.Item;
+  if (item) {
+    return itemToHackathon(item);
+  }
+
+  throw new NotFoundException(`Hackathon with id: ${id} not found`);
 }
 
 export async function removeHackathon(id: Uuid) {
@@ -59,13 +69,13 @@ export async function removeHackathon(id: Uuid) {
 
 function itemToHackathon(item: { [key: string]: AttributeValue }): Hackathon {
   return new Hackathon(
-      item.title.S!,
-      new Date(item.startDate.S!),
-      new Date(item.endDate.S!),
-      item.id.S!,
-      new Date(item.creationDate.S!),
-      item.participants.SS!,
-      item.categories.SS!,
-      item.ideas.SS!,
+      item.title.S,
+      new Date(item.startDate.S),
+      new Date(item.endDate.S),
+      item.id.S,
+      new Date(item.creationDate.S),
+      item.participantIds.SS,
+      item.categoryIds.SS,
+      item.ideaIds.SS,
   );
 }

@@ -13,6 +13,7 @@ import {
 import {Uuid} from '../util/uuids';
 import {getClient, safeTransformArray} from './dynamo-db';
 import {mapRolesToStrings, mapStringToRoles} from './domain/Role';
+import NotFoundException from './exception/NotFoundException';
 
 const table = process.env.USER_TABLE;
 const dynamoDBClient = getClient();
@@ -22,7 +23,12 @@ export async function listUsers(): Promise<User[]> {
     TableName: table,
   }));
 
-  return output.Items!.map((item) => itemToUser(item));
+  const items = output.Items;
+  if (items) {
+    return items.map((item) => itemToUser(item));
+  }
+
+  throw new NotFoundException(`Failed to list any users`);
 }
 
 export async function createUser(user: User) {
@@ -36,7 +42,7 @@ export async function createUser(user: User) {
       skills: safeTransformArray(user.skills),
       imageUrl: {S: user.imageUrl},
       id: {S: user.id},
-      creationDate: {S: user.creationDate.toString()},
+      creationDate: {S: user.creationDate.toISOString()},
     },
   }));
 }
@@ -47,7 +53,12 @@ export async function getUser(id: Uuid): Promise<User> {
     Key: {id: {S: id}},
   }));
 
-  return itemToUser(output.Item!);
+  const item = output.Item;
+  if (item) {
+    return itemToUser(item);
+  }
+
+  throw new NotFoundException(`User with id ${id} not found`);
 }
 
 export async function getUsers(ids: Uuid[]): Promise<User[]> {
@@ -68,13 +79,13 @@ export async function removeUser(id: Uuid) {
 
 function itemToUser(item: { [key: string]: AttributeValue }): User {
   return new User(
-      item.lastName.S!,
-      item.firstName.S!,
-      item.emailAddress.S!,
-      mapStringToRoles(item.roles.SS!),
-      item.skills.SS!,
-      item.imageUrl.S!,
-      item.id.S!,
-      new Date(item.creationDate.S!),
+      item.lastName.S,
+      item.firstName.S,
+      item.emailAddress.S,
+      mapStringToRoles(item.roles.SS),
+      item.skills.SS,
+      item.imageUrl.S,
+      item.id.S,
+      new Date(item.creationDate.S),
   );
 }
