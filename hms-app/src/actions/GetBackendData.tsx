@@ -1,6 +1,8 @@
+const api_id = 'gm1p3q1m7n'
+
 export const getListOfHackathons = (endpoint: any) => {
   return fetch(
-    `${'http://localhost:4566/restapis/6vdxzibubj/local/_user_request_'}/${endpoint}`,
+    `${'http://localhost:4566/restapis/'}${api_id}${'/local/_user_request_'}/${endpoint}`,
     {
       method: 'GET',
       headers: {
@@ -17,7 +19,7 @@ export const getListOfHackathons = (endpoint: any) => {
 
 export const getHackathonDetails = (endpoint: any) => {
   return fetch(
-    `${'http://localhost:4566/restapis/6vdxzibubj/local/_user_request_/hackathon'}/${endpoint}`,
+    `${'http://localhost:4566/restapis/'}${api_id}${'/local/_user_request_/hackathon'}/${endpoint}`,
     {
       method: 'GET',
       headers: {
@@ -34,7 +36,7 @@ export const getHackathonDetails = (endpoint: any) => {
 
 export const getIdeaDetails = (endpoint: any) => {
   return fetch(
-    `${'http://localhost:4566/restapis/6vdxzibubj/local/_user_request_/idea'}/${endpoint}`,
+    `${'http://localhost:4566/restapis/'}${api_id}${'/local/_user_request_/idea'}/${endpoint}`,
     {
       method: 'GET',
       headers: {
