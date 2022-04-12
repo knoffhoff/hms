@@ -14,7 +14,7 @@ $PUT --table-name hackathon --item '{
       "4e80138c-ed15-4947-ad18-15afa6af4adf",
       "bc7edc4c-d840-4521-8666-505946ff6ecf"
     ]},
-    "categoryId": {"SS": [
+    "categoryIds": {"SS": [
       "7f38993d-073a-4932-af79-07440012f268",
       "a8ce5468-ec97-4b99-acea-511c54817956"
     ]},
@@ -40,7 +40,7 @@ $PUT --table-name hackathon --item '{
       "dd4596c0-911a-49a9-826f-0b6ec8a2d0b6",
       "403d2770-f7d2-4aa0-8c58-b711ad09f169"
     ]},
-    "categoryId": {"SS": [
+    "categoryIds": {"SS": [
       "52c0bbde-6360-451c-bf50-b56694f56053"
     ]},
     "ideaIds": {"SS": [
@@ -63,7 +63,7 @@ $PUT --table-name hackathon --item '{
     "endDate": {"S": "2022-08-19"},
     "creationDate": {"S": "2022-03-01"},
     "participantIds": {"NULL": true},
-    "categoryId": {"SS": [
+    "categoryIds": {"SS": [
       "e499b34e-fda9-4f66-949a-46e0300b9d08",
       "c9897c51-2e0b-47d7-b9a7-5572e990d02b",
       "4be5c953-b871-40e3-b0cc-d2a7c929b519"
