@@ -84,6 +84,6 @@ function itemToIdea(item: { [key: string]: AttributeValue }): Idea {
       item.requiredSkills.SS,
       item.categoryId.S,
       item.id.S!,
-      new Date(item.creationDate.S),
+      new Date(item.creationDate.S!),
   );
 }

@@ -86,6 +86,6 @@ function itemToUser(item: { [key: string]: AttributeValue }): User {
       item.skills.SS,
       item.imageUrl.S,
       item.id.S!,
-      new Date(item.creationDate.S),
+      new Date(item.creationDate.S!),
   );
 }
