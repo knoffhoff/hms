@@ -26,7 +26,7 @@ export async function listParticipants(hackathonId: Uuid)
     ExpressionAttributeValues: {':hId': {'S': hackathonId}},
   }));
 
-  return output.Items.map((item) => itemToParticipant(item));
+  return output.Items!.map((item) => itemToParticipant(item));
 }
 
 export async function createParticipant(participant: Participant) {
@@ -41,19 +41,16 @@ export async function createParticipant(participant: Participant) {
   }));
 }
 
-export async function getParticipant(id: Uuid)
-    : Promise<Participant | undefined> {
+export async function getParticipant(id: Uuid): Promise<Participant> {
   const output = await dynamoDBClient.send(new GetItemCommand({
     TableName: table,
     Key: {id: {S: id}},
   }));
 
-  const item = output.Item;
-  return item ? itemToParticipant(item) : undefined;
+  return itemToParticipant(output.Item!);
 }
 
-export async function getParticipants(ids: Uuid[])
-    : Promise<Participant[]> {
+export async function getParticipants(ids: Uuid[]): Promise<Participant[]> {
   const participants: Participant[] = [];
   for (const id of ids) {
     participants.push(await getParticipant(id));
@@ -71,9 +68,9 @@ export async function removeParticipant(id: Uuid) {
 function itemToParticipant(item: { [key: string]: AttributeValue })
     : Participant {
   return new Participant(
-      item.userId.S,
-      item.hackathonId.S,
-      item.id.S,
-      new Date(item.creationDate.S),
+      item.userId.S!,
+      item.hackathonId.S!,
+      item.id.S!,
+      new Date(item.creationDate.S!),
   );
 }

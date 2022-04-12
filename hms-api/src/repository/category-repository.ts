@@ -25,7 +25,7 @@ export async function listCategories(hackathonId: Uuid): Promise<Category[]> {
     ExpressionAttributeValues: {':hId': {'S': hackathonId}},
   }));
 
-  return output.Items.map((item) => itemToCategory(item));
+  return output.Items!.map((item) => itemToCategory(item));
 }
 
 export async function createCategory(category: Category) {
@@ -40,14 +40,13 @@ export async function createCategory(category: Category) {
   }));
 }
 
-export async function getCategory(id: Uuid): Promise<Category | undefined> {
+export async function getCategory(id: Uuid): Promise<Category> {
   const output = await dynamoDBClient.send(new GetItemCommand({
     TableName: table,
     Key: {id: {S: id}},
   }));
 
-  const item = output.Item;
-  return item ? itemToCategory(item) : undefined;
+  return itemToCategory(output.Item!);
 }
 
 export async function removeCategory(id: Uuid) {
@@ -59,9 +58,9 @@ export async function removeCategory(id: Uuid) {
 
 function itemToCategory(item: { [key: string]: AttributeValue }): Category {
   return new Category(
-      item.title.S,
-      item.description.S,
-      item.hackathonId.S,
-      item.id.S,
+      item.title.S!,
+      item.description.S!,
+      item.hackathonId.S!,
+      item.id.S!,
   );
 }
