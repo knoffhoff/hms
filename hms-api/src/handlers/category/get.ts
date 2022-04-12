@@ -15,7 +15,6 @@ export async function get(event, context, callback) {
         category.description,
         HackathonPreviewResponse.from(hackathon),
     );
-
     callback(null, buildResponse(200, responseBody));
   } else {
     callback(null, buildResponse(404, {}));
