@@ -1,5 +1,4 @@
 /* eslint-disable require-jsdoc */
-// TODO add error handling
 // TODO add paging for lists
 
 import {
@@ -12,25 +11,30 @@ import {
 import {Uuid} from '../util/uuids';
 import {getClient, safeTransformArray} from './dynamo-db';
 import Idea from './domain/Idea';
+import NotFoundError from './error/NotFoundError';
 
-const table = process.env.IDEA_TABLE;
-const byHackathonIdIndex = process.env.IDEA_BY_HACKATHON_ID_INDEX;
 const dynamoDBClient = getClient();
 
 export async function listIdeas(hackathonId: Uuid): Promise<Idea[]> {
   const output = await dynamoDBClient.send(new QueryCommand({
-    TableName: table,
-    IndexName: byHackathonIdIndex,
+    TableName: process.env.IDEA_TABLE,
+    IndexName: process.env.IDEA_BY_HACKATHON_ID_INDEX,
     KeyConditionExpression: 'hackathonId = :hId',
     ExpressionAttributeValues: {':hId': {'S': hackathonId}},
   }));
 
-  return output.Items!.map((item) => itemToIdea(item));
+  const items = output.Items;
+  if (items) {
+    return items.map((item) => itemToIdea(item));
+  }
+
+  throw new NotFoundError(
+      `Ideas for Hackathon with id: ${hackathonId} not found`);
 }
 
 export async function createIdea(idea: Idea) {
   await dynamoDBClient.send(new PutItemCommand({
-    TableName: table,
+    TableName: process.env.IDEA_TABLE,
     Item: {
       owner: {S: idea.ownerId},
       hackathonId: {S: idea.hackathonId},
@@ -42,38 +46,43 @@ export async function createIdea(idea: Idea) {
       requiredSkills: safeTransformArray(idea.requiredSkills),
       categoryId: {S: idea.categoryId},
       id: {S: idea.id},
-      creationDate: {S: idea.creationDate.toString()},
+      creationDate: {S: idea.creationDate.toISOString()},
     },
   }));
 }
 
 export async function getIdea(id: Uuid): Promise<Idea> {
   const output = await dynamoDBClient.send(new GetItemCommand({
-    TableName: table,
+    TableName: process.env.IDEA_TABLE,
     Key: {id: {S: id}},
   }));
 
-  return itemToIdea(output.Item!);
+  const item = output.Item;
+  if (item) {
+    return itemToIdea(item);
+  }
+
+  throw new NotFoundError(`Idea with id: ${id} not found`);
 }
 
 export async function removeIdea(id: Uuid) {
   await dynamoDBClient.send(new DeleteItemCommand({
-    TableName: table,
+    TableName: process.env.IDEA_TABLE,
     Key: {id: {S: id}},
   }));
 }
 
 function itemToIdea(item: { [key: string]: AttributeValue }): Idea {
   return new Idea(
-      item.ownerId.S!,
-      item.hackathonId.S!,
-      item.participantIds.SS!,
-      item.title.S!,
-      item.description.S!,
-      item.problem.S!,
-      item.goal.S!,
-      item.requiredSkills.SS!,
-      item.categoryId.S!,
+      item.ownerId.S,
+      item.hackathonId.S,
+      item.participantIds.SS,
+      item.title.S,
+      item.description.S,
+      item.problem.S,
+      item.goal.S,
+      item.requiredSkills.SS,
+      item.categoryId.S,
       item.id.S!,
       new Date(item.creationDate.S!),
   );

@@ -1,13 +1,11 @@
 import {extractUser} from '../../src/service/user-service';
 import Participant from '../../src/repository/domain/Participant';
 import {uuid} from '../../src/util/uuids';
+import {makeUser, randomUser, UserData} from '../repository/domain/user-maker';
 import {
   makeParticipant,
-  makeUser,
   ParticipantData,
-  randomUser,
-  UserData,
-} from '../makers';
+} from '../repository/domain/participant-maker';
 
 describe('Extract User For Participant', () => {
   test('When user not in list', () => {
