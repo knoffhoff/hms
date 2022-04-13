@@ -21,4 +21,5 @@ export const makeParticipant = (
     creationDate,
 );
 
-export const randomParticipant = () => makeParticipant({} as ParticipantData);
+export const randomParticipant = ()
+    : Participant => makeParticipant({} as ParticipantData);

@@ -34,4 +34,4 @@ export const makeUser = (
     creationDate,
 );
 
-export const randomUser = () => makeUser({} as UserData);
+export const randomUser = (): User => makeUser({} as UserData);
