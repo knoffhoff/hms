@@ -14,7 +14,7 @@ export const makeParticipant = (
       userId = uuid(),
       hackathonId = uuid(),
       creationDate = new Date(),
-    }: ParticipantData) => new Participant(
+    }: ParticipantData): Participant => new Participant(
     userId,
     hackathonId,
     id,
