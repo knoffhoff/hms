@@ -1,5 +1,4 @@
 /* eslint-disable require-jsdoc */
-// TODO add error handling
 // TODO add paging for lists
 
 import {
@@ -12,6 +11,7 @@ import {
 import {Uuid} from '../util/uuids';
 import {getClient} from './dynamo-db';
 import Category from './domain/Category';
+import NotFoundError from './error/NotFoundError';
 
 const table = process.env.CATEGORY_TABLE;
 const byHackathonIdIndex = process.env.CATEGORY_BY_HACKATHON_ID_INDEX;
@@ -25,7 +25,13 @@ export async function listCategories(hackathonId: Uuid): Promise<Category[]> {
     ExpressionAttributeValues: {':hId': {'S': hackathonId}},
   }));
 
-  return output.Items!.map((item) => itemToCategory(item));
+  const items = output.Items;
+  if (items) {
+    return items.map((item) => itemToCategory(item));
+  }
+
+  throw new NotFoundError(
+      `Categories for Hackathon with id: ${hackathonId} not found`);
 }
 
 export async function createCategory(category: Category) {
@@ -46,7 +52,12 @@ export async function getCategory(id: Uuid): Promise<Category> {
     Key: {id: {S: id}},
   }));
 
-  return itemToCategory(output.Item!);
+  const item = output.Item;
+  if (item) {
+    return itemToCategory(item);
+  }
+
+  throw new NotFoundError(`Category with id: ${id} not found`);
 }
 
 export async function removeCategory(id: Uuid) {
@@ -58,9 +69,9 @@ export async function removeCategory(id: Uuid) {
 
 function itemToCategory(item: { [key: string]: AttributeValue }): Category {
   return new Category(
-      item.title.S!,
-      item.description.S!,
-      item.hackathonId.S!,
+      item.title.S,
+      item.description.S,
+      item.hackathonId.S,
       item.id.S!,
   );
 }

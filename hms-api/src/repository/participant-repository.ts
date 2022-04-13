@@ -12,6 +12,7 @@ import {
 import {Uuid} from '../util/uuids';
 import {getClient} from './dynamo-db';
 import Participant from './domain/Participant';
+import NotFoundError from './error/NotFoundError';
 
 const table = process.env.PARTICIPANT_TABLE;
 const byHackathonIdIndex = process.env.PARTICIPANT_BY_HACKATHON_ID_INDEX;
@@ -26,7 +27,13 @@ export async function listParticipants(hackathonId: Uuid)
     ExpressionAttributeValues: {':hId': {'S': hackathonId}},
   }));
 
-  return output.Items!.map((item) => itemToParticipant(item));
+  const items = output.Items;
+  if (items) {
+    return items.map((item) => itemToParticipant(item));
+  }
+
+  throw new NotFoundError(
+      `Participants for Hackathon with id: ${hackathonId} not found`);
 }
 
 export async function createParticipant(participant: Participant) {
@@ -36,7 +43,7 @@ export async function createParticipant(participant: Participant) {
       userId: {S: participant.userId},
       hackathonId: {S: participant.hackathonId},
       id: {S: participant.id},
-      creationDate: {S: participant.creationDate.toString()},
+      creationDate: {S: participant.creationDate.toISOString()},
     },
   }));
 }
@@ -47,7 +54,12 @@ export async function getParticipant(id: Uuid): Promise<Participant> {
     Key: {id: {S: id}},
   }));
 
-  return itemToParticipant(output.Item!);
+  const item = output.Item;
+  if (item) {
+    return itemToParticipant(item);
+  }
+
+  throw new NotFoundError(`Participant with id: ${id} not found`);
 }
 
 export async function getParticipants(ids: Uuid[]): Promise<Participant[]> {
@@ -68,8 +80,8 @@ export async function removeParticipant(id: Uuid) {
 function itemToParticipant(item: { [key: string]: AttributeValue })
     : Participant {
   return new Participant(
-      item.userId.S!,
-      item.hackathonId.S!,
+      item.userId.S,
+      item.hackathonId.S,
       item.id.S!,
       new Date(item.creationDate.S!),
   );
