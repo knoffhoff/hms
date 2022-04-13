@@ -29,7 +29,7 @@ export async function listHackathons(): Promise<Hackathon[]> {
   throw new NotFoundError(`Failed to list any Hackathons`);
 }
 
-export async function createHackathon(hackathon: Hackathon) {
+export async function putHackathon(hackathon: Hackathon) {
   await dynamoDBClient.send(new PutItemCommand({
     TableName: table,
     Item: {
@@ -57,6 +57,15 @@ export async function getHackathon(id: Uuid): Promise<Hackathon> {
   }
 
   throw new NotFoundError(`Hackathon with id: ${id} not found`);
+}
+
+export async function hackathonExists(id: Uuid): Promise<boolean> {
+  const output = await dynamoDBClient.send(new GetItemCommand({
+    TableName: table,
+    Key: {id: {S: id}},
+  }));
+
+  return !!output.Item;
 }
 
 export async function removeHackathon(id: Uuid) {

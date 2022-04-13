@@ -34,7 +34,7 @@ export async function listCategories(hackathonId: Uuid): Promise<Category[]> {
       `Categories for Hackathon with id: ${hackathonId} not found`);
 }
 
-export async function createCategory(category: Category) {
+export async function putCategory(category: Category) {
   await dynamoDBClient.send(new PutItemCommand({
     TableName: table,
     Item: {

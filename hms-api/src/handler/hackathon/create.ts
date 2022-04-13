@@ -1,5 +1,5 @@
 import {buildResponse} from '../../rest/responses';
-import {createHackathon} from '../../repository/hackathon-repository';
+import {putHackathon} from '../../repository/hackathon-repository';
 import {wrapHandler} from '../handler-wrapper';
 import Hackathon from '../../repository/domain/Hackathon';
 import HackathonCreateRequest from '../../rest/HackathonCreateRequest';
@@ -15,7 +15,7 @@ export async function create(event, context, callback) {
         request.startDate,
         request.endDate,
     );
-    await createHackathon(hackathon);
+    await putHackathon(hackathon);
 
     callback(null, buildResponse(
         201,
