@@ -9,12 +9,12 @@ Content-Type: application/json
 
 {
   "ownerId": "...",
-  "hackathonId": "8a3a2bd9-c32a-47d9-a925-c14405e6a51a",
+  "hackathonId": "b08e3017-c892-4a41-a6cf-d5225fb99a75",
   "participantIds": [
     "..."
   ],
-  "title": "testidea",
-  "description": "...",
+  "title": "testidea 2",
+  "description": "hm good question",
   "problem": "...",
   "goal": "...",
   "requiredSkills": [

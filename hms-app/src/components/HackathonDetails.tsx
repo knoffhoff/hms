@@ -10,7 +10,7 @@ type IProps = {
 }
 
 export default function HackathonDetails(props: IProps) {
-  const hackathonID = props
+  const { hackathonID } = props
   const [hackathonData, setHackathonData] = useState({
     errorhackathonData: false,
     isLoadinghackathonData: true,
@@ -21,9 +21,6 @@ export default function HackathonDetails(props: IProps) {
     categoryIds: [],
     ideaIds: [],
   })
-
-  console.log(hackathonID)
-  console.log(hackathonData)
 
   const {
     errorhackathonData,
@@ -37,7 +34,7 @@ export default function HackathonDetails(props: IProps) {
   } = hackathonData
 
   const loadSelectedHackathon = () => {
-    getHackathonDetails(hackathonID.hackathonID.toString()).then(
+    getHackathonDetails(hackathonID.toString()).then(
       (data) => {
         setHackathonData({
           title: data.title,
@@ -60,6 +57,14 @@ export default function HackathonDetails(props: IProps) {
     )
   }
 
+  /*useEffect(() => {
+    setHackathonData({ ...hackathonData, isLoadinghackathonData: true })
+    loadSelectedHackathon()
+  }, [])*/
+
+  console.log('hackathonData from detail component')
+  console.log(hackathonData)
+
   loadSelectedHackathon()
 
   return (
@@ -76,16 +81,19 @@ export default function HackathonDetails(props: IProps) {
           <p>Data is coming.</p>
         </div>
       )}
-      <h3>ID: {hackathonID.hackathonID}</h3>
-      <h2>Title: {hackathonData.title}</h2>
-      {startDate && (
-        <h2>
-          Date from: {hackathonData.startDate.slice(0, 10)} to:{' '}
-          {hackathonData.endDate.slice(0, 10)}
-        </h2>
-      )}
 
-      <IdeaCardList ideas={testIdeaData} columnSize={6} type={'Archive'} />
+      {startDate && (
+        <div>
+          <p>selected ID: {hackathonID}</p>
+          <h2>Title: {hackathonData.title}</h2>
+          <h2>
+            Date from: {hackathonData.startDate.slice(0, 10)} to:{' '}
+            {hackathonData.endDate.slice(0, 10)}
+          </h2>
+
+          <IdeaCardList ideas={testIdeaData} columnSize={6} type={'Archive'} />
+        </div>
+      )}
     </>
   )
 }
