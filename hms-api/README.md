@@ -3,7 +3,6 @@
 
 # HMS API
 
-[//]: # (TODO I feel like there is a good bit more "general" information we could include here)
 The HMS API functions as the backend of the HMS System. It is meant to handle requests from the frontend and manages the
 storage of data and executes any long-running operations.
 
@@ -29,6 +28,13 @@ the [Serverless](https://www.serverless.com/framework/docs) framework.
 When running on the HMS API locally for development and testing purposes, the AWS resources are mocked
 using [LocalStack](https://localstack.cloud/) inside of [Docker](https://docs.docker.com/get-started/). This allows for
 developers to work and test in a realistic environment without occurring any additional costs.
+
+## Application Structure
+
+The HMS-API is divided into three layers; [Handler](src/handler), [Service](src/service), [Repository](src/repository).
+Requests come into the Handler layer, they are passed to the Service layer for processing and then storage and retrieval
+of data is done in the Repository layer. Errors are thrown from within the Service and Repository layers and are handled
+in the Handler layer by use of the [handler-wrapper](src/handler/handler-wrapper.ts).
 
 ## Getting Started
 
@@ -65,6 +71,12 @@ keep [package-lock.json](package-lock.json) and your development environment up 
 Unit tests are run written and orchestrated using the [Jest](https://jestjs.io/) framework. Unit tests are located in
 the `__test__` folder and can be run from the root directory using the `jest` CLI command (Jest must be installed
 globally by NPM for this to work).
+
+To run all tests execute the following command:
+
+```shell
+npm test
+```
 
 To run a single test execute a shell command similar to:
 
