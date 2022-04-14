@@ -12,7 +12,7 @@ Content-Type: application/json
   "firstName": "Matthew",
   "emailAddress": "musty.matt@inter.net",
   "roles": ["Participant"],
-  "skills": ["bee handling", "frontend"],
+  "skills": ["{{skill_id}}"],
   "imageUrl": ""
 }
 
