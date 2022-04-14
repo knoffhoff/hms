@@ -32,11 +32,11 @@ export async function listIdeas(hackathonId: Uuid): Promise<Idea[]> {
       `Ideas for Hackathon with id: ${hackathonId} not found`);
 }
 
-export async function createIdea(idea: Idea) {
+export async function putIdea(idea: Idea) {
   await dynamoDBClient.send(new PutItemCommand({
     TableName: process.env.IDEA_TABLE,
     Item: {
-      owner: {S: idea.ownerId},
+      ownerId: {S: idea.ownerId},
       hackathonId: {S: idea.hackathonId},
       participantIds: safeTransformArray(idea.participantIds),
       title: {S: idea.title},
@@ -76,7 +76,6 @@ function itemToIdea(item: { [key: string]: AttributeValue }): Idea {
   return new Idea(
       item.ownerId.S,
       item.hackathonId.S,
-      item.participantIds.SS,
       item.title.S,
       item.description.S,
       item.problem.S,
@@ -85,5 +84,6 @@ function itemToIdea(item: { [key: string]: AttributeValue }): Idea {
       item.categoryId.S,
       item.id.S!,
       new Date(item.creationDate.S!),
+      item.participantIds.SS,
   );
 }

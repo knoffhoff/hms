@@ -22,9 +22,9 @@ export const makeHackathon = (
       startDate = new Date(new Date().getTime() + fiveDaysInMillis),
       endDate = new Date(new Date().getTime() + tenDaysInMillis),
       creationDate = new Date,
-      participantIds = [uuid(), uuid()],
-      categoryIds = [uuid()],
-      ideaIds = [uuid(), uuid(), uuid()],
+      participantIds = [],
+      categoryIds = [],
+      ideaIds = [],
     }: HackathonData): Hackathon => new Hackathon(
     title,
     startDate,

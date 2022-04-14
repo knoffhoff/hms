@@ -12,7 +12,7 @@ export async function createCategory(
     hackathonId: Uuid,
 ) {
   if (!await hackathonExists(hackathonId)) {
-    throw new ReferenceNotFoundError(`Cannot create category, ` +
+    throw new ReferenceNotFoundError(`Cannot create Category, ` +
         `Hackathon with id: ${hackathonId} does not exist`);
   }
 

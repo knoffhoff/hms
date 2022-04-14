@@ -3,6 +3,7 @@ import {
   getSkill,
   getSkills,
   listSkills,
+  skillExists,
 } from '../../src/repository/skill-repository';
 import {uuid} from '../../src/util/uuids';
 import NotFoundError from '../../src/repository/error/NotFoundError';
@@ -83,6 +84,20 @@ describe('List Skills', () => {
     ]);
 
     expect(await listSkills()).toStrictEqual([skill1, skill2]);
+  });
+});
+
+describe('Skill Exists', () => {
+  test('Item is non-null', async () => {
+    mockGetItem({});
+
+    expect(await skillExists(uuid())).toBe(true);
+  });
+
+  test('Item is null', async () => {
+    mockGetItem(null);
+
+    expect(await skillExists(uuid())).toBe(false);
   });
 });
 

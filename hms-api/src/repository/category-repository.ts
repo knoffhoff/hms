@@ -60,6 +60,15 @@ export async function getCategory(id: Uuid): Promise<Category> {
   throw new NotFoundError(`Category with id: ${id} not found`);
 }
 
+export async function categoryExists(id: Uuid): Promise<boolean> {
+  const output = await dynamoDBClient.send(new GetItemCommand({
+    TableName: table,
+    Key: {id: {S: id}},
+  }));
+
+  return !!output.Item;
+}
+
 export async function removeCategory(id: Uuid) {
   await dynamoDBClient.send(new DeleteItemCommand({
     TableName: table,

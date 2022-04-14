@@ -8,19 +8,16 @@ POST {{host}}/restapis/{{api_id}}/local/_user_request_/idea
 Content-Type: application/json
 
 {
-  "ownerId": "...",
-  "hackathonId": "...",
-  "participantIds": [
-    "..."
-  ],
-  "title": "...",
-  "description": "...",
-  "problem": "...",
-  "goal": "...",
+  "ownerId": "{{participant_id}}",
+  "hackathonId": "{{hackathon_id}}",
+  "title": "Wicked awesome idea",
+  "description": "By doing all the things and being the greatest of all time hackathons can be great again",
+  "problem": "Hackathons have become weak and boring",
+  "goal": "Make hackathons great again",
   "requiredSkills": [
-    "..."
+    "{{skill_id}}"
   ],
-  "categoryId": "..."
+  "categoryId": "{{category_id}}"
 }
 
 ###

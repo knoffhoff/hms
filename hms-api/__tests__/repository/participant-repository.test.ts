@@ -3,6 +3,7 @@ import {
   getParticipant,
   getParticipants,
   listParticipants,
+  participantExists,
 } from '../../src/repository/participant-repository';
 import {uuid} from '../../src/util/uuids';
 import NotFoundError from '../../src/repository/error/NotFoundError';
@@ -97,6 +98,20 @@ describe('List Participants', () => {
 
     expect(await listParticipants(hackathonId))
         .toStrictEqual([participant1, participant2]);
+  });
+});
+
+describe('Participant Exists', () => {
+  test('Item is non-null', async () => {
+    mockGetItem({});
+
+    expect(await participantExists(uuid())).toBe(true);
+  });
+
+  test('Item is null', async () => {
+    mockGetItem(null);
+
+    expect(await participantExists(uuid())).toBe(false);
   });
 });
 

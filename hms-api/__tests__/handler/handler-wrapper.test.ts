@@ -1,5 +1,7 @@
 import {wrapHandler} from '../../src/handler/handler-wrapper';
 import NotFoundError from '../../src/repository/error/NotFoundError';
+import ReferenceNotFoundError
+  from '../../src/repository/error/ReferenceNotFoundError';
 
 describe('Wrap Handler', () => {
   test('Calls provided function', async () => {
@@ -22,6 +24,25 @@ describe('Wrap Handler', () => {
 
     expect(callback).toHaveBeenCalledWith(null, {
       statusCode: 404,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Credentials': true,
+        'content-type': 'application/json',
+      },
+      body: JSON.stringify({errorMessage: message}),
+    });
+  });
+
+  test('Catches ReferenceNotFoundError', async () => {
+    const message = 'We couldn\'t find that thing your thing wanted';
+    const callback = jest.fn();
+
+    await wrapHandler(() => {
+      throw new ReferenceNotFoundError(message);
+    }, callback);
+
+    expect(callback).toHaveBeenCalledWith(null, {
+      statusCode: 400,
       headers: {
         'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Credentials': true,

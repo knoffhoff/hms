@@ -1,5 +1,6 @@
 import {mockGetItem, mockQuery} from './dynamo-db-mock';
 import {
+  categoryExists,
   getCategory,
   listCategories,
 } from '../../src/repository/category-repository';
@@ -62,6 +63,20 @@ describe('List Categories', () => {
 
     expect(await listCategories(hackathonId))
         .toStrictEqual([category1, category2]);
+  });
+});
+
+describe('Category Exists', () => {
+  test('Item is non-null', async () => {
+    mockGetItem({});
+
+    expect(await categoryExists(uuid())).toBe(true);
+  });
+
+  test('Item is null', async () => {
+    mockGetItem(null);
+
+    expect(await categoryExists(uuid())).toBe(false);
   });
 });
 

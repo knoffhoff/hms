@@ -1,13 +1,14 @@
-import {mockPut} from '../repository/dynamo-db-mock';
+import {mockPut, mockSend} from '../repository/dynamo-db-mock';
 import {mockUuid} from '../util/uuids-mock';
+import {randomCategory} from '../repository/domain/category-maker';
 
-import * as hackathonRepository
-  from '../../src/repository/hackathon-repository';
 import {createCategory} from '../../src/service/category-service';
 import {uuid} from '../../src/util/uuids';
 import ReferenceNotFoundError
   from '../../src/repository/error/ReferenceNotFoundError';
-import {randomCategory} from '../repository/domain/category-maker';
+
+import * as hackathonRepository
+  from '../../src/repository/hackathon-repository';
 
 const mockHackathonExists = jest.fn();
 jest.spyOn(hackathonRepository, 'hackathonExists')
@@ -15,16 +16,15 @@ jest.spyOn(hackathonRepository, 'hackathonExists')
 
 describe('Create Category', () => {
   test('Missing hackathon', async () => {
-    mockPut();
-
     mockHackathonExists.mockResolvedValue(false);
 
     await expect(createCategory('title', 'description', uuid()))
         .rejects
         .toThrow(ReferenceNotFoundError);
+    expect(mockSend).not.toHaveBeenCalled();
   });
 
-  test('Missing hackathon', async () => {
+  test('Happy Path', async () => {
     mockPut();
 
     mockHackathonExists.mockResolvedValue(true);

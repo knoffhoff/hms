@@ -19,7 +19,6 @@ export default class {
   constructor(
       ownerId: Uuid,
       hackathonId: Uuid,
-      participantIds: Uuid[],
       title: string,
       description: string,
       problem: string,
@@ -30,7 +29,6 @@ export default class {
   constructor(
       ownerId: Uuid,
       hackathonId: Uuid,
-      participantIds: Uuid[],
       title: string,
       description: string,
       problem: string,
@@ -39,13 +37,13 @@ export default class {
       categoryId: Uuid,
       id: Uuid,
       creationDate: Date,
+      participantIds: Uuid[],
   );
 
   // eslint-disable-next-line require-jsdoc
   constructor(
       ownerId: Uuid,
       hackathonId: Uuid,
-      participantIds: Uuid[],
       title: string,
       description: string,
       problem: string,
@@ -54,6 +52,7 @@ export default class {
       categoryId: Uuid,
       id: Uuid = uuid(),
       creationDate: Date = new Date(),
+      participantIds: Uuid[] = [],
   ) {
     this.id = id;
     this.ownerId = ownerId;

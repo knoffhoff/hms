@@ -31,5 +31,7 @@ export function buildNotFoundErrorResponse(error: NotFoundError): Object {
 }
 
 export function buildErrorResponse(error: Error): Object {
-  return buildResponse(500, {errorMessage: error.message});
+  return buildResponse(500, {
+    errorMessage: error.message,
+  });
 }
