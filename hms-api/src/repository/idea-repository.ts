@@ -36,7 +36,7 @@ export async function createIdea(idea: Idea) {
   await dynamoDBClient.send(new PutItemCommand({
     TableName: process.env.IDEA_TABLE,
     Item: {
-      owner: {S: idea.ownerId},
+      ownerId: {S: idea.ownerId},
       hackathonId: {S: idea.hackathonId},
       participantIds: safeTransformArray(idea.participantIds),
       title: {S: idea.title},
