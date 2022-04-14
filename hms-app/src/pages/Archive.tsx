@@ -1,16 +1,17 @@
-import React, {useEffect, useState} from 'react'
-import {Button} from '@mantine/core'
-import {getListOfHackathons,} from '../actions/GetBackendData'
+import React, { useEffect, useState } from 'react'
+import { Button } from '@mantine/core'
+import { getListOfHackathons } from '../actions/GetBackendData'
 import HackathonDetails from '../components/HackathonDetails'
+import { Select } from '@mantine/core'
 
 interface HackathonPreview {
-  id: string;
-  title: string;
+  id: string
+  title: string
 }
 
 export default function Archive() {
   const [selectedHackweek, setSelectedHackweek] = useState(
-    '4eb2d486-c786-431e-a4fd-4c093ed30642'
+    '260c6b6e-e572-476f-b6e7-4910dd6fba52'
   )
   const [hackathonList, setHackathonList] = useState({
     errorhackathonList: false,
@@ -18,8 +19,8 @@ export default function Archive() {
     hackathons: [] as HackathonPreview[],
   })
 
-  const { errorhackathonList, isLoadinghackathonList, hackathons }
-      = hackathonList
+  const { errorhackathonList, isLoadinghackathonList, hackathons } =
+    hackathonList
 
   const loadHackathons = () => {
     getListOfHackathons('hackathons').then(
@@ -44,12 +45,25 @@ export default function Archive() {
 
   const optionsList = () => {
     return hackathonList.hackathons.map((hackathon, index) => {
-      return <option value={hackathon.id}>{hackathon.id}</option>
+      return <option value={hackathon.id}>{hackathon.title}</option>
     })
   }
 
-  const selectChange = (event: { target: { value: any } }) => {
-    const value = event.target.value
+  const data = hackathonList.hackathons.map(
+    (hackathon, index) => `${hackathon.id}`
+  )
+  /*const data = [
+    {
+      value: hackathonList.hackathons
+        .map((hackathon, index) => `${hackathon.id}`)
+        .toString(),
+      label: hackathonList.hackathons
+        .map((hackathon, index) => `${hackathon.title}`)
+        .toString(),
+    },
+  ]*/
+
+  const selectChange = (value: string) => {
     setSelectedHackweek(value)
   }
 
@@ -63,23 +77,32 @@ export default function Archive() {
     console.log('1 hackathon')
   }
 
+  console.log('selected Hackweek')
+  console.log(selectedHackweek)
   console.log('hackathonList')
   console.log(hackathonList)
-  console.log('hackathonIDs')
-  console.log('hackathontitles')
-  loadHackathons()
 
   return (
     <>
-      {isLoadinghackathonList && <div>is loading</div>}
+      {isLoadinghackathonList && <div>is loading...</div>}
       {!isLoadinghackathonList && (
-        <select onChange={selectChange}>{optionsList()}</select>
+        <div style={{ border: '1px solid red', width: 250 }}>
+          <Select
+            placeholder={'select a Hackweek'}
+            maxDropdownHeight={280}
+            data={data}
+            /*value={selectedHackweek}*/
+            onChange={selectChange}
+          />
+        </div>
       )}
 
-      <Button onClick={printHackathons}>list hackathons</Button>
+      {/*<Button onClick={printHackathons}>list hackathons</Button>*/}
 
       <h1>Selected Hackweek:</h1>
-      <HackathonDetails hackathonID={selectedHackweek.toString()} />
+      <div style={{ border: '1px solid red' }}>
+        <HackathonDetails hackathonID={selectedHackweek.toString()} />
+      </div>
     </>
   )
 }
