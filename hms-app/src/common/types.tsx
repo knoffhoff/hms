@@ -1,25 +1,50 @@
-export type Hackathon = {
+export type HackathonPreview = {
+  id: string
+  title: string
+}
+
+export type IdeaPreviews = {
   id: string
   title: string
 }
 
 export type Idea = {
   id: string
+  owner: Owner[]
+  hackathon: HackathonPreview[]
+  participants: Participant[]
   title: string
   description: string
-  author?: User
-  reason: string
   problem: string
   goal: string
-  skills: string[]
-  category: string
-  participants: User[]
-  aws: boolean
+  requiredSkills: Skill[]
+  category: Category[]
+  creationDate: string
+}
+
+export type Category = {
+  id: string
+  title: string
+}
+
+export type Skill = {
+  id: string
+  name: string
+}
+
+export type Owner = {
+  id: string
+  user: User[]
+}
+
+export type Participant = {
+  id: string
+  user: User[]
 }
 
 export type User = {
-  name: string
-  email?: string
-  role?: string
-  avatar?: string
+  id: string
+  lastName?: string
+  firstName?: string
+  imageUrl?: string
 }

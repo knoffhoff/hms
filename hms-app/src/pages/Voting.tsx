@@ -205,7 +205,7 @@ export default function Voting() {
                                         }}
                                       >
                                         <IdeaCardFoldable
-                                          idea={item}
+                                          ideaPreview={item}
                                           index={index}
                                           type={'voting'}
                                         />

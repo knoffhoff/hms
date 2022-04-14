@@ -1,9 +1,6 @@
-import React, { useEffect, useState } from 'react'
-import { Button, Select } from '@mantine/core'
+import React, { useState } from 'react'
 import { getHackathonDetails } from '../actions/GetBackendData'
-import { Hackathon } from '../common/types'
 import IdeaCardList from './IdeaCardList'
-import testIdeaData from '../test/TestIdeaData'
 
 type IProps = {
   hackathonID: string
@@ -19,8 +16,11 @@ export default function HackathonDetails(props: IProps) {
     endDate: '',
     participantIds: [],
     categoryIds: [],
-    ideaIds: [],
+    ideas: [],
   })
+
+  console.log('hackathonData from detail component')
+  console.log(hackathonData)
 
   const {
     errorhackathonData,
@@ -30,7 +30,7 @@ export default function HackathonDetails(props: IProps) {
     endDate,
     participantIds,
     categoryIds,
-    ideaIds,
+    ideas,
   } = hackathonData
 
   const loadSelectedHackathon = () => {
@@ -40,9 +40,9 @@ export default function HackathonDetails(props: IProps) {
           title: data.title,
           startDate: data.startDate,
           endDate: data.endDate,
-          participantIds: data.participantIds,
-          categoryIds: data.categoryIds,
-          ideaIds: data.ideaIds,
+          participantIds: data.participants,
+          categoryIds: data.categories,
+          ideas: data.ideas,
           errorhackathonData: false,
           isLoadinghackathonData: false,
         })
@@ -56,11 +56,6 @@ export default function HackathonDetails(props: IProps) {
       }
     )
   }
-
-  /*useEffect(() => {
-    setHackathonData({ ...hackathonData, isLoadinghackathonData: true })
-    loadSelectedHackathon()
-  }, [])*/
 
   console.log('hackathonData from detail component')
   console.log(hackathonData)
@@ -77,8 +72,7 @@ export default function HackathonDetails(props: IProps) {
       )}
       {isLoadinghackathonData && (
         <div>
-          <h3>Loading...</h3>
-          <p>Data is coming.</p>
+          <h3>Hackathon details are loading...</h3>
         </div>
       )}
 
@@ -91,7 +85,7 @@ export default function HackathonDetails(props: IProps) {
             {hackathonData.endDate.slice(0, 10)}
           </h2>
 
-          <IdeaCardList ideas={testIdeaData} columnSize={6} type={'Archive'} />
+          <IdeaCardList ideaPreviews={ideas} columnSize={6} type={'Archive'} />
         </div>
       )}
     </>

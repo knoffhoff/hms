@@ -9,14 +9,14 @@ Content-Type: application/json
 
 {
   "ownerId": "...",
-  "hackathonId": "b08e3017-c892-4a41-a6cf-d5225fb99a75",
+  "hackathonId": "f6081e81-7805-4e67-bc79-8c7c118b8212",
   "participantIds": [
     "..."
   ],
-  "title": "testidea 2",
-  "description": "hm good question",
-  "problem": "...",
-  "goal": "...",
+  "title": "no errors anymore",
+  "description": "finaly make everything working",
+  "problem": "errors",
+  "goal": "no errors",
   "requiredSkills": [
     "..."
   ],
