@@ -8,20 +8,9 @@ POST {{host}}/restapis/{{api_id}}/local/_user_request_/hackathon
 Content-Type: application/json
 
 {
-  "title": "some future hackweek",
-  "startDate": "2023-09-01",
-  "endDate": "2023-09-05"
-}
-
-###
-# @name Create Hackathon
-POST {{host}}/restapis/{{api_id}}/local/_user_request_/hackathon
-Content-Type: application/json
-
-{
-  "title": "comeon",
-  "startDate": "2022-09-03",
-  "endDate": "2022-09-08"
+  "title": "Hackweek2022",
+  "startDate": "2022-09-01",
+  "endDate": "2022-09-05"
 }
 
 ###

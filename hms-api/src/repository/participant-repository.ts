@@ -1,5 +1,4 @@
 /* eslint-disable require-jsdoc */
-// TODO add error handling
 // TODO add paging for lists
 
 import {
@@ -18,8 +17,9 @@ const table = process.env.PARTICIPANT_TABLE;
 const byHackathonIdIndex = process.env.PARTICIPANT_BY_HACKATHON_ID_INDEX;
 const dynamoDBClient = getClient();
 
-export async function listParticipants(hackathonId: Uuid)
-    : Promise<Participant[]> {
+export async function listParticipants(
+    hackathonId: Uuid,
+): Promise<Participant[]> {
   const output = await dynamoDBClient.send(new QueryCommand({
     TableName: table,
     IndexName: byHackathonIdIndex,
@@ -36,7 +36,7 @@ export async function listParticipants(hackathonId: Uuid)
       `Participants for Hackathon with id: ${hackathonId} not found`);
 }
 
-export async function createParticipant(participant: Participant) {
+export async function putParticipant(participant: Participant) {
   await dynamoDBClient.send(new PutItemCommand({
     TableName: table,
     Item: {
@@ -68,6 +68,15 @@ export async function getParticipants(ids: Uuid[]): Promise<Participant[]> {
     participants.push(await getParticipant(id));
   }
   return participants;
+}
+
+export async function participantExists(id: Uuid): Promise<boolean> {
+  const output = await dynamoDBClient.send(new GetItemCommand({
+    TableName: table,
+    Key: {id: {S: id}},
+  }));
+
+  return !!output.Item;
 }
 
 export async function removeParticipant(id: Uuid) {

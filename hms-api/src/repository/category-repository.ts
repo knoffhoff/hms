@@ -34,7 +34,7 @@ export async function listCategories(hackathonId: Uuid): Promise<Category[]> {
       `Categories for Hackathon with id: ${hackathonId} not found`);
 }
 
-export async function createCategory(category: Category) {
+export async function putCategory(category: Category) {
   await dynamoDBClient.send(new PutItemCommand({
     TableName: table,
     Item: {
@@ -58,6 +58,15 @@ export async function getCategory(id: Uuid): Promise<Category> {
   }
 
   throw new NotFoundError(`Category with id: ${id} not found`);
+}
+
+export async function categoryExists(id: Uuid): Promise<boolean> {
+  const output = await dynamoDBClient.send(new GetItemCommand({
+    TableName: table,
+    Key: {id: {S: id}},
+  }));
+
+  return !!output.Item;
 }
 
 export async function removeCategory(id: Uuid) {

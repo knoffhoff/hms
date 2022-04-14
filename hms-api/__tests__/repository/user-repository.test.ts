@@ -3,6 +3,7 @@ import {
   getUser,
   getUsers,
   listUsers,
+  userExists,
 } from '../../src/repository/user-repository';
 import {uuid} from '../../src/util/uuids';
 import NotFoundError from '../../src/repository/error/NotFoundError';
@@ -84,6 +85,20 @@ describe('List Users', () => {
     ]);
 
     expect(await listUsers()).toStrictEqual([user1, user2]);
+  });
+});
+
+describe('User Exists', () => {
+  test('Item is non-null', async () => {
+    mockGetItem({});
+
+    expect(await userExists(uuid())).toBe(true);
+  });
+
+  test('Item is null', async () => {
+    mockGetItem(null);
+
+    expect(await userExists(uuid())).toBe(false);
   });
 });
 

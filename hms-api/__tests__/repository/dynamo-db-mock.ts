@@ -5,6 +5,7 @@ import {
   AttributeValue,
   DynamoDBClient,
   GetItemCommandOutput,
+  PutItemCommandOutput,
   QueryCommandOutput,
 } from '@aws-sdk/client-dynamodb';
 
@@ -27,4 +28,8 @@ export function mockGetItemOnce(item: { [key: string]: AttributeValue }): void {
 
 export function mockQuery(items: { [key: string]: AttributeValue }[]): void {
   mockSend.mockResolvedValue({Items: items} as QueryCommandOutput);
+}
+
+export function mockPut(): void {
+  mockSend.mockResolvedValue({} as PutItemCommandOutput);
 }

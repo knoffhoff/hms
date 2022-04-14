@@ -29,7 +29,7 @@ export async function listSkills(): Promise<Skill[]> {
   throw new NotFoundError(`Failed to list any Skills`);
 }
 
-export async function createSkill(skill: Skill) {
+export async function putSkill(skill: Skill) {
   await dynamoDBClient.send(new PutItemCommand({
     TableName: table,
     Item: {
@@ -61,6 +61,15 @@ export async function getSkills(ids: Uuid[]): Promise<Skill[]> {
   }
 
   return skills;
+}
+
+export async function skillExists(id: Uuid): Promise<boolean> {
+  const output = await dynamoDBClient.send(new GetItemCommand({
+    TableName: table,
+    Key: {id: {S: id}},
+  }));
+
+  return !!output.Item;
 }
 
 export async function removeSkill(id: Uuid) {

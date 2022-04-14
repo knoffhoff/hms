@@ -5,7 +5,6 @@ import {Uuid} from '../util/uuids';
 export default class {
   ownerId: Uuid;
   hackathonId: Uuid;
-  participantIds: Uuid[];
   title: string;
   description: string;
   problem: string;
@@ -16,7 +15,6 @@ export default class {
   constructor(
       ownerId: Uuid,
       hackathonId: Uuid,
-      participantIds: Uuid[],
       title: string,
       description: string,
       problem: string,
@@ -26,7 +24,6 @@ export default class {
   ) {
     this.ownerId = ownerId;
     this.hackathonId = hackathonId;
-    this.participantIds = participantIds;
     this.title = title;
     this.description = description;
     this.problem = problem;

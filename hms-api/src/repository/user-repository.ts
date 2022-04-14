@@ -1,5 +1,4 @@
 /* eslint-disable require-jsdoc */
-// TODO add error handling
 // TODO add paging for lists
 
 import User from './domain/User';
@@ -31,7 +30,7 @@ export async function listUsers(): Promise<User[]> {
   throw new NotFoundError(`Failed to list any users`);
 }
 
-export async function createUser(user: User) {
+export async function putUser(user: User) {
   await dynamoDBClient.send(new PutItemCommand({
     TableName: table,
     Item: {
@@ -67,6 +66,15 @@ export async function getUsers(ids: Uuid[]): Promise<User[]> {
     users.push(await getUser(id));
   }
   return users;
+}
+
+export async function userExists(id: Uuid): Promise<boolean> {
+  const output = await dynamoDBClient.send(new GetItemCommand({
+    TableName: table,
+    Key: {id: {S: id}},
+  }));
+
+  return !!output.Item;
 }
 
 export async function removeUser(id: Uuid) {
