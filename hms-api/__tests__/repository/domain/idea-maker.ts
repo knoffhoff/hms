@@ -20,7 +20,7 @@ export const makeIdea = (
       id = uuid(),
       ownerId = uuid(),
       hackathonId = uuid(),
-      participantIds = [uuid(), uuid(), uuid()],
+      participantIds = [],
       title = '#1 Best Idea :D',
       description = 'A super cool idea that is better than anything else',
       problem = 'We keep losing at hackathons',
@@ -31,7 +31,6 @@ export const makeIdea = (
     }: IdeaData): Idea => new Idea(
     ownerId,
     hackathonId,
-    participantIds,
     title,
     description,
     problem,
@@ -40,6 +39,7 @@ export const makeIdea = (
     categoryId,
     id,
     creationDate,
+    participantIds,
 );
 
 export const randomIdea = ()

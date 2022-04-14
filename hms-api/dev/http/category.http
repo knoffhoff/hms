@@ -8,9 +8,9 @@ POST {{host}}/restapis/{{api_id}}/local/_user_request_/category
 Content-Type: application/json
 
 {
-  "title": "...",
-  "description": "...",
-  "hackathonId": "..."
+  "title": "Form over Function",
+  "description": "This is for the horrible \"projects\" which are actually just flashy presentations that always win",
+  "hackathonId": "{{hackathon_id}}"
 }
 
 ###

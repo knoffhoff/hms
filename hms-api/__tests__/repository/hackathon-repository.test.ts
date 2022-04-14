@@ -1,6 +1,7 @@
 import {mockGetItem, mockQuery} from './dynamo-db-mock';
 import {
   getHackathon,
+  hackathonExists,
   listHackathons,
 } from '../../src/repository/hackathon-repository';
 import {uuid} from '../../src/util/uuids';
@@ -54,6 +55,20 @@ describe('List Hackathons', () => {
     ]);
 
     expect(await listHackathons()).toStrictEqual([hackathon1, hackathon2]);
+  });
+});
+
+describe('Hackathon Exists', () => {
+  test('Item is non-null', async () => {
+    mockGetItem({});
+
+    expect(await hackathonExists(uuid())).toBe(true);
+  });
+
+  test('Item is null', async () => {
+    mockGetItem(null);
+
+    expect(await hackathonExists(uuid())).toBe(false);
   });
 });
 
