@@ -15,7 +15,6 @@ import {
 import {
   Category,
   HackathonPreview,
-  Idea,
   IdeaPreviews,
   Owner,
   Participant,
@@ -27,6 +26,20 @@ type IProps = {
   ideaPreview: IdeaPreviews
   index: number
   type: string
+}
+
+interface Idea {
+  id: string
+  owner: Owner[]
+  hackathon: HackathonPreview[]
+  participants: Participant[]
+  title: string
+  description: string
+  problem: string
+  goal: string
+  requiredSkills: Skill[]
+  category: Category[]
+  creationDate: string
 }
 
 const useStyles = createStyles((theme) => ({
@@ -62,6 +75,12 @@ export default function IdeaCardFoldable(props: IProps) {
   const [ideaData, setIdeaData] = useState({
     errorIdeaData: false,
     isLoadingIdeaData: true,
+    ideaDetails: [] as Idea[],
+  })
+
+  /*const [ideaData, setIdeaData] = useState({
+    errorIdeaData: false,
+    isLoadingIdeaData: true,
     id: 'string',
     owner: [],
     hackathon: [],
@@ -73,8 +92,11 @@ export default function IdeaCardFoldable(props: IProps) {
     requiredSkills: [],
     category: [],
     creationDate: 'string',
-  })
-  const {
+  })*/
+
+  const { errorIdeaData, isLoadingIdeaData, ideaDetails } = ideaData
+
+  /*const {
     errorIdeaData,
     isLoadingIdeaData,
     id,
@@ -88,12 +110,13 @@ export default function IdeaCardFoldable(props: IProps) {
     requiredSkills,
     category,
     creationDate,
-  } = ideaData
+  } = ideaData*/
 
   const loadIdeaDetails = () => {
     getIdeaDetails(ideaPreview.id.toString()).then(
       (data) => {
-        setIdeaData({
+        console.log('data', data)
+        /*setIdeaData({
           id: data.id,
           owner: data.owner,
           hackathon: data.hackathon,
@@ -105,6 +128,11 @@ export default function IdeaCardFoldable(props: IProps) {
           requiredSkills: data.requiredSkills.name,
           category: data.category,
           creationDate: data.creationDate,
+          errorIdeaData: false,
+          isLoadingIdeaData: false,
+        })*/
+        setIdeaData({
+          ideaDetails: data,
           errorIdeaData: false,
           isLoadingIdeaData: false,
         })
@@ -124,18 +152,23 @@ export default function IdeaCardFoldable(props: IProps) {
   const MAX_TITLE_LENGTH = 45
   const MAX_DESCRIPTION_LENGTH = type === 'voting' ? 200 : 245
 
-  const skillBadges = requiredSkills.map((skill) => (
+  /*const skillBadges = requiredSkills.map((skill) => (
     <Badge color={theme.colorScheme === 'dark' ? 'dark' : 'gray'} key={skill}>
       {skill}
     </Badge>
-  ))
+  ))*/
 
-  const participantAvatars = participants.map((participant, index) => (
-    <Avatar key={index} src={participant} />
-  ))
+  /*const participantAvatars = ideaData.ideaDetails.map(
+    (idea, index) => `${idea.participants}`
+  )*/
 
-  loadIdeaDetails()
+  useEffect(() => {
+    loadIdeaDetails()
+  }, [])
+
+  /*loadIdeaDetails()*/
   console.log('ideacard', ideaPreview, ideaData)
+  console.log('ideaDetails', ideaDetails)
 
   return (
     <>
@@ -161,19 +194,19 @@ export default function IdeaCardFoldable(props: IProps) {
                     'https://avatars.githubusercontent.com/u/10353856?s=460&u=88394dfd67727327c1f7670a1764dc38a8a24831&v=4'
                   }
                 />
-                <Badge size="sm">{owner}</Badge>
+                {/*<Badge size="sm">{ideaData.ideaDetails}</Badge>*/}
               </Group>
 
-              <Text size="lg" weight={500}>
+              {/*<Text size="lg" weight={500}>
                 {title.slice(0, MAX_TITLE_LENGTH)}
                 {title.length > MAX_TITLE_LENGTH ? '...' : ''}
-              </Text>
+              </Text>*/}
             </Group>
 
-            <Text size="sm" mt="xs">
+            {/*<Text size="sm" mt="xs">
               {description.slice(0, MAX_DESCRIPTION_LENGTH)}
               {description.length > MAX_DESCRIPTION_LENGTH ? '...' : ''}
-            </Text>
+            </Text>*/}
           </Card.Section>
 
           {type !== 'voting' && (
@@ -183,7 +216,7 @@ export default function IdeaCardFoldable(props: IProps) {
                   Skills required
                 </Text>
                 <Group spacing={7} mt={5}>
-                  {skillBadges}
+                  {/*{skillBadges}*/}
                 </Group>
               </Card.Section>
 
@@ -201,7 +234,7 @@ export default function IdeaCardFoldable(props: IProps) {
                       Problem
                     </Text>
                     <Text size="sm" mt="xs">
-                      {problem}
+                      {/*{problem}*/}
                     </Text>
                   </Card.Section>
 
@@ -210,7 +243,7 @@ export default function IdeaCardFoldable(props: IProps) {
                       Goal
                     </Text>
                     <Text size="sm" mt="xs">
-                      {goal}
+                      {/*{goal}*/}
                     </Text>
                   </Card.Section>
 
@@ -223,13 +256,13 @@ export default function IdeaCardFoldable(props: IProps) {
                           </Text>
                           <Group spacing={7} mt={5}>
                             <AvatarsGroup limit={5}>
-                              {participantAvatars}
+                              {/*{participantAvatars}*/}
                             </AvatarsGroup>
                           </Group>
                         </div>
                       }
                     >
-                      {participantAvatars}
+                      {/*{participantAvatars}*/}
                     </Accordion.Item>
                   </Accordion>
 
