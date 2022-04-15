@@ -7,12 +7,13 @@ import CategoryCreateResponse from '../../rest/CategoryCreateResponse';
 // eslint-disable-next-line require-jsdoc
 export async function create(event, context, callback) {
   await wrapHandler(async () => {
-    const request: CategoryCreateRequest = JSON.parse(event.body);
+    const request = CategoryCreateRequest.parse(event.body);
     const category = await createCategory(
         request.title,
         request.description,
         request.hackathonId,
     );
+
     callback(null, buildResponse(201, new CategoryCreateResponse(category.id)));
   }, callback);
 }

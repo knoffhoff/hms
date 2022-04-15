@@ -1,6 +1,6 @@
 /* eslint-disable require-jsdoc */
 
-export default class {
+class SkillCreateRequest {
   name: string;
   description: string;
 
@@ -11,4 +11,11 @@ export default class {
     this.name = name;
     this.description = description;
   }
+
+  static parse(body: string): SkillCreateRequest {
+    const json = JSON.parse(body);
+    return new SkillCreateRequest(json.name, json.description);
+  }
 }
+
+export default SkillCreateRequest;

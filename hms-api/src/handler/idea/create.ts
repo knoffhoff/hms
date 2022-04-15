@@ -7,8 +7,7 @@ import IdeaCreateResponse from '../../rest/IdeaCreateResponse';
 // eslint-disable-next-line require-jsdoc
 export async function create(event, context, callback) {
   await wrapHandler(async () => {
-    const request: IdeaCreateRequest = JSON.parse(event.body);
-
+    const request = IdeaCreateRequest.parse(event.body);
     const idea = await createIdea(
         request.ownerId,
         request.hackathonId,

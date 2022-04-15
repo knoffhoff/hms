@@ -1,5 +1,7 @@
 /* eslint-disable require-jsdoc */
-export default class {
+
+
+class HackathonCreateRequest {
   title: string;
   startDate: Date;
   endDate: Date;
@@ -13,4 +15,15 @@ export default class {
     this.startDate = startDate;
     this.endDate = endDate;
   }
+
+  static parse(body: string): HackathonCreateRequest {
+    const json = JSON.parse(body);
+    return new HackathonCreateRequest(
+        json.title,
+        new Date(json.startDate),
+        new Date(json.endDate),
+    );
+  }
 }
+
+export default HackathonCreateRequest;
