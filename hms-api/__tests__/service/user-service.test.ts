@@ -3,6 +3,7 @@ import {mockUuid} from '../util/uuids-mock';
 import {
   createUser,
   extractUser,
+  getUserListResponse,
   getUserResponse,
   removeUser,
   usersFor,
@@ -22,6 +23,7 @@ import * as userRepository from '../../src/repository/user-repository';
 import {randomSkill} from '../repository/domain/skill-maker';
 import NotFoundError from '../../src/error/NotFoundError';
 import UserResponse from '../../src/rest/UserResponse';
+import UserListResponse from '../../src/rest/UserListResponse';
 
 const mockGetSkills = jest.fn();
 jest.spyOn(skillRepository, 'getSkills')
@@ -39,6 +41,9 @@ jest.spyOn(userRepository, 'getUser')
 const mockGetUsers = jest.fn();
 jest.spyOn(userRepository, 'getUsers')
     .mockImplementation(mockGetUsers);
+const mockListUsers = jest.fn();
+jest.spyOn(userRepository, 'listUsers')
+    .mockImplementation(mockListUsers);
 const mockDeleteUser = jest.fn();
 jest.spyOn(userRepository, 'deleteUser')
     .mockImplementation(mockDeleteUser);
@@ -125,6 +130,22 @@ describe('Get User Response', () => {
         .toThrow(NotFoundError);
     expect(mockGetUser).toHaveBeenCalledWith(id);
     expect(mockGetSkills).not.toHaveBeenCalled();
+  });
+});
+
+describe('Get User List Response', () => {
+  test('Happy Path', async () => {
+    const user1 = randomUser();
+    const user2 = randomUser();
+    const user3 = randomUser();
+    const expected = UserListResponse.from(
+        [user1, user2, user3],
+    );
+
+    mockListUsers.mockResolvedValue([user1, user2, user3]);
+
+    expect(await getUserListResponse()).toStrictEqual(expected);
+    expect(mockListUsers).toHaveBeenCalled();
   });
 });
 

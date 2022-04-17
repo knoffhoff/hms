@@ -7,12 +7,14 @@ import {
 import {
   deleteCategory,
   getCategory,
+  listCategories,
   putCategory,
 } from '../repository/category-repository';
 import Uuid from '../util/Uuid';
 import Category from '../repository/domain/Category';
 import ReferenceNotFoundError from '../error/ReferenceNotFoundError';
 import CategoryResponse from '../rest/CategoryResponse';
+import CategoryListResponse from '../rest/CategoryListResponse';
 
 export async function createCategory(
     title: string,
@@ -41,6 +43,13 @@ export async function getCategoryResponse(id: Uuid): Promise<CategoryResponse> {
   }
 
   return CategoryResponse.from(category, hackathon);
+}
+
+export async function getCategoryListResponse(
+    hackathonId: Uuid,
+): Promise<CategoryListResponse> {
+  const categories = await listCategories(hackathonId);
+  return CategoryListResponse.from(categories, hackathonId);
 }
 
 export async function removeCategory(id: Uuid) {

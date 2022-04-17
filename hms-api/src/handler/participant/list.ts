@@ -1,20 +1,13 @@
 import {buildResponse} from '../../rest/responses';
-import {listParticipants} from '../../repository/participant-repository';
-import {usersFor} from '../../service/user-service';
 import {wrapHandler} from '../handler-wrapper';
 import Uuid from '../../util/Uuid';
-import ParticipantListResponse from '../../rest/ParticipantListResponse';
-import ParticipantPreviewResponse from '../../rest/ParticipantPreviewResponse';
+import {getParticipantListResponse} from '../../service/participant-service';
 
 // eslint-disable-next-line require-jsdoc
 export async function list(event, context, callback) {
   await wrapHandler(async () => {
     const hackathonId: Uuid = event.pathParameters.hackathonId;
-    const participants = await listParticipants(hackathonId);
-    const users = await usersFor(participants);
-    const previews = ParticipantPreviewResponse.fromArray(participants, users);
-    const responseBody = new ParticipantListResponse(previews, hackathonId);
-
+    const responseBody = await getParticipantListResponse(hackathonId);
     callback(null, buildResponse(200, responseBody));
   }, callback);
 }

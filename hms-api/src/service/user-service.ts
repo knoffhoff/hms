@@ -4,6 +4,7 @@ import {
   deleteUser,
   getUser,
   getUsers,
+  listUsers,
   putUser,
 } from '../repository/user-repository';
 import {getSkills, skillExists} from '../repository/skill-repository';
@@ -13,6 +14,7 @@ import Uuid from '../util/Uuid';
 import Role from '../repository/domain/Role';
 import ReferenceNotFoundError from '../error/ReferenceNotFoundError';
 import UserResponse from '../rest/UserResponse';
+import UserListResponse from '../rest/UserListResponse';
 
 export async function createUser(
     lastName: string,
@@ -36,7 +38,7 @@ export async function createUser(
   return user;
 }
 
-export async function getUserResponse(id: Uuid) {
+export async function getUserResponse(id: Uuid): Promise<UserResponse> {
   const user = await getUser(id);
 
   let skills;
@@ -48,6 +50,11 @@ export async function getUserResponse(id: Uuid) {
   }
 
   return UserResponse.from(user, skills);
+}
+
+export async function getUserListResponse(): Promise<UserListResponse> {
+  const users = await listUsers();
+  return UserListResponse.from(users);
 }
 
 export async function removeUser(id: Uuid) {

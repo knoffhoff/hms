@@ -2,8 +2,9 @@
 
 import Uuid from '../util/Uuid';
 import CategoryPreviewResponse from './CategoryPreviewResponse';
+import Category from '../repository/domain/Category';
 
-export default class {
+class CategoryListResponse {
   categories: CategoryPreviewResponse[];
   hackathonId: Uuid;
 
@@ -14,4 +15,14 @@ export default class {
     this.categories = categories;
     this.hackathonId = hackathonId;
   }
+
+  static from = (
+      categories: Category[],
+      hackathonId: Uuid,
+  ): CategoryListResponse => new CategoryListResponse(
+      CategoryPreviewResponse.fromArray(categories),
+      hackathonId,
+  );
 }
+
+export default CategoryListResponse;

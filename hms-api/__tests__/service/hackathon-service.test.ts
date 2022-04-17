@@ -3,6 +3,7 @@ import {mockUuid} from '../util/uuids-mock';
 import {randomHackathon} from '../repository/domain/hackathon-maker';
 import {
   createHackathon,
+  getHackathonListResponse,
   getHackathonResponse,
   removeHackathon,
 } from '../../src/service/hackathon-service';
@@ -26,6 +27,7 @@ import * as categoryRepository from '../../src/repository/category-repository';
 import * as ideaRepository from '../../src/repository/idea-repository';
 import ReferenceNotFoundError from '../../src/error/ReferenceNotFoundError';
 import NotFoundError from '../../src/error/NotFoundError';
+import HackathonListResponse from '../../src/rest/HackathonListResponse';
 
 const mockPutHackathon = jest.fn();
 jest.spyOn(hackathonRepository, 'putHackathon')
@@ -33,6 +35,9 @@ jest.spyOn(hackathonRepository, 'putHackathon')
 const mockGetHackathon = jest.fn();
 jest.spyOn(hackathonRepository, 'getHackathon')
     .mockImplementation(mockGetHackathon);
+const mockListHackathons = jest.fn();
+jest.spyOn(hackathonRepository, 'listHackathons')
+    .mockImplementation(mockListHackathons);
 const mockDeleteHackathon = jest.fn();
 jest.spyOn(hackathonRepository, 'deleteHackathon')
     .mockImplementation(mockDeleteHackathon);
@@ -190,6 +195,22 @@ describe('Get Hackathon Response', () => {
     expect(mockListCategories).not.toHaveBeenCalled();
     expect(mockListIdeas).not.toHaveBeenCalled();
     expect(mockGetHackathon).not.toHaveBeenCalled();
+  });
+});
+
+describe('Get Hackathon List Response', () => {
+  test('Happy Path', async () => {
+    const hackathon1 = randomHackathon();
+    const hackathon2 = randomHackathon();
+    const hackathon3 = randomHackathon();
+    const expected = HackathonListResponse.from(
+        [hackathon1, hackathon2, hackathon3],
+    );
+
+    mockListHackathons.mockResolvedValue([hackathon1, hackathon2, hackathon3]);
+
+    expect(await getHackathonListResponse()).toStrictEqual(expected);
+    expect(mockListHackathons).toHaveBeenCalled();
   });
 });
 

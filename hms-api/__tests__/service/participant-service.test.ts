@@ -1,28 +1,28 @@
 import {mockDate} from '../util/date-mock';
 import {mockUuid} from '../util/uuids-mock';
-
 import {
   createParticipant,
+  getParticipantListResponse,
   getParticipantResponse,
   removeParticipant,
 } from '../../src/service/participant-service';
-import {uuid} from '../../src/util/Uuid';
-import ReferenceNotFoundError from '../../src/error/ReferenceNotFoundError';
 import {
   makeParticipant,
   ParticipantData,
   randomParticipant,
 } from '../repository/domain/participant-maker';
-
+import {randomUser} from '../repository/domain/user-maker';
+import {randomHackathon} from '../repository/domain/hackathon-maker';
+import {uuid} from '../../src/util/Uuid';
+import ParticipantResponse from '../../src/rest/ParticipantResponse';
+import ParticipantListResponse from '../../src/rest/ParticipantListResponse';
+import NotFoundError from '../../src/error/NotFoundError';
+import ReferenceNotFoundError from '../../src/error/ReferenceNotFoundError';
 import * as participantRepository
   from '../../src/repository/participant-repository';
 import * as hackathonRepository
   from '../../src/repository/hackathon-repository';
 import * as userRepository from '../../src/repository/user-repository';
-import ParticipantResponse from '../../src/rest/ParticipantResponse';
-import {randomUser} from '../repository/domain/user-maker';
-import {randomHackathon} from '../repository/domain/hackathon-maker';
-import NotFoundError from '../../src/error/NotFoundError';
 
 const mockPutParticipant = jest.fn();
 jest.spyOn(participantRepository, 'putParticipant')
@@ -30,6 +30,9 @@ jest.spyOn(participantRepository, 'putParticipant')
 const mockGetParticipant = jest.fn();
 jest.spyOn(participantRepository, 'getParticipant')
     .mockImplementation(mockGetParticipant);
+const mockListParticipants = jest.fn();
+jest.spyOn(participantRepository, 'listParticipants')
+    .mockImplementation(mockListParticipants);
 const mockDeleteParticipant = jest.fn();
 jest.spyOn(participantRepository, 'deleteParticipant')
     .mockImplementation(mockDeleteParticipant);
@@ -44,6 +47,9 @@ jest.spyOn(hackathonRepository, 'hackathonExists')
 const mockGetUser = jest.fn();
 jest.spyOn(userRepository, 'getUser')
     .mockImplementation(mockGetUser);
+const mockGetUsers = jest.fn();
+jest.spyOn(userRepository, 'getUsers')
+    .mockImplementation(mockGetUsers);
 const mockUserExists = jest.fn();
 jest.spyOn(userRepository, 'userExists')
     .mockImplementation(mockUserExists);
@@ -153,6 +159,48 @@ describe('Get Participant Response', () => {
     expect(mockGetParticipant).toHaveBeenCalledWith(id);
     expect(mockGetUser).not.toHaveBeenCalled();
     expect(mockGetHackathon).not.toHaveBeenCalled();
+  });
+});
+
+describe('Get Participant List Response', () => {
+  test('Happy Path', async () => {
+    const hackathonId = uuid();
+    const user1 = randomUser();
+    const participant1 = makeParticipant({userId: user1.id} as ParticipantData);
+    const user2 = randomUser();
+    const participant2 = makeParticipant({userId: user2.id} as ParticipantData);
+    const expected = ParticipantListResponse.from(
+        [participant1, participant2],
+        [user1, user2],
+        hackathonId,
+    );
+
+    mockListParticipants.mockResolvedValue([participant1, participant2]);
+    mockGetUsers.mockResolvedValue([user1, user2]);
+
+    expect(await getParticipantListResponse(hackathonId))
+        .toStrictEqual(expected);
+    expect(mockListParticipants).toHaveBeenCalledWith(hackathonId);
+    expect(mockGetUsers).toHaveBeenCalledWith(
+        [participant1.userId, participant2.userId]);
+  });
+
+  test('Missing Users', async () => {
+    const hackathonId = uuid();
+    const participant1 = randomParticipant();
+    const participant2 = randomParticipant();
+
+    mockListParticipants.mockResolvedValue([participant1, participant2]);
+    mockGetUsers.mockImplementation(() => {
+      throw new NotFoundError('FAIIIILLLUUUURE');
+    });
+
+    await expect(getParticipantListResponse(hackathonId))
+        .rejects
+        .toThrow(ReferenceNotFoundError);
+    expect(mockListParticipants).toHaveBeenCalledWith(hackathonId);
+    expect(mockGetUsers).toHaveBeenCalledWith(
+        [participant1.userId, participant2.userId]);
   });
 });
 
