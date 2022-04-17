@@ -6,7 +6,10 @@ import {randomIdea} from '../../repository/domain/idea-maker';
 import IdeaResponse from '../../../src/rest/IdeaResponse';
 import ReferenceNotFoundError from '../../../src/error/ReferenceNotFoundError';
 import {randomUser} from '../../repository/domain/user-maker';
-import {randomParticipant} from '../../repository/domain/participant-maker';
+import {
+  makeParticipant,
+  ParticipantData,
+} from '../../repository/domain/participant-maker';
 import {randomHackathon} from '../../repository/domain/hackathon-maker';
 import {randomCategory} from '../../repository/domain/category-maker';
 import {randomSkill} from '../../repository/domain/skill-maker';
@@ -18,15 +21,18 @@ jest.spyOn(ideaService, 'getIdeaResponse')
 describe('Get Idea', () => {
   test('Happy Path', async () => {
     const idea = randomIdea();
-    const ownerParticipant = randomParticipant();
     const ownerUser = randomUser();
+    const ownerParticipant = makeParticipant(
+        {userId: ownerUser.id} as ParticipantData);
+    const user2 = randomUser();
+    const participant2 = makeParticipant({userId: user2.id} as ParticipantData);
     const expected = IdeaResponse.from(
         idea,
         ownerParticipant,
         ownerUser,
         randomHackathon(),
-        [ownerParticipant, randomParticipant()],
-        [ownerUser, randomUser()],
+        [ownerParticipant, participant2],
+        [ownerUser, user2],
         [randomSkill(), randomSkill()],
         randomCategory(),
     );

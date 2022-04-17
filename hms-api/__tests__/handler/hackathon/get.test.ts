@@ -5,7 +5,10 @@ import Uuid, {uuid} from '../../../src/util/Uuid';
 import {randomHackathon} from '../../repository/domain/hackathon-maker';
 import HackathonResponse from '../../../src/rest/HackathonResponse';
 import ReferenceNotFoundError from '../../../src/error/ReferenceNotFoundError';
-import {randomParticipant} from '../../repository/domain/participant-maker';
+import {
+  makeParticipant,
+  ParticipantData,
+} from '../../repository/domain/participant-maker';
 import {randomUser} from '../../repository/domain/user-maker';
 import {randomCategory} from '../../repository/domain/category-maker';
 import {randomIdea} from '../../repository/domain/idea-maker';
@@ -17,10 +20,14 @@ jest.spyOn(hackathonService, 'getHackathonResponse')
 describe('Get Hackathon', () => {
   test('Happy Path', async () => {
     const hackathon = randomHackathon();
+    const user1 = randomUser();
+    const participant1 = makeParticipant({userId: user1.id} as ParticipantData);
+    const user2 = randomUser();
+    const participant2 = makeParticipant({userId: user2.id} as ParticipantData);
     const expected = HackathonResponse.from(
         hackathon,
-        [randomParticipant(), randomParticipant()],
-        [randomUser(), randomUser()],
+        [participant1, participant2],
+        [user1, user2],
         [randomCategory()],
         [randomIdea(), randomIdea()],
     );

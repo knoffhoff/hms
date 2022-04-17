@@ -13,6 +13,7 @@ import * as hackathonRepository
   from '../../src/repository/hackathon-repository';
 import {randomHackathon} from '../repository/domain/hackathon-maker';
 import CategoryResponse from '../../src/rest/CategoryResponse';
+import NotFoundError from '../../src/error/NotFoundError';
 
 const mockHackathonExists = jest.fn();
 jest.spyOn(hackathonRepository, 'hackathonExists')
@@ -21,6 +22,10 @@ jest.spyOn(hackathonRepository, 'hackathonExists')
 const mockGetHackathon = jest.fn();
 jest.spyOn(hackathonRepository, 'getHackathon')
     .mockImplementation(mockGetHackathon);
+
+const mockGetCategory = jest.fn();
+jest.spyOn(categoryRepository, 'getCategory')
+    .mockImplementation(mockGetCategory);
 
 const mockPutCategory = jest.fn();
 jest.spyOn(categoryRepository, 'putCategory')
@@ -64,7 +69,39 @@ describe('Get Category Response', () => {
     const hackathon = randomHackathon();
     const expected = CategoryResponse.from(category, hackathon);
 
+    mockGetCategory.mockResolvedValue(category);
+    mockGetHackathon.mockResolvedValue(hackathon);
+
     expect(await getCategoryResponse(category.id)).toStrictEqual(expected);
+    expect(mockGetCategory).toHaveBeenCalledWith(category.id);
+    expect(mockGetHackathon).toHaveBeenCalledWith(category.hackathonId);
+  });
+
+  test('Missing Category', async () => {
+    const category = randomCategory();
+    mockGetCategory.mockImplementation(() => {
+      throw new NotFoundError('Thing is missing');
+    });
+
+    await expect(getCategoryResponse(category.id))
+        .rejects
+        .toThrow(NotFoundError);
+    expect(mockGetCategory).toHaveBeenCalledWith(category.id);
+    expect(mockGetHackathon).not.toHaveBeenCalled();
+  });
+
+  test('Missing Hackathon', async () => {
+    const category = randomCategory();
+    mockGetCategory.mockResolvedValue(category);
+    mockGetHackathon.mockImplementation(() => {
+      throw new NotFoundError('Thing is missing');
+    });
+
+    await expect(getCategoryResponse(category.id))
+        .rejects
+        .toThrow(ReferenceNotFoundError);
+    expect(mockGetCategory).toHaveBeenCalledWith(category.id);
+    expect(mockGetHackathon).toHaveBeenCalledWith(category.hackathonId);
   });
 });
 
