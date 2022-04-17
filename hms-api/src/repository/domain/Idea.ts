@@ -1,4 +1,4 @@
-import {uuid, Uuid} from '../../util/uuids';
+import Uuid, {uuid} from '../../util/Uuid';
 
 /**
  * An Idea is... well an Idea idk it's a thing people work on

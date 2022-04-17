@@ -1,7 +1,7 @@
 import {buildResponse} from '../../rest/responses';
-import {removeUser} from '../../repository/user-repository';
+import {removeUser} from '../../service/user-service';
 import {wrapHandler} from '../handler-wrapper';
-import {Uuid} from '../../util/uuids';
+import Uuid from '../../util/Uuid';
 import UserDeleteResponse from '../../rest/UserDeleteResponse';
 
 // eslint-disable-next-line require-jsdoc

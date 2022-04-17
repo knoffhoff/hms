@@ -2,8 +2,11 @@
 
 import {hackathonExists} from '../repository/hackathon-repository';
 import {userExists} from '../repository/user-repository';
-import {putParticipant} from '../repository/participant-repository';
-import {Uuid} from '../util/uuids';
+import {
+  deleteParticipant,
+  putParticipant,
+} from '../repository/participant-repository';
+import Uuid from '../util/Uuid';
 import Participant from '../repository/domain/Participant';
 import ReferenceNotFoundError from '../repository/error/ReferenceNotFoundError';
 
@@ -24,4 +27,8 @@ export async function createParticipant(
   await putParticipant(participant);
 
   return participant;
+}
+
+export async function removeParticipant(id: Uuid) {
+  await deleteParticipant(id);
 }

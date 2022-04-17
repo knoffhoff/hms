@@ -1,4 +1,4 @@
-import {uuid, Uuid} from '../../../src/util/uuids';
+import Uuid, {uuid} from '../../../src/util/Uuid';
 import Hackathon from '../../../src/repository/domain/Hackathon';
 
 const fiveDaysInMillis = 5 * 24 * 60 * 60 * 1000;

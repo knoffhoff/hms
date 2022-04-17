@@ -1,11 +1,11 @@
 /* eslint-disable require-jsdoc */
 
+import {deleteUser, getUsers, putUser} from '../repository/user-repository';
+import {skillExists} from '../repository/skill-repository';
 import Participant from '../repository/domain/Participant';
 import User from '../repository/domain/User';
-import {getUsers, putUser} from '../repository/user-repository';
-import {Uuid} from '../util/uuids';
-import {Role} from '../repository/domain/Role';
-import {skillExists} from '../repository/skill-repository';
+import Uuid from '../util/Uuid';
+import Role from '../repository/domain/Role';
 import ReferenceNotFoundError from '../repository/error/ReferenceNotFoundError';
 
 export async function createUser(
@@ -28,6 +28,10 @@ export async function createUser(
   );
   await putUser(user);
   return user;
+}
+
+export async function removeUser(id: Uuid) {
+  await deleteUser(id);
 }
 
 export async function usersFor(participants: Participant[]): Promise<User[]> {

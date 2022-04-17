@@ -1,5 +1,5 @@
 import {buildResponse} from '../../rest/responses';
-import {removeSkill} from '../../repository/skill-repository';
+import {removeSkill} from '../../service/skill-service';
 import {wrapHandler} from '../handler-wrapper';
 import SkillDeleteResponse from '../../rest/SkillDeleteResponse';
 

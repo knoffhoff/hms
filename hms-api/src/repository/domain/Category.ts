@@ -1,4 +1,4 @@
-import {uuid, Uuid} from '../../util/uuids';
+import Uuid, {uuid} from '../../util/Uuid';
 
 /**
  * Each Hackathon has a number of Categories and each Category has a number of

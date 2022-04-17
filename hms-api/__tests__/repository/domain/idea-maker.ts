@@ -1,4 +1,4 @@
-import {uuid, Uuid} from '../../../src/util/uuids';
+import Uuid, {uuid} from '../../../src/util/Uuid';
 import Idea from '../../../src/repository/domain/Idea';
 
 export interface IdeaData {

@@ -1,4 +1,4 @@
-import {uuid, Uuid} from '../../util/uuids';
+import Uuid, {uuid} from '../../util/Uuid';
 
 /**
  * A Skill is any technical or other kind of skill that a User has and is

@@ -9,7 +9,7 @@ import {
   PutItemCommand,
   ScanCommand,
 } from '@aws-sdk/client-dynamodb';
-import {Uuid} from '../util/uuids';
+import Uuid from '../util/Uuid';
 import {getClient, safeTransformArray} from './dynamo-db';
 import NotFoundError from './error/NotFoundError';
 
@@ -40,7 +40,7 @@ export async function putHackathon(hackathon: Hackathon) {
       creationDate: {S: hackathon.creationDate.toISOString()},
       participantIds: safeTransformArray(hackathon.participantIds),
       categoryIds: safeTransformArray(hackathon.categoryIds),
-      ideaId: safeTransformArray(hackathon.ideaIds),
+      ideaIds: safeTransformArray(hackathon.ideaIds),
     },
   }));
 }
@@ -68,7 +68,7 @@ export async function hackathonExists(id: Uuid): Promise<boolean> {
   return !!output.Item;
 }
 
-export async function removeHackathon(id: Uuid) {
+export async function deleteHackathon(id: Uuid) {
   // TODO determine if something was actually deleted
   await dynamoDBClient.send(new DeleteItemCommand({
     TableName: table,

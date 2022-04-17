@@ -1,6 +1,6 @@
 /* eslint-disable require-jsdoc */
 
-import {Uuid} from '../util/uuids';
+import Uuid from '../util/Uuid';
 import UserPreviewResponse from './UserPreviewResponse';
 import Participant from '../repository/domain/Participant';
 import User from '../repository/domain/User';

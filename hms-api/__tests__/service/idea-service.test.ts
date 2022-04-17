@@ -1,8 +1,8 @@
-import {mockPut, mockSend} from '../repository/dynamo-db-mock';
 import {mockUuid} from '../util/uuids-mock';
+import {mockDate} from '../util/date-mock';
 
-import {createIdea} from '../../src/service/idea-service';
-import {uuid} from '../../src/util/uuids';
+import {createIdea, removeIdea} from '../../src/service/idea-service';
+import {uuid} from '../../src/util/Uuid';
 import ReferenceNotFoundError
   from '../../src/repository/error/ReferenceNotFoundError';
 import {randomIdea} from '../repository/domain/idea-maker';
@@ -13,7 +13,15 @@ import * as hackathonRepository
   from '../../src/repository/hackathon-repository';
 import * as categoryRepository from '../../src/repository/category-repository';
 import * as skillRepository from '../../src/repository/skill-repository';
-import {mockDate} from '../util/date-mock';
+import * as ideaRepository from '../../src/repository/idea-repository';
+
+const mockPutIdea = jest.fn();
+jest.spyOn(ideaRepository, 'putIdea')
+    .mockImplementation(mockPutIdea);
+
+const mockDeleteIdea = jest.fn();
+jest.spyOn(ideaRepository, 'deleteIdea')
+    .mockImplementation(mockDeleteIdea);
 
 const mockParticipantExists = jest.fn();
 jest.spyOn(participantRepository, 'participantExists')
@@ -49,7 +57,8 @@ describe('Create Idea', () => {
         uuid()))
         .rejects
         .toThrow(ReferenceNotFoundError);
-    expect(mockSend).not.toHaveBeenCalled();
+
+    expect(mockPutIdea).not.toHaveBeenCalled();
   });
 
   test('Missing Hackathon', async () => {
@@ -69,7 +78,8 @@ describe('Create Idea', () => {
         uuid()))
         .rejects
         .toThrow(ReferenceNotFoundError);
-    expect(mockSend).not.toHaveBeenCalled();
+
+    expect(mockPutIdea).not.toHaveBeenCalled();
   });
 
   test('Missing Category', async () => {
@@ -89,7 +99,8 @@ describe('Create Idea', () => {
         uuid()))
         .rejects
         .toThrow(ReferenceNotFoundError);
-    expect(mockSend).not.toHaveBeenCalled();
+
+    expect(mockPutIdea).not.toHaveBeenCalled();
   });
 
   test('Missing Skill', async () => {
@@ -109,11 +120,11 @@ describe('Create Idea', () => {
         uuid()))
         .rejects
         .toThrow(ReferenceNotFoundError);
-    expect(mockSend).not.toHaveBeenCalled();
+
+    expect(mockPutIdea).not.toHaveBeenCalled();
   });
 
   test('Happy Path', async () => {
-    mockPut();
     mockDate();
 
     mockParticipantExists.mockResolvedValue(true);
@@ -134,5 +145,15 @@ describe('Create Idea', () => {
         expected.requiredSkills,
         expected.categoryId,
     )).toStrictEqual(expected);
+
+    expect(mockPutIdea).toHaveBeenCalledWith(expected);
+  });
+});
+
+describe('Delete Idea', () => {
+  test('Happy Path', async () => {
+    const id = uuid();
+    await removeIdea(id);
+    expect(mockDeleteIdea).toHaveBeenCalledWith(id);
   });
 });

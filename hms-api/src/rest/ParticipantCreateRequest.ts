@@ -1,8 +1,8 @@
 /* eslint-disable require-jsdoc */
 
-import {Uuid} from '../util/uuids';
+import Uuid from '../util/Uuid';
 
-export default class {
+class ParticipantCreateRequest {
   userId: Uuid;
   hackathonId: Uuid;
 
@@ -13,4 +13,11 @@ export default class {
     this.userId = userId;
     this.hackathonId = hackathonId;
   }
+
+  static parse(body: string): ParticipantCreateRequest {
+    const json = JSON.parse(body);
+    return new ParticipantCreateRequest(json.userId, json.hackathonId);
+  }
 }
+
+export default ParticipantCreateRequest;

@@ -1,4 +1,4 @@
-import {uuid, Uuid} from '../../util/uuids';
+import Uuid, {uuid} from '../../util/Uuid';
 
 /**
  * A single User participating in a Hackathon

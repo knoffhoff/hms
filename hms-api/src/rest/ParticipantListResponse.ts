@@ -1,7 +1,7 @@
 /* eslint-disable require-jsdoc */
 
 import ParticipantPreviewResponse from './ParticipantPreviewResponse';
-import {Uuid} from '../util/uuids';
+import Uuid from '../util/Uuid';
 
 export default class {
   participants: ParticipantPreviewResponse[];

@@ -7,7 +7,7 @@ import SkillCreateResponse from '../../rest/SkillCreateResponse';
 // eslint-disable-next-line require-jsdoc
 export async function create(event, context, callback) {
   await wrapHandler(async () => {
-    const request: SkillCreateRequest = JSON.parse(event.body);
+    const request = SkillCreateRequest.parse(event.body);
     const skill = await createSkill(
         request.name,
         request.description,

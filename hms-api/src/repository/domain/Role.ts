@@ -1,6 +1,6 @@
 /* eslint-disable require-jsdoc */
 
-export enum Role {
+enum Role {
   Admin = 'Admin',
   Participant = 'Participant',
 }
@@ -10,3 +10,5 @@ export const mapRolesToStrings = (roles: Role[]): string[] =>
 
 export const mapStringToRoles = (roles: string[]): Role[] =>
   roles.map((role) => Role[role]);
+
+export default Role;

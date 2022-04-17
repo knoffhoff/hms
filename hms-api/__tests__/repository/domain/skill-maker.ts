@@ -1,4 +1,4 @@
-import {uuid, Uuid} from '../../../src/util/uuids';
+import Uuid, {uuid} from '../../../src/util/Uuid';
 import Skill from '../../../src/repository/domain/Skill';
 
 export interface SkillData {
