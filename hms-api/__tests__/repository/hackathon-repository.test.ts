@@ -13,7 +13,7 @@ import {
   putHackathon,
 } from '../../src/repository/hackathon-repository';
 import Uuid, {uuid} from '../../src/util/Uuid';
-import NotFoundError from '../../src/repository/error/NotFoundError';
+import NotFoundError from '../../src/error/NotFoundError';
 import {randomHackathon} from './domain/hackathon-maker';
 import Hackathon from '../../src/repository/domain/Hackathon';
 import {AttributeValue} from '@aws-sdk/client-dynamodb';

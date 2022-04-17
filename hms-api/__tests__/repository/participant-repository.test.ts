@@ -16,7 +16,7 @@ import {
   putParticipant,
 } from '../../src/repository/participant-repository';
 import Uuid, {uuid} from '../../src/util/Uuid';
-import NotFoundError from '../../src/repository/error/NotFoundError';
+import NotFoundError from '../../src/error/NotFoundError';
 import {
   makeParticipant,
   ParticipantData,

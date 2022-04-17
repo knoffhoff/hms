@@ -12,7 +12,7 @@ import {
 import Uuid from '../util/Uuid';
 import {getClient, safeTransformArray} from './dynamo-db';
 import {mapRolesToStrings, mapStringToRoles} from './domain/Role';
-import NotFoundError from './error/NotFoundError';
+import NotFoundError from '../error/NotFoundError';
 
 const table = process.env.USER_TABLE;
 const dynamoDBClient = getClient();

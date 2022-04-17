@@ -15,7 +15,7 @@ import {
   userExists,
 } from '../../src/repository/user-repository';
 import Uuid, {uuid} from '../../src/util/Uuid';
-import NotFoundError from '../../src/repository/error/NotFoundError';
+import NotFoundError from '../../src/error/NotFoundError';
 import {randomUser} from './domain/user-maker';
 import User from '../../src/repository/domain/User';
 import {AttributeValue} from '@aws-sdk/client-dynamodb';

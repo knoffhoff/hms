@@ -11,7 +11,7 @@ import {
 import Uuid from '../util/Uuid';
 import {getClient} from './dynamo-db';
 import Category from './domain/Category';
-import NotFoundError from './error/NotFoundError';
+import NotFoundError from '../error/NotFoundError';
 
 const table = process.env.CATEGORY_TABLE;
 const byHackathonIdIndex = process.env.CATEGORY_BY_HACKATHON_ID_INDEX;

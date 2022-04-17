@@ -5,8 +5,7 @@ import {
   removeCategory,
 } from '../../src/service/category-service';
 import {uuid} from '../../src/util/Uuid';
-import ReferenceNotFoundError
-  from '../../src/repository/error/ReferenceNotFoundError';
+import ReferenceNotFoundError from '../../src/error/ReferenceNotFoundError';
 
 import * as categoryRepository from '../../src/repository/category-repository';
 import * as hackathonRepository

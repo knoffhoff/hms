@@ -13,8 +13,7 @@ import {
   ParticipantData,
   randomParticipant,
 } from '../repository/domain/participant-maker';
-import ReferenceNotFoundError
-  from '../../src/repository/error/ReferenceNotFoundError';
+import ReferenceNotFoundError from '../../src/error/ReferenceNotFoundError';
 import Role from '../../src/repository/domain/Role';
 
 import * as skillRepository from '../../src/repository/skill-repository';

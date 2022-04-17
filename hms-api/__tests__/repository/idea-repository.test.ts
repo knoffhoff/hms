@@ -13,7 +13,7 @@ import {
   putIdea,
 } from '../../src/repository/idea-repository';
 import Uuid, {uuid} from '../../src/util/Uuid';
-import NotFoundError from '../../src/repository/error/NotFoundError';
+import NotFoundError from '../../src/error/NotFoundError';
 import {IdeaData, makeIdea, randomIdea} from './domain/idea-maker';
 import Idea from '../../src/repository/domain/Idea';
 import {AttributeValue} from '@aws-sdk/client-dynamodb';

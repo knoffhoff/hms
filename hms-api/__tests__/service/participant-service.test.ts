@@ -6,8 +6,7 @@ import {
   removeParticipant,
 } from '../../src/service/participant-service';
 import {uuid} from '../../src/util/Uuid';
-import ReferenceNotFoundError
-  from '../../src/repository/error/ReferenceNotFoundError';
+import ReferenceNotFoundError from '../../src/error/ReferenceNotFoundError';
 import {randomParticipant} from '../repository/domain/participant-maker';
 
 import * as participantRepository

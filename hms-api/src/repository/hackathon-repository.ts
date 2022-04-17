@@ -11,7 +11,7 @@ import {
 } from '@aws-sdk/client-dynamodb';
 import Uuid from '../util/Uuid';
 import {getClient, safeTransformArray} from './dynamo-db';
-import NotFoundError from './error/NotFoundError';
+import NotFoundError from '../error/NotFoundError';
 
 const table = process.env.HACKATHON_TABLE;
 const dynamoDBClient = getClient();

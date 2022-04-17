@@ -3,8 +3,7 @@ import {mockDate} from '../util/date-mock';
 
 import {createIdea, removeIdea} from '../../src/service/idea-service';
 import {uuid} from '../../src/util/Uuid';
-import ReferenceNotFoundError
-  from '../../src/repository/error/ReferenceNotFoundError';
+import ReferenceNotFoundError from '../../src/error/ReferenceNotFoundError';
 import {randomIdea} from '../repository/domain/idea-maker';
 
 import * as participantRepository

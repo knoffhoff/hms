@@ -3,7 +3,7 @@ import {mockUuid} from '../util/uuids-mock';
 import {randomHackathon} from '../repository/domain/hackathon-maker';
 import {
   createHackathon,
-  removeHackathon
+  removeHackathon,
 } from '../../src/service/hackathon-service';
 import {mockDate} from '../util/date-mock';
 import {uuid} from '../../src/util/Uuid';
