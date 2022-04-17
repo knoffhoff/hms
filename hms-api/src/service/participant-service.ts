@@ -8,12 +8,16 @@ import {getUser, userExists} from '../repository/user-repository';
 import {
   deleteParticipant,
   getParticipant,
+  listParticipants,
   putParticipant,
 } from '../repository/participant-repository';
 import Uuid from '../util/Uuid';
 import Participant from '../repository/domain/Participant';
 import ReferenceNotFoundError from '../error/ReferenceNotFoundError';
 import ParticipantResponse from '../rest/ParticipantResponse';
+import ParticipantListResponse from '../rest/ParticipantListResponse';
+import {usersFor} from './user-service';
+import ParticipantPreviewResponse from '../rest/ParticipantPreviewResponse';
 
 export async function createParticipant(
     userId: Uuid,
@@ -56,6 +60,26 @@ export async function getParticipantResponse(
   }
 
   return ParticipantResponse.from(participant, user, hackathon);
+}
+
+export async function getParticipantListResponse(
+    hackathonId: Uuid,
+): Promise<ParticipantListResponse> {
+  const participants = await listParticipants(hackathonId);
+
+  let users;
+  try {
+    users = await usersFor(participants);
+  } catch (e) {
+    throw new ReferenceNotFoundError(
+        `Could not list Participants for Hackathon with id: ${hackathonId}, ` +
+        `unable to list referenced Users`);
+  }
+
+  return new ParticipantListResponse(
+      ParticipantPreviewResponse.fromArray(participants, users),
+      hackathonId,
+  );
 }
 
 export async function removeParticipant(id: Uuid) {

@@ -3,6 +3,7 @@
 import {
   deleteHackathon,
   getHackathon,
+  listHackathons,
   putHackathon,
 } from '../repository/hackathon-repository';
 import {listParticipants} from '../repository/participant-repository';
@@ -13,6 +14,7 @@ import Uuid from '../util/Uuid';
 import Hackathon from '../repository/domain/Hackathon';
 import HackathonResponse from '../rest/HackathonResponse';
 import ReferenceNotFoundError from '../error/ReferenceNotFoundError';
+import HackathonListResponse from '../rest/HackathonListResponse';
 
 export async function createHackathon(
     title: string,
@@ -70,6 +72,12 @@ export async function getHackathonResponse(
       categories,
       ideas,
   );
+}
+
+export async function getHackathonListResponse(
+): Promise<HackathonListResponse> {
+  const hackathons = await listHackathons();
+  return HackathonListResponse.from(hackathons);
 }
 
 export async function removeHackathon(id: Uuid) {

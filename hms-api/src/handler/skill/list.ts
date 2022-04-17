@@ -1,13 +1,11 @@
 import {buildResponse} from '../../rest/responses';
-import {listSkills} from '../../repository/skill-repository';
 import {wrapHandler} from '../handler-wrapper';
-import SkillListResponse from '../../rest/SkillListResponse';
-import SkillPreviewResponse from '../../rest/SkillPreviewResponse';
+import {getSkillListResponse} from '../../service/skill-service';
 
 // eslint-disable-next-line require-jsdoc
 export async function list(event, context, callback) {
   await wrapHandler(async () => {
-    const previews = SkillPreviewResponse.fromArray(await listSkills());
-    callback(null, buildResponse(200, new SkillListResponse(previews)));
+    const responseBody = await getSkillListResponse();
+    callback(null, buildResponse(200, responseBody));
   }, callback);
 }

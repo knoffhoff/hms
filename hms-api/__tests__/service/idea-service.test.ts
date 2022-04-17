@@ -3,6 +3,7 @@ import {mockDate} from '../util/date-mock';
 
 import {
   createIdea,
+  getIdeaListResponse,
   getIdeaResponse,
   removeIdea,
 } from '../../src/service/idea-service';
@@ -29,6 +30,7 @@ import * as skillRepository from '../../src/repository/skill-repository';
 import * as userRepository from '../../src/repository/user-repository';
 import * as ideaRepository from '../../src/repository/idea-repository';
 import NotFoundError from '../../src/error/NotFoundError';
+import IdeaListResponse from '../../src/rest/IdeaListResponse';
 
 const mockPutIdea = jest.fn();
 jest.spyOn(ideaRepository, 'putIdea')
@@ -36,6 +38,9 @@ jest.spyOn(ideaRepository, 'putIdea')
 const mockGetIdea = jest.fn();
 jest.spyOn(ideaRepository, 'getIdea')
     .mockImplementation(mockGetIdea);
+const mockListIdeas = jest.fn();
+jest.spyOn(ideaRepository, 'listIdeas')
+    .mockImplementation(mockListIdeas);
 const mockDeleteIdea = jest.fn();
 jest.spyOn(ideaRepository, 'deleteIdea')
     .mockImplementation(mockDeleteIdea);
@@ -448,6 +453,23 @@ describe('Get Idea Response', () => {
     expect(mockGetHackathon).not.toHaveBeenCalled();
     expect(mockGetSkills).not.toHaveBeenCalled();
     expect(mockGetCategory).not.toHaveBeenCalled();
+  });
+});
+
+describe('Get Idea List Response', () => {
+  test('Happy Path', async () => {
+    const hackathonId = uuid();
+    const idea1 = randomIdea();
+    const idea2 = randomIdea();
+    const idea3 = randomIdea();
+    const expected = IdeaListResponse.from(
+        [idea1, idea2, idea3],
+        hackathonId);
+
+    mockListIdeas.mockResolvedValue([idea1, idea2, idea3]);
+
+    expect(await getIdeaListResponse(hackathonId)).toStrictEqual(expected);
+    expect(mockListIdeas).toHaveBeenCalledWith(hackathonId);
   });
 });
 

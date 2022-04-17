@@ -1,40 +1,40 @@
 import {mockUuid} from '../util/uuids-mock';
 import {randomCategory} from '../repository/domain/category-maker';
+import {randomHackathon} from '../repository/domain/hackathon-maker';
 import {
   createCategory,
+  getCategoryListResponse,
   getCategoryResponse,
   removeCategory,
 } from '../../src/service/category-service';
 import {uuid} from '../../src/util/Uuid';
 import ReferenceNotFoundError from '../../src/error/ReferenceNotFoundError';
-
+import CategoryResponse from '../../src/rest/CategoryResponse';
+import NotFoundError from '../../src/error/NotFoundError';
 import * as categoryRepository from '../../src/repository/category-repository';
 import * as hackathonRepository
   from '../../src/repository/hackathon-repository';
-import {randomHackathon} from '../repository/domain/hackathon-maker';
-import CategoryResponse from '../../src/rest/CategoryResponse';
-import NotFoundError from '../../src/error/NotFoundError';
+import CategoryListResponse from '../../src/rest/CategoryListResponse';
 
 const mockHackathonExists = jest.fn();
 jest.spyOn(hackathonRepository, 'hackathonExists')
     .mockImplementation(mockHackathonExists);
-
 const mockGetHackathon = jest.fn();
 jest.spyOn(hackathonRepository, 'getHackathon')
     .mockImplementation(mockGetHackathon);
 
-const mockGetCategory = jest.fn();
-jest.spyOn(categoryRepository, 'getCategory')
-    .mockImplementation(mockGetCategory);
-
 const mockPutCategory = jest.fn();
 jest.spyOn(categoryRepository, 'putCategory')
     .mockImplementation(mockPutCategory);
-
+const mockGetCategory = jest.fn();
+jest.spyOn(categoryRepository, 'getCategory')
+    .mockImplementation(mockGetCategory);
+const mockListCategories = jest.fn();
+jest.spyOn(categoryRepository, 'listCategories')
+    .mockImplementation(mockListCategories);
 const mockDeleteCategory = jest.fn();
 jest.spyOn(categoryRepository, 'deleteCategory')
     .mockImplementation(mockDeleteCategory);
-
 
 describe('Create Category', () => {
   test('Missing hackathon', async () => {
@@ -102,6 +102,23 @@ describe('Get Category Response', () => {
         .toThrow(ReferenceNotFoundError);
     expect(mockGetCategory).toHaveBeenCalledWith(category.id);
     expect(mockGetHackathon).toHaveBeenCalledWith(category.hackathonId);
+  });
+});
+
+describe('Get Category List Response', () => {
+  test('Happy Path', async () => {
+    const hackathonId = uuid();
+    const category1 = randomCategory();
+    const category2 = randomCategory();
+    const category3 = randomCategory();
+    const expected = CategoryListResponse.from(
+        [category1, category2, category3],
+        hackathonId);
+
+    mockListCategories.mockResolvedValue([category1, category2, category3]);
+
+    expect(await getCategoryListResponse(hackathonId)).toStrictEqual(expected);
+    expect(mockListCategories).toHaveBeenCalledWith(hackathonId);
   });
 });
 

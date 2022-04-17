@@ -11,13 +11,19 @@ import {
 } from '../repository/hackathon-repository';
 import {categoryExists, getCategory} from '../repository/category-repository';
 import {getSkills, skillExists} from '../repository/skill-repository';
-import {deleteIdea, getIdea, putIdea} from '../repository/idea-repository';
+import {
+  deleteIdea,
+  getIdea,
+  listIdeas,
+  putIdea,
+} from '../repository/idea-repository';
+import {usersFor} from './user-service';
+import {getUser} from '../repository/user-repository';
 import Uuid from '../util/Uuid';
 import Idea from '../repository/domain/Idea';
 import ReferenceNotFoundError from '../error/ReferenceNotFoundError';
 import IdeaResponse from '../rest/IdeaResponse';
-import {usersFor} from './user-service';
-import {getUser} from '../repository/user-repository';
+import IdeaListResponse from '../rest/IdeaListResponse';
 
 export async function createIdea(
     ownerId: Uuid,
@@ -129,6 +135,13 @@ export async function getIdeaResponse(id: Uuid): Promise<IdeaResponse> {
       skills,
       category,
   );
+}
+
+export async function getIdeaListResponse(
+    hackathonId: Uuid,
+): Promise<IdeaListResponse> {
+  const ideas = await listIdeas(hackathonId);
+  return IdeaListResponse.from(ideas, hackathonId);
 }
 
 export async function removeIdea(id: Uuid) {
