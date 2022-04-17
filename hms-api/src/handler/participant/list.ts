@@ -2,7 +2,7 @@ import {buildResponse} from '../../rest/responses';
 import {listParticipants} from '../../repository/participant-repository';
 import {usersFor} from '../../service/user-service';
 import {wrapHandler} from '../handler-wrapper';
-import {Uuid} from '../../util/uuids';
+import Uuid from '../../util/Uuid';
 import ParticipantListResponse from '../../rest/ParticipantListResponse';
 import ParticipantPreviewResponse from '../../rest/ParticipantPreviewResponse';
 

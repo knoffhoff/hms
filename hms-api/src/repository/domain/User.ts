@@ -1,5 +1,5 @@
-import {uuid, Uuid} from '../../util/uuids';
-import {Role} from './Role';
+import Uuid, {uuid} from '../../util/Uuid';
+import Role from './Role';
 
 /**
  * A User is a representation of a person in the HMS API.

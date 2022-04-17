@@ -1,7 +1,7 @@
 import {buildResponse} from '../../rest/responses';
 import {listIdeas} from '../../repository/idea-repository';
 import {wrapHandler} from '../handler-wrapper';
-import {Uuid} from '../../util/uuids';
+import Uuid from '../../util/Uuid';
 import IdeaListResponse from '../../rest/IdeaListResponse';
 import IdeaPreviewResponse from '../../rest/IdeaPreviewResponse';
 

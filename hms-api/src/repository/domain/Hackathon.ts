@@ -1,4 +1,4 @@
-import {uuid, Uuid} from '../../util/uuids';
+import Uuid, {uuid} from '../../util/Uuid';
 
 /**
  * Representation of a hackathon within the Database

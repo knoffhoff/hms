@@ -3,7 +3,7 @@ import {getUser} from '../../repository/user-repository';
 import {mapRolesToStrings} from '../../repository/domain/Role';
 import {getSkills} from '../../repository/skill-repository';
 import {wrapHandler} from '../handler-wrapper';
-import {Uuid} from '../../util/uuids';
+import Uuid from '../../util/Uuid';
 import UserResponse from '../../rest/UserResponse';
 import SkillPreviewResponse from '../../rest/SkillPreviewResponse';
 

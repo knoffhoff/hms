@@ -1,12 +1,19 @@
-import {mockPut} from '../repository/dynamo-db-mock';
 import {mockUuid} from '../util/uuids-mock';
 import {randomSkill} from '../repository/domain/skill-maker';
-import {createSkill} from '../../src/service/skill-service';
+import {createSkill, removeSkill} from '../../src/service/skill-service';
+import {uuid} from '../../src/util/Uuid';
+import * as skillRepository from '../../src/repository/skill-repository';
+
+const mockDeleteSkill = jest.fn();
+jest.spyOn(skillRepository, 'deleteSkill')
+    .mockImplementation(mockDeleteSkill);
+
+const mockPutSkill = jest.fn();
+jest.spyOn(skillRepository, 'putSkill')
+    .mockImplementation(mockPutSkill);
 
 describe('Create Skill', () => {
   test('Happy Path', async () => {
-    mockPut();
-
     const expected = randomSkill();
     mockUuid(expected.id);
 
@@ -14,5 +21,15 @@ describe('Create Skill', () => {
         expected.name,
         expected.description,
     )).toStrictEqual(expected);
+
+    expect(mockPutSkill).toHaveBeenCalledWith(expected);
+  });
+});
+
+describe('Delete Skill', () => {
+  test('Happy Path', async () => {
+    const id = uuid();
+    await removeSkill(id);
+    expect(mockDeleteSkill).toHaveBeenCalledWith(id);
   });
 });

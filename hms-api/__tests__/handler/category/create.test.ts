@@ -11,7 +11,7 @@ const mockCreateCategory = jest.fn();
 jest.spyOn(categoryService, 'createCategory')
     .mockImplementation(mockCreateCategory);
 
-describe('Create Hackathon', () => {
+describe('Create Category', () => {
   test('Happy Path', async () => {
     const expected = randomCategory();
     mockCreateCategory.mockResolvedValue(expected);

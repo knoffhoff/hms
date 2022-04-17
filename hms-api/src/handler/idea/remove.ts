@@ -1,7 +1,7 @@
 import {buildResponse} from '../../rest/responses';
-import {removeIdea} from '../../repository/idea-repository';
+import {removeIdea} from '../../service/idea-service';
 import {wrapHandler} from '../handler-wrapper';
-import {Uuid} from '../../util/uuids';
+import Uuid from '../../util/Uuid';
 import IdeaDeletionResponse from '../../rest/IdeaDeleteResponse';
 
 // eslint-disable-next-line require-jsdoc

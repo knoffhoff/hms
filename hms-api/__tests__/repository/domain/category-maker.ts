@@ -1,4 +1,4 @@
-import {uuid, Uuid} from '../../../src/util/uuids';
+import Uuid, {uuid} from '../../../src/util/Uuid';
 import Category from '../../../src/repository/domain/Category';
 
 export interface CategoryData {

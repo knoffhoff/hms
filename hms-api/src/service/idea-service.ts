@@ -4,8 +4,8 @@ import {participantExists} from '../repository/participant-repository';
 import {hackathonExists} from '../repository/hackathon-repository';
 import {categoryExists} from '../repository/category-repository';
 import {skillExists} from '../repository/skill-repository';
-import {putIdea} from '../repository/idea-repository';
-import {Uuid} from '../util/uuids';
+import {deleteIdea, putIdea} from '../repository/idea-repository';
+import Uuid from '../util/Uuid';
 import Idea from '../repository/domain/Idea';
 import ReferenceNotFoundError from '../repository/error/ReferenceNotFoundError';
 
@@ -46,6 +46,10 @@ export async function createIdea(
   await putIdea(idea);
 
   return idea;
+}
+
+export async function removeIdea(id: Uuid) {
+  await deleteIdea(id);
 }
 
 async function verifyAllSkillsExist(skillIds: Uuid[]): Promise<void> {

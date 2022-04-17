@@ -1,7 +1,7 @@
 /* eslint-disable require-jsdoc */
 
-import * as uuids from '../../src/util/uuids';
-import {Uuid} from '../../src/util/uuids';
+import * as uuids from '../../src/util/Uuid';
+import Uuid from '../../src/util/Uuid';
 
 export function mockUuid(id: Uuid) {
   const mockUuidFun = jest.fn();

@@ -1,7 +1,7 @@
 /* eslint-disable require-jsdoc */
 
 import IdeaPreviewResponse from './IdeaPreviewResponse';
-import {Uuid} from '../util/uuids';
+import Uuid from '../util/Uuid';
 
 export default class {
   ideas: IdeaPreviewResponse[];

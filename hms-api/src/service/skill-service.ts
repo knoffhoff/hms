@@ -1,7 +1,8 @@
 /* eslint-disable require-jsdoc */
 
-import {putSkill} from '../repository/skill-repository';
+import {deleteSkill, putSkill} from '../repository/skill-repository';
 import Skill from '../repository/domain/Skill';
+import Uuid from '../util/Uuid';
 
 export async function createSkill(
     name: string,
@@ -10,4 +11,8 @@ export async function createSkill(
   const skill = new Skill(name, description);
   await putSkill(skill);
   return skill;
+}
+
+export async function removeSkill(id: Uuid) {
+  await deleteSkill(id);
 }

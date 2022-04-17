@@ -3,7 +3,7 @@ import {listCategories} from '../../repository/category-repository';
 import {wrapHandler} from '../handler-wrapper';
 import CategoryListResponse from '../../rest/CategoryListResponse';
 import CategoryPreviewResponse from '../../rest/CategoryPreviewResponse';
-import {Uuid} from '../../util/uuids';
+import Uuid from '../../util/Uuid';
 
 // eslint-disable-next-line require-jsdoc
 export async function list(event, context, callback) {
