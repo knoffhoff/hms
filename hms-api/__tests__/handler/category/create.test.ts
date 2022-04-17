@@ -3,8 +3,7 @@ import {create} from '../../../src/handler/category/create';
 import {randomCategory} from '../../repository/domain/category-maker';
 import {mockUuid} from '../../util/uuids-mock';
 import CategoryCreateResponse from '../../../src/rest/CategoryCreateResponse';
-import ReferenceNotFoundError
-  from '../../../src/repository/error/ReferenceNotFoundError';
+import ReferenceNotFoundError from '../../../src/error/ReferenceNotFoundError';
 import Category from '../../../src/repository/domain/Category';
 
 const mockCreateCategory = jest.fn();

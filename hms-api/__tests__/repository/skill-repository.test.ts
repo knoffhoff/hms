@@ -15,7 +15,7 @@ import {
   skillExists,
 } from '../../src/repository/skill-repository';
 import Uuid, {uuid} from '../../src/util/Uuid';
-import NotFoundError from '../../src/repository/error/NotFoundError';
+import NotFoundError from '../../src/error/NotFoundError';
 import {randomSkill} from './domain/skill-maker';
 import Skill from '../../src/repository/domain/Skill';
 import {AttributeValue} from '@aws-sdk/client-dynamodb';

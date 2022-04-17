@@ -4,8 +4,13 @@ import Uuid from '../util/Uuid';
 import ParticipantPreviewResponse from './ParticipantPreviewResponse';
 import CategoryPreviewResponse from './CategoryPreviewResponse';
 import IdeaPreviewResponse from './IdeaPreviewResponse';
+import Hackathon from '../repository/domain/Hackathon';
+import Category from '../repository/domain/Category';
+import Participant from '../repository/domain/Participant';
+import Idea from '../repository/domain/Idea';
+import User from '../repository/domain/User';
 
-export default class {
+class HackathonResponse {
   id: Uuid;
   title: string;
   startDate: Date;
@@ -33,4 +38,22 @@ export default class {
     this.categories = categories;
     this.ideas = ideas;
   }
+
+  static from = (
+      hackathon: Hackathon,
+      participants: Participant[],
+      users: User[],
+      categories: Category[],
+      ideas: Idea[],
+  ): HackathonResponse => new HackathonResponse(
+      hackathon.id,
+      hackathon.title,
+      hackathon.startDate,
+      hackathon.endDate,
+      ParticipantPreviewResponse.fromArray(participants, users),
+      CategoryPreviewResponse.fromArray(categories),
+      IdeaPreviewResponse.fromArray(ideas),
+  );
 }
+
+export default HackathonResponse;

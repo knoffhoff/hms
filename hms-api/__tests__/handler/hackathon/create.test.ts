@@ -3,8 +3,7 @@ import {create} from '../../../src/handler/hackathon/create';
 import {randomHackathon} from '../../repository/domain/hackathon-maker';
 import {mockUuid} from '../../util/uuids-mock';
 import HackathonCreateResponse from '../../../src/rest/HackathonCreateResponse';
-import ReferenceNotFoundError
-  from '../../../src/repository/error/ReferenceNotFoundError';
+import ReferenceNotFoundError from '../../../src/error/ReferenceNotFoundError';
 import {mockDate} from '../../util/date-mock';
 import Hackathon from '../../../src/repository/domain/Hackathon';
 

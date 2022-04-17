@@ -15,11 +15,12 @@ class HackathonPreviewResponse {
     this.title = title;
   }
 
-  static from = (hackathon: Hackathon): HackathonPreviewResponse =>
-    new HackathonPreviewResponse(
-        hackathon.id,
-        hackathon.title,
-    );
+  static from = (
+      hackathon: Hackathon,
+  ): HackathonPreviewResponse => new HackathonPreviewResponse(
+      hackathon.id,
+      hackathon.title,
+  );
 
   static fromArray(hackathons: Hackathon[]): HackathonPreviewResponse[] {
     const previews: HackathonPreviewResponse[] = [];

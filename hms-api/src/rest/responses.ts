@@ -1,7 +1,7 @@
 /* eslint-disable require-jsdoc */
 
-import NotFoundError from '../repository/error/NotFoundError';
-import ReferenceNotFoundError from '../repository/error/ReferenceNotFoundError';
+import NotFoundError from '../error/NotFoundError';
+import ReferenceNotFoundError from '../error/ReferenceNotFoundError';
 
 const headers = {
   'Access-Control-Allow-Origin': '*',

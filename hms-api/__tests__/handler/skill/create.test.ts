@@ -3,8 +3,7 @@ import {create} from '../../../src/handler/skill/create';
 import {randomSkill} from '../../repository/domain/skill-maker';
 import {mockUuid} from '../../util/uuids-mock';
 import SkillCreateResponse from '../../../src/rest/SkillCreateResponse';
-import ReferenceNotFoundError
-  from '../../../src/repository/error/ReferenceNotFoundError';
+import ReferenceNotFoundError from '../../../src/error/ReferenceNotFoundError';
 import Skill from '../../../src/repository/domain/Skill';
 
 const mockCreateSkill = jest.fn();

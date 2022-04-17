@@ -3,8 +3,7 @@ import {create} from '../../../src/handler/idea/create';
 import {randomIdea} from '../../repository/domain/idea-maker';
 import {mockUuid} from '../../util/uuids-mock';
 import IdeaCreateResponse from '../../../src/rest/IdeaCreateResponse';
-import ReferenceNotFoundError
-  from '../../../src/repository/error/ReferenceNotFoundError';
+import ReferenceNotFoundError from '../../../src/error/ReferenceNotFoundError';
 import Idea from '../../../src/repository/domain/Idea';
 
 const mockCreateIdea = jest.fn();

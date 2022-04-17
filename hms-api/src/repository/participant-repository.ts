@@ -11,7 +11,7 @@ import {
 import Uuid from '../util/Uuid';
 import {getClient} from './dynamo-db';
 import Participant from './domain/Participant';
-import NotFoundError from './error/NotFoundError';
+import NotFoundError from '../error/NotFoundError';
 
 const table = process.env.PARTICIPANT_TABLE;
 const byHackathonIdIndex = process.env.PARTICIPANT_BY_HACKATHON_ID_INDEX;

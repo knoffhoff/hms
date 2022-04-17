@@ -1,12 +1,18 @@
 /* eslint-disable require-jsdoc */
 
-import {deleteUser, getUsers, putUser} from '../repository/user-repository';
-import {skillExists} from '../repository/skill-repository';
+import {
+  deleteUser,
+  getUser,
+  getUsers,
+  putUser,
+} from '../repository/user-repository';
+import {getSkills, skillExists} from '../repository/skill-repository';
 import Participant from '../repository/domain/Participant';
 import User from '../repository/domain/User';
 import Uuid from '../util/Uuid';
 import Role from '../repository/domain/Role';
-import ReferenceNotFoundError from '../repository/error/ReferenceNotFoundError';
+import ReferenceNotFoundError from '../error/ReferenceNotFoundError';
+import UserResponse from '../rest/UserResponse';
 
 export async function createUser(
     lastName: string,
@@ -28,6 +34,20 @@ export async function createUser(
   );
   await putUser(user);
   return user;
+}
+
+export async function getUserResponse(id: Uuid) {
+  const user = await getUser(id);
+
+  let skills;
+  try {
+    skills = await getSkills(user.skills);
+  } catch (e) {
+    throw new ReferenceNotFoundError(`Cannot get User with id: ${id}, ` +
+        `unable to get Skills with ids: ${user.skills}`);
+  }
+
+  return UserResponse.from(user, skills);
 }
 
 export async function removeUser(id: Uuid) {

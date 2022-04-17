@@ -15,7 +15,7 @@ import {
   putCategory,
 } from '../../src/repository/category-repository';
 import Uuid, {uuid} from '../../src/util/Uuid';
-import NotFoundError from '../../src/repository/error/NotFoundError';
+import NotFoundError from '../../src/error/NotFoundError';
 import {
   CategoryData,
   makeCategory,
@@ -150,22 +150,24 @@ const itemFromCategory = (
   id: {S: category.id},
 });
 
-const getExpected = (id: Uuid) =>
-    expect(mockSend).toHaveBeenCalledWith(
-        expect.objectContaining({
-          input: expect.objectContaining({
-            TableName: categoryTable,
-            Key: {id: {S: id}},
-          }),
-        }));
+const getExpected = (
+    id: Uuid,
+) => expect(mockSend).toHaveBeenCalledWith(
+    expect.objectContaining({
+      input: expect.objectContaining({
+        TableName: categoryTable,
+        Key: {id: {S: id}},
+      }),
+    }));
 
-const listExpected = (hackathonId: Uuid) =>
-    expect(mockSend).toHaveBeenCalledWith(
-        expect.objectContaining({
-          input: expect.objectContaining({
-            TableName: categoryTable,
-            IndexName: categoryByHackathonIdIndex,
-            KeyConditionExpression: 'hackathonId = :hId',
-            ExpressionAttributeValues: {':hId': {'S': hackathonId}},
-          }),
-        }));
+const listExpected = (
+    hackathonId: Uuid,
+) => expect(mockSend).toHaveBeenCalledWith(
+    expect.objectContaining({
+      input: expect.objectContaining({
+        TableName: categoryTable,
+        IndexName: categoryByHackathonIdIndex,
+        KeyConditionExpression: 'hackathonId = :hId',
+        ExpressionAttributeValues: {':hId': {'S': hackathonId}},
+      }),
+    }));

@@ -11,7 +11,7 @@ import {
 } from '@aws-sdk/client-dynamodb';
 import Uuid from '../util/Uuid';
 import Idea from './domain/Idea';
-import NotFoundError from './error/NotFoundError';
+import NotFoundError from '../error/NotFoundError';
 
 const dynamoDBClient = getClient();
 

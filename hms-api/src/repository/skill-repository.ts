@@ -11,7 +11,7 @@ import {
   ScanCommand,
 } from '@aws-sdk/client-dynamodb';
 import Uuid from '../util/Uuid';
-import NotFoundError from './error/NotFoundError';
+import NotFoundError from '../error/NotFoundError';
 
 const table = process.env.SKILL_TABLE;
 const dynamoDBClient = getClient();

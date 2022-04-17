@@ -4,8 +4,7 @@ import {randomParticipant} from '../../repository/domain/participant-maker';
 import {mockUuid} from '../../util/uuids-mock';
 import ParticipantCreateResponse
   from '../../../src/rest/ParticipantCreateResponse';
-import ReferenceNotFoundError
-  from '../../../src/repository/error/ReferenceNotFoundError';
+import ReferenceNotFoundError from '../../../src/error/ReferenceNotFoundError';
 import Participant from '../../../src/repository/domain/Participant';
 
 const mockCreateParticipant = jest.fn();

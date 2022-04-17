@@ -1,19 +1,11 @@
 import {buildResponse} from '../../rest/responses';
-import {getSkill} from '../../repository/skill-repository';
 import {wrapHandler} from '../handler-wrapper';
-import SkillResponse from '../../rest/SkillResponse';
+import {getSkillResponse} from '../../service/skill-service';
 
 // eslint-disable-next-line require-jsdoc
 export async function get(event, context, callback) {
   await wrapHandler(async () => {
-    const id: string = event.pathParameters.id;
-    const skill = await getSkill(id);
-    const responseBody = new SkillResponse(
-        skill.id,
-        skill.name,
-        skill.description,
-    );
-
+    const responseBody = await getSkillResponse(event.pathParameters.id);
     callback(null, buildResponse(200, responseBody));
   }, callback);
 }

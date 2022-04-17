@@ -18,15 +18,18 @@ class ParticipantPreviewResponse {
     this.user = user;
   }
 
-  static from = (participant: Participant, user: User)
-      : ParticipantPreviewResponse =>
-    new ParticipantPreviewResponse(
-        participant.id,
-        UserPreviewResponse.from(user),
-    );
+  static from = (
+      participant: Participant,
+      user: User,
+  ): ParticipantPreviewResponse => new ParticipantPreviewResponse(
+      participant.id,
+      UserPreviewResponse.from(user),
+  );
 
-  static fromArray(participants: Participant[], users: User[])
-      : ParticipantPreviewResponse[] {
+  static fromArray(
+      participants: Participant[],
+      users: User[],
+  ): ParticipantPreviewResponse[] {
     const previews: ParticipantPreviewResponse[] = [];
     for (const participant of participants) {
       previews.push(ParticipantPreviewResponse.from(

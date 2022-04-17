@@ -3,6 +3,7 @@ import {mockUuid} from '../util/uuids-mock';
 import {
   createUser,
   extractUser,
+  getUserResponse,
   removeUser,
   usersFor,
 } from '../../src/service/user-service';
@@ -13,13 +14,18 @@ import {
   ParticipantData,
   randomParticipant,
 } from '../repository/domain/participant-maker';
-import ReferenceNotFoundError
-  from '../../src/repository/error/ReferenceNotFoundError';
+import ReferenceNotFoundError from '../../src/error/ReferenceNotFoundError';
 import Role from '../../src/repository/domain/Role';
 
 import * as skillRepository from '../../src/repository/skill-repository';
 import * as userRepository from '../../src/repository/user-repository';
+import {randomSkill} from '../repository/domain/skill-maker';
+import NotFoundError from '../../src/error/NotFoundError';
+import UserResponse from '../../src/rest/UserResponse';
 
+const mockGetSkills = jest.fn();
+jest.spyOn(skillRepository, 'getSkills')
+    .mockImplementation(mockGetSkills);
 const mockSkillExists = jest.fn();
 jest.spyOn(skillRepository, 'skillExists')
     .mockImplementation(mockSkillExists);
@@ -27,14 +33,15 @@ jest.spyOn(skillRepository, 'skillExists')
 const mockPutUser = jest.fn();
 jest.spyOn(userRepository, 'putUser')
     .mockImplementation(mockPutUser);
-
-const mockDeleteUser = jest.fn();
-jest.spyOn(userRepository, 'deleteUser')
-    .mockImplementation(mockDeleteUser);
-
+const mockGetUser = jest.fn();
+jest.spyOn(userRepository, 'getUser')
+    .mockImplementation(mockGetUser);
 const mockGetUsers = jest.fn();
 jest.spyOn(userRepository, 'getUsers')
     .mockImplementation(mockGetUsers);
+const mockDeleteUser = jest.fn();
+jest.spyOn(userRepository, 'deleteUser')
+    .mockImplementation(mockDeleteUser);
 
 describe('Create Idea', () => {
   test('Missing Skill', async () => {
@@ -70,6 +77,54 @@ describe('Create Idea', () => {
         .toStrictEqual(expected);
 
     expect(mockPutUser).toHaveBeenCalledWith(expected);
+  });
+});
+
+describe('Get User Response', () => {
+  test('Happy Path', async () => {
+    const user = randomUser();
+    const skill1 = randomSkill();
+    const skill2 = randomSkill();
+    const skill3 = randomSkill();
+
+    const expected = UserResponse.from(user, [skill1, skill2, skill3]);
+
+    mockGetUser.mockResolvedValue(user);
+    mockGetSkills.mockResolvedValue([skill1, skill2, skill3]);
+
+    expect(await getUserResponse(user.id))
+        .toStrictEqual(expected);
+    expect(mockGetUser).toHaveBeenCalledWith(user.id);
+    expect(mockGetSkills).toHaveBeenCalledWith(user.skills);
+  });
+
+  test('Missing Skills', async () => {
+    const user = randomUser();
+
+    mockGetUser.mockResolvedValue(user);
+    mockGetSkills.mockImplementation(() => {
+      throw new NotFoundError('Not a chance');
+    });
+
+    await expect(getUserResponse(user.id))
+        .rejects
+        .toThrow(ReferenceNotFoundError);
+    expect(mockGetUser).toHaveBeenCalledWith(user.id);
+    expect(mockGetSkills).toHaveBeenCalledWith(user.skills);
+  });
+
+  test('Missing User', async () => {
+    const id = uuid();
+
+    mockGetUser.mockImplementation(() => {
+      throw new NotFoundError('Not a chance');
+    });
+
+    await expect(getUserResponse(id))
+        .rejects
+        .toThrow(NotFoundError);
+    expect(mockGetUser).toHaveBeenCalledWith(id);
+    expect(mockGetSkills).not.toHaveBeenCalled();
   });
 });
 
