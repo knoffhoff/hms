@@ -7,6 +7,7 @@ import {
   GetItemCommandOutput,
   PutItemCommandOutput,
   QueryCommandOutput,
+  UpdateItemCommandOutput,
 } from '@aws-sdk/client-dynamodb';
 
 export const categoryTable = 'category-table';
@@ -59,4 +60,8 @@ export function mockQuery(items: { [key: string]: AttributeValue }[]): void {
 
 export function mockPutItem(): void {
   mockSend.mockResolvedValue({} as PutItemCommandOutput);
+}
+
+export function mockUpdateItem(): void {
+  mockSend.mockResolvedValue({} as UpdateItemCommandOutput);
 }

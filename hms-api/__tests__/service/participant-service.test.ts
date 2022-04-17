@@ -17,6 +17,7 @@ import {uuid} from '../../src/util/Uuid';
 import ParticipantResponse from '../../src/rest/ParticipantResponse';
 import ParticipantListResponse from '../../src/rest/ParticipantListResponse';
 import NotFoundError from '../../src/error/NotFoundError';
+import ReferenceUpdateError from '../../src/error/ReferenceUpdateError';
 import ReferenceNotFoundError from '../../src/error/ReferenceNotFoundError';
 import * as participantRepository
   from '../../src/repository/participant-repository';
@@ -43,6 +44,9 @@ jest.spyOn(hackathonRepository, 'getHackathon')
 const mockHackathonExists = jest.fn();
 jest.spyOn(hackathonRepository, 'hackathonExists')
     .mockImplementation(mockHackathonExists);
+const mockAppendParticipantId = jest.fn();
+jest.spyOn(hackathonRepository, 'appendParticipantId')
+    .mockImplementation(mockAppendParticipantId);
 
 const mockGetUser = jest.fn();
 jest.spyOn(userRepository, 'getUser')
@@ -55,6 +59,10 @@ jest.spyOn(userRepository, 'userExists')
     .mockImplementation(mockUserExists);
 
 describe('Create Participant', () => {
+  beforeAll(() => {
+    mockDate();
+  });
+
   test('Missing Hackathon', async () => {
     mockHackathonExists.mockResolvedValue(false);
     mockUserExists.mockResolvedValue(true);
@@ -64,6 +72,8 @@ describe('Create Participant', () => {
         .toThrow(ReferenceNotFoundError);
 
     expect(mockPutParticipant).not.toHaveBeenCalled();
+    expect(mockAppendParticipantId).not.toHaveBeenCalled();
+    expect(mockDeleteParticipant).not.toHaveBeenCalled();
   });
 
   test('Missing User', async () => {
@@ -75,13 +85,35 @@ describe('Create Participant', () => {
         .toThrow(ReferenceNotFoundError);
 
     expect(mockPutParticipant).not.toHaveBeenCalled();
+    expect(mockAppendParticipantId).not.toHaveBeenCalled();
+    expect(mockDeleteParticipant).not.toHaveBeenCalled();
+  });
+
+  test('Error when appending Participant ID', async () => {
+    mockHackathonExists.mockResolvedValue(true);
+    mockUserExists.mockResolvedValue(true);
+    mockAppendParticipantId.mockImplementation(() => {
+      throw new ReferenceUpdateError('BLAM!');
+    });
+
+    const expected = randomParticipant();
+    mockUuid(expected.id);
+
+    await expect(createParticipant(expected.userId, expected.hackathonId))
+        .rejects
+        .toThrow(ReferenceUpdateError);
+
+    expect(mockPutParticipant).toHaveBeenCalledWith(expected);
+    expect(mockAppendParticipantId)
+        .toHaveBeenCalledWith(expected.hackathonId, expected.id);
+    expect(mockDeleteParticipant).toHaveBeenCalledWith(expected.id);
   });
 
   test('Happy Path', async () => {
-    mockDate();
-
     mockHackathonExists.mockResolvedValue(true);
     mockUserExists.mockResolvedValue(true);
+    mockAppendParticipantId.mockImplementation(() => {
+    });
 
     const expected = randomParticipant();
     mockUuid(expected.id);
@@ -90,6 +122,9 @@ describe('Create Participant', () => {
         .toStrictEqual(expected);
 
     expect(mockPutParticipant).toHaveBeenCalledWith(expected);
+    expect(mockAppendParticipantId)
+        .toHaveBeenCalledWith(expected.hackathonId, expected.id);
+    expect(mockDeleteParticipant).not.toHaveBeenCalled();
   });
 });
 

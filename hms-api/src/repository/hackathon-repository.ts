@@ -8,6 +8,7 @@ import {
   GetItemCommand,
   PutItemCommand,
   ScanCommand,
+  UpdateItemCommand,
 } from '@aws-sdk/client-dynamodb';
 import Uuid from '../util/Uuid';
 import {getClient, safeTransformArray} from './dynamo-db';
@@ -41,6 +42,42 @@ export async function putHackathon(hackathon: Hackathon) {
       participantIds: safeTransformArray(hackathon.participantIds),
       categoryIds: safeTransformArray(hackathon.categoryIds),
       ideaIds: safeTransformArray(hackathon.ideaIds),
+    },
+  }));
+}
+
+export async function appendParticipantId(
+    hackathonId: Uuid,
+    participantId: Uuid,
+) {
+  await dynamoDBClient.send(new UpdateItemCommand({
+    TableName: table,
+    Key: {id: {S: hackathonId}},
+    UpdateExpression: 'ADD participantIds :participant_id',
+    ExpressionAttributeValues: {
+      ':participant_id': {SS: [participantId]},
+    },
+  }));
+}
+
+export async function appendCategoryId(hackathonId: Uuid, categoryId: Uuid) {
+  await dynamoDBClient.send(new UpdateItemCommand({
+    TableName: table,
+    Key: {id: {S: hackathonId}},
+    UpdateExpression: 'ADD categoryIds :category_id',
+    ExpressionAttributeValues: {
+      ':category_id': {SS: [categoryId]},
+    },
+  }));
+}
+
+export async function appendIdeaId(hackathonId: Uuid, ideaId: Uuid) {
+  await dynamoDBClient.send(new UpdateItemCommand({
+    TableName: table,
+    Key: {id: {S: hackathonId}},
+    UpdateExpression: 'ADD ideaIds :idea_id',
+    ExpressionAttributeValues: {
+      ':idea_id': {SS: [ideaId]},
     },
   }));
 }
