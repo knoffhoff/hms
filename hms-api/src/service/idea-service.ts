@@ -17,12 +17,7 @@ import Idea from '../repository/domain/Idea';
 import ReferenceNotFoundError from '../error/ReferenceNotFoundError';
 import IdeaResponse from '../rest/IdeaResponse';
 import {usersFor} from './user-service';
-import participantPreviewResponse from '../rest/ParticipantPreviewResponse';
-import ParticipantPreviewResponse from '../rest/ParticipantPreviewResponse';
 import {getUser} from '../repository/user-repository';
-import HackathonPreviewResponse from '../rest/HackathonPreviewResponse';
-import SkillPreviewResponse from '../rest/SkillPreviewResponse';
-import CategoryPreviewResponse from '../rest/CategoryPreviewResponse';
 
 export async function createIdea(
     ownerId: Uuid,
@@ -124,18 +119,15 @@ export async function getIdeaResponse(id: Uuid): Promise<IdeaResponse> {
         `unable to get Category with id: ${idea.categoryId}`);
   }
 
-  return new IdeaResponse(
-      idea.id,
-      participantPreviewResponse.from(ownerParticipant, ownerUser),
-      HackathonPreviewResponse.from(hackathon),
-      ParticipantPreviewResponse.fromArray(participants, users),
-      idea.title,
-      idea.description,
-      idea.problem,
-      idea.goal,
-      SkillPreviewResponse.fromArray(skills),
-      CategoryPreviewResponse.from(category),
-      idea.creationDate,
+  return IdeaResponse.from(
+      idea,
+      ownerParticipant,
+      ownerUser,
+      hackathon,
+      participants,
+      users,
+      skills,
+      category,
   );
 }
 

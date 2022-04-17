@@ -16,11 +16,7 @@ export async function createSkill(
 
 export async function getSkillResponse(id: Uuid): Promise<SkillResponse> {
   const skill = await getSkill(id);
-  return new SkillResponse(
-      skill.id,
-      skill.name,
-      skill.description,
-  );
+  return SkillResponse.from(skill);
 }
 
 export async function removeSkill(id: Uuid) {

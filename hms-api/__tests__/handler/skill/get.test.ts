@@ -12,11 +12,7 @@ jest.spyOn(skillService, 'getSkillResponse')
 describe('Get Skill', () => {
   test('Happy Path', async () => {
     const skill = randomSkill();
-    const expected = new SkillResponse(
-        skill.id,
-        skill.name,
-        skill.description,
-    );
+    const expected = SkillResponse.from(skill);
 
     mockGetSkill.mockResolvedValue(expected);
     const event = toEvent(skill.id);

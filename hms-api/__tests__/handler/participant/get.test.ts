@@ -5,10 +5,7 @@ import * as participantService from '../../../src/service/participant-service';
 import Uuid, {uuid} from '../../../src/util/Uuid';
 import {randomHackathon} from '../../repository/domain/hackathon-maker';
 import ParticipantResponse from '../../../src/rest/ParticipantResponse';
-import HackathonPreviewResponse
-  from '../../../src/rest/HackathonPreviewResponse';
 import ReferenceNotFoundError from '../../../src/error/ReferenceNotFoundError';
-import UserPreviewResponse from '../../../src/rest/UserPreviewResponse';
 import {randomUser} from '../../repository/domain/user-maker';
 
 const mockGetParticipant = jest.fn();
@@ -18,18 +15,10 @@ jest.spyOn(participantService, 'getParticipantResponse')
 describe('Get Participant', () => {
   test('Happy Path', async () => {
     const participant = randomParticipant();
-    const user = randomUser();
-    const hackathon = randomHackathon();
-    const expected = new ParticipantResponse(
-        participant.id,
-        new UserPreviewResponse(
-            user.id,
-            user.lastName,
-            user.firstName,
-            user.imageUrl,
-        ),
-        new HackathonPreviewResponse(hackathon.id, hackathon.title),
-        participant.creationDate,
+    const expected = ParticipantResponse.from(
+        participant,
+        randomUser(),
+        randomHackathon(),
     );
 
     mockGetParticipant.mockResolvedValue(expected);

@@ -13,7 +13,6 @@ import Uuid from '../util/Uuid';
 import Category from '../repository/domain/Category';
 import ReferenceNotFoundError from '../error/ReferenceNotFoundError';
 import CategoryResponse from '../rest/CategoryResponse';
-import HackathonPreviewResponse from '../rest/HackathonPreviewResponse';
 
 export async function createCategory(
     title: string,
@@ -32,6 +31,7 @@ export async function createCategory(
 
 export async function getCategoryResponse(id: Uuid): Promise<CategoryResponse> {
   const category = await getCategory(id);
+
   let hackathon;
   try {
     hackathon = await getHackathon(category.hackathonId);
@@ -40,12 +40,7 @@ export async function getCategoryResponse(id: Uuid): Promise<CategoryResponse> {
         `reference Hackathon with id: ${category.hackathonId} does not exist`);
   }
 
-  return new CategoryResponse(
-      category.id,
-      category.title,
-      category.description,
-      HackathonPreviewResponse.from(hackathon),
-  );
+  return CategoryResponse.from(category, hackathon);
 }
 
 export async function removeCategory(id: Uuid) {

@@ -11,10 +11,7 @@ import {listCategories} from '../repository/category-repository';
 import {listIdeas} from '../repository/idea-repository';
 import Uuid from '../util/Uuid';
 import Hackathon from '../repository/domain/Hackathon';
-import ParticipantPreviewResponse from '../rest/ParticipantPreviewResponse';
 import HackathonResponse from '../rest/HackathonResponse';
-import CategoryPreviewResponse from '../rest/CategoryPreviewResponse';
-import IdeaPreviewResponse from '../rest/IdeaPreviewResponse';
 import ReferenceNotFoundError from '../error/ReferenceNotFoundError';
 
 export async function createHackathon(
@@ -66,14 +63,12 @@ export async function getHackathonResponse(
   }
 
   const hackathon = await getHackathon(id);
-  return new HackathonResponse(
-      hackathon.id,
-      hackathon.title,
-      hackathon.startDate,
-      hackathon.endDate,
-      ParticipantPreviewResponse.fromArray(participants, users),
-      CategoryPreviewResponse.fromArray(categories),
-      IdeaPreviewResponse.fromArray(ideas),
+  return HackathonResponse.from(
+      hackathon,
+      participants,
+      users,
+      categories,
+      ideas,
   );
 }
 

@@ -1,8 +1,9 @@
 /* eslint-disable require-jsdoc */
 
 import Uuid from '../util/Uuid';
+import Skill from '../repository/domain/Skill';
 
-export default class {
+class SkillResponse {
   id: Uuid;
   name: string;
   description: string;
@@ -16,4 +17,14 @@ export default class {
     this.name = name;
     this.description = description;
   }
+
+  static from = (
+      skill: Skill,
+  ): SkillResponse => new SkillResponse(
+      skill.id,
+      skill.name,
+      skill.description,
+  );
 }
+
+export default SkillResponse;

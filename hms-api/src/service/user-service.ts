@@ -10,10 +10,9 @@ import {getSkills, skillExists} from '../repository/skill-repository';
 import Participant from '../repository/domain/Participant';
 import User from '../repository/domain/User';
 import Uuid from '../util/Uuid';
-import Role, {mapRolesToStrings} from '../repository/domain/Role';
+import Role from '../repository/domain/Role';
 import ReferenceNotFoundError from '../error/ReferenceNotFoundError';
 import UserResponse from '../rest/UserResponse';
-import SkillPreviewResponse from '../rest/SkillPreviewResponse';
 
 export async function createUser(
     lastName: string,
@@ -48,16 +47,7 @@ export async function getUserResponse(id: Uuid) {
         `unable to get Skills with ids: ${user.skills}`);
   }
 
-  return new UserResponse(
-      user.id,
-      user.lastName,
-      user.firstName,
-      user.emailAddress,
-      mapRolesToStrings(user.roles),
-      SkillPreviewResponse.fromArray(skills),
-      user.imageUrl,
-      user.creationDate,
-  );
+  return UserResponse.from(user, skills);
 }
 
 export async function removeUser(id: Uuid) {

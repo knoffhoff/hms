@@ -6,14 +6,9 @@ import {randomHackathon} from '../../repository/domain/hackathon-maker';
 import HackathonResponse from '../../../src/rest/HackathonResponse';
 import ReferenceNotFoundError from '../../../src/error/ReferenceNotFoundError';
 import {randomParticipant} from '../../repository/domain/participant-maker';
-import ParticipantPreviewResponse
-  from '../../../src/rest/ParticipantPreviewResponse';
 import {randomUser} from '../../repository/domain/user-maker';
-import UserPreviewResponse from '../../../src/rest/UserPreviewResponse';
 import {randomCategory} from '../../repository/domain/category-maker';
 import {randomIdea} from '../../repository/domain/idea-maker';
-import CategoryPreviewResponse from '../../../src/rest/CategoryPreviewResponse';
-import IdeaPreviewResponse from '../../../src/rest/IdeaPreviewResponse';
 
 const mockGetHackathon = jest.fn();
 jest.spyOn(hackathonService, 'getHackathonResponse')
@@ -22,44 +17,12 @@ jest.spyOn(hackathonService, 'getHackathonResponse')
 describe('Get Hackathon', () => {
   test('Happy Path', async () => {
     const hackathon = randomHackathon();
-    const participant1 = randomParticipant();
-    const user1 = randomUser();
-    const participant2 = randomHackathon();
-    const user2 = randomUser();
-    const category = randomCategory();
-    const idea1 = randomIdea();
-    const idea2 = randomIdea();
-
-    const expected = new HackathonResponse(
-        hackathon.id,
-        hackathon.title,
-        hackathon.startDate,
-        hackathon.endDate,
-        [
-          new ParticipantPreviewResponse(
-              participant1.id,
-              new UserPreviewResponse(
-                  user1.id,
-                  user1.lastName,
-                  user1.firstName,
-                  user1.imageUrl,
-              ),
-          ),
-          new ParticipantPreviewResponse(
-              participant2.id,
-              new UserPreviewResponse(
-                  user2.id,
-                  user2.lastName,
-                  user2.firstName,
-                  user2.imageUrl,
-              ),
-          ),
-        ],
-        [new CategoryPreviewResponse(category.id, category.title)],
-        [
-          new IdeaPreviewResponse(idea1.id, idea1.title),
-          new IdeaPreviewResponse(idea2.id, idea2.title),
-        ],
+    const expected = HackathonResponse.from(
+        hackathon,
+        [randomParticipant(), randomParticipant()],
+        [randomUser(), randomUser()],
+        [randomCategory()],
+        [randomIdea(), randomIdea()],
     );
 
     mockGetHackathon.mockResolvedValue(expected);

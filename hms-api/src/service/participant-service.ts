@@ -14,8 +14,6 @@ import Uuid from '../util/Uuid';
 import Participant from '../repository/domain/Participant';
 import ReferenceNotFoundError from '../error/ReferenceNotFoundError';
 import ParticipantResponse from '../rest/ParticipantResponse';
-import UserPreviewResponse from '../rest/UserPreviewResponse';
-import HackathonPreviewResponse from '../rest/HackathonPreviewResponse';
 
 export async function createParticipant(
     userId: Uuid,
@@ -57,12 +55,7 @@ export async function getParticipantResponse(
         `unable to get Hackathon with id ${participant.hackathonId}`);
   }
 
-  return new ParticipantResponse(
-      participant.userId,
-      UserPreviewResponse.from(user),
-      HackathonPreviewResponse.from(hackathon),
-      participant.creationDate,
-  );
+  return ParticipantResponse.from(participant, user, hackathon);
 }
 
 export async function removeParticipant(id: Uuid) {

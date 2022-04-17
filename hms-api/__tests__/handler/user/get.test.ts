@@ -4,9 +4,7 @@ import NotFoundError from '../../../src/error/NotFoundError';
 import * as userService from '../../../src/service/user-service';
 import Uuid, {uuid} from '../../../src/util/Uuid';
 import UserResponse from '../../../src/rest/UserResponse';
-import {mapRolesToStrings} from '../../../src/repository/domain/Role';
 import {randomSkill} from '../../repository/domain/skill-maker';
-import SkillPreviewResponse from '../../../src/rest/SkillPreviewResponse';
 import ReferenceNotFoundError from '../../../src/error/ReferenceNotFoundError';
 
 const mockGetUser = jest.fn();
@@ -16,20 +14,9 @@ jest.spyOn(userService, 'getUserResponse')
 describe('Get User', () => {
   test('Happy Path', async () => {
     const user = randomUser();
-    const skill1 = randomSkill();
-    const skill2 = randomSkill();
-    const expected = new UserResponse(
-        user.id,
-        user.lastName,
-        user.firstName,
-        user.emailAddress,
-        mapRolesToStrings(user.roles),
-        [
-          new SkillPreviewResponse(skill1.id, skill1.name),
-          new SkillPreviewResponse(skill2.id, skill2.name),
-        ],
-        user.imageUrl,
-        user.creationDate,
+    const expected = UserResponse.from(
+        user,
+        [randomSkill(), randomSkill()],
     );
 
     mockGetUser.mockResolvedValue(expected);

@@ -7,16 +7,9 @@ import IdeaResponse from '../../../src/rest/IdeaResponse';
 import ReferenceNotFoundError from '../../../src/error/ReferenceNotFoundError';
 import {randomUser} from '../../repository/domain/user-maker';
 import {randomParticipant} from '../../repository/domain/participant-maker';
-import ParticipantPreviewResponse
-  from '../../../src/rest/ParticipantPreviewResponse';
-import UserPreviewResponse from '../../../src/rest/UserPreviewResponse';
 import {randomHackathon} from '../../repository/domain/hackathon-maker';
-import HackathonPreviewResponse
-  from '../../../src/rest/HackathonPreviewResponse';
-import CategoryPreviewResponse from '../../../src/rest/CategoryPreviewResponse';
 import {randomCategory} from '../../repository/domain/category-maker';
 import {randomSkill} from '../../repository/domain/skill-maker';
-import SkillPreviewResponse from '../../../src/rest/SkillPreviewResponse';
 
 const mockGetIdea = jest.fn();
 jest.spyOn(ideaService, 'getIdeaResponse')
@@ -27,55 +20,15 @@ describe('Get Idea', () => {
     const idea = randomIdea();
     const ownerParticipant = randomParticipant();
     const ownerUser = randomUser();
-    const participant = randomParticipant();
-    const user = randomUser();
-    const hackathon = randomHackathon();
-    const category = randomCategory();
-    const skill1 = randomSkill();
-    const skill2 = randomSkill();
-
-    const expected = new IdeaResponse(
-        idea.id,
-        new ParticipantPreviewResponse(
-            ownerParticipant.id,
-            new UserPreviewResponse(
-                ownerUser.id,
-                ownerUser.lastName,
-                ownerUser.firstName,
-                ownerUser.imageUrl,
-            ),
-        ),
-        new HackathonPreviewResponse(hackathon.id, hackathon.title),
-        [
-          new ParticipantPreviewResponse(
-              ownerParticipant.id,
-              new UserPreviewResponse(
-                  ownerUser.id,
-                  ownerUser.lastName,
-                  ownerUser.firstName,
-                  ownerUser.imageUrl,
-              ),
-          ),
-          new ParticipantPreviewResponse(
-              participant.id,
-              new UserPreviewResponse(
-                  user.id,
-                  user.lastName,
-                  user.firstName,
-                  user.imageUrl,
-              ),
-          ),
-        ],
-        idea.title,
-        idea.description,
-        idea.problem,
-        idea.goal,
-        [
-          new SkillPreviewResponse(skill1.id, skill1.name),
-          new SkillPreviewResponse(skill2.id, skill2.name),
-        ],
-        new CategoryPreviewResponse(category.id, category.title),
-        idea.creationDate,
+    const expected = IdeaResponse.from(
+        idea,
+        ownerParticipant,
+        ownerUser,
+        randomHackathon(),
+        [ownerParticipant, randomParticipant()],
+        [ownerUser, randomUser()],
+        [randomSkill(), randomSkill()],
+        randomCategory(),
     );
 
     mockGetIdea.mockResolvedValue(expected);

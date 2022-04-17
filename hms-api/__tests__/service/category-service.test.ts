@@ -2,6 +2,7 @@ import {mockUuid} from '../util/uuids-mock';
 import {randomCategory} from '../repository/domain/category-maker';
 import {
   createCategory,
+  getCategoryResponse,
   removeCategory,
 } from '../../src/service/category-service';
 import {uuid} from '../../src/util/Uuid';
@@ -10,10 +11,16 @@ import ReferenceNotFoundError from '../../src/error/ReferenceNotFoundError';
 import * as categoryRepository from '../../src/repository/category-repository';
 import * as hackathonRepository
   from '../../src/repository/hackathon-repository';
+import {randomHackathon} from '../repository/domain/hackathon-maker';
+import CategoryResponse from '../../src/rest/CategoryResponse';
 
 const mockHackathonExists = jest.fn();
 jest.spyOn(hackathonRepository, 'hackathonExists')
     .mockImplementation(mockHackathonExists);
+
+const mockGetHackathon = jest.fn();
+jest.spyOn(hackathonRepository, 'getHackathon')
+    .mockImplementation(mockGetHackathon);
 
 const mockPutCategory = jest.fn();
 jest.spyOn(categoryRepository, 'putCategory')
@@ -48,6 +55,16 @@ describe('Create Category', () => {
     )).toStrictEqual(expected);
 
     expect(mockPutCategory).toHaveBeenCalledWith(expected);
+  });
+});
+
+describe('Get Category Response', () => {
+  test('Happy Path', async () => {
+    const category = randomCategory();
+    const hackathon = randomHackathon();
+    const expected = CategoryResponse.from(category, hackathon);
+
+    expect(await getCategoryResponse(category.id)).toStrictEqual(expected);
   });
 });
 

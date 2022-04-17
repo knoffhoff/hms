@@ -5,8 +5,6 @@ import * as categoryService from '../../../src/service/category-service';
 import Uuid, {uuid} from '../../../src/util/Uuid';
 import {randomHackathon} from '../../repository/domain/hackathon-maker';
 import CategoryResponse from '../../../src/rest/CategoryResponse';
-import HackathonPreviewResponse
-  from '../../../src/rest/HackathonPreviewResponse';
 import ReferenceNotFoundError from '../../../src/error/ReferenceNotFoundError';
 
 const mockGetCategory = jest.fn();
@@ -16,13 +14,7 @@ jest.spyOn(categoryService, 'getCategoryResponse')
 describe('Get Category', () => {
   test('Happy Path', async () => {
     const category = randomCategory();
-    const hackathon = randomHackathon();
-    const expected = new CategoryResponse(
-        category.id,
-        category.title,
-        category.description,
-        new HackathonPreviewResponse(hackathon.id, hackathon.title),
-    );
+    const expected = CategoryResponse.from(category, randomHackathon());
 
     mockGetCategory.mockResolvedValue(expected);
     const event = toEvent(category.id);
