@@ -4,8 +4,12 @@ import {
   mockPutItem,
   mockQuery,
   mockSend,
+  mockUpdateItem,
 } from './dynamo-db-mock';
 import {
+  appendCategoryId,
+  appendIdeaId,
+  appendParticipantId,
   deleteHackathon,
   getHackathon,
   hackathonExists,
@@ -51,6 +55,72 @@ describe('Put Hackathon', () => {
           input: expect.objectContaining({
             TableName: hackathonTable,
             Item: itemFromHackathon(expected),
+          }),
+        }));
+  });
+});
+
+describe('Append Participant ID', () => {
+  test('Happy Path', async () => {
+    mockUpdateItem();
+    const hackathonId = uuid();
+    const participantId = uuid();
+
+    await appendParticipantId(hackathonId, participantId);
+
+    expect(mockSend).toHaveBeenCalledWith(
+        expect.objectContaining({
+          input: expect.objectContaining({
+            TableName: hackathonTable,
+            Key: {id: {S: hackathonId}},
+            UpdateExpression: 'ADD participantIds :participant_id',
+            ExpressionAttributeValues: {
+              ':participant_id': {SS: [participantId]},
+            },
+          }),
+        }));
+  });
+});
+
+describe('Append Category ID', () => {
+  test('Happy Path', async () => {
+    mockUpdateItem();
+    const hackathonId = uuid();
+    const categoryId = uuid();
+
+    await appendCategoryId(hackathonId, categoryId);
+
+    expect(mockSend).toHaveBeenCalledWith(
+        expect.objectContaining({
+          input: expect.objectContaining({
+            TableName: hackathonTable,
+            Key: {id: {S: hackathonId}},
+            UpdateExpression: 'ADD categoryIds :category_id',
+            ExpressionAttributeValues: {
+              ':category_id': {SS: [categoryId]},
+            },
+          }),
+        }));
+  });
+});
+
+describe('Append Idea ID', () => {
+  test('Happy Path', async () => {
+    mockUpdateItem();
+    const hackathonId = uuid();
+    const ideaId = uuid();
+
+    await appendIdeaId(hackathonId, ideaId);
+
+    expect(mockSend).toHaveBeenCalledWith(
+        expect.objectContaining({
+          input: expect.objectContaining({
+            TableName: hackathonTable,
+            Key: {id: {S: hackathonId}},
+            UpdateExpression: 'ADD ideaIds :idea_id',
+            ExpressionAttributeValues: {
+              ':idea_id': {SS: [ideaId]},
+            },
           }),
         }));
   });
@@ -146,19 +216,17 @@ const itemFromHackathon = (
   ideaIds: safeTransformArray(hackathon.ideaIds),
 });
 
-const getExpected = (id: Uuid) =>
-  expect(mockSend).toHaveBeenCalledWith(
-      expect.objectContaining({
-        input: expect.objectContaining({
-          TableName: hackathonTable,
-          Key: {id: {S: id}},
-        }),
-      }));
+const getExpected = (id: Uuid) => expect(mockSend).toHaveBeenCalledWith(
+    expect.objectContaining({
+      input: expect.objectContaining({
+        TableName: hackathonTable,
+        Key: {id: {S: id}},
+      }),
+    }));
 
-const listExpected = () =>
-  expect(mockSend).toHaveBeenCalledWith(
-      expect.objectContaining({
-        input: expect.objectContaining({
-          TableName: hackathonTable,
-        }),
-      }));
+const listExpected = () => expect(mockSend).toHaveBeenCalledWith(
+    expect.objectContaining({
+      input: expect.objectContaining({
+        TableName: hackathonTable,
+      }),
+    }));
