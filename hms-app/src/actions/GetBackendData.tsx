@@ -1,8 +1,8 @@
 const api_id = '6cyvp5ukhc'
 
-export const getListOfHackathons = (endpoint: any) => {
+export const getListOfHackathons = () => {
   return fetch(
-    `${'http://localhost:4566/restapis/'}${api_id}${'/local/_user_request_'}/${endpoint}`,
+    `http://localhost:4566/restapis/${api_id}/local/_user_request_/hackathons`,
     {
       method: 'GET',
       headers: {
@@ -17,9 +17,9 @@ export const getListOfHackathons = (endpoint: any) => {
     .catch((err) => console.log(err))
 }
 
-export const getHackathonDetails = (endpoint: any) => {
+export const getHackathonDetails = (hackathonID: string) => {
   return fetch(
-    `${'http://localhost:4566/restapis/'}${api_id}${'/local/_user_request_/hackathon'}/${endpoint}`,
+    `http://localhost:4566/restapis/${api_id}/local/_user_request_/hackathon/${hackathonID}`,
     {
       method: 'GET',
       headers: {
@@ -34,9 +34,9 @@ export const getHackathonDetails = (endpoint: any) => {
     .catch((err) => console.log(err))
 }
 
-export const getIdeaDetails = (endpoint: any) => {
+export const getIdeaDetails = (ideaID: string) => {
   return fetch(
-    `${'http://localhost:4566/restapis/'}${api_id}${'/local/_user_request_/idea'}/${endpoint}`,
+    `http://localhost:4566/restapis/${api_id}/local/_user_request_/idea/${ideaID}`,
     {
       method: 'GET',
       headers: {

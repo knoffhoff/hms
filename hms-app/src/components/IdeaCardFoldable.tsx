@@ -13,17 +13,17 @@ import {
   useAccordionState,
 } from '@mantine/core'
 import {
-  Category,
+  CategoryPreview,
   HackathonPreview,
-  IdeaPreviews,
-  Owner,
-  Participant,
-  Skill,
+  IdeaPreview,
+  OwnerPreview,
+  ParticipantPreview,
+  SkillPreview,
 } from '../common/types'
 import { getIdeaDetails } from '../actions/GetBackendData'
 
 type IProps = {
-  ideaPreview: IdeaPreviews
+  ideaPreview: IdeaPreview
   index: number
   type: string
 }
@@ -32,15 +32,15 @@ type Idea = {
   errorIdeaData: boolean
   isLoadingIdeaData: boolean
   id: string
-  owner: Owner[]
+  owner: OwnerPreview[]
   hackathon: HackathonPreview[]
-  participants: Participant[]
+  participants: ParticipantPreview[]
   title: string
   description: string
   problem: string
   goal: string
-  requiredSkills: Skill[]
-  category: Category[]
+  requiredSkills: SkillPreview[]
+  category: CategoryPreview[]
   creationDate: string
 }
 

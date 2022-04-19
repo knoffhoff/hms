@@ -11,29 +11,29 @@ interface HackathonPreview {
 export default function Archive() {
   const [selectedHackweek, setSelectedHackweek] = useState('')
   const [hackathonList, setHackathonList] = useState({
-    errorhackathonList: false,
-    isLoadinghackathonList: true,
+    errorHackathonList: false,
+    isLoadingHackathonList: true,
     hackathons: [] as HackathonPreview[],
   })
 
-  const { errorhackathonList, isLoadinghackathonList, hackathons } =
+  const { errorHackathonList, isLoadingHackathonList, hackathons } =
     hackathonList
 
   const loadHackathons = () => {
-    getListOfHackathons('hackathons').then(
+    getListOfHackathons().then(
       (data) => {
         setHackathonList({
           ...hackathonList,
           hackathons: data.hackathons,
-          errorhackathonList: false,
-          isLoadinghackathonList: false,
+          errorHackathonList: false,
+          isLoadingHackathonList: false,
         })
       },
       () => {
         setHackathonList({
           ...hackathonList,
-          errorhackathonList: true,
-          isLoadinghackathonList: false,
+          errorHackathonList: true,
+          isLoadingHackathonList: false,
         })
       }
     )
@@ -42,6 +42,19 @@ export default function Archive() {
   const data = hackathonList.hackathons.map(
     (hackathon, index) => `${hackathon.id}`
   )
+
+  const data2 = hackathonList.hackathons.map((hackathon, index) => [
+    {
+      value: hackathonList.hackathons[index].id,
+      label: hackathonList.hackathons[index].title,
+    },
+  ])
+  const data3 = hackathonList.hackathons.map((hackathon, index) => [
+    {
+      value: hackathon.id,
+      label: hackathon.title,
+    },
+  ])
 
   const selectChange = (value: string) => {
     setSelectedHackweek(value)
@@ -53,11 +66,11 @@ export default function Archive() {
 
   return (
     <>
-      {isLoadinghackathonList && <div>hackathon select is loading...</div>}
-      {!isLoadinghackathonList && (
+      {isLoadingHackathonList && <div>hackathon select is loading...</div>}
+      {!isLoadingHackathonList && (
         <div style={{ border: '1px solid red', width: 250 }}>
           <Select
-            placeholder={'select a Hackweek'}
+            placeholder={'select a Hackathon'}
             maxDropdownHeight={280}
             data={data}
             onChange={selectChange}

@@ -3,43 +3,43 @@ export type HackathonPreview = {
   title: string
 }
 
-export type IdeaPreviews = {
+export type IdeaPreview = {
   id: string
   title: string
 }
 
 export type Idea = {
   id: string
-  owner: Owner[]
-  hackathon: HackathonPreview[]
-  participants: Participant[]
+  owner: OwnerPreview
+  hackathon: HackathonPreview
+  participants: ParticipantPreview[]
   title: string
   description: string
   problem: string
   goal: string
-  requiredSkills: Skill[]
-  category: Category[]
+  requiredSkills: SkillPreview[]
+  category: CategoryPreview
   creationDate: string
 }
 
-export type Category = {
+export type CategoryPreview = {
   id: string
   title: string
 }
 
-export type Skill = {
+export type SkillPreview = {
   id: string
   name: string
 }
 
-export type Owner = {
+export type OwnerPreview = {
   id: string
-  user: User[]
+  user: User
 }
 
-export type Participant = {
+export type ParticipantPreview = {
   id: string
-  user: User[]
+  user: User
 }
 
 export type User = {

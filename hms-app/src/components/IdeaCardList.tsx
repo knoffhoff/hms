@@ -1,10 +1,10 @@
 import React from 'react'
-import { Idea, IdeaPreviews } from '../common/types'
+import { Idea, IdeaPreview } from '../common/types'
 import { Grid } from '@mantine/core'
 import IdeaCardFoldable from './IdeaCardFoldable'
 
 type IProps = {
-  ideaPreviews: IdeaPreviews[]
+  ideaPreviews: IdeaPreview[]
   columnSize: number
   type: string
 }
