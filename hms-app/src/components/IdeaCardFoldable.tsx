@@ -84,7 +84,7 @@ export default function IdeaCardFoldable(props: IProps) {
   }: Idea = ideaData
 
   const loadIdeaDetails = () => {
-    getIdeaDetails(ideaPreview.id.toString()).then(
+    getIdeaDetails(ideaPreview.id).then(
       (data) => {
         setIdeaData({
           id: data.id,
