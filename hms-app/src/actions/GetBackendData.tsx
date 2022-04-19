@@ -13,8 +13,8 @@ export const getListOfHackathons = () => {
       },
     }
   )
-    .then((response) => {
-      return response.json()
+    .then((data) => {
+      return data.json()
     })
     .catch((err) => console.log(err))
 }
@@ -30,13 +30,13 @@ export const getHackathonDetails = (hackathonID: string) => {
       },
     }
   )
-    .then((response) => {
-      return response.json()
+    .then((data) => {
+      return data.json()
     })
     .catch((err) => console.log(err))
 }
 
-export const getIdeaDetails = (ideaID: string) => {
+export const getIdeaDetails = (ideaID: string): Promise<Idea> => {
   return fetch(
     `http://localhost:4566/restapis/${api_id}/local/_user_request_/idea/${ideaID}`,
     {
@@ -47,8 +47,8 @@ export const getIdeaDetails = (ideaID: string) => {
       },
     }
   )
-    .then((response) => {
-      return response.json()
+    .then((data) => {
+      return data.json()
     })
     .catch((err) => console.log(err))
 }
