@@ -11,13 +11,15 @@ import {
   listParticipants,
   putParticipant,
 } from '../repository/participant-repository';
+import {usersFor} from './user-service';
+import {addParticipantToHackathon} from './hackathon-service';
 import Uuid from '../util/Uuid';
 import Participant from '../repository/domain/Participant';
 import ReferenceNotFoundError from '../error/ReferenceNotFoundError';
 import ParticipantResponse from '../rest/ParticipantResponse';
 import ParticipantListResponse from '../rest/ParticipantListResponse';
-import {usersFor} from './user-service';
 import ParticipantPreviewResponse from '../rest/ParticipantPreviewResponse';
+import ReferenceUpdateError from '../error/ReferenceUpdateError';
 
 export async function createParticipant(
     userId: Uuid,
@@ -32,8 +34,16 @@ export async function createParticipant(
   }
 
   const participant = new Participant(userId, hackathonId);
-
   await putParticipant(participant);
+
+  try {
+    await addParticipantToHackathon(participant.hackathonId, participant.id);
+  } catch (e) {
+    await deleteParticipant(participant.id);
+    throw new ReferenceUpdateError(`Failed to create Idea, ` +
+        `failed to add Participant to linked Hackathon ` +
+        `with id ${participant.hackathonId}`);
+  }
 
   return participant;
 }

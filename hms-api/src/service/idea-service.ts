@@ -19,11 +19,13 @@ import {
 } from '../repository/idea-repository';
 import {usersFor} from './user-service';
 import {getUser} from '../repository/user-repository';
+import {addIdeaToHackathon} from './hackathon-service';
 import Uuid from '../util/Uuid';
 import Idea from '../repository/domain/Idea';
 import ReferenceNotFoundError from '../error/ReferenceNotFoundError';
 import IdeaResponse from '../rest/IdeaResponse';
 import IdeaListResponse from '../rest/IdeaListResponse';
+import ReferenceUpdateError from '../error/ReferenceUpdateError';
 
 export async function createIdea(
     ownerId: Uuid,
@@ -58,8 +60,15 @@ export async function createIdea(
       requiredSkills,
       categoryId,
   );
-
   await putIdea(idea);
+
+  try {
+    await addIdeaToHackathon(idea.hackathonId, idea.id);
+  } catch (e) {
+    await deleteIdea(idea.id);
+    throw new ReferenceUpdateError(`Failed to create Idea, ` +
+        `failed to add Idea to linked Hackathon with id ${idea.hackathonId}`);
+  }
 
   return idea;
 }

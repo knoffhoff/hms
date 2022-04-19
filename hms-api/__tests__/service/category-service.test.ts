@@ -11,10 +11,11 @@ import {uuid} from '../../src/util/Uuid';
 import ReferenceNotFoundError from '../../src/error/ReferenceNotFoundError';
 import CategoryResponse from '../../src/rest/CategoryResponse';
 import NotFoundError from '../../src/error/NotFoundError';
+import CategoryListResponse from '../../src/rest/CategoryListResponse';
+import ReferenceUpdateError from '../../src/error/ReferenceUpdateError';
 import * as categoryRepository from '../../src/repository/category-repository';
 import * as hackathonRepository
   from '../../src/repository/hackathon-repository';
-import CategoryListResponse from '../../src/rest/CategoryListResponse';
 
 const mockHackathonExists = jest.fn();
 jest.spyOn(hackathonRepository, 'hackathonExists')
@@ -22,6 +23,9 @@ jest.spyOn(hackathonRepository, 'hackathonExists')
 const mockGetHackathon = jest.fn();
 jest.spyOn(hackathonRepository, 'getHackathon')
     .mockImplementation(mockGetHackathon);
+const mockAppendCategoryId = jest.fn();
+jest.spyOn(hackathonRepository, 'appendCategoryId')
+    .mockImplementation(mockAppendCategoryId);
 
 const mockPutCategory = jest.fn();
 jest.spyOn(categoryRepository, 'putCategory')
@@ -39,16 +43,42 @@ jest.spyOn(categoryRepository, 'deleteCategory')
 describe('Create Category', () => {
   test('Missing hackathon', async () => {
     mockHackathonExists.mockResolvedValue(false);
+    mockAppendCategoryId.mockImplementation(() => {});
 
     await expect(createCategory('title', 'description', uuid()))
         .rejects
         .toThrow(ReferenceNotFoundError);
 
     expect(mockPutCategory).not.toHaveBeenCalled();
+    expect(mockAppendCategoryId).not.toHaveBeenCalled();
+    expect(mockDeleteCategory).not.toHaveBeenCalled();
+  });
+
+  test('Error when appending Category ID', async () => {
+    mockHackathonExists.mockResolvedValue(true);
+    mockAppendCategoryId.mockImplementation(() => {
+      throw new Error('KABOOM!!!');
+    });
+
+    const expected = randomCategory();
+    mockUuid(expected.id);
+
+    await expect(createCategory(
+        expected.title,
+        expected.description,
+        expected.hackathonId,
+    )).rejects
+        .toThrow(ReferenceUpdateError);
+
+    expect(mockPutCategory).toHaveBeenCalledWith(expected);
+    expect(mockAppendCategoryId)
+        .toHaveBeenCalledWith(expected.hackathonId, expected.id);
+    expect(mockDeleteCategory).toHaveBeenCalledWith(expected.id);
   });
 
   test('Happy Path', async () => {
     mockHackathonExists.mockResolvedValue(true);
+    mockAppendCategoryId.mockImplementation(() => {});
 
     const expected = randomCategory();
     mockUuid(expected.id);
@@ -60,6 +90,9 @@ describe('Create Category', () => {
     )).toStrictEqual(expected);
 
     expect(mockPutCategory).toHaveBeenCalledWith(expected);
+    expect(mockAppendCategoryId)
+        .toHaveBeenCalledWith(expected.hackathonId, expected.id);
+    expect(mockDeleteCategory).not.toHaveBeenCalled();
   });
 });
 

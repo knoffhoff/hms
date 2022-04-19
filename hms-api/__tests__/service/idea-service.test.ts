@@ -1,5 +1,5 @@
-import {mockUuid} from '../util/uuids-mock';
 import {mockDate} from '../util/date-mock';
+import {mockUuid} from '../util/uuids-mock';
 
 import {
   createIdea,
@@ -8,10 +8,9 @@ import {
   removeIdea,
 } from '../../src/service/idea-service';
 import {uuid} from '../../src/util/Uuid';
-import ReferenceNotFoundError from '../../src/error/ReferenceNotFoundError';
 import {randomIdea} from '../repository/domain/idea-maker';
-
 import {randomHackathon} from '../repository/domain/hackathon-maker';
+
 import {randomUser} from '../repository/domain/user-maker';
 import {
   makeParticipant,
@@ -19,8 +18,12 @@ import {
   randomParticipant,
 } from '../repository/domain/participant-maker';
 import {randomCategory} from '../repository/domain/category-maker';
-import IdeaResponse from '../../src/rest/IdeaResponse';
 import {randomSkill} from '../repository/domain/skill-maker';
+import IdeaResponse from '../../src/rest/IdeaResponse';
+import NotFoundError from '../../src/error/NotFoundError';
+import ReferenceNotFoundError from '../../src/error/ReferenceNotFoundError';
+import IdeaListResponse from '../../src/rest/IdeaListResponse';
+import ReferenceUpdateError from '../../src/error/ReferenceUpdateError';
 import * as participantRepository
   from '../../src/repository/participant-repository';
 import * as hackathonRepository
@@ -29,8 +32,6 @@ import * as categoryRepository from '../../src/repository/category-repository';
 import * as skillRepository from '../../src/repository/skill-repository';
 import * as userRepository from '../../src/repository/user-repository';
 import * as ideaRepository from '../../src/repository/idea-repository';
-import NotFoundError from '../../src/error/NotFoundError';
-import IdeaListResponse from '../../src/rest/IdeaListResponse';
 
 const mockPutIdea = jest.fn();
 jest.spyOn(ideaRepository, 'putIdea')
@@ -68,6 +69,9 @@ jest.spyOn(hackathonRepository, 'getHackathon')
 const mockHackathonExists = jest.fn();
 jest.spyOn(hackathonRepository, 'hackathonExists')
     .mockImplementation(mockHackathonExists);
+const mockAppendIdeaId = jest.fn();
+jest.spyOn(hackathonRepository, 'appendIdeaId')
+    .mockImplementation(mockAppendIdeaId);
 
 const mockGetCategory = jest.fn();
 jest.spyOn(categoryRepository, 'getCategory')
@@ -84,6 +88,10 @@ jest.spyOn(skillRepository, 'skillExists')
     .mockImplementation(mockSkillExists);
 
 describe('Create Idea', () => {
+  beforeAll(() => {
+    mockDate();
+  });
+
   test('Missing Participant', async () => {
     mockParticipantExists.mockResolvedValue(false);
     mockHackathonExists.mockResolvedValue(true);
@@ -103,6 +111,8 @@ describe('Create Idea', () => {
         .toThrow(ReferenceNotFoundError);
 
     expect(mockPutIdea).not.toHaveBeenCalled();
+    expect(mockAppendIdeaId).not.toHaveBeenCalled();
+    expect(mockDeleteIdea).not.toHaveBeenCalled();
   });
 
   test('Missing Hackathon', async () => {
@@ -124,6 +134,8 @@ describe('Create Idea', () => {
         .toThrow(ReferenceNotFoundError);
 
     expect(mockPutIdea).not.toHaveBeenCalled();
+    expect(mockAppendIdeaId).not.toHaveBeenCalled();
+    expect(mockDeleteIdea).not.toHaveBeenCalled();
   });
 
   test('Missing Category', async () => {
@@ -145,6 +157,8 @@ describe('Create Idea', () => {
         .toThrow(ReferenceNotFoundError);
 
     expect(mockPutIdea).not.toHaveBeenCalled();
+    expect(mockAppendIdeaId).not.toHaveBeenCalled();
+    expect(mockDeleteIdea).not.toHaveBeenCalled();
   });
 
   test('Missing Skill', async () => {
@@ -166,15 +180,48 @@ describe('Create Idea', () => {
         .toThrow(ReferenceNotFoundError);
 
     expect(mockPutIdea).not.toHaveBeenCalled();
+    expect(mockAppendIdeaId).not.toHaveBeenCalled();
+    expect(mockDeleteIdea).not.toHaveBeenCalled();
   });
 
-  test('Happy Path', async () => {
-    mockDate();
-
+  test('Error when appending Idea ID', async () => {
     mockParticipantExists.mockResolvedValue(true);
     mockHackathonExists.mockResolvedValue(true);
     mockCategoryExists.mockResolvedValue(true);
     mockSkillExists.mockResolvedValue(true);
+    mockAppendIdeaId.mockImplementation(() => {
+      throw new Error('BOOM!');
+    });
+
+    const expected = randomIdea();
+    mockUuid(expected.id);
+
+    await expect(createIdea(
+        expected.ownerId,
+        expected.hackathonId,
+        expected.title,
+        expected.description,
+        expected.problem,
+        expected.goal,
+        expected.requiredSkills,
+        expected.categoryId))
+        .rejects
+        .toThrow(ReferenceUpdateError);
+
+    expect(mockPutIdea).toHaveBeenCalledWith(expected);
+    expect(mockAppendIdeaId).toHaveBeenCalledWith(
+        expected.hackathonId,
+        expected.id,
+    );
+    expect(mockDeleteIdea).toHaveBeenCalledWith(expected.id);
+  });
+
+  test('Happy Path', async () => {
+    mockParticipantExists.mockResolvedValue(true);
+    mockHackathonExists.mockResolvedValue(true);
+    mockCategoryExists.mockResolvedValue(true);
+    mockSkillExists.mockResolvedValue(true);
+    mockAppendIdeaId.mockImplementation(() => {});
 
     const expected = randomIdea();
     mockUuid(expected.id);
@@ -191,6 +238,10 @@ describe('Create Idea', () => {
     )).toStrictEqual(expected);
 
     expect(mockPutIdea).toHaveBeenCalledWith(expected);
+    expect(mockAppendIdeaId).toHaveBeenCalledWith(
+        expected.hackathonId,
+        expected.id,
+    );
   });
 });
 

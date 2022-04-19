@@ -1,6 +1,9 @@
 /* eslint-disable require-jsdoc */
 
 import {
+  appendCategoryId,
+  appendIdeaId,
+  appendParticipantId,
   deleteHackathon,
   getHackathon,
   listHackathons,
@@ -26,6 +29,24 @@ export async function createHackathon(
   await putHackathon(hackathon);
 
   return hackathon;
+}
+
+export async function addParticipantToHackathon(
+    hackathonId: Uuid,
+    participantId: Uuid,
+) {
+  await appendParticipantId(hackathonId, participantId);
+}
+
+export async function addCategoryToHackathon(
+    hackathonId: Uuid,
+    categoryId: Uuid,
+) {
+  await appendCategoryId(hackathonId, categoryId);
+}
+
+export async function addIdeaToHackathon(hackathonId: Uuid, ideaId: Uuid) {
+  await appendIdeaId(hackathonId, ideaId);
 }
 
 export async function getHackathonResponse(
