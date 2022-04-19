@@ -79,7 +79,7 @@ function IdeaPortal() {
 
       <div style={{ border: '1px solid red' }}>
         <IdeaCardList
-          ideas={filteredIdeas}
+          ideaPreviews={filteredIdeas}
           columnSize={6}
           type={'idea-portal'}
         />

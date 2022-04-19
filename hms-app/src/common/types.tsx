@@ -1,20 +1,63 @@
-export type Idea = {
+export type HackathonPreview = {
   id: string
   title: string
+}
+
+export type IdeaPreview = {
+  id: string
+  title: string
+}
+
+export type Hackathon = {
+  errorHackathonData: boolean
+  isLoadingHackathonData: boolean
+  title: string
+  startDate: string
+  endDate: string
+  participants: ParticipantPreview[] | null
+  categories: CategoryPreview | null
+  ideas: IdeaPreview[] | null
+}
+
+export type Idea = {
+  errorIdeaData: boolean
+  isLoadingIdeaData: boolean
+  id: string
+  owner?: OwnerPreview
+  hackathon?: HackathonPreview
+  participants?: ParticipantPreview[]
+  title: string
   description: string
-  author?: User
-  reason: string
   problem: string
   goal: string
-  skills: string[]
-  category: string
-  participants: User[]
-  aws: boolean
+  requiredSkills: SkillPreview[]
+  category?: CategoryPreview
+  creationDate: string
+}
+
+export type CategoryPreview = {
+  id: string
+  title: string
+}
+
+export type SkillPreview = {
+  id: string
+  name: string
+}
+
+export type OwnerPreview = {
+  id: string
+  user: User
+}
+
+export type ParticipantPreview = {
+  id: string
+  user: User
 }
 
 export type User = {
-  name: string
-  email?: string
-  role?: string
-  avatar?: string
+  id: string
+  lastName?: string
+  firstName?: string
+  imageUrl?: string
 }

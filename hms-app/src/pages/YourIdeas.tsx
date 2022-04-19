@@ -6,8 +6,6 @@ import React from 'react'
 import NewIdea from '../components/NewIdea'
 
 function YourIdeas() {
-  const ideas = ideaData as Idea[]
-
   return (
     <>
       <h1>this is the your idea page</h1>
@@ -24,7 +22,11 @@ function YourIdeas() {
         </Accordion.Item>
       </Accordion>
 
-      <IdeaCardList ideas={ideas} columnSize={6} type={'your-ideas'} />
+      <IdeaCardList
+        ideaPreviews={ideaData}
+        columnSize={6}
+        type={'your-ideas'}
+      />
     </>
   )
 }
