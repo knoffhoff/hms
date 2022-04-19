@@ -64,7 +64,7 @@ export default function Archive() {
     <>
       {isLoadingHackathonList && <div>hackathon select is loading...</div>}
       {!isLoadingHackathonList && (
-        <div style={{ border: '1px solid red', width: 250 }}>
+        <div style={{ width: 250 }}>
           <Select
             placeholder={'select a Hackathon'}
             maxDropdownHeight={280}
@@ -75,7 +75,7 @@ export default function Archive() {
       )}
 
       <h1>Selected Hackweek:</h1>
-      <div style={{ border: '1px solid red' }}>
+      <div>
         <HackathonDetails hackathonID={selectedHackweek.toString()} />
       </div>
     </>
