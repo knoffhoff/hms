@@ -12,7 +12,7 @@ import {
   AvatarsGroup,
   useAccordionState,
 } from '@mantine/core'
-import { Idea, IdeaPreview, OwnerPreview } from '../common/types'
+import { Idea, IdeaPreview } from '../common/types'
 import { getIdeaDetails } from '../actions/GetBackendData'
 
 type IProps = {
@@ -52,44 +52,40 @@ export default function IdeaCardFoldable(props: IProps) {
   })
 
   const [ideaData, setIdeaData] = useState({
-    idea: {
-      errorIdeaData: false,
-      isLoadingIdeaData: true,
-      id: 'string',
-      owner: null,
-      hackathon: null,
-      participants: [],
-      title: 'string',
-      description: 'string',
-      problem: 'string',
-      goal: 'string',
-      requiredSkills: [],
-      category: null,
-      creationDate: 'string',
-    } as Idea,
-  })
+    errorIdeaData: false,
+    isLoadingIdeaData: true,
+    id: 'string',
+    owner: undefined,
+    hackathon: undefined,
+    participants: [],
+    title: 'string',
+    description: 'string',
+    problem: 'string',
+    goal: 'string',
+    requiredSkills: [],
+    category: undefined,
+    creationDate: 'string',
+  } as Idea)
 
-  const idea: Idea = ideaData.idea
+  const idea: Idea = ideaData
 
   const loadIdeaDetails = () => {
     getIdeaDetails(ideaPreview.id).then(
       (data) => {
         setIdeaData({
-          idea: {
-            id: data.id,
-            owner: data.owner,
-            hackathon: data.hackathon,
-            participants: data.participants,
-            title: data.title,
-            description: data.description,
-            problem: data.problem,
-            goal: data.goal,
-            requiredSkills: data.requiredSkills,
-            category: data.category,
-            creationDate: data.creationDate,
-            errorIdeaData: false,
-            isLoadingIdeaData: false,
-          },
+          id: data.id,
+          owner: data.owner,
+          hackathon: data.hackathon,
+          participants: data.participants,
+          title: data.title,
+          description: data.description,
+          problem: data.problem,
+          goal: data.goal,
+          requiredSkills: data.requiredSkills,
+          category: data.category,
+          creationDate: data.creationDate,
+          errorIdeaData: false,
+          isLoadingIdeaData: false,
         })
       },
       () => {

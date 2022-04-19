@@ -23,15 +23,15 @@ export type Idea = {
   errorIdeaData: boolean
   isLoadingIdeaData: boolean
   id: string
-  owner: OwnerPreview | null
-  hackathon: HackathonPreview | null
-  participants: ParticipantPreview[] | null
+  owner?: OwnerPreview
+  hackathon?: HackathonPreview
+  participants?: ParticipantPreview[]
   title: string
   description: string
   problem: string
   goal: string
   requiredSkills: SkillPreview[]
-  category: CategoryPreview | null
+  category?: CategoryPreview
   creationDate: string
 }
 
