@@ -9,9 +9,7 @@ interface HackathonPreview {
 }
 
 export default function Archive() {
-  const [selectedHackweek, setSelectedHackweek] = useState(
-    '260c6b6e-e572-476f-b6e7-4910dd6fba52'
-  )
+  const [selectedHackweek, setSelectedHackweek] = useState('')
   const [hackathonList, setHackathonList] = useState({
     errorhackathonList: false,
     isLoadinghackathonList: true,
@@ -52,11 +50,6 @@ export default function Archive() {
   useEffect(() => {
     loadHackathons()
   }, [])
-
-  console.log('selected Hackweek')
-  console.log(selectedHackweek)
-  console.log('hackathonList')
-  console.log(hackathonList)
 
   return (
     <>

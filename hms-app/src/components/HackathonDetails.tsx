@@ -19,9 +19,6 @@ export default function HackathonDetails(props: IProps) {
     ideas: [],
   })
 
-  console.log('hackathonData from detail component')
-  console.log(hackathonData)
-
   const {
     errorhackathonData,
     isLoadinghackathonData,
@@ -57,16 +54,9 @@ export default function HackathonDetails(props: IProps) {
     )
   }
 
-  console.log('hackathonData from detail component')
-  console.log(hackathonData)
-
-  /*
-  //load nothing when i use useEffext
   useEffect(() => {
     loadSelectedHackathon()
-  }, [])*/
-
-  loadSelectedHackathon()
+  }, [hackathonID])
 
   return (
     <>

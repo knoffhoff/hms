@@ -20,7 +20,7 @@ import {
   Participant,
   Skill,
 } from '../common/types'
-import { getHackathonDetails, getIdeaDetails } from '../actions/GetBackendData'
+import { getIdeaDetails } from '../actions/GetBackendData'
 
 type IProps = {
   ideaPreview: IdeaPreviews
@@ -109,7 +109,6 @@ export default function IdeaCardFoldable(props: IProps) {
   const loadIdeaDetails = () => {
     getIdeaDetails(ideaPreview.id.toString()).then(
       (data) => {
-        console.log('data', data)
         setIdeaData({
           id: data.id,
           owner: data.owner,
@@ -144,8 +143,6 @@ export default function IdeaCardFoldable(props: IProps) {
   useEffect(() => {
     loadIdeaDetails()
   }, [])
-
-  console.log('ideacard', ideaPreview, ideaData)
 
   return (
     <>
