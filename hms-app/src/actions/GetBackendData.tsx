@@ -1,4 +1,4 @@
-const api_id = 'z5d8rkcvb0'
+const api_id = '6cyvp5ukhc'
 
 export const getListOfHackathons = (endpoint: any) => {
   return fetch(

@@ -28,7 +28,9 @@ type IProps = {
   type: string
 }
 
-interface Idea {
+type Idea = {
+  errorIdeaData: boolean
+  isLoadingIdeaData: boolean
   id: string
   owner: Owner[]
   hackathon: HackathonPreview[]
@@ -72,12 +74,6 @@ export default function IdeaCardFoldable(props: IProps) {
     initialItem: -1,
   })
 
-  /*const [ideaData, setIdeaData] = useState({
-    errorIdeaData: false,
-    isLoadingIdeaData: true,
-    ideaDetails: [] as Idea[],
-  })*/
-
   const [ideaData, setIdeaData] = useState({
     errorIdeaData: false,
     isLoadingIdeaData: true,
@@ -94,8 +90,6 @@ export default function IdeaCardFoldable(props: IProps) {
     creationDate: 'string',
   })
 
-  /*const { errorIdeaData, isLoadingIdeaData, ideaDetails } = ideaData*/
-
   const {
     errorIdeaData,
     isLoadingIdeaData,
@@ -110,7 +104,7 @@ export default function IdeaCardFoldable(props: IProps) {
     requiredSkills,
     category,
     creationDate,
-  } = ideaData
+  }: Idea = ideaData
 
   const loadIdeaDetails = () => {
     getIdeaDetails(ideaPreview.id.toString()).then(
@@ -125,17 +119,12 @@ export default function IdeaCardFoldable(props: IProps) {
           description: data.description,
           problem: data.problem,
           goal: data.goal,
-          requiredSkills: data.requiredSkills.name,
+          requiredSkills: data.requiredSkills,
           category: data.category,
           creationDate: data.creationDate,
           errorIdeaData: false,
           isLoadingIdeaData: false,
         })
-        /*setIdeaData({
-          ideaDetails: data,
-          errorIdeaData: false,
-          isLoadingIdeaData: false,
-        })*/
       },
       () => {
         setIdeaData({
@@ -152,25 +141,11 @@ export default function IdeaCardFoldable(props: IProps) {
   const MAX_TITLE_LENGTH = 45
   const MAX_DESCRIPTION_LENGTH = type === 'voting' ? 200 : 245
 
-  /*const skillBadges = ideaData.requiredSkills.map((skill) => (
-    <Badge color={theme.colorScheme === 'dark' ? 'dark' : 'gray'} key={skill}>
-      {skill}
-    </Badge>
-  ))*/
-
-  /*const title = ideaData.ideaDetails.map((idea) => <div>{idea.title}</div>)*/
-
-  /*const participantAvatars = ideaData.ideaDetails.map(
-    (idea, index) => `${idea.participants}`
-  )*/
-
   useEffect(() => {
     loadIdeaDetails()
   }, [])
 
-  /*loadIdeaDetails()*/
   console.log('ideacard', ideaPreview, ideaData)
-  console.log('ideaDetails', ideaData)
 
   return (
     <>
@@ -218,7 +193,14 @@ export default function IdeaCardFoldable(props: IProps) {
                   Skills required
                 </Text>
                 <Group spacing={7} mt={5}>
-                  {/*{skillBadges}*/}
+                  {requiredSkills.map((skill) => (
+                    <Badge
+                      color={theme.colorScheme === 'dark' ? 'dark' : 'gray'}
+                      key={skill.id}
+                    >
+                      {skill.name}
+                    </Badge>
+                  ))}
                 </Group>
               </Card.Section>
 

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { getHackathonDetails } from '../actions/GetBackendData'
 import IdeaCardList from './IdeaCardList'
 
@@ -60,7 +60,11 @@ export default function HackathonDetails(props: IProps) {
   console.log('hackathonData from detail component')
   console.log(hackathonData)
 
-  loadSelectedHackathon()
+  useEffect(() => {
+    loadSelectedHackathon()
+  }, [])
+
+  /*loadSelectedHackathon()*/
 
   return (
     <>
