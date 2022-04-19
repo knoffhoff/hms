@@ -3,8 +3,8 @@ import {
   buildNotFoundErrorResponse,
   buildReferenceNotFoundErrorResponse,
 } from '../rest/responses';
-import NotFoundError from '../repository/error/NotFoundError';
-import ReferenceNotFoundError from '../repository/error/ReferenceNotFoundError';
+import NotFoundError from '../error/NotFoundError';
+import ReferenceNotFoundError from '../error/ReferenceNotFoundError';
 
 // eslint-disable-next-line require-jsdoc
 export async function wrapHandler(fun: () => void, callback: Function)

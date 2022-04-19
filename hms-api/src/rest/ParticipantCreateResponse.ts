@@ -1,6 +1,6 @@
 /* eslint-disable require-jsdoc */
 
-import {Uuid} from '../util/uuids';
+import Uuid from '../util/Uuid';
 
 export default class {
   id: Uuid;

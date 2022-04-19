@@ -1,7 +1,7 @@
 import {buildResponse} from '../../rest/responses';
-import {removeCategory} from '../../repository/category-repository';
+import {removeCategory} from '../../service/category-service';
 import {wrapHandler} from '../handler-wrapper';
-import {Uuid} from '../../util/uuids';
+import Uuid from '../../util/Uuid';
 import CategoryDeleteResponse from '../../rest/CategoryDeleteResponse';
 
 // eslint-disable-next-line require-jsdoc

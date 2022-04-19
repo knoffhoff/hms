@@ -1,8 +1,8 @@
 /* eslint-disable require-jsdoc */
 
-import {Uuid} from '../util/uuids';
+import Uuid from '../util/Uuid';
 
-export default class {
+class IdeaCreateRequest {
   ownerId: Uuid;
   hackathonId: Uuid;
   title: string;
@@ -31,4 +31,20 @@ export default class {
     this.requiredSkills = requiredSkills;
     this.categoryId = categoryId;
   }
+
+  static parse(body: string): IdeaCreateRequest {
+    const json = JSON.parse(body);
+    return new IdeaCreateRequest(
+        json.ownerId,
+        json.hackathonId,
+        json.title,
+        json.description,
+        json.problem,
+        json.goal,
+        json.requiredSkills,
+        json.categoryId,
+    );
+  }
 }
+
+export default IdeaCreateRequest;

@@ -8,10 +8,10 @@ import {
   PutItemCommand,
   QueryCommand,
 } from '@aws-sdk/client-dynamodb';
-import {Uuid} from '../util/uuids';
+import Uuid from '../util/Uuid';
 import {getClient} from './dynamo-db';
 import Participant from './domain/Participant';
-import NotFoundError from './error/NotFoundError';
+import NotFoundError from '../error/NotFoundError';
 
 const table = process.env.PARTICIPANT_TABLE;
 const byHackathonIdIndex = process.env.PARTICIPANT_BY_HACKATHON_ID_INDEX;
@@ -79,7 +79,7 @@ export async function participantExists(id: Uuid): Promise<boolean> {
   return !!output.Item;
 }
 
-export async function removeParticipant(id: Uuid) {
+export async function deleteParticipant(id: Uuid) {
   await dynamoDBClient.send(new DeleteItemCommand({
     TableName: table,
     Key: {id: {S: id}},

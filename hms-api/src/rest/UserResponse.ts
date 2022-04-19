@@ -1,9 +1,12 @@
 /* eslint-disable require-jsdoc */
 
-import {Uuid} from '../util/uuids';
+import Uuid from '../util/Uuid';
 import SkillPreviewResponse from './SkillPreviewResponse';
+import User from '../repository/domain/User';
+import {mapRolesToStrings} from '../repository/domain/Role';
+import Skill from '../repository/domain/Skill';
 
-export default class {
+class UserResponse {
   id: Uuid;
   lastName: string;
   firstName: string;
@@ -32,4 +35,20 @@ export default class {
     this.imageUrl = imageUrl;
     this.creationDate = creationDate;
   }
+
+  static from = (
+      user: User,
+      skills: Skill[],
+  ): UserResponse => new UserResponse(
+      user.id,
+      user.lastName,
+      user.firstName,
+      user.emailAddress,
+      mapRolesToStrings(user.roles),
+      SkillPreviewResponse.fromArray(skills),
+      user.imageUrl,
+      user.creationDate,
+  );
 }
+
+export default UserResponse;

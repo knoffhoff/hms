@@ -1,11 +1,21 @@
-import {mockGetItem, mockQuery} from './dynamo-db-mock';
+import {
+  categoryByHackathonIdIndex,
+  categoryTable,
+  mockGetItem,
+  mockPutItem,
+  mockQuery,
+  mockSend,
+} from './dynamo-db-mock';
+
 import {
   categoryExists,
+  deleteCategory,
   getCategory,
   listCategories,
+  putCategory,
 } from '../../src/repository/category-repository';
-import {uuid} from '../../src/util/uuids';
-import NotFoundError from '../../src/repository/error/NotFoundError';
+import Uuid, {uuid} from '../../src/util/Uuid';
+import NotFoundError from '../../src/error/NotFoundError';
 import {
   CategoryData,
   makeCategory,
@@ -20,6 +30,8 @@ describe('Get Category', () => {
     mockGetItem(null);
 
     await expect(getCategory(id)).rejects.toThrow(NotFoundError);
+
+    getExpected(id);
   });
 
   test('Category exists', async () => {
@@ -27,6 +39,41 @@ describe('Get Category', () => {
     mockGetItem(itemFromCategory(expected));
 
     expect(await getCategory(expected.id)).toStrictEqual(expected);
+    getExpected(expected.id);
+  });
+});
+
+describe('Put Category', () => {
+  test('Happy Path', async () => {
+    mockPutItem();
+    const expected = randomCategory();
+
+    await putCategory(expected);
+
+    expect(mockSend).toHaveBeenCalledWith(
+        expect.objectContaining({
+          input: expect.objectContaining({
+            TableName: categoryTable,
+            Item: itemFromCategory(expected),
+          }),
+        }));
+  });
+});
+
+describe('Delete Category', () => {
+  test('Happy Path', async () => {
+    const id = uuid();
+
+    await deleteCategory(id);
+
+    expect(mockSend).toHaveBeenCalledWith(
+        expect.objectContaining({
+          input: expect.objectContaining({
+            TableName: categoryTable,
+            Key: {id: {S: id}},
+          }),
+        }),
+    );
   });
 });
 
@@ -38,6 +85,8 @@ describe('List Categories', () => {
     await expect(listCategories(hackathonId))
         .rejects
         .toThrow(NotFoundError);
+
+    listExpected(hackathonId);
   });
 
   test('0 Categories exist', async () => {
@@ -45,6 +94,8 @@ describe('List Categories', () => {
     mockQuery([]);
 
     expect(await listCategories(hackathonId)).toStrictEqual([]);
+
+    listExpected(hackathonId);
   });
 
   test('1 Category exists', async () => {
@@ -53,6 +104,8 @@ describe('List Categories', () => {
     mockQuery([itemFromCategory(category)]);
 
     expect(await listCategories(hackathonId)).toStrictEqual([category]);
+
+    listExpected(hackathonId);
   });
 
   test('2 Categories exist', async () => {
@@ -63,6 +116,8 @@ describe('List Categories', () => {
 
     expect(await listCategories(hackathonId))
         .toStrictEqual([category1, category2]);
+
+    listExpected(hackathonId);
   });
 });
 
@@ -70,20 +125,49 @@ describe('Category Exists', () => {
   test('Item is non-null', async () => {
     mockGetItem({});
 
-    expect(await categoryExists(uuid())).toBe(true);
+    const id = uuid();
+    expect(await categoryExists(id)).toBe(true);
+
+    getExpected(id);
   });
 
   test('Item is null', async () => {
     mockGetItem(null);
 
-    expect(await categoryExists(uuid())).toBe(false);
+    const id = uuid();
+    expect(await categoryExists(id)).toBe(false);
+
+    getExpected(id);
   });
 });
 
-const itemFromCategory = (category: Category)
-    : { [key: string]: AttributeValue } => ({
+const itemFromCategory = (
+    category: Category,
+): { [key: string]: AttributeValue } => ({
   title: {S: category.title},
   description: {S: category.description},
   hackathonId: {S: category.hackathonId},
   id: {S: category.id},
 });
+
+const getExpected = (
+    id: Uuid,
+) => expect(mockSend).toHaveBeenCalledWith(
+    expect.objectContaining({
+      input: expect.objectContaining({
+        TableName: categoryTable,
+        Key: {id: {S: id}},
+      }),
+    }));
+
+const listExpected = (
+    hackathonId: Uuid,
+) => expect(mockSend).toHaveBeenCalledWith(
+    expect.objectContaining({
+      input: expect.objectContaining({
+        TableName: categoryTable,
+        IndexName: categoryByHackathonIdIndex,
+        KeyConditionExpression: 'hackathonId = :hId',
+        ExpressionAttributeValues: {':hId': {'S': hackathonId}},
+      }),
+    }));

@@ -1,6 +1,7 @@
 /* eslint-disable require-jsdoc */
 // TODO add paging for lists
 
+import {getClient, safeTransformArray} from './dynamo-db';
 import {
   AttributeValue,
   DeleteItemCommand,
@@ -8,10 +9,9 @@ import {
   PutItemCommand,
   QueryCommand,
 } from '@aws-sdk/client-dynamodb';
-import {Uuid} from '../util/uuids';
-import {getClient, safeTransformArray} from './dynamo-db';
+import Uuid from '../util/Uuid';
 import Idea from './domain/Idea';
-import NotFoundError from './error/NotFoundError';
+import NotFoundError from '../error/NotFoundError';
 
 const dynamoDBClient = getClient();
 
@@ -65,7 +65,7 @@ export async function getIdea(id: Uuid): Promise<Idea> {
   throw new NotFoundError(`Idea with id: ${id} not found`);
 }
 
-export async function removeIdea(id: Uuid) {
+export async function deleteIdea(id: Uuid) {
   await dynamoDBClient.send(new DeleteItemCommand({
     TableName: process.env.IDEA_TABLE,
     Key: {id: {S: id}},

@@ -1,7 +1,7 @@
 import {buildResponse} from '../../rest/responses';
-import {removeHackathon} from '../../repository/hackathon-repository';
+import {removeHackathon} from '../../service/hackathon-service';
 import {wrapHandler} from '../handler-wrapper';
-import {Uuid} from '../../util/uuids';
+import Uuid from '../../util/Uuid';
 import HackathonDeleteResponse from '../../rest/HackathonDeleteResponse';
 
 // eslint-disable-next-line require-jsdoc

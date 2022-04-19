@@ -9,10 +9,10 @@ import {
   PutItemCommand,
   ScanCommand,
 } from '@aws-sdk/client-dynamodb';
-import {Uuid} from '../util/uuids';
+import Uuid from '../util/Uuid';
 import {getClient, safeTransformArray} from './dynamo-db';
 import {mapRolesToStrings, mapStringToRoles} from './domain/Role';
-import NotFoundError from './error/NotFoundError';
+import NotFoundError from '../error/NotFoundError';
 
 const table = process.env.USER_TABLE;
 const dynamoDBClient = getClient();
@@ -77,7 +77,7 @@ export async function userExists(id: Uuid): Promise<boolean> {
   return !!output.Item;
 }
 
-export async function removeUser(id: Uuid) {
+export async function deleteUser(id: Uuid) {
   // TODO determine if something was actually deleted
   await dynamoDBClient.send(new DeleteItemCommand({
     TableName: table,

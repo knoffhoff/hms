@@ -1,6 +1,6 @@
 /* eslint-disable require-jsdoc */
 
-import {Uuid} from '../util/uuids';
+import Uuid from '../util/Uuid';
 import Hackathon from '../repository/domain/Hackathon';
 
 class HackathonPreviewResponse {
@@ -15,11 +15,12 @@ class HackathonPreviewResponse {
     this.title = title;
   }
 
-  static from = (hackathon: Hackathon): HackathonPreviewResponse =>
-    new HackathonPreviewResponse(
-        hackathon.id,
-        hackathon.title,
-    );
+  static from = (
+      hackathon: Hackathon,
+  ): HackathonPreviewResponse => new HackathonPreviewResponse(
+      hackathon.id,
+      hackathon.title,
+  );
 
   static fromArray(hackathons: Hackathon[]): HackathonPreviewResponse[] {
     const previews: HackathonPreviewResponse[] = [];

@@ -1,14 +1,23 @@
-import {mockGetItem, mockQuery} from './dynamo-db-mock';
 import {
+  hackathonTable,
+  mockGetItem,
+  mockPutItem,
+  mockQuery,
+  mockSend,
+} from './dynamo-db-mock';
+import {
+  deleteHackathon,
   getHackathon,
   hackathonExists,
   listHackathons,
+  putHackathon,
 } from '../../src/repository/hackathon-repository';
-import {uuid} from '../../src/util/uuids';
-import NotFoundError from '../../src/repository/error/NotFoundError';
+import Uuid, {uuid} from '../../src/util/Uuid';
+import NotFoundError from '../../src/error/NotFoundError';
 import {randomHackathon} from './domain/hackathon-maker';
 import Hackathon from '../../src/repository/domain/Hackathon';
 import {AttributeValue} from '@aws-sdk/client-dynamodb';
+import {safeTransformArray} from '../../src/repository/dynamo-db';
 
 describe('Get Hackathon', () => {
   test('Hackathon doesn\'t exist', async () => {
@@ -16,6 +25,8 @@ describe('Get Hackathon', () => {
     mockGetItem(null);
 
     await expect(getHackathon(id)).rejects.toThrow(NotFoundError);
+
+    getExpected(id);
   });
 
   test('Hackathon exists', async () => {
@@ -23,6 +34,42 @@ describe('Get Hackathon', () => {
     mockGetItem(itemFromHackathon(expected));
 
     expect(await getHackathon(expected.id)).toStrictEqual(expected);
+
+    getExpected(expected.id);
+  });
+});
+
+describe('Put Hackathon', () => {
+  test('Happy Path', async () => {
+    mockPutItem();
+    const expected = randomHackathon();
+
+    await putHackathon(expected);
+
+    expect(mockSend).toHaveBeenCalledWith(
+        expect.objectContaining({
+          input: expect.objectContaining({
+            TableName: hackathonTable,
+            Item: itemFromHackathon(expected),
+          }),
+        }));
+  });
+});
+
+describe('Delete Hackathon', () => {
+  test('Happy Path', async () => {
+    const id = uuid();
+
+    await deleteHackathon(id);
+
+    expect(mockSend).toHaveBeenCalledWith(
+        expect.objectContaining({
+          input: expect.objectContaining({
+            TableName: hackathonTable,
+            Key: {id: {S: id}},
+          }),
+        }),
+    );
   });
 });
 
@@ -31,12 +78,16 @@ describe('List Hackathons', () => {
     mockQuery(null);
 
     await expect(listHackathons()).rejects.toThrow(NotFoundError);
+
+    listExpected();
   });
 
   test('0 Hackathons exist', async () => {
     mockQuery([]);
 
     expect(await listHackathons()).toStrictEqual([]);
+
+    listExpected();
   });
 
   test('1 Hackathon exists', async () => {
@@ -44,6 +95,8 @@ describe('List Hackathons', () => {
     mockQuery([itemFromHackathon(hackathon)]);
 
     expect(await listHackathons()).toStrictEqual([hackathon]);
+
+    listExpected();
   });
 
   test('2 Hackathons exist', async () => {
@@ -55,6 +108,8 @@ describe('List Hackathons', () => {
     ]);
 
     expect(await listHackathons()).toStrictEqual([hackathon1, hackathon2]);
+
+    listExpected();
   });
 });
 
@@ -62,24 +117,48 @@ describe('Hackathon Exists', () => {
   test('Item is non-null', async () => {
     mockGetItem({});
 
-    expect(await hackathonExists(uuid())).toBe(true);
+    const id = uuid();
+    expect(await hackathonExists(id)).toBe(true);
+
+    getExpected(id);
   });
 
   test('Item is null', async () => {
     mockGetItem(null);
 
-    expect(await hackathonExists(uuid())).toBe(false);
+    const id = uuid();
+    expect(await hackathonExists(id)).toBe(false);
+
+    getExpected(id);
   });
 });
 
-const itemFromHackathon = (hackathon: Hackathon)
-    : { [key: string]: AttributeValue } => ({
+const itemFromHackathon = (
+    hackathon: Hackathon,
+): { [key: string]: AttributeValue } => ({
   id: {S: hackathon.id},
   title: {S: hackathon.title},
   startDate: {S: hackathon.startDate.toISOString()},
   endDate: {S: hackathon.endDate.toISOString()},
   creationDate: {S: hackathon.creationDate.toISOString()},
-  participantIds: {SS: hackathon.participantIds},
-  categoryIds: {SS: hackathon.categoryIds},
-  ideaIds: {SS: hackathon.ideaIds},
+  participantIds: safeTransformArray(hackathon.participantIds),
+  categoryIds: safeTransformArray(hackathon.categoryIds),
+  ideaIds: safeTransformArray(hackathon.ideaIds),
 });
+
+const getExpected = (id: Uuid) =>
+  expect(mockSend).toHaveBeenCalledWith(
+      expect.objectContaining({
+        input: expect.objectContaining({
+          TableName: hackathonTable,
+          Key: {id: {S: id}},
+        }),
+      }));
+
+const listExpected = () =>
+  expect(mockSend).toHaveBeenCalledWith(
+      expect.objectContaining({
+        input: expect.objectContaining({
+          TableName: hackathonTable,
+        }),
+      }));

@@ -1,13 +1,11 @@
 import {buildResponse} from '../../rest/responses';
-import {listHackathons} from '../../repository/hackathon-repository';
 import {wrapHandler} from '../handler-wrapper';
-import HackathonListResponse from '../../rest/HackathonListResponse';
-import HackathonPreviewResponse from '../../rest/HackathonPreviewResponse';
+import {getHackathonListResponse} from '../../service/hackathon-service';
 
 // eslint-disable-next-line require-jsdoc
 export async function list(event, context, callback) {
   await wrapHandler(async () => {
-    const previews = HackathonPreviewResponse.fromArray(await listHackathons());
-    callback(null, buildResponse(200, new HackathonListResponse(previews)));
+    const responseBody = await getHackathonListResponse();
+    callback(null, buildResponse(200, responseBody));
   }, callback);
 }

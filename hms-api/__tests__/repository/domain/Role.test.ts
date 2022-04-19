@@ -1,4 +1,4 @@
-import {Role} from '../../../src/repository/domain/Role';
+import Role from '../../../src/repository/domain/Role';
 
 describe('Role conversion', () => {
   test('Admin converts to correct string', () => {

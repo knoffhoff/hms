@@ -1,12 +1,21 @@
-import {mockGetItem, mockGetItemOnce, mockQuery} from './dynamo-db-mock';
 import {
+  mockGetItem,
+  mockGetItemOnce,
+  mockPutItem,
+  mockQuery,
+  mockSend,
+  skillTable,
+} from './dynamo-db-mock';
+import {
+  deleteSkill,
   getSkill,
   getSkills,
   listSkills,
+  putSkill,
   skillExists,
 } from '../../src/repository/skill-repository';
-import {uuid} from '../../src/util/uuids';
-import NotFoundError from '../../src/repository/error/NotFoundError';
+import Uuid, {uuid} from '../../src/util/Uuid';
+import NotFoundError from '../../src/error/NotFoundError';
 import {randomSkill} from './domain/skill-maker';
 import Skill from '../../src/repository/domain/Skill';
 import {AttributeValue} from '@aws-sdk/client-dynamodb';
@@ -17,6 +26,8 @@ describe('Get Skill', () => {
     mockGetItem(null);
 
     await expect(getSkill(id)).rejects.toThrow(NotFoundError);
+
+    getExpected(id);
   });
 
   test('Skill exists', async () => {
@@ -24,6 +35,42 @@ describe('Get Skill', () => {
     mockGetItem(itemFromSkill(expected));
 
     expect(await getSkill(expected.id)).toStrictEqual(expected);
+
+    getExpected(expected.id);
+  });
+});
+
+describe('Put Skill', () => {
+  test('Happy Path', async () => {
+    mockPutItem();
+    const expected = randomSkill();
+
+    await putSkill(expected);
+
+    expect(mockSend).toHaveBeenCalledWith(
+        expect.objectContaining({
+          input: expect.objectContaining({
+            TableName: skillTable,
+            Item: itemFromSkill(expected),
+          }),
+        }));
+  });
+});
+
+describe('Delete Skill', () => {
+  test('Happy Path', async () => {
+    const id = uuid();
+
+    await deleteSkill(id);
+
+    expect(mockSend).toHaveBeenCalledWith(
+        expect.objectContaining({
+          input: expect.objectContaining({
+            TableName: skillTable,
+            Key: {id: {S: id}},
+          }),
+        }),
+    );
   });
 });
 
@@ -31,18 +78,25 @@ describe('Get Skills', () => {
   test('All skills missing', async () => {
     mockGetItemOnce(null);
     mockGetItemOnce(null);
-    await expect(getSkills([uuid(), uuid()]))
+    const id1 = uuid();
+    await expect(getSkills([id1, uuid()]))
         .rejects
         .toThrow(NotFoundError);
+
+    getExpected(id1);
   });
 
   test('1 skill missing', async () => {
     const skill1 = randomSkill();
     mockGetItemOnce(itemFromSkill(skill1));
     mockGetItemOnce(null);
-    await expect(getSkills([skill1.id, uuid()]))
+    const id2 = uuid();
+    await expect(getSkills([skill1.id, id2]))
         .rejects
         .toThrow(NotFoundError);
+
+    getExpected(skill1.id);
+    getExpected(id2);
   });
 
   test('0 skills missing', async () => {
@@ -52,6 +106,9 @@ describe('Get Skills', () => {
     mockGetItemOnce(itemFromSkill(skill2));
     expect(await getSkills([skill1.id, skill2.id]))
         .toStrictEqual([skill1, skill2]);
+
+    getExpected(skill1.id);
+    getExpected(skill2.id);
   });
 });
 
@@ -60,12 +117,16 @@ describe('List Skills', () => {
     mockQuery(null);
 
     await expect(listSkills()).rejects.toThrow(NotFoundError);
+
+    listExpected();
   });
 
   test('0 Skills exist', async () => {
     mockQuery([]);
 
     expect(await listSkills()).toStrictEqual([]);
+
+    listExpected();
   });
 
   test('1 Skill exists', async () => {
@@ -73,6 +134,8 @@ describe('List Skills', () => {
     mockQuery([itemFromSkill(skill)]);
 
     expect(await listSkills()).toStrictEqual([skill]);
+
+    listExpected();
   });
 
   test('2 Skills exist', async () => {
@@ -84,6 +147,8 @@ describe('List Skills', () => {
     ]);
 
     expect(await listSkills()).toStrictEqual([skill1, skill2]);
+
+    listExpected();
   });
 });
 
@@ -91,13 +156,19 @@ describe('Skill Exists', () => {
   test('Item is non-null', async () => {
     mockGetItem({});
 
-    expect(await skillExists(uuid())).toBe(true);
+    const id = uuid();
+    expect(await skillExists(id)).toBe(true);
+
+    getExpected(id);
   });
 
   test('Item is null', async () => {
     mockGetItem(null);
 
-    expect(await skillExists(uuid())).toBe(false);
+    const id = uuid();
+    expect(await skillExists(id)).toBe(false);
+
+    getExpected(id);
   });
 });
 
@@ -106,3 +177,21 @@ const itemFromSkill = (skill: Skill): { [key: string]: AttributeValue } => ({
   name: {S: skill.name},
   description: {S: skill.description},
 });
+
+const getExpected = (id: Uuid) =>
+  expect(mockSend).toHaveBeenCalledWith(
+      expect.objectContaining({
+        input: expect.objectContaining({
+          TableName: skillTable,
+          Key: {id: {S: id}},
+        }),
+      }));
+
+const listExpected = () =>
+  expect(mockSend).toHaveBeenCalledWith(
+      expect.objectContaining({
+        input: expect.objectContaining({
+          TableName: skillTable,
+        }),
+      }));
+

@@ -1,12 +1,18 @@
 /* eslint-disable require-jsdoc */
 
-import {Uuid} from '../util/uuids';
+import Uuid from '../util/Uuid';
 import SkillPreviewResponse from './SkillPreviewResponse';
 import HackathonPreviewResponse from './HackathonPreviewResponse';
 import CategoryPreviewResponse from './CategoryPreviewResponse';
 import ParticipantPreviewResponse from './ParticipantPreviewResponse';
+import Participant from '../repository/domain/Participant';
+import Idea from '../repository/domain/Idea';
+import User from '../repository/domain/User';
+import Hackathon from '../repository/domain/Hackathon';
+import Skill from '../repository/domain/Skill';
+import Category from '../repository/domain/Category';
 
-export default class {
+class IdeaResponse {
   id: Uuid;
   owner: ParticipantPreviewResponse;
   hackathon: HackathonPreviewResponse;
@@ -44,4 +50,29 @@ export default class {
     this.category = category;
     this.creationDate = creationDate;
   }
+
+  static from = (
+      idea: Idea,
+      ownerParticipant: Participant,
+      ownerUser: User,
+      hackathon: Hackathon,
+      participants: Participant[],
+      users: User[],
+      skills: Skill[],
+      category: Category,
+  ): IdeaResponse => new IdeaResponse(
+      idea.id,
+      ParticipantPreviewResponse.from(ownerParticipant, ownerUser),
+      HackathonPreviewResponse.from(hackathon),
+      ParticipantPreviewResponse.fromArray(participants, users),
+      idea.title,
+      idea.description,
+      idea.problem,
+      idea.goal,
+      SkillPreviewResponse.fromArray(skills),
+      CategoryPreviewResponse.from(category),
+      idea.creationDate,
+  );
 }
+
+export default IdeaResponse;

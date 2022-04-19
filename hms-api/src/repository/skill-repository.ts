@@ -1,6 +1,7 @@
 /* eslint-disable require-jsdoc */
 // TODO add paging for lists
 
+import {getClient} from './dynamo-db';
 import Skill from './domain/Skill';
 import {
   AttributeValue,
@@ -9,9 +10,8 @@ import {
   PutItemCommand,
   ScanCommand,
 } from '@aws-sdk/client-dynamodb';
-import {Uuid} from '../util/uuids';
-import {getClient} from './dynamo-db';
-import NotFoundError from './error/NotFoundError';
+import Uuid from '../util/Uuid';
+import NotFoundError from '../error/NotFoundError';
 
 const table = process.env.SKILL_TABLE;
 const dynamoDBClient = getClient();
@@ -72,7 +72,7 @@ export async function skillExists(id: Uuid): Promise<boolean> {
   return !!output.Item;
 }
 
-export async function removeSkill(id: Uuid) {
+export async function deleteSkill(id: Uuid) {
   // TODO determine if something was actually deleted
   await dynamoDBClient.send(new DeleteItemCommand({
     TableName: table,

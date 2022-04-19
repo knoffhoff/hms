@@ -1,9 +1,11 @@
 /* eslint-disable require-jsdoc */
 
-import {Uuid} from '../util/uuids';
+import Uuid from '../util/Uuid';
 import HackathonPreviewResponse from './HackathonPreviewResponse';
+import Hackathon from '../repository/domain/Hackathon';
+import Category from '../repository/domain/Category';
 
-export default class {
+class CategoryResponse {
   id: Uuid;
   title: string;
   description: string;
@@ -20,4 +22,16 @@ export default class {
     this.description = description;
     this.hackathon = hackathon;
   }
+
+  static from = (
+      category: Category,
+      hackathon: Hackathon,
+  ) => new CategoryResponse(
+      category.id,
+      category.title,
+      category.description,
+      HackathonPreviewResponse.from(hackathon),
+  );
 }
+
+export default CategoryResponse;

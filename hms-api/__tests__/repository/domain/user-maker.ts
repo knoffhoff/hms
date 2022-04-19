@@ -1,5 +1,5 @@
-import {uuid, Uuid} from '../../../src/util/uuids';
-import {Role} from '../../../src/repository/domain/Role';
+import Uuid, {uuid} from '../../../src/util/Uuid';
+import Role from '../../../src/repository/domain/Role';
 import User from '../../../src/repository/domain/User';
 
 export interface UserData {

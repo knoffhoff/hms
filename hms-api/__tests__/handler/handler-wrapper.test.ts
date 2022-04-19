@@ -1,7 +1,6 @@
 import {wrapHandler} from '../../src/handler/handler-wrapper';
-import NotFoundError from '../../src/repository/error/NotFoundError';
-import ReferenceNotFoundError
-  from '../../src/repository/error/ReferenceNotFoundError';
+import NotFoundError from '../../src/error/NotFoundError';
+import ReferenceNotFoundError from '../../src/error/ReferenceNotFoundError';
 
 describe('Wrap Handler', () => {
   test('Calls provided function', async () => {

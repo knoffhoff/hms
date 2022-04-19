@@ -1,9 +1,10 @@
 /* eslint-disable require-jsdoc */
 
 import IdeaPreviewResponse from './IdeaPreviewResponse';
-import {Uuid} from '../util/uuids';
+import Uuid from '../util/Uuid';
+import Idea from '../repository/domain/Idea';
 
-export default class {
+class IdeaListResponse {
   ideas: IdeaPreviewResponse[];
   hackathonId: Uuid;
 
@@ -14,4 +15,14 @@ export default class {
     this.ideas = ideas;
     this.hackathonId = hackathonId;
   }
+
+  static from = (
+      ideas: Idea[],
+      hackathonId: Uuid,
+  ): IdeaListResponse => new IdeaListResponse(
+      IdeaPreviewResponse.fromArray(ideas),
+      hackathonId,
+  );
 }
+
+export default IdeaListResponse;
