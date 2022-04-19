@@ -1,3 +1,5 @@
+import { Idea } from '../common/types'
+
 const api_id = '6cyvp5ukhc'
 
 export const getListOfHackathons = () => {

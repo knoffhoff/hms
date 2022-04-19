@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { getHackathonDetails } from '../actions/GetBackendData'
 import IdeaCardList from './IdeaCardList'
+import { Hackathon } from '../common/types'
 
 type IProps = {
   hackathonID: string
@@ -14,8 +15,8 @@ export default function HackathonDetails(props: IProps) {
     title: 'string',
     startDate: '',
     endDate: '',
-    participants: [],
-    categories: [],
+    participants: null,
+    categories: null,
     ideas: [],
   })
 
@@ -28,7 +29,7 @@ export default function HackathonDetails(props: IProps) {
     participants,
     categories,
     ideas,
-  } = hackathonData
+  }: Hackathon = hackathonData
 
   const loadSelectedHackathon = () => {
     getHackathonDetails(hackathonID).then(

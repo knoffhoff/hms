@@ -2,11 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { getListOfHackathons } from '../actions/GetBackendData'
 import HackathonDetails from '../components/HackathonDetails'
 import { Select } from '@mantine/core'
-
-interface HackathonPreview {
-  id: string
-  title: string
-}
+import { HackathonPreview } from '../common/types'
 
 export default function Archive() {
   const [selectedHackweek, setSelectedHackweek] = useState('')

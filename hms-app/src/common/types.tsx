@@ -8,17 +8,30 @@ export type IdeaPreview = {
   title: string
 }
 
+export type Hackathon = {
+  errorHackathonData: boolean
+  isLoadingHackathonData: boolean
+  title: string
+  startDate: string
+  endDate: string
+  participants: ParticipantPreview[] | null
+  categories: CategoryPreview | null
+  ideas: IdeaPreview[] | null
+}
+
 export type Idea = {
+  errorIdeaData: boolean
+  isLoadingIdeaData: boolean
   id: string
-  owner: OwnerPreview
-  hackathon: HackathonPreview
-  participants: ParticipantPreview[]
+  owner: OwnerPreview | null
+  hackathon: HackathonPreview | null
+  participants: ParticipantPreview[] | null
   title: string
   description: string
   problem: string
   goal: string
   requiredSkills: SkillPreview[]
-  category: CategoryPreview
+  category: CategoryPreview | null
   creationDate: string
 }
 

@@ -12,36 +12,13 @@ import {
   AvatarsGroup,
   useAccordionState,
 } from '@mantine/core'
-import {
-  CategoryPreview,
-  HackathonPreview,
-  IdeaPreview,
-  OwnerPreview,
-  ParticipantPreview,
-  SkillPreview,
-} from '../common/types'
+import { Idea, IdeaPreview } from '../common/types'
 import { getIdeaDetails } from '../actions/GetBackendData'
 
 type IProps = {
   ideaPreview: IdeaPreview
   index: number
   type: string
-}
-
-type Idea = {
-  errorIdeaData: boolean
-  isLoadingIdeaData: boolean
-  id: string
-  owner: OwnerPreview[]
-  hackathon: HackathonPreview[]
-  participants: ParticipantPreview[]
-  title: string
-  description: string
-  problem: string
-  goal: string
-  requiredSkills: SkillPreview[]
-  category: CategoryPreview[]
-  creationDate: string
 }
 
 const useStyles = createStyles((theme) => ({
@@ -78,15 +55,15 @@ export default function IdeaCardFoldable(props: IProps) {
     errorIdeaData: false,
     isLoadingIdeaData: true,
     id: 'string',
-    owner: [],
-    hackathon: [],
+    owner: null,
+    hackathon: null,
     participants: [],
     title: 'string',
     description: 'string',
     problem: 'string',
     goal: 'string',
     requiredSkills: [],
-    category: [],
+    category: null,
     creationDate: 'string',
   })
 
