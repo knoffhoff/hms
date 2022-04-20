@@ -13,23 +13,12 @@ export default function HackathonDetails(props: IProps) {
     errorHackathonData: false,
     isLoadingHackathonData: true,
     title: 'string',
-    startDate: '',
-    endDate: '',
-    participants: null,
-    categories: null,
+    startDate: 'string',
+    endDate: 'string',
+    participants: [],
+    categories: undefined,
     ideas: [],
-  })
-
-  const {
-    errorHackathonData,
-    isLoadingHackathonData,
-    title,
-    startDate,
-    endDate,
-    participants,
-    categories,
-    ideas,
-  }: Hackathon = hackathonData
+  } as Hackathon)
 
   const loadSelectedHackathon = () => {
     getHackathonDetails(hackathonID).then(
@@ -61,27 +50,31 @@ export default function HackathonDetails(props: IProps) {
 
   return (
     <>
-      {errorHackathonData && (
+      {hackathonData.errorHackathonData && (
         <div>
           <h3>Error loading hackathons</h3>
           <p>something went wrong.</p>
         </div>
       )}
-      {isLoadingHackathonData && (
+      {hackathonData.isLoadingHackathonData && (
         <div>
           <h3>Hackathon details are loading...</h3>
         </div>
       )}
 
-      {startDate && (
+      {hackathonData.startDate && (
         <div>
           <h2>Title: {hackathonData.title}</h2>
           <h2>
-            Date from: {new Date(startDate).toDateString()} to:{' '}
-            {new Date(endDate).toDateString()}
+            Date from: {new Date(hackathonData.startDate).toDateString()} to:{' '}
+            {new Date(hackathonData.endDate).toDateString()}
           </h2>
 
-          <IdeaCardList ideaPreviews={ideas} columnSize={6} type={'Archive'} />
+          <IdeaCardList
+            ideaPreviews={hackathonData.ideas!}
+            columnSize={6}
+            type={'Archive'}
+          />
         </div>
       )}
     </>
