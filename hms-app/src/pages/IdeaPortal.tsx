@@ -53,7 +53,7 @@ function IdeaPortal() {
   }
 
   const filteredIdeas = hackathonData.ideas.filter((item) => {
-    return item.title.includes(searchTerm)
+    return item.title.toLowerCase().includes(searchTerm.toLowerCase())
   })
 
   return (
