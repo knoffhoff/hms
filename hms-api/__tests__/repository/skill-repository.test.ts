@@ -1,4 +1,5 @@
 import {
+  mockDeleteItem,
   mockGetItem,
   mockGetItemOnce,
   mockPutItem,
@@ -59,15 +60,34 @@ describe('Put Skill', () => {
 
 describe('Delete Skill', () => {
   test('Happy Path', async () => {
+    const expected = randomSkill();
+    mockDeleteItem(itemFromSkill(expected));
+
+    expect(await deleteSkill(expected.id)).toStrictEqual(expected);
+    expect(mockSend).toHaveBeenCalledWith(
+        expect.objectContaining({
+          input: expect.objectContaining({
+            TableName: skillTable,
+            Key: {id: {S: expected.id}},
+            ReturnValues: 'ALL_OLD',
+          }),
+        }),
+    );
+  });
+
+  test('Skill not found', async () => {
     const id = uuid();
+    mockDeleteItem(null);
 
-    await deleteSkill(id);
-
+    await expect(deleteSkill(id))
+        .rejects
+        .toThrow(NotFoundError);
     expect(mockSend).toHaveBeenCalledWith(
         expect.objectContaining({
           input: expect.objectContaining({
             TableName: skillTable,
             Key: {id: {S: id}},
+            ReturnValues: 'ALL_OLD',
           }),
         }),
     );
@@ -178,20 +198,18 @@ const itemFromSkill = (skill: Skill): { [key: string]: AttributeValue } => ({
   description: {S: skill.description},
 });
 
-const getExpected = (id: Uuid) =>
-  expect(mockSend).toHaveBeenCalledWith(
-      expect.objectContaining({
-        input: expect.objectContaining({
-          TableName: skillTable,
-          Key: {id: {S: id}},
-        }),
-      }));
+const getExpected = (id: Uuid) => expect(mockSend).toHaveBeenCalledWith(
+    expect.objectContaining({
+      input: expect.objectContaining({
+        TableName: skillTable,
+        Key: {id: {S: id}},
+      }),
+    }));
 
-const listExpected = () =>
-  expect(mockSend).toHaveBeenCalledWith(
-      expect.objectContaining({
-        input: expect.objectContaining({
-          TableName: skillTable,
-        }),
-      }));
+const listExpected = () => expect(mockSend).toHaveBeenCalledWith(
+    expect.objectContaining({
+      input: expect.objectContaining({
+        TableName: skillTable,
+      }),
+    }));
 

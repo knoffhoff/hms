@@ -12,5 +12,10 @@ export function getClient(): DynamoDBClient {
   }
 }
 
-export const safeTransformArray = (a: string[]): AV.SSMember | AV.NULLMember =>
-    !!a && a.length > 0 ? {SS: a} : {NULL: true};
+export const safeTransformArray = (
+    a: string[],
+): AV.SSMember | AV.NULLMember => !!a && a.length > 0 ? {SS: a} : {NULL: true};
+
+export const safeTransformSSMember = (
+    ss: AV | undefined,
+): string[] => !!ss && !!ss.SS ? ss.SS : [];

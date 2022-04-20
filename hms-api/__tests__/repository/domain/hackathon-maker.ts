@@ -10,9 +10,6 @@ export interface HackathonData {
   startDate: Date;
   endDate: Date;
   creationDate: Date;
-  participantIds: string[];
-  categoryIds: string[];
-  ideaIds: string[];
 }
 
 export const makeHackathon = (
@@ -22,18 +19,12 @@ export const makeHackathon = (
       startDate = new Date(new Date().getTime() + fiveDaysInMillis),
       endDate = new Date(new Date().getTime() + tenDaysInMillis),
       creationDate = new Date,
-      participantIds = [],
-      categoryIds = [],
-      ideaIds = [],
     }: HackathonData): Hackathon => new Hackathon(
     title,
     startDate,
     endDate,
     id,
     creationDate,
-    participantIds,
-    categoryIds,
-    ideaIds,
 );
 
 export const randomHackathon = ()

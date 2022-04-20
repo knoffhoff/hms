@@ -10,6 +10,7 @@ jest.spyOn(ideaService, 'removeIdea')
 describe('Delete Idea', () => {
   test('Happy Path', async () => {
     const id = uuid();
+    mockRemoveIdea.mockResolvedValue(new IdeaDeleteResponse(id));
     const event = toEvent(id);
     const callback = jest.fn();
 

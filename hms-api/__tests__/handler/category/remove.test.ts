@@ -13,6 +13,8 @@ describe('Delete Category', () => {
     const event = toEvent(id);
     const callback = jest.fn();
 
+    mockRemoveCategory.mockResolvedValue(new CategoryDeleteResponse(id));
+
     await remove(event, null, callback);
 
     expect(mockRemoveCategory).toHaveBeenCalledWith(id);

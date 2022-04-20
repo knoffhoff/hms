@@ -10,19 +10,19 @@ import {
   listCategories,
   putCategory,
 } from '../repository/category-repository';
-import {addCategoryToHackathon} from './hackathon-service';
 import Uuid from '../util/Uuid';
 import Category from '../repository/domain/Category';
 import ReferenceNotFoundError from '../error/ReferenceNotFoundError';
 import CategoryResponse from '../rest/CategoryResponse';
 import CategoryListResponse from '../rest/CategoryListResponse';
-import ReferenceUpdateError from '../error/ReferenceUpdateError';
+import CategoryDeleteResponse from '../rest/CategoryDeleteResponse';
+import {removeIdeasForCategory} from './idea-service';
 
 export async function createCategory(
     title: string,
     description: string,
     hackathonId: Uuid,
-) {
+): Promise<Category> {
   if (!await hackathonExists(hackathonId)) {
     throw new ReferenceNotFoundError(`Cannot create Category, ` +
         `Hackathon with id: ${hackathonId} does not exist`);
@@ -30,16 +30,6 @@ export async function createCategory(
 
   const category = new Category(title, description, hackathonId);
   await putCategory(category);
-
-  try {
-    await addCategoryToHackathon(category.hackathonId, category.id);
-  } catch (e) {
-    await deleteCategory(category.id);
-    throw new ReferenceUpdateError(`Failed to create Idea, ` +
-        `failed to add Category to linked Hackathon ` +
-        `with id ${category.hackathonId}`);
-  }
-
   return category;
 }
 
@@ -64,6 +54,15 @@ export async function getCategoryListResponse(
   return CategoryListResponse.from(categories, hackathonId);
 }
 
-export async function removeCategory(id: Uuid) {
+export async function removeCategory(
+    id: Uuid,
+): Promise<CategoryDeleteResponse> {
+  try {
+    await removeIdeasForCategory(id);
+  } catch (e) {
+    // TODO throw an error
+  }
+
   await deleteCategory(id);
+  return new CategoryDeleteResponse(id);
 }

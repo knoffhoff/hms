@@ -12,14 +12,15 @@ import {
   putParticipant,
 } from '../repository/participant-repository';
 import {usersFor} from './user-service';
-import {addParticipantToHackathon} from './hackathon-service';
 import Uuid from '../util/Uuid';
 import Participant from '../repository/domain/Participant';
 import ReferenceNotFoundError from '../error/ReferenceNotFoundError';
 import ParticipantResponse from '../rest/ParticipantResponse';
 import ParticipantListResponse from '../rest/ParticipantListResponse';
 import ParticipantPreviewResponse from '../rest/ParticipantPreviewResponse';
-import ReferenceUpdateError from '../error/ReferenceUpdateError';
+import ParticipantDeleteResponse from '../rest/ParticipantDeleteResponse';
+import {removeIdeasForOwner, removeParticipantFromIdeas} from './idea-service';
+import DeletionError from '../error/DeletionError';
 
 export async function createParticipant(
     userId: Uuid,
@@ -35,15 +36,6 @@ export async function createParticipant(
 
   const participant = new Participant(userId, hackathonId);
   await putParticipant(participant);
-
-  try {
-    await addParticipantToHackathon(participant.hackathonId, participant.id);
-  } catch (e) {
-    await deleteParticipant(participant.id);
-    throw new ReferenceUpdateError(`Failed to create Idea, ` +
-        `failed to add Participant to linked Hackathon ` +
-        `with id ${participant.hackathonId}`);
-  }
 
   return participant;
 }
@@ -83,7 +75,7 @@ export async function getParticipantListResponse(
   } catch (e) {
     throw new ReferenceNotFoundError(
         `Could not list Participants for Hackathon with id: ${hackathonId}, ` +
-        `unable to list referenced Users`);
+        `unable to list linked Users`);
   }
 
   return new ParticipantListResponse(
@@ -92,6 +84,23 @@ export async function getParticipantListResponse(
   );
 }
 
-export async function removeParticipant(id: Uuid) {
+export async function removeParticipant(
+    id: Uuid,
+): Promise<ParticipantDeleteResponse> {
+  try {
+    await removeIdeasForOwner(id);
+  } catch (e) {
+    throw new DeletionError(`Unable to remove Participant with id ${id}, ` +
+        `nested failure is: ${e.message}`);
+  }
+
+  try {
+    await removeParticipantFromIdeas(id);
+  } catch (e) {
+    throw new DeletionError(`Unable to remove Participant with id ${id}, ` +
+        `nested failure is: ${e.message}`);
+  }
+
   await deleteParticipant(id);
+  return new ParticipantDeleteResponse(id);
 }
