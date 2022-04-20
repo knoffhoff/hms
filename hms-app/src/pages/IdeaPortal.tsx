@@ -20,16 +20,7 @@ function IdeaPortal() {
     categories: null,
     ideas: [] as IdeaPreview[],
   })
-  const {
-    errorHackathonData,
-    isLoadingHackathonData,
-    title,
-    startDate,
-    endDate,
-    participants,
-    categories,
-    ideas,
-  }: Hackathon = hackathonData
+
   const loadSelectedHackathon = () => {
     getHackathonDetails(hackathonID).then(
       (data) => {
