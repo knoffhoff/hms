@@ -99,6 +99,20 @@ export default function IdeaCardFoldable(props: IProps) {
   const MAX_TITLE_LENGTH = 45
   const MAX_DESCRIPTION_LENGTH = type === 'voting' ? 200 : 245
 
+  const participantData = ideaData.participants?.map((participant, index) => (
+    <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+      <Avatar
+        color="indigo"
+        radius="xl"
+        size="md"
+        src={
+          'https://avatars.githubusercontent.com/u/10353856?s=460&u=88394dfd67727327c1f7670a1764dc38a8a24831&v=4'
+        }
+      />
+      {participant.user.firstName} {participant.user.lastName}
+    </div>
+  ))
+
   useEffect(() => {
     loadIdeaDetails()
   }, [])
@@ -127,7 +141,10 @@ export default function IdeaCardFoldable(props: IProps) {
                     'https://avatars.githubusercontent.com/u/10353856?s=460&u=88394dfd67727327c1f7670a1764dc38a8a24831&v=4'
                   }
                 />
-                {/*<Badge size="sm">{ideaData.ideaDetails}</Badge>*/}
+                <Badge size="sm">
+                  {ideaData.owner?.user.firstName}{' '}
+                  {ideaData.owner?.user.lastName}
+                </Badge>
               </Group>
 
               <Text size="lg" weight={500}>
@@ -198,13 +215,24 @@ export default function IdeaCardFoldable(props: IProps) {
                           </Text>
                           <Group spacing={7} mt={5}>
                             <AvatarsGroup limit={5}>
-                              {/*{participantAvatars}*/}
+                              {ideaData.participants?.map(
+                                (participant, index) => (
+                                  <Avatar
+                                    color="indigo"
+                                    radius="xl"
+                                    size="md"
+                                    src={
+                                      'https://avatars.githubusercontent.com/u/10353856?s=460&u=88394dfd67727327c1f7670a1764dc38a8a24831&v=4'
+                                    }
+                                  />
+                                )
+                              )}
                             </AvatarsGroup>
                           </Group>
                         </div>
                       }
                     >
-                      {/*{participantAvatars}*/}
+                      {participantData}
                     </Accordion.Item>
                   </Accordion>
 

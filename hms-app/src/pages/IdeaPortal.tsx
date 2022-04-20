@@ -68,17 +68,35 @@ function IdeaPortal() {
         />
       </Group>
 
-      <div style={{ border: '1px solid red' }}>
-        <IdeaCardList
-          ideaPreviews={filteredIdeas}
-          columnSize={6}
-          type={'idea-portal'}
-        />
-      </div>
+      {hackathonData.errorHackathonData && (
+        <div>
+          <h3>Error loading hackathons</h3>
+          <p>something went wrong.</p>
+        </div>
+      )}
+      {hackathonData.isLoadingHackathonData && (
+        <div>
+          <h3>Hackathon details are loading...</h3>
+        </div>
+      )}
 
-      <div style={{ border: '1px solid red' }}>
-        <HackathonDetails hackathonID={hackathonID} />
-      </div>
+      {!hackathonData.isLoadingHackathonData && (
+        <div>
+          <h2>{hackathonData.title}</h2>
+          <h2>
+            from: {new Date(hackathonData.startDate).toDateString()} to:{' '}
+            {new Date(hackathonData.endDate).toDateString()}
+          </h2>
+
+          <div style={{ border: '1px solid red' }}>
+            <IdeaCardList
+              ideaPreviews={filteredIdeas}
+              columnSize={6}
+              type={'idea-portal'}
+            />
+          </div>
+        </div>
+      )}
     </>
   )
 }
