@@ -1,15 +1,12 @@
 import {
   hackathonTable,
+  mockDeleteItem,
   mockGetItem,
   mockPutItem,
   mockQuery,
   mockSend,
-  mockUpdateItem,
 } from './dynamo-db-mock';
 import {
-  appendCategoryId,
-  appendIdeaId,
-  appendParticipantId,
   deleteHackathon,
   getHackathon,
   hackathonExists,
@@ -21,7 +18,6 @@ import NotFoundError from '../../src/error/NotFoundError';
 import {randomHackathon} from './domain/hackathon-maker';
 import Hackathon from '../../src/repository/domain/Hackathon';
 import {AttributeValue} from '@aws-sdk/client-dynamodb';
-import {safeTransformArray} from '../../src/repository/dynamo-db';
 
 describe('Get Hackathon', () => {
   test('Hackathon doesn\'t exist', async () => {
@@ -60,83 +56,36 @@ describe('Put Hackathon', () => {
   });
 });
 
-describe('Append Participant ID', () => {
-  test('Happy Path', async () => {
-    mockUpdateItem();
-    const hackathonId = uuid();
-    const participantId = uuid();
-
-    await appendParticipantId(hackathonId, participantId);
-
-    expect(mockSend).toHaveBeenCalledWith(
-        expect.objectContaining({
-          input: expect.objectContaining({
-            TableName: hackathonTable,
-            Key: {id: {S: hackathonId}},
-            UpdateExpression: 'ADD participantIds :participant_id',
-            ExpressionAttributeValues: {
-              ':participant_id': {SS: [participantId]},
-            },
-          }),
-        }));
-  });
-});
-
-describe('Append Category ID', () => {
-  test('Happy Path', async () => {
-    mockUpdateItem();
-    const hackathonId = uuid();
-    const categoryId = uuid();
-
-    await appendCategoryId(hackathonId, categoryId);
-
-    expect(mockSend).toHaveBeenCalledWith(
-        expect.objectContaining({
-          input: expect.objectContaining({
-            TableName: hackathonTable,
-            Key: {id: {S: hackathonId}},
-            UpdateExpression: 'ADD categoryIds :category_id',
-            ExpressionAttributeValues: {
-              ':category_id': {SS: [categoryId]},
-            },
-          }),
-        }));
-  });
-});
-
-describe('Append Idea ID', () => {
-  test('Happy Path', async () => {
-    mockUpdateItem();
-    const hackathonId = uuid();
-    const ideaId = uuid();
-
-    await appendIdeaId(hackathonId, ideaId);
-
-    expect(mockSend).toHaveBeenCalledWith(
-        expect.objectContaining({
-          input: expect.objectContaining({
-            TableName: hackathonTable,
-            Key: {id: {S: hackathonId}},
-            UpdateExpression: 'ADD ideaIds :idea_id',
-            ExpressionAttributeValues: {
-              ':idea_id': {SS: [ideaId]},
-            },
-          }),
-        }));
-  });
-});
-
 describe('Delete Hackathon', () => {
   test('Happy Path', async () => {
+    const expected = randomHackathon();
+    mockDeleteItem(itemFromHackathon(expected));
+
+    expect(await deleteHackathon(expected.id)).toStrictEqual(expected);
+    expect(mockSend).toHaveBeenCalledWith(
+        expect.objectContaining({
+          input: expect.objectContaining({
+            TableName: hackathonTable,
+            Key: {id: {S: expected.id}},
+            ReturnValues: 'ALL_OLD',
+          }),
+        }),
+    );
+  });
+
+  test('Hackathon not found', async () => {
     const id = uuid();
+    mockDeleteItem(null);
 
-    await deleteHackathon(id);
-
+    await expect(deleteHackathon(id))
+        .rejects
+        .toThrow(NotFoundError);
     expect(mockSend).toHaveBeenCalledWith(
         expect.objectContaining({
           input: expect.objectContaining({
             TableName: hackathonTable,
             Key: {id: {S: id}},
+            ReturnValues: 'ALL_OLD',
           }),
         }),
     );
@@ -211,9 +160,6 @@ const itemFromHackathon = (
   startDate: {S: hackathon.startDate.toISOString()},
   endDate: {S: hackathon.endDate.toISOString()},
   creationDate: {S: hackathon.creationDate.toISOString()},
-  participantIds: safeTransformArray(hackathon.participantIds),
-  categoryIds: safeTransformArray(hackathon.categoryIds),
-  ideaIds: safeTransformArray(hackathon.ideaIds),
 });
 
 const getExpected = (id: Uuid) => expect(mockSend).toHaveBeenCalledWith(

@@ -1,15 +1,21 @@
 import {
   ideaByHackathonIdIndex,
+  ideaByOwnerIdIndex,
   ideaTable,
+  mockDeleteItem,
   mockGetItem,
   mockPutItem,
   mockQuery,
+  mockScan,
   mockSend,
 } from './dynamo-db-mock';
 import {
   deleteIdea,
+  deleteParticipantFromIdea,
   getIdea,
-  listIdeas,
+  listIdeasForHackathon,
+  listIdeasForOwner,
+  listIdeasForParticipant,
   putIdea,
 } from '../../src/repository/idea-repository';
 import Uuid, {uuid} from '../../src/util/Uuid';
@@ -58,40 +64,80 @@ describe('Put Idea', () => {
 
 describe('Delete Idea', () => {
   test('Happy Path', async () => {
+    const expected = randomIdea();
+    mockDeleteItem(itemFromIdea(expected));
+
+    expect(await deleteIdea(expected.id)).toStrictEqual(expected);
+    expect(mockSend).toHaveBeenCalledWith(
+        expect.objectContaining({
+          input: expect.objectContaining({
+            TableName: ideaTable,
+            Key: {id: {S: expected.id}},
+            ReturnValues: 'ALL_OLD',
+          }),
+        }),
+    );
+  });
+
+  test('Idea not found', async () => {
     const id = uuid();
+    mockDeleteItem(null);
 
-    await deleteIdea(id);
-
+    await expect(deleteIdea(id))
+        .rejects
+        .toThrow(NotFoundError);
     expect(mockSend).toHaveBeenCalledWith(
         expect.objectContaining({
           input: expect.objectContaining({
             TableName: ideaTable,
             Key: {id: {S: id}},
+            ReturnValues: 'ALL_OLD',
           }),
         }),
     );
   });
 });
 
-describe('List Ideas', () => {
+describe('Delete Participant from Idea', () => {
+  test('Happy Path', async () => {
+    const ideaId = uuid();
+    const participantId = uuid();
+
+    await deleteParticipantFromIdea(ideaId, participantId);
+
+    expect(mockSend).toHaveBeenCalledWith(
+        expect.objectContaining({
+          input: expect.objectContaining({
+            TableName: process.env.IDEA_TABLE,
+            Key: {id: {S: ideaId}},
+            UpdateExpression: 'DELETE participantIds :participant_id',
+            ExpressionAttributeValues: {
+              ':participant_id': {SS: [participantId]},
+            },
+          }),
+        }));
+  });
+});
+
+describe('List Ideas for Hackathon', () => {
   test('Query returns null', async () => {
     const hackathonId = uuid();
     mockQuery(null);
 
-    await expect(listIdeas(hackathonId))
+    await expect(listIdeasForHackathon(hackathonId))
         .rejects
         .toThrow(NotFoundError);
 
-    listExpected(hackathonId);
+    listHackathonExpected(hackathonId);
   });
 
   test('0 Ideas exist', async () => {
     const hackathonId = uuid();
     mockQuery([]);
 
-    expect(await listIdeas(hackathonId)).toStrictEqual([]);
+    expect(await listIdeasForHackathon(hackathonId)).toStrictEqual([]);
 
-    listExpected(hackathonId);
+    listHackathonExpected(hackathonId);
   });
 
   test('1 Idea exists', async () => {
@@ -99,9 +145,9 @@ describe('List Ideas', () => {
     const idea = makeIdea({hackathonId: hackathonId} as IdeaData);
     mockQuery([itemFromIdea(idea)]);
 
-    expect(await listIdeas(hackathonId)).toStrictEqual([idea]);
+    expect(await listIdeasForHackathon(hackathonId)).toStrictEqual([idea]);
 
-    listExpected(hackathonId);
+    listHackathonExpected(hackathonId);
   });
 
   test('2 Ideas exist', async () => {
@@ -110,9 +156,98 @@ describe('List Ideas', () => {
     const idea2 = makeIdea({hackathonId: hackathonId} as IdeaData);
     mockQuery([itemFromIdea(idea1), itemFromIdea(idea2)]);
 
-    expect(await listIdeas(hackathonId)).toStrictEqual([idea1, idea2]);
+    expect(await listIdeasForHackathon(hackathonId))
+        .toStrictEqual([idea1, idea2]);
 
-    listExpected(hackathonId);
+    listHackathonExpected(hackathonId);
+  });
+});
+
+describe('List Ideas for Owner', () => {
+  test('Query returns null', async () => {
+    const ownerId = uuid();
+    mockQuery(null);
+
+    await expect(listIdeasForOwner(ownerId))
+        .rejects
+        .toThrow(NotFoundError);
+
+    listOwnerExpected(ownerId);
+  });
+
+  test('0 Ideas exist', async () => {
+    const ownerId = uuid();
+    mockQuery([]);
+
+    expect(await listIdeasForOwner(ownerId)).toStrictEqual([]);
+
+    listOwnerExpected(ownerId);
+  });
+
+  test('1 Idea exists', async () => {
+    const ownerId = uuid();
+    const idea = makeIdea({ownerId: ownerId} as IdeaData);
+    mockQuery([itemFromIdea(idea)]);
+
+    expect(await listIdeasForOwner(ownerId)).toStrictEqual([idea]);
+
+    listOwnerExpected(ownerId);
+  });
+
+  test('2 Ideas exist', async () => {
+    const ownerId = uuid();
+    const idea1 = makeIdea({ownerId: ownerId} as IdeaData);
+    const idea2 = makeIdea({ownerId: ownerId} as IdeaData);
+    mockQuery([itemFromIdea(idea1), itemFromIdea(idea2)]);
+
+    expect(await listIdeasForOwner(ownerId))
+        .toStrictEqual([idea1, idea2]);
+
+    listOwnerExpected(ownerId);
+  });
+});
+
+describe('List Ideas for Participant', () => {
+  test('Query returns null', async () => {
+    const participantId = uuid();
+    mockScan(null);
+
+    await expect(listIdeasForParticipant(participantId))
+        .rejects
+        .toThrow(NotFoundError);
+
+    scanParticipantExpected(participantId);
+  });
+
+  test('0 Ideas exist', async () => {
+    const participantId = uuid();
+    mockScan([]);
+
+    expect(await listIdeasForParticipant(participantId)).toStrictEqual([]);
+
+    scanParticipantExpected(participantId);
+  });
+
+  test('1 Idea exists', async () => {
+    const participantId = uuid();
+    const idea = makeIdea({participantIds: [participantId]} as IdeaData);
+    mockScan([itemFromIdea(idea)]);
+
+    expect(await listIdeasForParticipant(participantId)).toStrictEqual([idea]);
+
+    scanParticipantExpected(participantId);
+  });
+
+  test('2 Ideas exist', async () => {
+    const participantId = uuid();
+    const idea1 = makeIdea({participantIds: [participantId]} as IdeaData);
+    const idea2 = makeIdea({participantIds: [participantId]} as IdeaData);
+    mockScan([itemFromIdea(idea1), itemFromIdea(idea2)]);
+
+    expect(await listIdeasForParticipant(participantId))
+        .toStrictEqual([idea1, idea2]);
+
+    scanParticipantExpected(participantId);
   });
 });
 
@@ -130,22 +265,45 @@ const itemFromIdea = (idea: Idea): { [key: string]: AttributeValue } => ({
   creationDate: {S: idea.creationDate.toISOString()},
 });
 
-const getExpected = (id: Uuid) =>
-  expect(mockSend).toHaveBeenCalledWith(
-      expect.objectContaining({
-        input: expect.objectContaining({
-          TableName: ideaTable,
-          Key: {id: {S: id}},
-        }),
-      }));
+const getExpected = (id: Uuid) => expect(mockSend).toHaveBeenCalledWith(
+    expect.objectContaining({
+      input: expect.objectContaining({
+        TableName: ideaTable,
+        Key: {id: {S: id}},
+      }),
+    }));
 
-const listExpected = (hackathonId: Uuid) =>
-  expect(mockSend).toHaveBeenCalledWith(
-      expect.objectContaining({
-        input: expect.objectContaining({
-          TableName: ideaTable,
-          IndexName: ideaByHackathonIdIndex,
-          KeyConditionExpression: 'hackathonId = :hId',
-          ExpressionAttributeValues: {':hId': {'S': hackathonId}},
-        }),
-      }));
+const listHackathonExpected = (
+    hackathonId: Uuid,
+) => expect(mockSend).toHaveBeenCalledWith(
+    expect.objectContaining({
+      input: expect.objectContaining({
+        TableName: ideaTable,
+        IndexName: ideaByHackathonIdIndex,
+        KeyConditionExpression: 'hackathonId = :hId',
+        ExpressionAttributeValues: {':hId': {'S': hackathonId}},
+      }),
+    }));
+
+const listOwnerExpected = (
+    ownerId: Uuid,
+) => expect(mockSend).toHaveBeenCalledWith(
+    expect.objectContaining({
+      input: expect.objectContaining({
+        TableName: ideaTable,
+        IndexName: ideaByOwnerIdIndex,
+        KeyConditionExpression: 'ownerId = :oId',
+        ExpressionAttributeValues: {':oId': {'S': ownerId}},
+      }),
+    }));
+
+const scanParticipantExpected = (
+    participantId: Uuid,
+) => expect(mockSend).toHaveBeenCalledWith(
+    expect.objectContaining({
+      input: expect.objectContaining({
+        TableName: ideaTable,
+        FilterExpression: 'contains(participantIds, :pId)',
+        ExpressionAttributeValues: {':pId': {'S': participantId}},
+      }),
+    }));

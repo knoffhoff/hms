@@ -1,4 +1,5 @@
 import {
+  mockDeleteItem,
   mockGetItem,
   mockGetItemOnce,
   mockPutItem,
@@ -60,15 +61,34 @@ describe('Put User', () => {
 
 describe('Delete User', () => {
   test('Happy Path', async () => {
+    const expected = randomUser();
+    mockDeleteItem(itemFromUser(expected));
+
+    expect(await deleteUser(expected.id)).toStrictEqual(expected);
+    expect(mockSend).toHaveBeenCalledWith(
+        expect.objectContaining({
+          input: expect.objectContaining({
+            TableName: userTable,
+            Key: {id: {S: expected.id}},
+            ReturnValues: 'ALL_OLD',
+          }),
+        }),
+    );
+  });
+
+  test('User not found', async () => {
     const id = uuid();
+    mockDeleteItem(null);
 
-    await deleteUser(id);
-
+    await expect(deleteUser(id))
+        .rejects
+        .toThrow(NotFoundError);
     expect(mockSend).toHaveBeenCalledWith(
         expect.objectContaining({
           input: expect.objectContaining({
             TableName: userTable,
             Key: {id: {S: id}},
+            ReturnValues: 'ALL_OLD',
           }),
         }),
     );

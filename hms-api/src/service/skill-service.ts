@@ -10,6 +10,7 @@ import Skill from '../repository/domain/Skill';
 import Uuid from '../util/Uuid';
 import SkillResponse from '../rest/SkillResponse';
 import SkillListResponse from '../rest/SkillListResponse';
+import SkillDeleteResponse from '../rest/SkillDeleteResponse';
 
 export async function createSkill(
     name: string,
@@ -30,6 +31,7 @@ export async function getSkillListResponse(): Promise<SkillListResponse> {
   return SkillListResponse.from(skills);
 }
 
-export async function removeSkill(id: Uuid) {
+export async function removeSkill(id: Uuid): Promise<SkillDeleteResponse> {
   await deleteSkill(id);
+  return new SkillDeleteResponse(id);
 }

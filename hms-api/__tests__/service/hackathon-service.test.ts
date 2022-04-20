@@ -28,6 +28,7 @@ import * as ideaRepository from '../../src/repository/idea-repository';
 import ReferenceNotFoundError from '../../src/error/ReferenceNotFoundError';
 import NotFoundError from '../../src/error/NotFoundError';
 import HackathonListResponse from '../../src/rest/HackathonListResponse';
+import HackathonDeleteResponse from '../../src/rest/HackathonDeleteResponse';
 
 const mockPutHackathon = jest.fn();
 jest.spyOn(hackathonRepository, 'putHackathon')
@@ -55,7 +56,7 @@ jest.spyOn(categoryRepository, 'listCategories')
     .mockImplementation(mockListCategories);
 
 const mockListIdeas = jest.fn();
-jest.spyOn(ideaRepository, 'listIdeas')
+jest.spyOn(ideaRepository, 'listIdeasForHackathon')
     .mockImplementation(mockListIdeas);
 
 describe('Create Hackathon', () => {
@@ -217,7 +218,8 @@ describe('Get Hackathon List Response', () => {
 describe('Delete Hackathon', () => {
   test('Happy Path', async () => {
     const id = uuid();
-    await removeHackathon(id);
+    expect(await removeHackathon(id))
+        .toStrictEqual(new HackathonDeleteResponse(id));
     expect(mockDeleteHackathon).toHaveBeenCalledWith(id);
   });
 });

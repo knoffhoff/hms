@@ -1,21 +1,30 @@
 /* eslint-disable require-jsdoc */
 // TODO add paging for lists
 
-import {getClient, safeTransformArray} from './dynamo-db';
+import {
+  getClient,
+  safeTransformArray,
+  safeTransformSSMember,
+} from './dynamo-db';
 import {
   AttributeValue,
   DeleteItemCommand,
+  DynamoDBClient,
   GetItemCommand,
   PutItemCommand,
   QueryCommand,
+  ScanCommand,
+  UpdateItemCommand,
 } from '@aws-sdk/client-dynamodb';
 import Uuid from '../util/Uuid';
 import Idea from './domain/Idea';
 import NotFoundError from '../error/NotFoundError';
 
-const dynamoDBClient = getClient();
+const dynamoDBClient: DynamoDBClient = getClient();
 
-export async function listIdeas(hackathonId: Uuid): Promise<Idea[]> {
+export async function listIdeasForHackathon(
+    hackathonId: Uuid,
+): Promise<Idea[]> {
   const output = await dynamoDBClient.send(new QueryCommand({
     TableName: process.env.IDEA_TABLE,
     IndexName: process.env.IDEA_BY_HACKATHON_ID_INDEX,
@@ -32,7 +41,62 @@ export async function listIdeas(hackathonId: Uuid): Promise<Idea[]> {
       `Ideas for Hackathon with id: ${hackathonId} not found`);
 }
 
-export async function putIdea(idea: Idea) {
+export async function listIdeasForCategory(
+    categoryId: Uuid,
+): Promise<Idea[]> {
+  const output = await dynamoDBClient.send(new QueryCommand({
+    TableName: process.env.IDEA_TABLE,
+    IndexName: process.env.IDEA_BY_CATEGORY_ID_INDEX,
+    KeyConditionExpression: 'categoryId = :cId',
+    ExpressionAttributeValues: {':cId': {'S': categoryId}},
+  }));
+
+  const items = output.Items;
+  if (items) {
+    return items.map((item) => itemToIdea(item));
+  }
+
+  throw new NotFoundError(
+      `Ideas for Category with id: ${categoryId} not found`);
+}
+
+export async function listIdeasForParticipant(
+    participantId: Uuid,
+): Promise<Idea[]> {
+  const output = await dynamoDBClient.send(new ScanCommand({
+    TableName: process.env.IDEA_TABLE,
+    FilterExpression: 'contains(participantIds, :pId)',
+    ExpressionAttributeValues: {':pId': {'S': participantId}},
+  }));
+
+  const items = output.Items;
+  if (items) {
+    return items.map((item) => itemToIdea(item));
+  }
+
+  throw new NotFoundError(
+      `Ideas for Participant with id: ${participantId} not found`);
+}
+
+export async function listIdeasForOwner(ownerId: Uuid): Promise<Idea[]> {
+  const output = await dynamoDBClient.send(new QueryCommand({
+    TableName: process.env.IDEA_TABLE,
+    IndexName: process.env.IDEA_BY_OWNER_ID_INDEX,
+    KeyConditionExpression: 'ownerId = :oId',
+    ExpressionAttributeValues: {':oId': {'S': ownerId}},
+  }));
+
+  const items = output.Items;
+  if (items) {
+    return items.map((item) => itemToIdea(item));
+  }
+
+  throw new NotFoundError(`Ideas for Owner with id: ${ownerId} not found`);
+}
+
+export async function putIdea(
+    idea: Idea,
+): Promise<void> {
   await dynamoDBClient.send(new PutItemCommand({
     TableName: process.env.IDEA_TABLE,
     Item: {
@@ -65,10 +129,32 @@ export async function getIdea(id: Uuid): Promise<Idea> {
   throw new NotFoundError(`Idea with id: ${id} not found`);
 }
 
-export async function deleteIdea(id: Uuid) {
-  await dynamoDBClient.send(new DeleteItemCommand({
+export async function deleteIdea(id: Uuid): Promise<Idea> {
+  const output = await dynamoDBClient.send(new DeleteItemCommand({
     TableName: process.env.IDEA_TABLE,
     Key: {id: {S: id}},
+    ReturnValues: 'ALL_OLD',
+  }));
+
+  if (output.Attributes) {
+    return itemToIdea(output.Attributes);
+  }
+
+  throw new NotFoundError(`Cannot delete Idea with id ${id}, ` +
+      `it does not exist`);
+}
+
+export async function deleteParticipantFromIdea(
+    ideaId: Uuid,
+    participantId: Uuid,
+): Promise<void> {
+  await dynamoDBClient.send(new UpdateItemCommand({
+    TableName: process.env.IDEA_TABLE,
+    Key: {id: {S: ideaId}},
+    UpdateExpression: 'DELETE participantIds :participant_id',
+    ExpressionAttributeValues: {
+      ':participant_id': {SS: [participantId]},
+    },
   }));
 }
 
@@ -80,10 +166,10 @@ function itemToIdea(item: { [key: string]: AttributeValue }): Idea {
       item.description.S,
       item.problem.S,
       item.goal.S,
-      item.requiredSkills.SS,
+      safeTransformSSMember(item.requiredSkills),
       item.categoryId.S,
       item.id.S!,
       new Date(item.creationDate.S!),
-      item.participantIds.SS,
+      safeTransformSSMember(item.participantIds),
   );
 }

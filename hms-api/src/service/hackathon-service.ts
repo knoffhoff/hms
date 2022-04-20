@@ -1,9 +1,6 @@
 /* eslint-disable require-jsdoc */
 
 import {
-  appendCategoryId,
-  appendIdeaId,
-  appendParticipantId,
   deleteHackathon,
   getHackathon,
   listHackathons,
@@ -12,12 +9,13 @@ import {
 import {listParticipants} from '../repository/participant-repository';
 import {usersFor} from './user-service';
 import {listCategories} from '../repository/category-repository';
-import {listIdeas} from '../repository/idea-repository';
+import {listIdeasForHackathon} from '../repository/idea-repository';
 import Uuid from '../util/Uuid';
 import Hackathon from '../repository/domain/Hackathon';
 import HackathonResponse from '../rest/HackathonResponse';
 import ReferenceNotFoundError from '../error/ReferenceNotFoundError';
 import HackathonListResponse from '../rest/HackathonListResponse';
+import HackathonDeleteResponse from '../rest/HackathonDeleteResponse';
 
 export async function createHackathon(
     title: string,
@@ -29,24 +27,6 @@ export async function createHackathon(
   await putHackathon(hackathon);
 
   return hackathon;
-}
-
-export async function addParticipantToHackathon(
-    hackathonId: Uuid,
-    participantId: Uuid,
-) {
-  await appendParticipantId(hackathonId, participantId);
-}
-
-export async function addCategoryToHackathon(
-    hackathonId: Uuid,
-    categoryId: Uuid,
-) {
-  await appendCategoryId(hackathonId, categoryId);
-}
-
-export async function addIdeaToHackathon(hackathonId: Uuid, ideaId: Uuid) {
-  await appendIdeaId(hackathonId, ideaId);
 }
 
 export async function getHackathonResponse(
@@ -79,7 +59,7 @@ export async function getHackathonResponse(
 
   let ideas;
   try {
-    ideas = await listIdeas(id);
+    ideas = await listIdeasForHackathon(id);
   } catch (e) {
     throw new ReferenceNotFoundError(`Cannot get Hackathon with id: ${id}, ` +
         `unable to list Ideas`);
@@ -95,12 +75,14 @@ export async function getHackathonResponse(
   );
 }
 
-export async function getHackathonListResponse(
-): Promise<HackathonListResponse> {
+export async function getHackathonListResponse(): Promise<HackathonListResponse> {
   const hackathons = await listHackathons();
   return HackathonListResponse.from(hackathons);
 }
 
-export async function removeHackathon(id: Uuid) {
+export async function removeHackathon(
+    id: Uuid,
+): Promise<HackathonDeleteResponse> {
   await deleteHackathon(id);
+  return new HackathonDeleteResponse(id);
 }

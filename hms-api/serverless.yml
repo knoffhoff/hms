@@ -23,11 +23,13 @@ provider:
     USER_TABLE: user
     SKILL_TABLE: skill
     CATEGORY_TABLE: category
-    CATEGORY_BY_HACKATHON_ID_INDEX: by-hackathonId
+    CATEGORY_BY_HACKATHON_ID_INDEX: category-by-hackathonId
     IDEA_TABLE: idea
-    IDEA_BY_HACKATHON_ID_INDEX: by-hackathonId
+    IDEA_BY_HACKATHON_ID_INDEX: idea-by-hackathonId
+    IDEA_BY_CATEGORY_ID_INDEX: idea-by-categoryId
+    IDEA_BY_OWNER_ID_INDEX: idea-by-ownerId
     PARTICIPANT_TABLE: participant
-    PARTICIPANT_BY_HACKATHON_ID_INDEX: by-hackathonId
+    PARTICIPANT_BY_HACKATHON_ID_INDEX: participant-by-hackathonId
   iam:
     role:
       statements:
@@ -48,7 +50,7 @@ provider:
             - arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.IDEA_TABLE}
             - arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.IDEA_TABLE}/index/*
             - arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.PARTICIPANT_TABLE}
-            - arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.PARTICIPANT_BY_HACKATHON_ID_INDEX}/index/*
+            - arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.PARTICIPANT_TABLE}/index/*
 
 functions:
   createHackathon:
@@ -301,6 +303,10 @@ resources:
             AttributeType: S
           - AttributeName: hackathonId
             AttributeType: S
+          - AttributeName: categoryId
+            AttributeType: S
+          - AttributeName: ownerId
+            AttributeType: S
         KeySchema:
           - AttributeName: id
             KeyType: HASH
@@ -308,6 +314,22 @@ resources:
           - IndexName: ${self:provider.environment.IDEA_BY_HACKATHON_ID_INDEX}
             KeySchema:
               - AttributeName: hackathonId
+                KeyType: HASH
+              - AttributeName: id
+                KeyType: RANG
+            Projection:
+              ProjectionType: ALL
+          - IndexName: ${self:provider.environment.IDEA_BY_CATEGORY_ID_INDEX}
+            KeySchema:
+              - AttributeName: categoryId
+                KeyType: HASH
+              - AttributeName: id
+                KeyType: RANG
+            Projection:
+              ProjectionType: ALL
+          - IndexName: ${self:provider.environment.IDEA_BY_OWNER_ID_INDEX}
+            KeySchema:
+              - AttributeName: ownerId
                 KeyType: HASH
               - AttributeName: id
                 KeyType: RANG

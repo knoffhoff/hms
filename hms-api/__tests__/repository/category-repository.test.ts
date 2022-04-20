@@ -1,6 +1,7 @@
 import {
   categoryByHackathonIdIndex,
   categoryTable,
+  mockDeleteItem,
   mockGetItem,
   mockPutItem,
   mockQuery,
@@ -62,15 +63,34 @@ describe('Put Category', () => {
 
 describe('Delete Category', () => {
   test('Happy Path', async () => {
+    const expected = randomCategory();
+    mockDeleteItem(itemFromCategory(expected));
+
+    expect(await deleteCategory(expected.id)).toStrictEqual(expected);
+    expect(mockSend).toHaveBeenCalledWith(
+        expect.objectContaining({
+          input: expect.objectContaining({
+            TableName: categoryTable,
+            Key: {id: {S: expected.id}},
+            ReturnValues: 'ALL_OLD',
+          }),
+        }),
+    );
+  });
+
+  test('Category not found', async () => {
     const id = uuid();
+    mockDeleteItem(null);
 
-    await deleteCategory(id);
-
+    await expect(deleteCategory(id))
+        .rejects
+        .toThrow(NotFoundError);
     expect(mockSend).toHaveBeenCalledWith(
         expect.objectContaining({
           input: expect.objectContaining({
             TableName: categoryTable,
             Key: {id: {S: id}},
+            ReturnValues: 'ALL_OLD',
           }),
         }),
     );

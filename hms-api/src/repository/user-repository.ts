@@ -10,16 +10,19 @@ import {
   ScanCommand,
 } from '@aws-sdk/client-dynamodb';
 import Uuid from '../util/Uuid';
-import {getClient, safeTransformArray} from './dynamo-db';
+import {
+  getClient,
+  safeTransformArray,
+  safeTransformSSMember,
+} from './dynamo-db';
 import {mapRolesToStrings, mapStringToRoles} from './domain/Role';
 import NotFoundError from '../error/NotFoundError';
 
-const table = process.env.USER_TABLE;
 const dynamoDBClient = getClient();
 
 export async function listUsers(): Promise<User[]> {
   const output = await dynamoDBClient.send(new ScanCommand({
-    TableName: table,
+    TableName: process.env.USER_TABLE,
   }));
 
   const items = output.Items;
@@ -32,7 +35,7 @@ export async function listUsers(): Promise<User[]> {
 
 export async function putUser(user: User) {
   await dynamoDBClient.send(new PutItemCommand({
-    TableName: table,
+    TableName: process.env.USER_TABLE,
     Item: {
       lastName: {S: user.lastName},
       firstName: {S: user.firstName},
@@ -48,7 +51,7 @@ export async function putUser(user: User) {
 
 export async function getUser(id: Uuid): Promise<User> {
   const output = await dynamoDBClient.send(new GetItemCommand({
-    TableName: table,
+    TableName: process.env.USER_TABLE,
     Key: {id: {S: id}},
   }));
 
@@ -70,7 +73,7 @@ export async function getUsers(ids: Uuid[]): Promise<User[]> {
 
 export async function userExists(id: Uuid): Promise<boolean> {
   const output = await dynamoDBClient.send(new GetItemCommand({
-    TableName: table,
+    TableName: process.env.USER_TABLE,
     Key: {id: {S: id}},
   }));
 
@@ -78,11 +81,18 @@ export async function userExists(id: Uuid): Promise<boolean> {
 }
 
 export async function deleteUser(id: Uuid) {
-  // TODO determine if something was actually deleted
-  await dynamoDBClient.send(new DeleteItemCommand({
-    TableName: table,
+  const output = await dynamoDBClient.send(new DeleteItemCommand({
+    TableName: process.env.USER_TABLE,
     Key: {id: {S: id}},
+    ReturnValues: 'ALL_OLD',
   }));
+
+  if (output.Attributes) {
+    return itemToUser(output.Attributes);
+  }
+
+  throw new NotFoundError(`Cannot delete User with id: ${id}, ` +
+      `it does not exist`);
 }
 
 function itemToUser(item: { [key: string]: AttributeValue }): User {
@@ -90,8 +100,8 @@ function itemToUser(item: { [key: string]: AttributeValue }): User {
       item.lastName.S,
       item.firstName.S,
       item.emailAddress.S,
-      mapStringToRoles(item.roles.SS),
-      item.skills.SS,
+      mapStringToRoles(safeTransformSSMember(item.roles)),
+      safeTransformSSMember(item.skills),
       item.imageUrl.S,
       item.id.S!,
       new Date(item.creationDate.S!),
