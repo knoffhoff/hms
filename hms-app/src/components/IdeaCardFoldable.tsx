@@ -67,8 +67,6 @@ export default function IdeaCardFoldable(props: IProps) {
     creationDate: 'string',
   } as Idea)
 
-  const idea: Idea = ideaData
-
   const loadIdeaDetails = () => {
     getIdeaDetails(ideaPreview.id).then(
       (data) => {
@@ -107,7 +105,7 @@ export default function IdeaCardFoldable(props: IProps) {
 
   return (
     <>
-      {!idea.isLoadingIdeaData && (
+      {!ideaData.isLoadingIdeaData && (
         <Card withBorder radius="md" p="md" className={classes.card}>
           <Card.Section
             className={classes.section}
@@ -133,14 +131,16 @@ export default function IdeaCardFoldable(props: IProps) {
               </Group>
 
               <Text size="lg" weight={500}>
-                {idea.title.slice(0, MAX_TITLE_LENGTH)}
-                {idea.title.length > MAX_TITLE_LENGTH ? '...' : ''}
+                {ideaData.title.slice(0, MAX_TITLE_LENGTH)}
+                {ideaData.title.length > MAX_TITLE_LENGTH ? '...' : ''}
               </Text>
             </Group>
 
             <Text size="sm" mt="xs">
-              {idea.description.slice(0, MAX_DESCRIPTION_LENGTH)}
-              {idea.description.length > MAX_DESCRIPTION_LENGTH ? '...' : ''}
+              {ideaData.description.slice(0, MAX_DESCRIPTION_LENGTH)}
+              {ideaData.description.length > MAX_DESCRIPTION_LENGTH
+                ? '...'
+                : ''}
             </Text>
           </Card.Section>
 
@@ -151,7 +151,7 @@ export default function IdeaCardFoldable(props: IProps) {
                   Skills required
                 </Text>
                 <Group spacing={7} mt={5}>
-                  {idea.requiredSkills.map((skill) => (
+                  {ideaData.requiredSkills!.map((skill) => (
                     <Badge
                       color={theme.colorScheme === 'dark' ? 'dark' : 'gray'}
                       key={skill.id}
@@ -176,7 +176,7 @@ export default function IdeaCardFoldable(props: IProps) {
                       Problem
                     </Text>
                     <Text size="sm" mt="xs">
-                      {idea.problem}
+                      {ideaData.problem}
                     </Text>
                   </Card.Section>
 
@@ -185,7 +185,7 @@ export default function IdeaCardFoldable(props: IProps) {
                       Goal
                     </Text>
                     <Text size="sm" mt="xs">
-                      {idea.goal}
+                      {ideaData.goal}
                     </Text>
                   </Card.Section>
 
