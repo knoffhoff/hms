@@ -51,49 +51,6 @@ export default function IdeaCardFoldable(props: IProps) {
     initialItem: -1,
   })
   const { ideas, type } = props
-  /*const [ideaData, setIdeaData] = useState({
-    errorIdeaData: false,
-    isLoadingIdeaData: true,
-    id: 'string',
-    owner: undefined,
-    hackathon: undefined,
-    participants: [],
-    title: 'string',
-    description: 'string',
-    problem: 'string',
-    goal: 'string',
-    requiredSkills: [],
-    category: undefined,
-    creationDate: 'string',
-  } as Idea)*/
-
-  /*const loadIdeaDetails = () => {
-    getIdeaDetails(ideaPreview.id).then(
-      (data) => {
-        setIdeaData({
-          id: data.id,
-          owner: data.owner,
-          hackathon: data.hackathon,
-          participants: data.participants,
-          title: data.title,
-          description: data.description,
-          problem: data.problem,
-          goal: data.goal,
-          requiredSkills: data.requiredSkills,
-          category: data.category,
-          creationDate: data.creationDate,
-          errorIdeaData: false,
-          isLoadingIdeaData: false,
-        })
-      },
-      () => {
-        setIdeaData({
-          ...ideaData,
-        })
-      }
-    )
-  }*/
-
   const MAX_TITLE_LENGTH = 45
   const MAX_DESCRIPTION_LENGTH = type === 'voting' ? 200 : 245
 
@@ -110,10 +67,6 @@ export default function IdeaCardFoldable(props: IProps) {
       {participant.user.firstName} {participant.user.lastName}
     </div>
   ))
-
-  /*useEffect(() => {
-    loadIdeaDetails()
-  }, [])*/
 
   return (
     <>
@@ -145,14 +98,14 @@ export default function IdeaCardFoldable(props: IProps) {
               </Group>
 
               <Text size="lg" weight={500}>
-                {ideas.title.slice(0, MAX_TITLE_LENGTH)}
-                {ideas.title.length > MAX_TITLE_LENGTH ? '...' : ''}
+                {ideas.title?.slice(0, MAX_TITLE_LENGTH)}
+                {ideas.title?.length > MAX_TITLE_LENGTH ? '...' : ''}
               </Text>
             </Group>
 
             <Text size="sm" mt="xs">
-              {ideas.description.slice(0, MAX_DESCRIPTION_LENGTH)}
-              {ideas.description.length > MAX_DESCRIPTION_LENGTH ? '...' : ''}
+              {ideas.description?.slice(0, MAX_DESCRIPTION_LENGTH)}
+              {ideas.description?.length > MAX_DESCRIPTION_LENGTH ? '...' : ''}
             </Text>
           </Card.Section>
 

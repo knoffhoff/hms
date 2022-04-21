@@ -14,12 +14,12 @@ function IdeaPortal() {
     errorHackathonData: false,
     isLoadingHackathonData: true,
     title: 'string',
-    startDate: '',
-    endDate: '',
-    participants: null,
-    categories: null,
-    ideas: [] as IdeaPreview[],
-  })
+    startDate: 'string',
+    endDate: 'string',
+    participants: [],
+    categories: undefined,
+    ideas: [],
+  } as Hackathon)
   const [ideaData, setIdeaData] = useState({
     errorIdeaData: false,
     isLoadingIdeaData: true,
@@ -66,7 +66,7 @@ function IdeaPortal() {
   }, [])
 
   const loadRelevantIdeaDetails = () => {
-    hackathonData.ideas.map((ideaPreviews) => {
+    hackathonData.ideas?.map((ideaPreviews) => {
       getIdeaDetails(ideaPreviews.id).then(
         (data) => {
           setIdeaData({
@@ -99,12 +99,6 @@ function IdeaPortal() {
   }, [hackathonData])
 
   useEffect(() => {
-    console.log('idea list ', relevantIdeaList.length)
-    console.log('hackathon list ', hackathonData.ideas.length)
-
-    /*if (relevantIdeaList.length > hackathonData.ideas.length) {
-      relevantIdeaList.shift()
-    }*/
     if (
       !relevantIdeaList
         .map((relevant) => {
@@ -118,15 +112,11 @@ function IdeaPortal() {
     }
   }, [ideaData])
 
-  console.log('relevantlist', relevantIdeaList)
-  /*console.log('ideaData', ideaData)
-  console.log('relevantIdeaDetail', loadRelevantIdeaDetails)*/
-
   const handleChangeSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value)
   }
 
-  const filteredIdeas = relevantIdeaList.filter((item) => {
+  const filteredIdeas = relevantIdeaList.slice(1).filter((item) => {
     return item.title?.toLowerCase().includes(searchTerm.toLowerCase())
   })
 
@@ -161,10 +151,11 @@ function IdeaPortal() {
             from: {new Date(hackathonData.startDate).toDateString()} to:{' '}
             {new Date(hackathonData.endDate).toDateString()}
           </h2>
+          <h2>All Ideas ({hackathonData.ideas?.length})</h2>
 
-          <div style={{ border: '1px solid red' }}>
+          <div>
             <IdeaCardList
-              ideas={filteredIdeas.slice(1)}
+              ideas={filteredIdeas}
               columnSize={6}
               type={'idea-portal'}
             />
