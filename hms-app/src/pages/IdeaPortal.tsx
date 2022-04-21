@@ -4,8 +4,8 @@ import { Input, Group, Title } from '@mantine/core'
 import { Search } from 'tabler-icons-react'
 import IdeaCardList from '../components/IdeaCardList'
 import HackathonDetails from '../components/HackathonDetails'
-import { Hackathon, IdeaPreview } from '../common/types'
-import { getHackathonDetails } from '../actions/GetBackendData'
+import { Hackathon, Idea, IdeaPreview } from '../common/types'
+import { getHackathonDetails, getIdeaDetails } from '../actions/GetBackendData'
 
 function IdeaPortal() {
   const [searchTerm, setSearchTerm] = useState('')
@@ -20,8 +20,24 @@ function IdeaPortal() {
     categories: null,
     ideas: [] as IdeaPreview[],
   })
+  const [ideaData, setIdeaData] = useState({
+    errorIdeaData: false,
+    isLoadingIdeaData: true,
+    id: 'string',
+    owner: undefined,
+    hackathon: undefined,
+    participants: [],
+    title: 'string',
+    description: 'string',
+    problem: 'string',
+    goal: 'string',
+    requiredSkills: [],
+    category: undefined,
+    creationDate: 'string',
+  } as Idea)
+  const [relevantIdeaList, setRelevantIdeaList] = useState([] as Idea[])
 
-  const loadSelectedHackathon = () => {
+  const loadSelectedHackathonData = () => {
     getHackathonDetails(hackathonID).then(
       (data) => {
         setHackathonData({
@@ -44,16 +60,74 @@ function IdeaPortal() {
       }
     )
   }
+
   useEffect(() => {
-    loadSelectedHackathon()
+    loadSelectedHackathonData()
   }, [])
+
+  const loadRelevantIdeaDetails = () => {
+    hackathonData.ideas.map((ideaPreviews) => {
+      getIdeaDetails(ideaPreviews.id).then(
+        (data) => {
+          setIdeaData({
+            id: data.id,
+            owner: data.owner,
+            hackathon: data.hackathon,
+            participants: data.participants,
+            title: data.title,
+            description: data.description,
+            problem: data.problem,
+            goal: data.goal,
+            requiredSkills: data.requiredSkills,
+            category: data.category,
+            creationDate: data.creationDate,
+            errorIdeaData: false,
+            isLoadingIdeaData: false,
+          })
+        },
+        () => {
+          setIdeaData({
+            ...ideaData,
+          })
+        }
+      )
+    })
+  }
+
+  useEffect(() => {
+    loadRelevantIdeaDetails()
+  }, [hackathonData])
+
+  useEffect(() => {
+    console.log('idea list ', relevantIdeaList.length)
+    console.log('hackathon list ', hackathonData.ideas.length)
+
+    /*if (relevantIdeaList.length > hackathonData.ideas.length) {
+      relevantIdeaList.shift()
+    }*/
+    if (
+      !relevantIdeaList
+        .map((relevant) => {
+          return relevant.id
+        })
+        .includes(ideaData.id)
+    ) {
+      setRelevantIdeaList((relevantIdeaList) => {
+        return [...relevantIdeaList, ideaData]
+      })
+    }
+  }, [ideaData])
+
+  console.log('relevantlist', relevantIdeaList)
+  /*console.log('ideaData', ideaData)
+  console.log('relevantIdeaDetail', loadRelevantIdeaDetails)*/
 
   const handleChangeSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value)
   }
 
-  const filteredIdeas = hackathonData.ideas.filter((item) => {
-    return item.title.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredIdeas = relevantIdeaList.filter((item) => {
+    return item.title?.toLowerCase().includes(searchTerm.toLowerCase())
   })
 
   return (
@@ -90,7 +164,7 @@ function IdeaPortal() {
 
           <div style={{ border: '1px solid red' }}>
             <IdeaCardList
-              ideaPreviews={filteredIdeas}
+              ideas={filteredIdeas.slice(1)}
               columnSize={6}
               type={'idea-portal'}
             />

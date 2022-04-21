@@ -70,11 +70,11 @@ export default function HackathonDetails(props: IProps) {
             {new Date(hackathonData.endDate).toDateString()}
           </h2>
 
-          <IdeaCardList
+          {/*<IdeaCardList
             ideaPreviews={hackathonData.ideas!}
             columnSize={6}
             type={'Archive'}
-          />
+          />*/}
         </div>
       )}
     </>
