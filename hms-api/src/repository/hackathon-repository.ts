@@ -8,10 +8,9 @@ import {
   GetItemCommand,
   PutItemCommand,
   ScanCommand,
-  UpdateItemCommand,
 } from '@aws-sdk/client-dynamodb';
 import Uuid from '../util/Uuid';
-import {getClient, safeTransformArray} from './dynamo-db';
+import {getClient} from './dynamo-db';
 import NotFoundError from '../error/NotFoundError';
 
 const table = process.env.HACKATHON_TABLE;
@@ -39,45 +38,6 @@ export async function putHackathon(hackathon: Hackathon) {
       endDate: {S: hackathon.endDate.toISOString()},
       id: {S: hackathon.id},
       creationDate: {S: hackathon.creationDate.toISOString()},
-      participantIds: safeTransformArray(hackathon.participantIds),
-      categoryIds: safeTransformArray(hackathon.categoryIds),
-      ideaIds: safeTransformArray(hackathon.ideaIds),
-    },
-  }));
-}
-
-export async function appendParticipantId(
-    hackathonId: Uuid,
-    participantId: Uuid,
-) {
-  await dynamoDBClient.send(new UpdateItemCommand({
-    TableName: table,
-    Key: {id: {S: hackathonId}},
-    UpdateExpression: 'ADD participantIds :participant_id',
-    ExpressionAttributeValues: {
-      ':participant_id': {SS: [participantId]},
-    },
-  }));
-}
-
-export async function appendCategoryId(hackathonId: Uuid, categoryId: Uuid) {
-  await dynamoDBClient.send(new UpdateItemCommand({
-    TableName: table,
-    Key: {id: {S: hackathonId}},
-    UpdateExpression: 'ADD categoryIds :category_id',
-    ExpressionAttributeValues: {
-      ':category_id': {SS: [categoryId]},
-    },
-  }));
-}
-
-export async function appendIdeaId(hackathonId: Uuid, ideaId: Uuid) {
-  await dynamoDBClient.send(new UpdateItemCommand({
-    TableName: table,
-    Key: {id: {S: hackathonId}},
-    UpdateExpression: 'ADD ideaIds :idea_id',
-    ExpressionAttributeValues: {
-      ':idea_id': {SS: [ideaId]},
     },
   }));
 }
@@ -106,11 +66,18 @@ export async function hackathonExists(id: Uuid): Promise<boolean> {
 }
 
 export async function deleteHackathon(id: Uuid) {
-  // TODO determine if something was actually deleted
-  await dynamoDBClient.send(new DeleteItemCommand({
+  const output = await dynamoDBClient.send(new DeleteItemCommand({
     TableName: table,
     Key: {id: {S: id}},
+    ReturnValues: 'ALL_OLD',
   }));
+
+  if (output.Attributes) {
+    return itemToHackathon(output.Attributes);
+  }
+
+  throw new NotFoundError(`Cannot delete Hackathon with id: ${id}, ` +
+      `it does not exist`);
 }
 
 function itemToHackathon(item: { [key: string]: AttributeValue }): Hackathon {
@@ -120,8 +87,5 @@ function itemToHackathon(item: { [key: string]: AttributeValue }): Hackathon {
       new Date(item.endDate.S),
       item.id.S!,
       new Date(item.creationDate.S!),
-      item.participantIds.SS,
-      item.categoryIds.SS,
-      item.ideaIds.SS,
   );
 }

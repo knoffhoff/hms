@@ -13,14 +13,12 @@ import {getClient} from './dynamo-db';
 import Category from './domain/Category';
 import NotFoundError from '../error/NotFoundError';
 
-const table = process.env.CATEGORY_TABLE;
-const byHackathonIdIndex = process.env.CATEGORY_BY_HACKATHON_ID_INDEX;
 const dynamoDBClient = getClient();
 
 export async function listCategories(hackathonId: Uuid): Promise<Category[]> {
   const output = await dynamoDBClient.send(new QueryCommand({
-    TableName: table,
-    IndexName: byHackathonIdIndex,
+    TableName: process.env.CATEGORY_TABLE,
+    IndexName: process.env.CATEGORY_BY_HACKATHON_ID_INDEX,
     KeyConditionExpression: 'hackathonId = :hId',
     ExpressionAttributeValues: {':hId': {'S': hackathonId}},
   }));
@@ -36,7 +34,7 @@ export async function listCategories(hackathonId: Uuid): Promise<Category[]> {
 
 export async function putCategory(category: Category) {
   await dynamoDBClient.send(new PutItemCommand({
-    TableName: table,
+    TableName: process.env.CATEGORY_TABLE,
     Item: {
       title: {S: category.title},
       description: {S: category.description},
@@ -48,7 +46,7 @@ export async function putCategory(category: Category) {
 
 export async function getCategory(id: Uuid): Promise<Category> {
   const output = await dynamoDBClient.send(new GetItemCommand({
-    TableName: table,
+    TableName: process.env.CATEGORY_TABLE,
     Key: {id: {S: id}},
   }));
 
@@ -62,18 +60,26 @@ export async function getCategory(id: Uuid): Promise<Category> {
 
 export async function categoryExists(id: Uuid): Promise<boolean> {
   const output = await dynamoDBClient.send(new GetItemCommand({
-    TableName: table,
+    TableName: process.env.CATEGORY_TABLE,
     Key: {id: {S: id}},
   }));
 
   return !!output.Item;
 }
 
-export async function deleteCategory(id: Uuid) {
-  await dynamoDBClient.send(new DeleteItemCommand({
-    TableName: table,
+export async function deleteCategory(id: Uuid): Promise<Category> {
+  const output = await dynamoDBClient.send(new DeleteItemCommand({
+    TableName: process.env.CATEGORY_TABLE,
     Key: {id: {S: id}},
+    ReturnValues: 'ALL_OLD',
   }));
+
+  if (output.Attributes) {
+    return itemToCategory(output.Attributes);
+  }
+
+  throw new NotFoundError(`Cannot delete Category with id: ${id}, ` +
+      `it does not exist`);
 }
 
 function itemToCategory(item: { [key: string]: AttributeValue }): Category {

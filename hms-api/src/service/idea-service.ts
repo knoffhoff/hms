@@ -13,19 +13,23 @@ import {categoryExists, getCategory} from '../repository/category-repository';
 import {getSkills, skillExists} from '../repository/skill-repository';
 import {
   deleteIdea,
+  deleteParticipantFromIdea,
   getIdea,
-  listIdeas,
+  listIdeasForCategory,
+  listIdeasForHackathon,
+  listIdeasForOwner,
+  listIdeasForParticipant,
   putIdea,
 } from '../repository/idea-repository';
 import {usersFor} from './user-service';
 import {getUser} from '../repository/user-repository';
-import {addIdeaToHackathon} from './hackathon-service';
 import Uuid from '../util/Uuid';
 import Idea from '../repository/domain/Idea';
 import ReferenceNotFoundError from '../error/ReferenceNotFoundError';
 import IdeaResponse from '../rest/IdeaResponse';
 import IdeaListResponse from '../rest/IdeaListResponse';
-import ReferenceUpdateError from '../error/ReferenceUpdateError';
+import IdeaDeleteResponse from '../rest/IdeaDeleteResponse';
+import DeletionError from '../error/DeletionError';
 
 export async function createIdea(
     ownerId: Uuid,
@@ -61,15 +65,6 @@ export async function createIdea(
       categoryId,
   );
   await putIdea(idea);
-
-  try {
-    await addIdeaToHackathon(idea.hackathonId, idea.id);
-  } catch (e) {
-    await deleteIdea(idea.id);
-    throw new ReferenceUpdateError(`Failed to create Idea, ` +
-        `failed to add Idea to linked Hackathon with id ${idea.hackathonId}`);
-  }
-
   return idea;
 }
 
@@ -149,12 +144,58 @@ export async function getIdeaResponse(id: Uuid): Promise<IdeaResponse> {
 export async function getIdeaListResponse(
     hackathonId: Uuid,
 ): Promise<IdeaListResponse> {
-  const ideas = await listIdeas(hackathonId);
+  const ideas = await listIdeasForHackathon(hackathonId);
   return IdeaListResponse.from(ideas, hackathonId);
 }
 
-export async function removeIdea(id: Uuid) {
+export async function removeIdea(
+    id: Uuid,
+): Promise<IdeaDeleteResponse> {
   await deleteIdea(id);
+  return new IdeaDeleteResponse(id);
+}
+
+// TODO this could be done using a Batch operation
+export async function removeIdeasForCategory(
+    categoryId: Uuid,
+): Promise<void> {
+  const ideas = await listIdeasForCategory(categoryId);
+  for (const idea of ideas) {
+    try {
+      await deleteIdea(idea.id);
+    } catch (e) {
+      throw new DeletionError(`Unable to delete all Ideas for Category with ` +
+          `id: ${categoryId}, Idea with id: ${idea.id} failed to delete`);
+    }
+  }
+}
+
+// TODO this could be done using a Batch operation
+export async function removeIdeasForOwner(ownerId: Uuid): Promise<void> {
+  const ideas = await listIdeasForOwner(ownerId);
+  for (const idea of ideas) {
+    try {
+      await deleteIdea(idea.id);
+    } catch (e) {
+      throw new DeletionError(`Unable to delete all Ideas for Owner with ` +
+          `id: ${ownerId}, Idea with id: ${idea.id} failed to delete`);
+    }
+  }
+}
+
+export async function removeParticipantFromIdeas(
+    participantId: Uuid,
+): Promise<void> {
+  const ideas = await listIdeasForParticipant(participantId);
+  for (const idea of ideas) {
+    try {
+      await deleteParticipantFromIdea(idea.id, participantId);
+    } catch (e) {
+      throw new DeletionError(`Unable to delete Participant from all Ideas, ` +
+          `Participant with id: ${participantId} failed to be deleted from ` +
+          `Idea with id: ${idea.id}`);
+    }
+  }
 }
 
 async function verifyAllSkillsExist(skillIds: Uuid[]): Promise<void> {

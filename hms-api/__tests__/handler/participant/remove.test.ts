@@ -3,6 +3,7 @@ import {remove} from '../../../src/handler/participant/remove';
 import ParticipantDeleteResponse
   from '../../../src/rest/ParticipantDeleteResponse';
 import Uuid, {uuid} from '../../../src/util/Uuid';
+import UserDeleteResponse from '../../../src/rest/UserDeleteResponse';
 
 const mockRemoveParticipant = jest.fn();
 jest.spyOn(participantService, 'removeParticipant')
@@ -11,6 +12,7 @@ jest.spyOn(participantService, 'removeParticipant')
 describe('Delete Participant', () => {
   test('Happy Path', async () => {
     const id = uuid();
+    mockRemoveParticipant.mockResolvedValue(new UserDeleteResponse(id));
     const event = toEvent(id);
     const callback = jest.fn();
 

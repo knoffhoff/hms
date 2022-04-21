@@ -13,12 +13,11 @@ import {
 import Uuid from '../util/Uuid';
 import NotFoundError from '../error/NotFoundError';
 
-const table = process.env.SKILL_TABLE;
 const dynamoDBClient = getClient();
 
 export async function listSkills(): Promise<Skill[]> {
   const output = await dynamoDBClient.send(new ScanCommand({
-    TableName: table,
+    TableName: process.env.SKILL_TABLE,
   }));
 
   const items = output.Items;
@@ -31,7 +30,7 @@ export async function listSkills(): Promise<Skill[]> {
 
 export async function putSkill(skill: Skill) {
   await dynamoDBClient.send(new PutItemCommand({
-    TableName: table,
+    TableName: process.env.SKILL_TABLE,
     Item: {
       name: {S: skill.name},
       description: {S: skill.description},
@@ -42,7 +41,7 @@ export async function putSkill(skill: Skill) {
 
 export async function getSkill(id: Uuid): Promise<Skill> {
   const output = await dynamoDBClient.send(new GetItemCommand({
-    TableName: table,
+    TableName: process.env.SKILL_TABLE,
     Key: {id: {S: id}},
   }));
 
@@ -65,19 +64,26 @@ export async function getSkills(ids: Uuid[]): Promise<Skill[]> {
 
 export async function skillExists(id: Uuid): Promise<boolean> {
   const output = await dynamoDBClient.send(new GetItemCommand({
-    TableName: table,
+    TableName: process.env.SKILL_TABLE,
     Key: {id: {S: id}},
   }));
 
   return !!output.Item;
 }
 
-export async function deleteSkill(id: Uuid) {
-  // TODO determine if something was actually deleted
-  await dynamoDBClient.send(new DeleteItemCommand({
-    TableName: table,
+export async function deleteSkill(id: Uuid): Promise<Skill> {
+  const output = await dynamoDBClient.send(new DeleteItemCommand({
+    TableName: process.env.SKILL_TABLE,
     Key: {id: {S: id}},
+    ReturnValues: 'ALL_OLD',
   }));
+
+  if (output.Attributes) {
+    return itemToSkill(output.Attributes);
+  }
+
+  throw new NotFoundError(`Cannot delete Skill with id: ${id}, ` +
+      `it does not exist`);
 }
 
 function itemToSkill(item: { [key: string]: AttributeValue }): Skill {

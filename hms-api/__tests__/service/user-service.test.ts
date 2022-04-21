@@ -24,6 +24,7 @@ import {randomSkill} from '../repository/domain/skill-maker';
 import NotFoundError from '../../src/error/NotFoundError';
 import UserResponse from '../../src/rest/UserResponse';
 import UserListResponse from '../../src/rest/UserListResponse';
+import UserDeleteResponse from '../../src/rest/UserDeleteResponse';
 
 const mockGetSkills = jest.fn();
 jest.spyOn(skillRepository, 'getSkills')
@@ -200,7 +201,7 @@ describe('Users For', () => {
 describe('Delete User', () => {
   test('Happy Path', async () => {
     const id = uuid();
-    await removeUser(id);
+    expect(await removeUser(id)).toStrictEqual(new UserDeleteResponse(id));
     expect(mockDeleteUser).toHaveBeenCalledWith(id);
   });
 });

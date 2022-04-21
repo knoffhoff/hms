@@ -15,6 +15,7 @@ import Role from '../repository/domain/Role';
 import ReferenceNotFoundError from '../error/ReferenceNotFoundError';
 import UserResponse from '../rest/UserResponse';
 import UserListResponse from '../rest/UserListResponse';
+import UserDeleteResponse from '../rest/UserDeleteResponse';
 
 export async function createUser(
     lastName: string,
@@ -57,8 +58,9 @@ export async function getUserListResponse(): Promise<UserListResponse> {
   return UserListResponse.from(users);
 }
 
-export async function removeUser(id: Uuid) {
+export async function removeUser(id: Uuid): Promise<UserDeleteResponse> {
   await deleteUser(id);
+  return new UserDeleteResponse(id);
 }
 
 export async function usersFor(participants: Participant[]): Promise<User[]> {

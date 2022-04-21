@@ -11,6 +11,7 @@ import * as skillRepository from '../../src/repository/skill-repository';
 import SkillResponse from '../../src/rest/SkillResponse';
 import NotFoundError from '../../src/error/NotFoundError';
 import SkillListResponse from '../../src/rest/SkillListResponse';
+import SkillDeleteResponse from '../../src/rest/SkillDeleteResponse';
 
 const mockPutSkill = jest.fn();
 jest.spyOn(skillRepository, 'putSkill')
@@ -85,7 +86,7 @@ describe('Get Skill List Response', () => {
 describe('Delete Skill', () => {
   test('Happy Path', async () => {
     const id = uuid();
-    await removeSkill(id);
+    expect(await removeSkill(id)).toStrictEqual(new SkillDeleteResponse(id));
     expect(mockDeleteSkill).toHaveBeenCalledWith(id);
   });
 });

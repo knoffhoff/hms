@@ -2,7 +2,6 @@
 
 import NotFoundError from '../error/NotFoundError';
 import ReferenceNotFoundError from '../error/ReferenceNotFoundError';
-import ReferenceUpdateError from '../error/ReferenceUpdateError';
 
 const headers = {
   'Access-Control-Allow-Origin': '*',
@@ -28,14 +27,6 @@ export function buildReferenceNotFoundErrorResponse(
 
 export function buildNotFoundErrorResponse(error: NotFoundError): any {
   return buildResponse(404, {
-    errorMessage: error.message,
-  });
-}
-
-export function buildReferenceUpdateErrorResponse(
-    error: ReferenceUpdateError,
-): any {
-  return buildResponse(500, {
     errorMessage: error.message,
   });
 }
