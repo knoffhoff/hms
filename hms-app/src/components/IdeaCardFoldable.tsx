@@ -116,7 +116,7 @@ export default function IdeaCardFoldable(props: IProps) {
                   Skills required
                 </Text>
                 <Group spacing={7} mt={5}>
-                  {ideas.requiredSkills!.map((skill) => (
+                  {ideas.requiredSkills?.map((skill) => (
                     <Badge
                       color={theme.colorScheme === 'dark' ? 'dark' : 'gray'}
                       key={skill.id}

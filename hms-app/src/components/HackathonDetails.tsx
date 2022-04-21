@@ -63,6 +63,10 @@ export default function HackathonDetails(props: IProps) {
   useEffect(() => {
     loadSelectedHackathon()
     setRelevantIdeaList([])
+    setHackathonData({
+      ...hackathonData,
+      isLoadingHackathonData: true,
+    })
   }, [hackathonID])
 
   const loadRelevantIdeaDetails = () => {
@@ -126,7 +130,7 @@ export default function HackathonDetails(props: IProps) {
         </div>
       )}
 
-      {hackathonData.startDate && (
+      {hackathonData.startDate && !hackathonData.isLoadingHackathonData && (
         <div>
           <h2>Title: {hackathonData.title}</h2>
           <h2>
