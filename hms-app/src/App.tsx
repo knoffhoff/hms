@@ -9,6 +9,7 @@ import Archive from './pages/Archive'
 import NoPage from './pages/NoPage'
 import LogInPage from './pages/LogInPage'
 import Voting from './pages/Voting'
+import AdminPage from './pages/AdminPage'
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
         <Route path="your-ideas" element={<YourIdeas />} />
         <Route path="archive" element={<Archive />} />
         <Route path="voting" element={<Voting />} />
+        <Route path="admin" element={<AdminPage />} />
         <Route path="*" element={<NoPage />} />
       </Route>
     </Routes>

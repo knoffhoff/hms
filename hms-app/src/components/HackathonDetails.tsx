@@ -67,6 +67,7 @@ export default function HackathonDetails(props: IProps) {
       ...hackathonData,
       isLoadingHackathonData: true,
     })
+    console.log('hackathonData', hackathonData)
   }, [hackathonID])
 
   const loadRelevantIdeaDetails = () => {
