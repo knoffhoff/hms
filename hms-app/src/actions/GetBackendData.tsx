@@ -53,7 +53,11 @@ export const getIdeaDetails = (ideaID: string): Promise<Idea> => {
     .catch((err) => console.log(err))
 }
 
-export const createHackathon = (props: string[]) => {
+export const createHackathon = (props: {
+  endDate: string
+  title: string
+  startDate: string
+}) => {
   return fetch(
     `http://localhost:4566/restapis/${api_id}/local/_user_request_/hackathon`,
     {
@@ -63,9 +67,35 @@ export const createHackathon = (props: string[]) => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        title: 'Hackweek 2022',
-        startDate: '2022-09-01',
-        endDate: '2022-09-05',
+        title: props.title,
+        startDate: props.startDate,
+        endDate: props.endDate,
+      }),
+    }
+  )
+    .then((response) => {
+      return response.json()
+    })
+    .catch((err) => console.log(err))
+}
+
+export const addCategory = (props: {
+  title: string
+  description: string
+  hackathonID: string
+}) => {
+  return fetch(
+    `http://localhost:4566/restapis/${api_id}/local/_user_request_/category`,
+    {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        title: props.title,
+        description: props.description,
+        hackathonId: props.hackathonID,
       }),
     }
   )
