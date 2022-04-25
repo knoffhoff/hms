@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { getListOfHackathons } from '../actions/GetBackendData'
+import { getListOfHackathons } from '../actions/HackathonActions'
 import HackathonDetails from '../components/HackathonDetails'
 import { Select } from '@mantine/core'
 import { HackathonPreview } from '../common/types'
@@ -71,7 +71,10 @@ export default function Archive() {
 
       <h1>Selected Hackweek:</h1>
       <div>
-        <HackathonDetails hackathonID={selectedHackweek.toString()} />
+        <HackathonDetails
+          hackathonID={selectedHackweek.toString()}
+          type={'header'}
+        />
       </div>
     </>
   )

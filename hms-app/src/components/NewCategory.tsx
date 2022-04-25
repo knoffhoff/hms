@@ -5,9 +5,10 @@ import {
   createStyles,
   Card,
   SimpleGrid,
+  TextInput,
 } from '@mantine/core'
 import React, { useState } from 'react'
-import { addCategory } from '../actions/GetBackendData'
+import { addCategory } from '../actions/CategoryActions'
 import { showNotification, updateNotification } from '@mantine/notifications'
 import { CheckIcon } from '@modulz/radix-icons'
 

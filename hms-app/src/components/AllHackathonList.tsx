@@ -1,6 +1,6 @@
 import { Group, Button, createStyles, Card, SimpleGrid } from '@mantine/core'
 import React, { useEffect, useState } from 'react'
-import { getListOfHackathons } from '../actions/GetBackendData'
+import { getListOfHackathons } from '../actions/HackathonActions'
 import { HackathonPreview } from '../common/types'
 
 const useStyles = createStyles((theme) => ({

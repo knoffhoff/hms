@@ -15,7 +15,7 @@ export type Hackathon = {
   startDate: string
   endDate: string
   participants?: ParticipantPreview[]
-  categories?: CategoryPreview
+  categories?: CategoryPreview[]
   ideas?: IdeaPreview[]
 }
 

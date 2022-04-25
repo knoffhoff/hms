@@ -13,7 +13,6 @@ import {
   useAccordionState,
 } from '@mantine/core'
 import { Idea, IdeaPreview } from '../common/types'
-import { getIdeaDetails } from '../actions/GetBackendData'
 
 type IProps = {
   ideas: Idea

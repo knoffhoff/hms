@@ -8,7 +8,7 @@ import {
 } from '@mantine/core'
 import React, { useEffect, useState } from 'react'
 import { DatePicker } from '@mantine/dates'
-import { createHackathon } from '../actions/GetBackendData'
+import { createHackathon } from '../actions/HackathonActions'
 import { showNotification, updateNotification } from '@mantine/notifications'
 import { CheckIcon } from '@modulz/radix-icons'
 

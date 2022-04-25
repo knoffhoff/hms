@@ -5,7 +5,8 @@ import { Search } from 'tabler-icons-react'
 import IdeaCardList from '../components/IdeaCardList'
 import HackathonDetails from '../components/HackathonDetails'
 import { Hackathon, Idea, IdeaPreview } from '../common/types'
-import { getHackathonDetails, getIdeaDetails } from '../actions/GetBackendData'
+import { getHackathonDetails } from '../actions/HackathonActions'
+import { getIdeaDetails } from '../actions/IdeaActions'
 
 function IdeaPortal() {
   const [searchTerm, setSearchTerm] = useState('')
