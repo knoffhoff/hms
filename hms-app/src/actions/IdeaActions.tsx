@@ -19,3 +19,20 @@ export const getIdeaDetails = (ideaID: string): Promise<Idea> => {
     })
     .catch((err) => console.log(err))
 }
+
+export const deleteIdea = (ideaID: string) => {
+  return fetch(
+    `http://localhost:4566/restapis/${api_id}/local/_user_request_/idea/${ideaID}`,
+    {
+      method: 'DELETE',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+    }
+  )
+    .then((response) => {
+      return response.json()
+    })
+    .catch((err) => console.log(err))
+}

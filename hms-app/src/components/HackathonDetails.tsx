@@ -5,7 +5,7 @@ import {
 } from '../actions/HackathonActions'
 import IdeaCardList from './IdeaCardList'
 import { Hackathon, Idea } from '../common/types'
-import { getIdeaDetails } from '../actions/IdeaActions'
+import { deleteIdea, getIdeaDetails } from '../actions/IdeaActions'
 import {
   Accordion,
   Button,
@@ -15,7 +15,10 @@ import {
   SimpleGrid,
   Text,
   Modal,
+  TextInput,
 } from '@mantine/core'
+import { deleteCategory } from '../actions/CategoryActions'
+import { deleteParticipant } from '../actions/ParticipantActions'
 
 type IProps = {
   hackathonID: string
@@ -58,7 +61,17 @@ const useStyles = createStyles((theme) => ({
 export default function HackathonDetails(props: IProps) {
   const { classes } = useStyles()
   const { hackathonID, type } = props
-  const [opened, setOpened] = useState(false)
+  const [opened, setOpened] = useState({
+    hackathonModal: false,
+    participantsModal: false,
+    categoriesModal: false,
+    ideasModal: false,
+  })
+  const [deleteIDs, setDeleteIDs] = useState({
+    participantID: '',
+    categoryID: '',
+    ideaID: '',
+  })
   const [hackathonData, setHackathonData] = useState({
     errorHackathonData: false,
     isLoadingHackathonData: true,
@@ -110,22 +123,6 @@ export default function HackathonDetails(props: IProps) {
     )
   }
 
-  const deleteSelectedHackathon = () => {
-    console.log('button pressed')
-    deleteHackathon(hackathonID).then((data) => {
-      setOpened(false)
-    })
-  }
-
-  useEffect(() => {
-    loadSelectedHackathon()
-    setRelevantIdeaList([])
-    setHackathonData({
-      ...hackathonData,
-      isLoadingHackathonData: true,
-    })
-  }, [hackathonID])
-
   const loadRelevantIdeaDetails = () => {
     hackathonData.ideas?.map((ideaPreviews) => {
       getIdeaDetails(ideaPreviews.id).then(
@@ -154,6 +151,51 @@ export default function HackathonDetails(props: IProps) {
       )
     })
   }
+
+  const deleteSelectedHackathon = () => {
+    deleteHackathon(hackathonID).then((data) => {
+      setOpened({
+        ...opened,
+        hackathonModal: false,
+      })
+    })
+  }
+
+  const deleteSelectedIdea = () => {
+    deleteIdea(deleteIDs.ideaID).then((data) => {
+      setOpened({
+        ...opened,
+        ideasModal: false,
+      })
+    })
+  }
+
+  const deleteSelectedCategory = () => {
+    deleteCategory(deleteIDs.categoryID).then((data) => {
+      setOpened({
+        ...opened,
+        categoriesModal: false,
+      })
+    })
+  }
+
+  const deleteSelectedParticipant = () => {
+    deleteParticipant(deleteIDs.participantID).then((data) => {
+      setOpened({
+        ...opened,
+        participantsModal: false,
+      })
+    })
+  }
+
+  useEffect(() => {
+    loadSelectedHackathon()
+    setRelevantIdeaList([])
+    setHackathonData({
+      ...hackathonData,
+      isLoadingHackathonData: true,
+    })
+  }, [hackathonID])
 
   useEffect(() => {
     loadRelevantIdeaDetails()
@@ -277,6 +319,7 @@ export default function HackathonDetails(props: IProps) {
                 </Card.Section>
               </SimpleGrid>
             </Card.Section>
+
             <Accordion iconPosition="left">
               <Accordion.Item
                 label={
@@ -286,8 +329,57 @@ export default function HackathonDetails(props: IProps) {
                 }
               >
                 <ol>{categoriesPreviewData}</ol>
+                <Modal
+                  centered
+                  opened={opened.categoriesModal}
+                  onClose={() =>
+                    setOpened({
+                      ...opened,
+                      categoriesModal: false,
+                    })
+                  }
+                  withCloseButton={false}
+                >
+                  Are you sure you want to delete this category?
+                  <h4>Title: (add the name of the category here)</h4>
+                  <Button
+                    color={'red'}
+                    onClick={() => deleteSelectedCategory()}
+                  >
+                    Yes delete this category
+                  </Button>
+                  <p>
+                    (This window will automatically closed as soon as the
+                    category is deleted)
+                  </p>
+                </Modal>
+                <Group position="left" mt="xl">
+                  <TextInput
+                    required
+                    placeholder={'put the category id here'}
+                    value={deleteIDs.categoryID}
+                    onChange={(event) =>
+                      setDeleteIDs({
+                        ...deleteIDs,
+                        categoryID: event.currentTarget.value,
+                      })
+                    }
+                  />
+                  <Button
+                    color={'red'}
+                    onClick={() =>
+                      setOpened({
+                        ...opened,
+                        categoriesModal: true,
+                      })
+                    }
+                  >
+                    Delete Category
+                  </Button>
+                </Group>
               </Accordion.Item>
             </Accordion>
+
             <Accordion iconPosition="left">
               <Accordion.Item
                 label={
@@ -297,8 +389,57 @@ export default function HackathonDetails(props: IProps) {
                 }
               >
                 <ol>{participantsPreviewData}</ol>
+                <Modal
+                  centered
+                  opened={opened.participantsModal}
+                  onClose={() =>
+                    setOpened({
+                      ...opened,
+                      participantsModal: false,
+                    })
+                  }
+                  withCloseButton={false}
+                >
+                  Are you sure you want to delete this participant?
+                  <h4>Name: (add the name of the participant here)</h4>
+                  <Button
+                    color={'red'}
+                    onClick={() => deleteSelectedParticipant()}
+                  >
+                    Yes delete this participant
+                  </Button>
+                  <p>
+                    (This window will automatically closed as soon as the idea
+                    is deleted)
+                  </p>
+                </Modal>
+                <Group position="left" mt="xl">
+                  <TextInput
+                    required
+                    placeholder={'put the participant id here'}
+                    value={deleteIDs.participantID}
+                    onChange={(event) =>
+                      setDeleteIDs({
+                        ...deleteIDs,
+                        participantID: event.currentTarget.value,
+                      })
+                    }
+                  />
+                  <Button
+                    color={'red'}
+                    onClick={() =>
+                      setOpened({
+                        ...opened,
+                        participantsModal: true,
+                      })
+                    }
+                  >
+                    Delete Participant
+                  </Button>
+                </Group>
               </Accordion.Item>
             </Accordion>
+
             <Accordion iconPosition="left">
               <Accordion.Item
                 label={
@@ -308,41 +449,100 @@ export default function HackathonDetails(props: IProps) {
                 }
               >
                 <ol>{ideasPreviewData}</ol>
-              </Accordion.Item>
-            </Accordion>
-            <Card.Section className={classes.section}>
-              <Group position="left" mt="xl">
                 <Modal
                   centered
-                  opened={opened}
-                  onClose={() => setOpened(false)}
+                  opened={opened.ideasModal}
+                  onClose={() =>
+                    setOpened({
+                      ...opened,
+                      ideasModal: false,
+                    })
+                  }
                   withCloseButton={false}
                 >
-                  Are you sure you want to delete this hackathon?
-                  <h4>Title: {hackathonData.title}</h4>
-                  <h4>
-                    Date from:
-                    {new Date(hackathonData.startDate).toDateString()}
-                  </h4>
-                  <h4>
-                    to:
-                    {new Date(hackathonData.endDate).toDateString()}
-                  </h4>
-                  <Button
-                    color={'red'}
-                    onClick={() => deleteSelectedHackathon()}
-                  >
-                    Yes delete this hackathon
+                  Are you sure you want to delete this idea?
+                  <h4>Title: (add the name of the idea here)</h4>
+                  <Button color={'red'} onClick={() => deleteSelectedIdea()}>
+                    Yes delete this idea
                   </Button>
                   <p>
-                    (This window will automatically closed as soon as the
-                    hackathon is deleted)
+                    (This window will automatically closed as soon as the idea
+                    is deleted)
                   </p>
                 </Modal>
-                <Button color={'red'} onClick={() => setOpened(true)}>
+                <Group position="left" mt="xl">
+                  <TextInput
+                    required
+                    placeholder={'put the idea id here'}
+                    value={deleteIDs.ideaID}
+                    onChange={(event) =>
+                      setDeleteIDs({
+                        ...deleteIDs,
+                        ideaID: event.currentTarget.value,
+                      })
+                    }
+                  />
+                  <Button
+                    color={'red'}
+                    onClick={() =>
+                      setOpened({
+                        ...opened,
+                        ideasModal: true,
+                      })
+                    }
+                  >
+                    Delete Idea
+                  </Button>
+                </Group>
+              </Accordion.Item>
+            </Accordion>
+
+            <Card.Section className={classes.section}>
+              <Modal
+                centered
+                opened={opened.hackathonModal}
+                onClose={() =>
+                  setOpened({
+                    ...opened,
+                    hackathonModal: false,
+                  })
+                }
+                withCloseButton={false}
+              >
+                Are you sure you want to delete this hackathon?
+                <h4>Title: {hackathonData.title}</h4>
+                <h4>
+                  Date from:
+                  {new Date(hackathonData.startDate).toDateString()}
+                </h4>
+                <h4>
+                  to:
+                  {new Date(hackathonData.endDate).toDateString()}
+                </h4>
+                <Button color={'red'} onClick={() => deleteSelectedHackathon()}>
+                  Yes delete this hackathon
+                </Button>
+                <p>
+                  (This window will automatically closed as soon as the
+                  hackathon is deleted)
+                </p>
+              </Modal>
+              <Group position="left" mt="xl">
+                <Button
+                  color={'red'}
+                  onClick={() =>
+                    setOpened({
+                      ...opened,
+                      hackathonModal: true,
+                    })
+                  }
+                >
                   Delete Hackathon
                 </Button>
                 <Button>Edit Hackathon</Button>
+                <Button color={'green'} onClick={() => loadSelectedHackathon()}>
+                  Reload Details
+                </Button>
               </Group>
             </Card.Section>
           </Card>

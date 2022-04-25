@@ -1,12 +1,5 @@
 import React, { useState } from 'react'
-import {
-  Accordion,
-  Button,
-  Card,
-  createStyles,
-  Group,
-  TextInput,
-} from '@mantine/core'
+import { Accordion, Card, createStyles, Group, TextInput } from '@mantine/core'
 import NewHackathon from '../components/NewHackathon'
 import AllHackathonList from '../components/AllHackathonList'
 import NewCategory from '../components/NewCategory'
@@ -33,13 +26,6 @@ const useStyles = createStyles((theme) => ({
 function AdminPage() {
   const { classes } = useStyles()
   const [hackathonID, setHackathonID] = useState('')
-  const [isLoadingHackathonDetails, setIsLoadingHackathonDetails] =
-    useState(false)
-
-  function submitForm(event: React.MouseEvent<HTMLButtonElement>) {
-    event.preventDefault()
-    setIsLoadingHackathonDetails(true)
-  }
 
   return (
     <>
@@ -79,19 +65,18 @@ function AdminPage() {
             <Card.Section className={classes.section}>
               <Group position="left" mt="xl">
                 <TextInput
+                  label={'Hackathon ID'}
+                  required
                   placeholder={'Hackathon ID'}
                   value={hackathonID}
                   onChange={(event) =>
                     setHackathonID(event.currentTarget.value)
                   }
                 />
-                <Button onClick={submitForm}>Load hackathon details</Button>
               </Group>
             </Card.Section>
             <Card.Section className={classes.section} p={15}>
-              {isLoadingHackathonDetails && (
-                <HackathonDetails hackathonID={hackathonID} type={'fullInfo'} />
-              )}
+              <HackathonDetails hackathonID={hackathonID} type={'fullInfo'} />
             </Card.Section>
           </Card>
         </Accordion.Item>
