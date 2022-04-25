@@ -1,16 +1,30 @@
 import React, { useEffect, useState } from 'react'
 import ideaData from '../test/TestIdeaData'
-import { Input, Group, Title } from '@mantine/core'
+import { Input, Group, Title, Select, Button } from '@mantine/core'
 import { Search } from 'tabler-icons-react'
 import IdeaCardList from '../components/IdeaCardList'
 import HackathonDetails from '../components/HackathonDetails'
-import { Hackathon, Idea, IdeaPreview } from '../common/types'
-import { getHackathonDetails } from '../actions/HackathonActions'
+import { Hackathon, HackathonPreview, Idea, IdeaPreview } from '../common/types'
+import {
+  getHackathonDetails,
+  getListOfHackathons,
+} from '../actions/HackathonActions'
 import { getIdeaDetails } from '../actions/IdeaActions'
+import {
+  createHackathonParticipant,
+  deleteParticipant,
+} from '../actions/ParticipantActions'
 
 function IdeaPortal() {
   const [searchTerm, setSearchTerm] = useState('')
-  const hackathonID = '4eb2d486-c786-431e-a4fd-4c093ed30642'
+  const [selectedHackweek, setSelectedHackweek] = useState(
+    '4eb2d486-c786-431e-a4fd-4c093ed30642'
+  )
+  const [hackathonList, setHackathonList] = useState({
+    errorHackathonList: false,
+    isLoadingHackathonList: true,
+    hackathons: [] as HackathonPreview[],
+  })
   const [hackathonData, setHackathonData] = useState({
     errorHackathonData: false,
     isLoadingHackathonData: true,
@@ -37,9 +51,33 @@ function IdeaPortal() {
     creationDate: 'string',
   } as Idea)
   const [relevantIdeaList, setRelevantIdeaList] = useState([] as Idea[])
+  const [participantInfo, setParticipantInfo] = useState({
+    userId: 'f6fa2b8e-68ed-4486-b8df-f93b87ff23e5',
+    hackathonId: '',
+  })
+
+  const loadHackathons = () => {
+    getListOfHackathons().then(
+      (data) => {
+        setHackathonList({
+          ...hackathonList,
+          hackathons: data.hackathons,
+          errorHackathonList: false,
+          isLoadingHackathonList: false,
+        })
+      },
+      () => {
+        setHackathonList({
+          ...hackathonList,
+          errorHackathonList: true,
+          isLoadingHackathonList: false,
+        })
+      }
+    )
+  }
 
   const loadSelectedHackathonData = () => {
-    getHackathonDetails(hackathonID).then(
+    getHackathonDetails(selectedHackweek).then(
       (data) => {
         setHackathonData({
           title: data.title,
@@ -61,10 +99,6 @@ function IdeaPortal() {
       }
     )
   }
-
-  useEffect(() => {
-    loadSelectedHackathonData()
-  }, [])
 
   const loadRelevantIdeaDetails = () => {
     hackathonData.ideas?.map((ideaPreviews) => {
@@ -96,6 +130,18 @@ function IdeaPortal() {
   }
 
   useEffect(() => {
+    loadHackathons()
+  }, [])
+
+  useEffect(() => {
+    setParticipantInfo({ ...participantInfo, hackathonId: selectedHackweek })
+    loadSelectedHackathonData()
+  }, [selectedHackweek])
+
+  useEffect(() => {
+    setRelevantIdeaList((relevantIdeaList) => {
+      return []
+    })
     loadRelevantIdeaDetails()
   }, [hackathonData])
 
@@ -117,14 +163,48 @@ function IdeaPortal() {
     setSearchTerm(event.target.value)
   }
 
-  const filteredIdeas = relevantIdeaList.slice(1).filter((item) => {
+  const filteredIdeas = relevantIdeaList.filter((item) => {
     return item.title?.toLowerCase().includes(searchTerm.toLowerCase())
   })
+
+  const data = hackathonList.hackathons.map(
+    (hackathon, index) => hackathon.title
+  )
+
+  const selectChange = (value: string) => {
+    const getHackathon = hackathonList.hackathons.filter((hackathon) => {
+      return hackathon.title.includes(value)
+    })
+
+    const selectedHackathonID = getHackathon.map(
+      (hackathon, index) => hackathon.id
+    )
+
+    setSelectedHackweek(selectedHackathonID.toString())
+  }
+
+  const addHackathonParticipant = () => {
+    createHackathonParticipant(participantInfo).then((r) => console.log(r))
+  }
 
   return (
     <>
       <Title order={1}>All ideas</Title>
-      <Group position={'right'} py={20}>
+      <Group position={'apart'} py={20}>
+        {hackathonList.isLoadingHackathonList && (
+          <div>hackathon select is loading...</div>
+        )}
+        {!hackathonList.isLoadingHackathonList && (
+          <div style={{ width: 250 }}>
+            <Select
+              placeholder={'select a Hackathon'}
+              maxDropdownHeight={280}
+              data={data}
+              onChange={selectChange}
+            />
+          </div>
+        )}
+
         <Input
           variant="default"
           placeholder="Search for idea title..."
@@ -152,6 +232,8 @@ function IdeaPortal() {
             from: {new Date(hackathonData.startDate).toDateString()} to:{' '}
             {new Date(hackathonData.endDate).toDateString()}
           </h2>
+          <h4>want to participate in this Hackathon?</h4>
+          <Button onClick={() => addHackathonParticipant()}>Participate</Button>
           <h2>All Ideas ({hackathonData.ideas?.length})</h2>
 
           <div>
