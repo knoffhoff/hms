@@ -22,11 +22,11 @@ function YourIdeas() {
         </Accordion.Item>
       </Accordion>
 
-      <IdeaCardList
+      {/*<IdeaCardList
         ideaPreviews={ideaData}
         columnSize={6}
         type={'your-ideas'}
-      />
+      />*/}
     </>
   )
 }

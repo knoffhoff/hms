@@ -36,24 +36,19 @@ export default function Archive() {
   }
 
   const data = hackathonList.hackathons.map(
-    (hackathon, index) => `${hackathon.id}`
+    (hackathon, index) => hackathon.title
   )
 
-  const data2 = hackathonList.hackathons.map((hackathon, index) => [
-    {
-      value: hackathonList.hackathons[index].id,
-      label: hackathonList.hackathons[index].title,
-    },
-  ])
-  const data3 = hackathonList.hackathons.map((hackathon, index) => [
-    {
-      value: hackathon.id,
-      label: hackathon.title,
-    },
-  ])
-
   const selectChange = (value: string) => {
-    setSelectedHackweek(value)
+    const getHackathon = hackathonList.hackathons.filter((hackathon) => {
+      return hackathon.title.includes(value)
+    })
+
+    const selectedHackathonID = getHackathon.map(
+      (hackathon, index) => hackathon.id
+    )
+
+    setSelectedHackweek(selectedHackathonID.toString())
   }
 
   useEffect(() => {

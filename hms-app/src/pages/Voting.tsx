@@ -204,11 +204,11 @@ export default function Voting() {
                                           ...provided.draggableProps.style,
                                         }}
                                       >
-                                        <IdeaCardFoldable
+                                        {/*<IdeaCardFoldable
                                           ideaPreview={item}
                                           index={index}
                                           type={'voting'}
-                                        />
+                                        />*/}
                                       </div>
                                     )
                                   }}

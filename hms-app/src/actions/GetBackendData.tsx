@@ -1,6 +1,6 @@
 import { Idea } from '../common/types'
 
-const api_id = 'q9g27ynw9q'
+const api_id = '9lm0afbpgp'
 
 export const getListOfHackathons = () => {
   return fetch(

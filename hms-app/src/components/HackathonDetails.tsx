@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import { getHackathonDetails } from '../actions/GetBackendData'
+import { getHackathonDetails, getIdeaDetails } from '../actions/GetBackendData'
 import IdeaCardList from './IdeaCardList'
-import { Hackathon } from '../common/types'
+import { Hackathon, Idea } from '../common/types'
 
 type IProps = {
   hackathonID: string
@@ -19,6 +19,22 @@ export default function HackathonDetails(props: IProps) {
     categories: undefined,
     ideas: [],
   } as Hackathon)
+  const [ideaData, setIdeaData] = useState({
+    errorIdeaData: false,
+    isLoadingIdeaData: true,
+    id: 'string',
+    owner: undefined,
+    hackathon: undefined,
+    participants: [],
+    title: 'string',
+    description: 'string',
+    problem: 'string',
+    goal: 'string',
+    requiredSkills: [],
+    category: undefined,
+    creationDate: 'string',
+  } as Idea)
+  const [relevantIdeaList, setRelevantIdeaList] = useState([] as Idea[])
 
   const loadSelectedHackathon = () => {
     getHackathonDetails(hackathonID).then(
@@ -46,7 +62,59 @@ export default function HackathonDetails(props: IProps) {
 
   useEffect(() => {
     loadSelectedHackathon()
+    setRelevantIdeaList([])
+    setHackathonData({
+      ...hackathonData,
+      isLoadingHackathonData: true,
+    })
   }, [hackathonID])
+
+  const loadRelevantIdeaDetails = () => {
+    hackathonData.ideas?.map((ideaPreviews) => {
+      getIdeaDetails(ideaPreviews.id).then(
+        (data) => {
+          setIdeaData({
+            id: data.id,
+            owner: data.owner,
+            hackathon: data.hackathon,
+            participants: data.participants,
+            title: data.title,
+            description: data.description,
+            problem: data.problem,
+            goal: data.goal,
+            requiredSkills: data.requiredSkills,
+            category: data.category,
+            creationDate: data.creationDate,
+            errorIdeaData: false,
+            isLoadingIdeaData: false,
+          })
+        },
+        () => {
+          setIdeaData({
+            ...ideaData,
+          })
+        }
+      )
+    })
+  }
+
+  useEffect(() => {
+    loadRelevantIdeaDetails()
+  }, [hackathonData])
+
+  useEffect(() => {
+    if (
+      !relevantIdeaList
+        .map((relevant) => {
+          return relevant.id
+        })
+        .includes(ideaData.id)
+    ) {
+      setRelevantIdeaList((relevantIdeaList) => {
+        return [...relevantIdeaList, ideaData]
+      })
+    }
+  }, [ideaData])
 
   return (
     <>
@@ -62,16 +130,17 @@ export default function HackathonDetails(props: IProps) {
         </div>
       )}
 
-      {hackathonData.startDate && (
+      {hackathonData.startDate && !hackathonData.isLoadingHackathonData && (
         <div>
           <h2>Title: {hackathonData.title}</h2>
           <h2>
             Date from: {new Date(hackathonData.startDate).toDateString()} to:{' '}
             {new Date(hackathonData.endDate).toDateString()}
           </h2>
+          <h2>All Ideas ({hackathonData.ideas?.length})</h2>
 
           <IdeaCardList
-            ideaPreviews={hackathonData.ideas!}
+            ideas={relevantIdeaList}
             columnSize={6}
             type={'Archive'}
           />
