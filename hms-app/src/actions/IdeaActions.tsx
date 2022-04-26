@@ -1,7 +1,7 @@
 import { Idea } from '../common/types'
 import { ApiVariable } from './ApiVariable'
 
-const api_id = 'w3xa9nfaxn'
+const api_id = 'l6edxqb897'
 
 export const getIdeaDetails = (ideaID: string): Promise<Idea> => {
   return fetch(
@@ -29,6 +29,47 @@ export const deleteIdea = (ideaID: string) => {
         Accept: 'application/json',
         'Content-Type': 'application/json',
       },
+    }
+  )
+    .then((response) => {
+      return response.json()
+    })
+    .catch((err) => console.log(err))
+}
+
+export const createIdea = (
+  ideaText: {
+    ownerId: string
+    hackathonId: string
+    title: string
+    description: string
+    problem: string
+    goal: string
+  },
+  skills: string[],
+  categories: string[]
+) => {
+  console.log('ideaText2', ideaText)
+  console.log('skills2', skills)
+  console.log('categories2', categories)
+  return fetch(
+    `http://localhost:4566/restapis/${api_id}/local/_user_request_/idea`,
+    {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        ownerId: ideaText.ownerId,
+        hackathonId: ideaText.hackathonId,
+        title: ideaText.title,
+        description: ideaText.description,
+        problem: ideaText.problem,
+        goal: ideaText.goal,
+        requiredSkills: skills,
+        categoryId: categories.toString(),
+      }),
     }
   )
     .then((response) => {

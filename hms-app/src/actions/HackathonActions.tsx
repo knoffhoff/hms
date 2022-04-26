@@ -1,6 +1,6 @@
 import { ApiVariable } from './ApiVariable'
 
-const api_id = 'w3xa9nfaxn'
+const api_id = 'l6edxqb897'
 
 export const getListOfHackathons = () => {
   return fetch(

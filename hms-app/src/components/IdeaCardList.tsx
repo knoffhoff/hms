@@ -15,7 +15,7 @@ export default function IdeaCardList(props: IProps) {
   const IdeasList = ideas.map((idea, index) => {
     return (
       <Grid.Col sm={columnSize} lg={columnSize}>
-        <div style={{ padding: 10 }}>
+        <div style={{ border: '1px solid red', padding: 10 }}>
           <IdeaCardFoldable
             ideas={idea}
             index={index}

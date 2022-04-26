@@ -9,8 +9,26 @@ import {
   Card,
   SimpleGrid,
   Select,
+  Text,
 } from '@mantine/core'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import {
+  CategoryPreview,
+  Hackathon,
+  HackathonPreview,
+  SkillPreview,
+} from '../common/types'
+import { getListOfHackathons } from '../actions/HackathonActions'
+import { getListOfSkills } from '../actions/SkillActions'
+import { addCategory, getListOfCategories } from '../actions/CategoryActions'
+import { showNotification, updateNotification } from '@mantine/notifications'
+import { CheckIcon } from '@modulz/radix-icons'
+import { createIdea } from '../actions/IdeaActions'
+
+type IProps = {
+  hackathon: Hackathon
+  userId: string
+}
 
 const useStyles = createStyles((theme) => ({
   card: {
@@ -30,34 +48,113 @@ const useStyles = createStyles((theme) => ({
   },
 }))
 
-function NewIdea() {
+function NewIdea(props: IProps) {
+  const { hackathon, userId } = props
   const { classes } = useStyles()
+  const [availableSkills, setAvailableSkills] = useState({
+    skills: [] as SkillPreview[],
+  })
   const [skills, setSkills] = useState<string[]>([])
+  const [availableCategories, setAvailableCategories] = useState({
+    categories: [] as CategoryPreview[],
+  })
+  const [categories, setCategories] = useState<string[]>([])
   const [ideaText, setIdeaText] = useState({
+    ownerId: userId.toString(),
+    hackathonId: hackathon.hackathonId,
     title: '',
     description: '',
-    reason: '',
     problem: '',
     goal: '',
-    minimumParticipants: '',
-    awsNeeded: '',
+    creationDate: new Date(),
   })
+
+  const loadAvailableSkills = () => {
+    getListOfSkills().then((data) => {
+      setAvailableSkills({
+        ...availableSkills,
+        skills: data.skills,
+      })
+    })
+  }
+
+  const skillsList = availableSkills.skills.map((skill, index) => [
+    <Checkbox value={skill.id} label={skill.name} />,
+  ])
+
+  const loadAvailableCategories = () => {
+    getListOfCategories(hackathon.hackathonId).then((data) => {
+      setAvailableCategories({
+        ...availableCategories,
+        categories: data.categories,
+      })
+    })
+  }
+
+  const categoriesList = availableCategories.categories.map(
+    (category, index) => [
+      <Checkbox value={category.id} label={category.title} />,
+    ]
+  )
+
+  useEffect(() => {
+    loadAvailableSkills()
+    loadAvailableCategories()
+  }, [])
+
+  useEffect(() => {
+    loadAvailableCategories()
+  }, [hackathon])
 
   function handleChange(event: React.ChangeEvent<HTMLTextAreaElement>) {
     setIdeaText((prevIdeaText) => ({
       ...prevIdeaText,
+      hackathonId: hackathon.hackathonId,
       [event.target.name]: event.target.value,
     }))
   }
 
   function submitForm(event: React.MouseEvent<HTMLButtonElement>) {
     event.preventDefault()
-    alert(JSON.stringify(ideaText) + 'skills: ' + JSON.stringify(skills))
+    /*alert(
+      JSON.stringify(ideaText) +
+        'skills: ' +
+        JSON.stringify(skills) +
+        'categories: ' +
+        JSON.stringify(categories)
+    )*/
+
+    showNotification({
+      id: 'idea-load',
+      loading: true,
+      title: 'Create idea',
+      message: 'this can take a second',
+      autoClose: false,
+      disallowClose: true,
+    })
+    console.log('ideaText', ideaText)
+    console.log('skills', skills)
+    console.log('categories', categories)
+    createIdea(ideaText, skills, categories).then((r) =>
+      setTimeout(() => {
+        updateNotification({
+          id: 'idea-load',
+          color: 'teal',
+          title: 'Idea was created',
+          message: 'Notification will close in 2 seconds',
+          icon: <CheckIcon />,
+          autoClose: 2000,
+        })
+      }, 3000)
+    )
   }
 
   return (
     <>
       <Card withBorder radius="md" p="md" className={classes.card}>
+        <Card.Section className={classes.section}>
+          <Text mt="sm">hackathon: {hackathon.title}</Text>
+        </Card.Section>
         <Card.Section className={classes.section}>
           <Textarea
             label="Title"
@@ -85,18 +182,6 @@ function NewIdea() {
         </Card.Section>
         <Card.Section className={classes.section}>
           <Textarea
-            label="Reason"
-            mt="sm"
-            placeholder="Descripe how you got this idea (optional)"
-            minRows={2}
-            maxRows={3}
-            autosize
-            onChange={handleChange}
-            name="reason"
-          />
-        </Card.Section>
-        <Card.Section className={classes.section}>
-          <Textarea
             label="Problem"
             mt="sm"
             placeholder="which problelm does it solve (optional)"
@@ -120,22 +205,6 @@ function NewIdea() {
           />
         </Card.Section>
         <Card.Section className={classes.section}>
-          <SimpleGrid cols={2} breakpoints={[{ maxWidth: 'sm', cols: 1 }]}>
-            <Select
-              label="minimum participants"
-              data={['1', '2', '3', '4', '5']}
-            />
-            <Select
-              required
-              label="AWS account required?"
-              data={[
-                { value: 'yes', label: 'Yes' },
-                { value: 'no', label: 'No' },
-              ]}
-            />
-          </SimpleGrid>
-        </Card.Section>
-        <Card.Section className={classes.section}>
           <CheckboxGroup
             mt="sm"
             color="gray"
@@ -145,11 +214,20 @@ function NewIdea() {
             onChange={setSkills}
             required
           >
-            <Checkbox value="none" label="none" />
-            <Checkbox value="frontend" label="frontend" />
-            <Checkbox value="backend" label="backend" />
-            <Checkbox value="design" label="design" />
-            <Checkbox value="infrastructure" label="infrastructure" />
+            {skillsList}
+          </CheckboxGroup>
+        </Card.Section>
+        <Card.Section className={classes.section}>
+          <CheckboxGroup
+            mt="sm"
+            color="gray"
+            label="Category"
+            description="chose one or more categories"
+            spacing="md"
+            onChange={setCategories}
+            required
+          >
+            {categoriesList}
           </CheckboxGroup>
         </Card.Section>
 

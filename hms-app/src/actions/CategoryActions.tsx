@@ -1,6 +1,6 @@
 import { ApiVariable } from './ApiVariable'
 
-const api_id = 'w3xa9nfaxn'
+const api_id = 'l6edxqb897'
 
 export const addCategory = (props: {
   title: string
@@ -41,6 +41,23 @@ export const deleteCategory = (categoryID: string) => {
   )
     .then((response) => {
       return response.json()
+    })
+    .catch((err) => console.log(err))
+}
+
+export const getListOfCategories = (endpoint: string) => {
+  return fetch(
+    `http://localhost:4566/restapis/${api_id}/local/_user_request_/hackathon/${endpoint}/categories`,
+    {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+    }
+  )
+    .then((data) => {
+      return data.json()
     })
     .catch((err) => console.log(err))
 }

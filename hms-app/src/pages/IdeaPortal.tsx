@@ -28,6 +28,7 @@ function IdeaPortal() {
   const [hackathonData, setHackathonData] = useState({
     errorHackathonData: false,
     isLoadingHackathonData: true,
+    hackathonId: 'string',
     title: 'string',
     startDate: 'string',
     endDate: 'string',
@@ -52,7 +53,7 @@ function IdeaPortal() {
   } as Idea)
   const [relevantIdeaList, setRelevantIdeaList] = useState([] as Idea[])
   const [participantInfo, setParticipantInfo] = useState({
-    userId: 'f6fa2b8e-68ed-4486-b8df-f93b87ff23e5',
+    userId: 'dd4596c0-911a-49a9-826f-0b6ec8a2d0b6',
     hackathonId: '',
   })
 
@@ -80,6 +81,7 @@ function IdeaPortal() {
     getHackathonDetails(selectedHackweek).then(
       (data) => {
         setHackathonData({
+          hackathonId: data.id,
           title: data.title,
           startDate: data.startDate,
           endDate: data.endDate,
@@ -236,7 +238,7 @@ function IdeaPortal() {
           <Button onClick={() => addHackathonParticipant()}>Participate</Button>
           <h2>All Ideas ({hackathonData.ideas?.length})</h2>
 
-          <div>
+          <div style={{ border: '1px solid' }}>
             <IdeaCardList
               ideas={filteredIdeas}
               columnSize={6}

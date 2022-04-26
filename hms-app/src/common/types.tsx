@@ -11,6 +11,7 @@ export type IdeaPreview = {
 export type Hackathon = {
   errorHackathonData: boolean
   isLoadingHackathonData: boolean
+  hackathonId: string
   title: string
   startDate: string
   endDate: string

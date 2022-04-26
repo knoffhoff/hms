@@ -75,6 +75,7 @@ export default function HackathonDetails(props: IProps) {
   const [hackathonData, setHackathonData] = useState({
     errorHackathonData: false,
     isLoadingHackathonData: true,
+    hackathonId: 'string',
     title: 'string',
     startDate: 'string',
     endDate: 'string',
@@ -103,6 +104,7 @@ export default function HackathonDetails(props: IProps) {
     getHackathonDetails(hackathonID).then(
       (data) => {
         setHackathonData({
+          hackathonId: data.id,
           title: data.title,
           startDate: data.startDate,
           endDate: data.endDate,
