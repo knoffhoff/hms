@@ -1,6 +1,6 @@
 /* eslint-disable require-jsdoc */
 
-class HackathonCreateRequest {
+class HackathonEditRequest {
   title: string;
   startDate: Date;
   endDate: Date;
@@ -15,9 +15,9 @@ class HackathonCreateRequest {
     this.endDate = endDate;
   }
 
-  static parse(body: string): HackathonCreateRequest {
+  static parse(body: string): HackathonEditRequest {
     const json = JSON.parse(body);
-    return new HackathonCreateRequest(
+    return new HackathonEditRequest(
         json.title,
         new Date(json.startDate),
         new Date(json.endDate),
@@ -25,4 +25,4 @@ class HackathonCreateRequest {
   }
 }
 
-export default HackathonCreateRequest;
+export default HackathonEditRequest;
