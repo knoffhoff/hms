@@ -16,12 +16,18 @@ import HackathonResponse from '../rest/HackathonResponse';
 import ReferenceNotFoundError from '../error/ReferenceNotFoundError';
 import HackathonListResponse from '../rest/HackathonListResponse';
 import HackathonDeleteResponse from '../rest/HackathonDeleteResponse';
+import InvalidStateError from '../error/InvalidStateError';
 
 export async function createHackathon(
     title: string,
     startDate: Date,
     endDate: Date,
 ): Promise<Hackathon> {
+  if (endDate <= startDate) {
+    throw new InvalidStateError(`Cannot create hackathon, ` +
+        `startDate (${startDate}) is after endDate (${endDate})`);
+  }
+
   const hackathon = new Hackathon(title, startDate, endDate);
 
   await putHackathon(hackathon);

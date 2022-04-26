@@ -1,4 +1,3 @@
-import {mockUuid} from '../util/uuids-mock';
 import {randomSkill} from '../repository/domain/skill-maker';
 import {
   createSkill,
@@ -29,14 +28,19 @@ jest.spyOn(skillRepository, 'deleteSkill')
 describe('Create Skill', () => {
   test('Happy Path', async () => {
     const expected = randomSkill();
-    mockUuid(expected.id);
 
     expect(await createSkill(
         expected.name,
         expected.description,
-    )).toStrictEqual(expected);
+    )).toEqual(expect.objectContaining({
+      name: expected.name,
+      description: expected.description,
+    }));
 
-    expect(mockPutSkill).toHaveBeenCalledWith(expected);
+    expect(mockPutSkill).toHaveBeenCalledWith(expect.objectContaining({
+      name: expected.name,
+      description: expected.description,
+    }));
   });
 });
 

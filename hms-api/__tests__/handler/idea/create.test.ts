@@ -1,7 +1,6 @@
 import * as ideaService from '../../../src/service/idea-service';
 import {create} from '../../../src/handler/idea/create';
 import {randomIdea} from '../../repository/domain/idea-maker';
-import {mockUuid} from '../../util/uuids-mock';
 import IdeaCreateResponse from '../../../src/rest/IdeaCreateResponse';
 import ReferenceNotFoundError from '../../../src/error/ReferenceNotFoundError';
 import Idea from '../../../src/repository/domain/Idea';
@@ -14,7 +13,6 @@ describe('Create Idea', () => {
   test('Happy Path', async () => {
     const expected = randomIdea();
     mockCreateIdea.mockResolvedValue(expected);
-    mockUuid(expected.id);
     const callback = jest.fn();
 
     await create(toEvent(expected), null, callback);

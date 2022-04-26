@@ -10,7 +10,6 @@ export default {
   testPathIgnorePatterns: [
     '<rootDir>/__tests__/repository/domain/.*-maker.ts',
     '<rootDir>/__tests__/repository/dynamo-db-mock.ts',
-    '<rootDir>/__tests__/util/date-mock.ts',
     '<rootDir>/__tests__/util/uuids-mock.ts',
   ],
   coveragePathIgnorePatterns: [
