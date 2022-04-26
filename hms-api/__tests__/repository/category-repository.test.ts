@@ -142,20 +142,34 @@ describe('List Categories', () => {
 });
 
 describe('Category Exists', () => {
-  test('Item is non-null', async () => {
-    mockGetItem({});
-
+  test('Item is null', async () => {
     const id = uuid();
-    expect(await categoryExists(id)).toBe(true);
+    mockGetItem(null);
+
+    expect(await categoryExists(id, uuid())).toBe(false);
 
     getExpected(id);
   });
 
-  test('Item is null', async () => {
-    mockGetItem(null);
-
+  test('HackathonId does not match', async () => {
     const id = uuid();
-    expect(await categoryExists(id)).toBe(false);
+    mockGetItem({
+      hackathonId: {S: uuid()},
+    });
+
+    expect(await categoryExists(id, uuid())).toBe(false);
+
+    getExpected(id);
+  });
+
+  test('HackathonId matches', async () => {
+    const id = uuid();
+    const hackathonId = uuid();
+    mockGetItem({
+      hackathonId: {S: hackathonId},
+    });
+
+    expect(await categoryExists(id, hackathonId)).toBe(true);
 
     getExpected(id);
   });

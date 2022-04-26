@@ -41,15 +41,17 @@ export async function createIdea(
     requiredSkills: Uuid[],
     categoryId: Uuid,
 ): Promise<Idea> {
-  if (!await participantExists(ownerId)) {
+  if (!await participantExists(ownerId, hackathonId)) {
     throw new ReferenceNotFoundError(`Cannot create Idea, ` +
-        `Category with id: ${categoryId} does not exist`);
+        `Owner (Participant) with id: ${ownerId} does not exist ` +
+        `in Hackathon with id: ${hackathonId}`);
   } else if (!await hackathonExists(hackathonId)) {
     throw new ReferenceNotFoundError(`Cannot create Idea, ` +
         `Hackathon with id: ${hackathonId} does not exist`);
-  } else if (!await categoryExists(categoryId)) {
+  } else if (!await categoryExists(categoryId, hackathonId)) {
     throw new ReferenceNotFoundError(`Cannot create Idea, ` +
-        `Category with id: ${categoryId} does not exist`);
+        `Category with id: ${categoryId} does not exist ` +
+        `in Hackathon with id: ${hackathonId}`);
   }
 
   await verifyAllSkillsExist(requiredSkills);

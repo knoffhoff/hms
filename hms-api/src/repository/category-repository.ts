@@ -58,13 +58,18 @@ export async function getCategory(id: Uuid): Promise<Category> {
   throw new NotFoundError(`Category with id: ${id} not found`);
 }
 
-export async function categoryExists(id: Uuid): Promise<boolean> {
+export async function categoryExists(
+    id: Uuid,
+    hackathonId: Uuid,
+): Promise<boolean> {
   const output = await dynamoDBClient.send(new GetItemCommand({
     TableName: process.env.CATEGORY_TABLE,
     Key: {id: {S: id}},
   }));
 
-  return !!output.Item;
+  return !!output.Item &&
+      output.Item.hackathonId &&
+      output.Item.hackathonId.S === hackathonId;
 }
 
 export async function deleteCategory(id: Uuid): Promise<Category> {

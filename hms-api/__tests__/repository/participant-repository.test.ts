@@ -188,20 +188,34 @@ describe('List Participants', () => {
 });
 
 describe('Participant Exists', () => {
-  test('Item is non-null', async () => {
-    mockGetItem({});
-
+  test('Item is null', async () => {
     const id = uuid();
-    expect(await participantExists(id)).toBe(true);
+    mockGetItem(null);
+
+    expect(await participantExists(id, uuid())).toBe(false);
 
     getExpected(id);
   });
 
-  test('Item is null', async () => {
-    mockGetItem(null);
-
+  test('HackathonId does not match', async () => {
     const id = uuid();
-    expect(await participantExists(id)).toBe(false);
+    mockGetItem({
+      hackathonId: {S: uuid()},
+    });
+
+    expect(await participantExists(id, uuid())).toBe(false);
+
+    getExpected(id);
+  });
+
+  test('HackathonId matches', async () => {
+    const id = uuid();
+    const hackathonId = uuid();
+    mockGetItem({
+      hackathonId: {S: hackathonId},
+    });
+
+    expect(await participantExists(id, hackathonId)).toBe(true);
 
     getExpected(id);
   });
@@ -216,22 +230,24 @@ const itemFromParticipant = (
   creationDate: {S: participant.creationDate.toISOString()},
 });
 
-const getExpected = (id: Uuid) =>
-  expect(mockSend).toHaveBeenCalledWith(
-      expect.objectContaining({
-        input: expect.objectContaining({
-          TableName: participantTable,
-          Key: {id: {S: id}},
-        }),
-      }));
+const getExpected = (
+    id: Uuid,
+) => expect(mockSend).toHaveBeenCalledWith(
+    expect.objectContaining({
+      input: expect.objectContaining({
+        TableName: participantTable,
+        Key: {id: {S: id}},
+      }),
+    }));
 
-const listExpected = (hackathonId: Uuid) =>
-  expect(mockSend).toHaveBeenCalledWith(
-      expect.objectContaining({
-        input: expect.objectContaining({
-          TableName: participantTable,
-          IndexName: participantByHackathonIdIndex,
-          KeyConditionExpression: 'hackathonId = :hId',
-          ExpressionAttributeValues: {':hId': {'S': hackathonId}},
-        }),
-      }));
+const listExpected = (
+    hackathonId: Uuid,
+) => expect(mockSend).toHaveBeenCalledWith(
+    expect.objectContaining({
+      input: expect.objectContaining({
+        TableName: participantTable,
+        IndexName: participantByHackathonIdIndex,
+        KeyConditionExpression: 'hackathonId = :hId',
+        ExpressionAttributeValues: {':hId': {'S': hackathonId}},
+      }),
+    }));
