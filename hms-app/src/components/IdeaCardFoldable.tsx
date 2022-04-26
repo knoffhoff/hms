@@ -70,13 +70,7 @@ export default function IdeaCardFoldable(props: IProps) {
   return (
     <>
       {!ideas.isLoadingIdeaData && (
-        <Card
-          withBorder
-          radius="md"
-          p="md"
-          className={classes.card}
-          style={{ minWidth: 200 }}
-        >
+        <Card withBorder radius="md" p="md" className={classes.card}>
           <Card.Section
             className={classes.section}
             mt="md"

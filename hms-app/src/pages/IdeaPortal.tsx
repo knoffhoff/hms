@@ -238,7 +238,7 @@ function IdeaPortal() {
           <Button onClick={() => addHackathonParticipant()}>Participate</Button>
           <h2>All Ideas ({hackathonData.ideas?.length})</h2>
 
-          <div style={{ border: '1px solid' }}>
+          <div>
             <IdeaCardList
               ideas={filteredIdeas}
               columnSize={6}
