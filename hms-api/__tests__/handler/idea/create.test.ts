@@ -4,6 +4,7 @@ import {randomIdea} from '../../repository/domain/idea-maker';
 import IdeaCreateResponse from '../../../src/rest/IdeaCreateResponse';
 import ReferenceNotFoundError from '../../../src/error/ReferenceNotFoundError';
 import Idea from '../../../src/repository/domain/Idea';
+import IdeaCreateRequest from '../../../src/rest/IdeaCreateRequest';
 
 const mockCreateIdea = jest.fn();
 jest.spyOn(ideaService, 'createIdea')
@@ -78,14 +79,14 @@ describe('Create Idea', () => {
 });
 
 const toEvent = (idea: Idea): any => ({
-  body: JSON.stringify({
-    ownerId: idea.ownerId,
-    hackathonId: idea.hackathonId,
-    title: idea.title,
-    description: idea.description,
-    problem: idea.problem,
-    goal: idea.goal,
-    requiredSkills: idea.requiredSkills,
-    categoryId: idea.categoryId,
-  }),
+  body: JSON.stringify(new IdeaCreateRequest(
+      idea.ownerId,
+      idea.hackathonId,
+      idea.title,
+      idea.description,
+      idea.problem,
+      idea.goal,
+      idea.requiredSkills,
+      idea.categoryId,
+  )),
 });

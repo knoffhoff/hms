@@ -12,10 +12,13 @@ import ReferenceNotFoundError from '../../src/error/ReferenceNotFoundError';
 import CategoryResponse from '../../src/rest/CategoryResponse';
 import NotFoundError from '../../src/error/NotFoundError';
 import CategoryListResponse from '../../src/rest/CategoryListResponse';
+import Category from '../../src/repository/domain/Category';
+import DeletionError from '../../src/error/DeletionError';
+import CategoryDeleteResponse from '../../src/rest/CategoryDeleteResponse';
 import * as categoryRepository from '../../src/repository/category-repository';
 import * as hackathonRepository
   from '../../src/repository/hackathon-repository';
-import Category from '../../src/repository/domain/Category';
+import * as ideaService from '../../src/service/idea-service';
 
 const mockHackathonExists = jest.fn();
 jest.spyOn(hackathonRepository, 'hackathonExists')
@@ -36,6 +39,10 @@ jest.spyOn(categoryRepository, 'listCategories')
 const mockDeleteCategory = jest.fn();
 jest.spyOn(categoryRepository, 'deleteCategory')
     .mockImplementation(mockDeleteCategory);
+
+const mockRemoveIdeasForCategory = jest.fn();
+jest.spyOn(ideaService, 'removeIdeasForCategory')
+    .mockImplementation(mockRemoveIdeasForCategory);
 
 describe('Create Category', () => {
   test('Missing hackathon', async () => {
@@ -171,7 +178,25 @@ describe('Get Category List Response', () => {
 describe('Delete Category', () => {
   test('Happy Path', async () => {
     const id = uuid();
-    await removeCategory(id);
+    mockRemoveIdeasForCategory.mockImplementation(() => {
+    });
+
+    expect(await removeCategory(id))
+        .toStrictEqual(new CategoryDeleteResponse(id));
+    expect(mockRemoveIdeasForCategory).toHaveBeenCalledWith(id);
     expect(mockDeleteCategory).toHaveBeenCalledWith(id);
+  });
+
+  test('Fails to remove Ideas', async () => {
+    const id = uuid();
+    mockRemoveIdeasForCategory.mockImplementation(() => {
+      throw new DeletionError('It just won\'t delete bud!');
+    });
+
+    await expect(removeCategory(id))
+        .rejects
+        .toThrow(DeletionError);
+    expect(mockRemoveIdeasForCategory).toHaveBeenCalledWith(id);
+    expect(mockDeleteCategory).not.toHaveBeenCalled();
   });
 });

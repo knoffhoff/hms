@@ -4,6 +4,7 @@ import {randomHackathon} from '../../repository/domain/hackathon-maker';
 import HackathonCreateResponse from '../../../src/rest/HackathonCreateResponse';
 import ReferenceNotFoundError from '../../../src/error/ReferenceNotFoundError';
 import Hackathon from '../../../src/repository/domain/Hackathon';
+import HackathonCreateRequest from '../../../src/rest/HackathonCreateRequest';
 
 const mockCreateHackathon = jest.fn();
 jest.spyOn(hackathonService, 'createHackathon')
@@ -73,9 +74,8 @@ describe('Create Hackathon', () => {
 });
 
 const toEvent = (hackathon: Hackathon): any => ({
-  body: JSON.stringify({
-    title: hackathon.title,
-    startDate: hackathon.startDate.toISOString(),
-    endDate: hackathon.endDate.toISOString(),
-  }),
+  body: JSON.stringify(new HackathonCreateRequest(
+      hackathon.title,
+      hackathon.startDate,
+      hackathon.endDate)),
 });

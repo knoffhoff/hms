@@ -5,6 +5,8 @@ import ParticipantCreateResponse
   from '../../../src/rest/ParticipantCreateResponse';
 import ReferenceNotFoundError from '../../../src/error/ReferenceNotFoundError';
 import Participant from '../../../src/repository/domain/Participant';
+import ParticipantCreateRequest
+  from '../../../src/rest/ParticipantCreateRequest';
 
 const mockCreateParticipant = jest.fn();
 jest.spyOn(participantService, 'createParticipant')
@@ -73,8 +75,8 @@ describe('Create Participant', () => {
 });
 
 const toEvent = (participant: Participant): any => ({
-  body: JSON.stringify({
-    userId: participant.userId,
-    hackathonId: participant.hackathonId,
-  }),
+  body: JSON.stringify(new ParticipantCreateRequest(
+      participant.userId,
+      participant.hackathonId,
+  )),
 });

@@ -3,6 +3,7 @@ import {
   getIdeaListResponse,
   getIdeaResponse,
   removeIdea,
+  removeIdeasForCategory,
   removeIdeasForOwner,
   removeParticipantFromIdeas,
 } from '../../src/service/idea-service';
@@ -44,6 +45,9 @@ jest.spyOn(ideaRepository, 'listIdeasForHackathon')
 const mockListIdeasForOwner = jest.fn();
 jest.spyOn(ideaRepository, 'listIdeasForOwner')
     .mockImplementation(mockListIdeasForOwner);
+const mockListIdeasForCategory = jest.fn();
+jest.spyOn(ideaRepository, 'listIdeasForCategory')
+    .mockImplementation(mockListIdeasForCategory);
 const mockListIdeasForParticipant = jest.fn();
 jest.spyOn(ideaRepository, 'listIdeasForParticipant')
     .mockImplementation(mockListIdeasForParticipant);
@@ -506,6 +510,36 @@ describe('Delete Idea', () => {
     const id = uuid();
     await removeIdea(id);
     expect(mockDeleteIdea).toHaveBeenCalledWith(id);
+  });
+});
+
+describe('Remove Ideas for Category', () => {
+  test('Happy Path', async () => {
+    const categoryId = uuid();
+    const idea1 = randomIdea();
+    const idea2 = randomIdea();
+    mockListIdeasForCategory.mockResolvedValue([idea1, idea2]);
+    mockDeleteIdea.mockImplementation(() => {
+    });
+
+    await removeIdeasForCategory(categoryId);
+    expect(mockDeleteIdea).toHaveBeenCalledWith(idea1.id);
+    expect(mockDeleteIdea).toHaveBeenCalledWith(idea2.id);
+  });
+
+  test('Fails on first delete', async () => {
+    const categoryId = uuid();
+    const idea1 = randomIdea();
+    const idea2 = randomIdea();
+    mockListIdeasForCategory.mockResolvedValue([idea1, idea2]);
+    mockDeleteIdea.mockImplementation(() => {
+      throw new DeletionError('Well this stinks');
+    });
+
+    await expect(removeIdeasForCategory(categoryId))
+        .rejects
+        .toThrow(DeletionError);
+    expect(mockDeleteIdea).toHaveBeenCalledWith(idea1.id);
   });
 });
 

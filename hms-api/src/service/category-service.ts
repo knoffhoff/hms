@@ -18,6 +18,7 @@ import CategoryListResponse from '../rest/CategoryListResponse';
 import CategoryDeleteResponse from '../rest/CategoryDeleteResponse';
 import {removeIdeasForCategory} from './idea-service';
 import NotFoundError from '../error/NotFoundError';
+import DeletionError from '../error/DeletionError';
 
 export async function createCategory(
     title: string,
@@ -78,7 +79,8 @@ export async function removeCategory(
   try {
     await removeIdeasForCategory(id);
   } catch (e) {
-    // TODO throw an error
+    throw new DeletionError(`Unable to remove Category with id ${id}, ` +
+        `nested failure is: ${e.message}`);
   }
 
   await deleteCategory(id);
