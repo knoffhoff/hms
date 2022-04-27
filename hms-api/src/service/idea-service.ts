@@ -185,6 +185,21 @@ export async function removeIdeasForOwner(ownerId: Uuid): Promise<void> {
   }
 }
 
+// TODO this could be done using a Batch operation
+export async function removeIdeasForHackathon(
+    hackathonId: Uuid,
+): Promise<void> {
+  const ideas = await listIdeasForHackathon(hackathonId);
+  for (const idea of ideas) {
+    try {
+      await deleteIdea(idea.id);
+    } catch (e) {
+      throw new DeletionError(`Unable to delete all Ideas for Hackathon with ` +
+          `id: ${hackathonId}, Idea with id: ${idea.id} failed to delete`);
+    }
+  }
+}
+
 export async function removeParticipantFromIdeas(
     participantId: Uuid,
 ): Promise<void> {

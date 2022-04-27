@@ -3,6 +3,7 @@ import {
   getParticipantListResponse,
   getParticipantResponse,
   removeParticipant,
+  removeParticipantsForHackathon,
 } from '../../src/service/participant-service';
 import {
   makeParticipant,
@@ -270,3 +271,30 @@ describe('Delete Participant', () => {
   });
 });
 
+describe('Remove Participants for Hackathon', () => {
+  test('Happy Path', async () => {
+    const hackathonId = uuid();
+    const participant1 =
+        makeParticipant({hackathonId: hackathonId} as ParticipantData);
+    const participant2 =
+        makeParticipant({hackathonId: hackathonId} as ParticipantData);
+
+    mockListParticipants.mockResolvedValue([participant1, participant2]);
+
+    mockRemoveIdeasForOwner.mockImplementation(() => {
+    });
+    mockRemoveParticipantFromIdeas.mockImplementation(() => {
+    });
+
+    await removeParticipantsForHackathon(hackathonId);
+
+    expect(mockRemoveIdeasForOwner).toHaveBeenCalledWith(participant1.id);
+    expect(mockRemoveIdeasForOwner).toHaveBeenCalledWith(participant2.id);
+    expect(mockRemoveParticipantFromIdeas)
+        .toHaveBeenCalledWith(participant1.id);
+    expect(mockRemoveParticipantFromIdeas)
+        .toHaveBeenCalledWith(participant2.id);
+    expect(mockDeleteParticipant).toHaveBeenCalledWith(participant1.id);
+    expect(mockDeleteParticipant).toHaveBeenCalledWith(participant2.id);
+  });
+});

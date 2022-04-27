@@ -17,19 +17,23 @@ import {
   randomParticipant,
 } from '../repository/domain/participant-maker';
 import {randomIdea} from '../repository/domain/idea-maker';
-import * as hackathonRepository
-  from '../../src/repository/hackathon-repository';
-import * as participantRepository
-  from '../../src/repository/participant-repository';
-import * as userRepository from '../../src/repository/user-repository';
-import * as categoryRepository from '../../src/repository/category-repository';
-import * as ideaRepository from '../../src/repository/idea-repository';
 import ReferenceNotFoundError from '../../src/error/ReferenceNotFoundError';
 import NotFoundError from '../../src/error/NotFoundError';
 import HackathonListResponse from '../../src/rest/HackathonListResponse';
 import HackathonDeleteResponse from '../../src/rest/HackathonDeleteResponse';
 import InvalidStateError from '../../src/error/InvalidStateError';
 import Hackathon from '../../src/repository/domain/Hackathon';
+import * as hackathonRepository
+  from '../../src/repository/hackathon-repository';
+import * as participantRepository
+  from '../../src/repository/participant-repository';
+import * as participantService from '../../src/service/participant-service';
+import * as userRepository from '../../src/repository/user-repository';
+import * as categoryRepository from '../../src/repository/category-repository';
+import * as categoryService from '../../src/service/category-service';
+import * as ideaRepository from '../../src/repository/idea-repository';
+import * as ideaService from '../../src/service/idea-service';
+import DeletionError from '../../src/error/DeletionError';
 
 const mockPutHackathon = jest.fn();
 jest.spyOn(hackathonRepository, 'putHackathon')
@@ -48,6 +52,10 @@ const mockListParticipants = jest.fn();
 jest.spyOn(participantRepository, 'listParticipants')
     .mockImplementation(mockListParticipants);
 
+const mockRemoveParticipantsForHackathon = jest.fn();
+jest.spyOn(participantService, 'removeParticipantsForHackathon')
+    .mockImplementation(mockRemoveParticipantsForHackathon);
+
 const mockGetUsers = jest.fn();
 jest.spyOn(userRepository, 'getUsers')
     .mockImplementation(mockGetUsers);
@@ -56,9 +64,17 @@ const mockListCategories = jest.fn();
 jest.spyOn(categoryRepository, 'listCategories')
     .mockImplementation(mockListCategories);
 
+const mockRemoveCategoriesForHackathon = jest.fn();
+jest.spyOn(categoryService, 'removeCategoriesForHackathon')
+    .mockImplementation(mockRemoveCategoriesForHackathon);
+
 const mockListIdeas = jest.fn();
 jest.spyOn(ideaRepository, 'listIdeasForHackathon')
     .mockImplementation(mockListIdeas);
+
+const mockRemoveIdeasForHackathon = jest.fn();
+jest.spyOn(ideaService, 'removeIdeasForHackathon')
+    .mockImplementation(mockRemoveIdeasForHackathon);
 
 beforeAll(() => {
 });
@@ -318,8 +334,75 @@ describe('Get Hackathon List Response', () => {
 describe('Delete Hackathon', () => {
   test('Happy Path', async () => {
     const id = uuid();
+    mockRemoveIdeasForHackathon.mockImplementation(() => {
+    });
+    mockRemoveCategoriesForHackathon.mockImplementation(() => {
+    });
+    mockRemoveParticipantsForHackathon.mockImplementation(() => {
+    });
+
     expect(await removeHackathon(id))
         .toStrictEqual(new HackathonDeleteResponse(id));
+    expect(mockRemoveIdeasForHackathon).toHaveBeenCalledWith(id);
+    expect(mockRemoveCategoriesForHackathon).toHaveBeenCalledWith(id);
+    expect(mockRemoveParticipantsForHackathon).toHaveBeenCalledWith(id);
     expect(mockDeleteHackathon).toHaveBeenCalledWith(id);
+  });
+
+  test('Failed to remove Participants', async () => {
+    const id = uuid();
+    mockRemoveIdeasForHackathon.mockImplementation(() => {
+    });
+    mockRemoveCategoriesForHackathon.mockImplementation(() => {
+    });
+    mockRemoveParticipantsForHackathon.mockImplementation(() => {
+      throw new DeletionError('Participants Failed');
+    });
+
+    await expect(removeHackathon(id))
+        .rejects
+        .toThrow(DeletionError);
+    expect(mockRemoveIdeasForHackathon).toHaveBeenCalledWith(id);
+    expect(mockRemoveCategoriesForHackathon).toHaveBeenCalledWith(id);
+    expect(mockRemoveParticipantsForHackathon).toHaveBeenCalledWith(id);
+    expect(mockDeleteHackathon).not.toHaveBeenCalled();
+  });
+
+  test('Failed to remove Participants', async () => {
+    const id = uuid();
+    mockRemoveIdeasForHackathon.mockImplementation(() => {
+    });
+    mockRemoveCategoriesForHackathon.mockImplementation(() => {
+      throw new DeletionError('Categories Failed');
+    });
+    mockRemoveParticipantsForHackathon.mockImplementation(() => {
+    });
+
+    await expect(removeHackathon(id))
+        .rejects
+        .toThrow(DeletionError);
+    expect(mockRemoveIdeasForHackathon).toHaveBeenCalledWith(id);
+    expect(mockRemoveCategoriesForHackathon).toHaveBeenCalledWith(id);
+    expect(mockRemoveParticipantsForHackathon).not.toHaveBeenCalled();
+    expect(mockDeleteHackathon).not.toHaveBeenCalled();
+  });
+
+  test('Failed to remove Participants', async () => {
+    const id = uuid();
+    mockRemoveIdeasForHackathon.mockImplementation(() => {
+      throw new DeletionError('Ideas Failed');
+    });
+    mockRemoveCategoriesForHackathon.mockImplementation(() => {
+    });
+    mockRemoveParticipantsForHackathon.mockImplementation(() => {
+    });
+
+    await expect(removeHackathon(id))
+        .rejects
+        .toThrow(DeletionError);
+    expect(mockRemoveIdeasForHackathon).toHaveBeenCalledWith(id);
+    expect(mockRemoveCategoriesForHackathon).not.toHaveBeenCalled();
+    expect(mockRemoveParticipantsForHackathon).not.toHaveBeenCalled();
+    expect(mockDeleteHackathon).not.toHaveBeenCalled();
   });
 });

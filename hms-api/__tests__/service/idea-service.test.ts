@@ -4,6 +4,7 @@ import {
   getIdeaResponse,
   removeIdea,
   removeIdeasForCategory,
+  removeIdeasForHackathon,
   removeIdeasForOwner,
   removeParticipantFromIdeas,
 } from '../../src/service/idea-service';
@@ -537,6 +538,36 @@ describe('Remove Ideas for Category', () => {
     });
 
     await expect(removeIdeasForCategory(categoryId))
+        .rejects
+        .toThrow(DeletionError);
+    expect(mockDeleteIdea).toHaveBeenCalledWith(idea1.id);
+  });
+});
+
+describe('Remove Ideas for Hackathon', () => {
+  test('Happy Path', async () => {
+    const hackathonId = uuid();
+    const idea1 = randomIdea();
+    const idea2 = randomIdea();
+    mockListIdeasForHackathon.mockResolvedValue([idea1, idea2]);
+    mockDeleteIdea.mockImplementation(() => {
+    });
+
+    await removeIdeasForHackathon(hackathonId);
+    expect(mockDeleteIdea).toHaveBeenCalledWith(idea1.id);
+    expect(mockDeleteIdea).toHaveBeenCalledWith(idea2.id);
+  });
+
+  test('Fails on first delete', async () => {
+    const hackathonId = uuid();
+    const idea1 = randomIdea();
+    const idea2 = randomIdea();
+    mockListIdeasForHackathon.mockResolvedValue([idea1, idea2]);
+    mockDeleteIdea.mockImplementation(() => {
+      throw new DeletionError('Well this stinks');
+    });
+
+    await expect(removeIdeasForHackathon(hackathonId))
         .rejects
         .toThrow(DeletionError);
     expect(mockDeleteIdea).toHaveBeenCalledWith(idea1.id);
