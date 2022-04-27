@@ -1,4 +1,3 @@
-import {mockUuid} from '../util/uuids-mock';
 import {randomCategory} from '../repository/domain/category-maker';
 import {randomHackathon} from '../repository/domain/hackathon-maker';
 import {
@@ -52,15 +51,22 @@ describe('Create Category', () => {
     mockHackathonExists.mockResolvedValue(true);
 
     const expected = randomCategory();
-    mockUuid(expected.id);
 
     expect(await createCategory(
         expected.title,
         expected.description,
         expected.hackathonId,
-    )).toStrictEqual(expected);
+    )).toEqual(expect.objectContaining({
+      title: expected.title,
+      description: expected.description,
+      hackathonId: expected.hackathonId,
+    }));
 
-    expect(mockPutCategory).toHaveBeenCalledWith(expected);
+    expect(mockPutCategory).toHaveBeenCalledWith(expect.objectContaining({
+      title: expected.title,
+      description: expected.description,
+      hackathonId: expected.hackathonId,
+    }));
     expect(mockDeleteCategory).not.toHaveBeenCalled();
   });
 });

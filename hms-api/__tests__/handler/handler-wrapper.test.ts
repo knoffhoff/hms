@@ -1,6 +1,7 @@
 import {wrapHandler} from '../../src/handler/handler-wrapper';
 import NotFoundError from '../../src/error/NotFoundError';
 import ReferenceNotFoundError from '../../src/error/ReferenceNotFoundError';
+import InvalidStateError from '../../src/error/InvalidStateError';
 
 describe('Wrap Handler', () => {
   test('Calls provided function', async () => {
@@ -38,6 +39,25 @@ describe('Wrap Handler', () => {
 
     await wrapHandler(() => {
       throw new ReferenceNotFoundError(message);
+    }, callback);
+
+    expect(callback).toHaveBeenCalledWith(null, {
+      statusCode: 400,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Credentials': true,
+        'content-type': 'application/json',
+      },
+      body: JSON.stringify({errorMessage: message}),
+    });
+  });
+
+  test('Catches InvalidStateError', async () => {
+    const message = 'We couldn\'t find that thing your thing wanted';
+    const callback = jest.fn();
+
+    await wrapHandler(() => {
+      throw new InvalidStateError(message);
     }, callback);
 
     expect(callback).toHaveBeenCalledWith(null, {

@@ -1,10 +1,8 @@
 import * as hackathonService from '../../../src/service/hackathon-service';
 import {create} from '../../../src/handler/hackathon/create';
 import {randomHackathon} from '../../repository/domain/hackathon-maker';
-import {mockUuid} from '../../util/uuids-mock';
 import HackathonCreateResponse from '../../../src/rest/HackathonCreateResponse';
 import ReferenceNotFoundError from '../../../src/error/ReferenceNotFoundError';
-import {mockDate} from '../../util/date-mock';
 import Hackathon from '../../../src/repository/domain/Hackathon';
 
 const mockCreateHackathon = jest.fn();
@@ -13,11 +11,8 @@ jest.spyOn(hackathonService, 'createHackathon')
 
 describe('Create Hackathon', () => {
   test('Happy Path', async () => {
-    mockDate();
-
     const expected = randomHackathon();
     mockCreateHackathon.mockResolvedValue(expected);
-    mockUuid(expected.id);
     const callback = jest.fn();
 
     await create(toEvent(expected), null, callback);

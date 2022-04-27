@@ -1,6 +1,3 @@
-import {mockDate} from '../util/date-mock';
-import {mockUuid} from '../util/uuids-mock';
-
 import {
   createIdea,
   getIdeaListResponse,
@@ -96,10 +93,6 @@ jest.spyOn(skillRepository, 'skillExists')
     .mockImplementation(mockSkillExists);
 
 describe('Create Idea', () => {
-  beforeAll(() => {
-    mockDate();
-  });
-
   test('Missing Participant', async () => {
     mockParticipantExists.mockResolvedValue(false);
     mockHackathonExists.mockResolvedValue(true);
@@ -195,7 +188,6 @@ describe('Create Idea', () => {
     mockSkillExists.mockResolvedValue(true);
 
     const expected = randomIdea();
-    mockUuid(expected.id);
 
     expect(await createIdea(
         expected.ownerId,
@@ -206,9 +198,27 @@ describe('Create Idea', () => {
         expected.goal,
         expected.requiredSkills,
         expected.categoryId,
-    )).toStrictEqual(expected);
+    )).toEqual(expect.objectContaining({
+      ownerId: expected.ownerId,
+      hackathonId: expected.hackathonId,
+      title: expected.title,
+      description: expected.description,
+      problem: expected.problem,
+      goal: expected.goal,
+      requiredSkills: expected.requiredSkills,
+      categoryId: expected.categoryId,
+    }));
 
-    expect(mockPutIdea).toHaveBeenCalledWith(expected);
+    expect(mockPutIdea).toHaveBeenCalledWith(expect.objectContaining({
+      ownerId: expected.ownerId,
+      hackathonId: expected.hackathonId,
+      title: expected.title,
+      description: expected.description,
+      problem: expected.problem,
+      goal: expected.goal,
+      requiredSkills: expected.requiredSkills,
+      categoryId: expected.categoryId,
+    }));
   });
 });
 

@@ -1,10 +1,12 @@
 import {
   buildErrorResponse,
+  buildInvalidStateErrorResponse,
   buildNotFoundErrorResponse,
   buildReferenceNotFoundErrorResponse,
 } from '../rest/responses';
 import NotFoundError from '../error/NotFoundError';
 import ReferenceNotFoundError from '../error/ReferenceNotFoundError';
+import InvalidStateError from '../error/InvalidStateError';
 
 // eslint-disable-next-line require-jsdoc
 export async function wrapHandler(fun: () => void, callback: Function)
@@ -16,6 +18,8 @@ export async function wrapHandler(fun: () => void, callback: Function)
       callback(null, buildReferenceNotFoundErrorResponse(e));
     } else if (e instanceof NotFoundError) {
       callback(null, buildNotFoundErrorResponse(e));
+    } else if (e instanceof InvalidStateError) {
+      callback(null, buildInvalidStateErrorResponse(e));
     } else {
       callback(null, buildErrorResponse(e));
     }
