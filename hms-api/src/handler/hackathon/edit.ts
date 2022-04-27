@@ -5,7 +5,7 @@ import HackathonEditRequest from '../../rest/HackathonEditRequest';
 import HackathonEditResponse from '../../rest/HackathonEditResponse';
 
 // eslint-disable-next-line require-jsdoc
-export async function create(event, context, callback) {
+export async function edit(event, context, callback) {
   await wrapHandler(async () => {
     const id = event.pathParameters.id;
     const request = HackathonEditRequest.parse(event.body);
