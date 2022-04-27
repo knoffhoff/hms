@@ -1,7 +1,6 @@
 import { Idea } from '../common/types'
-import { ApiVariable } from './ApiVariable'
 
-const api_id = 'l6edxqb897'
+const api_id = process.env.API_ID
 
 export const getIdeaDetails = (ideaID: string): Promise<Idea> => {
   return fetch(

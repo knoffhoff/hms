@@ -1,6 +1,4 @@
-import { ApiVariable } from './ApiVariable'
-
-const api_id = 'l6edxqb897'
+const api_id = process.env.REACT_APP_API_ID
 
 export const getListOfHackathons = () => {
   return fetch(

@@ -1,4 +1,4 @@
-const api_id = 'l6edxqb897'
+const api_id = process.env.API_ID
 
 export const getListOfSkills = () => {
   return fetch(

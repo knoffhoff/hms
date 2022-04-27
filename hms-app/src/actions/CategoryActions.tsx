@@ -1,6 +1,4 @@
-import { ApiVariable } from './ApiVariable'
-
-const api_id = 'l6edxqb897'
+const api_id = process.env.API_ID
 
 export const addCategory = (props: {
   title: string
