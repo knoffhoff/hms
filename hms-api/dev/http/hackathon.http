@@ -14,6 +14,17 @@ Content-Type: application/json
 }
 
 ###
+# @name Edit Hackathon
+PUT {{host}}/restapis/{{api_id}}/local/_user_request_/hackathon/{{hackathon_id}}
+Content-Type: application/json
+
+{
+  "title": "Renamed Hackathon",
+  "startDate": "2022-11-23",
+  "endDate": "2022-11-22"
+}
+
+###
 # @name Get Hackathon
 GET {{host}}/restapis/{{api_id}}/local/_user_request_/hackathon/{{hackathon_id}}
 
