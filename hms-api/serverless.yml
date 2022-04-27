@@ -96,6 +96,13 @@ functions:
           path: idea
           method: post
           cors: true
+  editIdea:
+    handler: src/handler/idea/edit.edit
+    events:
+      - http:
+          path: idea/{id}
+          method: put
+          cors: true
   listAllIdea:
     handler: src/handler/idea/list.list
     events:
