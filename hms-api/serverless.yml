@@ -183,6 +183,13 @@ functions:
           path: category
           method: post
           cors: true
+  editCategory:
+    handler: src/handler/category/edit.edit
+    events:
+      - http:
+          path: category/{id}
+          method: put
+          cors: true
   listAllCategory:
     handler: src/handler/category/list.list
     events:

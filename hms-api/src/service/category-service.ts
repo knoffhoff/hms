@@ -17,6 +17,7 @@ import CategoryResponse from '../rest/CategoryResponse';
 import CategoryListResponse from '../rest/CategoryListResponse';
 import CategoryDeleteResponse from '../rest/CategoryDeleteResponse';
 import {removeIdeasForCategory} from './idea-service';
+import NotFoundError from '../error/NotFoundError';
 
 export async function createCategory(
     title: string,
@@ -31,6 +32,23 @@ export async function createCategory(
   const category = new Category(title, description, hackathonId);
   await putCategory(category);
   return category;
+}
+
+export async function editCategory(
+    id: Uuid,
+    title: string,
+    description: string,
+): Promise<void> {
+  try {
+    const existing = await getCategory(id);
+    existing.title = title;
+    existing.description = description;
+
+    await putCategory(existing);
+  } catch (e) {
+    throw new NotFoundError(`Cannot edit Category with id: ${id}, ` +
+        `it does not exist`);
+  }
 }
 
 export async function getCategoryResponse(id: Uuid): Promise<CategoryResponse> {

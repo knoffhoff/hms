@@ -99,19 +99,17 @@ export async function editHackathon(
         `startDate (${startDate}) is after endDate (${endDate})`);
   }
 
-  let existing: Hackathon;
   try {
-    existing = await getHackathon(id);
+    const existing = await getHackathon(id);
+    existing.title = title;
+    existing.startDate = startDate;
+    existing.endDate = endDate;
+
+    await putHackathon(existing);
   } catch (e) {
     throw new NotFoundError(`Cannot edit Hackathon with id: ${id}, ` +
         `it does not exist`);
   }
-
-  existing.title = title;
-  existing.startDate = startDate;
-  existing.endDate = endDate;
-
-  await putHackathon(existing);
 }
 
 export async function removeHackathon(
