@@ -1,5 +1,3 @@
-import {mockDate} from '../util/date-mock';
-import {mockUuid} from '../util/uuids-mock';
 import {
   createParticipant,
   getParticipantListResponse,
@@ -66,10 +64,6 @@ jest.spyOn(ideaService, 'removeParticipantFromIdeas')
     .mockImplementation(mockRemoveParticipantFromIdeas);
 
 describe('Create Participant', () => {
-  beforeAll(() => {
-    mockDate();
-  });
-
   test('Missing Hackathon', async () => {
     mockHackathonExists.mockResolvedValue(false);
     mockUserExists.mockResolvedValue(true);
@@ -99,12 +93,17 @@ describe('Create Participant', () => {
     mockUserExists.mockResolvedValue(true);
 
     const expected = randomParticipant();
-    mockUuid(expected.id);
 
     expect(await createParticipant(expected.userId, expected.hackathonId))
-        .toStrictEqual(expected);
+        .toEqual(expect.objectContaining({
+          userId: expected.userId,
+          hackathonId: expected.hackathonId,
+        }));
 
-    expect(mockPutParticipant).toHaveBeenCalledWith(expected);
+    expect(mockPutParticipant).toHaveBeenCalledWith(expect.objectContaining({
+      userId: expected.userId,
+      hackathonId: expected.hackathonId,
+    }));
     expect(mockDeleteParticipant).not.toHaveBeenCalled();
   });
 });

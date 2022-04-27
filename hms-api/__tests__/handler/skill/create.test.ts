@@ -1,7 +1,6 @@
 import * as skillService from '../../../src/service/skill-service';
 import {create} from '../../../src/handler/skill/create';
 import {randomSkill} from '../../repository/domain/skill-maker';
-import {mockUuid} from '../../util/uuids-mock';
 import SkillCreateResponse from '../../../src/rest/SkillCreateResponse';
 import ReferenceNotFoundError from '../../../src/error/ReferenceNotFoundError';
 import Skill from '../../../src/repository/domain/Skill';
@@ -14,7 +13,6 @@ describe('Create Skill', () => {
   test('Happy Path', async () => {
     const expected = randomSkill();
     mockCreateSkill.mockResolvedValue(expected);
-    mockUuid(expected.id);
     const callback = jest.fn();
 
     await create(toEvent(expected), null, callback);

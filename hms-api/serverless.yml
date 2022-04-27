@@ -60,6 +60,13 @@ functions:
           path: hackathon
           method: post
           cors: true
+  editHackathon:
+    handler: src/handler/hackathon/edit.edit
+    events:
+      - http:
+          path: hackathon/{id}
+          method: put
+          cors: true
   listAllHackathons:
     handler: src/handler/hackathon/list.list
     events:

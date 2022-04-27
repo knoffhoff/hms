@@ -1,13 +1,12 @@
 import {mockPutItem} from '../repository/dynamo-db-mock';
-import {mockUuid} from '../util/uuids-mock';
 import {randomHackathon} from '../repository/domain/hackathon-maker';
 import {
   createHackathon,
+  editHackathon,
   getHackathonListResponse,
   getHackathonResponse,
   removeHackathon,
 } from '../../src/service/hackathon-service';
-import {mockDate} from '../util/date-mock';
 import {uuid} from '../../src/util/Uuid';
 import {randomCategory} from '../repository/domain/category-maker';
 import HackathonResponse from '../../src/rest/HackathonResponse';
@@ -29,6 +28,8 @@ import ReferenceNotFoundError from '../../src/error/ReferenceNotFoundError';
 import NotFoundError from '../../src/error/NotFoundError';
 import HackathonListResponse from '../../src/rest/HackathonListResponse';
 import HackathonDeleteResponse from '../../src/rest/HackathonDeleteResponse';
+import InvalidStateError from '../../src/error/InvalidStateError';
+import Hackathon from '../../src/repository/domain/Hackathon';
 
 const mockPutHackathon = jest.fn();
 jest.spyOn(hackathonRepository, 'putHackathon')
@@ -59,21 +60,120 @@ const mockListIdeas = jest.fn();
 jest.spyOn(ideaRepository, 'listIdeasForHackathon')
     .mockImplementation(mockListIdeas);
 
+beforeAll(() => {
+});
+
 describe('Create Hackathon', () => {
   test('Happy Path', async () => {
     mockPutItem();
-    mockDate();
 
     const expected = randomHackathon();
-    mockUuid(expected.id);
 
     expect(await createHackathon(
         expected.title,
         expected.startDate,
         expected.endDate,
-    )).toStrictEqual(expected);
+    )).toEqual(expect.objectContaining({
+      title: expected.title,
+      startDate: expected.startDate,
+      endDate: expected.endDate,
+    }));
+    expect(mockPutHackathon).toHaveBeenCalledWith(expect.objectContaining({
+      title: expected.title,
+      startDate: expected.startDate,
+      endDate: expected.endDate,
+    }));
+  });
+
+  test('StartDate > EndDate', async () => {
+    const expected = randomHackathon();
+
+    await expect(createHackathon(
+        expected.title,
+        expected.endDate,
+        expected.startDate))
+        .rejects
+        .toThrow(InvalidStateError);
+    expect(mockPutHackathon).not.toHaveBeenCalled();
+  });
+
+  test('StartDate === EndDate', async () => {
+    const expected = randomHackathon();
+
+    await expect(createHackathon(
+        expected.title,
+        expected.startDate,
+        expected.startDate))
+        .rejects
+        .toThrow(InvalidStateError);
+    expect(mockPutHackathon).not.toHaveBeenCalled();
+  });
+});
+
+describe('Edit Hackathon', () => {
+  test('Happy Path', async () => {
+    const oldHackathon = randomHackathon();
+    const title = 'Worst Hackathon Ever';
+    const startDate = new Date('2000-01-01');
+    const endDate = new Date('2000-04-04');
+    const expected = new Hackathon(
+        title,
+        startDate,
+        endDate,
+        oldHackathon.id,
+        oldHackathon.creationDate);
+
+    mockGetHackathon.mockResolvedValue(oldHackathon);
+
+    await editHackathon(oldHackathon.id, title, startDate, endDate);
 
     expect(mockPutHackathon).toHaveBeenCalledWith(expected);
+  });
+
+  test('StartDate > EndDate', async () => {
+    const expected = randomHackathon();
+
+    await expect(editHackathon(
+        expected.id,
+        expected.title,
+        expected.endDate,
+        expected.startDate))
+        .rejects
+        .toThrow(InvalidStateError);
+    expect(mockPutHackathon).not.toHaveBeenCalled();
+    expect(mockGetHackathon).not.toHaveBeenCalled();
+  });
+
+  test('StartDate === EndDate', async () => {
+    const expected = randomHackathon();
+
+    await expect(editHackathon(
+        expected.id,
+        expected.title,
+        expected.startDate,
+        expected.startDate))
+        .rejects
+        .toThrow(InvalidStateError);
+    expect(mockPutHackathon).not.toHaveBeenCalled();
+    expect(mockGetHackathon).not.toHaveBeenCalled();
+  });
+
+  test('Hackathon is missing', async () => {
+    const id = uuid();
+
+    mockGetHackathon.mockImplementation(() => {
+      throw new Error('Uh oh');
+    });
+
+    await expect(editHackathon(
+        id,
+        'Anything',
+        new Date(),
+        new Date(new Date().getTime() + 10000)))
+        .rejects
+        .toThrow(NotFoundError);
+    expect(mockPutHackathon).not.toHaveBeenCalled();
+    expect(mockGetHackathon).toHaveBeenCalledWith(id);
   });
 });
 

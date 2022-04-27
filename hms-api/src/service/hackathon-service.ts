@@ -16,12 +16,19 @@ import HackathonResponse from '../rest/HackathonResponse';
 import ReferenceNotFoundError from '../error/ReferenceNotFoundError';
 import HackathonListResponse from '../rest/HackathonListResponse';
 import HackathonDeleteResponse from '../rest/HackathonDeleteResponse';
+import NotFoundError from '../error/NotFoundError';
+import InvalidStateError from '../error/InvalidStateError';
 
 export async function createHackathon(
     title: string,
     startDate: Date,
     endDate: Date,
 ): Promise<Hackathon> {
+  if (endDate <= startDate) {
+    throw new InvalidStateError(`Cannot create Hackathon, ` +
+        `startDate (${startDate}) is after endDate (${endDate})`);
+  }
+
   const hackathon = new Hackathon(title, startDate, endDate);
 
   await putHackathon(hackathon);
@@ -75,9 +82,36 @@ export async function getHackathonResponse(
   );
 }
 
-export async function getHackathonListResponse(): Promise<HackathonListResponse> {
+export async function getHackathonListResponse(
+): Promise<HackathonListResponse> {
   const hackathons = await listHackathons();
   return HackathonListResponse.from(hackathons);
+}
+
+export async function editHackathon(
+    id: Uuid,
+    title: string,
+    startDate: Date,
+    endDate: Date,
+): Promise<void> {
+  if (endDate <= startDate) {
+    throw new InvalidStateError(`Cannot edit Hackathon with id ${id}, ` +
+        `startDate (${startDate}) is after endDate (${endDate})`);
+  }
+
+  let existing: Hackathon;
+  try {
+    existing = await getHackathon(id);
+  } catch (e) {
+    throw new NotFoundError(`Cannot edit Hackathon with id: ${id}, ` +
+        `it does not exist`);
+  }
+
+  existing.title = title;
+  existing.startDate = startDate;
+  existing.endDate = endDate;
+
+  await putHackathon(existing);
 }
 
 export async function removeHackathon(

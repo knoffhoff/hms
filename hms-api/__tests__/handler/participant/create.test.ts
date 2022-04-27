@@ -1,7 +1,6 @@
 import * as participantService from '../../../src/service/participant-service';
 import {create} from '../../../src/handler/participant/create';
 import {randomParticipant} from '../../repository/domain/participant-maker';
-import {mockUuid} from '../../util/uuids-mock';
 import ParticipantCreateResponse
   from '../../../src/rest/ParticipantCreateResponse';
 import ReferenceNotFoundError from '../../../src/error/ReferenceNotFoundError';
@@ -15,7 +14,6 @@ describe('Create Participant', () => {
   test('Happy Path', async () => {
     const expected = randomParticipant();
     mockCreateParticipant.mockResolvedValue(expected);
-    mockUuid(expected.id);
     const callback = jest.fn();
 
     await create(toEvent(expected), null, callback);
