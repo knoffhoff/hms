@@ -60,6 +60,9 @@ const mockListIdeas = jest.fn();
 jest.spyOn(ideaRepository, 'listIdeasForHackathon')
     .mockImplementation(mockListIdeas);
 
+beforeAll(() => {
+});
+
 describe('Create Hackathon', () => {
   test('Happy Path', async () => {
     mockPutItem();
@@ -124,7 +127,16 @@ describe('Edit Hackathon', () => {
 
     await editHackathon(oldHackathon.id, title, startDate, endDate);
 
-    expect(mockPutHackathon).toHaveBeenCalledWith(expected);
+  test('StartDate === EndDate', async () => {
+    const expected = randomHackathon();
+
+    await expect(createHackathon(
+        expected.title,
+        expected.startDate,
+        expected.startDate))
+        .rejects
+        .toThrow(InvalidStateError);
+    expect(mockPutHackathon).not.toHaveBeenCalled();
     expect(mockGetHackathon).toHaveBeenCalledWith(oldHackathon.id);
   });
 
