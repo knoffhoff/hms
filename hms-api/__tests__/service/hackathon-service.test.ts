@@ -127,17 +127,7 @@ describe('Edit Hackathon', () => {
 
     await editHackathon(oldHackathon.id, title, startDate, endDate);
 
-  test('StartDate === EndDate', async () => {
-    const expected = randomHackathon();
-
-    await expect(createHackathon(
-        expected.title,
-        expected.startDate,
-        expected.startDate))
-        .rejects
-        .toThrow(InvalidStateError);
-    expect(mockPutHackathon).not.toHaveBeenCalled();
-    expect(mockGetHackathon).toHaveBeenCalledWith(oldHackathon.id);
+    expect(mockPutHackathon).toHaveBeenCalledWith(expected);
   });
 
   test('StartDate > EndDate', async () => {
