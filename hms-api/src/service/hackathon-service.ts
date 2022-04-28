@@ -126,7 +126,6 @@ export async function removeHackathon(
     throw new DeletionError(`Unable to remove Hackathon with id: ${id}, ` +
         `nested failure is: ${e.message}`);
   }
-
   await deleteHackathon(id);
   return new HackathonDeleteResponse(id);
 }
