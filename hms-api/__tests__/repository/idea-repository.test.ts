@@ -1,4 +1,5 @@
 import {
+  ideaByCategoryIdIndex,
   ideaByHackathonIdIndex,
   ideaByOwnerIdIndex,
   ideaTable,
@@ -13,6 +14,7 @@ import {
   deleteIdea,
   deleteParticipantFromIdea,
   getIdea,
+  listIdeasForCategory,
   listIdeasForHackathon,
   listIdeasForOwner,
   listIdeasForParticipant,
@@ -251,6 +253,50 @@ describe('List Ideas for Participant', () => {
   });
 });
 
+describe('List Ideas for Category', () => {
+  test('Query returns null', async () => {
+    const categoryId = uuid();
+    mockScan(null);
+
+    await expect(listIdeasForCategory(categoryId))
+        .rejects
+        .toThrow(NotFoundError);
+
+    listCategoryExpected(categoryId);
+  });
+
+  test('0 Ideas exist', async () => {
+    const categoryId = uuid();
+    mockScan([]);
+
+    expect(await listIdeasForCategory(categoryId)).toStrictEqual([]);
+
+    listCategoryExpected(categoryId);
+  });
+
+  test('1 Idea exists', async () => {
+    const categoryId = uuid();
+    const idea = makeIdea({categoryId: categoryId} as IdeaData);
+    mockScan([itemFromIdea(idea)]);
+
+    expect(await listIdeasForCategory(categoryId)).toStrictEqual([idea]);
+
+    listCategoryExpected(categoryId);
+  });
+
+  test('2 Ideas exist', async () => {
+    const categoryId = uuid();
+    const idea1 = makeIdea({categoryId: categoryId} as IdeaData);
+    const idea2 = makeIdea({categoryId: categoryId} as IdeaData);
+    mockScan([itemFromIdea(idea1), itemFromIdea(idea2)]);
+
+    expect(await listIdeasForCategory(categoryId))
+        .toStrictEqual([idea1, idea2]);
+
+    listCategoryExpected(categoryId);
+  });
+});
+
 const itemFromIdea = (idea: Idea): { [key: string]: AttributeValue } => ({
   id: {S: idea.id},
   ownerId: {S: idea.ownerId},
@@ -294,6 +340,18 @@ const listOwnerExpected = (
         IndexName: ideaByOwnerIdIndex,
         KeyConditionExpression: 'ownerId = :oId',
         ExpressionAttributeValues: {':oId': {'S': ownerId}},
+      }),
+    }));
+
+const listCategoryExpected = (
+    categoryId: Uuid,
+) => expect(mockSend).toHaveBeenCalledWith(
+    expect.objectContaining({
+      input: expect.objectContaining({
+        TableName: ideaTable,
+        IndexName: ideaByCategoryIdIndex,
+        KeyConditionExpression: 'categoryId = :cId',
+        ExpressionAttributeValues: {':cId': {'S': categoryId}},
       }),
     }));
 

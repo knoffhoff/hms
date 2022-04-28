@@ -115,6 +115,7 @@ export async function editHackathon(
 export async function removeHackathon(
     id: Uuid,
 ): Promise<HackathonDeleteResponse> {
+  // TODO delete all participants/ideas/categories
   await deleteHackathon(id);
   return new HackathonDeleteResponse(id);
 }

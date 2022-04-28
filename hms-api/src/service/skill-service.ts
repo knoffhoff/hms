@@ -11,6 +11,7 @@ import Uuid from '../util/Uuid';
 import SkillResponse from '../rest/SkillResponse';
 import SkillListResponse from '../rest/SkillListResponse';
 import SkillDeleteResponse from '../rest/SkillDeleteResponse';
+import NotFoundError from '../error/NotFoundError';
 
 export async function createSkill(
     name: string,
@@ -19,6 +20,23 @@ export async function createSkill(
   const skill = new Skill(name, description);
   await putSkill(skill);
   return skill;
+}
+
+export async function editSkill(
+    id: Uuid,
+    name: string,
+    description: string,
+): Promise<void> {
+  try {
+    const existing = await getSkill(id);
+    existing.name = name;
+    existing.description = description;
+
+    await putSkill(existing);
+  } catch (e) {
+    throw new NotFoundError(`Cannot edit Skill with id: ${id}, ` +
+        `it does not exist`);
+  }
 }
 
 export async function getSkillResponse(id: Uuid): Promise<SkillResponse> {

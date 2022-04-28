@@ -4,6 +4,7 @@ import * as hackathonService from '../../../src/service/hackathon-service';
 import HackathonEditResponse from '../../../src/rest/HackathonEditResponse';
 import InvalidStateError from '../../../src/error/InvalidStateError';
 import NotFoundError from '../../../src/error/NotFoundError';
+import HackathonEditRequest from '../../../src/rest/HackathonEditRequest';
 
 const mockEditHackathon = jest.fn();
 jest.spyOn(hackathonService, 'editHackathon')
@@ -127,11 +128,11 @@ const toEvent = (
     endDate: Date,
     id: Uuid,
 ): any => ({
-  body: JSON.stringify({
-    title: title,
-    startDate: startDate.toISOString(),
-    endDate: endDate.toISOString(),
-  }),
+  body: JSON.stringify(new HackathonEditRequest(
+      title,
+      startDate,
+      endDate,
+  )),
   pathParameters: {
     id: id,
   },
