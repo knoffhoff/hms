@@ -191,14 +191,16 @@ describe('Get Participant List Response', () => {
         hackathonId,
     );
 
+    mockHackathonExists.mockResolvedValue(true);
     mockListParticipants.mockResolvedValue([participant1, participant2]);
     mockGetUsers.mockResolvedValue([user1, user2]);
 
     expect(await getParticipantListResponse(hackathonId))
         .toStrictEqual(expected);
-    expect(mockListParticipants).toHaveBeenCalledWith(hackathonId);
+    expect(mockHackathonExists).toHaveBeenCalledWith(hackathonId);
     expect(mockGetUsers).toHaveBeenCalledWith(
         [participant1.userId, participant2.userId]);
+    expect(mockListParticipants).toHaveBeenCalledWith(hackathonId);
   });
 
   test('Missing Users', async () => {
@@ -206,6 +208,7 @@ describe('Get Participant List Response', () => {
     const participant1 = randomParticipant();
     const participant2 = randomParticipant();
 
+    mockHackathonExists.mockResolvedValue(true);
     mockListParticipants.mockResolvedValue([participant1, participant2]);
     mockGetUsers.mockImplementation(() => {
       throw new NotFoundError('FAIIIILLLUUUURE');
@@ -214,9 +217,29 @@ describe('Get Participant List Response', () => {
     await expect(getParticipantListResponse(hackathonId))
         .rejects
         .toThrow(ReferenceNotFoundError);
-    expect(mockListParticipants).toHaveBeenCalledWith(hackathonId);
+    expect(mockHackathonExists).toHaveBeenCalledWith(hackathonId);
     expect(mockGetUsers).toHaveBeenCalledWith(
         [participant1.userId, participant2.userId]);
+    expect(mockListParticipants).toHaveBeenCalledWith(hackathonId);
+  });
+
+  test('Missing Hackathon', async () => {
+    const hackathonId = uuid();
+    const participant1 = randomParticipant();
+    const participant2 = randomParticipant();
+
+    mockHackathonExists.mockResolvedValue(false);
+    mockListParticipants.mockResolvedValue([participant1, participant2]);
+    mockGetUsers.mockImplementation(() => {
+      throw new NotFoundError('FAIIIILLLUUUURE');
+    });
+
+    await expect(getParticipantListResponse(hackathonId))
+        .rejects
+        .toThrow(NotFoundError);
+    expect(mockHackathonExists).toHaveBeenCalledWith(hackathonId);
+    expect(mockGetUsers).not.toHaveBeenCalled();
+    expect(mockListParticipants).not.toHaveBeenCalled();
   });
 });
 

@@ -21,6 +21,7 @@ import ParticipantPreviewResponse from '../rest/ParticipantPreviewResponse';
 import ParticipantDeleteResponse from '../rest/ParticipantDeleteResponse';
 import {removeIdeasForOwner, removeParticipantFromIdeas} from './idea-service';
 import DeletionError from '../error/DeletionError';
+import NotFoundError from '../error/NotFoundError';
 
 export async function createParticipant(
     userId: Uuid,
@@ -67,6 +68,12 @@ export async function getParticipantResponse(
 export async function getParticipantListResponse(
     hackathonId: Uuid,
 ): Promise<ParticipantListResponse> {
+  if (!await hackathonExists(hackathonId)) {
+    throw new NotFoundError(
+        `Cannot list Participants for Hackathon with id: ${hackathonId}, ` +
+        `it does not exist`);
+  }
+
   const participants = await listParticipants(hackathonId);
 
   let users;
