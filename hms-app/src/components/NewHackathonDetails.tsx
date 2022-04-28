@@ -209,20 +209,18 @@ export default function NewHackathonDetails(props: IProps) {
   )
 
   const allCategories = hackathonData.categories?.map((category, index) => (
-    <Accordion iconPosition="right">
-      <Accordion.Item
-        label={
-          <SimpleGrid cols={2} breakpoints={[{ maxWidth: 'sm', cols: 1 }]}>
-            <div>
-              {index + 1}. {category.title}
-            </div>
-            <div>{category.id}</div>
-          </SimpleGrid>
-        }
-      >
-        <CategoryDetails categoryID={category.id} />
-      </Accordion.Item>
-    </Accordion>
+    <Accordion.Item
+      label={
+        <SimpleGrid cols={2} breakpoints={[{ maxWidth: 'sm', cols: 1 }]}>
+          <div>
+            {index + 1}. {category.title}
+          </div>
+          <div>{category.id}</div>
+        </SimpleGrid>
+      }
+    >
+      <CategoryDetails categoryID={category.id.toString()} />
+    </Accordion.Item>
   ))
 
   const ideasPreviewData = hackathonData.ideas?.map((idea, index) => (
@@ -298,7 +296,7 @@ export default function NewHackathonDetails(props: IProps) {
                   </Text>
                 }
               >
-                {allCategories}
+                <Accordion iconPosition="right">{allCategories}</Accordion>
               </Accordion.Item>
             </Accordion>
 

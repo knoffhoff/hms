@@ -31,7 +31,7 @@ const useStyles = createStyles((theme) => ({
 
 export default function CategoryDetails(props: IProps) {
   const { classes } = useStyles()
-  const categoryID = props
+  const { categoryID } = props
   const [opened, setOpened] = useState(false)
   const [categoryData, setCategoryData] = useState({
     errorCategoryData: false,
@@ -43,7 +43,7 @@ export default function CategoryDetails(props: IProps) {
   } as Category)
 
   const loadSelectedCategory = () => {
-    getCategoryDetails(categoryID.categoryID).then(
+    getCategoryDetails(categoryID).then(
       (data) => {
         setCategoryData({
           id: data.id,
@@ -76,7 +76,7 @@ export default function CategoryDetails(props: IProps) {
       ...categoryData,
       isLoadingCategoryData: true,
     })
-  }, [categoryID])
+  }, [])
 
   return (
     <>

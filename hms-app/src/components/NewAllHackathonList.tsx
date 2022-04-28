@@ -59,20 +59,18 @@ function NewAllHackathonList() {
   }
 
   const allHackathons = hackathonList.hackathons.map((hackathon, index) => [
-    <Accordion iconPosition="right">
-      <Accordion.Item
-        label={
-          <SimpleGrid cols={2} breakpoints={[{ maxWidth: 'sm', cols: 1 }]}>
-            <div>
-              {index + 1}. {hackathon.title}
-            </div>
-            <div>{hackathon.id}</div>
-          </SimpleGrid>
-        }
-      >
-        <NewHackathonDetails hackathonID={hackathon.id} type={'fullInfo'} />
-      </Accordion.Item>
-    </Accordion>,
+    <Accordion.Item
+      label={
+        <SimpleGrid cols={2} breakpoints={[{ maxWidth: 'sm', cols: 1 }]}>
+          <div>
+            {index + 1}. {hackathon.title}
+          </div>
+          <div>{hackathon.id}</div>
+        </SimpleGrid>
+      }
+    >
+      <NewHackathonDetails hackathonID={hackathon.id} type={'fullInfo'} />
+    </Accordion.Item>,
   ])
 
   useEffect(() => {
@@ -96,7 +94,9 @@ function NewAllHackathonList() {
             {hackathonList.isLoadingHackathonList && <div>Loading...</div>}
           </Group>
         </Card.Section>
-        <Card.Section>{allHackathons}</Card.Section>
+        <Card.Section>
+          <Accordion iconPosition="right">{allHackathons}</Accordion>
+        </Card.Section>
       </Card>{' '}
     </>
   )
