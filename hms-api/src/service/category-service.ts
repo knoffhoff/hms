@@ -69,7 +69,14 @@ export async function getCategoryResponse(id: Uuid): Promise<CategoryResponse> {
 export async function getCategoryListResponse(
     hackathonId: Uuid,
 ): Promise<CategoryListResponse> {
+  if (!await hackathonExists(hackathonId)) {
+    throw new NotFoundError(
+        `Cannot list Categories for Hackathon with id: ${hackathonId}, ` +
+        `it does not exist`);
+  }
+
   const categories = await listCategories(hackathonId);
+
   return CategoryListResponse.from(categories, hackathonId);
 }
 

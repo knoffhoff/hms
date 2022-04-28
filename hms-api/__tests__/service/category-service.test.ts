@@ -174,10 +174,28 @@ describe('Get Category List Response', () => {
         [category1, category2, category3],
         hackathonId);
 
+    mockHackathonExists.mockResolvedValue(true);
     mockListCategories.mockResolvedValue([category1, category2, category3]);
 
     expect(await getCategoryListResponse(hackathonId)).toStrictEqual(expected);
+    expect(mockHackathonExists).toHaveBeenCalledWith(hackathonId);
     expect(mockListCategories).toHaveBeenCalledWith(hackathonId);
+  });
+
+  test('Hackathon missing', async () => {
+    const hackathonId = uuid();
+    mockHackathonExists.mockResolvedValue(false);
+    mockListCategories.mockResolvedValue([
+      randomCategory(),
+      randomCategory(),
+      randomCategory(),
+    ]);
+
+    await expect(getCategoryListResponse(hackathonId))
+        .rejects
+        .toThrow(NotFoundError);
+    expect(mockHackathonExists).toHaveBeenCalledWith(hackathonId);
+    expect(mockListCategories).not.toHaveBeenCalled();
   });
 });
 
