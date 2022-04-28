@@ -17,6 +17,8 @@ import CategoryResponse from '../rest/CategoryResponse';
 import CategoryListResponse from '../rest/CategoryListResponse';
 import CategoryDeleteResponse from '../rest/CategoryDeleteResponse';
 import {removeIdeasForCategory} from './idea-service';
+import NotFoundError from '../error/NotFoundError';
+import DeletionError from '../error/DeletionError';
 
 export async function createCategory(
     title: string,
@@ -31,6 +33,23 @@ export async function createCategory(
   const category = new Category(title, description, hackathonId);
   await putCategory(category);
   return category;
+}
+
+export async function editCategory(
+    id: Uuid,
+    title: string,
+    description: string,
+): Promise<void> {
+  try {
+    const existing = await getCategory(id);
+    existing.title = title;
+    existing.description = description;
+
+    await putCategory(existing);
+  } catch (e) {
+    throw new NotFoundError(`Cannot edit Category with id: ${id}, ` +
+        `it does not exist`);
+  }
 }
 
 export async function getCategoryResponse(id: Uuid): Promise<CategoryResponse> {
@@ -60,9 +79,19 @@ export async function removeCategory(
   try {
     await removeIdeasForCategory(id);
   } catch (e) {
-    // TODO throw an error
+    throw new DeletionError(`Unable to remove Category with id ${id}, ` +
+        `nested failure is: ${e.message}`);
   }
 
   await deleteCategory(id);
   return new CategoryDeleteResponse(id);
+}
+
+export async function removeCategoriesForHackathon(
+    hackathonId: Uuid,
+): Promise<void> {
+  const categories = await listCategories(hackathonId);
+  for (const category of categories) {
+    await removeCategory(category.id);
+  }
 }

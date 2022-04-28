@@ -4,6 +4,7 @@ import {randomSkill} from '../../repository/domain/skill-maker';
 import SkillCreateResponse from '../../../src/rest/SkillCreateResponse';
 import ReferenceNotFoundError from '../../../src/error/ReferenceNotFoundError';
 import Skill from '../../../src/repository/domain/Skill';
+import SkillCreateRequest from '../../../src/rest/SkillCreateRequest';
 
 const mockCreateSkill = jest.fn();
 jest.spyOn(skillService, 'createSkill')
@@ -72,8 +73,8 @@ describe('Create Skill', () => {
 });
 
 const toEvent = (skill: Skill): any => ({
-  body: JSON.stringify({
-    name: skill.name,
-    description: skill.description,
-  }),
+  body: JSON.stringify(new SkillCreateRequest(
+      skill.name,
+      skill.description,
+  )),
 });

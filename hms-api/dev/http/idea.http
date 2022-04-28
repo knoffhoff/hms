@@ -21,6 +21,22 @@ Content-Type: application/json
 }
 
 ###
+# @name Edit Idea
+PUT {{host}}/restapis/{{api_id}}/local/_user_request_/idea/{{idea_id}}
+Content-Type: application/json
+
+{
+  "title": "SUPER BORING IDEA",
+  "description": "We're actually just going to do nothing.  No work, no coding, no presentation... nothing...",
+  "problem": "Too much goes on all the time, we should take it easy",
+  "goal": "Make hackathons relaxed again",
+  "requiredSkills": [
+    "{{skill_id_2}}"
+  ],
+  "categoryId": "{{category_id_2}}"
+}
+
+###
 # @name Get Idea
 GET {{host}}/restapis/{{api_id}}/local/_user_request_/idea/{{idea_id}}
 

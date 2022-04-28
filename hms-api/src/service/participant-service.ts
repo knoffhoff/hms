@@ -89,12 +89,6 @@ export async function removeParticipant(
 ): Promise<ParticipantDeleteResponse> {
   try {
     await removeIdeasForOwner(id);
-  } catch (e) {
-    throw new DeletionError(`Unable to remove Participant with id ${id}, ` +
-        `nested failure is: ${e.message}`);
-  }
-
-  try {
     await removeParticipantFromIdeas(id);
   } catch (e) {
     throw new DeletionError(`Unable to remove Participant with id ${id}, ` +
@@ -103,4 +97,13 @@ export async function removeParticipant(
 
   await deleteParticipant(id);
   return new ParticipantDeleteResponse(id);
+}
+
+export async function removeParticipantsForHackathon(
+    hackathonId: Uuid,
+): Promise<void> {
+  const participants = await listParticipants(hackathonId);
+  for (const participant of participants) {
+    await removeParticipant(participant.id);
+  }
 }

@@ -1,16 +1,18 @@
 import {randomSkill} from '../repository/domain/skill-maker';
 import {
   createSkill,
+  editSkill,
   getSkillListResponse,
   getSkillResponse,
   removeSkill,
 } from '../../src/service/skill-service';
 import {uuid} from '../../src/util/Uuid';
-import * as skillRepository from '../../src/repository/skill-repository';
+import Skill from '../../src/repository/domain/Skill';
 import SkillResponse from '../../src/rest/SkillResponse';
 import NotFoundError from '../../src/error/NotFoundError';
 import SkillListResponse from '../../src/rest/SkillListResponse';
 import SkillDeleteResponse from '../../src/rest/SkillDeleteResponse';
+import * as skillRepository from '../../src/repository/skill-repository';
 
 const mockPutSkill = jest.fn();
 jest.spyOn(skillRepository, 'putSkill')
@@ -41,6 +43,41 @@ describe('Create Skill', () => {
       name: expected.name,
       description: expected.description,
     }));
+  });
+});
+
+describe('Edit Skill', () => {
+  test('Happy Path', async () => {
+    const oldSkill = randomSkill();
+    const title = 'Worst Skill Ever';
+    const description = 'Best description ever!';
+    const expected = new Skill(
+        title,
+        description,
+        oldSkill.id);
+
+    mockGetSkill.mockResolvedValue(oldSkill);
+
+    await editSkill(oldSkill.id, title, description);
+
+    expect(mockPutSkill).toHaveBeenCalledWith(expected);
+  });
+
+  test('Skill is missing', async () => {
+    const id = uuid();
+
+    mockGetSkill.mockImplementation(() => {
+      throw new Error('Uh oh');
+    });
+
+    await expect(editSkill(
+        id,
+        'Anything',
+        'There once was a man from Nantucket...'))
+        .rejects
+        .toThrow(NotFoundError);
+    expect(mockPutSkill).not.toHaveBeenCalled();
+    expect(mockGetSkill).toHaveBeenCalledWith(id);
   });
 });
 

@@ -18,6 +18,10 @@ import HackathonListResponse from '../rest/HackathonListResponse';
 import HackathonDeleteResponse from '../rest/HackathonDeleteResponse';
 import NotFoundError from '../error/NotFoundError';
 import InvalidStateError from '../error/InvalidStateError';
+import {removeIdeasForHackathon} from './idea-service';
+import DeletionError from '../error/DeletionError';
+import {removeCategoriesForHackathon} from './category-service';
+import {removeParticipantsForHackathon} from './participant-service';
 
 export async function createHackathon(
     title: string,
@@ -82,8 +86,7 @@ export async function getHackathonResponse(
   );
 }
 
-export async function getHackathonListResponse(
-): Promise<HackathonListResponse> {
+export async function getHackathonListResponse(): Promise<HackathonListResponse> {
   const hackathons = await listHackathons();
   return HackathonListResponse.from(hackathons);
 }
@@ -99,24 +102,30 @@ export async function editHackathon(
         `startDate (${startDate}) is after endDate (${endDate})`);
   }
 
-  let existing: Hackathon;
   try {
-    existing = await getHackathon(id);
+    const existing = await getHackathon(id);
+    existing.title = title;
+    existing.startDate = startDate;
+    existing.endDate = endDate;
+
+    await putHackathon(existing);
   } catch (e) {
     throw new NotFoundError(`Cannot edit Hackathon with id: ${id}, ` +
         `it does not exist`);
   }
-
-  existing.title = title;
-  existing.startDate = startDate;
-  existing.endDate = endDate;
-
-  await putHackathon(existing);
 }
 
 export async function removeHackathon(
     id: Uuid,
 ): Promise<HackathonDeleteResponse> {
+  try {
+    await removeIdeasForHackathon(id);
+    await removeCategoriesForHackathon(id);
+    await removeParticipantsForHackathon(id);
+  } catch (e) {
+    throw new DeletionError(`Unable to remove Hackathon with id: ${id}, ` +
+        `nested failure is: ${e.message}`);
+  }
   await deleteHackathon(id);
   return new HackathonDeleteResponse(id);
 }

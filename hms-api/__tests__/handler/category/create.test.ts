@@ -4,6 +4,7 @@ import {randomCategory} from '../../repository/domain/category-maker';
 import CategoryCreateResponse from '../../../src/rest/CategoryCreateResponse';
 import ReferenceNotFoundError from '../../../src/error/ReferenceNotFoundError';
 import Category from '../../../src/repository/domain/Category';
+import CategoryCreateRequest from '../../../src/rest/CategoryCreateRequest';
 
 const mockCreateCategory = jest.fn();
 jest.spyOn(categoryService, 'createCategory')
@@ -74,9 +75,10 @@ describe('Create Category', () => {
 });
 
 const toEvent = (category: Category): any => ({
-  body: JSON.stringify({
-    title: category.title,
-    description: category.description,
-    hackathonId: category.hackathonId,
-  }),
+  body: JSON.stringify(
+      new CategoryCreateRequest(
+          category.title,
+          category.description,
+          category.hackathonId),
+  ),
 });
