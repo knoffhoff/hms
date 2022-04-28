@@ -4,6 +4,7 @@ import NewHackathon from '../components/NewHackathon'
 import AllHackathonList from '../components/AllHackathonList'
 import NewCategory from '../components/NewCategory'
 import HackathonDetails from '../components/HackathonDetails'
+import NewAllHackathonList from '../components/NewAllHackathonList'
 
 const useStyles = createStyles((theme) => ({
   card: {
@@ -41,14 +42,23 @@ function AdminPage() {
         </Accordion.Item>
       </Accordion>
 
-      <Accordion mb={30}>
+      <Accordion mb={30} onChange={() => console.log('click')}>
+        <Accordion.Item
+          style={{ border: '1px solid' }}
+          label={'New Hackathon list'}
+        >
+          <NewAllHackathonList />
+        </Accordion.Item>
+      </Accordion>
+
+      {/*<Accordion mb={30} onChange={() => console.log('click')}>
         <Accordion.Item
           style={{ border: '1px solid' }}
           label={'Hackathon list'}
         >
           <AllHackathonList />
         </Accordion.Item>
-      </Accordion>
+      </Accordion>*/}
 
       <Accordion mb={30}>
         <Accordion.Item style={{ border: '1px solid' }} label={'Add Category'}>
@@ -56,7 +66,7 @@ function AdminPage() {
         </Accordion.Item>
       </Accordion>
 
-      <Accordion mb={30}>
+      {/*<Accordion mb={30}>
         <Accordion.Item
           style={{ border: '1px solid' }}
           label={'Load hackthon details'}
@@ -80,7 +90,7 @@ function AdminPage() {
             </Card.Section>
           </Card>
         </Accordion.Item>
-      </Accordion>
+      </Accordion>*/}
     </>
   )
 }

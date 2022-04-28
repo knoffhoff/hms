@@ -1,7 +1,17 @@
-import { Group, Button, createStyles, Card, SimpleGrid } from '@mantine/core'
+import {
+  Group,
+  Button,
+  createStyles,
+  Card,
+  SimpleGrid,
+  Accordion,
+  TextInput,
+} from '@mantine/core'
 import React, { useEffect, useState } from 'react'
 import { getListOfHackathons } from '../actions/HackathonActions'
 import { HackathonPreview } from '../common/types'
+import HackathonDetails from './HackathonDetails'
+import NewHackathonDetails from './NewHackathonDetails'
 
 const useStyles = createStyles((theme) => ({
   card: {
@@ -31,7 +41,7 @@ const useStyles = createStyles((theme) => ({
   },
 }))
 
-function AllHackathonList() {
+function NewAllHackathonList() {
   const { classes } = useStyles()
   const [hackathonList, setHackathonList] = useState({
     errorHackathonList: false,
@@ -60,14 +70,24 @@ function AllHackathonList() {
   }
 
   const allHackathons = hackathonList.hackathons.map((hackathon, index) => [
-    <SimpleGrid
-      cols={2}
-      breakpoints={[{ maxWidth: 'sm', cols: 1 }]}
-      className={index % 2 ? classes.list : classes.list2}
-    >
-      <li>title: {hackathon.title}</li>
-      ID: {hackathon.id}
-    </SimpleGrid>,
+    <Accordion iconPosition="right">
+      <Accordion.Item
+        label={
+          <SimpleGrid
+            cols={2}
+            breakpoints={[{ maxWidth: 'sm', cols: 1 }]}
+            className={index % 2 ? classes.list : classes.list2}
+          >
+            <div>
+              {index + 1}. Title: {hackathon.title}
+            </div>
+            <div>ID: {hackathon.id}</div>
+          </SimpleGrid>
+        }
+      >
+        <NewHackathonDetails hackathonID={hackathon.id} type={'fullInfo'} />
+      </Accordion.Item>
+    </Accordion>,
   ])
 
   useEffect(() => {
@@ -91,12 +111,10 @@ function AllHackathonList() {
             {hackathonList.isLoadingHackathonList && <div>Loading...</div>}
           </Group>
         </Card.Section>
-        <Card.Section className={classes.section}>
-          <ol>{allHackathons}</ol>
-        </Card.Section>
+        <Card.Section>{allHackathons}</Card.Section>
       </Card>{' '}
     </>
   )
 }
 
-export default AllHackathonList
+export default NewAllHackathonList
