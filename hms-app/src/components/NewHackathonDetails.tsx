@@ -17,8 +17,8 @@ import {
   Modal,
   TextInput,
 } from '@mantine/core'
-import { deleteCategory } from '../actions/CategoryActions'
 import { deleteParticipant } from '../actions/ParticipantActions'
+import CategoryDetails from './CategoryDetails'
 
 type IProps = {
   hackathonID: string
@@ -37,7 +37,6 @@ const useStyles = createStyles((theme) => ({
     paddingLeft: theme.spacing.md,
     paddingRight: theme.spacing.md,
     paddingBottom: theme.spacing.md,
-    textTransform: 'uppercase',
     fontSize: theme.fontSizes.md,
     fontWeight: 500,
   },
@@ -172,15 +171,6 @@ export default function NewHackathonDetails(props: IProps) {
     })
   }
 
-  const deleteSelectedCategory = () => {
-    deleteCategory(deleteIDs.categoryID).then((data) => {
-      setOpened({
-        ...opened,
-        categoriesModal: false,
-      })
-    })
-  }
-
   const deleteSelectedParticipant = () => {
     deleteParticipant(deleteIDs.participantID).then((data) => {
       setOpened({
@@ -232,18 +222,26 @@ export default function NewHackathonDetails(props: IProps) {
     )
   )
 
-  const categoriesPreviewData = hackathonData.categories?.map(
-    (category, index) => (
-      <SimpleGrid
-        cols={2}
-        breakpoints={[{ maxWidth: 'sm', cols: 1 }]}
-        className={index % 2 ? classes.list : classes.list2}
+  const allCategories = hackathonData.categories?.map((category, index) => (
+    <Accordion iconPosition="right">
+      <Accordion.Item
+        label={
+          <SimpleGrid
+            cols={2}
+            breakpoints={[{ maxWidth: 'sm', cols: 1 }]}
+            className={index % 2 ? classes.list : classes.list2}
+          >
+            <div>
+              {index + 1}. {category.title}
+            </div>
+            <div>{category.id}</div>
+          </SimpleGrid>
+        }
       >
-        <li>Name: {category.title}</li>
-        ID: {category.id}
-      </SimpleGrid>
-    )
-  )
+        <CategoryDetails categoryID={category.id} />
+      </Accordion.Item>
+    </Accordion>
+  ))
 
   const ideasPreviewData = hackathonData.ideas?.map((idea, index) => (
     <SimpleGrid
@@ -294,91 +292,35 @@ export default function NewHackathonDetails(props: IProps) {
         type === 'fullInfo' && (
           <Card withBorder radius="md" p="md" className={classes.card}>
             <Card.Section className={classes.section}>
-              <Text mt="md" className={classes.label} color="dimmed">
-                Title:
-              </Text>
-              <Text size="sm" mt="xs">
+              <Text size="md" mt="xs">
                 {hackathonData.title}
               </Text>
+              <Text size={'xs'}>ID: {hackathonData.hackathonId}</Text>
             </Card.Section>
             <Card.Section className={classes.section}>
               <SimpleGrid cols={2} breakpoints={[{ maxWidth: 'sm', cols: 1 }]}>
                 <Card.Section>
-                  <Text mt="md" className={classes.label} color="dimmed">
-                    Start Date:
-                  </Text>
                   <Text size="sm" mt="xs">
-                    {new Date(hackathonData.startDate).toDateString()}
+                    From: {new Date(hackathonData.startDate).toDateString()}
                   </Text>
                 </Card.Section>
                 <Card.Section>
-                  <Text mt="md" className={classes.label} color="dimmed">
-                    End Date:
-                  </Text>
                   <Text size="sm" mt="xs">
-                    {new Date(hackathonData.endDate).toDateString()}
+                    To: {new Date(hackathonData.endDate).toDateString()}
                   </Text>
                 </Card.Section>
               </SimpleGrid>
             </Card.Section>
 
-            <Accordion iconPosition="left">
+            <Accordion iconPosition="left" offsetIcon={false}>
               <Accordion.Item
                 label={
                   <Text className={classes.label} color="dimmed">
-                    Categories ( {categoriesPreviewData?.length} )
+                    Categories ( {allCategories?.length} )
                   </Text>
                 }
               >
-                <ol>{categoriesPreviewData}</ol>
-                <Modal
-                  centered
-                  opened={opened.categoriesModal}
-                  onClose={() =>
-                    setOpened({
-                      ...opened,
-                      categoriesModal: false,
-                    })
-                  }
-                  withCloseButton={false}
-                >
-                  Are you sure you want to delete this category?
-                  <h4>Title: (add the name of the category here)</h4>
-                  <Button
-                    color={'red'}
-                    onClick={() => deleteSelectedCategory()}
-                  >
-                    Yes delete this category
-                  </Button>
-                  <p>
-                    (This window will automatically closed as soon as the
-                    category is deleted)
-                  </p>
-                </Modal>
-                <Group position="left" mt="xl">
-                  <TextInput
-                    required
-                    placeholder={'put the category id here'}
-                    value={deleteIDs.categoryID}
-                    onChange={(event) =>
-                      setDeleteIDs({
-                        ...deleteIDs,
-                        categoryID: event.currentTarget.value,
-                      })
-                    }
-                  />
-                  <Button
-                    color={'red'}
-                    onClick={() =>
-                      setOpened({
-                        ...opened,
-                        categoriesModal: true,
-                      })
-                    }
-                  >
-                    Delete Category
-                  </Button>
-                </Group>
+                {allCategories}
               </Accordion.Item>
             </Accordion>
 

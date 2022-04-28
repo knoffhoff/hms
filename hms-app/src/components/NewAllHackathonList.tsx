@@ -79,9 +79,9 @@ function NewAllHackathonList() {
             className={index % 2 ? classes.list : classes.list2}
           >
             <div>
-              {index + 1}. Title: {hackathon.title}
+              {index + 1}. {hackathon.title}
             </div>
-            <div>ID: {hackathon.id}</div>
+            <div>{hackathon.id}</div>
           </SimpleGrid>
         }
       >

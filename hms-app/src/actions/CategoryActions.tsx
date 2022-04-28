@@ -59,3 +59,20 @@ export const getListOfCategories = (endpoint: string) => {
     })
     .catch((err) => console.log(err))
 }
+
+export const getCategoryDetails = (categoryID: string) => {
+  return fetch(
+    `http://localhost:4566/restapis/${api_id}/local/_user_request_/category/${categoryID}`,
+    {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+    }
+  )
+    .then((data) => {
+      return data.json()
+    })
+    .catch((err) => console.log(err))
+}

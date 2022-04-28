@@ -3,11 +3,6 @@ export type HackathonPreview = {
   title: string
 }
 
-export type IdeaPreview = {
-  id: string
-  title: string
-}
-
 export type Hackathon = {
   errorHackathonData: boolean
   isLoadingHackathonData: boolean
@@ -18,6 +13,11 @@ export type Hackathon = {
   participants?: ParticipantPreview[]
   categories?: CategoryPreview[]
   ideas?: IdeaPreview[]
+}
+
+export type IdeaPreview = {
+  id: string
+  title: string
 }
 
 export type Idea = {
@@ -39,6 +39,15 @@ export type Idea = {
 export type CategoryPreview = {
   id: string
   title: string
+}
+
+export type Category = {
+  errorCategoryData: boolean
+  isLoadingCategoryData: boolean
+  id: string
+  title: string
+  description: string
+  hackathonId: string
 }
 
 export type SkillPreview = {
