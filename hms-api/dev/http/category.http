@@ -14,6 +14,16 @@ Content-Type: application/json
 }
 
 ###
+# @name Edit Category
+PUT {{host}}/restapis/{{api_id}}/local/_user_request_/category/{{category_id}}
+Content-Type: application/json
+
+{
+  "title": "Renamed Category",
+  "description": "This is now very different from what it was before!!!"
+}
+
+###
 # @name Get Category
 GET {{host}}/restapis/{{api_id}}/local/_user_request_/category/{{category_id}}
 

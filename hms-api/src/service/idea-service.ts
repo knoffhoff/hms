@@ -30,6 +30,7 @@ import IdeaResponse from '../rest/IdeaResponse';
 import IdeaListResponse from '../rest/IdeaListResponse';
 import IdeaDeleteResponse from '../rest/IdeaDeleteResponse';
 import DeletionError from '../error/DeletionError';
+import NotFoundError from '../error/NotFoundError';
 
 export async function createIdea(
     ownerId: Uuid,
@@ -54,7 +55,12 @@ export async function createIdea(
         `in Hackathon with id: ${hackathonId}`);
   }
 
-  await verifyAllSkillsExist(requiredSkills);
+  for (const skillId of requiredSkills) {
+    if (!await skillExists(skillId)) {
+      throw new ReferenceNotFoundError(`Cannot create Idea, ` +
+          `Skill with id: ${skillId} does not exist`);
+    }
+  }
 
   const idea = new Idea(
       ownerId,
@@ -68,6 +74,45 @@ export async function createIdea(
   );
   await putIdea(idea);
   return idea;
+}
+
+export async function editIdea(
+    id: Uuid,
+    title: string,
+    description: string,
+    problem: string,
+    goal: string,
+    requiredSkills: Uuid[],
+    categoryId: Uuid,
+): Promise<void> {
+  let existing;
+  try {
+    existing = await getIdea(id);
+  } catch (e) {
+    throw new NotFoundError(`Cannot edit Idea with id: ${id}, ` +
+        `it does not exist`);
+  }
+
+  if (!await categoryExists(categoryId, existing.hackathonId)) {
+    throw new ReferenceNotFoundError(`Cannot edit Idea with id: ${id}, ` +
+        `Category with id: ${categoryId} does not exist ` +
+        `in Hackathon with id: ${existing.hackathonId}`);
+  }
+
+  for (const skillId of requiredSkills) {
+    if (!await skillExists(skillId)) {
+      throw new ReferenceNotFoundError(`Cannot edit Idea with id: ${id}, ` +
+          `Skill with id: ${skillId} does not exist`);
+    }
+  }
+
+  existing.title = title;
+  existing.description = description;
+  existing.problem = problem;
+  existing.goal = goal;
+  existing.requiredSkills = requiredSkills;
+  existing.categoryId = categoryId;
+  await putIdea(existing);
 }
 
 export async function getIdeaResponse(id: Uuid): Promise<IdeaResponse> {
@@ -185,6 +230,21 @@ export async function removeIdeasForOwner(ownerId: Uuid): Promise<void> {
   }
 }
 
+// TODO this could be done using a Batch operation
+export async function removeIdeasForHackathon(
+    hackathonId: Uuid,
+): Promise<void> {
+  const ideas = await listIdeasForHackathon(hackathonId);
+  for (const idea of ideas) {
+    try {
+      await deleteIdea(idea.id);
+    } catch (e) {
+      throw new DeletionError(`Unable to delete all Ideas for Hackathon with ` +
+          `id: ${hackathonId}, Idea with id: ${idea.id} failed to delete`);
+    }
+  }
+}
+
 export async function removeParticipantFromIdeas(
     participantId: Uuid,
 ): Promise<void> {
@@ -196,15 +256,6 @@ export async function removeParticipantFromIdeas(
       throw new DeletionError(`Unable to delete Participant from all Ideas, ` +
           `Participant with id: ${participantId} failed to be deleted from ` +
           `Idea with id: ${idea.id}`);
-    }
-  }
-}
-
-async function verifyAllSkillsExist(skillIds: Uuid[]): Promise<void> {
-  for (const skillId of skillIds) {
-    if (!await skillExists(skillId)) {
-      throw new ReferenceNotFoundError(`Cannot create Idea, ` +
-          `Skill with id: ${skillId} does not exist`);
     }
   }
 }

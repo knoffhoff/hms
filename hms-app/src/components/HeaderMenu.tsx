@@ -116,7 +116,7 @@ export default function HeaderMenu({ links }: HeaderSearchProps) {
         <div className={classes.inner}>
           <h1>HMS</h1>
           <Group spacing={5} className={classes.links}>
-            <SwitchToggle></SwitchToggle>
+            <SwitchToggle />
             {items}
             <Avatar color="indigo" radius="xl">
               JP

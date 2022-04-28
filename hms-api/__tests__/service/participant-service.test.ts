@@ -3,6 +3,7 @@ import {
   getParticipantListResponse,
   getParticipantResponse,
   removeParticipant,
+  removeParticipantsForHackathon,
 } from '../../src/service/participant-service';
 import {
   makeParticipant,
@@ -190,14 +191,16 @@ describe('Get Participant List Response', () => {
         hackathonId,
     );
 
+    mockHackathonExists.mockResolvedValue(true);
     mockListParticipants.mockResolvedValue([participant1, participant2]);
     mockGetUsers.mockResolvedValue([user1, user2]);
 
     expect(await getParticipantListResponse(hackathonId))
         .toStrictEqual(expected);
-    expect(mockListParticipants).toHaveBeenCalledWith(hackathonId);
+    expect(mockHackathonExists).toHaveBeenCalledWith(hackathonId);
     expect(mockGetUsers).toHaveBeenCalledWith(
         [participant1.userId, participant2.userId]);
+    expect(mockListParticipants).toHaveBeenCalledWith(hackathonId);
   });
 
   test('Missing Users', async () => {
@@ -205,6 +208,7 @@ describe('Get Participant List Response', () => {
     const participant1 = randomParticipant();
     const participant2 = randomParticipant();
 
+    mockHackathonExists.mockResolvedValue(true);
     mockListParticipants.mockResolvedValue([participant1, participant2]);
     mockGetUsers.mockImplementation(() => {
       throw new NotFoundError('FAIIIILLLUUUURE');
@@ -213,9 +217,29 @@ describe('Get Participant List Response', () => {
     await expect(getParticipantListResponse(hackathonId))
         .rejects
         .toThrow(ReferenceNotFoundError);
-    expect(mockListParticipants).toHaveBeenCalledWith(hackathonId);
+    expect(mockHackathonExists).toHaveBeenCalledWith(hackathonId);
     expect(mockGetUsers).toHaveBeenCalledWith(
         [participant1.userId, participant2.userId]);
+    expect(mockListParticipants).toHaveBeenCalledWith(hackathonId);
+  });
+
+  test('Missing Hackathon', async () => {
+    const hackathonId = uuid();
+    const participant1 = randomParticipant();
+    const participant2 = randomParticipant();
+
+    mockHackathonExists.mockResolvedValue(false);
+    mockListParticipants.mockResolvedValue([participant1, participant2]);
+    mockGetUsers.mockImplementation(() => {
+      throw new NotFoundError('FAIIIILLLUUUURE');
+    });
+
+    await expect(getParticipantListResponse(hackathonId))
+        .rejects
+        .toThrow(NotFoundError);
+    expect(mockHackathonExists).toHaveBeenCalledWith(hackathonId);
+    expect(mockGetUsers).not.toHaveBeenCalled();
+    expect(mockListParticipants).not.toHaveBeenCalled();
   });
 });
 
@@ -270,3 +294,30 @@ describe('Delete Participant', () => {
   });
 });
 
+describe('Remove Participants for Hackathon', () => {
+  test('Happy Path', async () => {
+    const hackathonId = uuid();
+    const participant1 =
+        makeParticipant({hackathonId: hackathonId} as ParticipantData);
+    const participant2 =
+        makeParticipant({hackathonId: hackathonId} as ParticipantData);
+
+    mockListParticipants.mockResolvedValue([participant1, participant2]);
+
+    mockRemoveIdeasForOwner.mockImplementation(() => {
+    });
+    mockRemoveParticipantFromIdeas.mockImplementation(() => {
+    });
+
+    await removeParticipantsForHackathon(hackathonId);
+
+    expect(mockRemoveIdeasForOwner).toHaveBeenCalledWith(participant1.id);
+    expect(mockRemoveIdeasForOwner).toHaveBeenCalledWith(participant2.id);
+    expect(mockRemoveParticipantFromIdeas)
+        .toHaveBeenCalledWith(participant1.id);
+    expect(mockRemoveParticipantFromIdeas)
+        .toHaveBeenCalledWith(participant2.id);
+    expect(mockDeleteParticipant).toHaveBeenCalledWith(participant1.id);
+    expect(mockDeleteParticipant).toHaveBeenCalledWith(participant2.id);
+  });
+});

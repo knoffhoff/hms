@@ -29,8 +29,10 @@ export default function IdeaCardList(props: IProps) {
 
   return (
     <>
-      <Grid gutter={'lg'}>
-        <Grid gutter={'lg'}>{IdeasList}</Grid>
+      <Grid gutter={'lg'} justify={'center'}>
+        <Grid gutter={'lg'} style={{ minWidth: '100%' }}>
+          {IdeasList}
+        </Grid>
       </Grid>
     </>
   )

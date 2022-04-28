@@ -21,6 +21,7 @@ import ParticipantPreviewResponse from '../rest/ParticipantPreviewResponse';
 import ParticipantDeleteResponse from '../rest/ParticipantDeleteResponse';
 import {removeIdeasForOwner, removeParticipantFromIdeas} from './idea-service';
 import DeletionError from '../error/DeletionError';
+import NotFoundError from '../error/NotFoundError';
 
 export async function createParticipant(
     userId: Uuid,
@@ -67,6 +68,12 @@ export async function getParticipantResponse(
 export async function getParticipantListResponse(
     hackathonId: Uuid,
 ): Promise<ParticipantListResponse> {
+  if (!await hackathonExists(hackathonId)) {
+    throw new NotFoundError(
+        `Cannot list Participants for Hackathon with id: ${hackathonId}, ` +
+        `it does not exist`);
+  }
+
   const participants = await listParticipants(hackathonId);
 
   let users;
@@ -89,12 +96,6 @@ export async function removeParticipant(
 ): Promise<ParticipantDeleteResponse> {
   try {
     await removeIdeasForOwner(id);
-  } catch (e) {
-    throw new DeletionError(`Unable to remove Participant with id ${id}, ` +
-        `nested failure is: ${e.message}`);
-  }
-
-  try {
     await removeParticipantFromIdeas(id);
   } catch (e) {
     throw new DeletionError(`Unable to remove Participant with id ${id}, ` +
@@ -103,4 +104,13 @@ export async function removeParticipant(
 
   await deleteParticipant(id);
   return new ParticipantDeleteResponse(id);
+}
+
+export async function removeParticipantsForHackathon(
+    hackathonId: Uuid,
+): Promise<void> {
+  const participants = await listParticipants(hackathonId);
+  for (const participant of participants) {
+    await removeParticipant(participant.id);
+  }
 }
