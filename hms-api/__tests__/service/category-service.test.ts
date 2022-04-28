@@ -100,6 +100,7 @@ describe('Edit Category', () => {
 
     await editCategory(oldCategory.id, title, description);
 
+    expect(mockGetCategory).toHaveBeenCalledWith(oldCategory.id);
     expect(mockPutCategory).toHaveBeenCalledWith(expected);
   });
 
@@ -116,8 +117,8 @@ describe('Edit Category', () => {
         'There once was a man from Nantucket...'))
         .rejects
         .toThrow(NotFoundError);
-    expect(mockPutCategory).not.toHaveBeenCalled();
     expect(mockGetCategory).toHaveBeenCalledWith(id);
+    expect(mockPutCategory).not.toHaveBeenCalled();
   });
 });
 
