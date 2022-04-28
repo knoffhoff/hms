@@ -2,6 +2,7 @@ import {randomCategory} from '../repository/domain/category-maker';
 import {randomHackathon} from '../repository/domain/hackathon-maker';
 import {
   createCategory,
+  editCategory,
   getCategoryListResponse,
   getCategoryResponse,
   removeCategory,
@@ -14,6 +15,7 @@ import CategoryListResponse from '../../src/rest/CategoryListResponse';
 import * as categoryRepository from '../../src/repository/category-repository';
 import * as hackathonRepository
   from '../../src/repository/hackathon-repository';
+import Category from '../../src/repository/domain/Category';
 
 const mockHackathonExists = jest.fn();
 jest.spyOn(hackathonRepository, 'hackathonExists')
@@ -68,6 +70,42 @@ describe('Create Category', () => {
       hackathonId: expected.hackathonId,
     }));
     expect(mockDeleteCategory).not.toHaveBeenCalled();
+  });
+});
+
+describe('Edit Category', () => {
+  test('Happy Path', async () => {
+    const oldCategory = randomCategory();
+    const title = 'Worst Category Ever';
+    const description = 'Best description ever!';
+    const expected = new Category(
+        title,
+        description,
+        oldCategory.hackathonId,
+        oldCategory.id);
+
+    mockGetCategory.mockResolvedValue(oldCategory);
+
+    await editCategory(oldCategory.id, title, description);
+
+    expect(mockPutCategory).toHaveBeenCalledWith(expected);
+  });
+
+  test('Category is missing', async () => {
+    const id = uuid();
+
+    mockGetCategory.mockImplementation(() => {
+      throw new Error('Uh oh');
+    });
+
+    await expect(editCategory(
+        id,
+        'Anything',
+        'There once was a man from Nantucket...'))
+        .rejects
+        .toThrow(NotFoundError);
+    expect(mockPutCategory).not.toHaveBeenCalled();
+    expect(mockGetCategory).toHaveBeenCalledWith(id);
   });
 });
 
