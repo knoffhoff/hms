@@ -20,6 +20,7 @@ import * as hackathonRepository
   from '../../src/repository/hackathon-repository';
 import * as ideaService from '../../src/service/idea-service';
 
+
 const mockHackathonExists = jest.fn();
 jest.spyOn(hackathonRepository, 'hackathonExists')
     .mockImplementation(mockHackathonExists);
