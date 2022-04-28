@@ -18,16 +18,6 @@ const useStyles = createStyles((theme) => ({
     backgroundColor:
       theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.white,
   },
-  list: {
-    backgroundColor:
-      theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.white,
-  },
-  list2: {
-    backgroundColor:
-      theme.colorScheme === 'dark'
-        ? theme.colors.dark[4]
-        : theme.colors.gray[3],
-  },
   section: {
     borderBottom: `1px solid ${
       theme.colorScheme === 'dark' ? theme.colors.dark[4] : theme.colors.gray[3]
@@ -35,7 +25,6 @@ const useStyles = createStyles((theme) => ({
     paddingLeft: theme.spacing.md,
     paddingRight: theme.spacing.md,
     paddingBottom: theme.spacing.md,
-    /*textTransform: 'uppercase',*/
     fontSize: theme.fontSizes.md,
     fontWeight: 500,
   },
@@ -73,11 +62,7 @@ function NewAllHackathonList() {
     <Accordion iconPosition="right">
       <Accordion.Item
         label={
-          <SimpleGrid
-            cols={2}
-            breakpoints={[{ maxWidth: 'sm', cols: 1 }]}
-            className={index % 2 ? classes.list : classes.list2}
-          >
+          <SimpleGrid cols={2} breakpoints={[{ maxWidth: 'sm', cols: 1 }]}>
             <div>
               {index + 1}. {hackathon.title}
             </div>

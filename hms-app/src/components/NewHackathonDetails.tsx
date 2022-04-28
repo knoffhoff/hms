@@ -45,16 +45,6 @@ const useStyles = createStyles((theme) => ({
     fontSize: theme.fontSizes.xs,
     fontWeight: 700,
   },
-  list: {
-    backgroundColor:
-      theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.white,
-  },
-  list2: {
-    backgroundColor:
-      theme.colorScheme === 'dark'
-        ? theme.colors.dark[4]
-        : theme.colors.gray[3],
-  },
 }))
 
 export default function NewHackathonDetails(props: IProps) {
@@ -209,11 +199,7 @@ export default function NewHackathonDetails(props: IProps) {
 
   const participantsPreviewData = hackathonData.participants?.map(
     (participant, index) => (
-      <SimpleGrid
-        cols={2}
-        breakpoints={[{ maxWidth: 'sm', cols: 1 }]}
-        className={index % 2 ? classes.list : classes.list2}
-      >
+      <SimpleGrid cols={2} breakpoints={[{ maxWidth: 'sm', cols: 1 }]}>
         <li>
           Name: {participant.user.firstName} {participant.user.lastName}
         </li>
@@ -226,11 +212,7 @@ export default function NewHackathonDetails(props: IProps) {
     <Accordion iconPosition="right">
       <Accordion.Item
         label={
-          <SimpleGrid
-            cols={2}
-            breakpoints={[{ maxWidth: 'sm', cols: 1 }]}
-            className={index % 2 ? classes.list : classes.list2}
-          >
+          <SimpleGrid cols={2} breakpoints={[{ maxWidth: 'sm', cols: 1 }]}>
             <div>
               {index + 1}. {category.title}
             </div>
@@ -244,11 +226,7 @@ export default function NewHackathonDetails(props: IProps) {
   ))
 
   const ideasPreviewData = hackathonData.ideas?.map((idea, index) => (
-    <SimpleGrid
-      cols={2}
-      breakpoints={[{ maxWidth: 'sm', cols: 1 }]}
-      className={index % 2 ? classes.list : classes.list2}
-    >
+    <SimpleGrid cols={2} breakpoints={[{ maxWidth: 'sm', cols: 1 }]}>
       <li>Title: {idea.title}</li>
       ID: {idea.id}
     </SimpleGrid>
