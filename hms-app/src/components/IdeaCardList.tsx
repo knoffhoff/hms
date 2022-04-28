@@ -4,20 +4,20 @@ import { Grid } from '@mantine/core'
 import IdeaCardFoldable from './IdeaCardFoldable'
 
 type IProps = {
-  ideaPreviews: IdeaPreview[]
+  ideas: Idea[]
   columnSize: number
   type: string
 }
 
 export default function IdeaCardList(props: IProps) {
-  const { ideaPreviews, columnSize, type } = props
+  const { ideas, columnSize, type } = props
 
-  const IdeasList = ideaPreviews.map((idea, index) => {
+  const IdeasList = ideas.map((idea, index) => {
     return (
       <Grid.Col sm={columnSize} lg={columnSize}>
         <div style={{ padding: 10 }}>
           <IdeaCardFoldable
-            ideaPreview={idea}
+            ideas={idea}
             index={index}
             key={idea.id}
             type={type}
@@ -29,8 +29,10 @@ export default function IdeaCardList(props: IProps) {
 
   return (
     <>
-      <Grid gutter={'lg'}>
-        <Grid gutter={'lg'}>{IdeasList}</Grid>
+      <Grid gutter={'lg'} justify={'center'}>
+        <Grid gutter={'lg'} style={{ minWidth: '100%' }}>
+          {IdeasList}
+        </Grid>
       </Grid>
     </>
   )

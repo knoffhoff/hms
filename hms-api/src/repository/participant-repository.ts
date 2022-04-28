@@ -68,13 +68,18 @@ export async function getParticipants(ids: Uuid[]): Promise<Participant[]> {
   return participants;
 }
 
-export async function participantExists(id: Uuid): Promise<boolean> {
+export async function participantExists(
+    id: Uuid,
+    hackathonId: Uuid,
+): Promise<boolean> {
   const output = await dynamoDBClient.send(new GetItemCommand({
     TableName: process.env.PARTICIPANT_TABLE,
     Key: {id: {S: id}},
   }));
 
-  return !!output.Item;
+  return !!output.Item &&
+      output.Item.hackathonId &&
+      output.Item.hackathonId.S === hackathonId;
 }
 
 export async function deleteParticipant(id: Uuid): Promise<Participant> {

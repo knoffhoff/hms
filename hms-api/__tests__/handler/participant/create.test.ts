@@ -1,11 +1,12 @@
 import * as participantService from '../../../src/service/participant-service';
 import {create} from '../../../src/handler/participant/create';
 import {randomParticipant} from '../../repository/domain/participant-maker';
-import {mockUuid} from '../../util/uuids-mock';
 import ParticipantCreateResponse
   from '../../../src/rest/ParticipantCreateResponse';
 import ReferenceNotFoundError from '../../../src/error/ReferenceNotFoundError';
 import Participant from '../../../src/repository/domain/Participant';
+import ParticipantCreateRequest
+  from '../../../src/rest/ParticipantCreateRequest';
 
 const mockCreateParticipant = jest.fn();
 jest.spyOn(participantService, 'createParticipant')
@@ -15,7 +16,6 @@ describe('Create Participant', () => {
   test('Happy Path', async () => {
     const expected = randomParticipant();
     mockCreateParticipant.mockResolvedValue(expected);
-    mockUuid(expected.id);
     const callback = jest.fn();
 
     await create(toEvent(expected), null, callback);
@@ -75,8 +75,8 @@ describe('Create Participant', () => {
 });
 
 const toEvent = (participant: Participant): any => ({
-  body: JSON.stringify({
-    userId: participant.userId,
-    hackathonId: participant.hackathonId,
-  }),
+  body: JSON.stringify(new ParticipantCreateRequest(
+      participant.userId,
+      participant.hackathonId,
+  )),
 });

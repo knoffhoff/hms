@@ -1,10 +1,10 @@
 import * as skillService from '../../../src/service/skill-service';
 import {create} from '../../../src/handler/skill/create';
 import {randomSkill} from '../../repository/domain/skill-maker';
-import {mockUuid} from '../../util/uuids-mock';
 import SkillCreateResponse from '../../../src/rest/SkillCreateResponse';
 import ReferenceNotFoundError from '../../../src/error/ReferenceNotFoundError';
 import Skill from '../../../src/repository/domain/Skill';
+import SkillCreateRequest from '../../../src/rest/SkillCreateRequest';
 
 const mockCreateSkill = jest.fn();
 jest.spyOn(skillService, 'createSkill')
@@ -14,7 +14,6 @@ describe('Create Skill', () => {
   test('Happy Path', async () => {
     const expected = randomSkill();
     mockCreateSkill.mockResolvedValue(expected);
-    mockUuid(expected.id);
     const callback = jest.fn();
 
     await create(toEvent(expected), null, callback);
@@ -74,8 +73,8 @@ describe('Create Skill', () => {
 });
 
 const toEvent = (skill: Skill): any => ({
-  body: JSON.stringify({
-    name: skill.name,
-    description: skill.description,
-  }),
+  body: JSON.stringify(new SkillCreateRequest(
+      skill.name,
+      skill.description,
+  )),
 });

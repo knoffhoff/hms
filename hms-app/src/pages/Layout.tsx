@@ -20,16 +20,11 @@ const menuLinks = [
   {
     link: 'archive',
     label: 'Archive',
-    links: [
-      { link: 'dec-2021', label: 'Dec 2021' },
-      { link: 'jun-2021', label: 'Jun 2021' },
-    ],
   },
   { link: 'voting', label: 'Voting' },
   {
     link: 'admin',
     label: 'Admin',
-    links: [{ link: 'manage-ideas', label: 'Manage Ideas' }],
   },
 ]
 

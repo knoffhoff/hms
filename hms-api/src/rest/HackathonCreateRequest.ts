@@ -1,6 +1,5 @@
 /* eslint-disable require-jsdoc */
 
-
 class HackathonCreateRequest {
   title: string;
   startDate: Date;

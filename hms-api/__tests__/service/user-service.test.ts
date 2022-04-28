@@ -1,5 +1,3 @@
-import {mockDate} from '../util/date-mock';
-import {mockUuid} from '../util/uuids-mock';
 import {
   createUser,
   extractUser,
@@ -67,11 +65,9 @@ describe('Create Idea', () => {
   });
 
   test('Happy Path', async () => {
-    mockDate();
     mockSkillExists.mockResolvedValue(true);
 
     const expected = randomUser();
-    mockUuid(expected.id);
 
     expect(await createUser(
         expected.lastName,
@@ -80,9 +76,23 @@ describe('Create Idea', () => {
         expected.roles,
         expected.skills,
         expected.imageUrl))
-        .toStrictEqual(expected);
+        .toEqual(expect.objectContaining({
+          lastName: expected.lastName,
+          firstName: expected.firstName,
+          emailAddress: expected.emailAddress,
+          roles: expected.roles,
+          skills: expected.skills,
+          imageUrl: expected.imageUrl,
+        }));
 
-    expect(mockPutUser).toHaveBeenCalledWith(expected);
+    expect(mockPutUser).toHaveBeenCalledWith(expect.objectContaining({
+      lastName: expected.lastName,
+      firstName: expected.firstName,
+      emailAddress: expected.emailAddress,
+      roles: expected.roles,
+      skills: expected.skills,
+      imageUrl: expected.imageUrl,
+    }));
   });
 });
 

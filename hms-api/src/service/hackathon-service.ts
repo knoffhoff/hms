@@ -16,12 +16,23 @@ import HackathonResponse from '../rest/HackathonResponse';
 import ReferenceNotFoundError from '../error/ReferenceNotFoundError';
 import HackathonListResponse from '../rest/HackathonListResponse';
 import HackathonDeleteResponse from '../rest/HackathonDeleteResponse';
+import NotFoundError from '../error/NotFoundError';
+import InvalidStateError from '../error/InvalidStateError';
+import {removeIdeasForHackathon} from './idea-service';
+import DeletionError from '../error/DeletionError';
+import {removeCategoriesForHackathon} from './category-service';
+import {removeParticipantsForHackathon} from './participant-service';
 
 export async function createHackathon(
     title: string,
     startDate: Date,
     endDate: Date,
 ): Promise<Hackathon> {
+  if (endDate <= startDate) {
+    throw new InvalidStateError(`Cannot create Hackathon, ` +
+        `startDate (${startDate}) is after endDate (${endDate})`);
+  }
+
   const hackathon = new Hackathon(title, startDate, endDate);
 
   await putHackathon(hackathon);
@@ -80,9 +91,41 @@ export async function getHackathonListResponse(): Promise<HackathonListResponse>
   return HackathonListResponse.from(hackathons);
 }
 
+export async function editHackathon(
+    id: Uuid,
+    title: string,
+    startDate: Date,
+    endDate: Date,
+): Promise<void> {
+  if (endDate <= startDate) {
+    throw new InvalidStateError(`Cannot edit Hackathon with id ${id}, ` +
+        `startDate (${startDate}) is after endDate (${endDate})`);
+  }
+
+  try {
+    const existing = await getHackathon(id);
+    existing.title = title;
+    existing.startDate = startDate;
+    existing.endDate = endDate;
+
+    await putHackathon(existing);
+  } catch (e) {
+    throw new NotFoundError(`Cannot edit Hackathon with id: ${id}, ` +
+        `it does not exist`);
+  }
+}
+
 export async function removeHackathon(
     id: Uuid,
 ): Promise<HackathonDeleteResponse> {
+  try {
+    await removeIdeasForHackathon(id);
+    await removeCategoriesForHackathon(id);
+    await removeParticipantsForHackathon(id);
+  } catch (e) {
+    throw new DeletionError(`Unable to remove Hackathon with id: ${id}, ` +
+        `nested failure is: ${e.message}`);
+  }
   await deleteHackathon(id);
   return new HackathonDeleteResponse(id);
 }

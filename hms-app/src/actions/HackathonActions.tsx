@@ -1,6 +1,4 @@
-import { Idea } from '../common/types'
-
-const api_id = 'q9g27ynw9q'
+const api_id = process.env.REACT_APP_API_ID
 
 export const getListOfHackathons = () => {
   return fetch(
@@ -36,19 +34,45 @@ export const getHackathonDetails = (hackathonID: string) => {
     .catch((err) => console.log(err))
 }
 
-export const getIdeaDetails = (ideaID: string): Promise<Idea> => {
+export const createHackathon = (props: {
+  endDate: string
+  title: string
+  startDate: string
+}) => {
   return fetch(
-    `http://localhost:4566/restapis/${api_id}/local/_user_request_/idea/${ideaID}`,
+    `http://localhost:4566/restapis/${api_id}/local/_user_request_/hackathon`,
     {
-      method: 'GET',
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        title: props.title,
+        startDate: props.startDate,
+        endDate: props.endDate,
+      }),
+    }
+  )
+    .then((response) => {
+      return response.json()
+    })
+    .catch((err) => console.log(err))
+}
+
+export const deleteHackathon = (hackathonID: string) => {
+  return fetch(
+    `http://localhost:4566/restapis/${api_id}/local/_user_request_/hackathon/${hackathonID}`,
+    {
+      method: 'DELETE',
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
       },
     }
   )
-    .then((data) => {
-      return data.json()
+    .then((response) => {
+      return response.json()
     })
     .catch((err) => console.log(err))
 }

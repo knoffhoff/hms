@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { getListOfHackathons } from '../actions/GetBackendData'
+import { getListOfHackathons } from '../actions/HackathonActions'
 import HackathonDetails from '../components/HackathonDetails'
 import { Select } from '@mantine/core'
 import { HackathonPreview } from '../common/types'
@@ -36,24 +36,19 @@ export default function Archive() {
   }
 
   const data = hackathonList.hackathons.map(
-    (hackathon, index) => `${hackathon.id}`
+    (hackathon, index) => hackathon.title
   )
 
-  const data2 = hackathonList.hackathons.map((hackathon, index) => [
-    {
-      value: hackathonList.hackathons[index].id,
-      label: hackathonList.hackathons[index].title,
-    },
-  ])
-  const data3 = hackathonList.hackathons.map((hackathon, index) => [
-    {
-      value: hackathon.id,
-      label: hackathon.title,
-    },
-  ])
-
   const selectChange = (value: string) => {
-    setSelectedHackweek(value)
+    const getHackathon = hackathonList.hackathons.filter((hackathon) => {
+      return hackathon.title.includes(value)
+    })
+
+    const selectedHackathonID = getHackathon.map(
+      (hackathon, index) => hackathon.id
+    )
+
+    setSelectedHackweek(selectedHackathonID.toString())
   }
 
   useEffect(() => {
@@ -76,7 +71,10 @@ export default function Archive() {
 
       <h1>Selected Hackweek:</h1>
       <div>
-        <HackathonDetails hackathonID={selectedHackweek.toString()} />
+        <HackathonDetails
+          hackathonID={selectedHackweek.toString()}
+          type={'header'}
+        />
       </div>
     </>
   )

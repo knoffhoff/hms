@@ -1,11 +1,11 @@
-import {mockDate} from '../util/date-mock';
-import {mockUuid} from '../util/uuids-mock';
-
 import {
   createIdea,
+  editIdea,
   getIdeaListResponse,
   getIdeaResponse,
   removeIdea,
+  removeIdeasForCategory,
+  removeIdeasForHackathon,
   removeIdeasForOwner,
   removeParticipantFromIdeas,
 } from '../../src/service/idea-service';
@@ -26,6 +26,7 @@ import NotFoundError from '../../src/error/NotFoundError';
 import ReferenceNotFoundError from '../../src/error/ReferenceNotFoundError';
 import IdeaListResponse from '../../src/rest/IdeaListResponse';
 import DeletionError from '../../src/error/DeletionError';
+import Idea from '../../src/repository/domain/Idea';
 import * as participantRepository
   from '../../src/repository/participant-repository';
 import * as hackathonRepository
@@ -47,6 +48,9 @@ jest.spyOn(ideaRepository, 'listIdeasForHackathon')
 const mockListIdeasForOwner = jest.fn();
 jest.spyOn(ideaRepository, 'listIdeasForOwner')
     .mockImplementation(mockListIdeasForOwner);
+const mockListIdeasForCategory = jest.fn();
+jest.spyOn(ideaRepository, 'listIdeasForCategory')
+    .mockImplementation(mockListIdeasForCategory);
 const mockListIdeasForParticipant = jest.fn();
 jest.spyOn(ideaRepository, 'listIdeasForParticipant')
     .mockImplementation(mockListIdeasForParticipant);
@@ -96,10 +100,6 @@ jest.spyOn(skillRepository, 'skillExists')
     .mockImplementation(mockSkillExists);
 
 describe('Create Idea', () => {
-  beforeAll(() => {
-    mockDate();
-  });
-
   test('Missing Participant', async () => {
     mockParticipantExists.mockResolvedValue(false);
     mockHackathonExists.mockResolvedValue(true);
@@ -195,7 +195,6 @@ describe('Create Idea', () => {
     mockSkillExists.mockResolvedValue(true);
 
     const expected = randomIdea();
-    mockUuid(expected.id);
 
     expect(await createIdea(
         expected.ownerId,
@@ -206,9 +205,149 @@ describe('Create Idea', () => {
         expected.goal,
         expected.requiredSkills,
         expected.categoryId,
-    )).toStrictEqual(expected);
+    )).toEqual(expect.objectContaining({
+      ownerId: expected.ownerId,
+      hackathonId: expected.hackathonId,
+      title: expected.title,
+      description: expected.description,
+      problem: expected.problem,
+      goal: expected.goal,
+      requiredSkills: expected.requiredSkills,
+      categoryId: expected.categoryId,
+    }));
 
+    expect(mockPutIdea).toHaveBeenCalledWith(expect.objectContaining({
+      ownerId: expected.ownerId,
+      hackathonId: expected.hackathonId,
+      title: expected.title,
+      description: expected.description,
+      problem: expected.problem,
+      goal: expected.goal,
+      requiredSkills: expected.requiredSkills,
+      categoryId: expected.categoryId,
+    }));
+  });
+});
+
+describe('Edit Idea', () => {
+  test('Happy Path', async () => {
+    const oldIdea = randomIdea();
+    const title = 'Worst Idea Ever';
+    const description = 'Best description ever!';
+    const problem = 'A simple problem';
+    const goal = 'An overly complicated goal';
+    const requiredSkills = [uuid(), uuid()];
+    const categoryId = uuid();
+    const expected = new Idea(
+        oldIdea.ownerId,
+        oldIdea.hackathonId,
+        title,
+        description,
+        problem,
+        goal,
+        requiredSkills,
+        categoryId,
+        oldIdea.id,
+        oldIdea.creationDate,
+        oldIdea.participantIds);
+
+    mockGetIdea.mockResolvedValue(oldIdea);
+    mockCategoryExists.mockResolvedValue(true);
+    mockSkillExists.mockResolvedValue(true);
+
+    await editIdea(
+        oldIdea.id,
+        title,
+        description,
+        problem,
+        goal,
+        requiredSkills,
+        categoryId);
+
+    expect(mockGetIdea).toHaveBeenCalledWith(oldIdea.id);
+    expect(mockCategoryExists)
+        .toHaveBeenCalledWith(categoryId, oldIdea.hackathonId);
+    expect(mockSkillExists).toHaveBeenCalledWith(requiredSkills[0]);
+    expect(mockSkillExists).toHaveBeenCalledWith(requiredSkills[1]);
     expect(mockPutIdea).toHaveBeenCalledWith(expected);
+  });
+
+  test('Idea is missing', async () => {
+    const id = uuid();
+
+    mockGetIdea.mockImplementation(() => {
+      throw new Error('Uh oh');
+    });
+    mockCategoryExists.mockResolvedValue(true);
+    mockSkillExists.mockResolvedValue(true);
+
+    await expect(editIdea(
+        id,
+        'Anything',
+        'Super excellent Idea',
+        'Praw-blem',
+        'Go-well',
+        [uuid(), uuid()],
+        uuid()))
+        .rejects
+        .toThrow(NotFoundError);
+    expect(mockGetIdea).toHaveBeenCalledWith(id);
+    expect(mockCategoryExists).not.toHaveBeenCalled();
+    expect(mockSkillExists).not.toHaveBeenCalled();
+    expect(mockPutIdea).not.toHaveBeenCalled();
+  });
+
+  test('Category is missing', async () => {
+    const id = uuid();
+
+    const oldIdea = randomIdea();
+    mockGetIdea.mockResolvedValue(oldIdea);
+    mockCategoryExists.mockResolvedValue(false);
+    mockSkillExists.mockResolvedValue(true);
+
+    const categoryId = uuid();
+    await expect(editIdea(
+        id,
+        'Anything',
+        'Super excellent Idea',
+        'Praw-blem',
+        'Go-well',
+        [uuid(), uuid()],
+        categoryId))
+        .rejects
+        .toThrow(ReferenceNotFoundError);
+    expect(mockGetIdea).toHaveBeenCalledWith(id);
+    expect(mockCategoryExists)
+        .toHaveBeenCalledWith(categoryId, oldIdea.hackathonId);
+    expect(mockSkillExists).not.toHaveBeenCalled();
+    expect(mockPutIdea).not.toHaveBeenCalled();
+  });
+
+  test('Skills are missing', async () => {
+    const id = uuid();
+
+    const oldIdea = randomIdea();
+    mockGetIdea.mockResolvedValue(oldIdea);
+    mockCategoryExists.mockResolvedValue(true);
+    mockSkillExists.mockResolvedValue(false);
+
+    const categoryId = uuid();
+    const skillId1 = uuid();
+    await expect(editIdea(
+        id,
+        'Anything',
+        'Super excellent Idea',
+        'Praw-blem',
+        'Go-well',
+        [skillId1, uuid()],
+        categoryId))
+        .rejects
+        .toThrow(ReferenceNotFoundError);
+    expect(mockGetIdea).toHaveBeenCalledWith(id);
+    expect(mockCategoryExists)
+        .toHaveBeenCalledWith(categoryId, oldIdea.hackathonId);
+    expect(mockSkillExists).toHaveBeenCalledWith(skillId1);
+    expect(mockPutIdea).not.toHaveBeenCalled();
   });
 });
 
@@ -496,6 +635,66 @@ describe('Delete Idea', () => {
     const id = uuid();
     await removeIdea(id);
     expect(mockDeleteIdea).toHaveBeenCalledWith(id);
+  });
+});
+
+describe('Remove Ideas for Category', () => {
+  test('Happy Path', async () => {
+    const categoryId = uuid();
+    const idea1 = randomIdea();
+    const idea2 = randomIdea();
+    mockListIdeasForCategory.mockResolvedValue([idea1, idea2]);
+    mockDeleteIdea.mockImplementation(() => {
+    });
+
+    await removeIdeasForCategory(categoryId);
+    expect(mockDeleteIdea).toHaveBeenCalledWith(idea1.id);
+    expect(mockDeleteIdea).toHaveBeenCalledWith(idea2.id);
+  });
+
+  test('Fails on first delete', async () => {
+    const categoryId = uuid();
+    const idea1 = randomIdea();
+    const idea2 = randomIdea();
+    mockListIdeasForCategory.mockResolvedValue([idea1, idea2]);
+    mockDeleteIdea.mockImplementation(() => {
+      throw new DeletionError('Well this stinks');
+    });
+
+    await expect(removeIdeasForCategory(categoryId))
+        .rejects
+        .toThrow(DeletionError);
+    expect(mockDeleteIdea).toHaveBeenCalledWith(idea1.id);
+  });
+});
+
+describe('Remove Ideas for Hackathon', () => {
+  test('Happy Path', async () => {
+    const hackathonId = uuid();
+    const idea1 = randomIdea();
+    const idea2 = randomIdea();
+    mockListIdeasForHackathon.mockResolvedValue([idea1, idea2]);
+    mockDeleteIdea.mockImplementation(() => {
+    });
+
+    await removeIdeasForHackathon(hackathonId);
+    expect(mockDeleteIdea).toHaveBeenCalledWith(idea1.id);
+    expect(mockDeleteIdea).toHaveBeenCalledWith(idea2.id);
+  });
+
+  test('Fails on first delete', async () => {
+    const hackathonId = uuid();
+    const idea1 = randomIdea();
+    const idea2 = randomIdea();
+    mockListIdeasForHackathon.mockResolvedValue([idea1, idea2]);
+    mockDeleteIdea.mockImplementation(() => {
+      throw new DeletionError('Well this stinks');
+    });
+
+    await expect(removeIdeasForHackathon(hackathonId))
+        .rejects
+        .toThrow(DeletionError);
+    expect(mockDeleteIdea).toHaveBeenCalledWith(idea1.id);
   });
 });
 

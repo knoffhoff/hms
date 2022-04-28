@@ -1,10 +1,15 @@
-import {mockUuid} from '../util/uuids-mock';
-import {randomCategory} from '../repository/domain/category-maker';
+import {
+  CategoryData,
+  makeCategory,
+  randomCategory,
+} from '../repository/domain/category-maker';
 import {randomHackathon} from '../repository/domain/hackathon-maker';
 import {
   createCategory,
+  editCategory,
   getCategoryListResponse,
   getCategoryResponse,
+  removeCategoriesForHackathon,
   removeCategory,
 } from '../../src/service/category-service';
 import {uuid} from '../../src/util/Uuid';
@@ -12,9 +17,13 @@ import ReferenceNotFoundError from '../../src/error/ReferenceNotFoundError';
 import CategoryResponse from '../../src/rest/CategoryResponse';
 import NotFoundError from '../../src/error/NotFoundError';
 import CategoryListResponse from '../../src/rest/CategoryListResponse';
+import Category from '../../src/repository/domain/Category';
+import DeletionError from '../../src/error/DeletionError';
+import CategoryDeleteResponse from '../../src/rest/CategoryDeleteResponse';
 import * as categoryRepository from '../../src/repository/category-repository';
 import * as hackathonRepository
   from '../../src/repository/hackathon-repository';
+import * as ideaService from '../../src/service/idea-service';
 
 const mockHackathonExists = jest.fn();
 jest.spyOn(hackathonRepository, 'hackathonExists')
@@ -36,6 +45,10 @@ const mockDeleteCategory = jest.fn();
 jest.spyOn(categoryRepository, 'deleteCategory')
     .mockImplementation(mockDeleteCategory);
 
+const mockRemoveIdeasForCategory = jest.fn();
+jest.spyOn(ideaService, 'removeIdeasForCategory')
+    .mockImplementation(mockRemoveIdeasForCategory);
+
 describe('Create Category', () => {
   test('Missing hackathon', async () => {
     mockHackathonExists.mockResolvedValue(false);
@@ -52,16 +65,60 @@ describe('Create Category', () => {
     mockHackathonExists.mockResolvedValue(true);
 
     const expected = randomCategory();
-    mockUuid(expected.id);
 
     expect(await createCategory(
         expected.title,
         expected.description,
         expected.hackathonId,
-    )).toStrictEqual(expected);
+    )).toEqual(expect.objectContaining({
+      title: expected.title,
+      description: expected.description,
+      hackathonId: expected.hackathonId,
+    }));
 
-    expect(mockPutCategory).toHaveBeenCalledWith(expected);
+    expect(mockPutCategory).toHaveBeenCalledWith(expect.objectContaining({
+      title: expected.title,
+      description: expected.description,
+      hackathonId: expected.hackathonId,
+    }));
     expect(mockDeleteCategory).not.toHaveBeenCalled();
+  });
+});
+
+describe('Edit Category', () => {
+  test('Happy Path', async () => {
+    const oldCategory = randomCategory();
+    const title = 'Worst Category Ever';
+    const description = 'Best description ever!';
+    const expected = new Category(
+        title,
+        description,
+        oldCategory.hackathonId,
+        oldCategory.id);
+
+    mockGetCategory.mockResolvedValue(oldCategory);
+
+    await editCategory(oldCategory.id, title, description);
+
+    expect(mockGetCategory).toHaveBeenCalledWith(oldCategory.id);
+    expect(mockPutCategory).toHaveBeenCalledWith(expected);
+  });
+
+  test('Category is missing', async () => {
+    const id = uuid();
+
+    mockGetCategory.mockImplementation(() => {
+      throw new Error('Uh oh');
+    });
+
+    await expect(editCategory(
+        id,
+        'Anything',
+        'There once was a man from Nantucket...'))
+        .rejects
+        .toThrow(NotFoundError);
+    expect(mockGetCategory).toHaveBeenCalledWith(id);
+    expect(mockPutCategory).not.toHaveBeenCalled();
   });
 });
 
@@ -117,17 +174,75 @@ describe('Get Category List Response', () => {
         [category1, category2, category3],
         hackathonId);
 
+    mockHackathonExists.mockResolvedValue(true);
     mockListCategories.mockResolvedValue([category1, category2, category3]);
 
     expect(await getCategoryListResponse(hackathonId)).toStrictEqual(expected);
+    expect(mockHackathonExists).toHaveBeenCalledWith(hackathonId);
     expect(mockListCategories).toHaveBeenCalledWith(hackathonId);
+  });
+
+  test('Hackathon missing', async () => {
+    const hackathonId = uuid();
+    mockHackathonExists.mockResolvedValue(false);
+    mockListCategories.mockResolvedValue([
+      randomCategory(),
+      randomCategory(),
+      randomCategory(),
+    ]);
+
+    await expect(getCategoryListResponse(hackathonId))
+        .rejects
+        .toThrow(NotFoundError);
+    expect(mockHackathonExists).toHaveBeenCalledWith(hackathonId);
+    expect(mockListCategories).not.toHaveBeenCalled();
   });
 });
 
 describe('Delete Category', () => {
   test('Happy Path', async () => {
     const id = uuid();
-    await removeCategory(id);
+    mockRemoveIdeasForCategory.mockImplementation(() => {
+    });
+
+    expect(await removeCategory(id))
+        .toStrictEqual(new CategoryDeleteResponse(id));
+    expect(mockRemoveIdeasForCategory).toHaveBeenCalledWith(id);
     expect(mockDeleteCategory).toHaveBeenCalledWith(id);
+  });
+
+  test('Fails to remove Ideas', async () => {
+    const id = uuid();
+    mockRemoveIdeasForCategory.mockImplementation(() => {
+      throw new DeletionError('It just won\'t delete bud!');
+    });
+
+    await expect(removeCategory(id))
+        .rejects
+        .toThrow(DeletionError);
+    expect(mockRemoveIdeasForCategory).toHaveBeenCalledWith(id);
+    expect(mockDeleteCategory).not.toHaveBeenCalled();
+  });
+});
+
+describe('Remove Categories for Hackathon', () => {
+  test('Happy Path', async () => {
+    const hackathonId = uuid();
+    const category1 =
+        makeCategory({hackathonId: hackathonId} as CategoryData);
+    const category2 =
+        makeCategory({hackathonId: hackathonId} as CategoryData);
+
+    mockListCategories.mockResolvedValue([category1, category2]);
+
+    mockRemoveIdeasForCategory.mockImplementation(() => {
+    });
+
+    await removeCategoriesForHackathon(hackathonId);
+
+    expect(mockRemoveIdeasForCategory).toHaveBeenCalledWith(category1.id);
+    expect(mockRemoveIdeasForCategory).toHaveBeenCalledWith(category2.id);
+    expect(mockDeleteCategory).toHaveBeenCalledWith(category1.id);
+    expect(mockDeleteCategory).toHaveBeenCalledWith(category2.id);
   });
 });

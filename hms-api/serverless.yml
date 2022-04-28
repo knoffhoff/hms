@@ -60,6 +60,13 @@ functions:
           path: hackathon
           method: post
           cors: true
+  editHackathon:
+    handler: src/handler/hackathon/edit.edit
+    events:
+      - http:
+          path: hackathon/{id}
+          method: put
+          cors: true
   listAllHackathons:
     handler: src/handler/hackathon/list.list
     events:
@@ -88,6 +95,13 @@ functions:
       - http:
           path: idea
           method: post
+          cors: true
+  editIdea:
+    handler: src/handler/idea/edit.edit
+    events:
+      - http:
+          path: idea/{id}
+          method: put
           cors: true
   listAllIdea:
     handler: src/handler/idea/list.list
@@ -175,6 +189,13 @@ functions:
       - http:
           path: category
           method: post
+          cors: true
+  editCategory:
+    handler: src/handler/category/edit.edit
+    events:
+      - http:
+          path: category/{id}
+          method: put
           cors: true
   listAllCategory:
     handler: src/handler/category/list.list

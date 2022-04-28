@@ -1,10 +1,10 @@
 import * as userService from '../../../src/service/user-service';
 import {create} from '../../../src/handler/user/create';
 import {randomUser} from '../../repository/domain/user-maker';
-import {mockUuid} from '../../util/uuids-mock';
 import UserCreateResponse from '../../../src/rest/UserCreateResponse';
 import ReferenceNotFoundError from '../../../src/error/ReferenceNotFoundError';
 import User from '../../../src/repository/domain/User';
+import UserCreateRequest from '../../../src/rest/UserCreateRequest';
 
 const mockCreateUser = jest.fn();
 jest.spyOn(userService, 'createUser')
@@ -15,7 +15,6 @@ describe('Create User', () => {
     const expected = randomUser();
     mockCreateUser.mockResolvedValue(expected);
     const event = toEvent(expected);
-    mockUuid(expected.id);
     const callback = jest.fn();
 
     await create(event, null, callback);
@@ -79,12 +78,12 @@ describe('Create User', () => {
 });
 
 const toEvent = (user: User): any => ({
-  body: JSON.stringify({
-    lastName: user.lastName,
-    firstName: user.firstName,
-    emailAddress: user.emailAddress,
-    roles: user.roles,
-    skills: user.skills,
-    imageUrl: user.imageUrl,
-  }),
+  body: JSON.stringify(new UserCreateRequest(
+      user.lastName,
+      user.firstName,
+      user.emailAddress,
+      user.roles,
+      user.skills,
+      user.imageUrl,
+  )),
 });

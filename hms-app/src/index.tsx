@@ -4,11 +4,14 @@ import { BrowserRouter } from 'react-router-dom'
 import './index.css'
 import App from './App'
 import reportWebVitals from './reportWebVitals'
+import { NotificationsProvider } from '@mantine/notifications'
 
 ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
-      <App />
+      <NotificationsProvider>
+        <App />
+      </NotificationsProvider>
     </BrowserRouter>
   </React.StrictMode>,
   document.getElementById('root')
