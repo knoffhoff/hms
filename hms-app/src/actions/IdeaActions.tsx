@@ -37,7 +37,7 @@ export const deleteIdea = (ideaID: string) => {
 }
 
 export const createIdea = (
-  ideaText: {
+  idea: {
     ownerId: string
     hackathonId: string
     title: string
@@ -48,9 +48,6 @@ export const createIdea = (
   skills: string[],
   categories: string[]
 ) => {
-  console.log('ideaText2', ideaText)
-  console.log('skills2', skills)
-  console.log('categories2', categories)
   return fetch(
     `http://localhost:4566/restapis/${api_id}/local/_user_request_/idea`,
     {
@@ -60,12 +57,12 @@ export const createIdea = (
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        ownerId: ideaText.ownerId,
-        hackathonId: ideaText.hackathonId,
-        title: ideaText.title,
-        description: ideaText.description,
-        problem: ideaText.problem,
-        goal: ideaText.goal,
+        ownerId: idea.ownerId,
+        hackathonId: idea.hackathonId,
+        title: idea.title,
+        description: idea.description,
+        problem: idea.problem,
+        goal: idea.goal,
         requiredSkills: skills,
         categoryId: categories.toString(),
       }),

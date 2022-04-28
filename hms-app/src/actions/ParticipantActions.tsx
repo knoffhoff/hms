@@ -17,10 +17,7 @@ export const deleteParticipant = (participantID: string) => {
     .catch((err) => console.log(err))
 }
 
-export const createHackathonParticipant = (props: {
-  userId: string
-  hackathonId: string
-}) => {
+export const createParticipant = (userId: string, hackathonId: string) => {
   return fetch(
     `http://localhost:4566/restapis/${api_id}/local/_user_request_/participant`,
     {
@@ -30,8 +27,8 @@ export const createHackathonParticipant = (props: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        userId: props.userId,
-        hackathonId: props.hackathonId,
+        userId: userId,
+        hackathonId: hackathonId,
       }),
     }
   )

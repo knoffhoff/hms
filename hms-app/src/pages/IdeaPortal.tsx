@@ -11,7 +11,7 @@ import {
 } from '../actions/HackathonActions'
 import { getIdeaDetails } from '../actions/IdeaActions'
 import {
-  createHackathonParticipant,
+  createParticipant,
   deleteParticipant,
 } from '../actions/ParticipantActions'
 
@@ -186,7 +186,9 @@ function IdeaPortal() {
   }
 
   const addHackathonParticipant = () => {
-    createHackathonParticipant(participantInfo).then((r) => console.log(r))
+    createParticipant(participantInfo.userId, participantInfo.hackathonId).then(
+      (r) => console.log(r)
+    )
   }
 
   return (

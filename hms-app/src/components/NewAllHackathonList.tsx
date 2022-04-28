@@ -32,28 +32,23 @@ const useStyles = createStyles((theme) => ({
 
 function NewAllHackathonList() {
   const { classes } = useStyles()
+  const [isError, setIsError] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
   const [hackathonList, setHackathonList] = useState({
-    errorHackathonList: false,
-    isLoadingHackathonList: true,
     hackathons: [] as HackathonPreview[],
   })
 
   const loadHackathons = () => {
     getListOfHackathons().then(
       (data) => {
+        setIsError(false)
+        setIsLoading(false)
         setHackathonList({
-          ...hackathonList,
           hackathons: data.hackathons,
-          errorHackathonList: false,
-          isLoadingHackathonList: false,
         })
       },
       () => {
-        setHackathonList({
-          ...hackathonList,
-          errorHackathonList: true,
-          isLoadingHackathonList: false,
-        })
+        setIsError(true)
       }
     )
   }
@@ -78,10 +73,7 @@ function NewAllHackathonList() {
   }, [])
 
   function refreshList() {
-    setHackathonList({
-      ...hackathonList,
-      isLoadingHackathonList: true,
-    })
+    setIsLoading(true)
     loadHackathons()
   }
 
@@ -90,8 +82,8 @@ function NewAllHackathonList() {
       <Card withBorder radius="md" p="md" className={classes.card}>
         <Card.Section className={classes.section}>
           <Group position="left" mt="xl">
-            <Button onClick={refreshList}>Refresh list</Button>
-            {hackathonList.isLoadingHackathonList && <div>Loading...</div>}
+            {!isLoading && <Button onClick={refreshList}>Refresh list</Button>}
+            {isLoading && <div>Loading...</div>}
           </Group>
         </Card.Section>
         <Card.Section>

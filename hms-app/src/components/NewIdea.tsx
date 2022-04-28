@@ -132,9 +132,6 @@ function NewIdea(props: IProps) {
       autoClose: false,
       disallowClose: true,
     })
-    console.log('ideaText', ideaText)
-    console.log('skills', skills)
-    console.log('categories', categories)
     createIdea(ideaText, skills, categories).then((r) =>
       setTimeout(() => {
         updateNotification({
