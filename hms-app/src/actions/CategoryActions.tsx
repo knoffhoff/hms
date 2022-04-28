@@ -43,9 +43,9 @@ export const deleteCategory = (categoryID: string) => {
     .catch((err) => console.log(err))
 }
 
-export const getListOfCategories = (endpoint: string) => {
+export const getListOfCategories = (hackathonID: string) => {
   return fetch(
-    `http://localhost:4566/restapis/${api_id}/local/_user_request_/hackathon/${endpoint}/categories`,
+    `http://localhost:4566/restapis/${api_id}/local/_user_request_/hackathon/${hackathonID}/categories`,
     {
       method: 'GET',
       headers: {
