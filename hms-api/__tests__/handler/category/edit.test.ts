@@ -5,7 +5,6 @@ import CategoryEditResponse from '../../../src/rest/CategoryEditResponse';
 import NotFoundError from '../../../src/error/NotFoundError';
 import CategoryEditRequest from '../../../src/rest/CategoryEditRequest';
 
-
 const mockEditCategory = jest.fn();
 jest.spyOn(categoryService, 'editCategory')
     .mockImplementation(mockEditCategory);

@@ -86,3 +86,12 @@ export async function removeCategory(
   await deleteCategory(id);
   return new CategoryDeleteResponse(id);
 }
+
+export async function removeCategoriesForHackathon(
+    hackathonId: Uuid,
+): Promise<void> {
+  const categories = await listCategories(hackathonId);
+  for (const category of categories) {
+    await removeCategory(category.id);
+  }
+}

@@ -1,10 +1,15 @@
-import {randomCategory} from '../repository/domain/category-maker';
+import {
+  CategoryData,
+  makeCategory,
+  randomCategory,
+} from '../repository/domain/category-maker';
 import {randomHackathon} from '../repository/domain/hackathon-maker';
 import {
   createCategory,
   editCategory,
   getCategoryListResponse,
   getCategoryResponse,
+  removeCategoriesForHackathon,
   removeCategory,
 } from '../../src/service/category-service';
 import {uuid} from '../../src/util/Uuid';
@@ -19,7 +24,6 @@ import * as categoryRepository from '../../src/repository/category-repository';
 import * as hackathonRepository
   from '../../src/repository/hackathon-repository';
 import * as ideaService from '../../src/service/idea-service';
-
 
 const mockHackathonExists = jest.fn();
 jest.spyOn(hackathonRepository, 'hackathonExists')
@@ -199,5 +203,27 @@ describe('Delete Category', () => {
         .toThrow(DeletionError);
     expect(mockRemoveIdeasForCategory).toHaveBeenCalledWith(id);
     expect(mockDeleteCategory).not.toHaveBeenCalled();
+  });
+});
+
+describe('Remove Categories for Hackathon', () => {
+  test('Happy Path', async () => {
+    const hackathonId = uuid();
+    const category1 =
+        makeCategory({hackathonId: hackathonId} as CategoryData);
+    const category2 =
+        makeCategory({hackathonId: hackathonId} as CategoryData);
+
+    mockListCategories.mockResolvedValue([category1, category2]);
+
+    mockRemoveIdeasForCategory.mockImplementation(() => {
+    });
+
+    await removeCategoriesForHackathon(hackathonId);
+
+    expect(mockRemoveIdeasForCategory).toHaveBeenCalledWith(category1.id);
+    expect(mockRemoveIdeasForCategory).toHaveBeenCalledWith(category2.id);
+    expect(mockDeleteCategory).toHaveBeenCalledWith(category1.id);
+    expect(mockDeleteCategory).toHaveBeenCalledWith(category2.id);
   });
 });
