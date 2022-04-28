@@ -191,7 +191,14 @@ export async function getIdeaResponse(id: Uuid): Promise<IdeaResponse> {
 export async function getIdeaListResponse(
     hackathonId: Uuid,
 ): Promise<IdeaListResponse> {
+  if (!await hackathonExists(hackathonId)) {
+    throw new NotFoundError(
+        `Cannot list Ideas for Hackathon with id: ${hackathonId}, ` +
+        `it does not exist`);
+  }
+
   const ideas = await listIdeasForHackathon(hackathonId);
+
   return IdeaListResponse.from(ideas, hackathonId);
 }
 
