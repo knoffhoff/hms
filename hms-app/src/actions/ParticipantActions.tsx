@@ -37,3 +37,20 @@ export const createParticipant = (userId: string, hackathonId: string) => {
     })
     .catch((err) => console.log(err))
 }
+
+export const getParticipantDetails = (participantID: string) => {
+  return fetch(
+    `http://localhost:4566/restapis/${api_id}/local/_user_request_/category/${participantID}`,
+    {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+    }
+  )
+    .then((data) => {
+      return data.json()
+    })
+    .catch((err) => console.log(err))
+}

@@ -1,19 +1,14 @@
 import React, { useEffect, useState } from 'react'
-import ideaData from '../test/TestIdeaData'
 import { Input, Group, Title, Select, Button } from '@mantine/core'
 import { Search } from 'tabler-icons-react'
 import IdeaCardList from '../components/IdeaCardList'
-import HackathonDetails from '../components/HackathonDetails'
 import { Hackathon, HackathonPreview, Idea, IdeaPreview } from '../common/types'
 import {
   getHackathonDetails,
   getListOfHackathons,
 } from '../actions/HackathonActions'
 import { getIdeaDetails } from '../actions/IdeaActions'
-import {
-  createParticipant,
-  deleteParticipant,
-} from '../actions/ParticipantActions'
+import { createParticipant } from '../actions/ParticipantActions'
 
 function IdeaPortal() {
   const [searchTerm, setSearchTerm] = useState('')

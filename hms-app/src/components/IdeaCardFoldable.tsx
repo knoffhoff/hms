@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import {
   Card,
   Text,
@@ -11,12 +11,13 @@ import {
   Avatar,
   AvatarsGroup,
   useAccordionState,
+  Modal,
 } from '@mantine/core'
-import { Idea, IdeaPreview } from '../common/types'
+import { Idea } from '../common/types'
+import { deleteIdea } from '../actions/IdeaActions'
 
 type IProps = {
-  ideas: Idea
-  index: number
+  idea: Idea
   type: string
 }
 
@@ -45,15 +46,16 @@ const useStyles = createStyles((theme) => ({
 export default function IdeaCardFoldable(props: IProps) {
   const { classes } = useStyles()
   const theme = useMantineTheme()
+  const [opened, setOpened] = useState(false)
   const [accordionState, setAccordionState] = useAccordionState({
     total: 1,
     initialItem: -1,
   })
-  const { ideas, type } = props
+  const { idea, type } = props
   const MAX_TITLE_LENGTH = 45
   const MAX_DESCRIPTION_LENGTH = type === 'voting' ? 200 : 245
 
-  const participantData = ideas.participants?.map((participant, index) => (
+  const participantData = idea.participants?.map((participant, index) => (
     <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
       <Avatar
         color="indigo"
@@ -67,9 +69,67 @@ export default function IdeaCardFoldable(props: IProps) {
     </div>
   ))
 
+  const deleteSelectedIdea = () => {
+    deleteIdea(idea.id).then((data) => {
+      setOpened(false)
+    })
+  }
+
+  const ideaDetails = () => {
+    return (
+      <div>
+        <Card.Section className={classes.section}>
+          <Text mt="md" className={classes.label} color="dimmed">
+            Problem
+          </Text>
+          <Text size="sm" mt="xs">
+            {idea.problem}
+          </Text>
+        </Card.Section>
+
+        <Card.Section className={classes.section}>
+          <Text mt="md" className={classes.label} color="dimmed">
+            Goal
+          </Text>
+          <Text size="sm" mt="xs">
+            {idea.goal}
+          </Text>
+        </Card.Section>
+
+        <Accordion iconPosition="right">
+          <Accordion.Item
+            label={
+              <div>
+                <Text className={classes.label} color="dimmed">
+                  Current participants
+                </Text>
+                <Group spacing={7} mt={5}>
+                  <AvatarsGroup limit={5}>
+                    {idea.participants?.map((participant, index) => (
+                      <Avatar
+                        color="indigo"
+                        radius="xl"
+                        size="md"
+                        src={
+                          'https://avatars.githubusercontent.com/u/10353856?s=460&u=88394dfd67727327c1f7670a1764dc38a8a24831&v=4'
+                        }
+                      />
+                    ))}
+                  </AvatarsGroup>
+                </Group>
+              </div>
+            }
+          >
+            {participantData}
+          </Accordion.Item>
+        </Accordion>
+      </div>
+    )
+  }
+
   return (
     <>
-      {!ideas.isLoadingIdeaData && (
+      {!idea.isLoadingIdeaData && (
         <Card withBorder radius="md" p="md" className={classes.card}>
           <Card.Section
             className={classes.section}
@@ -92,19 +152,19 @@ export default function IdeaCardFoldable(props: IProps) {
                   }
                 />
                 <Badge size="sm">
-                  {ideas.owner?.user.firstName} {ideas.owner?.user.lastName}
+                  {idea.owner?.user.firstName} {idea.owner?.user.lastName}
                 </Badge>
               </Group>
 
               <Text size="lg" weight={500}>
-                {ideas.title?.slice(0, MAX_TITLE_LENGTH)}
-                {ideas.title?.length > MAX_TITLE_LENGTH ? '...' : ''}
+                {idea.title?.slice(0, MAX_TITLE_LENGTH)}
+                {idea.title?.length > MAX_TITLE_LENGTH ? '...' : ''}
               </Text>
             </Group>
 
             <Text size="sm" mt="xs">
-              {ideas.description?.slice(0, MAX_DESCRIPTION_LENGTH)}
-              {ideas.description?.length > MAX_DESCRIPTION_LENGTH ? '...' : ''}
+              {idea.description?.slice(0, MAX_DESCRIPTION_LENGTH)}
+              {idea.description?.length > MAX_DESCRIPTION_LENGTH ? '...' : ''}
             </Text>
           </Card.Section>
 
@@ -115,7 +175,7 @@ export default function IdeaCardFoldable(props: IProps) {
                   Skills required
                 </Text>
                 <Group spacing={7} mt={5}>
-                  {ideas.requiredSkills?.map((skill) => (
+                  {idea.requiredSkills?.map((skill) => (
                     <Badge
                       color={theme.colorScheme === 'dark' ? 'dark' : 'gray'}
                       key={skill.id}
@@ -126,69 +186,58 @@ export default function IdeaCardFoldable(props: IProps) {
                 </Group>
               </Card.Section>
 
-              <Accordion
-                state={accordionState}
-                onChange={setAccordionState.setState}
-              >
-                <Accordion.Item
-                  mt="sm"
-                  style={{ border: 'none' }}
-                  label={!accordionState['0'] ? 'Show details' : 'Hide details'}
+              {type !== 'admin' && (
+                <Accordion
+                  state={accordionState}
+                  onChange={setAccordionState.setState}
                 >
-                  <Card.Section className={classes.section}>
-                    <Text mt="md" className={classes.label} color="dimmed">
-                      Problem
-                    </Text>
-                    <Text size="sm" mt="xs">
-                      {ideas.problem}
-                    </Text>
-                  </Card.Section>
+                  <Accordion.Item
+                    mt="sm"
+                    style={{ border: 'none' }}
+                    label={
+                      !accordionState['0'] ? 'Show details' : 'Hide details'
+                    }
+                  >
+                    <div>{ideaDetails()}</div>
 
-                  <Card.Section className={classes.section}>
-                    <Text mt="md" className={classes.label} color="dimmed">
-                      Goal
-                    </Text>
-                    <Text size="sm" mt="xs">
-                      {ideas.goal}
-                    </Text>
-                  </Card.Section>
+                    <Group mt="xs" position={'right'} style={{ paddingTop: 5 }}>
+                      <Button variant={'outline'} color={'yellow'}>
+                        Add to Favorites
+                      </Button>
+                      <Button>Participate</Button>
+                    </Group>
+                  </Accordion.Item>
+                </Accordion>
+              )}
 
-                  <Accordion iconPosition="right">
-                    <Accordion.Item
-                      label={
-                        <div>
-                          <Text className={classes.label} color="dimmed">
-                            Current participants
-                          </Text>
-                          <Group spacing={7} mt={5}>
-                            <AvatarsGroup limit={5}>
-                              {ideas.participants?.map((participant, index) => (
-                                <Avatar
-                                  color="indigo"
-                                  radius="xl"
-                                  size="md"
-                                  src={
-                                    'https://avatars.githubusercontent.com/u/10353856?s=460&u=88394dfd67727327c1f7670a1764dc38a8a24831&v=4'
-                                  }
-                                />
-                              ))}
-                            </AvatarsGroup>
-                          </Group>
-                        </div>
-                      }
-                    >
-                      {participantData}
-                    </Accordion.Item>
-                  </Accordion>
+              {type === 'admin' && (
+                <>
+                  <div>{ideaDetails()}</div>
 
-                  <Group mt="xs" position={'right'} style={{ paddingTop: 5 }}>
-                    <Button variant={'outline'} color={'yellow'}>
-                      Add to Favorites
+                  <Modal
+                    centered
+                    opened={opened}
+                    onClose={() => setOpened(false)}
+                    withCloseButton={false}
+                  >
+                    Are you sure you want to delete this idea?
+                    <h4>Title: {idea.title}</h4>
+                    <Button color={'red'} onClick={() => deleteSelectedIdea()}>
+                      Yes delete this idea
                     </Button>
-                    <Button>Participate</Button>
+                    <p>
+                      (This window will automatically close as soon as the idea
+                      is deleted)
+                    </p>
+                  </Modal>
+                  <Group position="left" mt="xl">
+                    <Button color={'red'} onClick={() => setOpened(true)}>
+                      Delete
+                    </Button>
+                    <Button>Edit</Button>
                   </Group>
-                </Accordion.Item>
-              </Accordion>
+                </>
+              )}
             </>
           )}
         </Card>

@@ -5,13 +5,11 @@ import {
   Card,
   SimpleGrid,
   Accordion,
-  TextInput,
 } from '@mantine/core'
 import React, { useEffect, useState } from 'react'
 import { getListOfHackathons } from '../actions/HackathonActions'
 import { HackathonPreview } from '../common/types'
-import HackathonDetails from './HackathonDetails'
-import NewHackathonDetails from './NewHackathonDetails'
+import NewHackathonDetails from './hackathon-details/NewHackathonDetails'
 
 const useStyles = createStyles((theme) => ({
   card: {
