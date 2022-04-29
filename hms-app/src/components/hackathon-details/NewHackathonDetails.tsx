@@ -51,7 +51,7 @@ const useStyles = createStyles((theme) => ({
 export default function NewHackathonDetails(props: IProps) {
   const { classes } = useStyles()
   const { hackathonID, type } = props
-  const [opened, setOpened] = useState(false)
+  const [modalOpened, setModalOpened] = useState(false)
   const [hackathonData, setHackathonData] = useState({
     errorHackathonData: false,
     isLoadingHackathonData: true,
@@ -136,7 +136,7 @@ export default function NewHackathonDetails(props: IProps) {
 
   const deleteSelectedHackathon = () => {
     deleteHackathon(hackathonID).then((data) => {
-      setOpened(false)
+      setModalOpened(false)
     })
   }
 
@@ -315,8 +315,8 @@ export default function NewHackathonDetails(props: IProps) {
             <Card.Section className={classes.section}>
               <Modal
                 centered
-                opened={opened}
-                onClose={() => setOpened(false)}
+                opened={modalOpened}
+                onClose={() => setModalOpened(false)}
                 withCloseButton={false}
               >
                 Are you sure you want to delete this hackathon?
@@ -338,7 +338,7 @@ export default function NewHackathonDetails(props: IProps) {
                 </p>
               </Modal>
               <Group position="left" mt="xl">
-                <Button color={'red'} onClick={() => setOpened(true)}>
+                <Button color={'red'} onClick={() => setModalOpened(true)}>
                   Delete
                 </Button>
                 <Button>Edit</Button>

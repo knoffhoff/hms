@@ -59,6 +59,7 @@ export default function CategoryDetails(props: IProps) {
       },
       () => {
         setIsError(true)
+        setIsLoading(false)
       }
     )
   }
@@ -88,7 +89,7 @@ export default function CategoryDetails(props: IProps) {
         </div>
       )}
 
-      {!isLoading && (
+      {!isLoading && !isError && (
         <Card withBorder radius="md" p="md" className={classes.card}>
           <Card.Section className={classes.section}>
             <Text size="md" mt="xs">

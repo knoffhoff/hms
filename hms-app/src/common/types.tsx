@@ -57,7 +57,7 @@ export type Participant = {
   userId: string
   hackathonId: string
   id: string
-  creationDate: string
+  creationDate: Date
 }
 
 export type User = {

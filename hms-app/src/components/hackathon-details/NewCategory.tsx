@@ -30,14 +30,14 @@ function NewCategory(props: IProps) {
   const { classes } = useStyles()
   const { hackathonID } = props
   const [hasTitle, setHasTitle] = useState(false)
-  const [categoryText, setCategoryText] = useState({
+  const [category, setCategory] = useState({
     title: '',
     description: '',
-    hackathonID: hackathonID.toString(),
+    hackathonID: hackathonID,
   })
 
   function handleChange(event: React.ChangeEvent<HTMLTextAreaElement>) {
-    setCategoryText((prevCategoryText) => ({
+    setCategory((prevCategoryText) => ({
       ...prevCategoryText,
       [event.target.name]: event.target.value,
     }))
@@ -55,7 +55,7 @@ function NewCategory(props: IProps) {
       disallowClose: true,
     })
     setHasTitle(false)
-    addCategory(categoryText).then((r) =>
+    addCategory(category).then((r) =>
       setTimeout(() => {
         updateNotification({
           id: 'category-load',

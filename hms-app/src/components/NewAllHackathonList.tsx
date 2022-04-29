@@ -58,7 +58,6 @@ function NewAllHackathonList() {
           <div>
             {index + 1}. {hackathon.title}
           </div>
-          <div>{hackathon.id}</div>
         </SimpleGrid>
       }
     >

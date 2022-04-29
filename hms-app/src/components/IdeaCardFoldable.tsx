@@ -223,7 +223,7 @@ export default function IdeaCardFoldable(props: IProps) {
                     Are you sure you want to delete this idea?
                     <h4>Title: {idea.title}</h4>
                     <Button color={'red'} onClick={() => deleteSelectedIdea()}>
-                      Yes delete this idea
+                      Yes, delete this idea
                     </Button>
                     <p>
                       (This window will automatically close as soon as the idea
