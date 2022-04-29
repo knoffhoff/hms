@@ -13,7 +13,7 @@ class SkillListResponse {
   static from = (
       skills: Skill[],
   ): SkillListResponse => new SkillListResponse(
-      SkillPreviewResponse.fromArray(skills),
+      SkillPreviewResponse.fromArray(skills.sort(Skill.compare)),
   );
 }
 
