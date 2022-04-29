@@ -37,22 +37,19 @@ function NewHackathon() {
   const [endDateValue, setEndDateValue] = useState<Date | null>(new Date())
   const [hackathonText, setHackathonText] = useState({
     title: '',
-    startDate: '',
-    endDate: '',
-    titleSet: false,
-    dateSet: false,
   })
 
   function handleChange(event: React.ChangeEvent<HTMLTextAreaElement>) {
     setHackathonText((prevHackathonText) => ({
       ...prevHackathonText,
       [event.target.name]: event.target.value,
-      titleBSet: true,
     }))
   }
 
   function submitForm(event: React.MouseEvent<HTMLButtonElement>) {
     event.preventDefault()
+    console.log(hackathonText, startDateValue, endDateValue)
+
     showNotification({
       id: 'hackathon-load',
       loading: true,
@@ -61,41 +58,34 @@ function NewHackathon() {
       autoClose: false,
       disallowClose: true,
     })
-    setHackathonText((prevHackathonText) => ({
-      ...prevHackathonText,
-      titleSet: false,
-      dateSet: false,
-    }))
-    createHackathon(hackathonText).then((r) =>
-      setTimeout(() => {
-        updateNotification({
-          id: 'hackathon-load',
-          color: 'teal',
-          title: 'Hackathon was created',
-          message: 'Notification will close in 2 seconds',
-          icon: <CheckIcon />,
-          autoClose: 2000,
-        })
-      }, 3000)
+
+    createHackathon(hackathonText.title, startDateValue!, endDateValue!).then(
+      (r) =>
+        setTimeout(() => {
+          updateNotification({
+            id: 'hackathon-load',
+            color: 'teal',
+            title: 'Hackathon was created',
+            message: 'Notification will close in 2 seconds',
+            icon: <CheckIcon />,
+            autoClose: 2000,
+          })
+        }, 3000)
     )
   }
 
-  useEffect(() => {
+  /*useEffect(() => {
     setHackathonText((prevHackathonText) => ({
       ...prevHackathonText,
       startDate: startDateValue!.toDateString(),
       endDate: endDateValue!.toDateString(),
       dateSet: true,
     }))
-  }, [endDateValue])
+  }, [endDateValue])*/
 
-  useEffect(() => {
-    setHackathonText((prevHackathonText) => ({
-      ...prevHackathonText,
-      titleSet: false,
-      dateSet: false,
-    }))
-  }, [])
+  function submitIsEnabled(): boolean {
+    return !!hackathonText.title
+  }
 
   return (
     <>
@@ -115,27 +105,24 @@ function NewHackathon() {
         <Card.Section className={classes.section}>
           <SimpleGrid cols={2} breakpoints={[{ maxWidth: 'sm', cols: 1 }]}>
             <DatePicker
-              label={'Start date'}
+              label={'Start Date'}
               value={startDateValue}
               onChange={setStartDateValue}
-              excludeDate={(date) => date.getDate() < today.getDate()}
+              excludeDate={(date) => date < today}
               required
             />
             <DatePicker
-              label={'End date'}
+              label={'End Date'}
               value={endDateValue}
               onChange={setEndDateValue}
-              excludeDate={(date) => date.getDate() < startDateValue!.getDate()}
+              excludeDate={(date) => date < startDateValue!}
               required
             />
           </SimpleGrid>
         </Card.Section>
         <Group position="right" mt="xl">
-          <Button
-            disabled={!hackathonText.titleSet && !hackathonText.dateSet}
-            onClick={submitForm}
-          >
-            Submit hackathon
+          <Button disabled={!submitIsEnabled()} onClick={submitForm}>
+            Create
           </Button>
         </Group>
       </Card>{' '}
