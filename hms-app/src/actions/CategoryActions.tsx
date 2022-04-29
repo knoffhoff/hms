@@ -1,25 +1,22 @@
-const api_id = process.env.REACT_APP_API_ID
+const core_url = process.env.REACT_APP_CORE_URL
 
 export const addCategory = (props: {
   title: string
   description: string
   hackathonID: string
 }) => {
-  return fetch(
-    `http://localhost:4566/restapis/${api_id}/local/_user_request_/category`,
-    {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        title: props.title,
-        description: props.description,
-        hackathonId: props.hackathonID,
-      }),
-    }
-  )
+  return fetch(`${core_url}/category`, {
+    method: 'POST',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      title: props.title,
+      description: props.description,
+      hackathonId: props.hackathonID,
+    }),
+  })
     .then((response) => {
       return response.json()
     })
@@ -27,16 +24,13 @@ export const addCategory = (props: {
 }
 
 export const deleteCategory = (categoryID: string) => {
-  return fetch(
-    `http://localhost:4566/restapis/${api_id}/local/_user_request_/category/${categoryID}`,
-    {
-      method: 'DELETE',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-    }
-  )
+  return fetch(`${core_url}/category/${categoryID}`, {
+    method: 'DELETE',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+  })
     .then((response) => {
       return response.json()
     })
@@ -44,16 +38,13 @@ export const deleteCategory = (categoryID: string) => {
 }
 
 export const getListOfCategories = (hackathonID: string) => {
-  return fetch(
-    `http://localhost:4566/restapis/${api_id}/local/_user_request_/hackathon/${hackathonID}/categories`,
-    {
-      method: 'GET',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-    }
-  )
+  return fetch(`${core_url}/hackathon/${hackathonID}/categories`, {
+    method: 'GET',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+  })
     .then((data) => {
       return data.json()
     })
@@ -61,16 +52,13 @@ export const getListOfCategories = (hackathonID: string) => {
 }
 
 export const getCategoryDetails = (categoryID: string) => {
-  return fetch(
-    `http://localhost:4566/restapis/${api_id}/local/_user_request_/category/${categoryID}`,
-    {
-      method: 'GET',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-    }
-  )
+  return fetch(`${core_url}/category/${categoryID}`, {
+    method: 'GET',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+  })
     .then((data) => {
       return data.json()
     })

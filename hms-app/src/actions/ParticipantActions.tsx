@@ -1,16 +1,13 @@
-const api_id = process.env.REACT_APP_API_ID
+const core_url = process.env.REACT_APP_CORE_URL
 
 export const deleteParticipant = (participantID: string) => {
-  return fetch(
-    `http://localhost:4566/restapis/${api_id}/local/_user_request_/participant/${participantID}`,
-    {
-      method: 'DELETE',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-    }
-  )
+  return fetch(`${core_url}/participant/${participantID}`, {
+    method: 'DELETE',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+  })
     .then((response) => {
       return response.json()
     })
@@ -18,20 +15,17 @@ export const deleteParticipant = (participantID: string) => {
 }
 
 export const createParticipant = (userId: string, hackathonId: string) => {
-  return fetch(
-    `http://localhost:4566/restapis/${api_id}/local/_user_request_/participant`,
-    {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        userId: userId,
-        hackathonId: hackathonId,
-      }),
-    }
-  )
+  return fetch(`${core_url}/participant`, {
+    method: 'POST',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      userId: userId,
+      hackathonId: hackathonId,
+    }),
+  })
     .then((response) => {
       return response.json()
     })
@@ -39,16 +33,13 @@ export const createParticipant = (userId: string, hackathonId: string) => {
 }
 
 export const getParticipantDetails = (participantID: string) => {
-  return fetch(
-    `http://localhost:4566/restapis/${api_id}/local/_user_request_/category/${participantID}`,
-    {
-      method: 'GET',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-    }
-  )
+  return fetch(`${core_url}/category/${participantID}`, {
+    method: 'GET',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+  })
     .then((data) => {
       return data.json()
     })

@@ -1,16 +1,13 @@
-const api_id = process.env.REACT_APP_API_ID
+const core_url = process.env.REACT_APP_CORE_URL
 
 export const getListOfSkills = () => {
-  return fetch(
-    `http://localhost:4566/restapis/${api_id}/local/_user_request_/skills`,
-    {
-      method: 'GET',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-    }
-  )
+  return fetch(`${core_url}/skills`, {
+    method: 'GET',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+  })
     .then((data) => {
       return data.json()
     })
