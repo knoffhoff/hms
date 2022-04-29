@@ -29,7 +29,6 @@ const useStyles = createStyles((theme) => ({
 function NewCategory(props: IProps) {
   const { classes } = useStyles()
   const { hackathonID } = props
-  const [hasTitle, setHasTitle] = useState(false)
   const [category, setCategory] = useState({
     title: '',
     description: '',
@@ -41,7 +40,6 @@ function NewCategory(props: IProps) {
       ...prevCategoryText,
       [event.target.name]: event.target.value,
     }))
-    setHasTitle(true)
   }
 
   function submitForm(event: React.MouseEvent<HTMLButtonElement>) {
@@ -54,7 +52,6 @@ function NewCategory(props: IProps) {
       autoClose: false,
       disallowClose: true,
     })
-    setHasTitle(false)
     addCategory(category).then((r) =>
       setTimeout(() => {
         updateNotification({
@@ -72,8 +69,6 @@ function NewCategory(props: IProps) {
   function submitIsEnabled(): boolean {
     return !!category.title
   }
-
-  console.log(submitIsEnabled())
 
   return (
     <>
@@ -102,7 +97,7 @@ function NewCategory(props: IProps) {
           />
         </Card.Section>
         <Group position="right" mt="xl">
-          <Button disabled={!hasTitle} onClick={submitForm}>
+          <Button disabled={!submitIsEnabled()} onClick={submitForm}>
             Submit category
           </Button>
         </Group>
