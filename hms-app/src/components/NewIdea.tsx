@@ -2,25 +2,16 @@ import {
   Textarea,
   Group,
   Button,
-  useMantineTheme,
   CheckboxGroup,
   Checkbox,
   createStyles,
   Card,
-  SimpleGrid,
-  Select,
   Text,
 } from '@mantine/core'
 import React, { useEffect, useState } from 'react'
-import {
-  CategoryPreview,
-  Hackathon,
-  HackathonPreview,
-  SkillPreview,
-} from '../common/types'
-import { getListOfHackathons } from '../actions/HackathonActions'
+import { CategoryPreview, Hackathon, SkillPreview } from '../common/types'
 import { getListOfSkills } from '../actions/SkillActions'
-import { addCategory, getListOfCategories } from '../actions/CategoryActions'
+import { getListOfCategories } from '../actions/CategoryActions'
 import { showNotification, updateNotification } from '@mantine/notifications'
 import { CheckIcon } from '@modulz/radix-icons'
 import { createIdea } from '../actions/IdeaActions'
@@ -116,14 +107,6 @@ function NewIdea(props: IProps) {
 
   function submitForm(event: React.MouseEvent<HTMLButtonElement>) {
     event.preventDefault()
-    /*alert(
-      JSON.stringify(ideaText) +
-        'skills: ' +
-        JSON.stringify(skills) +
-        'categories: ' +
-        JSON.stringify(categories)
-    )*/
-
     showNotification({
       id: 'idea-load',
       loading: true,

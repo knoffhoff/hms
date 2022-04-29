@@ -1,19 +1,14 @@
 import React, { useEffect, useState } from 'react'
-import ideaData from '../test/TestIdeaData'
 import { Input, Group, Title, Select, Button } from '@mantine/core'
 import { Search } from 'tabler-icons-react'
 import IdeaCardList from '../components/IdeaCardList'
-import HackathonDetails from '../components/HackathonDetails'
 import { Hackathon, HackathonPreview, Idea, IdeaPreview } from '../common/types'
 import {
   getHackathonDetails,
   getListOfHackathons,
 } from '../actions/HackathonActions'
 import { getIdeaDetails } from '../actions/IdeaActions'
-import {
-  createParticipant,
-  deleteParticipant,
-} from '../actions/ParticipantActions'
+import { createParticipant } from '../actions/ParticipantActions'
 
 function IdeaPortal() {
   const [searchTerm, setSearchTerm] = useState('')
@@ -25,9 +20,9 @@ function IdeaPortal() {
     isLoadingHackathonList: true,
     hackathons: [] as HackathonPreview[],
   })
+  const [isHackathonError, setIsHackathonError] = useState(false)
+  const [isHackathonLoading, setIsHackathonLoading] = useState(true)
   const [hackathonData, setHackathonData] = useState({
-    errorHackathonData: false,
-    isLoadingHackathonData: true,
     hackathonId: 'string',
     title: 'string',
     startDate: 'string',
@@ -88,16 +83,13 @@ function IdeaPortal() {
           participants: data.participants,
           categories: data.categories,
           ideas: data.ideas,
-          errorHackathonData: false,
-          isLoadingHackathonData: false,
         })
+        setIsHackathonLoading(false)
+        setIsHackathonError(false)
       },
       () => {
-        setHackathonData({
-          ...hackathonData,
-          errorHackathonData: true,
-          isLoadingHackathonData: false,
-        })
+        setIsHackathonLoading(false)
+        setIsHackathonError(true)
       }
     )
   }
@@ -217,19 +209,19 @@ function IdeaPortal() {
         />
       </Group>
 
-      {hackathonData.errorHackathonData && (
+      {isHackathonError && (
         <div>
           <h3>Error loading hackathons</h3>
           <p>something went wrong.</p>
         </div>
       )}
-      {hackathonData.isLoadingHackathonData && (
+      {isHackathonLoading && (
         <div>
           <h3>Hackathon details are loading...</h3>
         </div>
       )}
 
-      {!hackathonData.isLoadingHackathonData && (
+      {!isHackathonLoading && !isHackathonError && (
         <div>
           <h2>{hackathonData.title}</h2>
           <h2>

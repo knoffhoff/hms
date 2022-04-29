@@ -4,8 +4,6 @@ export type HackathonPreview = {
 }
 
 export type Hackathon = {
-  errorHackathonData: boolean
-  isLoadingHackathonData: boolean
   hackathonId: string
   title: string
   startDate: string
@@ -42,12 +40,29 @@ export type CategoryPreview = {
 }
 
 export type Category = {
-  errorCategoryData: boolean
-  isLoadingCategoryData: boolean
   id: string
   title: string
   description: string
   hackathonId: string
+}
+
+export type ParticipantPreview = {
+  id: string
+  user: User
+}
+
+export type Participant = {
+  userId: string
+  hackathonId: string
+  id: string
+  creationDate: Date
+}
+
+export type User = {
+  id: string
+  lastName?: string
+  firstName?: string
+  imageUrl?: string
 }
 
 export type SkillPreview = {
@@ -58,16 +73,4 @@ export type SkillPreview = {
 export type OwnerPreview = {
   id: string
   user: User
-}
-
-export type ParticipantPreview = {
-  id: string
-  user: User
-}
-
-export type User = {
-  id: string
-  lastName?: string
-  firstName?: string
-  imageUrl?: string
 }

@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import { Category } from '../common/types'
+import { Category } from '../../common/types'
 import { Button, Card, createStyles, Group, Modal, Text } from '@mantine/core'
-import { deleteCategory, getCategoryDetails } from '../actions/CategoryActions'
+import {
+  deleteCategory,
+  getCategoryDetails,
+} from '../../actions/CategoryActions'
 
 type IProps = {
   categoryID: string
@@ -33,9 +36,9 @@ export default function CategoryDetails(props: IProps) {
   const { classes } = useStyles()
   const { categoryID } = props
   const [opened, setOpened] = useState(false)
+  const [isError, setIsError] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
   const [categoryData, setCategoryData] = useState({
-    errorCategoryData: false,
-    isLoadingCategoryData: true,
     id: 'string',
     title: 'string',
     description: 'string',
@@ -45,21 +48,18 @@ export default function CategoryDetails(props: IProps) {
   const loadSelectedCategory = () => {
     getCategoryDetails(categoryID).then(
       (data) => {
+        setIsError(false)
+        setIsLoading(false)
         setCategoryData({
           id: data.id,
           title: data.title,
           description: data.description,
           hackathonId: data.hackathonId,
-          errorCategoryData: false,
-          isLoadingCategoryData: false,
         })
       },
       () => {
-        setCategoryData({
-          ...categoryData,
-          errorCategoryData: true,
-          isLoadingCategoryData: false,
-        })
+        setIsError(true)
+        setIsLoading(false)
       }
     )
   }
@@ -72,27 +72,24 @@ export default function CategoryDetails(props: IProps) {
 
   useEffect(() => {
     loadSelectedCategory()
-    setCategoryData({
-      ...categoryData,
-      isLoadingCategoryData: true,
-    })
+    setIsLoading(true)
   }, [])
 
   return (
     <>
-      {categoryData.errorCategoryData && (
+      {isError && (
         <div>
           <h3>Error loading hackathons</h3>
           <p>something went wrong.</p>
         </div>
       )}
-      {categoryData.isLoadingCategoryData && (
+      {isLoading && (
         <div>
           <h3>Category details are loading...</h3>
         </div>
       )}
 
-      {!categoryData.isLoadingCategoryData && (
+      {!isLoading && !isError && (
         <Card withBorder radius="md" p="md" className={classes.card}>
           <Card.Section className={classes.section}>
             <Text size="md" mt="xs">
@@ -117,9 +114,11 @@ export default function CategoryDetails(props: IProps) {
             >
               Are you sure you want to delete this category?
               <h4>Title: {categoryData.title}</h4>
-              <Button color={'red'} onClick={() => deleteSelectedCategory()}>
-                Yes delete this category
-              </Button>
+              {!isLoading && (
+                <Button color={'red'} onClick={() => deleteSelectedCategory()}>
+                  Yes delete this category
+                </Button>
+              )}
               <p>
                 (This window will automatically close as soon as the category is
                 deleted)
@@ -130,9 +129,6 @@ export default function CategoryDetails(props: IProps) {
                 Delete
               </Button>
               <Button>Edit</Button>
-              <Button color={'green'} onClick={() => loadSelectedCategory()}>
-                Reload
-              </Button>
             </Group>
           </Card.Section>
         </Card>

@@ -2,10 +2,10 @@ import React, { useEffect, useState } from 'react'
 import {
   deleteHackathon,
   getHackathonDetails,
-} from '../actions/HackathonActions'
-import IdeaCardList from './IdeaCardList'
-import { Hackathon, Idea } from '../common/types'
-import { deleteIdea, getIdeaDetails } from '../actions/IdeaActions'
+} from '../../actions/HackathonActions'
+import IdeaCardList from '../IdeaCardList'
+import { Hackathon, Idea } from '../../common/types'
+import { getIdeaDetails } from '../../actions/IdeaActions'
 import {
   Accordion,
   Button,
@@ -15,10 +15,11 @@ import {
   SimpleGrid,
   Text,
   Modal,
-  TextInput,
 } from '@mantine/core'
-import { deleteParticipant } from '../actions/ParticipantActions'
 import CategoryDetails from './CategoryDetails'
+import NewCategory from './NewCategory'
+import ParticipantDetails from './ParticipantDetails'
+import IdeaCardFoldable from '../IdeaCardFoldable'
 
 type IProps = {
   hackathonID: string
@@ -50,20 +51,10 @@ const useStyles = createStyles((theme) => ({
 export default function NewHackathonDetails(props: IProps) {
   const { classes } = useStyles()
   const { hackathonID, type } = props
-  const [opened, setOpened] = useState({
-    hackathonModal: false,
-    participantsModal: false,
-    categoriesModal: false,
-    ideasModal: false,
-  })
-  const [deleteIDs, setDeleteIDs] = useState({
-    participantID: '',
-    categoryID: '',
-    ideaID: '',
-  })
+  const [modalOpened, setModalOpened] = useState(false)
+  const [isHackathonError, setIsHackathonError] = useState(false)
+  const [isHackathonLoading, setIsHackathonLoading] = useState(true)
   const [hackathonData, setHackathonData] = useState({
-    errorHackathonData: false,
-    isLoadingHackathonData: true,
     hackathonId: 'string',
     title: 'string',
     startDate: 'string',
@@ -100,16 +91,13 @@ export default function NewHackathonDetails(props: IProps) {
           participants: data.participants,
           categories: data.categories,
           ideas: data.ideas,
-          errorHackathonData: false,
-          isLoadingHackathonData: false,
         })
+        setIsHackathonLoading(false)
+        setIsHackathonError(false)
       },
       () => {
-        setHackathonData({
-          ...hackathonData,
-          errorHackathonData: true,
-          isLoadingHackathonData: false,
-        })
+        setIsHackathonLoading(false)
+        setIsHackathonError(true)
       }
     )
   }
@@ -145,38 +133,14 @@ export default function NewHackathonDetails(props: IProps) {
 
   const deleteSelectedHackathon = () => {
     deleteHackathon(hackathonID).then((data) => {
-      setOpened({
-        ...opened,
-        hackathonModal: false,
-      })
-    })
-  }
-
-  const deleteSelectedIdea = () => {
-    deleteIdea(deleteIDs.ideaID).then((data) => {
-      setOpened({
-        ...opened,
-        ideasModal: false,
-      })
-    })
-  }
-
-  const deleteSelectedParticipant = () => {
-    deleteParticipant(deleteIDs.participantID).then((data) => {
-      setOpened({
-        ...opened,
-        participantsModal: false,
-      })
+      setModalOpened(false)
     })
   }
 
   useEffect(() => {
     loadSelectedHackathon()
     setRelevantIdeaList([])
-    setHackathonData({
-      ...hackathonData,
-      isLoadingHackathonData: true,
-    })
+    setIsHackathonLoading(true)
   }, [hackathonID])
 
   useEffect(() => {
@@ -197,55 +161,65 @@ export default function NewHackathonDetails(props: IProps) {
     }
   }, [ideaData])
 
-  const participantsPreviewData = hackathonData.participants?.map(
+  const allParticipants = hackathonData.participants?.map(
     (participant, index) => (
-      <SimpleGrid cols={2} breakpoints={[{ maxWidth: 'sm', cols: 1 }]}>
-        <li>
-          Name: {participant.user.firstName} {participant.user.lastName}
-        </li>
-        ID: {participant.user.id}
-      </SimpleGrid>
+      <Accordion.Item
+        label={
+          <div>
+            {index + 1}. {participant.user.firstName}{' '}
+            {participant.user.lastName}
+          </div>
+        }
+      >
+        <ParticipantDetails
+          participantID={participant.id}
+          user={participant.user}
+        />
+      </Accordion.Item>
     )
   )
 
   const allCategories = hackathonData.categories?.map((category, index) => (
     <Accordion.Item
       label={
-        <SimpleGrid cols={2} breakpoints={[{ maxWidth: 'sm', cols: 1 }]}>
-          <div>
-            {index + 1}. {category.title}
-          </div>
-          <div>{category.id}</div>
-        </SimpleGrid>
+        <div>
+          {index + 1}. {category.title}
+        </div>
       }
     >
       <CategoryDetails categoryID={category.id.toString()} />
     </Accordion.Item>
   ))
 
-  const ideasPreviewData = hackathonData.ideas?.map((idea, index) => (
-    <SimpleGrid cols={2} breakpoints={[{ maxWidth: 'sm', cols: 1 }]}>
-      <li>Title: {idea.title}</li>
-      ID: {idea.id}
-    </SimpleGrid>
+  const allIdeas = relevantIdeaList.slice(0).map((idea, index) => (
+    <Accordion.Item
+      label={
+        <div>
+          {index + 1}. {idea.title}
+        </div>
+      }
+    >
+      <IdeaCardFoldable idea={idea} type={'admin'} />
+    </Accordion.Item>
   ))
 
   return (
     <>
-      {hackathonData.errorHackathonData && (
+      {isHackathonError && (
         <div>
           <h3>Error loading hackathons</h3>
           <p>something went wrong.</p>
         </div>
       )}
-      {hackathonData.isLoadingHackathonData && (
+      {isHackathonLoading && (
         <div>
           <h3>Hackathon details are loading...</h3>
         </div>
       )}
 
       {hackathonData.startDate &&
-        !hackathonData.isLoadingHackathonData &&
+        !isHackathonLoading &&
+        !isHackathonError &&
         type === 'header' && (
           <div>
             <h2>Title: {hackathonData.title}</h2>
@@ -264,7 +238,8 @@ export default function NewHackathonDetails(props: IProps) {
         )}
 
       {hackathonData.startDate &&
-        !hackathonData.isLoadingHackathonData &&
+        !isHackathonLoading &&
+        !isHackathonError &&
         type === 'fullInfo' && (
           <Card withBorder radius="md" p="md" className={classes.card}>
             <Card.Section className={classes.section}>
@@ -273,6 +248,7 @@ export default function NewHackathonDetails(props: IProps) {
               </Text>
               <Text size={'xs'}>ID: {hackathonData.hackathonId}</Text>
             </Card.Section>
+
             <Card.Section className={classes.section}>
               <SimpleGrid cols={2} breakpoints={[{ maxWidth: 'sm', cols: 1 }]}>
                 <Card.Section>
@@ -296,137 +272,47 @@ export default function NewHackathonDetails(props: IProps) {
                   </Text>
                 }
               >
-                <Accordion iconPosition="right">{allCategories}</Accordion>
+                <Accordion iconPosition="right">
+                  <Accordion.Item
+                    style={{ border: '1px solid' }}
+                    label={'Add Category'}
+                  >
+                    <NewCategory hackathonID={hackathonData.hackathonId} />
+                  </Accordion.Item>
+                  {allCategories}
+                </Accordion>
               </Accordion.Item>
             </Accordion>
 
-            <Accordion iconPosition="left">
+            <Accordion iconPosition="left" offsetIcon={false}>
               <Accordion.Item
                 label={
                   <Text className={classes.label} color="dimmed">
-                    Participants ( {participantsPreviewData?.length} )
+                    Participants ( {allParticipants?.length} )
                   </Text>
                 }
               >
-                <ol>{participantsPreviewData}</ol>
-                <Modal
-                  centered
-                  opened={opened.participantsModal}
-                  onClose={() =>
-                    setOpened({
-                      ...opened,
-                      participantsModal: false,
-                    })
-                  }
-                  withCloseButton={false}
-                >
-                  Are you sure you want to delete this participant?
-                  <h4>Name: (add the name of the participant here)</h4>
-                  <Button
-                    color={'red'}
-                    onClick={() => deleteSelectedParticipant()}
-                  >
-                    Yes delete this participant
-                  </Button>
-                  <p>
-                    (This window will automatically closed as soon as the idea
-                    is deleted)
-                  </p>
-                </Modal>
-                <Group position="left" mt="xl">
-                  <TextInput
-                    required
-                    placeholder={'put the participant id here'}
-                    value={deleteIDs.participantID}
-                    onChange={(event) =>
-                      setDeleteIDs({
-                        ...deleteIDs,
-                        participantID: event.currentTarget.value,
-                      })
-                    }
-                  />
-                  <Button
-                    color={'red'}
-                    onClick={() =>
-                      setOpened({
-                        ...opened,
-                        participantsModal: true,
-                      })
-                    }
-                  >
-                    Delete Participant
-                  </Button>
-                </Group>
+                <Accordion iconPosition="right">{allParticipants}</Accordion>
               </Accordion.Item>
             </Accordion>
 
-            <Accordion iconPosition="left">
+            <Accordion iconPosition="left" offsetIcon={false}>
               <Accordion.Item
                 label={
                   <Text className={classes.label} color="dimmed">
-                    Ideas ( {ideasPreviewData?.length} )
+                    Ideas ( {allIdeas?.length} )
                   </Text>
                 }
               >
-                <ol>{ideasPreviewData}</ol>
-                <Modal
-                  centered
-                  opened={opened.ideasModal}
-                  onClose={() =>
-                    setOpened({
-                      ...opened,
-                      ideasModal: false,
-                    })
-                  }
-                  withCloseButton={false}
-                >
-                  Are you sure you want to delete this idea?
-                  <h4>Title: (add the name of the idea here)</h4>
-                  <Button color={'red'} onClick={() => deleteSelectedIdea()}>
-                    Yes delete this idea
-                  </Button>
-                  <p>
-                    (This window will automatically closed as soon as the idea
-                    is deleted)
-                  </p>
-                </Modal>
-                <Group position="left" mt="xl">
-                  <TextInput
-                    required
-                    placeholder={'put the idea id here'}
-                    value={deleteIDs.ideaID}
-                    onChange={(event) =>
-                      setDeleteIDs({
-                        ...deleteIDs,
-                        ideaID: event.currentTarget.value,
-                      })
-                    }
-                  />
-                  <Button
-                    color={'red'}
-                    onClick={() =>
-                      setOpened({
-                        ...opened,
-                        ideasModal: true,
-                      })
-                    }
-                  >
-                    Delete Idea
-                  </Button>
-                </Group>
+                <Accordion iconPosition="right">{allIdeas}</Accordion>
               </Accordion.Item>
             </Accordion>
 
             <Card.Section className={classes.section}>
               <Modal
                 centered
-                opened={opened.hackathonModal}
-                onClose={() =>
-                  setOpened({
-                    ...opened,
-                    hackathonModal: false,
-                  })
-                }
+                opened={modalOpened}
+                onClose={() => setModalOpened(false)}
                 withCloseButton={false}
               >
                 Are you sure you want to delete this hackathon?
@@ -448,20 +334,12 @@ export default function NewHackathonDetails(props: IProps) {
                 </p>
               </Modal>
               <Group position="left" mt="xl">
-                <Button
-                  color={'red'}
-                  onClick={() =>
-                    setOpened({
-                      ...opened,
-                      hackathonModal: true,
-                    })
-                  }
-                >
-                  Delete Hackathon
+                <Button color={'red'} onClick={() => setModalOpened(true)}>
+                  Delete
                 </Button>
-                <Button>Edit Hackathon</Button>
+                <Button>Edit</Button>
                 <Button color={'green'} onClick={() => loadSelectedHackathon()}>
-                  Reload Details
+                  Reload
                 </Button>
               </Group>
             </Card.Section>

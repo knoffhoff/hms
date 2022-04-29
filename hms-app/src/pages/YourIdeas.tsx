@@ -18,9 +18,9 @@ function YourIdeas() {
     isLoadingHackathonList: true,
     hackathons: [] as HackathonPreview[],
   })
+  const [isHackathonError, setIsHackathonError] = useState(false)
+  const [isHackathonLoading, setIsHackathonLoading] = useState(true)
   const [hackathonData, setHackathonData] = useState({
-    errorHackathonData: false,
-    isLoadingHackathonData: true,
     hackathonId: 'string',
     title: 'string',
     startDate: 'string',
@@ -77,16 +77,13 @@ function YourIdeas() {
           participants: data.participants,
           categories: data.categories,
           ideas: data.ideas,
-          errorHackathonData: false,
-          isLoadingHackathonData: false,
         })
+        setIsHackathonLoading(false)
+        setIsHackathonError(false)
       },
       () => {
-        setHackathonData({
-          ...hackathonData,
-          errorHackathonData: true,
-          isLoadingHackathonData: false,
-        })
+        setIsHackathonLoading(false)
+        setIsHackathonError(true)
       }
     )
   }
@@ -198,19 +195,19 @@ function YourIdeas() {
         </Accordion.Item>
       </Accordion>
 
-      {hackathonData.errorHackathonData && (
+      {isHackathonError && (
         <div>
           <h3>Error loading hackathons</h3>
           <p>something went wrong.</p>
         </div>
       )}
-      {hackathonData.isLoadingHackathonData && (
+      {isHackathonLoading && (
         <div>
           <h3>Hackathon details are loading...</h3>
         </div>
       )}
 
-      {!hackathonData.isLoadingHackathonData && (
+      {!isHackathonLoading && isHackathonError && (
         <div>
           <h2>{hackathonData.title}</h2>
           <h2>
