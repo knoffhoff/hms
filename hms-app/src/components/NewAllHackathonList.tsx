@@ -31,7 +31,7 @@ const useStyles = createStyles((theme) => ({
 function NewAllHackathonList() {
   const { classes } = useStyles()
   const [isError, setIsError] = useState(false)
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
   const [hackathonList, setHackathonList] = useState({
     hackathons: [] as HackathonPreview[],
   })

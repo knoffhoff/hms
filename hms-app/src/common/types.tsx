@@ -4,8 +4,6 @@ export type HackathonPreview = {
 }
 
 export type Hackathon = {
-  errorHackathonData: boolean
-  isLoadingHackathonData: boolean
   hackathonId: string
   title: string
   startDate: string

@@ -52,9 +52,9 @@ export default function NewHackathonDetails(props: IProps) {
   const { classes } = useStyles()
   const { hackathonID, type } = props
   const [modalOpened, setModalOpened] = useState(false)
+  const [isHackathonError, setIsHackathonError] = useState(false)
+  const [isHackathonLoading, setIsHackathonLoading] = useState(true)
   const [hackathonData, setHackathonData] = useState({
-    errorHackathonData: false,
-    isLoadingHackathonData: true,
     hackathonId: 'string',
     title: 'string',
     startDate: 'string',
@@ -91,16 +91,13 @@ export default function NewHackathonDetails(props: IProps) {
           participants: data.participants,
           categories: data.categories,
           ideas: data.ideas,
-          errorHackathonData: false,
-          isLoadingHackathonData: false,
         })
+        setIsHackathonLoading(false)
+        setIsHackathonError(false)
       },
       () => {
-        setHackathonData({
-          ...hackathonData,
-          errorHackathonData: true,
-          isLoadingHackathonData: false,
-        })
+        setIsHackathonLoading(false)
+        setIsHackathonError(true)
       }
     )
   }
@@ -143,10 +140,7 @@ export default function NewHackathonDetails(props: IProps) {
   useEffect(() => {
     loadSelectedHackathon()
     setRelevantIdeaList([])
-    setHackathonData({
-      ...hackathonData,
-      isLoadingHackathonData: true,
-    })
+    setIsHackathonLoading(true)
   }, [hackathonID])
 
   useEffect(() => {
@@ -211,20 +205,21 @@ export default function NewHackathonDetails(props: IProps) {
 
   return (
     <>
-      {hackathonData.errorHackathonData && (
+      {isHackathonError && (
         <div>
           <h3>Error loading hackathons</h3>
           <p>something went wrong.</p>
         </div>
       )}
-      {hackathonData.isLoadingHackathonData && (
+      {isHackathonLoading && (
         <div>
           <h3>Hackathon details are loading...</h3>
         </div>
       )}
 
       {hackathonData.startDate &&
-        !hackathonData.isLoadingHackathonData &&
+        !isHackathonLoading &&
+        !isHackathonError &&
         type === 'header' && (
           <div>
             <h2>Title: {hackathonData.title}</h2>
@@ -243,7 +238,8 @@ export default function NewHackathonDetails(props: IProps) {
         )}
 
       {hackathonData.startDate &&
-        !hackathonData.isLoadingHackathonData &&
+        !isHackathonLoading &&
+        !isHackathonError &&
         type === 'fullInfo' && (
           <Card withBorder radius="md" p="md" className={classes.card}>
             <Card.Section className={classes.section}>

@@ -69,6 +69,12 @@ function NewCategory(props: IProps) {
     )
   }
 
+  function submitIsEnabled(): boolean {
+    return !!category.title
+  }
+
+  console.log(submitIsEnabled())
+
   return (
     <>
       <Card withBorder radius="md" p="md" className={classes.card}>
