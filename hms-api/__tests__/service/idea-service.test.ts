@@ -623,10 +623,29 @@ describe('Get Idea List Response', () => {
         [idea1, idea2, idea3],
         hackathonId);
 
+    mockHackathonExists.mockResolvedValue(true);
     mockListIdeasForHackathon.mockResolvedValue([idea1, idea2, idea3]);
 
     expect(await getIdeaListResponse(hackathonId)).toStrictEqual(expected);
+    expect(mockHackathonExists).toHaveBeenCalledWith(hackathonId);
     expect(mockListIdeasForHackathon).toHaveBeenCalledWith(hackathonId);
+  });
+
+  test('Hackathon Missing', async () => {
+    const hackathonId = uuid();
+
+    mockHackathonExists.mockResolvedValue(false);
+    mockListIdeasForHackathon.mockResolvedValue([
+      randomIdea(),
+      randomIdea(),
+      randomIdea(),
+    ]);
+
+    await expect(getIdeaListResponse(hackathonId))
+        .rejects
+        .toThrow(NotFoundError);
+    expect(mockHackathonExists).toHaveBeenCalledWith(hackathonId);
+    expect(mockListIdeasForHackathon).not.toHaveBeenCalledWith();
   });
 });
 
