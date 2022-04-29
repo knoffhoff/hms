@@ -16,7 +16,7 @@ function YourIdeas() {
   const [hackathonList, setHackathonList] = useState({
     errorHackathonList: false,
     isLoadingHackathonList: true,
-    hackathons: [] as HackathonPreview[],
+    users: [] as HackathonPreview[],
   })
   const [isHackathonError, setIsHackathonError] = useState(false)
   const [isHackathonLoading, setIsHackathonLoading] = useState(true)
@@ -51,7 +51,7 @@ function YourIdeas() {
       (data) => {
         setHackathonList({
           ...hackathonList,
-          hackathons: data.hackathons,
+          users: data.hackathons,
           errorHackathonList: false,
           isLoadingHackathonList: false,
         })
@@ -150,12 +150,10 @@ function YourIdeas() {
     return item.owner?.id.includes(userId)
   })
 
-  const data = hackathonList.hackathons.map(
-    (hackathon, index) => hackathon.title
-  )
+  const data = hackathonList.users.map((hackathon, index) => hackathon.title)
 
   const selectChange = (value: string) => {
-    const getHackathon = hackathonList.hackathons.filter((hackathon) => {
+    const getHackathon = hackathonList.users.filter((hackathon) => {
       return hackathon.title.includes(value)
     })
 

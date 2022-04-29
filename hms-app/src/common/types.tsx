@@ -48,7 +48,7 @@ export type Category = {
 
 export type ParticipantPreview = {
   id: string
-  user: User
+  user: UserPreview
 }
 
 export type Participant = {
@@ -58,11 +58,22 @@ export type Participant = {
   creationDate: Date
 }
 
-export type User = {
+export type UserPreview = {
   id: string
   lastName?: string
   firstName?: string
   imageUrl?: string
+}
+
+export type User = {
+  id: string
+  lastName: string
+  firstName: string
+  emailAddress: string
+  roles: string[]
+  skills: SkillPreview[]
+  imageUrl: string
+  creationDate: Date
 }
 
 export type SkillPreview = {
@@ -72,5 +83,5 @@ export type SkillPreview = {
 
 export type OwnerPreview = {
   id: string
-  user: User
+  user: UserPreview
 }

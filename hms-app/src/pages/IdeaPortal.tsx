@@ -18,7 +18,7 @@ function IdeaPortal() {
   const [hackathonList, setHackathonList] = useState({
     errorHackathonList: false,
     isLoadingHackathonList: true,
-    hackathons: [] as HackathonPreview[],
+    users: [] as HackathonPreview[],
   })
   const [isHackathonError, setIsHackathonError] = useState(false)
   const [isHackathonLoading, setIsHackathonLoading] = useState(true)
@@ -57,7 +57,7 @@ function IdeaPortal() {
       (data) => {
         setHackathonList({
           ...hackathonList,
-          hackathons: data.hackathons,
+          users: data.hackathons,
           errorHackathonList: false,
           isLoadingHackathonList: false,
         })
@@ -161,12 +161,10 @@ function IdeaPortal() {
     return item.title?.toLowerCase().includes(searchTerm.toLowerCase())
   })
 
-  const data = hackathonList.hackathons.map(
-    (hackathon, index) => hackathon.title
-  )
+  const data = hackathonList.users.map((hackathon, index) => hackathon.title)
 
   const selectChange = (value: string) => {
-    const getHackathon = hackathonList.hackathons.filter((hackathon) => {
+    const getHackathon = hackathonList.users.filter((hackathon) => {
       return hackathon.title.includes(value)
     })
 

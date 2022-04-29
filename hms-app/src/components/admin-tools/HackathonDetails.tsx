@@ -48,7 +48,7 @@ const useStyles = createStyles((theme) => ({
   },
 }))
 
-export default function NewHackathonDetails(props: IProps) {
+export default function HackathonDetails(props: IProps) {
   const { classes } = useStyles()
   const { hackathonID, type } = props
   const [modalOpened, setModalOpened] = useState(false)
@@ -224,8 +224,8 @@ export default function NewHackathonDetails(props: IProps) {
           <div>
             <h2>Title: {hackathonData.title}</h2>
             <h2>
-              Date from: {new Date(hackathonData.startDate).toDateString()} to:{' '}
-              {new Date(hackathonData.endDate).toDateString()}
+              Start Date: {new Date(hackathonData.startDate).toDateString()}
+              End Date: {new Date(hackathonData.endDate).toDateString()}
             </h2>
             <h2>All Ideas ({hackathonData.ideas?.length})</h2>
 
@@ -253,12 +253,13 @@ export default function NewHackathonDetails(props: IProps) {
               <SimpleGrid cols={2} breakpoints={[{ maxWidth: 'sm', cols: 1 }]}>
                 <Card.Section>
                   <Text size="sm" mt="xs">
-                    From: {new Date(hackathonData.startDate).toDateString()}
+                    Start Date:{' '}
+                    {new Date(hackathonData.startDate).toDateString()}
                   </Text>
                 </Card.Section>
                 <Card.Section>
                   <Text size="sm" mt="xs">
-                    To: {new Date(hackathonData.endDate).toDateString()}
+                    End Date: {new Date(hackathonData.endDate).toDateString()}
                   </Text>
                 </Card.Section>
               </SimpleGrid>
@@ -318,11 +319,11 @@ export default function NewHackathonDetails(props: IProps) {
                 Are you sure you want to delete this hackathon?
                 <h4>Title: {hackathonData.title}</h4>
                 <h4>
-                  Date from:
+                  Start Date:
                   {new Date(hackathonData.startDate).toDateString()}
                 </h4>
                 <h4>
-                  to:
+                  End Date:
                   {new Date(hackathonData.endDate).toDateString()}
                 </h4>
                 <Button color={'red'} onClick={() => deleteSelectedHackathon()}>
