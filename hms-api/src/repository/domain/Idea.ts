@@ -1,9 +1,11 @@
+/* eslint-disable require-jsdoc */
+
 import Uuid, {uuid} from '../../util/Uuid';
 
 /**
  * An Idea is... well an Idea idk it's a thing people work on
  */
-export default class {
+class Idea {
   id: Uuid;
   ownerId: Uuid;
   hackathonId: Uuid;
@@ -40,7 +42,6 @@ export default class {
       participantIds: Uuid[],
   );
 
-  // eslint-disable-next-line require-jsdoc
   constructor(
       ownerId: Uuid,
       hackathonId: Uuid,
@@ -66,4 +67,17 @@ export default class {
     this.categoryId = categoryId;
     this.creationDate = creationDate;
   }
+
+  static compare(a: Idea, b: Idea): number {
+    const aTime = a.creationDate.getTime();
+    const bTime = b.creationDate.getTime();
+
+    if (aTime === bTime) {
+      return a.id.localeCompare(b.id);
+    }
+
+    return bTime - aTime;
+  }
 }
+
+export default Idea;

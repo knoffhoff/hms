@@ -1,10 +1,12 @@
+/* eslint-disable require-jsdoc */
+
 import Uuid, {uuid} from '../../util/Uuid';
 
 /**
  * Each Hackathon has a number of Categories and each Category has a number of
  * Ideas
  */
-export default class {
+class Category {
   id: Uuid;
   title: string;
   description: string;
@@ -22,7 +24,6 @@ export default class {
       id: Uuid,
   );
 
-  // eslint-disable-next-line require-jsdoc
   constructor(
       title: string,
       description: string,
@@ -34,4 +35,14 @@ export default class {
     this.description = description;
     this.hackathonId = hackathonId;
   }
+
+  static compare(a: Category, b: Category): number {
+    if (a.title === b.title) {
+      return a.id.localeCompare(b.id);
+    }
+
+    return a.title.localeCompare(b.title);
+  }
 }
+
+export default Category;
