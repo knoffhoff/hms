@@ -12,6 +12,8 @@ import {
   Text,
   useMantineTheme,
 } from '@mantine/core'
+import HackathonForm from './HackathonForm'
+import UserForm from './UserForm'
 
 const useStyles = createStyles((theme) => ({
   card: {
@@ -39,7 +41,8 @@ export default function UserDetails(props: { userID: string }) {
   const theme = useMantineTheme()
   const { classes } = useStyles()
   const { userID } = props
-  const [modalOpened, setModalOpened] = useState(false)
+  const [deleteModalOpened, setDeleteModalOpened] = useState(false)
+  const [editModalOpened, setEditModalOpened] = useState(false)
   const [isUserError, setIsUserError] = useState(false)
   const [isUserLoading, setIsUserLoading] = useState(true)
   const [user, setUser] = useState({
@@ -78,7 +81,7 @@ export default function UserDetails(props: { userID: string }) {
 
   const deleteSelectedUser = () => {
     deleteUser(userID).then((data) => {
-      setModalOpened(false)
+      setDeleteModalOpened(false)
     })
   }
 
@@ -86,6 +89,45 @@ export default function UserDetails(props: { userID: string }) {
     loadSelectedUser()
     setIsUserLoading(true)
   }, [userID])
+
+  const deleteModal = (
+    <Modal
+      centered
+      opened={deleteModalOpened}
+      onClose={() => setDeleteModalOpened(false)}
+      withCloseButton={false}
+    >
+      Are you sure you want to delete this user?
+      <h4>
+        Name: {user.firstName} {user.lastName}
+      </h4>
+      <h4>E-mail: {user.emailAddress}</h4>
+      <Button color={'red'} onClick={() => deleteSelectedUser()}>
+        Yes delete this user
+      </Button>
+      <p>
+        (This window will automatically closed as soon as the hackathon is
+        deleted)
+      </p>
+    </Modal>
+  )
+
+  const editModal = (
+    <Modal
+      centered
+      opened={editModalOpened}
+      onClose={() => setEditModalOpened(false)}
+      withCloseButton={false}
+    >
+      Edit User
+      <UserForm contextID={userID} />
+      {isUserLoading && <div>Loading...</div>}
+      <p>
+        (This window will automatically close as soon as the category is
+        deleted)
+      </p>
+    </Modal>
+  )
 
   return (
     <>
@@ -156,33 +198,19 @@ export default function UserDetails(props: { userID: string }) {
           </Card.Section>
 
           <Card.Section className={classes.section}>
-            <Modal
-              centered
-              opened={modalOpened}
-              onClose={() => setModalOpened(false)}
-              withCloseButton={false}
-            >
-              Are you sure you want to delete this user?
-              <h4>
-                Name: {user.firstName} {user.lastName}
-              </h4>
-              <h4>E-mail: {user.emailAddress}</h4>
-              <Button color={'red'} onClick={() => deleteSelectedUser()}>
-                Yes delete this user
-              </Button>
-              <p>
-                (This window will automatically closed as soon as the hackathon
-                is deleted)
-              </p>
-            </Modal>
             <Group position="left" mt="xl">
-              <Button color={'red'} onClick={() => setModalOpened(true)}>
+              {deleteModal}
+              <Button color={'red'} onClick={() => setDeleteModalOpened(true)}>
                 Delete
               </Button>
-              <Button>Edit</Button>
-              <Button color={'green'} onClick={() => loadSelectedUser()}>
-                Reload
-              </Button>
+              {editModal}
+              <Button onClick={() => setEditModalOpened(true)}>Edit</Button>
+              {!isUserLoading && (
+                <Button color={'green'} onClick={() => loadSelectedUser()}>
+                  Reload
+                </Button>
+              )}
+              {isUserLoading && <div>Loading...</div>}
             </Group>
           </Card.Section>
         </Card>

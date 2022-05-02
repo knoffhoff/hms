@@ -41,3 +41,35 @@ export const deleteUser = (userID: string) => {
     })
     .catch((err) => console.log(err))
 }
+
+export const editUser = (
+  contextID: string,
+  user: {
+    lastName: string
+    firstName: string
+    emailAddress: string
+    roles: any[]
+    imageUrl: string
+  },
+  skills: string[]
+) => {
+  return fetch(`${core_url}/user/${contextID}`, {
+    method: 'PUT',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      skills: skills,
+      lastName: user.lastName,
+      firstName: user.firstName,
+      emailAddress: user.emailAddress,
+      roles: user.roles,
+      imageUrl: user.imageUrl,
+    }),
+  })
+    .then((response) => {
+      return response.json()
+    })
+    .catch((err) => console.log(err))
+}

@@ -6,7 +6,7 @@ import {
   Card,
   SimpleGrid,
 } from '@mantine/core'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { DatePicker } from '@mantine/dates'
 import { createHackathon, editHackathon } from '../../actions/HackathonActions'
 import { showNotification, updateNotification } from '@mantine/notifications'
@@ -145,12 +145,12 @@ function HackathonForm(props: IProps) {
         <Group position="right" mt="xl">
           {context === 'edit' && (
             <Button disabled={!submitIsEnabled()} onClick={editThisHackathon}>
-              Submit category
+              Edit
             </Button>
           )}
           {context === 'new' && (
             <Button disabled={!submitIsEnabled()} onClick={createThisHackathon}>
-              Submit category
+              Create
             </Button>
           )}
         </Group>
