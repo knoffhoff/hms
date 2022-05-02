@@ -1,9 +1,9 @@
 const core_url = process.env.REACT_APP_CORE_URL
 
 export const addCategory = (props: {
+  contextID: string
   title: string
   description: string
-  hackathonID: string
 }) => {
   return fetch(`${core_url}/category`, {
     method: 'POST',
@@ -14,7 +14,7 @@ export const addCategory = (props: {
     body: JSON.stringify({
       title: props.title,
       description: props.description,
-      hackathonId: props.hackathonID,
+      hackathonId: props.contextID,
     }),
   })
     .then((response) => {
@@ -61,6 +61,28 @@ export const getCategoryDetails = (categoryID: string) => {
   })
     .then((data) => {
       return data.json()
+    })
+    .catch((err) => console.log(err))
+}
+
+export const editCategory = (props: {
+  contextID: string
+  title: string
+  description: string
+}) => {
+  return fetch(`${core_url}/category/${props.contextID}`, {
+    method: 'PUT',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      title: props.title,
+      description: props.description,
+    }),
+  })
+    .then((response) => {
+      return response.json()
     })
     .catch((err) => console.log(err))
 }

@@ -3,8 +3,10 @@ import { Category } from '../../common/types'
 import { Button, Card, createStyles, Group, Modal, Text } from '@mantine/core'
 import {
   deleteCategory,
+  editCategory,
   getCategoryDetails,
 } from '../../actions/CategoryActions'
+import CategoryForm from './CategoryForm'
 
 type IProps = {
   categoryID: string
@@ -35,7 +37,8 @@ const useStyles = createStyles((theme) => ({
 export default function CategoryDetails(props: IProps) {
   const { classes } = useStyles()
   const { categoryID } = props
-  const [opened, setOpened] = useState(false)
+  const [deleteModalOpened, setDeleteModalOpened] = useState(false)
+  const [editModalOpened, setEditModalOpened] = useState(false)
   const [isError, setIsError] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
   const [categoryData, setCategoryData] = useState({
@@ -66,7 +69,7 @@ export default function CategoryDetails(props: IProps) {
 
   const deleteSelectedCategory = () => {
     deleteCategory(categoryData.id).then((data) => {
-      setOpened(false)
+      setDeleteModalOpened(false)
     })
   }
 
@@ -74,6 +77,44 @@ export default function CategoryDetails(props: IProps) {
     loadSelectedCategory()
     setIsLoading(true)
   }, [])
+
+  const deleteModal = (
+    <Modal
+      centered
+      opened={deleteModalOpened}
+      onClose={() => setDeleteModalOpened(false)}
+      withCloseButton={false}
+    >
+      Are you sure you want to delete this category?
+      <h4>Title: {categoryData.title}</h4>
+      {!isLoading && (
+        <Button color={'red'} onClick={() => deleteSelectedCategory()}>
+          Yes delete this category
+        </Button>
+      )}
+      <p>
+        (This window will automatically close as soon as the category is
+        deleted)
+      </p>
+    </Modal>
+  )
+
+  const editModal = (
+    <Modal
+      centered
+      opened={editModalOpened}
+      onClose={() => setEditModalOpened(false)}
+      withCloseButton={false}
+    >
+      Edit Category
+      <CategoryForm contextID={categoryData.id} context={'edit'} />
+      {isLoading && <div>Loading...</div>}
+      <p>
+        (This window will automatically close as soon as the category is
+        deleted)
+      </p>
+    </Modal>
+  )
 
   return (
     <>
@@ -106,29 +147,13 @@ export default function CategoryDetails(props: IProps) {
             </Text>
           </Card.Section>
           <Card.Section className={classes.section}>
-            <Modal
-              centered
-              opened={opened}
-              onClose={() => setOpened(false)}
-              withCloseButton={false}
-            >
-              Are you sure you want to delete this category?
-              <h4>Title: {categoryData.title}</h4>
-              {!isLoading && (
-                <Button color={'red'} onClick={() => deleteSelectedCategory()}>
-                  Yes delete this category
-                </Button>
-              )}
-              <p>
-                (This window will automatically close as soon as the category is
-                deleted)
-              </p>
-            </Modal>
             <Group position="left" mt="xl">
-              <Button color={'red'} onClick={() => setOpened(true)}>
+              {deleteModal}
+              <Button color={'red'} onClick={() => setDeleteModalOpened(true)}>
                 Delete
               </Button>
-              <Button>Edit</Button>
+              {editModal}
+              <Button onClick={() => setEditModalOpened(true)}>Edit</Button>
             </Group>
           </Card.Section>
         </Card>

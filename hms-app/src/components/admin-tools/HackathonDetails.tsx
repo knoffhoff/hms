@@ -17,9 +17,9 @@ import {
   Modal,
 } from '@mantine/core'
 import CategoryDetails from './CategoryDetails'
-import NewCategory from './NewCategory'
 import ParticipantDetails from './ParticipantDetails'
 import IdeaCardFoldable from '../IdeaCardFoldable'
+import CategoryForm from './CategoryForm'
 
 type IProps = {
   hackathonID: string
@@ -203,6 +203,11 @@ export default function HackathonDetails(props: IProps) {
     </Accordion.Item>
   ))
 
+  function refreshList() {
+    setIsHackathonLoading(true)
+    loadSelectedHackathon()
+  }
+
   return (
     <>
       {isHackathonError && (
@@ -278,7 +283,10 @@ export default function HackathonDetails(props: IProps) {
                     style={{ border: '1px solid' }}
                     label={'Add Category'}
                   >
-                    <NewCategory hackathonID={hackathonData.hackathonId} />
+                    <CategoryForm
+                      contextID={hackathonData.hackathonId}
+                      context={'new'}
+                    />
                   </Accordion.Item>
                   {allCategories}
                 </Accordion>
@@ -339,9 +347,12 @@ export default function HackathonDetails(props: IProps) {
                   Delete
                 </Button>
                 <Button>Edit</Button>
-                <Button color={'green'} onClick={() => loadSelectedHackathon()}>
-                  Reload
-                </Button>
+                {!isHackathonLoading && (
+                  <Button color={'green'} onClick={() => refreshList()}>
+                    Reload
+                  </Button>
+                )}
+                {isHackathonLoading && <div>Loading...</div>}
               </Group>
             </Card.Section>
           </Card>
