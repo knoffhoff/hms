@@ -1,6 +1,6 @@
 import React from 'react'
 import { Accordion } from '@mantine/core'
-import NewHackathon from '../components/admin-tools/NewHackathon'
+import HackathonForm from '../components/admin-tools/HackathonForm'
 import AllHackathonList from '../components/AllHackathonList'
 import AllUserList from '../components/admin-tools/AllUserList'
 
@@ -15,7 +15,7 @@ function AdminPage() {
           style={{ border: '1px solid' }}
           label={'Create new hackathon'}
         >
-          <NewHackathon />
+          <HackathonForm hackathonID={null} context={'new'} />
         </Accordion.Item>
       </Accordion>
 

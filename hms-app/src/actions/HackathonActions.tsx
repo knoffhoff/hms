@@ -51,6 +51,30 @@ export const createHackathon = (
     .catch((err) => console.log(err))
 }
 
+export const editHackathon = (
+  hackathonID: string,
+  hackathonText: string,
+  startDate: Date,
+  endDate: Date
+) => {
+  return fetch(`${core_url}/hackathon/${hackathonID}`, {
+    method: 'PUT',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      title: hackathonText,
+      startDate: startDate.toString(),
+      endDate: endDate.toString(),
+    }),
+  })
+    .then((response) => {
+      return response.json()
+    })
+    .catch((err) => console.log(err))
+}
+
 export const deleteHackathon = (hackathonID: string) => {
   return fetch(`${core_url}/hackathon/${hackathonID}`, {
     method: 'DELETE',

@@ -23,7 +23,7 @@ function IdeaPortal() {
   const [isHackathonError, setIsHackathonError] = useState(false)
   const [isHackathonLoading, setIsHackathonLoading] = useState(true)
   const [hackathonData, setHackathonData] = useState({
-    hackathonId: 'string',
+    id: 'string',
     title: 'string',
     startDate: 'string',
     endDate: 'string',
@@ -48,7 +48,7 @@ function IdeaPortal() {
   } as Idea)
   const [relevantIdeaList, setRelevantIdeaList] = useState([] as Idea[])
   const [participantInfo, setParticipantInfo] = useState({
-    userId: 'dd4596c0-911a-49a9-826f-0b6ec8a2d0b6',
+    userId: 'f6fa2b8e-68ed-4486-b8df-f93b87ff23e5',
     hackathonId: '',
   })
 
@@ -76,7 +76,7 @@ function IdeaPortal() {
     getHackathonDetails(selectedHackweek).then(
       (data) => {
         setHackathonData({
-          hackathonId: data.id,
+          id: data.id,
           title: data.title,
           startDate: data.startDate,
           endDate: data.endDate,

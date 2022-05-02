@@ -8,7 +8,7 @@ import {
 } from '@mantine/core'
 import React, { useEffect, useState } from 'react'
 import { DatePicker } from '@mantine/dates'
-import { createHackathon } from '../../actions/HackathonActions'
+import { createHackathon, editHackathon } from '../../actions/HackathonActions'
 import { showNotification, updateNotification } from '@mantine/notifications'
 import { CheckIcon } from '@modulz/radix-icons'
 
@@ -30,7 +30,10 @@ const useStyles = createStyles((theme) => ({
   },
 }))
 
-function NewHackathon() {
+type IProps = { context: string; hackathonID: string | null }
+
+function HackathonForm(props: IProps) {
+  const { context, hackathonID } = props
   const { classes } = useStyles()
   const today = new Date()
   const [startDateValue, setStartDateValue] = useState<Date | null>(new Date())
@@ -46,10 +49,8 @@ function NewHackathon() {
     }))
   }
 
-  function submitForm(event: React.MouseEvent<HTMLButtonElement>) {
+  function createThisHackathon(event: React.MouseEvent<HTMLButtonElement>) {
     event.preventDefault()
-    console.log(hackathonText, startDateValue, endDateValue)
-
     showNotification({
       id: 'hackathon-load',
       loading: true,
@@ -74,14 +75,35 @@ function NewHackathon() {
     )
   }
 
-  /*useEffect(() => {
-    setHackathonText((prevHackathonText) => ({
-      ...prevHackathonText,
-      startDate: startDateValue!.toDateString(),
-      endDate: endDateValue!.toDateString(),
-      dateSet: true,
-    }))
-  }, [endDateValue])*/
+  function editThisHackathon(event: React.MouseEvent<HTMLButtonElement>) {
+    event.preventDefault()
+    showNotification({
+      id: 'hackathon-load',
+      loading: true,
+      title: 'Hackathon is uploading',
+      message: 'this can take a second',
+      autoClose: false,
+      disallowClose: true,
+    })
+
+    editHackathon(
+      hackathonID!,
+      hackathonText.title,
+      startDateValue!,
+      endDateValue!
+    ).then((r) =>
+      setTimeout(() => {
+        updateNotification({
+          id: 'hackathon-load',
+          color: 'teal',
+          title: 'Hackathon was created',
+          message: 'Notification will close in 2 seconds',
+          icon: <CheckIcon />,
+          autoClose: 2000,
+        })
+      }, 3000)
+    )
+  }
 
   function submitIsEnabled(): boolean {
     return !!hackathonText.title
@@ -121,13 +143,20 @@ function NewHackathon() {
           </SimpleGrid>
         </Card.Section>
         <Group position="right" mt="xl">
-          <Button disabled={!submitIsEnabled()} onClick={submitForm}>
-            Create
-          </Button>
+          {context === 'edit' && (
+            <Button disabled={!submitIsEnabled()} onClick={editThisHackathon}>
+              Submit category
+            </Button>
+          )}
+          {context === 'new' && (
+            <Button disabled={!submitIsEnabled()} onClick={createThisHackathon}>
+              Submit category
+            </Button>
+          )}
         </Group>
       </Card>{' '}
     </>
   )
 }
 
-export default NewHackathon
+export default HackathonForm

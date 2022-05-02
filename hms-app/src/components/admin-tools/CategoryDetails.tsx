@@ -3,7 +3,6 @@ import { Category } from '../../common/types'
 import { Button, Card, createStyles, Group, Modal, Text } from '@mantine/core'
 import {
   deleteCategory,
-  editCategory,
   getCategoryDetails,
 } from '../../actions/CategoryActions'
 import CategoryForm from './CategoryForm'

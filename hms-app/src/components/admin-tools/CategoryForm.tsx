@@ -96,7 +96,7 @@ export default function CategoryForm(props: IProps) {
     )
   }
 
-  function createCategory(event: React.MouseEvent<HTMLButtonElement>) {
+  function createThisCategory(event: React.MouseEvent<HTMLButtonElement>) {
     event.preventDefault()
     showNotification({
       id: 'category-load',
@@ -165,7 +165,10 @@ export default function CategoryForm(props: IProps) {
               </Button>
             )}
             {context === 'new' && (
-              <Button disabled={!submitIsEnabled()} onClick={createCategory}>
+              <Button
+                disabled={!submitIsEnabled()}
+                onClick={createThisCategory}
+              >
                 Submit category
               </Button>
             )}

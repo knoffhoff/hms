@@ -4,7 +4,7 @@ export type HackathonPreview = {
 }
 
 export type Hackathon = {
-  hackathonId: string
+  id: string
   title: string
   startDate: string
   endDate: string

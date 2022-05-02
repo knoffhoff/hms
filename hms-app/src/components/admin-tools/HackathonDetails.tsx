@@ -20,6 +20,7 @@ import CategoryDetails from './CategoryDetails'
 import ParticipantDetails from './ParticipantDetails'
 import IdeaCardFoldable from '../IdeaCardFoldable'
 import CategoryForm from './CategoryForm'
+import HackathonForm from './HackathonForm'
 
 type IProps = {
   hackathonID: string
@@ -51,11 +52,12 @@ const useStyles = createStyles((theme) => ({
 export default function HackathonDetails(props: IProps) {
   const { classes } = useStyles()
   const { hackathonID, type } = props
-  const [modalOpened, setModalOpened] = useState(false)
+  const [deleteModalOpened, setDeleteModalOpened] = useState(false)
+  const [editModalOpened, setEditModalOpened] = useState(false)
   const [isHackathonError, setIsHackathonError] = useState(false)
   const [isHackathonLoading, setIsHackathonLoading] = useState(true)
   const [hackathonData, setHackathonData] = useState({
-    hackathonId: 'string',
+    id: 'string',
     title: 'string',
     startDate: 'string',
     endDate: 'string',
@@ -84,7 +86,7 @@ export default function HackathonDetails(props: IProps) {
     getHackathonDetails(hackathonID).then(
       (data) => {
         setHackathonData({
-          hackathonId: data.id,
+          id: data.id,
           title: data.title,
           startDate: data.startDate,
           endDate: data.endDate,
@@ -133,7 +135,7 @@ export default function HackathonDetails(props: IProps) {
 
   const deleteSelectedHackathon = () => {
     deleteHackathon(hackathonID).then((data) => {
-      setModalOpened(false)
+      setDeleteModalOpened(false)
     })
   }
 
@@ -208,6 +210,50 @@ export default function HackathonDetails(props: IProps) {
     loadSelectedHackathon()
   }
 
+  const deleteModal = (
+    <Modal
+      centered
+      opened={deleteModalOpened}
+      onClose={() => setDeleteModalOpened(false)}
+      withCloseButton={false}
+    >
+      Are you sure you want to delete this hackathon?
+      <h4>Title: {hackathonData.title}</h4>
+      <h4>
+        Start Date:
+        {new Date(hackathonData.startDate).toDateString()}
+      </h4>
+      <h4>
+        End Date:
+        {new Date(hackathonData.endDate).toDateString()}
+      </h4>
+      <Button color={'red'} onClick={() => deleteSelectedHackathon()}>
+        Yes delete this hackathon
+      </Button>
+      <p>
+        (This window will automatically closed as soon as the hackathon is
+        deleted)
+      </p>
+    </Modal>
+  )
+
+  const editModal = (
+    <Modal
+      centered
+      opened={editModalOpened}
+      onClose={() => setEditModalOpened(false)}
+      withCloseButton={false}
+    >
+      Edit Hackathon
+      <HackathonForm context={'edit'} hackathonID={hackathonData.id} />
+      {isHackathonLoading && <div>Loading...</div>}
+      <p>
+        (This window will automatically close as soon as the category is
+        deleted)
+      </p>
+    </Modal>
+  )
+
   return (
     <>
       {isHackathonError && (
@@ -251,7 +297,7 @@ export default function HackathonDetails(props: IProps) {
               <Text size="md" mt="xs">
                 {hackathonData.title}
               </Text>
-              <Text size={'xs'}>ID: {hackathonData.hackathonId}</Text>
+              <Text size={'xs'}>ID: {hackathonData.id}</Text>
             </Card.Section>
 
             <Card.Section className={classes.section}>
@@ -284,7 +330,7 @@ export default function HackathonDetails(props: IProps) {
                     label={'Add Category'}
                   >
                     <CategoryForm
-                      contextID={hackathonData.hackathonId}
+                      contextID={hackathonData.id}
                       context={'new'}
                     />
                   </Accordion.Item>
@@ -318,35 +364,16 @@ export default function HackathonDetails(props: IProps) {
             </Accordion>
 
             <Card.Section className={classes.section}>
-              <Modal
-                centered
-                opened={modalOpened}
-                onClose={() => setModalOpened(false)}
-                withCloseButton={false}
-              >
-                Are you sure you want to delete this hackathon?
-                <h4>Title: {hackathonData.title}</h4>
-                <h4>
-                  Start Date:
-                  {new Date(hackathonData.startDate).toDateString()}
-                </h4>
-                <h4>
-                  End Date:
-                  {new Date(hackathonData.endDate).toDateString()}
-                </h4>
-                <Button color={'red'} onClick={() => deleteSelectedHackathon()}>
-                  Yes delete this hackathon
-                </Button>
-                <p>
-                  (This window will automatically closed as soon as the
-                  hackathon is deleted)
-                </p>
-              </Modal>
               <Group position="left" mt="xl">
-                <Button color={'red'} onClick={() => setModalOpened(true)}>
+                {deleteModal}
+                <Button
+                  color={'red'}
+                  onClick={() => setDeleteModalOpened(true)}
+                >
                   Delete
                 </Button>
-                <Button>Edit</Button>
+                {editModal}
+                <Button onClick={() => setEditModalOpened(true)}>Edit</Button>
                 {!isHackathonLoading && (
                   <Button color={'green'} onClick={() => refreshList()}>
                     Reload
