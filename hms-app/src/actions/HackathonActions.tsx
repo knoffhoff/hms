@@ -29,7 +29,7 @@ export const getHackathonDetails = (hackathonID: string) => {
 }
 
 export const createHackathon = (
-  hackathonText: string,
+  title: string,
   startDate: Date,
   endDate: Date
 ) => {
@@ -40,7 +40,7 @@ export const createHackathon = (
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      title: hackathonText,
+      title: title,
       startDate: startDate.toString(),
       endDate: endDate.toString(),
     }),
