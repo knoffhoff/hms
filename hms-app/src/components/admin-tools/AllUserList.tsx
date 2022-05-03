@@ -7,9 +7,9 @@ import {
   Accordion,
 } from '@mantine/core'
 import React, { useEffect, useState } from 'react'
-import { getListOfHackathons } from '../actions/HackathonActions'
-import { HackathonPreview } from '../common/types'
-import NewHackathonDetails from './hackathon-details/NewHackathonDetails'
+import { UserPreview } from '../../common/types'
+import { getListOfUsers } from '../../actions/UserActions'
+import UserDetails from './UserDetails'
 
 const useStyles = createStyles((theme) => ({
   card: {
@@ -28,21 +28,21 @@ const useStyles = createStyles((theme) => ({
   },
 }))
 
-function NewAllHackathonList() {
+export default function AllUserList() {
   const { classes } = useStyles()
   const [isError, setIsError] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
-  const [hackathonList, setHackathonList] = useState({
-    hackathons: [] as HackathonPreview[],
+  const [userList, setUserList] = useState({
+    users: [] as UserPreview[],
   })
 
-  const loadHackathons = () => {
-    getListOfHackathons().then(
+  const loadUsers = () => {
+    getListOfUsers().then(
       (data) => {
         setIsError(false)
         setIsLoading(false)
-        setHackathonList({
-          hackathons: data.hackathons,
+        setUserList({
+          users: data.users,
         })
       },
       () => {
@@ -51,27 +51,25 @@ function NewAllHackathonList() {
     )
   }
 
-  const allHackathons = hackathonList.hackathons.map((hackathon, index) => [
+  const allUsers = userList.users.map((user, index) => [
     <Accordion.Item
       label={
-        <SimpleGrid cols={2} breakpoints={[{ maxWidth: 'sm', cols: 1 }]}>
-          <div>
-            {index + 1}. {hackathon.title}
-          </div>
-        </SimpleGrid>
+        <div>
+          {index + 1}. {user.firstName} {user.lastName}
+        </div>
       }
     >
-      <NewHackathonDetails hackathonID={hackathon.id} type={'fullInfo'} />
+      <UserDetails userID={user.id} />
     </Accordion.Item>,
   ])
 
   useEffect(() => {
-    loadHackathons()
+    loadUsers()
   }, [])
 
   function refreshList() {
     setIsLoading(true)
-    loadHackathons()
+    loadUsers()
   }
 
   return (
@@ -84,11 +82,9 @@ function NewAllHackathonList() {
           </Group>
         </Card.Section>
         <Card.Section>
-          <Accordion iconPosition="right">{allHackathons}</Accordion>
+          <Accordion iconPosition="right">{allUsers}</Accordion>
         </Card.Section>
       </Card>{' '}
     </>
   )
 }
-
-export default NewAllHackathonList

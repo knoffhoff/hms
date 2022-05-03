@@ -64,3 +64,37 @@ export const createIdea = (
     })
     .catch((err) => console.log(err))
 }
+
+export const editIdea = (
+  ideaID: string,
+  idea: {
+    ownerId: string
+    hackathonId: string
+    title: string
+    description: string
+    problem: string
+    goal: string
+  },
+  skills: string[],
+  categories: string[]
+) => {
+  return fetch(`${core_url}/idea/${ideaID}`, {
+    method: 'PUT',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      title: idea.title,
+      description: idea.description,
+      problem: idea.problem,
+      goal: idea.goal,
+      requiredSkills: skills,
+      categoryId: categories.toString(),
+    }),
+  })
+    .then((response) => {
+      return response.json()
+    })
+    .catch((err) => console.log(err))
+}

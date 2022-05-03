@@ -1,9 +1,8 @@
-import { Accordion, Button, Select } from '@mantine/core'
-import ideaData from '../test/TestIdeaData'
+import { Accordion, Select } from '@mantine/core'
 import { Hackathon, HackathonPreview, Idea } from '../common/types'
 import IdeaCardList from '../components/IdeaCardList'
 import React, { useEffect, useState } from 'react'
-import NewIdea from '../components/NewIdea'
+import IdeaForm from '../components/IdeaForm'
 import {
   getHackathonDetails,
   getListOfHackathons,
@@ -11,7 +10,7 @@ import {
 import { getIdeaDetails } from '../actions/IdeaActions'
 
 function YourIdeas() {
-  const userId = 'dd4596c0-911a-49a9-826f-0b6ec8a2d0b6'
+  const userId = '5008e966-a793-4b07-a1be-0f6008a0e23b'
   const [selectedHackweek, setSelectedHackweek] = useState('')
   const [hackathonList, setHackathonList] = useState({
     errorHackathonList: false,
@@ -21,7 +20,7 @@ function YourIdeas() {
   const [isHackathonError, setIsHackathonError] = useState(false)
   const [isHackathonLoading, setIsHackathonLoading] = useState(true)
   const [hackathonData, setHackathonData] = useState({
-    hackathonId: 'string',
+    id: 'string',
     title: 'string',
     startDate: 'string',
     endDate: 'string',
@@ -45,6 +44,10 @@ function YourIdeas() {
     creationDate: 'string',
   } as Idea)
   const [relevantIdeaList, setRelevantIdeaList] = useState([] as Idea[])
+
+  console.log('selected Hackweek', selectedHackweek)
+  console.log('hackathonList', hackathonList)
+  console.log('hackathonData', hackathonData)
 
   const loadHackathons = () => {
     getListOfHackathons().then(
@@ -70,7 +73,7 @@ function YourIdeas() {
     getHackathonDetails(selectedHackweek).then(
       (data) => {
         setHackathonData({
-          hackathonId: data.id,
+          id: data.id,
           title: data.title,
           startDate: data.startDate,
           endDate: data.endDate,
@@ -172,28 +175,32 @@ function YourIdeas() {
       {hackathonList.isLoadingHackathonList && (
         <div>hackathon select is loading...</div>
       )}
-      {!hackathonList.isLoadingHackathonList && (
-        <div style={{ width: 250 }}>
-          <Select
-            placeholder={'select a Hackathon'}
-            maxDropdownHeight={280}
-            data={data}
-            onChange={selectChange}
-          />
-        </div>
-      )}
-      <Accordion mb={30} icon={false} iconPosition="right">
-        <Accordion.Item
-          style={{ border: 'none' }}
-          label={
-            <Button radius="md" size="md">
-              Create new idea
-            </Button>
-          }
-        >
-          <NewIdea hackathon={hackathonData} userId={userId} />
-        </Accordion.Item>
-      </Accordion>
+      {!hackathonList.isLoadingHackathonList &&
+        !hackathonList.errorHackathonList && (
+          <div>
+            <div style={{ width: 250 }}>
+              <Select
+                placeholder={'select a Hackathon'}
+                maxDropdownHeight={280}
+                data={data}
+                onChange={selectChange}
+              />
+            </div>
+            <Accordion mb={30} pt={10} iconPosition="left">
+              <Accordion.Item
+                style={{ border: '1px solid' }}
+                label={'Create new idea'}
+              >
+                <IdeaForm
+                  ideaID={null}
+                  hackathon={hackathonData}
+                  userId={userId}
+                  context={'new'}
+                />
+              </Accordion.Item>
+            </Accordion>
+          </div>
+        )}
 
       {isHackathonError && (
         <div>
@@ -207,7 +214,7 @@ function YourIdeas() {
         </div>
       )}
 
-      {!isHackathonLoading && isHackathonError && (
+      {!isHackathonLoading && !isHackathonError && (
         <div>
           <h2>{hackathonData.title}</h2>
           <h2>
@@ -217,11 +224,7 @@ function YourIdeas() {
           <h2>Your Ideas ({filteredIdeas.length})</h2>
 
           <div>
-            <IdeaCardList
-              ideas={filteredIdeas}
-              columnSize={6}
-              type={'idea-portal'}
-            />
+            <IdeaCardList ideas={filteredIdeas} columnSize={6} type={'owner'} />
           </div>
         </div>
       )}
