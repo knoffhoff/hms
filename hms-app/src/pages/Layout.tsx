@@ -9,6 +9,7 @@ import {
 } from '@mantine/core'
 import HeaderMenu from '../components/HeaderMenu'
 import { useColorScheme } from '@mantine/hooks'
+import NavBar from '../components/nav-bar'
 
 const menuLinks = [
   { link: 'home', label: 'Home' },
@@ -53,6 +54,7 @@ const Layout = () => {
             },
           })}
         >
+          <NavBar />
           <Container size={'xl'} pt={50}>
             <Outlet />
           </Container>
