@@ -3,6 +3,8 @@ import { Button, Title, useMantineTheme, Text, Group } from '@mantine/core'
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd'
 import ideaData from '../test/TestIdeaData'
 import IdeaCardFoldable from '../components/IdeaCardFoldable'
+import { withAuthenticationRequired } from '@auth0/auth0-react'
+import Loading from '../components/Loading'
 
 const columnsFromBackend = {
   ['1']: {
@@ -58,7 +60,7 @@ const onDragStart = (result: any, columns: any, setCanVote: any) => {
   else setCanVote(true)
 }
 
-export default function Voting() {
+function Voting() {
   const [columns, setColumns] = useState(columnsFromBackend)
   const [canVote, setCanVote] = useState(true)
 
@@ -230,3 +232,7 @@ export default function Voting() {
     </div>
   )
 }
+
+export default withAuthenticationRequired(Voting, {
+  onRedirecting: () => <Loading />,
+})

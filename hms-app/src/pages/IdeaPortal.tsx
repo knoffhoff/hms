@@ -9,6 +9,8 @@ import {
 } from '../actions/HackathonActions'
 import { getIdeaDetails } from '../actions/IdeaActions'
 import { createParticipant } from '../actions/ParticipantActions'
+import { withAuthenticationRequired } from '@auth0/auth0-react'
+import Loading from '../components/Loading'
 
 function IdeaPortal() {
   const [searchTerm, setSearchTerm] = useState('')
@@ -243,4 +245,6 @@ function IdeaPortal() {
   )
 }
 
-export default IdeaPortal
+export default withAuthenticationRequired(IdeaPortal, {
+  onRedirecting: () => <Loading />,
+})
