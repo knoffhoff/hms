@@ -14,6 +14,7 @@ import {
 import { useBooleanToggle } from '@mantine/hooks'
 import { ChevronDown } from 'tabler-icons-react'
 import { SwitchToggle } from './ThemeSwitchToggle'
+import AuthenticationButton from './authentication-button'
 
 const useStyles = createStyles((theme) => ({
   inner: {
@@ -115,6 +116,7 @@ export default function HeaderMenu({ links }: HeaderSearchProps) {
       <Container>
         <div className={classes.inner}>
           <h1>HMS</h1>
+          <AuthenticationButton />
           <Group spacing={5} className={classes.links}>
             <SwitchToggle />
             {items}
