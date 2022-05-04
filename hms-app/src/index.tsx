@@ -14,7 +14,7 @@ const msalInstance = new PublicClientApplication(msalConfig)
 
 // Azure Variant
 // to use the Auth0 variant go to hms-app/src/pages/Layout.tsx and change the end of the file
-/*ReactDOM.render(
+ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
       <NotificationsProvider>
@@ -25,11 +25,11 @@ const msalInstance = new PublicClientApplication(msalConfig)
     </BrowserRouter>
   </React.StrictMode>,
   document.getElementById('root')
-)*/
+)
 
 // Auth0 Variant
 // to use the Auth0 variant go to hms-app/src/pages/Layout.tsx and change the end of the file
-ReactDOM.render(
+/*ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
       <NotificationsProvider>
@@ -40,7 +40,7 @@ ReactDOM.render(
     </BrowserRouter>
   </React.StrictMode>,
   document.getElementById('root')
-)
+)*/
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
