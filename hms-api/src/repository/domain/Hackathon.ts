@@ -38,17 +38,6 @@ class Hackathon {
     this.endDate = endDate;
     this.creationDate = creationDate;
   }
-
-  static compare(a: Hackathon, b: Hackathon): number {
-    const aTime = a.startDate.getTime();
-    const bTime = b.startDate.getTime();
-
-    if (aTime === bTime) {
-      return a.id.localeCompare(b.id);
-    }
-
-    return aTime - bTime;
-  }
 }
 
 export default Hackathon;

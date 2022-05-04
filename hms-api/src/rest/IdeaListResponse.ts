@@ -20,7 +20,7 @@ class IdeaListResponse {
       ideas: Idea[],
       hackathonId: Uuid,
   ): IdeaListResponse => new IdeaListResponse(
-      IdeaPreviewResponse.fromArray(ideas.sort(Idea.compare)),
+      IdeaPreviewResponse.fromArray(ideas),
       hackathonId,
   );
 }

@@ -30,14 +30,6 @@ class Skill {
     this.name = name;
     this.description = description;
   }
-
-  static compare(a: Skill, b: Skill): number {
-    if (a.name === b.name) {
-      return a.id.localeCompare(b.id);
-    }
-
-    return a.name.localeCompare(b.name);
-  }
 }
 
 export default Skill;

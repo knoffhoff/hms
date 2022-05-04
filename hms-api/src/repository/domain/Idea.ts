@@ -67,17 +67,6 @@ class Idea {
     this.categoryId = categoryId;
     this.creationDate = creationDate;
   }
-
-  static compare(a: Idea, b: Idea): number {
-    const aTime = a.creationDate.getTime();
-    const bTime = b.creationDate.getTime();
-
-    if (aTime === bTime) {
-      return a.id.localeCompare(b.id);
-    }
-
-    return bTime - aTime;
-  }
 }
 
 export default Idea;

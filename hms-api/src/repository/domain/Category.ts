@@ -35,14 +35,6 @@ class Category {
     this.description = description;
     this.hackathonId = hackathonId;
   }
-
-  static compare(a: Category, b: Category): number {
-    if (a.title === b.title) {
-      return a.id.localeCompare(b.id);
-    }
-
-    return a.title.localeCompare(b.title);
-  }
 }
 
 export default Category;

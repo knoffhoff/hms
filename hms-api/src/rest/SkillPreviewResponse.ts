@@ -26,7 +26,15 @@ class SkillPreviewResponse {
     for (const skill of skills) {
       previews.push(SkillPreviewResponse.from(skill));
     }
-    return previews;
+    return previews.sort(this.compare);
+  }
+
+  static compare(a: Skill, b: Skill): number {
+    if (a.name === b.name) {
+      return a.id.localeCompare(b.id);
+    }
+
+    return a.name.localeCompare(b.name);
   }
 }
 

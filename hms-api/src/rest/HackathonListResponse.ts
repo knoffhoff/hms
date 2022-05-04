@@ -13,7 +13,7 @@ class HackathonListResponse {
   static from = (
       hackathons: Hackathon[],
   ): HackathonListResponse => new HackathonListResponse(
-      HackathonPreviewResponse.fromArray(hackathons.sort(Hackathon.compare)),
+      HackathonPreviewResponse.fromArray(hackathons),
   );
 }
 

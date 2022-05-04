@@ -20,7 +20,7 @@ class CategoryListResponse {
       categories: Category[],
       hackathonId: Uuid,
   ): CategoryListResponse => new CategoryListResponse(
-      CategoryPreviewResponse.fromArray(categories.sort(Category.compare)),
+      CategoryPreviewResponse.fromArray(categories),
       hackathonId,
   );
 }
