@@ -4,8 +4,19 @@ import { useAuth0, withAuthenticationRequired } from '@auth0/auth0-react'
 import Loading from '../components/Loading'
 
 const Profile = () => {
-  const { user } = useAuth0()
+  const { user, getAccessTokenSilently } = useAuth0()
   const { name, picture, email } = user
+
+  getAccessTokenSilently({
+    detailedResponse: true,
+    scope: 'fun',
+  })
+    .then((token) => {
+      console.log(token)
+    })
+    .catch((err) => {
+      console.error(JSON.stringify(err))
+    })
 
   return (
     <div>
