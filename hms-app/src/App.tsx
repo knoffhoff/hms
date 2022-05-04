@@ -11,8 +11,16 @@ import LogInPage from './pages/LogInPage'
 import Voting from './pages/Voting'
 import AdminPage from './pages/AdminPage'
 import Profile from './pages/Profile'
+import Loading from './components/Loading'
+import { useAuth0 } from '@auth0/auth0-react'
 
 function App() {
+  const { isLoading } = useAuth0()
+
+  if (isLoading) {
+    return <Loading />
+  }
+
   return (
     <Routes>
       <Route path="/" element={<Layout />}>

@@ -4,6 +4,8 @@
   "private": true,
   "dependencies": {
     "@auth0/auth0-react": "^1.10.1",
+    "@azure/msal-browser": "^2.24.0",
+    "@azure/msal-react": "^1.4.0",
     "@mantine/core": "^4.0.7",
     "@mantine/dates": "^4.1.4",
     "@mantine/form": "^4.0.7",

@@ -3,8 +3,6 @@ import { Accordion } from '@mantine/core'
 import HackathonForm from '../components/admin-tools/HackathonForm'
 import AllHackathonList from '../components/AllHackathonList'
 import AllUserList from '../components/admin-tools/AllUserList'
-import { withAuthenticationRequired } from '@auth0/auth0-react'
-import Loading from '../components/Loading'
 
 function AdminPage() {
   return (
@@ -39,6 +37,4 @@ function AdminPage() {
   )
 }
 
-export default withAuthenticationRequired(AdminPage, {
-  onRedirecting: () => <Loading />,
-})
+export default AdminPage

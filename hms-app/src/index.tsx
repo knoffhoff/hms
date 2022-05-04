@@ -5,15 +5,37 @@ import './index.css'
 import App from './App'
 import reportWebVitals from './reportWebVitals'
 import { NotificationsProvider } from '@mantine/notifications'
-import Auth0ProviderWithHistory from './auth/auth0-provider-with-history'
+import AuthProvider from './auth/auth_provider'
+import { PublicClientApplication } from '@azure/msal-browser'
+import { MsalProvider } from '@azure/msal-react'
+import { msalConfig } from './azureAuthConfig'
 
+const msalInstance = new PublicClientApplication(msalConfig)
+
+// Azure Variant
+// to use the Auth0 variant go to hms-app/src/pages/Layout.tsx and change the end of the file
+/*ReactDOM.render(
+  <React.StrictMode>
+    <BrowserRouter>
+      <NotificationsProvider>
+        <MsalProvider instance={msalInstance}>
+          <App />
+        </MsalProvider>
+      </NotificationsProvider>
+    </BrowserRouter>
+  </React.StrictMode>,
+  document.getElementById('root')
+)*/
+
+// Auth0 Variant
+// to use the Auth0 variant go to hms-app/src/pages/Layout.tsx and change the end of the file
 ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
       <NotificationsProvider>
-        <Auth0ProviderWithHistory>
+        <AuthProvider>
           <App />
-        </Auth0ProviderWithHistory>
+        </AuthProvider>
       </NotificationsProvider>
     </BrowserRouter>
   </React.StrictMode>,

@@ -66,4 +66,10 @@ const Layout = () => {
   )
 }
 
+// use for Azure authentication
 export default Layout
+
+// user for Auth0 authentication
+/*export default withAuthenticationRequired(Layout, {
+  onRedirecting: () => <Loading />,
+})*/

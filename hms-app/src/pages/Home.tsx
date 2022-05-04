@@ -1,6 +1,4 @@
 import React from 'react'
-import { withAuthenticationRequired } from '@auth0/auth0-react'
-import Loading from '../components/Loading'
 
 function Home() {
   return (
@@ -22,6 +20,4 @@ function Home() {
   )
 }
 
-export default withAuthenticationRequired(Home, {
-  onRedirecting: () => <Loading />,
-})
+export default Home

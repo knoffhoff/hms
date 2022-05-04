@@ -8,8 +8,6 @@ import {
   getListOfHackathons,
 } from '../actions/HackathonActions'
 import { getIdeaDetails } from '../actions/IdeaActions'
-import { withAuthenticationRequired } from '@auth0/auth0-react'
-import Loading from '../components/Loading'
 
 function YourIdeas() {
   const userId = '5008e966-a793-4b07-a1be-0f6008a0e23b'
@@ -234,6 +232,4 @@ function YourIdeas() {
   )
 }
 
-export default withAuthenticationRequired(YourIdeas, {
-  onRedirecting: () => <Loading />,
-})
+export default YourIdeas

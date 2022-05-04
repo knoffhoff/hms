@@ -1,7 +1,6 @@
 import React from 'react'
 
-import { useAuth0, withAuthenticationRequired } from '@auth0/auth0-react'
-import Loading from '../components/Loading'
+import { useAuth0 } from '@auth0/auth0-react'
 
 const Profile = () => {
   const { user, getAccessTokenSilently } = useAuth0()
@@ -36,6 +35,4 @@ const Profile = () => {
   )
 }
 
-export default withAuthenticationRequired(Profile, {
-  onRedirecting: () => <Loading />,
-})
+export default Profile

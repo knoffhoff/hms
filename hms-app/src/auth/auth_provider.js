@@ -2,7 +2,7 @@ import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Auth0Provider } from '@auth0/auth0-react'
 
-const Auth0ProviderWithHistory = ({ children }) => {
+const AuthProvider = ({ children }) => {
   const domain = process.env.REACT_APP_AUTH0_DOMAIN
   const clientId = process.env.REACT_APP_AUTH0_CLIENT_ID
 
@@ -13,6 +13,7 @@ const Auth0ProviderWithHistory = ({ children }) => {
   }
 
   return (
+    //replace with own auth component
     <Auth0Provider
       domain={domain}
       clientId={clientId}
@@ -26,4 +27,4 @@ const Auth0ProviderWithHistory = ({ children }) => {
   )
 }
 
-export default Auth0ProviderWithHistory
+export default AuthProvider

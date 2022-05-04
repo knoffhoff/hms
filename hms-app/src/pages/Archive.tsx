@@ -3,8 +3,6 @@ import { getListOfHackathons } from '../actions/HackathonActions'
 import HackathonDetails from '../components/admin-tools/HackathonDetails'
 import { Select } from '@mantine/core'
 import { HackathonPreview } from '../common/types'
-import { withAuthenticationRequired } from '@auth0/auth0-react'
-import Loading from '../components/Loading'
 
 function Archive() {
   const [selectedHackweek, setSelectedHackweek] = useState('')
@@ -82,6 +80,4 @@ function Archive() {
   )
 }
 
-export default withAuthenticationRequired(Archive, {
-  onRedirecting: () => <Loading />,
-})
+export default Archive
