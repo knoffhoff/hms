@@ -27,6 +27,10 @@ const menuLinks = [
     link: 'admin',
     label: 'Admin',
   },
+  {
+    link: 'profile',
+    label: 'Profile',
+  },
 ]
 
 const Layout = () => {

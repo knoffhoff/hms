@@ -6,10 +6,10 @@ const Auth0ProviderWithHistory = ({ children }) => {
   const domain = process.env.REACT_APP_AUTH0_DOMAIN
   const clientId = process.env.REACT_APP_AUTH0_CLIENT_ID
 
-  const history = useNavigate()
+  const navigate = useNavigate()
 
   const onRedirectCallback = (appState) => {
-    history.push(appState?.returnTo || window.location.pathname)
+    navigate(appState?.returnTo || window.location.pathname)
   }
 
   return (
@@ -18,6 +18,8 @@ const Auth0ProviderWithHistory = ({ children }) => {
       clientId={clientId}
       redirectUri={window.location.origin}
       onRedirectCallback={onRedirectCallback}
+      useRefreshTokens={true}
+      cacheLocation="localstorage"
     >
       {children}
     </Auth0Provider>
