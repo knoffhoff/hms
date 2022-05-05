@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { getListOfHackathons } from '../actions/HackathonActions'
-import HackathonDetails from '../components/admin-tools/HackathonDetails'
+import HackathonDetails from '../components/card- details/HackathonDetails'
 import { Select } from '@mantine/core'
 import { HackathonPreview } from '../common/types'
 

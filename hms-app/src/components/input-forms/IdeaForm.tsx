@@ -13,12 +13,12 @@ import {
   CategoryPreview,
   HackathonPreview,
   SkillPreview,
-} from '../common/types'
-import { getListOfSkills } from '../actions/SkillActions'
-import { getListOfCategories } from '../actions/CategoryActions'
+} from '../../common/types'
+import { getListOfSkills } from '../../actions/SkillActions'
+import { getListOfCategories } from '../../actions/CategoryActions'
 import { showNotification, updateNotification } from '@mantine/notifications'
 import { CheckIcon } from '@modulz/radix-icons'
-import { createIdea, editIdea, getIdeaDetails } from '../actions/IdeaActions'
+import { createIdea, editIdea, getIdeaDetails } from '../../actions/IdeaActions'
 
 type IProps = {
   hackathon: HackathonPreview

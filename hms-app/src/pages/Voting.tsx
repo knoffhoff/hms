@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Button, Title, useMantineTheme, Text, Group } from '@mantine/core'
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd'
 import ideaData from '../test/TestIdeaData'
-import IdeaCardFoldable from '../components/IdeaCardFoldable'
+import IdeaDetails from '../components/card- details/IdeaDetails'
 
 const columnsFromBackend = {
   ['1']: {
@@ -204,7 +204,7 @@ export default function Voting() {
                                           ...provided.draggableProps.style,
                                         }}
                                       >
-                                        {/*<IdeaCardFoldable
+                                        {/*<IdeaDetails
                                           ideaPreview={item}
                                           index={index}
                                           type={'voting'}

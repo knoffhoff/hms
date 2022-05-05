@@ -13,12 +13,13 @@ import {
   useAccordionState,
   Modal,
 } from '@mantine/core'
-import { Idea } from '../common/types'
-import { deleteIdea } from '../actions/IdeaActions'
-import IdeaForm from './IdeaForm'
+import { Idea } from '../../common/types'
+import { deleteIdea } from '../../actions/IdeaActions'
+import IdeaForm from '../input-forms/IdeaForm'
 
 type IProps = {
   idea: Idea
+  isLoading: boolean
   type: string
 }
 
@@ -44,7 +45,7 @@ const useStyles = createStyles((theme) => ({
   },
 }))
 
-export default function IdeaCardFoldable(props: IProps) {
+export default function IdeaDetails(props: IProps) {
   const { classes } = useStyles()
   const theme = useMantineTheme()
   const [deleteModalOpened, setDeleteModalOpened] = useState(false)
@@ -53,7 +54,7 @@ export default function IdeaCardFoldable(props: IProps) {
     total: 1,
     initialItem: -1,
   })
-  const { idea, type } = props
+  const { idea, type, isLoading } = props
   const MAX_TITLE_LENGTH = 45
   const MAX_DESCRIPTION_LENGTH = type === 'voting' ? 200 : 245
 
@@ -170,7 +171,7 @@ export default function IdeaCardFoldable(props: IProps) {
 
   return (
     <>
-      {!idea.isLoadingIdeaData && (
+      {!isLoading && (
         <Card withBorder radius="md" p="md" className={classes.card}>
           <Card.Section
             className={classes.section}

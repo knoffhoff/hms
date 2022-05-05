@@ -38,15 +38,10 @@ function HackathonForm(props: IProps) {
   const today = new Date()
   const [startDateValue, setStartDateValue] = useState<Date | null>(new Date())
   const [endDateValue, setEndDateValue] = useState<Date | null>(new Date())
-  const [hackathonText, setHackathonText] = useState({
-    title: '',
-  })
+  const [hackathonTitle, setHackathonTitle] = useState('')
 
   function handleChange(event: React.ChangeEvent<HTMLTextAreaElement>) {
-    setHackathonText((prevHackathonText) => ({
-      ...prevHackathonText,
-      [event.target.name]: event.target.value,
-    }))
+    setHackathonTitle(event.target.value)
   }
 
   function createThisHackathon(event: React.MouseEvent<HTMLButtonElement>) {
@@ -59,19 +54,17 @@ function HackathonForm(props: IProps) {
       autoClose: false,
       disallowClose: true,
     })
-
-    createHackathon(hackathonText.title, startDateValue!, endDateValue!).then(
-      (r) =>
-        setTimeout(() => {
-          updateNotification({
-            id: 'hackathon-load',
-            color: 'teal',
-            title: 'Hackathon was created',
-            message: 'Notification will close in 2 seconds',
-            icon: <CheckIcon />,
-            autoClose: 2000,
-          })
-        }, 3000)
+    createHackathon(hackathonTitle, startDateValue!, endDateValue!).then((r) =>
+      setTimeout(() => {
+        updateNotification({
+          id: 'hackathon-load',
+          color: 'teal',
+          title: 'Hackathon was created',
+          message: 'Notification will close in 2 seconds',
+          icon: <CheckIcon />,
+          autoClose: 2000,
+        })
+      }, 3000)
     )
   }
 
@@ -88,7 +81,7 @@ function HackathonForm(props: IProps) {
 
     editHackathon(
       hackathonID!,
-      hackathonText.title,
+      hackathonTitle,
       startDateValue!,
       endDateValue!
     ).then((r) =>
@@ -96,7 +89,7 @@ function HackathonForm(props: IProps) {
         updateNotification({
           id: 'hackathon-load',
           color: 'teal',
-          title: 'Hackathon was created',
+          title: 'Hackathon was edited',
           message: 'Notification will close in 2 seconds',
           icon: <CheckIcon />,
           autoClose: 2000,
@@ -106,7 +99,7 @@ function HackathonForm(props: IProps) {
   }
 
   function submitIsEnabled(): boolean {
-    return !!hackathonText.title
+    return !!hackathonTitle
   }
 
   return (

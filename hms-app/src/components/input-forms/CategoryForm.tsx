@@ -9,7 +9,8 @@ import { showNotification, updateNotification } from '@mantine/notifications'
 import { CheckIcon } from '@modulz/radix-icons'
 
 type IProps = {
-  contextID: string
+  hackathonID: string
+  categoryID: string
   context: string
 }
 
@@ -33,24 +34,26 @@ const useStyles = createStyles((theme) => ({
 
 export default function CategoryForm(props: IProps) {
   const { classes } = useStyles()
-  const { contextID, context } = props
+  const { hackathonID, categoryID, context } = props
   const [isError, setIsError] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
   const [category, setCategory] = useState({
-    contextID: contextID,
+    hackathonID: hackathonID,
+    categoryID: categoryID,
     title: '',
     description: '',
   })
 
   const loadSelectedCategory = () => {
-    getCategoryDetails(contextID).then(
+    getCategoryDetails(categoryID).then(
       (data) => {
         setIsError(false)
         setIsLoading(false)
         setCategory({
           title: data.title,
           description: data.description,
-          contextID: data.id,
+          hackathonID: hackathonID,
+          categoryID: categoryID,
         })
       },
       () => {
@@ -98,6 +101,10 @@ export default function CategoryForm(props: IProps) {
 
   function createThisCategory(event: React.MouseEvent<HTMLButtonElement>) {
     event.preventDefault()
+    setCategory((prevState) => ({
+      ...prevState,
+      hackathonID: hackathonID.toString(),
+    }))
     showNotification({
       id: 'category-load',
       loading: true,
@@ -161,7 +168,7 @@ export default function CategoryForm(props: IProps) {
           <Group position="right" mt="xl">
             {context === 'edit' && (
               <Button disabled={!submitIsEnabled()} onClick={editThisCategory}>
-                Submit category
+                Edit
               </Button>
             )}
             {context === 'new' && (
@@ -169,7 +176,7 @@ export default function CategoryForm(props: IProps) {
                 disabled={!submitIsEnabled()}
                 onClick={createThisCategory}
               >
-                Submit category
+                Create
               </Button>
             )}
           </Group>

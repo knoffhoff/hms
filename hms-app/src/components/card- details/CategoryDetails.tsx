@@ -5,7 +5,7 @@ import {
   deleteCategory,
   getCategoryDetails,
 } from '../../actions/CategoryActions'
-import CategoryForm from './CategoryForm'
+import CategoryForm from '../input-forms/CategoryForm'
 
 type IProps = {
   categoryID: string
@@ -106,7 +106,11 @@ export default function CategoryDetails(props: IProps) {
       withCloseButton={false}
     >
       Edit Category
-      <CategoryForm contextID={categoryData.id} context={'edit'} />
+      <CategoryForm
+        categoryID={categoryData.id}
+        context={'edit'}
+        hackathonID={''}
+      />
       {isLoading && <div>Loading...</div>}
       <p>
         (This window will automatically close as soon as the category is
@@ -117,13 +121,13 @@ export default function CategoryDetails(props: IProps) {
 
   return (
     <>
-      {isError && (
+      {isError && !isLoading && (
         <div>
           <h3>Error loading hackathons</h3>
           <p>something went wrong.</p>
         </div>
       )}
-      {isLoading && (
+      {isLoading && !isError && (
         <div>
           <h3>Category details are loading...</h3>
         </div>

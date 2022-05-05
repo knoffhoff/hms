@@ -3,7 +3,7 @@ import {
   deleteHackathon,
   getHackathonDetails,
 } from '../../actions/HackathonActions'
-import IdeaCardList from '../IdeaCardList'
+import IdeaCardList from '../lists/IdeaCardList'
 import { Hackathon, Idea } from '../../common/types'
 import { getIdeaDetails } from '../../actions/IdeaActions'
 import {
@@ -16,11 +16,11 @@ import {
   Text,
   Modal,
 } from '@mantine/core'
-import CategoryDetails from './CategoryDetails'
 import ParticipantDetails from './ParticipantDetails'
-import IdeaCardFoldable from '../IdeaCardFoldable'
-import CategoryForm from './CategoryForm'
-import HackathonForm from './HackathonForm'
+import IdeaDetails from './IdeaDetails'
+import CategoryForm from '../input-forms/CategoryForm'
+import HackathonForm from '../input-forms/HackathonForm'
+import CategoryDetails from './CategoryDetails'
 
 type IProps = {
   hackathonID: string
@@ -56,6 +56,8 @@ export default function HackathonDetails(props: IProps) {
   const [editModalOpened, setEditModalOpened] = useState(false)
   const [isHackathonError, setIsHackathonError] = useState(false)
   const [isHackathonLoading, setIsHackathonLoading] = useState(true)
+  const [isIdeaError, setIsIdeaError] = useState(false)
+  const [isIdeaLoading, setIsIdeaLoading] = useState(true)
   const [hackathonData, setHackathonData] = useState({
     id: 'string',
     title: 'string',
@@ -66,8 +68,6 @@ export default function HackathonDetails(props: IProps) {
     ideas: [],
   } as Hackathon)
   const [ideaData, setIdeaData] = useState({
-    errorIdeaData: false,
-    isLoadingIdeaData: true,
     id: 'string',
     owner: undefined,
     hackathon: undefined,
@@ -78,7 +78,7 @@ export default function HackathonDetails(props: IProps) {
     goal: 'string',
     requiredSkills: [],
     category: undefined,
-    creationDate: 'string',
+    creationDate: new Date(),
   } as Idea)
   const [relevantIdeaList, setRelevantIdeaList] = useState([] as Idea[])
 
@@ -86,7 +86,7 @@ export default function HackathonDetails(props: IProps) {
     getHackathonDetails(hackathonID).then(
       (data) => {
         setHackathonData({
-          id: data.id,
+          id: hackathonID,
           title: data.title,
           startDate: data.startDate,
           endDate: data.endDate,
@@ -120,9 +120,9 @@ export default function HackathonDetails(props: IProps) {
             requiredSkills: data.requiredSkills,
             category: data.category,
             creationDate: data.creationDate,
-            errorIdeaData: false,
-            isLoadingIdeaData: false,
           })
+          setIsIdeaLoading(false)
+          setIsIdeaError(false)
         },
         () => {
           setIdeaData({
@@ -201,7 +201,7 @@ export default function HackathonDetails(props: IProps) {
         </div>
       }
     >
-      <IdeaCardFoldable idea={idea} type={'admin'} />
+      <IdeaDetails idea={idea} type={'admin'} isLoading={isIdeaLoading} />
     </Accordion.Item>
   ))
 
@@ -284,6 +284,7 @@ export default function HackathonDetails(props: IProps) {
               ideas={relevantIdeaList}
               columnSize={6}
               type={'Archive'}
+              isLoading={isIdeaLoading}
             />
           </div>
         )}
@@ -330,8 +331,9 @@ export default function HackathonDetails(props: IProps) {
                     label={'Add Category'}
                   >
                     <CategoryForm
-                      contextID={hackathonData.id}
+                      hackathonID={hackathonData.id}
                       context={'new'}
+                      categoryID={''}
                     />
                   </Accordion.Item>
                   {allCategories}

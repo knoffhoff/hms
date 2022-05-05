@@ -19,8 +19,6 @@ export type IdeaPreview = {
 }
 
 export type Idea = {
-  errorIdeaData: boolean
-  isLoadingIdeaData: boolean
   id: string
   owner?: OwnerPreview
   hackathon?: HackathonPreview
@@ -31,7 +29,7 @@ export type Idea = {
   goal: string
   requiredSkills?: SkillPreview[]
   category?: CategoryPreview
-  creationDate: string
+  creationDate: Date
 }
 
 export type CategoryPreview = {

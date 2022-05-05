@@ -1,8 +1,8 @@
 import { Accordion, Select } from '@mantine/core'
 import { Hackathon, HackathonPreview, Idea } from '../common/types'
-import IdeaCardList from '../components/IdeaCardList'
+import IdeaCardList from '../components/lists/IdeaCardList'
 import React, { useEffect, useState } from 'react'
-import IdeaForm from '../components/IdeaForm'
+import IdeaForm from '../components/input-forms/IdeaForm'
 import {
   getHackathonDetails,
   getListOfHackathons,
@@ -10,7 +10,7 @@ import {
 import { getIdeaDetails } from '../actions/IdeaActions'
 
 function YourIdeas() {
-  const userId = '5008e966-a793-4b07-a1be-0f6008a0e23b'
+  const userId = '3d57dcee-ec55-4581-b560-bf5dc0a5f54b'
   const [selectedHackweek, setSelectedHackweek] = useState('')
   const [hackathonList, setHackathonList] = useState({
     errorHackathonList: false,
@@ -28,9 +28,9 @@ function YourIdeas() {
     categories: undefined,
     ideas: [],
   } as Hackathon)
+  const [isIdeaError, setIsIdeaError] = useState(false)
+  const [isIdeaLoading, setIsIdeaLoading] = useState(true)
   const [ideaData, setIdeaData] = useState({
-    errorIdeaData: false,
-    isLoadingIdeaData: true,
     id: 'string',
     owner: undefined,
     hackathon: undefined,
@@ -41,13 +41,9 @@ function YourIdeas() {
     goal: 'string',
     requiredSkills: [],
     category: undefined,
-    creationDate: 'string',
+    creationDate: new Date(),
   } as Idea)
   const [relevantIdeaList, setRelevantIdeaList] = useState([] as Idea[])
-
-  console.log('selected Hackweek', selectedHackweek)
-  console.log('hackathonList', hackathonList)
-  console.log('hackathonData', hackathonData)
 
   const loadHackathons = () => {
     getListOfHackathons().then(
@@ -107,9 +103,9 @@ function YourIdeas() {
             requiredSkills: data.requiredSkills,
             category: data.category,
             creationDate: data.creationDate,
-            errorIdeaData: false,
-            isLoadingIdeaData: false,
           })
+          setIsIdeaLoading(false)
+          setIsIdeaError(false)
         },
         () => {
           setIdeaData({
@@ -192,7 +188,7 @@ function YourIdeas() {
                 label={'Create new idea'}
               >
                 <IdeaForm
-                  ideaID={null}
+                  ideaID={'null'}
                   hackathon={hackathonData}
                   userId={userId}
                   context={'new'}
@@ -224,7 +220,12 @@ function YourIdeas() {
           <h2>Your Ideas ({filteredIdeas.length})</h2>
 
           <div>
-            <IdeaCardList ideas={filteredIdeas} columnSize={6} type={'owner'} />
+            <IdeaCardList
+              ideas={filteredIdeas}
+              columnSize={6}
+              type={'owner'}
+              isLoading={isIdeaLoading}
+            />
           </div>
         </div>
       )}

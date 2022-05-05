@@ -43,8 +43,8 @@ export const deleteUser = (userID: string) => {
 }
 
 export const editUser = (
-  contextID: string,
   user: {
+    id: string
     lastName: string
     firstName: string
     emailAddress: string
@@ -53,7 +53,7 @@ export const editUser = (
   },
   skills: string[]
 ) => {
-  return fetch(`${core_url}/user/${contextID}`, {
+  return fetch(`${core_url}/user/${user.id}`, {
     method: 'PUT',
     headers: {
       Accept: 'application/json',

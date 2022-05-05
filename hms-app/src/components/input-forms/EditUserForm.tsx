@@ -15,7 +15,7 @@ import { SkillPreview } from '../../common/types'
 import { getListOfSkills } from '../../actions/SkillActions'
 
 type IProps = {
-  contextID: string
+  userID: string
 }
 
 const useStyles = createStyles((theme) => ({
@@ -36,16 +36,15 @@ const useStyles = createStyles((theme) => ({
   },
 }))
 
-export default function UserForm(props: IProps) {
+export default function EditUserForm(props: IProps) {
   const { classes } = useStyles()
-  const { contextID } = props
+  const { userID } = props
   const [isError, setIsError] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
-  const [availableSkills, setAvailableSkills] = useState({
-    skills: [] as SkillPreview[],
-  })
+  const [availableSkills, setAvailableSkills] = useState([] as SkillPreview[])
   const [skills, setSkills] = useState<string[]>([])
   const [user, setUser] = useState({
+    id: '',
     lastName: '',
     firstName: '',
     emailAddress: '',
@@ -54,11 +53,12 @@ export default function UserForm(props: IProps) {
   })
 
   const loadSelectedUser = () => {
-    getUserDetails(contextID).then(
+    getUserDetails(userID).then(
       (data) => {
         setIsError(false)
         setIsLoading(false)
         setUser({
+          id: userID,
           lastName: data.lastName,
           firstName: data.firstName,
           emailAddress: data.emailAddress,
@@ -80,8 +80,8 @@ export default function UserForm(props: IProps) {
   }, [])
 
   function handleChange(event: React.ChangeEvent<HTMLTextAreaElement>) {
-    setUser((prevUserText) => ({
-      ...prevUserText,
+    setUser((prevUser) => ({
+      ...prevUser,
       [event.target.name]: event.target.value,
     }))
   }
@@ -96,7 +96,7 @@ export default function UserForm(props: IProps) {
       autoClose: false,
       disallowClose: true,
     })
-    editUser(contextID, user, skills).then((r) =>
+    editUser(user, skills).then((r) =>
       setTimeout(() => {
         updateNotification({
           id: 'user-load',
@@ -116,14 +116,11 @@ export default function UserForm(props: IProps) {
 
   const loadAvailableSkills = () => {
     getListOfSkills().then((data) => {
-      setAvailableSkills({
-        ...availableSkills,
-        skills: data.skills,
-      })
+      setAvailableSkills(data.skills)
     })
   }
 
-  const skillsList = availableSkills.skills.map((skill, index) => [
+  const skillsList = availableSkills.map((skill) => [
     <Checkbox value={skill.id} label={skill.name} />,
   ])
 
@@ -145,7 +142,7 @@ export default function UserForm(props: IProps) {
               maxRows={1}
               autosize
               onChange={handleChange}
-              name="title"
+              name="First Name"
               value={user.firstName}
             />
           </Card.Section>
@@ -157,7 +154,7 @@ export default function UserForm(props: IProps) {
               maxRows={1}
               autosize
               onChange={handleChange}
-              name="description"
+              name="Last Name"
               value={user.lastName}
             />
           </Card.Section>
@@ -169,7 +166,7 @@ export default function UserForm(props: IProps) {
               maxRows={1}
               autosize
               onChange={handleChange}
-              name="description"
+              name="E-mail"
               value={user.emailAddress}
             />
           </Card.Section>

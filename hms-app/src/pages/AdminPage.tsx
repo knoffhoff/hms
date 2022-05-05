@@ -1,8 +1,8 @@
 import React from 'react'
 import { Accordion } from '@mantine/core'
-import HackathonForm from '../components/admin-tools/HackathonForm'
-import AllHackathonList from '../components/AllHackathonList'
-import AllUserList from '../components/admin-tools/AllUserList'
+import HackathonForm from '../components/input-forms/HackathonForm'
+import AllHackathonList from '../components/lists/AllHackathonList'
+import AllUserList from '../components/lists/AllUserList'
 
 function AdminPage() {
   return (

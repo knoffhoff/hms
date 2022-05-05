@@ -53,7 +53,7 @@ export const createHackathon = (
 
 export const editHackathon = (
   hackathonID: string,
-  hackathonText: string,
+  title: string,
   startDate: Date,
   endDate: Date
 ) => {
@@ -64,7 +64,7 @@ export const editHackathon = (
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      title: hackathonText,
+      title: title,
       startDate: startDate.toString(),
       endDate: endDate.toString(),
     }),

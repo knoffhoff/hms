@@ -12,8 +12,8 @@ import {
   Text,
   useMantineTheme,
 } from '@mantine/core'
-import HackathonForm from './HackathonForm'
-import UserForm from './UserForm'
+import HackathonForm from '../input-forms/HackathonForm'
+import EditUserForm from '../input-forms/EditUserForm'
 
 const useStyles = createStyles((theme) => ({
   card: {
@@ -59,16 +59,7 @@ export default function UserDetails(props: { userID: string }) {
   const loadSelectedUser = () => {
     getUserDetails(userID).then(
       (data) => {
-        setUser({
-          id: data.id,
-          lastName: data.lastName,
-          firstName: data.firstName,
-          emailAddress: data.emailAddress,
-          roles: data.roles,
-          skills: data.skills,
-          imageUrl: data.imageUrl,
-          creationDate: data.creationDate,
-        })
+        setUser(data)
         setIsUserLoading(false)
         setIsUserError(false)
       },
@@ -106,8 +97,7 @@ export default function UserDetails(props: { userID: string }) {
         Yes delete this user
       </Button>
       <p>
-        (This window will automatically closed as soon as the hackathon is
-        deleted)
+        (This window will automatically closed as soon as the user is deleted)
       </p>
     </Modal>
   )
@@ -120,24 +110,23 @@ export default function UserDetails(props: { userID: string }) {
       withCloseButton={false}
     >
       Edit User
-      <UserForm contextID={userID} />
+      <EditUserForm userID={userID} />
       {isUserLoading && <div>Loading...</div>}
       <p>
-        (This window will automatically close as soon as the category is
-        deleted)
+        (This window will automatically close as soon as the user is deleted)
       </p>
     </Modal>
   )
 
   return (
     <>
-      {isUserError && (
+      {isUserError && !isUserLoading && (
         <div>
-          <h3>Error loading hackathons</h3>
+          <h3>Error loading user</h3>
           <p>something went wrong.</p>
         </div>
       )}
-      {isUserLoading && (
+      {isUserLoading && !isUserError && (
         <div>
           <h3>User details are loading...</h3>
         </div>
@@ -205,12 +194,9 @@ export default function UserDetails(props: { userID: string }) {
               </Button>
               {editModal}
               <Button onClick={() => setEditModalOpened(true)}>Edit</Button>
-              {!isUserLoading && (
-                <Button color={'green'} onClick={() => loadSelectedUser()}>
-                  Reload
-                </Button>
-              )}
-              {isUserLoading && <div>Loading...</div>}
+              <Button color={'green'} onClick={() => loadSelectedUser()}>
+                Reload
+              </Button>
             </Group>
           </Card.Section>
         </Card>
