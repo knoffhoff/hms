@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Input, Group, Title, Select, Button } from '@mantine/core'
 import { Search } from 'tabler-icons-react'
-import IdeaCardList from '../components/IdeaCardList'
+import IdeaCardList from '../components/lists/IdeaCardList'
 import { Hackathon, HackathonPreview, Idea, IdeaPreview } from '../common/types'
 import {
   getHackathonDetails,
@@ -23,7 +23,7 @@ function IdeaPortal() {
   const [isHackathonError, setIsHackathonError] = useState(false)
   const [isHackathonLoading, setIsHackathonLoading] = useState(true)
   const [hackathonData, setHackathonData] = useState({
-    hackathonId: 'string',
+    id: 'string',
     title: 'string',
     startDate: 'string',
     endDate: 'string',
@@ -31,9 +31,9 @@ function IdeaPortal() {
     categories: undefined,
     ideas: [],
   } as Hackathon)
+  const [isIdeaError, setIsIdeaError] = useState(false)
+  const [isIdeaLoading, setIsIdeaLoading] = useState(true)
   const [ideaData, setIdeaData] = useState({
-    errorIdeaData: false,
-    isLoadingIdeaData: true,
     id: 'string',
     owner: undefined,
     hackathon: undefined,
@@ -44,11 +44,11 @@ function IdeaPortal() {
     goal: 'string',
     requiredSkills: [],
     category: undefined,
-    creationDate: 'string',
+    creationDate: new Date(),
   } as Idea)
   const [relevantIdeaList, setRelevantIdeaList] = useState([] as Idea[])
   const [participantInfo, setParticipantInfo] = useState({
-    userId: 'dd4596c0-911a-49a9-826f-0b6ec8a2d0b6',
+    userId: 'f6fa2b8e-68ed-4486-b8df-f93b87ff23e5',
     hackathonId: '',
   })
 
@@ -76,7 +76,7 @@ function IdeaPortal() {
     getHackathonDetails(selectedHackweek).then(
       (data) => {
         setHackathonData({
-          hackathonId: data.id,
+          id: data.id,
           title: data.title,
           startDate: data.startDate,
           endDate: data.endDate,
@@ -110,9 +110,9 @@ function IdeaPortal() {
             requiredSkills: data.requiredSkills,
             category: data.category,
             creationDate: data.creationDate,
-            errorIdeaData: false,
-            isLoadingIdeaData: false,
           })
+          setIsIdeaError(false)
+          setIsIdeaLoading(false)
         },
         () => {
           setIdeaData({
@@ -161,20 +161,13 @@ function IdeaPortal() {
     return item.title?.toLowerCase().includes(searchTerm.toLowerCase())
   })
 
-  const data = hackathonList.hackathons.map(
-    (hackathon, index) => hackathon.title
-  )
+  const hackathonMap = hackathonList.hackathons.map((hackathon, index) => ({
+    value: hackathon.id,
+    label: hackathon.title,
+  }))
 
   const selectChange = (value: string) => {
-    const getHackathon = hackathonList.hackathons.filter((hackathon) => {
-      return hackathon.title.includes(value)
-    })
-
-    const selectedHackathonID = getHackathon.map(
-      (hackathon, index) => hackathon.id
-    )
-
-    setSelectedHackweek(selectedHackathonID.toString())
+    setSelectedHackweek(value)
   }
 
   const addHackathonParticipant = () => {
@@ -195,7 +188,7 @@ function IdeaPortal() {
             <Select
               placeholder={'select a Hackathon'}
               maxDropdownHeight={280}
-              data={data}
+              data={hackathonMap}
               onChange={selectChange}
             />
           </div>
@@ -237,6 +230,7 @@ function IdeaPortal() {
               ideas={filteredIdeas}
               columnSize={6}
               type={'idea-portal'}
+              isLoading={isIdeaLoading}
             />
           </div>
         </div>

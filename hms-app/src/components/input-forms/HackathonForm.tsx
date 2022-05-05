@@ -6,9 +6,9 @@ import {
   Card,
   SimpleGrid,
 } from '@mantine/core'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { DatePicker } from '@mantine/dates'
-import { createHackathon } from '../actions/HackathonActions'
+import { createHackathon, editHackathon } from '../../actions/HackathonActions'
 import { showNotification, updateNotification } from '@mantine/notifications'
 import { CheckIcon } from '@modulz/radix-icons'
 
@@ -30,28 +30,21 @@ const useStyles = createStyles((theme) => ({
   },
 }))
 
-function NewHackathon() {
+type IProps = { context: string; hackathonID: string | null }
+
+function HackathonForm(props: IProps) {
+  const { context, hackathonID } = props
   const { classes } = useStyles()
   const today = new Date()
   const [startDateValue, setStartDateValue] = useState<Date | null>(new Date())
   const [endDateValue, setEndDateValue] = useState<Date | null>(new Date())
-  const [hackathonText, setHackathonText] = useState({
-    title: '',
-    startDate: '',
-    endDate: '',
-    titleSet: false,
-    dateSet: false,
-  })
+  const [hackathonTitle, setHackathonTitle] = useState('')
 
   function handleChange(event: React.ChangeEvent<HTMLTextAreaElement>) {
-    setHackathonText((prevHackathonText) => ({
-      ...prevHackathonText,
-      [event.target.name]: event.target.value,
-      titleBSet: true,
-    }))
+    setHackathonTitle(event.target.value)
   }
 
-  function submitForm(event: React.MouseEvent<HTMLButtonElement>) {
+  function createThisHackathon(event: React.MouseEvent<HTMLButtonElement>) {
     event.preventDefault()
     showNotification({
       id: 'hackathon-load',
@@ -61,12 +54,7 @@ function NewHackathon() {
       autoClose: false,
       disallowClose: true,
     })
-    setHackathonText((prevHackathonText) => ({
-      ...prevHackathonText,
-      titleSet: false,
-      dateSet: false,
-    }))
-    createHackathon(hackathonText).then((r) =>
+    createHackathon(hackathonTitle, startDateValue!, endDateValue!).then((r) =>
       setTimeout(() => {
         updateNotification({
           id: 'hackathon-load',
@@ -80,22 +68,39 @@ function NewHackathon() {
     )
   }
 
-  useEffect(() => {
-    setHackathonText((prevHackathonText) => ({
-      ...prevHackathonText,
-      startDate: startDateValue!.toDateString(),
-      endDate: endDateValue!.toDateString(),
-      dateSet: true,
-    }))
-  }, [endDateValue])
+  function editThisHackathon(event: React.MouseEvent<HTMLButtonElement>) {
+    event.preventDefault()
+    showNotification({
+      id: 'hackathon-load',
+      loading: true,
+      title: 'Hackathon is uploading',
+      message: 'this can take a second',
+      autoClose: false,
+      disallowClose: true,
+    })
 
-  useEffect(() => {
-    setHackathonText((prevHackathonText) => ({
-      ...prevHackathonText,
-      titleSet: false,
-      dateSet: false,
-    }))
-  }, [])
+    editHackathon(
+      hackathonID!,
+      hackathonTitle,
+      startDateValue!,
+      endDateValue!
+    ).then((r) =>
+      setTimeout(() => {
+        updateNotification({
+          id: 'hackathon-load',
+          color: 'teal',
+          title: 'Hackathon was edited',
+          message: 'Notification will close in 2 seconds',
+          icon: <CheckIcon />,
+          autoClose: 2000,
+        })
+      }, 3000)
+    )
+  }
+
+  function submitIsEnabled(): boolean {
+    return !!hackathonTitle
+  }
 
   return (
     <>
@@ -115,32 +120,36 @@ function NewHackathon() {
         <Card.Section className={classes.section}>
           <SimpleGrid cols={2} breakpoints={[{ maxWidth: 'sm', cols: 1 }]}>
             <DatePicker
-              label={'Start date'}
+              label={'Start Date'}
               value={startDateValue}
               onChange={setStartDateValue}
-              excludeDate={(date) => date.getDate() < today.getDate()}
+              excludeDate={(date) => date < today}
               required
             />
             <DatePicker
-              label={'End date'}
+              label={'End Date'}
               value={endDateValue}
               onChange={setEndDateValue}
-              excludeDate={(date) => date.getDate() < startDateValue!.getDate()}
+              excludeDate={(date) => date < startDateValue!}
               required
             />
           </SimpleGrid>
         </Card.Section>
         <Group position="right" mt="xl">
-          <Button
-            disabled={!hackathonText.titleSet && !hackathonText.dateSet}
-            onClick={submitForm}
-          >
-            Submit hackathon
-          </Button>
+          {context === 'edit' && (
+            <Button disabled={!submitIsEnabled()} onClick={editThisHackathon}>
+              Edit
+            </Button>
+          )}
+          {context === 'new' && (
+            <Button disabled={!submitIsEnabled()} onClick={createThisHackathon}>
+              Create
+            </Button>
+          )}
         </Group>
       </Card>{' '}
     </>
   )
 }
 
-export default NewHackathon
+export default HackathonForm

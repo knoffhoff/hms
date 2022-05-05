@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
-import { User } from '../../common/types'
+import { UserPreview } from '../../common/types'
 import { Button, Card, createStyles, Group, Modal, Text } from '@mantine/core'
 import { deleteParticipant } from '../../actions/ParticipantActions'
 
 type IProps = {
   participantID: string
-  user: User
+  user: UserPreview
 }
 
 const useStyles = createStyles((theme) => ({

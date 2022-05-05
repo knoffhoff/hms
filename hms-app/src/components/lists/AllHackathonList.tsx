@@ -1,15 +1,8 @@
-import {
-  Group,
-  Button,
-  createStyles,
-  Card,
-  SimpleGrid,
-  Accordion,
-} from '@mantine/core'
+import { Group, Button, createStyles, Card, Accordion } from '@mantine/core'
 import React, { useEffect, useState } from 'react'
-import { getListOfHackathons } from '../actions/HackathonActions'
-import { HackathonPreview } from '../common/types'
-import NewHackathonDetails from './hackathon-details/NewHackathonDetails'
+import { getListOfHackathons } from '../../actions/HackathonActions'
+import { HackathonPreview } from '../../common/types'
+import HackathonDetails from '../card- details/HackathonDetails'
 
 const useStyles = createStyles((theme) => ({
   card: {
@@ -28,7 +21,7 @@ const useStyles = createStyles((theme) => ({
   },
 }))
 
-function NewAllHackathonList() {
+function AllHackathonList() {
   const { classes } = useStyles()
   const [isError, setIsError] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
@@ -54,14 +47,12 @@ function NewAllHackathonList() {
   const allHackathons = hackathonList.hackathons.map((hackathon, index) => [
     <Accordion.Item
       label={
-        <SimpleGrid cols={2} breakpoints={[{ maxWidth: 'sm', cols: 1 }]}>
-          <div>
-            {index + 1}. {hackathon.title}
-          </div>
-        </SimpleGrid>
+        <div>
+          {index + 1}. {hackathon.title}
+        </div>
       }
     >
-      <NewHackathonDetails hackathonID={hackathon.id} type={'fullInfo'} />
+      <HackathonDetails hackathonID={hackathon.id} type={'fullInfo'} />
     </Accordion.Item>,
   ])
 
@@ -91,4 +82,4 @@ function NewAllHackathonList() {
   )
 }
 
-export default NewAllHackathonList
+export default AllHackathonList
