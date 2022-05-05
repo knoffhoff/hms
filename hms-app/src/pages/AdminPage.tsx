@@ -1,14 +1,19 @@
 import React from 'react'
-import { Accordion } from '@mantine/core'
+import { Accordion, Button } from '@mantine/core'
 import HackathonForm from '../components/input-forms/HackathonForm'
 import AllHackathonList from '../components/lists/AllHackathonList'
 import AllUserList from '../components/lists/AllUserList'
+import { Link } from 'react-router-dom'
 
 function AdminPage() {
   return (
     <>
       <h1>Hello Admin </h1>
       <h2>Nice to see you</h2>
+
+      <Button mb={20} component={Link} to="/presentations">
+        Presentations
+      </Button>
 
       <Accordion mb={30}>
         <Accordion.Item

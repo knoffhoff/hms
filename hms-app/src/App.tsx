@@ -10,6 +10,7 @@ import NoPage from './pages/NoPage'
 import LogInPage from './pages/LogInPage'
 import Voting from './pages/Voting'
 import AdminPage from './pages/AdminPage'
+import Presentations from './pages/Presentations'
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
         <Route path="admin" element={<AdminPage />} />
         <Route path="*" element={<NoPage />} />
       </Route>
+      <Route path={'presentations'} element={<Presentations />} />
     </Routes>
   )
 }
