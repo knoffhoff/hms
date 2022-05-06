@@ -28,11 +28,11 @@ export const getHackathonDetails = (hackathonID: string) => {
     .catch((err) => console.log(err))
 }
 
-export const createHackathon = (props: {
-  endDate: string
-  title: string
-  startDate: string
-}) => {
+export const createHackathon = (
+  title: string,
+  startDate: Date,
+  endDate: Date
+) => {
   return fetch(`${core_url}/hackathon`, {
     method: 'POST',
     headers: {
@@ -40,9 +40,33 @@ export const createHackathon = (props: {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      title: props.title,
-      startDate: props.startDate,
-      endDate: props.endDate,
+      title: title,
+      startDate: startDate.toString(),
+      endDate: endDate.toString(),
+    }),
+  })
+    .then((response) => {
+      return response.json()
+    })
+    .catch((err) => console.log(err))
+}
+
+export const editHackathon = (
+  hackathonID: string,
+  title: string,
+  startDate: Date,
+  endDate: Date
+) => {
+  return fetch(`${core_url}/hackathon/${hackathonID}`, {
+    method: 'PUT',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      title: title,
+      startDate: startDate.toString(),
+      endDate: endDate.toString(),
     }),
   })
     .then((response) => {

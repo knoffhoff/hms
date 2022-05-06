@@ -1,7 +1,8 @@
 import React from 'react'
 import { Accordion } from '@mantine/core'
-import NewHackathon from '../components/NewHackathon'
-import NewAllHackathonList from '../components/NewAllHackathonList'
+import HackathonForm from '../components/input-forms/HackathonForm'
+import AllHackathonList from '../components/lists/AllHackathonList'
+import AllUserList from '../components/lists/AllUserList'
 
 function AdminPage() {
   return (
@@ -14,16 +15,22 @@ function AdminPage() {
           style={{ border: '1px solid' }}
           label={'Create new hackathon'}
         >
-          <NewHackathon />
+          <HackathonForm hackathonID={null} context={'new'} />
         </Accordion.Item>
       </Accordion>
 
-      <Accordion mb={30} onChange={() => console.log('click')}>
+      <Accordion mb={30}>
         <Accordion.Item
           style={{ border: '1px solid' }}
-          label={'New Hackathon list'}
+          label={'Hackathon list'}
         >
-          <NewAllHackathonList />
+          <AllHackathonList />
+        </Accordion.Item>
+      </Accordion>
+
+      <Accordion mb={30}>
+        <Accordion.Item style={{ border: '1px solid' }} label={'User list'}>
+          <AllUserList />
         </Accordion.Item>
       </Accordion>
     </>

@@ -13,11 +13,13 @@ import {
   useAccordionState,
   Modal,
 } from '@mantine/core'
-import { Idea } from '../common/types'
-import { deleteIdea } from '../actions/IdeaActions'
+import { Idea } from '../../common/types'
+import { deleteIdea } from '../../actions/IdeaActions'
+import IdeaForm from '../input-forms/IdeaForm'
 
 type IProps = {
   idea: Idea
+  isLoading: boolean
   type: string
 }
 
@@ -43,15 +45,16 @@ const useStyles = createStyles((theme) => ({
   },
 }))
 
-export default function IdeaCardFoldable(props: IProps) {
+export default function IdeaDetails(props: IProps) {
   const { classes } = useStyles()
   const theme = useMantineTheme()
-  const [opened, setOpened] = useState(false)
+  const [deleteModalOpened, setDeleteModalOpened] = useState(false)
+  const [editModalOpened, setEditModalOpened] = useState(false)
   const [accordionState, setAccordionState] = useAccordionState({
     total: 1,
     initialItem: -1,
   })
-  const { idea, type } = props
+  const { idea, type, isLoading } = props
   const MAX_TITLE_LENGTH = 45
   const MAX_DESCRIPTION_LENGTH = type === 'voting' ? 200 : 245
 
@@ -71,9 +74,48 @@ export default function IdeaCardFoldable(props: IProps) {
 
   const deleteSelectedIdea = () => {
     deleteIdea(idea.id).then((data) => {
-      setOpened(false)
+      setDeleteModalOpened(false)
     })
   }
+
+  const deleteModal = (
+    <Modal
+      centered
+      opened={deleteModalOpened}
+      onClose={() => setDeleteModalOpened(false)}
+      withCloseButton={false}
+    >
+      Are you sure you want to delete this idea?
+      <h4>Title: {idea.title}</h4>
+      <Button color={'red'} onClick={() => deleteSelectedIdea()}>
+        Yes, delete this idea
+      </Button>
+      <p>
+        (This window will automatically close as soon as the idea is deleted)
+      </p>
+    </Modal>
+  )
+
+  const editModal = (
+    <Modal
+      centered
+      opened={editModalOpened}
+      onClose={() => setEditModalOpened(false)}
+      withCloseButton={false}
+    >
+      Edit Idea
+      <IdeaForm
+        ideaID={idea.id}
+        context={'edit'}
+        userId={idea.owner?.id!}
+        hackathon={idea.hackathon!}
+      />
+      <p>
+        (This window will automatically close as soon as the category is
+        deleted)
+      </p>
+    </Modal>
+  )
 
   const ideaDetails = () => {
     return (
@@ -129,7 +171,7 @@ export default function IdeaCardFoldable(props: IProps) {
 
   return (
     <>
-      {!idea.isLoadingIdeaData && (
+      {!isLoading && (
         <Card withBorder radius="md" p="md" className={classes.card}>
           <Card.Section
             className={classes.section}
@@ -186,7 +228,7 @@ export default function IdeaCardFoldable(props: IProps) {
                 </Group>
               </Card.Section>
 
-              {type !== 'admin' && (
+              {type !== 'admin' && type !== 'owner' && (
                 <Accordion
                   state={accordionState}
                   onChange={setAccordionState.setState}
@@ -210,31 +252,52 @@ export default function IdeaCardFoldable(props: IProps) {
                 </Accordion>
               )}
 
+              {type === 'owner' && (
+                <Accordion
+                  state={accordionState}
+                  onChange={setAccordionState.setState}
+                >
+                  <Accordion.Item
+                    mt="sm"
+                    style={{ border: 'none' }}
+                    label={
+                      !accordionState['0'] ? 'Show details' : 'Hide details'
+                    }
+                  >
+                    <div>{ideaDetails()}</div>
+
+                    <Group position="left" mt="xl">
+                      {deleteModal}
+                      <Button
+                        color={'red'}
+                        onClick={() => setDeleteModalOpened(true)}
+                      >
+                        Delete
+                      </Button>
+                      {editModal}
+                      <Button onClick={() => setEditModalOpened(true)}>
+                        Edit
+                      </Button>
+                    </Group>
+                  </Accordion.Item>
+                </Accordion>
+              )}
+
               {type === 'admin' && (
                 <>
                   <div>{ideaDetails()}</div>
-
-                  <Modal
-                    centered
-                    opened={opened}
-                    onClose={() => setOpened(false)}
-                    withCloseButton={false}
-                  >
-                    Are you sure you want to delete this idea?
-                    <h4>Title: {idea.title}</h4>
-                    <Button color={'red'} onClick={() => deleteSelectedIdea()}>
-                      Yes, delete this idea
-                    </Button>
-                    <p>
-                      (This window will automatically close as soon as the idea
-                      is deleted)
-                    </p>
-                  </Modal>
                   <Group position="left" mt="xl">
-                    <Button color={'red'} onClick={() => setOpened(true)}>
+                    {deleteModal}
+                    <Button
+                      color={'red'}
+                      onClick={() => setDeleteModalOpened(true)}
+                    >
                       Delete
                     </Button>
-                    <Button>Edit</Button>
+                    {editModal}
+                    <Button onClick={() => setEditModalOpened(true)}>
+                      Edit
+                    </Button>
                   </Group>
                 </>
               )}
