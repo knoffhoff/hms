@@ -21,6 +21,7 @@ import IdeaDetails from './IdeaDetails'
 import CategoryForm from '../input-forms/CategoryForm'
 import HackathonForm from '../input-forms/HackathonForm'
 import CategoryDetails from './CategoryDetails'
+import { Link } from 'react-router-dom'
 
 type IProps = {
   hackathonID: string
@@ -361,6 +362,19 @@ export default function HackathonDetails(props: IProps) {
                   </Text>
                 }
               >
+                <Button
+                  mb={20}
+                  onClick={() =>
+                    localStorage.setItem(
+                      'ideas',
+                      JSON.stringify(relevantIdeaList)
+                    )
+                  }
+                  component={Link}
+                  to="/presentations"
+                >
+                  Presentations
+                </Button>
                 <Accordion iconPosition="right">{allIdeas}</Accordion>
               </Accordion.Item>
             </Accordion>
