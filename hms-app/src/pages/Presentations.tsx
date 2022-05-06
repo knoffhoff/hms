@@ -129,15 +129,22 @@ export default function Presentations() {
             <Text mt="md" className={classes.label}>
               Problem
             </Text>
-            <Text mt="sm" style={{ backgroundColor: 'white' }}>
+            <Text
+              mt="sm"
+              style={{
+                backgroundColor: 'white',
+                height: '70%',
+              }}
+            >
               {idea.problem}
             </Text>
           </Card.Section>
+
           <Card.Section style={{ height: '20%' }} className={classes.section}>
             <Text mt="md" className={classes.label}>
               Goal
             </Text>
-            <Text mt="sm" style={{ backgroundColor: 'white' }}>
+            <Text mt="sm" style={{ backgroundColor: 'white', height: '70%' }}>
               {idea.goal}
             </Text>
           </Card.Section>
@@ -149,7 +156,10 @@ export default function Presentations() {
                   <Text mt="md" className={classes.label}>
                     Skills
                   </Text>
-                  <Text mt="sm" style={{ backgroundColor: 'white' }}>
+                  <Text
+                    mt="sm"
+                    style={{ backgroundColor: 'white', height: '70%' }}
+                  >
                     <ul>
                       {idea.requiredSkills?.map((skill, index) => (
                         <li>{skill.name}</li>
@@ -163,7 +173,7 @@ export default function Presentations() {
                   <Text mt="md" className={classes.label}>
                     Participants
                   </Text>
-                  <Grid style={{ backgroundColor: 'white' }}>
+                  <Grid style={{ backgroundColor: 'white', height: '70%' }}>
                     {idea.participants?.map((participant, index) => (
                       <Grid.Col span={4}>
                         <div
