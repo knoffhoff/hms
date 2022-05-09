@@ -9,7 +9,7 @@ import {
 import React, { useEffect, useState } from 'react'
 import { UserPreview } from '../../common/types'
 import { getListOfUsers } from '../../actions/UserActions'
-import UserDetails from '../card- details/UserDetails'
+import UserDetails from '../card-details/UserDetails'
 
 const useStyles = createStyles((theme) => ({
   card: {
