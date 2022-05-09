@@ -34,11 +34,12 @@ class CategoryPreviewResponse {
       a: CategoryPreviewResponse,
       b: CategoryPreviewResponse,
   ): number {
-    if (a.title === b.title) {
-      return a.id.localeCompare(b.id);
+    const diff = a.title.localeCompare(b.title);
+    if (diff) {
+      return diff;
     }
 
-    return a.title.localeCompare(b.title);
+    return a.id.localeCompare(b.id);
   }
 }
 

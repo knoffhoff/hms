@@ -9,7 +9,7 @@ export interface SkillData {
 
 export const makeSkill = (
     {
-      id = uuid,
+      id = uuid(),
       name = 'Testing',
       description = 'Just being wicked good at testing',
     }: SkillData): Skill => new Skill(name, description, id);

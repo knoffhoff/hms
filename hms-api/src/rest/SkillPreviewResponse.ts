@@ -29,12 +29,13 @@ class SkillPreviewResponse {
     return previews.sort(this.compare);
   }
 
-  static compare(a: Skill, b: Skill): number {
-    if (a.name === b.name) {
-      return a.id.localeCompare(b.id);
+  static compare(a: SkillPreviewResponse, b: SkillPreviewResponse): number {
+    const diff = a.name.localeCompare(b.name);
+    if (diff) {
+      return diff;
     }
 
-    return a.name.localeCompare(b.name);
+    return a.id.localeCompare(b.id);
   }
 }
 

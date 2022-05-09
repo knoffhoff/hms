@@ -38,14 +38,12 @@ class IdeaPreviewResponse {
       a: IdeaPreviewResponse,
       b: IdeaPreviewResponse,
   ): number {
-    const aTime = a.creationDate.getTime();
-    const bTime = b.creationDate.getTime();
-
-    if (aTime === bTime) {
-      return a.id.localeCompare(b.id);
+    const diff = a.creationDate.getTime() - b.creationDate.getTime();
+    if (diff) {
+      return diff;
     }
 
-    return bTime - aTime;
+    return a.id.localeCompare(b.id);
   }
 }
 
