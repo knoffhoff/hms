@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { Link } from 'react-router-dom'
 import {
   Avatar,
@@ -10,21 +10,18 @@ import {
   Group,
   Text,
 } from '@mantine/core'
-import { useForceUpdate, useFullscreen } from '@mantine/hooks'
+import { useFullscreen } from '@mantine/hooks'
 import { Idea } from '../common/types'
+import Carousel from 'nuka-carousel'
 
 const useStyles = createStyles((theme) => ({
   card: {
     backgroundColor: 'lightblue',
   },
   section: {
-    borderBottom: `1px solid ${
-      theme.colorScheme === 'dark' ? theme.colors.dark[4] : theme.colors.gray[3]
-    }`,
     paddingLeft: theme.spacing.md,
     paddingRight: theme.spacing.md,
     paddingBottom: theme.spacing.md,
-    textTransform: 'uppercase',
     fontSize: theme.fontSizes.md,
     fontWeight: 500,
   },
@@ -38,51 +35,21 @@ const useStyles = createStyles((theme) => ({
 export default function Presentations() {
   const { classes } = useStyles()
   const { ref, toggle, fullscreen } = useFullscreen()
-  const [count, setCount] = useState(0)
   // @ts-ignore
   const allIdeas = JSON.parse(localStorage.getItem('ideas'))
-  const forceUpdate = useForceUpdate()
-  let count2 = 6
-
-  window.addEventListener(
-    'keydown',
-    function (event) {
-      if (event.defaultPrevented) {
-        return // Do nothing if the event was already processed
-      }
-      if (event.key === 'ArrowLeft') {
-        console.log(count2)
-        count2 = count2 - 1
-        console.log(count2)
-      } else if (event.key === 'ArrowRight') {
-        console.log(count2)
-        count2 = count2 + 1
-        forceUpdate()
-        console.log(count2)
-      }
-      // Cancel the default action to avoid it being handled twice
-      event.preventDefault()
-    },
-    true
-  )
 
   function getIdeasMap() {
     return allIdeas.map((idea: Idea, index: number) => (
-      <div
-        style={{ border: '1px solid', padding: 10 }}
-        ref={index === count2 ? ref : null}
-      >
+      <div style={{ padding: 10 }}>
         <Card
           withBorder
           radius="md"
           p="md"
-          style={{ height: '100%' }}
+          style={{ height: '99vh' }}
           className={classes.card}
         >
-          <Card.Section style={{ height: '5%' }} className={classes.section}>
-            <Text mt="md" className={classes.label}>
-              Title
-            </Text>
+          <Card.Section style={{ height: '6%' }} className={classes.section}>
+            <Text className={classes.label}>Title</Text>
             <Text mt="sm" style={{ backgroundColor: 'white' }}>
               {idea.title}
             </Text>
@@ -91,11 +58,15 @@ export default function Presentations() {
           <Card.Section style={{ height: '25%' }} className={classes.section}>
             <Grid align="center">
               <Grid.Col span={8}>
-                <Card.Section>
-                  <Text mt="md" className={classes.label}>
-                    Description
-                  </Text>
-                  <Text mt="sm" style={{ backgroundColor: 'white' }}>
+                <Card.Section style={{ height: '100%' }}>
+                  <Text className={classes.label}>Description</Text>
+                  <Text
+                    mt="sm"
+                    style={{
+                      backgroundColor: 'white',
+                      height: '20vh',
+                    }}
+                  >
                     {idea.description}
                   </Text>
                 </Card.Section>
@@ -126,14 +97,12 @@ export default function Presentations() {
           </Card.Section>
 
           <Card.Section style={{ height: '20%' }} className={classes.section}>
-            <Text mt="md" className={classes.label}>
-              Problem
-            </Text>
+            <Text className={classes.label}>Problem</Text>
             <Text
               mt="sm"
               style={{
                 backgroundColor: 'white',
-                height: '70%',
+                height: '15vh',
               }}
             >
               {idea.problem}
@@ -141,10 +110,8 @@ export default function Presentations() {
           </Card.Section>
 
           <Card.Section style={{ height: '20%' }} className={classes.section}>
-            <Text mt="md" className={classes.label}>
-              Goal
-            </Text>
-            <Text mt="sm" style={{ backgroundColor: 'white', height: '70%' }}>
+            <Text className={classes.label}>Goal</Text>
+            <Text mt="sm" style={{ backgroundColor: 'white', height: '15vh' }}>
               {idea.goal}
             </Text>
           </Card.Section>
@@ -153,12 +120,13 @@ export default function Presentations() {
             <Grid>
               <Grid.Col span={6}>
                 <Card.Section>
-                  <Text mt="md" className={classes.label}>
-                    Skills
-                  </Text>
+                  <Text className={classes.label}>Skills</Text>
                   <Text
                     mt="sm"
-                    style={{ backgroundColor: 'white', height: '70%' }}
+                    style={{
+                      backgroundColor: 'white',
+                      height: '15vh',
+                    }}
                   >
                     <ul>
                       {idea.requiredSkills?.map((skill, index) => (
@@ -168,35 +136,43 @@ export default function Presentations() {
                   </Text>
                 </Card.Section>
               </Grid.Col>
+
               <Grid.Col span={6}>
                 <Card.Section>
-                  <Text mt="md" className={classes.label}>
-                    Participants
+                  <Text className={classes.label}>Participants</Text>
+                  <Text
+                    mt="sm"
+                    style={{
+                      backgroundColor: 'white',
+                      height: '15vh',
+                      border: '1px solid transparent',
+                    }}
+                  >
+                    <Grid>
+                      {idea.participants?.map((participant, index) => (
+                        <Grid.Col span={4}>
+                          <div
+                            style={{
+                              display: 'flex',
+                              alignItems: 'center',
+                              gap: '10px',
+                            }}
+                          >
+                            <Avatar
+                              color="indigo"
+                              radius="xl"
+                              size="md"
+                              src={
+                                'https://avatars.githubusercontent.com/u/10353856?s=460&u=88394dfd67727327c1f7670a1764dc38a8a24831&v=4'
+                              }
+                            />
+                            {participant.user.firstName}{' '}
+                            {participant.user.lastName}
+                          </div>
+                        </Grid.Col>
+                      ))}
+                    </Grid>
                   </Text>
-                  <Grid style={{ backgroundColor: 'white', height: '70%' }}>
-                    {idea.participants?.map((participant, index) => (
-                      <Grid.Col span={4}>
-                        <div
-                          style={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: '10px',
-                          }}
-                        >
-                          <Avatar
-                            color="indigo"
-                            radius="xl"
-                            size="md"
-                            src={
-                              'https://avatars.githubusercontent.com/u/10353856?s=460&u=88394dfd67727327c1f7670a1764dc38a8a24831&v=4'
-                            }
-                          />
-                          {participant.user.firstName}{' '}
-                          {participant.user.lastName}
-                        </div>
-                      </Grid.Col>
-                    ))}
-                  </Grid>
                 </Card.Section>
               </Grid.Col>
             </Grid>
@@ -205,10 +181,6 @@ export default function Presentations() {
       </div>
     ))
   }
-
-  useEffect(() => {
-    getIdeasMap()
-  }, [count2])
 
   return (
     <>
@@ -223,7 +195,9 @@ export default function Presentations() {
         console log all ideas
       </Button>
 
-      {getIdeasMap()}
+      <div ref={ref}>
+        <Carousel enableKeyboardControls={true}>{getIdeasMap()}</Carousel>
+      </div>
     </>
   )
 }
