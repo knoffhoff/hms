@@ -1,5 +1,5 @@
 import { getHackathonDetails } from '../actions/HackathonActions'
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Hackathon, Idea } from '../common/types'
 import { getIdeaDetails } from '../actions/IdeaActions'
 
@@ -7,19 +7,22 @@ type Props = {
   selectedHackweek: string
   setRelevantIdea: (relevantIdeaList: Idea[]) => void
   setHackathon: (hackathonData: Hackathon) => void
+  setLoading: (boolean: boolean) => void
 }
 
 export default function GetRelevantIdeas({
   selectedHackweek,
   setRelevantIdea,
   setHackathon,
+  setLoading,
 }: Props) {
   const [relevantIdeaList, setRelevantIdeaList] = useState([] as Idea[])
+  const [isLoading, setIsLoading] = useState(true)
   const [hackathonData, setHackathonData] = useState({
     id: 'string',
     title: 'string',
-    startDate: 'string',
-    endDate: 'string',
+    startDate: new Date(),
+    endDate: new Date(),
     participants: [],
     categories: undefined,
     ideas: [],
@@ -68,6 +71,7 @@ export default function GetRelevantIdeas({
           category: data.category,
           creationDate: data.creationDate,
         })
+        setIsLoading(false)
       })
     })
   }
@@ -99,6 +103,7 @@ export default function GetRelevantIdeas({
 
   setRelevantIdea(relevantIdeaList)
   setHackathon(hackathonData)
+  setLoading(isLoading)
 
   return <div />
 }

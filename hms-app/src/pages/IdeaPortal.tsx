@@ -9,6 +9,7 @@ import GetRelevantIdeas from '../components/GetRelevantIdeas'
 
 function IdeaPortal() {
   const [searchTerm, setSearchTerm] = useState('')
+  const [isLoading, setIsLoading] = useState(true)
   const [selectedHackweek, setSelectedHackweek] = useState('')
   const [relevantIdeaList, setRelevantIdeaList] = useState([] as Idea[])
   const [participantInfo, setParticipantInfo] = useState({
@@ -18,8 +19,8 @@ function IdeaPortal() {
   const [hackathonData, setHackathonData] = useState({
     id: 'string',
     title: 'string',
-    startDate: 'string',
-    endDate: 'string',
+    startDate: new Date(),
+    endDate: new Date(),
     participants: [],
     categories: undefined,
     ideas: [],
@@ -39,7 +40,9 @@ function IdeaPortal() {
 
   const addHackathonParticipant = () => {
     createParticipant(participantInfo.userId, participantInfo.hackathonId).then(
-      (r) => console.log(r)
+      (r) => {
+        console.log(r)
+      }
     )
   }
 
@@ -53,6 +56,10 @@ function IdeaPortal() {
 
   const getHackathonData = (hackathonData: Hackathon) => {
     setHackathonData(hackathonData)
+  }
+
+  const getIsLoading = (isLoading: boolean) => {
+    setIsLoading(isLoading)
   }
 
   return (
@@ -73,28 +80,33 @@ function IdeaPortal() {
         setHackathon={getHackathonData}
         setRelevantIdea={getRelevantIdeaList}
         selectedHackweek={selectedHackweek}
+        setLoading={getIsLoading}
       />
 
-      <h4>want to participate in this Hackathon?</h4>
-      <Button onClick={() => addHackathonParticipant()}>Participate</Button>
-
       <div>
-        <h2>{hackathonData.title}</h2>
-        <h2>
-          from: {new Date(hackathonData.startDate).toDateString()} to:{' '}
-          {new Date(hackathonData.endDate).toDateString()}
-        </h2>
-        <h2>All Ideas ({hackathonData.ideas?.length})</h2>
-
-        <div>
-          <IdeaCardList
-            ideas={filteredIdeas}
-            columnSize={6}
-            type={'idea-portal'}
-            isLoading={false}
-          />
-        </div>
+        <h4>want to participate in this Hackathon?</h4>
+        <Button onClick={() => addHackathonParticipant()}>Participate</Button>
       </div>
+
+      {!isLoading && (
+        <div>
+          <h2>{hackathonData.title}</h2>
+          <h2>
+            from: {new Date(hackathonData.startDate).toDateString()} to:{' '}
+            {new Date(hackathonData.endDate).toDateString()}
+          </h2>
+          <h2>Your Ideas ({filteredIdeas.length})</h2>
+
+          <div>
+            <IdeaCardList
+              ideas={filteredIdeas}
+              columnSize={6}
+              type={'idea-portal'}
+              isLoading={false}
+            />
+          </div>
+        </div>
+      )}
     </>
   )
 }

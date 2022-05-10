@@ -1,13 +1,15 @@
 export type HackathonPreview = {
   id: string
   title: string
+  startDate: Date
+  endDate: Date
 }
 
 export type Hackathon = {
   id: string
   title: string
-  startDate: string
-  endDate: string
+  startDate: Date
+  endDate: Date
   participants?: ParticipantPreview[]
   categories?: CategoryPreview[]
   ideas?: IdeaPreview[]

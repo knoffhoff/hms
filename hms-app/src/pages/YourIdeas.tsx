@@ -1,21 +1,21 @@
 import { Accordion } from '@mantine/core'
 import { Hackathon, Idea } from '../common/types'
 import IdeaCardList from '../components/lists/IdeaCardList'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import IdeaForm from '../components/input-forms/IdeaForm'
 import HackathonSelectDropdown from '../components/HackathonSelectDropdown'
 import GetRelevantIdeas from '../components/GetRelevantIdeas'
 
 function YourIdeas() {
   const userId = '1c9db559-d3be-4836-9e8e-f04f7644a485'
-
   const [selectedHackweek, setSelectedHackweek] = useState('')
   const [relevantIdeaList, setRelevantIdeaList] = useState([] as Idea[])
+  const [isLoading, setIsLoading] = useState(true)
   const [hackathonData, setHackathonData] = useState({
     id: 'string',
     title: 'string',
-    startDate: 'string',
-    endDate: 'string',
+    startDate: new Date(),
+    endDate: new Date(),
     participants: [],
     categories: undefined,
     ideas: [],
@@ -37,6 +37,10 @@ function YourIdeas() {
     setHackathonData(hackathonData)
   }
 
+  const getIsLoading = (isLoading: boolean) => {
+    setIsLoading(isLoading)
+  }
+
   return (
     <>
       <HackathonSelectDropdown setHackathonID={getHackathonID} />
@@ -45,6 +49,7 @@ function YourIdeas() {
         setHackathon={getHackathonData}
         setRelevantIdea={getRelevantIdeaList}
         selectedHackweek={selectedHackweek}
+        setLoading={getIsLoading}
       />
 
       <>
@@ -63,23 +68,25 @@ function YourIdeas() {
             </Accordion.Item>
           </Accordion>
         </div>
-        <div>
-          <h2>{hackathonData.title}</h2>
-          <h2>
-            from: {new Date(hackathonData.startDate).toDateString()} to:{' '}
-            {new Date(hackathonData.endDate).toDateString()}
-          </h2>
-          <h2>Your Ideas ({filteredIdeas.length})</h2>
-
+        {!isLoading && (
           <div>
-            <IdeaCardList
-              ideas={filteredIdeas}
-              columnSize={6}
-              type={'owner'}
-              isLoading={false}
-            />
+            <h2>{hackathonData.title}</h2>
+            <h2>
+              from: {new Date(hackathonData.startDate).toDateString()} to:{' '}
+              {new Date(hackathonData.endDate).toDateString()}
+            </h2>
+            <h2>Your Ideas ({filteredIdeas.length})</h2>
+
+            <div>
+              <IdeaCardList
+                ideas={filteredIdeas}
+                columnSize={6}
+                type={'owner'}
+                isLoading={false}
+              />
+            </div>
           </div>
-        </div>
+        )}
       </>
     </>
   )

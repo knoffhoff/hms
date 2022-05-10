@@ -33,7 +33,12 @@ export default function HackathonSelectDropdown(setHackathonID: Props) {
 
   const hackathonMap = hackathonList.hackathons.map((hackathon, index) => ({
     value: hackathon.id,
-    label: hackathon.title,
+    label:
+      hackathon.title +
+      ' ' +
+      new Date(hackathon.startDate).toLocaleDateString() +
+      '-' +
+      new Date(hackathon.endDate).toLocaleDateString(),
   }))
 
   const selectChange = (value: string) => {
