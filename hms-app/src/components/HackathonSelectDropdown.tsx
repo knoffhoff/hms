@@ -11,16 +11,12 @@ export default function HackathonSelectDropdown(setHackathonID: Props) {
   const [selectedHackweek, setSelectedHackweek] = useState('')
   const [isError, setIsError] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
-  const [hackathonList, setHackathonList] = useState({
-    hackathons: [] as HackathonPreview[],
-  })
+  const [hackathonList, setHackathonList] = useState([] as HackathonPreview[])
 
   const loadHackathons = () => {
     getListOfHackathons().then(
       (data) => {
-        setHackathonList({
-          hackathons: data.hackathons,
-        })
+        setHackathonList(data.hackathons)
         setIsLoading(false)
         setIsError(false)
       },
@@ -31,7 +27,7 @@ export default function HackathonSelectDropdown(setHackathonID: Props) {
     )
   }
 
-  const hackathonMap = hackathonList.hackathons.map((hackathon, index) => ({
+  const hackathonMap = hackathonList.map((hackathon, index) => ({
     value: hackathon.id,
     label:
       hackathon.title +

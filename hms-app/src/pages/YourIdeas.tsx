@@ -4,7 +4,7 @@ import IdeaCardList from '../components/lists/IdeaCardList'
 import React, { useEffect, useState } from 'react'
 import IdeaForm from '../components/input-forms/IdeaForm'
 import HackathonSelectDropdown from '../components/HackathonSelectDropdown'
-import GetRelevantIdeas from '../components/GetRelevantIdeas'
+import RelevantIdeasLoader from '../components/RelevantIdeasLoader'
 
 function YourIdeas() {
   const userId = '1c9db559-d3be-4836-9e8e-f04f7644a485'
@@ -45,7 +45,7 @@ function YourIdeas() {
     <>
       <HackathonSelectDropdown setHackathonID={getHackathonID} />
 
-      <GetRelevantIdeas
+      <RelevantIdeasLoader
         setHackathon={getHackathonData}
         setRelevantIdea={getRelevantIdeaList}
         selectedHackweek={selectedHackweek}

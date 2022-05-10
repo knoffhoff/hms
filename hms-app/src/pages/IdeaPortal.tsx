@@ -5,18 +5,18 @@ import IdeaCardList from '../components/lists/IdeaCardList'
 import { Hackathon, Idea } from '../common/types'
 import { createParticipant } from '../actions/ParticipantActions'
 import HackathonSelectDropdown from '../components/HackathonSelectDropdown'
-import GetRelevantIdeas from '../components/GetRelevantIdeas'
+import RelevantIdeasLoader from '../components/RelevantIdeasLoader'
 
 function IdeaPortal() {
   const [searchTerm, setSearchTerm] = useState('')
   const [isLoading, setIsLoading] = useState(true)
   const [selectedHackweek, setSelectedHackweek] = useState('')
-  const [relevantIdeaList, setRelevantIdeaList] = useState([] as Idea[])
+  const [relevantIdeaList, setRelevantIdeas] = useState([] as Idea[])
   const [participantInfo, setParticipantInfo] = useState({
     userId: 'f6fa2b8e-68ed-4486-b8df-f93b87ff23e5',
     hackathonId: '',
   })
-  const [hackathonData, setHackathonData] = useState({
+  const [hackathonData, setHackathons] = useState({
     id: 'string',
     title: 'string',
     startDate: new Date(),
@@ -46,19 +46,19 @@ function IdeaPortal() {
     )
   }
 
-  const getHackathonID = (hackthonID: string) => {
+  const setHackathonID = (hackthonID: string) => {
     setSelectedHackweek(hackthonID)
   }
 
-  const getRelevantIdeaList = (relevantIdeaList: Idea[]) => {
-    setRelevantIdeaList(relevantIdeaList)
+  const setRelevantIdeaList = (relevantIdeaList: Idea[]) => {
+    setRelevantIdeas(relevantIdeaList)
   }
 
-  const getHackathonData = (hackathonData: Hackathon) => {
-    setHackathonData(hackathonData)
+  const setHackathonData = (hackathonData: Hackathon) => {
+    setHackathons(hackathonData)
   }
 
-  const getIsLoading = (isLoading: boolean) => {
+  const setThisIsLoading = (isLoading: boolean) => {
     setIsLoading(isLoading)
   }
 
@@ -66,7 +66,7 @@ function IdeaPortal() {
     <>
       <Title order={1}>All ideas</Title>
       <Group position={'apart'} py={20}>
-        <HackathonSelectDropdown setHackathonID={getHackathonID} />
+        <HackathonSelectDropdown setHackathonID={setHackathonID} />
 
         <Input
           variant="default"
@@ -76,11 +76,11 @@ function IdeaPortal() {
         />
       </Group>
 
-      <GetRelevantIdeas
-        setHackathon={getHackathonData}
-        setRelevantIdea={getRelevantIdeaList}
+      <RelevantIdeasLoader
+        setHackathon={setHackathonData}
+        setRelevantIdea={setRelevantIdeaList}
         selectedHackweek={selectedHackweek}
-        setLoading={getIsLoading}
+        setLoading={setThisIsLoading}
       />
 
       <div>

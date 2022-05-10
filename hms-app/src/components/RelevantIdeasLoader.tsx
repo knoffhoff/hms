@@ -10,7 +10,7 @@ type Props = {
   setLoading: (boolean: boolean) => void
 }
 
-export default function GetRelevantIdeas({
+export default function RelevantIdeasLoader({
   selectedHackweek,
   setRelevantIdea,
   setHackathon,
