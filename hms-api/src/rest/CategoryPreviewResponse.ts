@@ -15,18 +15,31 @@ class CategoryPreviewResponse {
     this.title = title;
   }
 
-  static from = (category: Category): CategoryPreviewResponse =>
-    new CategoryPreviewResponse(
-        category.id,
-        category.title,
-    );
+  static from = (
+      category: Category,
+  ): CategoryPreviewResponse => new CategoryPreviewResponse(
+      category.id,
+      category.title,
+  );
 
   static fromArray(categories: Category[]): CategoryPreviewResponse[] {
     const previews: CategoryPreviewResponse[] = [];
     for (const category of categories) {
       previews.push(CategoryPreviewResponse.from(category));
     }
-    return previews;
+    return previews.sort(this.compare);
+  }
+
+  static compare(
+      a: CategoryPreviewResponse,
+      b: CategoryPreviewResponse,
+  ): number {
+    const diff = a.title.localeCompare(b.title);
+    if (diff) {
+      return diff;
+    }
+
+    return a.id.localeCompare(b.id);
   }
 }
 

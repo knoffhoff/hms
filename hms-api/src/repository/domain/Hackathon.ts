@@ -1,9 +1,11 @@
+/* eslint-disable require-jsdoc */
+
 import Uuid, {uuid} from '../../util/Uuid';
 
 /**
  * Representation of a hackathon within the Database
  */
-export default class {
+class Hackathon {
   id: Uuid;
   title: string;
   startDate: Date;
@@ -23,7 +25,6 @@ export default class {
       creationDate: Date,
   );
 
-  // eslint-disable-next-line require-jsdoc
   constructor(
       title: string,
       startDate: Date,
@@ -38,3 +39,5 @@ export default class {
     this.creationDate = creationDate;
   }
 }
+
+export default Hackathon;
