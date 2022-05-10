@@ -10,7 +10,8 @@ import {
 import { getIdeaDetails } from '../actions/IdeaActions'
 
 function YourIdeas() {
-  const userId = '3d57dcee-ec55-4581-b560-bf5dc0a5f54b'
+  const userId = '1c9db559-d3be-4836-9e8e-f04f7644a485'
+
   const [selectedHackweek, setSelectedHackweek] = useState('')
   const [hackathonList, setHackathonList] = useState({
     errorHackathonList: false,
