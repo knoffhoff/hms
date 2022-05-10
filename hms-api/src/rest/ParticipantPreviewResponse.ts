@@ -36,7 +36,19 @@ class ParticipantPreviewResponse {
           participant,
           extractUser(users, participant)));
     }
-    return previews;
+    return previews.sort(this.compare);
+  }
+
+  static compare(
+      a: ParticipantPreviewResponse,
+      b: ParticipantPreviewResponse,
+  ): number {
+    const diff = UserPreviewResponse.compare(a.user, b.user);
+    if (diff) {
+      return diff;
+    }
+
+    return a.id.localeCompare(b.id);
   }
 }
 

@@ -21,20 +21,38 @@ class UserPreviewResponse {
     this.imageUrl = imageUrl;
   }
 
-  static from = (user: User): UserPreviewResponse =>
-    new UserPreviewResponse(
-        user.id,
-        user.lastName,
-        user.firstName,
-        user.imageUrl,
-    );
+  static from = (
+      user: User,
+  ): UserPreviewResponse => new UserPreviewResponse(
+      user.id,
+      user.lastName,
+      user.firstName,
+      user.imageUrl,
+  );
 
   static fromArray(users: User[]): UserPreviewResponse[] {
     const previews: UserPreviewResponse[] = [];
     for (const user of users) {
       previews.push(UserPreviewResponse.from(user));
     }
-    return previews;
+    return previews.sort(this.compare);
+  }
+
+  static compare(
+      a: UserPreviewResponse,
+      b: UserPreviewResponse,
+  ): number {
+    let diff = a.firstName.localeCompare(b.firstName);
+    if (diff) {
+      return diff;
+    }
+
+    diff = a.lastName.localeCompare(b.lastName);
+    if (diff) {
+      return diff;
+    }
+
+    return a.id.localeCompare(b.id);
   }
 }
 

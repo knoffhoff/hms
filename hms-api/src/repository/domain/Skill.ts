@@ -1,10 +1,12 @@
+/* eslint-disable require-jsdoc */
+
 import Uuid, {uuid} from '../../util/Uuid';
 
 /**
  * A Skill is any technical or other kind of skill that a User has and is
  * needed for the completion of an Idea
  */
-export default class {
+class Skill {
   id: Uuid;
   name: string;
   description: string;
@@ -19,7 +21,6 @@ export default class {
       id: Uuid,
   );
 
-  // eslint-disable-next-line require-jsdoc
   constructor(
       name: string,
       description: string,
@@ -30,3 +31,5 @@ export default class {
     this.description = description;
   }
 }
+
+export default Skill;
