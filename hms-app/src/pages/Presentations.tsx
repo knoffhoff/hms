@@ -11,7 +11,7 @@ import {
   Text,
 } from '@mantine/core'
 import { useFullscreen } from '@mantine/hooks'
-import { Idea } from '../common/types'
+import { Idea, User, UserPreview } from '../common/types'
 import Carousel from 'nuka-carousel'
 
 const useStyles = createStyles((theme) => ({
@@ -38,7 +38,11 @@ export default function Presentations() {
   // @ts-ignore
   const allIdeas = JSON.parse(localStorage.getItem('ideas'))
 
-  function getIdeasMap() {
+  function renderName(user: UserPreview): string {
+    return user.firstName + (user.lastName ? ' ' + user.lastName : '')
+  }
+
+  function getIdeasList() {
     return allIdeas.map((idea: Idea, index: number) => (
       <div style={{ padding: 10 }}>
         <Card
@@ -130,7 +134,7 @@ export default function Presentations() {
                   >
                     <ul>
                       {idea.requiredSkills?.map((skill, index) => (
-                        <li>{skill.name}</li>
+                        <li key={skill.id}>{skill.name}</li>
                       ))}
                     </ul>
                   </Text>
@@ -145,7 +149,6 @@ export default function Presentations() {
                     style={{
                       backgroundColor: 'white',
                       height: '15vh',
-                      border: '1px solid transparent',
                     }}
                   >
                     <Grid>
@@ -166,8 +169,7 @@ export default function Presentations() {
                                 'https://avatars.githubusercontent.com/u/10353856?s=460&u=88394dfd67727327c1f7670a1764dc38a8a24831&v=4'
                               }
                             />
-                            {participant.user.firstName}{' '}
-                            {participant.user.lastName}
+                            {renderName(participant.user)}
                           </div>
                         </Grid.Col>
                       ))}
@@ -196,7 +198,7 @@ export default function Presentations() {
       </Button>
 
       <div ref={ref}>
-        <Carousel enableKeyboardControls={true}>{getIdeasMap()}</Carousel>
+        <Carousel enableKeyboardControls={true}>{getIdeasList()}</Carousel>
       </div>
     </>
   )
