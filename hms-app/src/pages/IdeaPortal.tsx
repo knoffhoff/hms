@@ -15,6 +15,7 @@ import { CheckIcon } from '@modulz/radix-icons'
 function IdeaPortal() {
   const [searchTerm, setSearchTerm] = useState('')
   const [isLoading, setIsLoading] = useState(true)
+  const [participantCheck, setParticipantCheck] = useState(false)
   const [selectedHackweek, setSelectedHackweek] = useState('')
   const [buttonIsDisabled, setButtonisDisabled] = useState(false)
   const [relevantIdeaList, setRelevantIdeas] = useState([] as Idea[])
@@ -33,10 +34,6 @@ function IdeaPortal() {
     ideas: [],
   } as Hackathon)
 
-  useEffect(() => {
-    setParticipantInfo({ ...participantInfo, hackathonId: selectedHackweek })
-  }, [selectedHackweek])
-
   const handleChangeSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value)
   }
@@ -53,6 +50,8 @@ function IdeaPortal() {
     return item.user.id.includes(participantInfo.userId)
   })
 
+  const isParticipant = hackathonParticipants?.includes(participantInfo.userId)
+
   const addHackathonParticipant = () => {
     setButtonisDisabled(true)
     showNotification({
@@ -66,7 +65,13 @@ function IdeaPortal() {
     createParticipant(participantInfo.userId, participantInfo.hackathonId).then(
       (r) => {
         setTimeout(() => {
-          console.log('r', r)
+          console.log('r added', r)
+          setButtonisDisabled(false)
+          setParticipantCheck(true)
+          setParticipantInfo((prevState) => ({
+            ...prevState,
+            participantId: r.id,
+          }))
           updateNotification({
             id: 'participant-load',
             color: 'teal',
@@ -76,11 +81,6 @@ function IdeaPortal() {
             autoClose: 2000,
           })
         }, 3000)
-        setButtonisDisabled(false)
-        setParticipantInfo((prevState) => ({
-          ...prevState,
-          participantId: r.id,
-        }))
       }
     )
   }
@@ -98,7 +98,9 @@ function IdeaPortal() {
     // @ts-ignore
     deleteParticipant(filterParticipants[0].id).then((r) => {
       setTimeout(() => {
-        console.log('r', r)
+        console.log('r deleted', r)
+        setButtonisDisabled(false)
+        setParticipantCheck(false)
         updateNotification({
           id: 'participant-load',
           color: 'teal',
@@ -108,7 +110,6 @@ function IdeaPortal() {
           autoClose: 2000,
         })
       }, 3000)
-      setButtonisDisabled(false)
     })
   }
 
@@ -127,6 +128,14 @@ function IdeaPortal() {
   const setThisIsLoading = (isLoading: boolean) => {
     setIsLoading(isLoading)
   }
+
+  useEffect(() => {
+    setParticipantInfo({ ...participantInfo, hackathonId: selectedHackweek })
+  }, [selectedHackweek])
+
+  useEffect(() => {
+    setParticipantCheck(isParticipant!)
+  }, [hackathonData])
 
   return (
     <>
@@ -149,23 +158,18 @@ function IdeaPortal() {
         setLoading={setThisIsLoading}
       />
 
-      {!isLoading && !hackathonParticipants?.includes(participantInfo.userId) && (
-        <div>
-          <Button disabled={buttonIsDisabled} onClick={addHackathonParticipant}>
-            Join Hackathon
-          </Button>
-        </div>
-      )}
-      {!isLoading && hackathonParticipants?.includes(participantInfo.userId) && (
-        <div>
-          <Button
-            disabled={buttonIsDisabled}
-            onClick={removeHackathonParticipant}
-            color={'red'}
-          >
-            Left Hackathon
-          </Button>
-        </div>
+      {!isLoading && (
+        <Button
+          disabled={buttonIsDisabled}
+          onClick={
+            participantCheck
+              ? removeHackathonParticipant
+              : addHackathonParticipant
+          }
+          color={participantCheck ? 'red' : 'blue'}
+        >
+          {participantCheck ? 'Left Hackathon' : 'Join Hackathon'}
+        </Button>
       )}
 
       {!isLoading && (
