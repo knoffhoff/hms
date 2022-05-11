@@ -168,7 +168,7 @@ function IdeaPortal() {
           }
           color={participantCheck ? 'red' : 'blue'}
         >
-          {participantCheck ? 'Left Hackathon' : 'Join Hackathon'}
+          {participantCheck ? 'Leave Hackathon' : 'Join Hackathon'}
         </Button>
       )}
 
