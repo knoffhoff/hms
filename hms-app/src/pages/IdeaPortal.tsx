@@ -3,9 +3,14 @@ import { Input, Group, Title, Button } from '@mantine/core'
 import { Search } from 'tabler-icons-react'
 import IdeaCardList from '../components/lists/IdeaCardList'
 import { Hackathon, Idea } from '../common/types'
-import { createParticipant } from '../actions/ParticipantActions'
+import {
+  createParticipant,
+  deleteParticipant,
+} from '../actions/ParticipantActions'
 import HackathonSelectDropdown from '../components/HackathonSelectDropdown'
 import RelevantIdeasLoader from '../components/RelevantIdeasLoader'
+import { showNotification, updateNotification } from '@mantine/notifications'
+import { CheckIcon } from '@modulz/radix-icons'
 
 function IdeaPortal() {
   const [searchTerm, setSearchTerm] = useState('')
@@ -15,6 +20,7 @@ function IdeaPortal() {
   const [participantInfo, setParticipantInfo] = useState({
     userId: 'f6fa2b8e-68ed-4486-b8df-f93b87ff23e5',
     hackathonId: '',
+    participantId: '',
   })
   const [hackathonData, setHackathons] = useState({
     id: 'string',
@@ -38,12 +44,67 @@ function IdeaPortal() {
     return item.title?.toLowerCase().includes(searchTerm.toLowerCase())
   })
 
+  const hackathonParticipants = hackathonData.participants?.map(
+    (participant) => participant.user.id
+  )
+
+  const filterParticipants = hackathonData.participants?.filter((item) => {
+    return item.user.id.includes(participantInfo.userId)
+  })
+
   const addHackathonParticipant = () => {
+    showNotification({
+      id: 'participant-load',
+      loading: true,
+      title: 'Join Hackathon',
+      message: 'this can take a second',
+      autoClose: false,
+      disallowClose: true,
+    })
     createParticipant(participantInfo.userId, participantInfo.hackathonId).then(
       (r) => {
-        console.log(r)
+        setTimeout(() => {
+          console.log('r', r)
+          updateNotification({
+            id: 'participant-load',
+            color: 'teal',
+            title: 'Joined Hackathon',
+            message: 'Notification will close in 2 seconds',
+            icon: <CheckIcon />,
+            autoClose: 2000,
+          })
+        }, 3000)
+        setParticipantInfo((prevState) => ({
+          ...prevState,
+          participantId: r.id,
+        }))
       }
     )
+  }
+
+  const removeHackathonParticipant = () => {
+    showNotification({
+      id: 'participant-load',
+      loading: true,
+      title: 'Left Hackathon',
+      message: 'this can take a second',
+      autoClose: false,
+      disallowClose: true,
+    })
+    // @ts-ignore
+    deleteParticipant(filterParticipants[0].id).then((r) => {
+      setTimeout(() => {
+        console.log('r', r)
+        updateNotification({
+          id: 'participant-load',
+          color: 'teal',
+          title: 'Left Hackathon',
+          message: 'Notification will close in 2 seconds',
+          icon: <CheckIcon />,
+          autoClose: 2000,
+        })
+      }, 3000)
+    })
   }
 
   const setHackathonID = (hackthonID: string) => {
@@ -83,10 +144,20 @@ function IdeaPortal() {
         setLoading={setThisIsLoading}
       />
 
-      <div>
-        <h4>want to participate in this Hackathon?</h4>
-        <Button onClick={() => addHackathonParticipant()}>Participate</Button>
-      </div>
+      {!isLoading && !hackathonParticipants?.includes(participantInfo.userId) && (
+        <div>
+          <Button onClick={() => addHackathonParticipant()}>
+            Join Hackathon
+          </Button>
+        </div>
+      )}
+      {!isLoading && hackathonParticipants?.includes(participantInfo.userId) && (
+        <div>
+          <Button onClick={removeHackathonParticipant} color={'red'}>
+            Left Hackathon
+          </Button>
+        </div>
+      )}
 
       {!isLoading && (
         <div>
@@ -107,6 +178,8 @@ function IdeaPortal() {
           </div>
         </div>
       )}
+
+      {isLoading && selectedHackweek && <div>Loading...</div>}
     </>
   )
 }
