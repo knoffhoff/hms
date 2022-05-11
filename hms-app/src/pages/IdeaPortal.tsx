@@ -151,10 +151,7 @@ function IdeaPortal() {
 
       {!isLoading && !hackathonParticipants?.includes(participantInfo.userId) && (
         <div>
-          <Button
-            disabled={buttonIsDisabled}
-            onClick={() => addHackathonParticipant()}
-          >
+          <Button disabled={buttonIsDisabled} onClick={addHackathonParticipant}>
             Join Hackathon
           </Button>
         </div>
