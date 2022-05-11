@@ -1,13 +1,12 @@
 import React, { useState } from 'react'
 import { Button, Title, useMantineTheme, Text, Group } from '@mantine/core'
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd'
-import ideaData from '../test/TestIdeaData'
 import IdeaDetails from '../components/card-details/IdeaDetails'
 
 const columnsFromBackend = {
   ['1']: {
     name: 'All ideas',
-    items: [...ideaData],
+    items: [],
   },
   ['2']: {
     name: 'Your Votes',
@@ -188,7 +187,9 @@ export default function Voting() {
                             {column.items.map((item, index) => {
                               return (
                                 <Draggable
+                                  // @ts-ignore
                                   key={item.id}
+                                  // @ts-ignore
                                   draggableId={item.id.toString()}
                                   index={index}
                                 >
