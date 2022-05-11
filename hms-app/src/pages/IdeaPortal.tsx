@@ -16,6 +16,7 @@ function IdeaPortal() {
   const [searchTerm, setSearchTerm] = useState('')
   const [isLoading, setIsLoading] = useState(true)
   const [selectedHackweek, setSelectedHackweek] = useState('')
+  const [buttonIsDisabled, setButtonisDisabled] = useState(false)
   const [relevantIdeaList, setRelevantIdeas] = useState([] as Idea[])
   const [participantInfo, setParticipantInfo] = useState({
     userId: 'f6fa2b8e-68ed-4486-b8df-f93b87ff23e5',
@@ -53,6 +54,7 @@ function IdeaPortal() {
   })
 
   const addHackathonParticipant = () => {
+    setButtonisDisabled(true)
     showNotification({
       id: 'participant-load',
       loading: true,
@@ -74,6 +76,7 @@ function IdeaPortal() {
             autoClose: 2000,
           })
         }, 3000)
+        setButtonisDisabled(false)
         setParticipantInfo((prevState) => ({
           ...prevState,
           participantId: r.id,
@@ -83,6 +86,7 @@ function IdeaPortal() {
   }
 
   const removeHackathonParticipant = () => {
+    setButtonisDisabled(true)
     showNotification({
       id: 'participant-load',
       loading: true,
@@ -104,6 +108,7 @@ function IdeaPortal() {
           autoClose: 2000,
         })
       }, 3000)
+      setButtonisDisabled(false)
     })
   }
 
@@ -146,14 +151,21 @@ function IdeaPortal() {
 
       {!isLoading && !hackathonParticipants?.includes(participantInfo.userId) && (
         <div>
-          <Button onClick={() => addHackathonParticipant()}>
+          <Button
+            disabled={buttonIsDisabled}
+            onClick={() => addHackathonParticipant()}
+          >
             Join Hackathon
           </Button>
         </div>
       )}
       {!isLoading && hackathonParticipants?.includes(participantInfo.userId) && (
         <div>
-          <Button onClick={removeHackathonParticipant} color={'red'}>
+          <Button
+            disabled={buttonIsDisabled}
+            onClick={removeHackathonParticipant}
+            color={'red'}
+          >
             Left Hackathon
           </Button>
         </div>
