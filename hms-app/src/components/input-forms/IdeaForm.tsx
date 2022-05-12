@@ -12,6 +12,7 @@ import React, { useEffect, useState } from 'react'
 import {
   CategoryPreview,
   HackathonPreview,
+  Idea,
   SkillPreview,
 } from '../../common/types'
 import { getListOfSkills } from '../../actions/SkillActions'
@@ -26,6 +27,7 @@ type IProps = {
   context: string
   ideaID: string | null
   setOpened?: (boolean: boolean) => void
+  idea?: Idea
 }
 
 const useStyles = createStyles((theme) => ({
@@ -47,9 +49,8 @@ const useStyles = createStyles((theme) => ({
 }))
 
 function IdeaForm(props: IProps) {
-  const { hackathon, participantID, context, ideaID, setOpened } = props
+  const { hackathon, participantID, context, ideaID, setOpened, idea } = props
   const { classes } = useStyles()
-  const [isError, setIsError] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
   const [buttonIsDisabled, setButtonIsDisabled] = useState(false)
   const [availableSkills, setAvailableSkills] = useState({
@@ -70,24 +71,16 @@ function IdeaForm(props: IProps) {
     creationDate: new Date(),
   })
 
-  const loadSelectedIdea = () => {
-    getIdeaDetails(ideaID!).then(
-      (data) => {
-        setIsError(false)
-        setIsLoading(false)
-        setIdeaText({
-          ...ideaText,
-          title: data.title,
-          description: data.description,
-          problem: data.problem,
-          goal: data.goal,
-        })
-      },
-      () => {
-        setIsError(true)
-        setIsLoading(false)
-      }
-    )
+  const setIdea = () => {
+    if (idea) {
+      setIdeaText({
+        ...ideaText,
+        title: idea.title,
+        description: idea.description,
+        problem: idea.problem,
+        goal: idea.goal,
+      })
+    }
   }
 
   const loadAvailableSkills = () => {
@@ -105,6 +98,7 @@ function IdeaForm(props: IProps) {
         ...availableCategories,
         categories: data.categories,
       })
+      setIsLoading(false)
     })
   }
 
@@ -195,8 +189,7 @@ function IdeaForm(props: IProps) {
   useEffect(() => {
     loadAvailableSkills()
     loadAvailableCategories()
-    loadSelectedIdea()
-    setIsLoading(true)
+    setIdea()
     setCategories([])
     setSkills([])
   }, [])
@@ -219,91 +212,99 @@ function IdeaForm(props: IProps) {
           <h3>Idea details are loading...</h3>
         </div>
       )}
-      {!isLoading && (
-        <Card withBorder radius="md" p="md" className={classes.card}>
+
+      <Card withBorder radius="md" p="md" className={classes.card}>
+        <Card.Section className={classes.section}>
+          <Text mt="sm">hackathon: {hackathon.title}</Text>
+        </Card.Section>
+        <Card.Section className={classes.section}>
+          <Textarea
+            label="Title"
+            mt="sm"
+            required
+            placeholder="Title"
+            maxRows={1}
+            autosize
+            onChange={handleChange}
+            name="title"
+            value={ideaText.title}
+          />
+        </Card.Section>
+        <Card.Section className={classes.section}>
+          <Textarea
+            mt="sm"
+            label="Description"
+            required
+            placeholder="Description"
+            minRows={2}
+            maxRows={3}
+            autosize
+            onChange={handleChange}
+            name="description"
+            value={ideaText.description}
+          />
+        </Card.Section>
+        <Card.Section className={classes.section}>
+          <Textarea
+            label="Problem"
+            mt="sm"
+            placeholder="which problelm does it solve (optional)"
+            minRows={2}
+            maxRows={3}
+            autosize
+            onChange={handleChange}
+            name="problem"
+            value={ideaText.problem}
+          />
+        </Card.Section>
+        <Card.Section className={classes.section}>
+          <Textarea
+            label="Goal"
+            mt="sm"
+            placeholder="the goal for the hackweek is... (optional)"
+            minRows={2}
+            maxRows={3}
+            autosize
+            onChange={handleChange}
+            name="goal"
+            value={ideaText.goal}
+          />
+        </Card.Section>
+
+        <>
           <Card.Section className={classes.section}>
-            <Text mt="sm">hackathon: {hackathon.title}</Text>
+            {isLoading && <div>Loading skills...</div>}
+            {!isLoading && (
+              <CheckboxGroup
+                mt="sm"
+                color="gray"
+                label="Required skills"
+                description="chose one or more required skills"
+                spacing="md"
+                onChange={setSkills}
+                required
+                value={skills}
+              >
+                {skillsList}
+              </CheckboxGroup>
+            )}
           </Card.Section>
           <Card.Section className={classes.section}>
-            <Textarea
-              label="Title"
-              mt="sm"
-              required
-              placeholder="Title"
-              maxRows={1}
-              autosize
-              onChange={handleChange}
-              name="title"
-              value={ideaText.title}
-            />
-          </Card.Section>
-          <Card.Section className={classes.section}>
-            <Textarea
-              mt="sm"
-              label="Description"
-              required
-              placeholder="Description"
-              minRows={2}
-              maxRows={3}
-              autosize
-              onChange={handleChange}
-              name="description"
-              value={ideaText.description}
-            />
-          </Card.Section>
-          <Card.Section className={classes.section}>
-            <Textarea
-              label="Problem"
-              mt="sm"
-              placeholder="which problelm does it solve (optional)"
-              minRows={2}
-              maxRows={3}
-              autosize
-              onChange={handleChange}
-              name="problem"
-              value={ideaText.problem}
-            />
-          </Card.Section>
-          <Card.Section className={classes.section}>
-            <Textarea
-              label="Goal"
-              mt="sm"
-              placeholder="the goal for the hackweek is... (optional)"
-              minRows={2}
-              maxRows={3}
-              autosize
-              onChange={handleChange}
-              name="goal"
-              value={ideaText.goal}
-            />
-          </Card.Section>
-          <Card.Section className={classes.section}>
-            <CheckboxGroup
-              mt="sm"
-              color="gray"
-              label="Required skills"
-              description="chose one or more required skills"
-              spacing="md"
-              onChange={setSkills}
-              required
-              value={skills}
-            >
-              {skillsList}
-            </CheckboxGroup>
-          </Card.Section>
-          <Card.Section className={classes.section}>
-            <CheckboxGroup
-              mt="sm"
-              color="gray"
-              label="Category"
-              description="chose one or more categories"
-              spacing="md"
-              onChange={setCategories}
-              required
-              value={categories}
-            >
-              {categoriesList}
-            </CheckboxGroup>
+            {isLoading && <div>Loading categories...</div>}
+            {!isLoading && (
+              <CheckboxGroup
+                mt="sm"
+                color="gray"
+                label="Category"
+                description="chose one or more categories"
+                spacing="md"
+                onChange={setCategories}
+                required
+                value={categories}
+              >
+                {categoriesList}
+              </CheckboxGroup>
+            )}
           </Card.Section>
 
           <Group position="right" mt="xl">
@@ -318,8 +319,8 @@ function IdeaForm(props: IProps) {
               </Button>
             )}
           </Group>
-        </Card>
-      )}
+        </>
+      </Card>
     </>
   )
 }

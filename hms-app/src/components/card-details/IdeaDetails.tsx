@@ -117,6 +117,7 @@ export default function IdeaDetails(props: IProps) {
       Edit Idea
       <IdeaForm
         ideaID={idea.id}
+        idea={idea}
         context={'edit'}
         participantID={idea.owner?.id!}
         hackathon={idea.hackathon!}

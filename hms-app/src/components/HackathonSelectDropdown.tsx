@@ -51,7 +51,7 @@ export default function HackathonSelectDropdown(setHackathonID: Props) {
     <>
       {isLoading && !isError && <div>hackathon select is loading...</div>}
       {!isLoading && !isError && (
-        <div style={{ width: 250 }}>
+        <div style={{ width: 385 }}>
           <Select
             placeholder={'select a Hackathon'}
             maxDropdownHeight={280}
