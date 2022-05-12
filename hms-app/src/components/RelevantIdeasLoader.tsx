@@ -1,7 +1,4 @@
-import {
-  getHackathonDetails,
-  getNewHackathonDetails,
-} from '../actions/HackathonActions'
+import { getHackathonDetails } from '../actions/HackathonActions'
 import React, { useEffect, useState } from 'react'
 import { Hackathon, Idea } from '../common/types'
 import { getIdeaDetails } from '../actions/IdeaActions'
@@ -45,7 +42,7 @@ export default function RelevantIdeasLoader({
   } as Idea)
 
   const loadSelectedHackathonData = () => {
-    getNewHackathonDetails(selectedHackweek).then((data) => {
+    getHackathonDetails(selectedHackweek).then((data) => {
       setHackathonData({
         id: data.id,
         title: data.title,
