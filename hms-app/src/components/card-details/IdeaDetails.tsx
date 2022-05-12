@@ -16,6 +16,7 @@ import {
 import { Idea } from '../../common/types'
 import { deleteIdea } from '../../actions/IdeaActions'
 import IdeaForm from '../input-forms/IdeaForm'
+import { Spoiler } from '@mantine/core'
 
 type IProps = {
   idea: Idea
@@ -54,6 +55,11 @@ export default function IdeaDetails(props: IProps) {
     total: 1,
     initialItem: -1,
   })
+  const [participantAccordionState, setParticipantAccordionState] =
+    useAccordionState({
+      total: 1,
+      initialItem: -1,
+    })
   const { idea, type, isLoading } = props
   const MAX_TITLE_LENGTH = 45
   const MAX_DESCRIPTION_LENGTH = type === 'voting' ? 200 : 245
@@ -138,28 +144,38 @@ export default function IdeaDetails(props: IProps) {
           </Text>
         </Card.Section>
 
-        <Accordion iconPosition="right">
+        <Accordion
+          iconPosition="right"
+          state={participantAccordionState}
+          onChange={setParticipantAccordionState.setState}
+        >
           <Accordion.Item
             label={
-              <div>
+              !participantAccordionState['0'] ? (
+                <div>
+                  <Text className={classes.label} color="dimmed">
+                    Current participants
+                  </Text>
+                  <Group spacing={7} mt={5}>
+                    <AvatarsGroup limit={5}>
+                      {idea.participants?.map((participant, index) => (
+                        <Avatar
+                          color="indigo"
+                          radius="xl"
+                          size="md"
+                          src={
+                            'https://avatars.githubusercontent.com/u/10353856?s=460&u=88394dfd67727327c1f7670a1764dc38a8a24831&v=4'
+                          }
+                        />
+                      ))}
+                    </AvatarsGroup>
+                  </Group>
+                </div>
+              ) : (
                 <Text className={classes.label} color="dimmed">
                   Current participants
                 </Text>
-                <Group spacing={7} mt={5}>
-                  <AvatarsGroup limit={5}>
-                    {idea.participants?.map((participant, index) => (
-                      <Avatar
-                        color="indigo"
-                        radius="xl"
-                        size="md"
-                        src={
-                          'https://avatars.githubusercontent.com/u/10353856?s=460&u=88394dfd67727327c1f7670a1764dc38a8a24831&v=4'
-                        }
-                      />
-                    ))}
-                  </AvatarsGroup>
-                </Group>
-              </div>
+              )
             }
           >
             {participantData}
@@ -173,42 +189,43 @@ export default function IdeaDetails(props: IProps) {
     <>
       {!isLoading && (
         <Card withBorder radius="md" p="md" className={classes.card}>
-          <Card.Section
-            className={classes.section}
-            mt="md"
-            style={{ height: 180 }}
-          >
-            <Group noWrap>
-              <Group
-                direction={'column'}
-                align={'center'}
-                position={'center'}
-                spacing={'xs'}
-              >
-                <Avatar
-                  color="indigo"
-                  radius="xl"
-                  size="md"
-                  src={
-                    'https://avatars.githubusercontent.com/u/10353856?s=460&u=88394dfd67727327c1f7670a1764dc38a8a24831&v=4'
-                  }
-                />
-                <Badge size="sm">
-                  {idea.owner?.user.firstName} {idea.owner?.user.lastName}
-                </Badge>
+          <Spoiler maxHeight={140} showLabel="Show more" hideLabel="Hide">
+            <Card.Section
+              className={classes.section}
+              mt="md"
+              style={{ height: 180 }}
+            >
+              <Group noWrap>
+                <Group
+                  direction={'column'}
+                  align={'center'}
+                  position={'center'}
+                  spacing={'xs'}
+                >
+                  <Avatar
+                    color="indigo"
+                    radius="xl"
+                    size="md"
+                    src={
+                      'https://avatars.githubusercontent.com/u/10353856?s=460&u=88394dfd67727327c1f7670a1764dc38a8a24831&v=4'
+                    }
+                  />
+                  <Badge size="sm">
+                    {idea.owner?.user.firstName} {idea.owner?.user.lastName}
+                  </Badge>
+                </Group>
+
+                <Text size="lg" weight={500}>
+                  {idea.title?.slice(0, MAX_TITLE_LENGTH)}
+                  {idea.title?.length > MAX_TITLE_LENGTH ? '...' : ''}
+                </Text>
               </Group>
 
-              <Text size="lg" weight={500}>
-                {idea.title?.slice(0, MAX_TITLE_LENGTH)}
-                {idea.title?.length > MAX_TITLE_LENGTH ? '...' : ''}
+              <Text size="sm" mt="xs">
+                {idea.description}
               </Text>
-            </Group>
-
-            <Text size="sm" mt="xs">
-              {idea.description?.slice(0, MAX_DESCRIPTION_LENGTH)}
-              {idea.description?.length > MAX_DESCRIPTION_LENGTH ? '...' : ''}
-            </Text>
-          </Card.Section>
+            </Card.Section>
+          </Spoiler>
 
           {type !== 'voting' && (
             <>
