@@ -22,7 +22,7 @@ import { createIdea, editIdea, getIdeaDetails } from '../../actions/IdeaActions'
 
 type IProps = {
   hackathon: HackathonPreview
-  userId: string
+  participantID: string
   context: string
   ideaID: string | null
 }
@@ -46,10 +46,11 @@ const useStyles = createStyles((theme) => ({
 }))
 
 function IdeaForm(props: IProps) {
-  const { hackathon, userId, context, ideaID } = props
+  const { hackathon, participantID, context, ideaID } = props
   const { classes } = useStyles()
   const [isError, setIsError] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
+  const [buttonIsDisabled, setButtonIsDisabled] = useState(false)
   const [availableSkills, setAvailableSkills] = useState({
     skills: [] as SkillPreview[],
   })
@@ -59,7 +60,7 @@ function IdeaForm(props: IProps) {
   })
   const [categories, setCategories] = useState<string[]>([])
   const [ideaText, setIdeaText] = useState({
-    ownerId: userId.toString(),
+    ownerId: participantID.toString(),
     hackathonId: hackathon.id,
     title: '',
     description: '',
@@ -88,11 +89,6 @@ function IdeaForm(props: IProps) {
     )
   }
 
-  useEffect(() => {
-    loadSelectedIdea()
-    setIsLoading(true)
-  }, [])
-
   const loadAvailableSkills = () => {
     getListOfSkills().then((data) => {
       setAvailableSkills({
@@ -101,10 +97,6 @@ function IdeaForm(props: IProps) {
       })
     })
   }
-
-  const skillsList = availableSkills.skills.map((skill, index) => [
-    <Checkbox value={skill.id} label={skill.name} />,
-  ])
 
   const loadAvailableCategories = () => {
     getListOfCategories(hackathon.id).then((data) => {
@@ -115,20 +107,15 @@ function IdeaForm(props: IProps) {
     })
   }
 
+  const skillsList = availableSkills.skills.map((skill, index) => [
+    <Checkbox value={skill.id} label={skill.name} />,
+  ])
+
   const categoriesList = availableCategories?.categories?.map(
     (category, index) => [
       <Checkbox value={category.id} label={category.title} />,
     ]
   )
-
-  useEffect(() => {
-    loadAvailableSkills()
-    loadAvailableCategories()
-  }, [])
-
-  useEffect(() => {
-    loadAvailableCategories()
-  }, [hackathon])
 
   function handleChange(event: React.ChangeEvent<HTMLTextAreaElement>) {
     setIdeaText((prevIdeaText) => ({
@@ -140,6 +127,7 @@ function IdeaForm(props: IProps) {
 
   function createThisIdea(event: React.MouseEvent<HTMLButtonElement>) {
     event.preventDefault()
+    setButtonIsDisabled(true)
     showNotification({
       id: 'idea-load',
       loading: true,
@@ -151,6 +139,16 @@ function IdeaForm(props: IProps) {
     createIdea(ideaText, skills, categories).then((r) =>
       setTimeout(() => {
         console.log('r', r)
+        setButtonIsDisabled(false)
+        setCategories([])
+        setSkills([])
+        setIdeaText((prevState) => ({
+          ...prevState,
+          title: '',
+          description: '',
+          problem: '',
+          goal: '',
+        }))
         updateNotification({
           id: 'idea-load',
           color: 'teal',
@@ -165,20 +163,23 @@ function IdeaForm(props: IProps) {
 
   function editThisIdea(event: React.MouseEvent<HTMLButtonElement>) {
     event.preventDefault()
+    setButtonIsDisabled(true)
     showNotification({
       id: 'idea-load',
       loading: true,
-      title: 'Create idea',
+      title: 'Edit idea',
       message: 'this can take a second',
       autoClose: false,
       disallowClose: true,
     })
     editIdea(ideaID!, ideaText, skills, categories).then((r) =>
       setTimeout(() => {
+        setButtonIsDisabled(false)
+
         updateNotification({
           id: 'idea-load',
           color: 'teal',
-          title: 'Idea was created',
+          title: 'Idea was Edited',
           message: 'Notification will close in 2 seconds',
           icon: <CheckIcon />,
           autoClose: 2000,
@@ -187,9 +188,25 @@ function IdeaForm(props: IProps) {
     )
   }
 
-  function submitIsEnabled(): boolean {
-    return !!(hackathon.title && ideaText.title)
-  }
+  useEffect(() => {
+    loadAvailableSkills()
+    loadAvailableCategories()
+    loadSelectedIdea()
+    setIsLoading(true)
+    setCategories([])
+    setSkills([])
+  }, [])
+
+  useEffect(() => {
+    setIdeaText((prevIdeaText) => ({
+      ...prevIdeaText,
+      ownerId: participantID.toString(),
+    }))
+  }, [participantID])
+
+  useEffect(() => {
+    loadAvailableCategories()
+  }, [hackathon])
 
   return (
     <>
@@ -287,12 +304,12 @@ function IdeaForm(props: IProps) {
 
           <Group position="right" mt="xl">
             {context === 'edit' && (
-              <Button disabled={!submitIsEnabled()} onClick={editThisIdea}>
+              <Button disabled={buttonIsDisabled} onClick={editThisIdea}>
                 Edit
               </Button>
             )}
             {context === 'new' && (
-              <Button disabled={!submitIsEnabled()} onClick={createThisIdea}>
+              <Button disabled={buttonIsDisabled} onClick={createThisIdea}>
                 Create
               </Button>
             )}

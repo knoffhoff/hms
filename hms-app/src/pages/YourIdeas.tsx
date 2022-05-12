@@ -53,7 +53,7 @@ export default function YourIdeas() {
   useEffect(() => {
     // @ts-ignore
     setParticipantID(getID)
-  }, [relevantIdeas])
+  }, [hackathons])
 
   return (
     <>
@@ -78,7 +78,7 @@ export default function YourIdeas() {
                 <IdeaForm
                   ideaID={'null'}
                   hackathon={hackathons}
-                  userId={participantID}
+                  participantID={participantID}
                   context={'new'}
                 />
               </Accordion.Item>

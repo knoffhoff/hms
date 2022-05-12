@@ -113,12 +113,11 @@ export default function IdeaDetails(props: IProps) {
       <IdeaForm
         ideaID={idea.id}
         context={'edit'}
-        userId={idea.owner?.id!}
+        participantID={idea.owner?.id!}
         hackathon={idea.hackathon!}
       />
       <p>
-        (This window will automatically close as soon as the category is
-        deleted)
+        (This window will automatically close as soon as the idea is edited)
       </p>
     </Modal>
   )
