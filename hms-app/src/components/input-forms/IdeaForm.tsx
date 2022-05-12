@@ -25,6 +25,7 @@ type IProps = {
   participantID: string
   context: string
   ideaID: string | null
+  setOpened?: (boolean: boolean) => void
 }
 
 const useStyles = createStyles((theme) => ({
@@ -46,7 +47,7 @@ const useStyles = createStyles((theme) => ({
 }))
 
 function IdeaForm(props: IProps) {
-  const { hackathon, participantID, context, ideaID } = props
+  const { hackathon, participantID, context, ideaID, setOpened } = props
   const { classes } = useStyles()
   const [isError, setIsError] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
@@ -175,7 +176,10 @@ function IdeaForm(props: IProps) {
     editIdea(ideaID!, ideaText, skills, categories).then((r) =>
       setTimeout(() => {
         setButtonIsDisabled(false)
-
+        if (setOpened) {
+          setOpened(false)
+        }
+        console.log(r)
         updateNotification({
           id: 'idea-load',
           color: 'teal',

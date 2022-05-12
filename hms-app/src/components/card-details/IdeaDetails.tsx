@@ -84,6 +84,10 @@ export default function IdeaDetails(props: IProps) {
     })
   }
 
+  const closeEditModal = (isOpened: boolean) => {
+    setEditModalOpened(isOpened)
+  }
+
   const deleteModal = (
     <Modal
       centered
@@ -108,6 +112,7 @@ export default function IdeaDetails(props: IProps) {
       opened={editModalOpened}
       onClose={() => setEditModalOpened(false)}
       withCloseButton={false}
+      size="55%"
     >
       Edit Idea
       <IdeaForm
@@ -115,6 +120,7 @@ export default function IdeaDetails(props: IProps) {
         context={'edit'}
         participantID={idea.owner?.id!}
         hackathon={idea.hackathon!}
+        setOpened={closeEditModal}
       />
       <p>
         (This window will automatically close as soon as the idea is edited)
