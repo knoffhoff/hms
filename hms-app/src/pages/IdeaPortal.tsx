@@ -176,10 +176,10 @@ function IdeaPortal() {
         <div>
           <h2>{hackathonData.title}</h2>
           <h2>
-            from: {new Date(hackathonData.startDate).toDateString()} to:{' '}
-            {new Date(hackathonData.endDate).toDateString()}
+            Start Date: {new Date(hackathonData.startDate).toDateString()} End
+            Date: {new Date(hackathonData.endDate).toDateString()}
           </h2>
-          <h2>Your Ideas ({filteredIdeas.length})</h2>
+          <h2>All Ideas ({filteredIdeas.length})</h2>
 
           <div>
             <IdeaCardList
