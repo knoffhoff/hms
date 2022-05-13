@@ -61,6 +61,8 @@ describe('Put Participant', () => {
           }),
         }));
   });
+
+  // TODO add a test for the ConditionalCheckFailedException
 });
 
 describe('Delete Participant', () => {
