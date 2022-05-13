@@ -58,7 +58,10 @@ export default function YourIdeas() {
   return (
     <>
       <Title order={1}>Your ideas</Title>
-      <HackathonSelectDropdown setHackathonID={setHackathonID} />
+      <HackathonSelectDropdown
+        setHackathonID={setHackathonID}
+        context={'your-ideas'}
+      />
 
       <RelevantIdeasLoader
         setHackathon={setHackathonData}

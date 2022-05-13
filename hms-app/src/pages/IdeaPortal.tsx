@@ -7,10 +7,10 @@ import {
   createHackathonParticipant,
   deleteParticipant,
 } from '../actions/ParticipantActions'
-import HackathonSelectDropdown from '../components/HackathonSelectDropdown'
-import RelevantIdeasLoader from '../components/RelevantIdeasLoader'
 import { showNotification, updateNotification } from '@mantine/notifications'
 import { CheckIcon } from '@modulz/radix-icons'
+import HackathonSelectDropdown from '../components/HackathonSelectDropdown'
+import RelevantIdeasLoader from '../components/RelevantIdeasLoader'
 
 function IdeaPortal() {
   const [searchTerm, setSearchTerm] = useState('')
@@ -142,7 +142,10 @@ function IdeaPortal() {
     <>
       <Title order={1}>All ideas</Title>
       <Group position={'apart'} py={20}>
-        <HackathonSelectDropdown setHackathonID={setHackathonID} />
+        <HackathonSelectDropdown
+          setHackathonID={setHackathonID}
+          context={'idea-portal'}
+        />
 
         <Input
           variant="default"

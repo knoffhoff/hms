@@ -5,13 +5,18 @@ import { HackathonPreview } from '../common/types'
 
 type Props = {
   setHackathonID: (hackthonID: string) => void
+  context: string
 }
 
-export default function HackathonSelectDropdown(setHackathonID: Props) {
+export default function HackathonSelectDropdown({
+  setHackathonID,
+  context,
+}: Props) {
   const [selectedHackweek, setSelectedHackweek] = useState('')
   const [isError, setIsError] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
   const [hackathonList, setHackathonList] = useState([] as HackathonPreview[])
+  const today = new Date()
 
   const loadHackathons = () => {
     getListOfHackathons().then(
@@ -27,7 +32,24 @@ export default function HackathonSelectDropdown(setHackathonID: Props) {
     )
   }
 
-  const hackathonMap = hackathonList.map((hackathon, index) => ({
+  const hackathonDateCurrentAndFuture = hackathonList.filter((hackathon) => {
+    return (
+      new Date(hackathon.startDate) > today ||
+      new Date(hackathon.endDate) > today
+    )
+  })
+
+  const hackathonDateCurrentAndPast = hackathonList.filter((hackathon) => {
+    return new Date(hackathon.endDate) < today
+  })
+
+  const hackathonMap = (
+    context === 'archive'
+      ? hackathonDateCurrentAndPast
+      : context === 'idea-portal'
+      ? hackathonDateCurrentAndFuture
+      : hackathonList
+  ).map((hackathon, index) => ({
     value: hackathon.id,
     label:
       hackathon.title +
@@ -54,7 +76,7 @@ export default function HackathonSelectDropdown(setHackathonID: Props) {
   }, [])
 
   useEffect(() => {
-    setHackathonID.setHackathonID(selectedHackweek)
+    setHackathonID(selectedHackweek)
   }, [selectedHackweek])
 
   return (

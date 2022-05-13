@@ -279,8 +279,8 @@ export default function HackathonDetails(props: IProps) {
           <div>
             <h2>Title: {hackathonData.title}</h2>
             <h2>
-              Start Date: {new Date(hackathonData.startDate).toDateString()}
-              End Date: {new Date(hackathonData.endDate).toDateString()}
+              Start Date: {new Date(hackathonData.startDate).toDateString()} End
+              Date: {new Date(hackathonData.endDate).toDateString()}
             </h2>
             <h2>All Ideas ({hackathonData.ideas?.length})</h2>
 

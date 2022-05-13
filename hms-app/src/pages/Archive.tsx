@@ -13,7 +13,10 @@ export default function Archive() {
   return (
     <>
       <Title order={1}>Archive</Title>
-      <HackathonSelectDropdown setHackathonID={setHackathonID} />
+      <HackathonSelectDropdown
+        setHackathonID={setHackathonID}
+        context={'archive'}
+      />
 
       <div>
         <HackathonDetails
