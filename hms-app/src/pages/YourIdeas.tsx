@@ -12,7 +12,7 @@ export default function YourIdeas() {
   const [selectedHackweek, setSelectedHackweek] = useState('')
   const [relevantIdeas, setRelevantIdeas] = useState([] as Idea[])
   const [isLoading, setIsLoading] = useState(true)
-  const [hackathons, setHackathons] = useState({
+  const [hackathon, setHackathon] = useState({
     id: 'string',
     title: 'string',
     startDate: new Date(),
@@ -26,7 +26,7 @@ export default function YourIdeas() {
     return item.owner?.user.id.includes(userID)
   })
 
-  const getParticipant = hackathons.participants?.filter((participant) => {
+  const getParticipant = hackathon.participants?.filter((participant) => {
     return participant.user.id.includes(userID)
   })
 
@@ -43,7 +43,7 @@ export default function YourIdeas() {
   }
 
   const setHackathonData = (hackathonData: Hackathon) => {
-    setHackathons(hackathonData)
+    setHackathon(hackathonData)
   }
 
   const setThisIsLoading = (isLoading: boolean) => {
@@ -53,7 +53,11 @@ export default function YourIdeas() {
   useEffect(() => {
     // @ts-ignore
     setParticipantID(getID)
-  }, [hackathons])
+  }, [hackathon])
+
+  function isParticipant(): boolean {
+    return !!participantID.toString()
+  }
 
   return (
     <>
@@ -72,37 +76,41 @@ export default function YourIdeas() {
 
       {!isLoading && (
         <div>
-          <div>
-            <Accordion mb={30} pt={10} iconPosition="left">
-              <Accordion.Item
-                style={{ border: '1px solid' }}
-                label={'Create new idea'}
-              >
-                <IdeaForm
-                  ideaID={'null'}
-                  hackathon={hackathons}
-                  participantID={participantID}
-                  context={'new'}
-                />
-              </Accordion.Item>
-            </Accordion>
-          </div>
-
-          <h2>{hackathons.title}</h2>
+          <h2>{hackathon.title}</h2>
           <h2>
-            Start Date: {new Date(hackathons.startDate).toDateString()} End
-            Date: {new Date(hackathons.endDate).toDateString()}
+            Start Date: {new Date(hackathon.startDate).toDateString()} End Date:{' '}
+            {new Date(hackathon.endDate).toDateString()}
           </h2>
-          <h2>Your Ideas ({filteredIdeas.length})</h2>
 
-          <div>
-            <IdeaCardList
-              ideas={filteredIdeas}
-              columnSize={6}
-              type={'owner'}
-              isLoading={false}
-            />
-          </div>
+          {isParticipant() && (
+            <div>
+              <div>
+                <Accordion mb={30} pt={10} iconPosition="left">
+                  <Accordion.Item
+                    style={{ border: '1px solid' }}
+                    label={'Create new idea'}
+                  >
+                    <IdeaForm
+                      ideaID={'null'}
+                      hackathon={hackathon}
+                      participantID={participantID}
+                      context={'new'}
+                    />
+                  </Accordion.Item>
+                </Accordion>
+              </div>
+              <h2>Your Ideas ({filteredIdeas.length})</h2>
+              <IdeaCardList
+                ideas={filteredIdeas}
+                columnSize={6}
+                type={'owner'}
+                isLoading={false}
+              />
+            </div>
+          )}
+          {!isParticipant() && (
+            <div>you haven't participated in this hackathon</div>
+          )}
         </div>
       )}
       {isLoading && selectedHackweek && <div>Loading...</div>}
