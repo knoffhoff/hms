@@ -56,6 +56,7 @@ function HackathonForm(props: IProps) {
     })
     createHackathon(hackathonTitle, startDateValue!, endDateValue!).then((r) =>
       setTimeout(() => {
+        console.log(r)
         updateNotification({
           id: 'hackathon-load',
           color: 'teal',
@@ -78,7 +79,6 @@ function HackathonForm(props: IProps) {
       autoClose: false,
       disallowClose: true,
     })
-
     editHackathon(
       hackathonID!,
       hackathonTitle,
@@ -86,6 +86,7 @@ function HackathonForm(props: IProps) {
       endDateValue!
     ).then((r) =>
       setTimeout(() => {
+        console.log(r)
         updateNotification({
           id: 'hackathon-load',
           color: 'teal',
