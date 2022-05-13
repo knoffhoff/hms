@@ -39,13 +39,13 @@ export default function HackathonSelectDropdown({
     )
   })
 
-  const hackathonDateCurrentAndPast = hackathonList.filter((hackathon) => {
+  const hackathonDatePast = hackathonList.filter((hackathon) => {
     return new Date(hackathon.endDate) < today
   })
 
   const hackathonMap = (
     context === 'archive'
-      ? hackathonDateCurrentAndPast
+      ? hackathonDatePast
       : context === 'idea-portal'
       ? hackathonDateCurrentAndFuture
       : hackathonList
