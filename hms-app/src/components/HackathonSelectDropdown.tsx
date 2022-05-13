@@ -32,9 +32,17 @@ export default function HackathonSelectDropdown(setHackathonID: Props) {
     label:
       hackathon.title +
       ' ' +
-      new Date(hackathon.startDate).toLocaleDateString() +
+      new Date(hackathon.startDate).toLocaleString(undefined, {
+        year: '2-digit',
+        month: '2-digit',
+        day: '2-digit',
+      }) +
       '-' +
-      new Date(hackathon.endDate).toLocaleDateString(),
+      new Date(hackathon.endDate).toLocaleString(undefined, {
+        year: '2-digit',
+        month: '2-digit',
+        day: '2-digit',
+      }),
   }))
 
   const selectChange = (value: string) => {
