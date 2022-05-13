@@ -65,7 +65,10 @@ export default function IdeaDetails(props: IProps) {
   const MAX_DESCRIPTION_LENGTH = type === 'voting' ? 200 : 245
 
   const participantData = idea.participants?.map((participant, index) => (
-    <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+    <div
+      key={index}
+      style={{ display: 'flex', alignItems: 'center', gap: '10px' }}
+    >
       <Avatar
         color="indigo"
         radius="xl"
@@ -166,6 +169,7 @@ export default function IdeaDetails(props: IProps) {
                     <AvatarsGroup limit={5}>
                       {idea.participants?.map((participant, index) => (
                         <Avatar
+                          key={index}
                           color="indigo"
                           radius="xl"
                           size="md"
