@@ -12,6 +12,7 @@ import RelevantIdeasLoader from '../components/RelevantIdeasLoader'
 import { showNotification, updateNotification } from '@mantine/notifications'
 import { CheckIcon } from '@modulz/radix-icons'
 
+
 function IdeaPortal() {
   const [searchTerm, setSearchTerm] = useState('')
   const [isLoading, setIsLoading] = useState(true)
