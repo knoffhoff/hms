@@ -1,6 +1,42 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import { getListOfHackathons } from '../actions/HackathonActions'
+import { HackathonPreview } from '../common/types'
+import { Button } from '@mantine/core'
 
 function Home() {
+  const [hackathonList, setHackathonList] = useState([] as HackathonPreview[])
+  const today = new Date()
+
+  const loadHackathons = () => {
+    getListOfHackathons().then((data) => {
+      setHackathonList(data.hackathons)
+    })
+  }
+
+  /*const getNextHackathon = hackathonList.filter((hackathon) => {
+    return new Date(hackathon.startDate) > today
+  })
+
+  const timeTillNextHackathonHIHI =
+    new Date(getNextHackathon[0].startDate).getTime() - today.getTime()
+
+  function timeTillNextHackathon() {
+    console.log('today', today)
+    console.log('startdate', new Date(getNextHackathon[0].startDate))
+    console.log('getnexthackathon', getNextHackathon)
+    console.log(
+      new Date(getNextHackathon[0].startDate).getTime() - today.getTime()
+    )
+    console.log(
+      'in days',
+      Math.round(timeTillNextHackathonHIHI / (1000 * 3600 * 24))
+    )
+  }*/
+
+  useEffect(() => {
+    loadHackathons()
+  }, [])
+
   return (
     <>
       <h1>this is the Startpage</h1>
@@ -16,6 +52,8 @@ function Home() {
         rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem
         ipsum dolor sit amet.
       </p>
+
+      {/*<Button onClick={timeTillNextHackathon}>log time</Button>*/}
     </>
   )
 }
