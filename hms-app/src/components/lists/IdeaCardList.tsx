@@ -1,7 +1,7 @@
 import React from 'react'
 import { Idea } from '../../common/types'
 import { Grid } from '@mantine/core'
-import IdeaDetails from '../card- details/IdeaDetails'
+import IdeaDetails from '../card-details/IdeaDetails'
 
 type IProps = {
   ideas: Idea[]

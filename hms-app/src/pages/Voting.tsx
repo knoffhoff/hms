@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Button, Title, useMantineTheme, Text, Group } from '@mantine/core'
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd'
 import ideaData from '../test/TestIdeaData'
-import IdeaDetails from '../components/card- details/IdeaDetails'
+import IdeaDetails from '../components/card-details/IdeaDetails'
 
 const columnsFromBackend = {
   ['1']: {
