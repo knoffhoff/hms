@@ -107,9 +107,5 @@ export default function RelevantIdeasLoader({
     setLoading(isLoading)
   }, [relevantIdeaList, hackathonData, isLoading])
 
-  /*setRelevantIdea(relevantIdeaList)
-  setHackathon(hackathonData)
-  setLoading(isLoading)*/
-
   return <div />
 }

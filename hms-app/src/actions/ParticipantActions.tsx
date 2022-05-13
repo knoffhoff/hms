@@ -14,7 +14,10 @@ export const deleteParticipant = (participantID: string) => {
     .catch((err) => console.log(err))
 }
 
-export const createParticipant = (userId: string, hackathonId: string) => {
+export const createHackathonParticipant = (
+  userId: string,
+  hackathonId: string
+) => {
   return fetch(`${core_url}/participant`, {
     method: 'POST',
     headers: {

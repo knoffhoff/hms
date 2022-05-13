@@ -4,7 +4,7 @@ import { Search } from 'tabler-icons-react'
 import IdeaCardList from '../components/lists/IdeaCardList'
 import { Hackathon, Idea } from '../common/types'
 import {
-  createParticipant,
+  createHackathonParticipant,
   deleteParticipant,
 } from '../actions/ParticipantActions'
 import HackathonSelectDropdown from '../components/HackathonSelectDropdown'
@@ -62,27 +62,28 @@ function IdeaPortal() {
       autoClose: false,
       disallowClose: true,
     })
-    createParticipant(participantInfo.userId, participantInfo.hackathonId).then(
-      (r) => {
-        setTimeout(() => {
-          console.log('r added', r)
-          setButtonisDisabled(false)
-          setParticipantCheck(true)
-          setParticipantInfo((prevState) => ({
-            ...prevState,
-            participantId: r.id,
-          }))
-          updateNotification({
-            id: 'participant-load',
-            color: 'teal',
-            title: 'Joined Hackathon',
-            message: 'Notification will close in 2 seconds',
-            icon: <CheckIcon />,
-            autoClose: 2000,
-          })
-        }, 3000)
-      }
-    )
+    createHackathonParticipant(
+      participantInfo.userId,
+      participantInfo.hackathonId
+    ).then((r) => {
+      setTimeout(() => {
+        console.log('r added', r)
+        setButtonisDisabled(false)
+        setParticipantCheck(true)
+        setParticipantInfo((prevState) => ({
+          ...prevState,
+          participantId: r.id,
+        }))
+        updateNotification({
+          id: 'participant-load',
+          color: 'teal',
+          title: 'Joined Hackathon',
+          message: 'Notification will close in 2 seconds',
+          icon: <CheckIcon />,
+          autoClose: 2000,
+        })
+      }, 3000)
+    })
   }
 
   const removeHackathonParticipant = () => {

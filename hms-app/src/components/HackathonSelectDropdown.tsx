@@ -49,8 +49,6 @@ export default function HackathonSelectDropdown(setHackathonID: Props) {
     setHackathonID.setHackathonID(selectedHackweek)
   }, [selectedHackweek])
 
-  /*setHackathonID.setHackathonID(selectedHackweek)*/
-
   return (
     <>
       {isLoading && !isError && <div>hackathon select is loading...</div>}
