@@ -45,7 +45,11 @@ export default function HackathonSelectDropdown(setHackathonID: Props) {
     loadHackathons()
   }, [])
 
-  setHackathonID.setHackathonID(selectedHackweek)
+  useEffect(() => {
+    setHackathonID.setHackathonID(selectedHackweek)
+  }, [selectedHackweek])
+
+  /*setHackathonID.setHackathonID(selectedHackweek)*/
 
   return (
     <>
