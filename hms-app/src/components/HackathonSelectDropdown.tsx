@@ -12,7 +12,6 @@ export default function HackathonSelectDropdown({
   setHackathonID,
   context,
 }: Props) {
-  const [selectedHackweek, setSelectedHackweek] = useState('')
   const [isError, setIsError] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
   const [hackathonList, setHackathonList] = useState([] as HackathonPreview[])
@@ -67,20 +66,13 @@ export default function HackathonSelectDropdown({
       }),
   }))
 
-  const selectChange = (value: string) => {
-    setSelectedHackweek(value)
-  }
-
   useEffect(() => {
     loadHackathons()
   }, [])
 
-  useEffect(() => {
-    setHackathonID(selectedHackweek)
-  }, [selectedHackweek])
-
   return (
     <>
+      {isError && <div>Ups something went wrong...</div>}
       {isLoading && !isError && <div>hackathon select is loading...</div>}
       {!isLoading && !isError && (
         <div style={{ width: 385 }}>
@@ -88,7 +80,7 @@ export default function HackathonSelectDropdown({
             placeholder={'select a Hackathon'}
             maxDropdownHeight={280}
             data={hackathonMap}
-            onChange={selectChange}
+            onChange={setHackathonID}
           />
         </div>
       )}

@@ -9,7 +9,7 @@ import RelevantIdeasLoader from '../components/RelevantIdeasLoader'
 export default function YourIdeas() {
   const [participantID, setParticipantID] = useState('')
   const userID = '629f52c9-df29-491b-82a4-bdd80806338d'
-  const [selectedHackweek, setSelectedHackweek] = useState('')
+  const [selectedHackweekID, setSelectedHackweekID] = useState('')
   const [relevantIdeas, setRelevantIdeas] = useState([] as Idea[])
   const [isLoading, setIsLoading] = useState(true)
   const [hackathon, setHackathon] = useState({
@@ -34,22 +34,6 @@ export default function YourIdeas() {
     return participant.id
   })
 
-  const setHackathonID = (hackthonID: string) => {
-    setSelectedHackweek(hackthonID)
-  }
-
-  const setRelevantIdeaList = (relevantIdeaList: Idea[]) => {
-    setRelevantIdeas(relevantIdeaList)
-  }
-
-  const setHackathonData = (hackathonData: Hackathon) => {
-    setHackathon(hackathonData)
-  }
-
-  const setThisIsLoading = (isLoading: boolean) => {
-    setIsLoading(isLoading)
-  }
-
   useEffect(() => {
     // @ts-ignore
     setParticipantID(getID)
@@ -63,15 +47,15 @@ export default function YourIdeas() {
     <>
       <Title order={1}>Your ideas</Title>
       <HackathonSelectDropdown
-        setHackathonID={setHackathonID}
+        setHackathonID={setSelectedHackweekID}
         context={'your-ideas'}
       />
 
       <RelevantIdeasLoader
-        setHackathon={setHackathonData}
-        setRelevantIdea={setRelevantIdeaList}
-        selectedHackweek={selectedHackweek}
-        setLoading={setThisIsLoading}
+        setHackathon={setHackathon}
+        setRelevantIdea={setRelevantIdeas}
+        selectedHackweekID={selectedHackweekID}
+        setLoading={setIsLoading}
       />
 
       {!isLoading && (
@@ -113,7 +97,7 @@ export default function YourIdeas() {
           )}
         </div>
       )}
-      {isLoading && selectedHackweek && <div>Loading...</div>}
+      {isLoading && selectedHackweekID && <div>Loading...</div>}
     </>
   )
 }

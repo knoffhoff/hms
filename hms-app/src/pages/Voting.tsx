@@ -190,7 +190,7 @@ export default function Voting() {
                                   // @ts-ignore
                                   key={item.id}
                                   // @ts-ignore
-                                  draggableId={item.id.toString()}
+                                  draggableId={item.id}
                                   index={index}
                                 >
                                   {(provided, snapshot) => {

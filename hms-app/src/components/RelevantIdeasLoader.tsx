@@ -4,14 +4,14 @@ import { Hackathon, Idea } from '../common/types'
 import { getIdeaDetails } from '../actions/IdeaActions'
 
 type Props = {
-  selectedHackweek: string
+  selectedHackweekID: string
   setRelevantIdea: (relevantIdeaList: Idea[]) => void
   setHackathon: (hackathonData: Hackathon) => void
   setLoading: (boolean: boolean) => void
 }
 
 export default function RelevantIdeasLoader({
-  selectedHackweek,
+  selectedHackweekID,
   setRelevantIdea,
   setHackathon,
   setLoading,
@@ -42,7 +42,7 @@ export default function RelevantIdeasLoader({
   } as Idea)
 
   const loadSelectedHackathonData = () => {
-    getHackathonDetails(selectedHackweek).then((data) => {
+    getHackathonDetails(selectedHackweekID).then((data) => {
       setHackathonData({
         id: data.id,
         title: data.title,
@@ -78,7 +78,7 @@ export default function RelevantIdeasLoader({
 
   useEffect(() => {
     loadSelectedHackathonData()
-  }, [selectedHackweek])
+  }, [selectedHackweekID])
 
   useEffect(() => {
     setRelevantIdeaList((relevantIdeaList) => {

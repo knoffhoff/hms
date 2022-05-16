@@ -16,7 +16,7 @@ function IdeaPortal() {
   const [searchTerm, setSearchTerm] = useState('')
   const [isLoading, setIsLoading] = useState(true)
   const [participantCheck, setParticipantCheck] = useState(false)
-  const [selectedHackweek, setSelectedHackweek] = useState('')
+  const [selectedHackweekID, setSelectedHackweekID] = useState('')
   const [buttonIsDisabled, setButtonisDisabled] = useState(false)
   const [relevantIdeaList, setRelevantIdeas] = useState([] as Idea[])
   const [participantInfo, setParticipantInfo] = useState({
@@ -67,7 +67,7 @@ function IdeaPortal() {
       participantInfo.hackathonId
     ).then((r) => {
       setTimeout(() => {
-        console.log('r added', r)
+        console.log('participant added with id', r)
         setButtonisDisabled(false)
         setParticipantCheck(true)
         setParticipantInfo((prevState) => ({
@@ -98,10 +98,10 @@ function IdeaPortal() {
     })
     // @ts-ignore
     deleteParticipant(filterParticipants[0].id).then((r) => {
+      console.log('participant deleted with id ', r)
+      setButtonisDisabled(false)
+      setParticipantCheck(false)
       setTimeout(() => {
-        console.log('r deleted', r)
-        setButtonisDisabled(false)
-        setParticipantCheck(false)
         updateNotification({
           id: 'participant-load',
           color: 'teal',
@@ -114,25 +114,9 @@ function IdeaPortal() {
     })
   }
 
-  const setHackathonID = (hackthonID: string) => {
-    setSelectedHackweek(hackthonID)
-  }
-
-  const setRelevantIdeaList = (relevantIdeaList: Idea[]) => {
-    setRelevantIdeas(relevantIdeaList)
-  }
-
-  const setHackathonData = (hackathonData: Hackathon) => {
-    setHackathons(hackathonData)
-  }
-
-  const setThisIsLoading = (isLoading: boolean) => {
-    setIsLoading(isLoading)
-  }
-
   useEffect(() => {
-    setParticipantInfo({ ...participantInfo, hackathonId: selectedHackweek })
-  }, [selectedHackweek])
+    setParticipantInfo({ ...participantInfo, hackathonId: selectedHackweekID })
+  }, [selectedHackweekID])
 
   useEffect(() => {
     setParticipantCheck(isParticipant!)
@@ -143,7 +127,7 @@ function IdeaPortal() {
       <Title order={1}>All ideas</Title>
       <Group position={'apart'} py={20}>
         <HackathonSelectDropdown
-          setHackathonID={setHackathonID}
+          setHackathonID={setSelectedHackweekID}
           context={'idea-portal'}
         />
 
@@ -156,10 +140,10 @@ function IdeaPortal() {
       </Group>
 
       <RelevantIdeasLoader
-        setHackathon={setHackathonData}
-        setRelevantIdea={setRelevantIdeaList}
-        selectedHackweek={selectedHackweek}
-        setLoading={setThisIsLoading}
+        setHackathon={setHackathons}
+        setRelevantIdea={setRelevantIdeas}
+        selectedHackweekID={selectedHackweekID}
+        setLoading={setIsLoading}
       />
 
       {!isLoading && (
@@ -196,7 +180,7 @@ function IdeaPortal() {
         </div>
       )}
 
-      {isLoading && selectedHackweek && <div>Loading...</div>}
+      {isLoading && selectedHackweekID && <div>Loading...</div>}
     </>
   )
 }
