@@ -32,10 +32,7 @@ export default function HackathonSelectDropdown({
   }
 
   const hackathonDateCurrentAndFuture = hackathonList.filter((hackathon) => {
-    return (
-      new Date(hackathon.startDate) > today ||
-      new Date(hackathon.endDate) > today
-    )
+    return new Date(hackathon.endDate) > today
   })
 
   const hackathonDatePast = hackathonList.filter((hackathon) => {
