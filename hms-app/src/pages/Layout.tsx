@@ -1,4 +1,3 @@
-import React, { useState } from 'react'
 import { Outlet } from 'react-router-dom'
 import {
   AppShell,
@@ -8,7 +7,7 @@ import {
   ColorScheme,
 } from '@mantine/core'
 import HeaderMenu from '../components/HeaderMenu'
-import { useColorScheme } from '@mantine/hooks'
+import { useLocalStorage } from '../common/localStorage'
 
 const menuLinks = [
   { link: 'home', label: 'Home' },
@@ -28,17 +27,16 @@ const menuLinks = [
   },
 ]
 
+const colorSchemeLocalStorageKey = 'color-scheme'
+
 const Layout = () => {
-  const preferredColorScheme = useColorScheme()
-  const [colorScheme, setColorScheme] =
-    useState<ColorScheme>(preferredColorScheme)
-  const toggleColorScheme = (value?: ColorScheme) =>
-    setColorScheme(value || (colorScheme === 'dark' ? 'light' : 'dark'))
+
+  const [colorScheme, setColorScheme] = useLocalStorage<ColorScheme>(colorSchemeLocalStorageKey, 'light');
 
   return (
     <ColorSchemeProvider
       colorScheme={colorScheme}
-      toggleColorScheme={toggleColorScheme}
+      toggleColorScheme={() => setColorScheme(colorScheme === 'dark' ? 'light' : 'dark')}
     >
       <MantineProvider theme={{ colorScheme }} withGlobalStyles>
         <AppShell
