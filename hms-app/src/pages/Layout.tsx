@@ -27,16 +27,18 @@ const menuLinks = [
   },
 ]
 
-const colorSchemeLocalStorageKey = 'color-scheme'
+const defaultColorSchemeLocalStorageKey: string = 'color-scheme'
+const defaultColorScheme: ColorScheme = 'light'
+const toggleColorScheme = (colorScheme: ColorScheme) => colorScheme === 'dark' ? 'light' : 'dark';
 
 const Layout = () => {
 
-  const [colorScheme, setColorScheme] = useLocalStorage<ColorScheme>(colorSchemeLocalStorageKey, 'light');
+  const [colorScheme, setColorScheme] = useLocalStorage<ColorScheme>(defaultColorSchemeLocalStorageKey, defaultColorScheme);
 
   return (
     <ColorSchemeProvider
       colorScheme={colorScheme}
-      toggleColorScheme={() => setColorScheme(colorScheme === 'dark' ? 'light' : 'dark')}
+      toggleColorScheme={() => setColorScheme(toggleColorScheme(colorScheme))}
     >
       <MantineProvider theme={{ colorScheme }} withGlobalStyles>
         <AppShell
