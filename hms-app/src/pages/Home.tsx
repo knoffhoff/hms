@@ -18,7 +18,7 @@ function Home() {
     return new Date(hackathon.startDate) > today
   })
 
-  const timeTillNextHackathonHIHI = !isLoading
+  const timeTillNextHackathon = !isLoading
     ? new Date(getNextHackathon[0].startDate).getTime() - today.getTime()
     : today.getTime()
 
@@ -46,9 +46,8 @@ function Home() {
         <div>
           <h1>
             Time till next Hackathon{' '}
-            {Math.round(timeTillNextHackathonHIHI / (1000 * 3600 * 24))} days
-            and {Math.round(timeTillNextHackathonHIHI / (1000 * 60 * 60)) % 24}{' '}
-            hours
+            {Math.round(timeTillNextHackathon / (1000 * 3600 * 24))} days and{' '}
+            {Math.round(timeTillNextHackathon / (1000 * 60 * 60)) % 24} hours
           </h1>
 
           <h2>{getNextHackathon[0].title}</h2>
