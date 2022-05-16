@@ -21,6 +21,9 @@ export default function YourIdeas() {
     categories: undefined,
     ideas: [],
   } as Hackathon)
+  const today = new Date()
+
+  console.log(new Date(hackathon.endDate) < today)
 
   const filteredIdeas = relevantIdeas.filter((item) => {
     return item.owner?.user.id.includes(userID)
@@ -69,19 +72,21 @@ export default function YourIdeas() {
           {isParticipant() && (
             <div>
               <div>
-                <Accordion mb={30} pt={10} iconPosition="left">
-                  <Accordion.Item
-                    style={{ border: '1px solid' }}
-                    label={'Create new idea'}
-                  >
-                    <IdeaForm
-                      ideaID={'null'}
-                      hackathon={hackathon}
-                      participantID={participantID}
-                      context={'new'}
-                    />
-                  </Accordion.Item>
-                </Accordion>
+                {!(new Date(hackathon.endDate) < today) && (
+                  <Accordion mb={30} pt={10} iconPosition="left">
+                    <Accordion.Item
+                      style={{ border: '1px solid' }}
+                      label={'Create new idea'}
+                    >
+                      <IdeaForm
+                        ideaID={'null'}
+                        hackathon={hackathon}
+                        participantID={participantID}
+                        context={'new'}
+                      />
+                    </Accordion.Item>
+                  </Accordion>
+                )}
               </div>
               <h2>Your Ideas ({filteredIdeas.length})</h2>
               <IdeaCardList
