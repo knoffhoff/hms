@@ -54,18 +54,19 @@ function HackathonForm(props: IProps) {
       autoClose: false,
       disallowClose: true,
     })
-    createHackathon(hackathonTitle, startDateValue!, endDateValue!).then((r) =>
-      setTimeout(() => {
-        console.log(r)
-        updateNotification({
-          id: 'hackathon-load',
-          color: 'teal',
-          title: 'Hackathon was created',
-          message: 'Notification will close in 2 seconds',
-          icon: <CheckIcon />,
-          autoClose: 2000,
-        })
-      }, 3000)
+    createHackathon(hackathonTitle, startDateValue!, endDateValue!).then(
+      (response) =>
+        setTimeout(() => {
+          console.log(response)
+          updateNotification({
+            id: 'hackathon-load',
+            color: 'teal',
+            title: 'Hackathon was created',
+            message: 'Notification will close in 2 seconds',
+            icon: <CheckIcon />,
+            autoClose: 2000,
+          })
+        }, 3000)
     )
   }
 
@@ -84,9 +85,9 @@ function HackathonForm(props: IProps) {
       hackathonTitle,
       startDateValue!,
       endDateValue!
-    ).then((r) =>
+    ).then((response) =>
       setTimeout(() => {
-        console.log(r)
+        console.log(response)
         updateNotification({
           id: 'hackathon-load',
           color: 'teal',

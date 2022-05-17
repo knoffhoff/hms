@@ -9,7 +9,7 @@ import RelevantIdeasLoader from '../components/RelevantIdeasLoader'
 export default function YourIdeas() {
   const [participantID, setParticipantID] = useState('')
   const userID = '629f52c9-df29-491b-82a4-bdd80806338d'
-  const [selectedHackweekID, setSelectedHackweekID] = useState('')
+  const [selectedHackathonID, setSelectedHackathonID] = useState('')
   const [relevantIdeas, setRelevantIdeas] = useState([] as Idea[])
   const [isLoading, setIsLoading] = useState(true)
   const [hackathon, setHackathon] = useState({
@@ -50,14 +50,14 @@ export default function YourIdeas() {
     <>
       <Title order={1}>Your ideas</Title>
       <HackathonSelectDropdown
-        setHackathonID={setSelectedHackweekID}
+        setHackathonID={setSelectedHackathonID}
         context={'your-ideas'}
       />
 
       <RelevantIdeasLoader
         setHackathon={setHackathon}
         setRelevantIdea={setRelevantIdeas}
-        selectedHackweekID={selectedHackweekID}
+        selectedHackweekID={selectedHackathonID}
         setLoading={setIsLoading}
       />
 
@@ -102,7 +102,7 @@ export default function YourIdeas() {
           )}
         </div>
       )}
-      {isLoading && selectedHackweekID && <div>Loading...</div>}
+      {isLoading && selectedHackathonID && <div>Loading...</div>}
     </>
   )
 }
