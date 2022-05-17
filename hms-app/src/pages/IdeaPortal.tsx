@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Input, Group, Title, Button } from '@mantine/core'
 import { Search } from 'tabler-icons-react'
 import IdeaCardList from '../components/lists/IdeaCardList'
-import { Hackathon, Idea } from '../common/types'
+import { Hackathon, Idea, ParticipantPreview } from '../common/types'
 import {
   createHackathonParticipant,
   deleteParticipant,
@@ -42,15 +42,9 @@ function IdeaPortal() {
     return item.title?.toLowerCase().includes(searchTerm.toLowerCase())
   })
 
-  const hackathonParticipants = hackathonData.participants?.map(
-    (participant) => participant.user.id
-  )
-
-  const filterParticipants = hackathonData.participants?.filter((item) => {
-    return item.user.id.includes(participantInfo.userId)
-  })
-
-  const isParticipant = hackathonParticipants?.includes(participantInfo.userId)
+  const findParticipant = hackathonData.participants?.find(
+    (participant) => participant.user.id === participantInfo.userId
+  )!
 
   const addHackathonParticipant = () => {
     setButtonisDisabled(true)
@@ -96,8 +90,7 @@ function IdeaPortal() {
       autoClose: false,
       disallowClose: true,
     })
-    // @ts-ignore
-    deleteParticipant(filterParticipants[0].id).then((r) => {
+    deleteParticipant(findParticipant.id).then((r) => {
       console.log('participant deleted with id ', r)
       setButtonisDisabled(false)
       setParticipantCheck(false)
@@ -119,7 +112,7 @@ function IdeaPortal() {
   }, [selectedHackweekID])
 
   useEffect(() => {
-    setParticipantCheck(isParticipant!)
+    setParticipantCheck(!!findParticipant)
   }, [hackathonData])
 
   return (
