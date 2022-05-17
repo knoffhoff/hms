@@ -4,6 +4,7 @@
 import {getClient} from './dynamo-db';
 import {
   AttributeValue,
+  ConditionalCheckFailedException,
   DeleteItemCommand,
   GetItemCommand,
   PutItemCommand,
@@ -12,6 +13,7 @@ import {
 import Uuid from '../util/Uuid';
 import Participant from './domain/Participant';
 import NotFoundError from '../error/NotFoundError';
+import InvalidStateError from '../error/InvalidStateError';
 
 const dynamoDBClient = getClient();
 
@@ -35,15 +37,28 @@ export async function listParticipants(
 }
 
 export async function putParticipant(participant: Participant): Promise<void> {
-  await dynamoDBClient.send(new PutItemCommand({
-    TableName: process.env.PARTICIPANT_TABLE,
-    Item: {
-      userId: {S: participant.userId},
-      hackathonId: {S: participant.hackathonId},
-      id: {S: participant.id},
-      creationDate: {S: participant.creationDate.toISOString()},
-    },
-  }));
+  try {
+    await dynamoDBClient.send(new PutItemCommand({
+      TableName: process.env.PARTICIPANT_TABLE,
+      Item: {
+        userId: {S: participant.userId},
+        hackathonId: {S: participant.hackathonId},
+        id: {S: participant.id},
+        creationDate: {S: participant.creationDate.toISOString()},
+      },
+      ConditionExpression: `hackathonId = :hId AND userId = :uId`,
+      ExpressionAttributeValues: {
+        ':hId': {'S': participant.hackathonId},
+        ':uId': {'S': participant.userId},
+      },
+    }));
+  } catch (e) {
+    if (e instanceof ConditionalCheckFailedException) {
+      throw new InvalidStateError(`Cannot create Participant for ` +
+          `User with id: ${participant.userId} and ` +
+          `Hackathon with id: ${participant.hackathonId}, it already exists`);
+    }
+  }
 }
 
 export async function getParticipant(id: Uuid): Promise<Participant> {

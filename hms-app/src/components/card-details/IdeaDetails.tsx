@@ -60,6 +60,7 @@ export default function IdeaDetails(props: IProps) {
       total: 1,
       initialItem: -1,
     })
+
   const { idea, type, isLoading } = props
   const MAX_TITLE_LENGTH = 45
   const MAX_DESCRIPTION_LENGTH = type === 'voting' ? 200 : 245

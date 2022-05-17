@@ -7,17 +7,20 @@ class UserPreviewResponse {
   id: Uuid;
   lastName: string;
   firstName: string;
+  emailAddress: string;
   imageUrl: string;
 
   constructor(
       id: Uuid,
       lastName: string,
       firstName: string,
+      emailAddress: string,
       imageUrl: string,
   ) {
     this.id = id;
     this.lastName = lastName;
     this.firstName = firstName;
+    this.emailAddress = emailAddress;
     this.imageUrl = imageUrl;
   }
 
@@ -27,6 +30,7 @@ class UserPreviewResponse {
       user.id,
       user.lastName,
       user.firstName,
+      user.emailAddress,
       user.imageUrl,
   );
 
