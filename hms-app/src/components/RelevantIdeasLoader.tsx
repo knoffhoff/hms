@@ -46,8 +46,8 @@ export default function RelevantIdeasLoader({
       setHackathonData({
         id: data.id,
         title: data.title,
-        startDate: data.startDate,
-        endDate: data.endDate,
+        startDate: new Date(data.startDate),
+        endDate: new Date(data.endDate),
         participants: data.participants,
         categories: data.categories,
         ideas: data.ideas,
@@ -85,6 +85,7 @@ export default function RelevantIdeasLoader({
       return []
     })
     loadRelevantIdeaDetails()
+    setHackathon(hackathonData)
   }, [hackathonData])
 
   useEffect(() => {
@@ -103,9 +104,11 @@ export default function RelevantIdeasLoader({
 
   useEffect(() => {
     setRelevantIdea(relevantIdeaList)
-    setHackathon(hackathonData)
+  }, [relevantIdeaList])
+
+  useEffect(() => {
     setLoading(isLoading)
-  }, [relevantIdeaList, hackathonData, isLoading])
+  }, [isLoading])
 
   return <div />
 }

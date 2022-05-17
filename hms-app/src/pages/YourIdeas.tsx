@@ -65,14 +65,14 @@ export default function YourIdeas() {
         <div>
           <h2>{hackathon.title}</h2>
           <h2>
-            Start Date: {new Date(hackathon.startDate).toDateString()} End Date:{' '}
-            {new Date(hackathon.endDate).toDateString()}
+            Start Date: {hackathon.startDate.toDateString()} End Date:{' '}
+            {hackathon.endDate.toDateString()}
           </h2>
 
           {isParticipant() && (
             <div>
               <div>
-                {!(new Date(hackathon.endDate) < today) && (
+                {!(hackathon.endDate < today) && (
                   <Accordion mb={30} pt={10} iconPosition="left">
                     <Accordion.Item
                       style={{ border: '1px solid' }}
