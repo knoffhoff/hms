@@ -62,7 +62,7 @@ function IdeaForm(props: IProps) {
   })
   const [categories, setCategories] = useState<string[]>([])
   const [ideaText, setIdeaText] = useState({
-    ownerId: participantID.toString(),
+    ownerId: participantID,
     hackathonId: hackathon.id,
     title: '',
     description: '',
