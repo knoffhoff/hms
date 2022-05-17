@@ -39,11 +39,6 @@ export default function YourIdeas() {
     return !!participantID.toString()
   }
 
-  useEffect(() => {
-    // @ts-ignore
-    setParticipantID(getID)
-  }, [hackathons])
-
   return (
     <>
       <Title order={1}>Your ideas</Title>

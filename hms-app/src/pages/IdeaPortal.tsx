@@ -11,8 +11,6 @@ import { showNotification, updateNotification } from '@mantine/notifications'
 import { CheckIcon } from '@modulz/radix-icons'
 import HackathonSelectDropdown from '../components/HackathonSelectDropdown'
 import RelevantIdeasLoader from '../components/RelevantIdeasLoader'
-import { showNotification, updateNotification } from '@mantine/notifications'
-import { CheckIcon } from '@modulz/radix-icons'
 
 function IdeaPortal() {
   const [searchTerm, setSearchTerm] = useState('')
@@ -115,14 +113,6 @@ function IdeaPortal() {
 
   useEffect(() => {
     setParticipantCheck(!!findParticipant)
-  }, [hackathonData])
-
-  useEffect(() => {
-    setParticipantInfo({ ...participantInfo, hackathonId: selectedHackweek })
-  }, [selectedHackweek])
-
-  useEffect(() => {
-    setParticipantCheck(isParticipant!)
   }, [hackathonData])
 
   return (
