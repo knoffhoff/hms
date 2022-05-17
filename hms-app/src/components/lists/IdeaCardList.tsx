@@ -15,7 +15,7 @@ export default function IdeaCardList(props: IProps) {
 
   const IdeasList = ideas.map((idea, index) => {
     return (
-      <Grid.Col sm={columnSize} lg={columnSize}>
+      <Grid.Col key={index} sm={columnSize} lg={columnSize}>
         <div style={{ padding: 10 }}>
           <IdeaDetails idea={idea} type={type} isLoading={isLoading} />
         </div>

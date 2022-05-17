@@ -101,9 +101,11 @@ export default function RelevantIdeasLoader({
     }
   }, [ideaData])
 
-  setRelevantIdea(relevantIdeaList)
-  setHackathon(hackathonData)
-  setLoading(isLoading)
+  useEffect(() => {
+    setRelevantIdea(relevantIdeaList)
+    setHackathon(hackathonData)
+    setLoading(isLoading)
+  }, [relevantIdeaList, hackathonData, isLoading])
 
   return <div />
 }

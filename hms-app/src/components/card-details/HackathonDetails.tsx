@@ -167,6 +167,7 @@ export default function HackathonDetails(props: IProps) {
   const allParticipants = hackathonData.participants?.map(
     (participant, index) => (
       <Accordion.Item
+        key={index}
         label={
           <div>
             {index + 1}. {participant.user.firstName}{' '}
@@ -184,6 +185,7 @@ export default function HackathonDetails(props: IProps) {
 
   const allCategories = hackathonData.categories?.map((category, index) => (
     <Accordion.Item
+      key={index}
       label={
         <div>
           {index + 1}. {category.title}
@@ -194,8 +196,9 @@ export default function HackathonDetails(props: IProps) {
     </Accordion.Item>
   ))
 
-  const allIdeas = relevantIdeaList.slice(0).map((idea, index) => (
+  const allIdeas = relevantIdeaList.map((idea, index) => (
     <Accordion.Item
+      key={index}
       label={
         <div>
           {index + 1}. {idea.title}

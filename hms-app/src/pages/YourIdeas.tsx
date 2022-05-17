@@ -1,4 +1,4 @@
-import { Accordion } from '@mantine/core'
+import { Accordion, Title } from '@mantine/core'
 import { Hackathon, Idea } from '../common/types'
 import IdeaCardList from '../components/lists/IdeaCardList'
 import React, { useEffect, useState } from 'react'
@@ -6,12 +6,13 @@ import IdeaForm from '../components/input-forms/IdeaForm'
 import HackathonSelectDropdown from '../components/HackathonSelectDropdown'
 import RelevantIdeasLoader from '../components/RelevantIdeasLoader'
 
-function YourIdeas() {
-  const userId = '1c9db559-d3be-4836-9e8e-f04f7644a485'
+export default function YourIdeas() {
+  const [participantID, setParticipantID] = useState('')
+  const userID = '629f52c9-df29-491b-82a4-bdd80806338d'
   const [selectedHackweek, setSelectedHackweek] = useState('')
-  const [relevantIdeaList, setRelevantIdeaList] = useState([] as Idea[])
+  const [relevantIdeas, setRelevantIdeas] = useState([] as Idea[])
   const [isLoading, setIsLoading] = useState(true)
-  const [hackathonData, setHackathonData] = useState({
+  const [hackathons, setHackathons] = useState({
     id: 'string',
     title: 'string',
     startDate: new Date(),
@@ -21,75 +22,87 @@ function YourIdeas() {
     ideas: [],
   } as Hackathon)
 
-  const filteredIdeas = relevantIdeaList.filter((item) => {
-    return item.owner?.id.includes(userId)
+  const filteredIdeas = relevantIdeas.filter((item) => {
+    return item.owner?.user.id.includes(userID)
   })
 
-  const getHackathonID = (hackthonID: string) => {
+  const getParticipant = hackathons.participants?.filter((participant) => {
+    return participant.user.id.includes(userID)
+  })
+
+  const getID = getParticipant?.map((participant) => {
+    return participant.id
+  })
+
+  const setHackathonID = (hackthonID: string) => {
     setSelectedHackweek(hackthonID)
   }
 
-  const getRelevantIdeaList = (relevantIdeaList: Idea[]) => {
-    setRelevantIdeaList(relevantIdeaList)
+  const setRelevantIdeaList = (relevantIdeaList: Idea[]) => {
+    setRelevantIdeas(relevantIdeaList)
   }
 
-  const getHackathonData = (hackathonData: Hackathon) => {
-    setHackathonData(hackathonData)
+  const setHackathonData = (hackathonData: Hackathon) => {
+    setHackathons(hackathonData)
   }
 
-  const getIsLoading = (isLoading: boolean) => {
+  const setThisIsLoading = (isLoading: boolean) => {
     setIsLoading(isLoading)
   }
 
+  useEffect(() => {
+    // @ts-ignore
+    setParticipantID(getID)
+  }, [hackathons])
+
   return (
     <>
-      <HackathonSelectDropdown setHackathonID={getHackathonID} />
+      <Title order={1}>Your ideas</Title>
+      <HackathonSelectDropdown setHackathonID={setHackathonID} />
 
       <RelevantIdeasLoader
-        setHackathon={getHackathonData}
-        setRelevantIdea={getRelevantIdeaList}
+        setHackathon={setHackathonData}
+        setRelevantIdea={setRelevantIdeaList}
         selectedHackweek={selectedHackweek}
-        setLoading={getIsLoading}
+        setLoading={setThisIsLoading}
       />
 
-      <>
+      {!isLoading && (
         <div>
-          <Accordion mb={30} pt={10} iconPosition="left">
-            <Accordion.Item
-              style={{ border: '1px solid' }}
-              label={'Create new idea'}
-            >
-              <IdeaForm
-                ideaID={'null'}
-                hackathon={hackathonData}
-                userId={userId}
-                context={'new'}
-              />
-            </Accordion.Item>
-          </Accordion>
-        </div>
-        {!isLoading && (
           <div>
-            <h2>{hackathonData.title}</h2>
-            <h2>
-              from: {new Date(hackathonData.startDate).toDateString()} to:{' '}
-              {new Date(hackathonData.endDate).toDateString()}
-            </h2>
-            <h2>Your Ideas ({filteredIdeas.length})</h2>
-
-            <div>
-              <IdeaCardList
-                ideas={filteredIdeas}
-                columnSize={6}
-                type={'owner'}
-                isLoading={false}
-              />
-            </div>
+            <Accordion mb={30} pt={10} iconPosition="left">
+              <Accordion.Item
+                style={{ border: '1px solid' }}
+                label={'Create new idea'}
+              >
+                <IdeaForm
+                  ideaID={'null'}
+                  hackathon={hackathons}
+                  participantID={participantID}
+                  context={'new'}
+                />
+              </Accordion.Item>
+            </Accordion>
           </div>
-        )}
-      </>
+
+          <h2>{hackathons.title}</h2>
+          <h2>
+            Start Date: {new Date(hackathons.startDate).toDateString()} End
+            Date: {new Date(hackathons.endDate).toDateString()}
+          </h2>
+          <h2>Your Ideas ({filteredIdeas.length})</h2>
+
+          <div>
+            <IdeaCardList
+              ideas={filteredIdeas}
+              columnSize={6}
+              type={'owner'}
+              isLoading={false}
+            />
+          </div>
+        </div>
+      )}
+      {isLoading && selectedHackweek && <div>Loading...</div>}
     </>
   )
 }
-
-export default YourIdeas

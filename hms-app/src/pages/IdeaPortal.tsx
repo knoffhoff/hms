@@ -4,14 +4,13 @@ import { Search } from 'tabler-icons-react'
 import IdeaCardList from '../components/lists/IdeaCardList'
 import { Hackathon, Idea } from '../common/types'
 import {
-  createParticipant,
+  createHackathonParticipant,
   deleteParticipant,
 } from '../actions/ParticipantActions'
 import HackathonSelectDropdown from '../components/HackathonSelectDropdown'
 import RelevantIdeasLoader from '../components/RelevantIdeasLoader'
 import { showNotification, updateNotification } from '@mantine/notifications'
 import { CheckIcon } from '@modulz/radix-icons'
-
 
 function IdeaPortal() {
   const [searchTerm, setSearchTerm] = useState('')
@@ -63,27 +62,28 @@ function IdeaPortal() {
       autoClose: false,
       disallowClose: true,
     })
-    createParticipant(participantInfo.userId, participantInfo.hackathonId).then(
-      (r) => {
-        setTimeout(() => {
-          console.log('r added', r)
-          setButtonisDisabled(false)
-          setParticipantCheck(true)
-          setParticipantInfo((prevState) => ({
-            ...prevState,
-            participantId: r.id,
-          }))
-          updateNotification({
-            id: 'participant-load',
-            color: 'teal',
-            title: 'Joined Hackathon',
-            message: 'Notification will close in 2 seconds',
-            icon: <CheckIcon />,
-            autoClose: 2000,
-          })
-        }, 3000)
-      }
-    )
+    createHackathonParticipant(
+      participantInfo.userId,
+      participantInfo.hackathonId
+    ).then((r) => {
+      setTimeout(() => {
+        console.log('r added', r)
+        setButtonisDisabled(false)
+        setParticipantCheck(true)
+        setParticipantInfo((prevState) => ({
+          ...prevState,
+          participantId: r.id,
+        }))
+        updateNotification({
+          id: 'participant-load',
+          color: 'teal',
+          title: 'Joined Hackathon',
+          message: 'Notification will close in 2 seconds',
+          icon: <CheckIcon />,
+          autoClose: 2000,
+        })
+      }, 3000)
+    })
   }
 
   const removeHackathonParticipant = () => {
@@ -177,10 +177,10 @@ function IdeaPortal() {
         <div>
           <h2>{hackathonData.title}</h2>
           <h2>
-            from: {new Date(hackathonData.startDate).toDateString()} to:{' '}
-            {new Date(hackathonData.endDate).toDateString()}
+            Start Date: {new Date(hackathonData.startDate).toDateString()} End
+            Date: {new Date(hackathonData.endDate).toDateString()}
           </h2>
-          <h2>Your Ideas ({filteredIdeas.length})</h2>
+          <h2>All Ideas ({filteredIdeas.length})</h2>
 
           <div>
             <IdeaCardList
