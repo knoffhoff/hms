@@ -16,9 +16,9 @@ export default function RelevantIdeasLoader({
   setHackathon,
   setLoading,
 }: Props) {
-  const [relevantIdeaList, setRelevantIdeaList] = useState([] as Idea[])
+  const [relevantIdeaList, setRelevantIdeaList] = useState<Idea[]>([])
   const [isLoading, setIsLoading] = useState(true)
-  const [hackathonData, setHackathonData] = useState({
+  const [hackathonData, setHackathonData] = useState<Hackathon>({
     id: 'string',
     title: 'string',
     startDate: new Date(),
@@ -26,8 +26,8 @@ export default function RelevantIdeasLoader({
     participants: [],
     categories: undefined,
     ideas: [],
-  } as Hackathon)
-  const [ideaData, setIdeaData] = useState({
+  })
+  const [ideaData, setIdeaData] = useState<Idea>({
     id: 'string',
     owner: undefined,
     hackathon: undefined,
@@ -39,7 +39,7 @@ export default function RelevantIdeasLoader({
     requiredSkills: [],
     category: undefined,
     creationDate: new Date(),
-  } as Idea)
+  })
 
   const loadSelectedHackathonData = () => {
     getHackathonDetails(selectedHackweekID).then((data) => {

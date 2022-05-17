@@ -14,7 +14,7 @@ export default function HackathonSelectDropdown({
 }: Props) {
   const [isError, setIsError] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
-  const [hackathonList, setHackathonList] = useState([] as HackathonPreview[])
+  const [hackathonList, setHackathonList] = useState<HackathonPreview[]>([])
   const today = new Date()
 
   const loadHackathons = () => {

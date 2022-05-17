@@ -1,5 +1,5 @@
 import { Accordion, Title } from '@mantine/core'
-import { Hackathon, Idea } from '../common/types'
+import { Hackathon, Idea, ParticipantPreview } from '../common/types'
 import IdeaCardList from '../components/lists/IdeaCardList'
 import React, { useEffect, useState } from 'react'
 import IdeaForm from '../components/input-forms/IdeaForm'
@@ -10,7 +10,7 @@ export default function YourIdeas() {
   const [participantID, setParticipantID] = useState('')
   const userID = '629f52c9-df29-491b-82a4-bdd80806338d'
   const [selectedHackathonID, setSelectedHackathonID] = useState('')
-  const [relevantIdeas, setRelevantIdeas] = useState([] as Idea[])
+  const [relevantIdeas, setRelevantIdeas] = useState<Idea[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [hackathon, setHackathon] = useState({
     id: 'string',
@@ -23,23 +23,16 @@ export default function YourIdeas() {
   } as Hackathon)
   const today = new Date()
 
-  console.log(new Date(hackathon.endDate) < today)
-
   const filteredIdeas = relevantIdeas.filter((item) => {
     return item.owner?.user.id.includes(userID)
   })
 
-  const getParticipant = hackathon.participants?.filter((participant) => {
-    return participant.user.id.includes(userID)
-  })
-
-  const getID = getParticipant?.map((participant) => {
-    return participant.id
-  })
+  const userParticipant: ParticipantPreview = hackathon.participants?.find(
+    (participant) => participant.user.id === userID
+  )!
 
   useEffect(() => {
-    // @ts-ignore
-    setParticipantID(getID)
+    setParticipantID(userParticipant?.id)
   }, [hackathon])
 
   function isParticipant(): boolean {

@@ -3,7 +3,7 @@ import { HackathonPreview } from '../common/types'
 import { getListOfHackathons } from '../actions/HackathonActions'
 
 function Home() {
-  const [hackathonList, setHackathonList] = useState([] as HackathonPreview[])
+  const [hackathonList, setHackathonList] = useState<HackathonPreview[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const today = new Date()
 

@@ -18,7 +18,7 @@ function IdeaPortal() {
   const [participantCheck, setParticipantCheck] = useState(false)
   const [selectedHackweekID, setSelectedHackweekID] = useState('')
   const [buttonIsDisabled, setButtonisDisabled] = useState(false)
-  const [relevantIdeaList, setRelevantIdeas] = useState([] as Idea[])
+  const [relevantIdeaList, setRelevantIdeas] = useState<Idea[]>([])
   const [participantInfo, setParticipantInfo] = useState({
     userId: 'f6fa2b8e-68ed-4486-b8df-f93b87ff23e5',
     hackathonId: '',
