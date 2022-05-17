@@ -16,7 +16,7 @@ function IdeaPortal() {
   const [searchTerm, setSearchTerm] = useState('')
   const [isLoading, setIsLoading] = useState(true)
   const [participantCheck, setParticipantCheck] = useState(false)
-  const [selectedHackweekID, setSelectedHackweekID] = useState('')
+  const [selectedHackathonID, setSelectedHackathonID] = useState('')
   const [buttonIsDisabled, setButtonisDisabled] = useState(false)
   const [relevantIdeaList, setRelevantIdeas] = useState<Idea[]>([])
   const [participantInfo, setParticipantInfo] = useState({
@@ -24,7 +24,7 @@ function IdeaPortal() {
     hackathonId: '',
     participantId: '',
   })
-  const [hackathonData, setHackathons] = useState({
+  const [hackathonData, setHackathonData] = useState({
     id: 'string',
     title: 'string',
     startDate: new Date(),
@@ -108,8 +108,8 @@ function IdeaPortal() {
   }
 
   useEffect(() => {
-    setParticipantInfo({ ...participantInfo, hackathonId: selectedHackweekID })
-  }, [selectedHackweekID])
+    setParticipantInfo({ ...participantInfo, hackathonId: selectedHackathonID })
+  }, [selectedHackathonID])
 
   useEffect(() => {
     setParticipantCheck(!!findParticipant)
@@ -120,7 +120,7 @@ function IdeaPortal() {
       <Title order={1}>All ideas</Title>
       <Group position={'apart'} py={20}>
         <HackathonSelectDropdown
-          setHackathonID={setSelectedHackweekID}
+          setHackathonID={setSelectedHackathonID}
           context={'idea-portal'}
         />
 
@@ -133,9 +133,9 @@ function IdeaPortal() {
       </Group>
 
       <RelevantIdeasLoader
-        setHackathon={setHackathons}
+        setHackathon={setHackathonData}
         setRelevantIdea={setRelevantIdeas}
-        selectedHackweekID={selectedHackweekID}
+        selectedHackathonID={selectedHackathonID}
         setLoading={setIsLoading}
       />
 
@@ -157,8 +157,8 @@ function IdeaPortal() {
         <div>
           <h2>{hackathonData.title}</h2>
           <h2>
-            Start Date: {hackathonData.startDate.toDateString()} End Date:{' '}
-            {hackathonData.endDate.toDateString()}
+            Start Date: {new Date(hackathonData.startDate).toDateString()} End
+            Date: {new Date(hackathonData.endDate).toDateString()}
           </h2>
           <h2>All Ideas ({filteredIdeas.length})</h2>
 
@@ -173,7 +173,7 @@ function IdeaPortal() {
         </div>
       )}
 
-      {isLoading && selectedHackweekID && <div>Loading...</div>}
+      {isLoading && selectedHackathonID && <div>Loading...</div>}
     </>
   )
 }

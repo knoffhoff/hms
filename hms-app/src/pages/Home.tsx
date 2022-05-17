@@ -1,16 +1,44 @@
 import React, { useEffect, useState } from 'react'
-import { HackathonPreview } from '../common/types'
-import { getListOfHackathons } from '../actions/HackathonActions'
+import { Hackathon, HackathonPreview } from '../common/types'
+import {
+  getHackathonDetails,
+  getListOfHackathons,
+} from '../actions/HackathonActions'
+import HackathonSelectDropdown from '../components/HackathonSelectDropdown'
 
 function Home() {
   const [hackathonList, setHackathonList] = useState<HackathonPreview[]>([])
   const [isLoading, setIsLoading] = useState(true)
+  const [selectedHackathonID, setSelectedHackathonID] = useState('')
   const today = new Date()
+  const [hackathonData, setHackathonData] = useState<Hackathon>({
+    id: 'string',
+    title: 'string',
+    startDate: new Date(),
+    endDate: new Date(),
+    participants: [],
+    categories: undefined,
+    ideas: [],
+  })
 
   const loadHackathons = () => {
     getListOfHackathons().then((data) => {
       setHackathonList(data.hackathons)
       setIsLoading(false)
+    })
+  }
+
+  const loadSelectedHackathon = () => {
+    getHackathonDetails(selectedHackathonID).then((data) => {
+      setHackathonData({
+        id: data.id,
+        title: data.title,
+        startDate: new Date(data.startDate),
+        endDate: new Date(data.endDate),
+        participants: data.participants,
+        categories: data.categories,
+        ideas: data.ideas,
+      })
     })
   }
 
@@ -25,6 +53,22 @@ function Home() {
   useEffect(() => {
     loadHackathons()
   }, [])
+
+  useEffect(() => {
+    localStorage.getItem(selectedHackathonID)
+      ? setHackathonData(JSON.parse(localStorage.getItem(selectedHackathonID)!))
+      : loadSelectedHackathon()
+  }, [selectedHackathonID])
+
+  useEffect(() => {
+    //Todo: write this data into localstorage
+    localStorage.getItem(hackathonData.id)
+      ? console.log(
+          'id exist',
+          JSON.parse(localStorage.getItem(hackathonData.id)!)
+        )
+      : localStorage.setItem(hackathonData.id, JSON.stringify(hackathonData))
+  }, [hackathonData])
 
   return (
     <>
@@ -43,23 +87,32 @@ function Home() {
       </p>
 
       {!isLoading && (
-        <div>
-          <h1>
-            Time till next Hackathon{' '}
-            {Math.round(timeTillNextHackathon / (1000 * 3600 * 24))} days and{' '}
-            {Math.round(timeTillNextHackathon / (1000 * 60 * 60)) % 24} hours
-          </h1>
+        <h1>
+          Time till next Hackathon{' '}
+          {
+            (timeTillNextHackathon / (1000 * 3600 * 24))
+              .toString()
+              .split('.')[0]
+          }{' '}
+          days and {Math.round(timeTillNextHackathon / (1000 * 60 * 60)) % 24}{' '}
+          hours
+        </h1>
+      )}
 
-          <h2>{getNextHackathon[0].title}</h2>
+      {!!selectedHackathonID && (
+        <div>
+          <h2>{hackathonData.title}</h2>
           <h2>
-            Start Date: {new Date(getNextHackathon[0].startDate).toDateString()}
+            Start Date: {new Date(hackathonData.startDate).toDateString()}
           </h2>
-          <h2>
-            {' '}
-            End Date: {new Date(getNextHackathon[0].endDate).toDateString()}
-          </h2>
+          <h2> End Date: {new Date(hackathonData.endDate).toDateString()}</h2>
         </div>
       )}
+
+      <HackathonSelectDropdown
+        setHackathonID={setSelectedHackathonID}
+        context={'home'}
+      />
     </>
   )
 }

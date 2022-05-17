@@ -50,7 +50,7 @@ export default function YourIdeas() {
       <RelevantIdeasLoader
         setHackathon={setHackathon}
         setRelevantIdea={setRelevantIdeas}
-        selectedHackweekID={selectedHackathonID}
+        selectedHackathonID={selectedHackathonID}
         setLoading={setIsLoading}
       />
 
@@ -58,8 +58,8 @@ export default function YourIdeas() {
         <div>
           <h2>{hackathon.title}</h2>
           <h2>
-            Start Date: {hackathon.startDate.toDateString()} End Date:{' '}
-            {hackathon.endDate.toDateString()}
+            Start Date: {new Date(hackathon.startDate).toDateString()} End Date:{' '}
+            {new Date(hackathon.endDate).toDateString()}
           </h2>
 
           {isParticipant() && (

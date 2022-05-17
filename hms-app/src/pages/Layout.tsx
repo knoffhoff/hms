@@ -11,7 +11,7 @@ import HeaderMenu from '../components/HeaderMenu'
 import { useColorScheme } from '@mantine/hooks'
 
 const menuLinks = [
-  { link: 'home', label: 'Home' },
+  { link: '', label: 'Home' },
   {
     link: 'ideas',
     label: 'Idea Portal',
