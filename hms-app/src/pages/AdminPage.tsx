@@ -15,7 +15,7 @@ function AdminPage() {
           style={{ border: '1px solid' }}
           label={'Create new hackathon'}
         >
-          <HackathonForm hackathonID={null} context={'new'} />
+          <HackathonForm hackathonId={null} context={'new'} />
         </Accordion.Item>
       </Accordion>
 

@@ -16,7 +16,7 @@ function IdeaPortal() {
   const [searchTerm, setSearchTerm] = useState('')
   const [isLoading, setIsLoading] = useState(true)
   const [participantCheck, setParticipantCheck] = useState(false)
-  const [selectedHackathonID, setSelectedHackathonID] = useState('')
+  const [selectedHackathonId, setSelectedHackathonId] = useState('')
   const [buttonIsDisabled, setButtonisDisabled] = useState(false)
   const [relevantIdeaList, setRelevantIdeas] = useState<Idea[]>([])
   const [participantInfo, setParticipantInfo] = useState({
@@ -108,8 +108,8 @@ function IdeaPortal() {
   }
 
   useEffect(() => {
-    setParticipantInfo({ ...participantInfo, hackathonId: selectedHackathonID })
-  }, [selectedHackathonID])
+    setParticipantInfo({ ...participantInfo, hackathonId: selectedHackathonId })
+  }, [selectedHackathonId])
 
   useEffect(() => {
     setParticipantCheck(!!findParticipant)
@@ -120,7 +120,7 @@ function IdeaPortal() {
       <Title order={1}>All ideas</Title>
       <Group position={'apart'} py={20}>
         <HackathonSelectDropdown
-          setHackathonID={setSelectedHackathonID}
+          setHackathonId={setSelectedHackathonId}
           context={'idea-portal'}
         />
 
@@ -135,7 +135,7 @@ function IdeaPortal() {
       <RelevantIdeasLoader
         setHackathon={setHackathonData}
         setRelevantIdea={setRelevantIdeas}
-        selectedHackathonID={selectedHackathonID}
+        selectedHackathonId={selectedHackathonId}
         setLoading={setIsLoading}
       />
 
@@ -173,7 +173,7 @@ function IdeaPortal() {
         </div>
       )}
 
-      {isLoading && selectedHackathonID && <div>Loading...</div>}
+      {isLoading && selectedHackathonId && <div>Loading...</div>}
     </>
   )
 }

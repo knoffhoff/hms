@@ -7,9 +7,9 @@ import HackathonSelectDropdown from '../components/HackathonSelectDropdown'
 import RelevantIdeasLoader from '../components/RelevantIdeasLoader'
 
 export default function YourIdeas() {
-  const [participantID, setParticipantID] = useState('')
+  const [participantId, setParticipantId] = useState('')
   const userID = '629f52c9-df29-491b-82a4-bdd80806338d'
-  const [selectedHackathonID, setSelectedHackathonID] = useState('')
+  const [selectedHackathonId, setSelectedHackathonId] = useState('')
   const [relevantIdeas, setRelevantIdeas] = useState<Idea[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [hackathon, setHackathon] = useState({
@@ -32,25 +32,25 @@ export default function YourIdeas() {
   )!
 
   useEffect(() => {
-    setParticipantID(userParticipant?.id)
+    setParticipantId(userParticipant?.id)
   }, [hackathon])
 
   function isParticipant(): boolean {
-    return !!participantID.toString()
+    return !!participantId.toString()
   }
 
   return (
     <>
       <Title order={1}>Your ideas</Title>
       <HackathonSelectDropdown
-        setHackathonID={setSelectedHackathonID}
+        setHackathonId={setSelectedHackathonId}
         context={'your-ideas'}
       />
 
       <RelevantIdeasLoader
         setHackathon={setHackathon}
         setRelevantIdea={setRelevantIdeas}
-        selectedHackathonID={selectedHackathonID}
+        selectedHackathonId={selectedHackathonId}
         setLoading={setIsLoading}
       />
 
@@ -72,9 +72,9 @@ export default function YourIdeas() {
                       label={'Create new idea'}
                     >
                       <IdeaForm
-                        ideaID={'null'}
+                        ideaId={'null'}
                         hackathon={hackathon}
-                        participantID={participantID}
+                        participantId={participantId}
                         context={'new'}
                       />
                     </Accordion.Item>
@@ -95,7 +95,7 @@ export default function YourIdeas() {
           )}
         </div>
       )}
-      {isLoading && selectedHackathonID && <div>Loading...</div>}
+      {isLoading && selectedHackathonId && <div>Loading...</div>}
     </>
   )
 }

@@ -4,19 +4,19 @@ import HackathonSelectDropdown from '../components/HackathonSelectDropdown'
 import { Title } from '@mantine/core'
 
 export default function Archive() {
-  const [selectedHackathonID, setSelectedHackathonID] = useState('')
+  const [selectedHackathonId, setSelectedHackathonId] = useState('')
 
   return (
     <>
       <Title order={1}>Archive</Title>
       <HackathonSelectDropdown
-        setHackathonID={setSelectedHackathonID}
+        setHackathonId={setSelectedHackathonId}
         context={'archive'}
       />
 
       <div>
         <HackathonDetails
-          hackathonID={selectedHackathonID.toString()}
+          hackathonId={selectedHackathonId.toString()}
           type={'header'}
         />
       </div>

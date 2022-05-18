@@ -11,7 +11,7 @@ import {
   Text,
 } from '@mantine/core'
 import { useFullscreen } from '@mantine/hooks'
-import { Idea, User, UserPreview } from '../common/types'
+import { Idea, UserPreview } from '../common/types'
 import Carousel from 'nuka-carousel'
 
 const useStyles = createStyles((theme) => ({

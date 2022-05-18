@@ -30,10 +30,10 @@ const useStyles = createStyles((theme) => ({
   },
 }))
 
-type IProps = { context: string; hackathonID: string | null }
+type IProps = { context: string; hackathonId: string | null }
 
 function HackathonForm(props: IProps) {
-  const { context, hackathonID } = props
+  const { context, hackathonId } = props
   const { classes } = useStyles()
   const today = new Date()
   const [startDateValue, setStartDateValue] = useState<Date | null>(new Date())
@@ -81,7 +81,7 @@ function HackathonForm(props: IProps) {
       disallowClose: true,
     })
     editHackathon(
-      hackathonID!,
+      hackathonId!,
       hackathonTitle,
       startDateValue!,
       endDateValue!

@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import { Button, Title, useMantineTheme, Text, Group } from '@mantine/core'
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd'
-import IdeaDetails from '../components/card-details/IdeaDetails'
 
 const columnsFromBackend = {
   ['1']: {

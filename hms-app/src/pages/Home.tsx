@@ -9,7 +9,7 @@ import HackathonSelectDropdown from '../components/HackathonSelectDropdown'
 function Home() {
   const [hackathonList, setHackathonList] = useState<HackathonPreview[]>([])
   const [isLoading, setIsLoading] = useState(true)
-  const [selectedHackathonID, setSelectedHackathonID] = useState('')
+  const [selectedHackathonId, setSelectedHackathonId] = useState('')
   const today = new Date()
   const [hackathonData, setHackathonData] = useState<Hackathon>({
     id: 'string',
@@ -29,7 +29,7 @@ function Home() {
   }
 
   const loadSelectedHackathon = () => {
-    getHackathonDetails(selectedHackathonID).then((data) => {
+    getHackathonDetails(selectedHackathonId).then((data) => {
       setHackathonData({
         id: data.id,
         title: data.title,
@@ -55,10 +55,10 @@ function Home() {
   }, [])
 
   useEffect(() => {
-    localStorage.getItem(selectedHackathonID)
-      ? setHackathonData(JSON.parse(localStorage.getItem(selectedHackathonID)!))
+    localStorage.getItem(selectedHackathonId)
+      ? setHackathonData(JSON.parse(localStorage.getItem(selectedHackathonId)!))
       : loadSelectedHackathon()
-  }, [selectedHackathonID])
+  }, [selectedHackathonId])
 
   useEffect(() => {
     //Todo: write this data into localstorage
@@ -99,7 +99,7 @@ function Home() {
         </h1>
       )}
 
-      {!!selectedHackathonID && (
+      {!!selectedHackathonId && (
         <div>
           <h2>{hackathonData.title}</h2>
           <h2>
@@ -110,7 +110,7 @@ function Home() {
       )}
 
       <HackathonSelectDropdown
-        setHackathonID={setSelectedHackathonID}
+        setHackathonId={setSelectedHackathonId}
         context={'home'}
       />
     </>

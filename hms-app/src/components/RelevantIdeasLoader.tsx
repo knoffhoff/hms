@@ -4,14 +4,14 @@ import { Hackathon, Idea } from '../common/types'
 import { getIdeaDetails } from '../actions/IdeaActions'
 
 type Props = {
-  selectedHackathonID: string
+  selectedHackathonId: string
   setRelevantIdea: (relevantIdeaList: Idea[]) => void
   setHackathon: (hackathonData: Hackathon) => void
   setLoading: (boolean: boolean) => void
 }
 
 export default function RelevantIdeasLoader({
-  selectedHackathonID,
+  selectedHackathonId,
   setRelevantIdea,
   setHackathon,
   setLoading,
@@ -42,45 +42,25 @@ export default function RelevantIdeasLoader({
   })
 
   const loadSelectedHackathon = () => {
-    getHackathonDetails(selectedHackathonID).then((data) => {
-      setHackathonData({
-        id: data.id,
-        title: data.title,
-        startDate: new Date(data.startDate),
-        endDate: new Date(data.endDate),
-        participants: data.participants,
-        categories: data.categories,
-        ideas: data.ideas,
-      })
+    getHackathonDetails(selectedHackathonId).then((data) => {
+      setHackathonData(data)
     })
   }
 
   const loadRelevantIdeaDetails = () => {
     hackathonData.ideas?.map((ideaPreviews) => {
       getIdeaDetails(ideaPreviews.id).then((data) => {
-        setIdeaData({
-          id: data.id,
-          owner: data.owner,
-          hackathon: data.hackathon,
-          participants: data.participants,
-          title: data.title,
-          description: data.description,
-          problem: data.problem,
-          goal: data.goal,
-          requiredSkills: data.requiredSkills,
-          category: data.category,
-          creationDate: data.creationDate,
-        })
+        setIdeaData(data)
         setIsLoading(false)
       })
     })
   }
 
   useEffect(() => {
-    localStorage.getItem(selectedHackathonID)
-      ? setHackathonData(JSON.parse(localStorage.getItem(selectedHackathonID)!))
+    localStorage.getItem(selectedHackathonId)
+      ? setHackathonData(JSON.parse(localStorage.getItem(selectedHackathonId)!))
       : loadSelectedHackathon()
-  }, [selectedHackathonID])
+  }, [selectedHackathonId])
 
   useEffect(() => {
     setRelevantIdeaList((relevantIdeaList) => {

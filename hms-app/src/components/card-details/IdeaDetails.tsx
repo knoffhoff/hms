@@ -120,10 +120,10 @@ export default function IdeaDetails(props: IProps) {
     >
       Edit Idea
       <IdeaForm
-        ideaID={idea.id}
+        ideaId={idea.id}
         idea={idea}
         context={'edit'}
-        participantID={idea.owner?.id!}
+        participantId={idea.owner?.id!}
         hackathon={idea.hackathon!}
         setOpened={closeEditModal}
       />

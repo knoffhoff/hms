@@ -52,7 +52,7 @@ function AllHackathonList() {
         </div>
       }
     >
-      <HackathonDetails hackathonID={hackathon.id} type={'fullInfo'} />
+      <HackathonDetails hackathonId={hackathon.id} type={'fullInfo'} />
     </Accordion.Item>,
   ])
 
