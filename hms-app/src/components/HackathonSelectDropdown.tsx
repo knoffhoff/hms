@@ -43,7 +43,7 @@ export default function HackathonSelectDropdown({
         })
     }
     return hackathonList
-  })
+  }
 
   function mapHackathonToSelectItem(hackathon: HackathonPreview): SelectItem {
     return {
