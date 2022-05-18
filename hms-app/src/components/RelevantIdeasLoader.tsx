@@ -27,6 +27,7 @@ export default function RelevantIdeasLoader({
     categories: undefined,
     ideas: [],
   })
+
   const [ideaData, setIdeaData] = useState<Idea>({
     id: 'string',
     owner: undefined,

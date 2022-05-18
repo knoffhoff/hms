@@ -15,7 +15,7 @@ export default function HackathonSelectDropdown({
   const [isError, setIsError] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
   const [hackathonList, setHackathonList] = useState<HackathonPreview[]>([])
-  const today = new Date()
+  const today = new Date().setHours(0, 0, 0, 0)
 
   const loadHackathons = () => {
     getListOfHackathons().then(
@@ -31,23 +31,19 @@ export default function HackathonSelectDropdown({
     )
   }
 
-  const futureAndPresentHackathons = hackathonList.filter((hackathon) => {
-    return new Date(hackathon.endDate) > today
-  })
-
-  const pastHackathons = hackathonList.filter((hackathon) => {
-    return new Date(hackathon.endDate) < today
-  })
-
-  function getHackatonsForContext(): HackathonPreview[] {
+  function getHackathonsForContext(): HackathonPreview[] {
     switch (context) {
       case 'archive':
-        return pastHackathons
+        return hackathonList.filter((hackathon) => {
+          return new Date(hackathon.endDate) < new Date(today)
+        })
       case 'idea-portal':
-        return futureAndPresentHackathons
+        return hackathonList.filter((hackathon) => {
+          return new Date(hackathon.endDate) >= new Date(today)
+        })
     }
     return hackathonList
-  }
+  })
 
   function mapHackathonToSelectItem(hackathon: HackathonPreview): SelectItem {
     return {
@@ -69,7 +65,7 @@ export default function HackathonSelectDropdown({
     }
   }
 
-  const hackathonMap = getHackatonsForContext().map((hackathon) =>
+  const hackathonMap = getHackathonsForContext().map((hackathon) =>
     mapHackathonToSelectItem(hackathon)
   )
 
