@@ -36,18 +36,18 @@ export default function HackathonSelectDropdown({
     )
   }
 
-  function getHackathonsForContext(): HackathonPreview[] {
+  function getHackathonsSelectItems(): SelectItem[] {
     switch (context) {
       case Enum.Archive:
-        return hackathonList.filter((hackathon) => {
-          return new Date(hackathon.endDate) < new Date(today)
-        })
+        return hackathonList
+          .filter((hackathon) => new Date(hackathon.endDate) < new Date(today))
+          .map((hackathon) => mapHackathonToSelectItem(hackathon))
       case Enum.IdeaPortal:
-        return hackathonList.filter((hackathon) => {
-          return new Date(hackathon.endDate) >= new Date(today)
-        })
+        return hackathonList
+          .filter((hackathon) => new Date(hackathon.endDate) >= new Date(today))
+          .map((hackathon) => mapHackathonToSelectItem(hackathon))
     }
-    return hackathonList
+    return hackathonList.map((hackathon) => mapHackathonToSelectItem(hackathon))
   }
 
   function mapHackathonToSelectItem(hackathon: HackathonPreview): SelectItem {
@@ -70,10 +70,6 @@ export default function HackathonSelectDropdown({
     }
   }
 
-  const hackathonMap = getHackathonsForContext().map((hackathon) =>
-    mapHackathonToSelectItem(hackathon)
-  )
-
   useEffect(() => {
     loadHackathons()
   }, [])
@@ -87,7 +83,7 @@ export default function HackathonSelectDropdown({
           <Select
             placeholder={'select a Hackathon'}
             maxDropdownHeight={280}
-            data={hackathonMap}
+            data={getHackathonsSelectItems()}
             onChange={setHackathonId}
           />
         </div>
