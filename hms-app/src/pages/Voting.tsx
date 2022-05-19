@@ -6,12 +6,6 @@ import IdeaDetails from '../components/card-details/IdeaDetails'
 import { useLocalStorage } from '../common/localStorage'
 import { Idea } from '../common/types'
 
-const onDragStart = (result: DragStart, setReadyToVote: Function) => {
-  if(result.source.droppableId==='2') {
-    setReadyToVote(false)
-  }
-}
-
 const onDragEnd = (result: DropResult, votingState: VotingState, setColumnsState: Function) => {
   if (!result.destination) return
 
@@ -39,7 +33,7 @@ const onDragEnd = (result: DropResult, votingState: VotingState, setColumnsState
     })
   } else {
     const sourceColumn: TitledColumn = votingState[source.droppableId as keyof VotingState]
-    const copiedItems: Idea[] = [...sourceColumn.items]
+    const copiedItems: Idea[] = sourceColumn.items
     const [removed] = copiedItems.splice(source.index, 1)
     copiedItems.splice(destination.index, 0, removed)
     setColumnsState({
@@ -163,11 +157,11 @@ export default function Voting() {
         <DragDropContext
           onDragStart={result => {
             setDragEnabled(false)
-            onDragStart(result, setReadyToVote)
+            setReadyToVote(false)
           }}
           onDragEnd={result => {
-            setReadyToVote(votingState[2].items.length === 3)
             setDragEnabled(true)
+            setReadyToVote(votingState[2].items.length === 3)
             onDragEnd(result, votingState, setVotingState)
           }}
         >
