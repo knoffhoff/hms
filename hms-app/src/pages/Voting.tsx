@@ -1,12 +1,18 @@
 import { useEffect, useState } from 'react'
 import { Button, Title, useMantineTheme, Text, Group } from '@mantine/core'
-import { DragDropContext, Draggable, Droppable, DropResult } from 'react-beautiful-dnd'
+import { DragDropContext, Draggable, DragStart, Droppable, DropResult } from 'react-beautiful-dnd'
 import ideaData from '../test/TestIdeaData'
 import IdeaDetails from '../components/card-details/IdeaDetails'
 import { useLocalStorage } from '../common/localStorage'
 import { Idea } from '../common/types'
 
-const onDragEnd = (result: DropResult, votingState: VotingState, setColumnsState: any) => {
+const onDragStart = (result: DragStart, setReadyToVote: Function) => {
+  if(result.source.droppableId==='2') {
+    setReadyToVote(false)
+  }
+}
+
+const onDragEnd = (result: DropResult, votingState: VotingState, setColumnsState: Function) => {
   if (!result.destination) return
 
   const { source, destination } = result
@@ -56,32 +62,33 @@ type VotingState = {
   '2': TitledColumn;
 }
 
+const defaultColumnsFromBackend: VotingState = {
+  '1': {
+    name: 'All ideas',
+    items: [...ideaData],
+  },
+  '2': {
+    name: 'Your Votes',
+    items: [],
+  }
+}
+
 export default function Voting() {
   const theme = useMantineTheme()
   const backgroundColor = theme.colorScheme === 'dark' ? theme.colors.gray[7] : theme.colors.dark[1]
 
-  //TODO exchange it with real backend call
-  const defaultColumnsFromBackend: VotingState = {
-    '1': {
-      name: 'All ideas',
-      items: [...ideaData],
-    },
-    '2': {
-      name: 'Your Votes',
-      items: [],
-    }
-  }
+  const [votingState, setVotingState] = useLocalStorage("current-voting-state", defaultColumnsFromBackend)
 
-  const [columnsState, setcolumnsState] = useLocalStorage("current-voting-state", defaultColumnsFromBackend)
+  const [readyToVote, setReadyToVote] = useState(votingState[2].items.length === 3)
+  useEffect(() => setReadyToVote(votingState[2].items.length === 3), [votingState]);
 
-  const [readyToVote, setReadyToVote] = useState(columnsState[2].items.length === 3)
-  useEffect(() => setReadyToVote(columnsState[2].items.length === 3), [columnsState]);
+  const [dragEnabled, setDragEnabled] = useState(true);
 
   //TODO exchange it with real backend call
   function submitVote() {
-    console.log(columnsState['1'].items)
+    console.log(votingState['1'].items)
     console.log('voting submit is: ')
-    console.log(columnsState['2'].items)
+    console.log(votingState['2'].items)
   }
 
   const mapIdeaToDraggableIdea = (item: Idea, index: number) => {
@@ -89,6 +96,7 @@ export default function Voting() {
       key={item.id}
       draggableId={item.id}
       index={index}
+      isDragDisabled={!dragEnabled}
     >
       {(provided) => {
         return (
@@ -153,9 +161,17 @@ export default function Voting() {
 
       <div style={{ display: 'flex', paddingTop: '25px' }}>
         <DragDropContext
-          onDragEnd={result => onDragEnd(result, columnsState, setcolumnsState)}
+          onDragStart={result => {
+            setDragEnabled(false)
+            onDragStart(result, setReadyToVote)
+          }}
+          onDragEnd={result => {
+            setReadyToVote(votingState[2].items.length === 3)
+            setDragEnabled(true)
+            onDragEnd(result, votingState, setVotingState)
+          }}
         >
-          {Object.entries(columnsState)
+          {Object.entries(votingState)
             .map(([columnId, column]) => (
               <div
                 style={{
