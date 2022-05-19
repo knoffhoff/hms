@@ -1,58 +1,49 @@
-import {useState} from 'react'
-import {Button, Group, Text, Title, useMantineTheme} from '@mantine/core'
-import {
-  DragDropContext,
-  Draggable,
-  DragStart,
-  Droppable,
-  DropResult
-} from 'react-beautiful-dnd'
+import { useEffect, useState } from 'react'
+import { Button, Title, useMantineTheme, Text, Group } from '@mantine/core'
+import { DragDropContext, Draggable, Droppable, DropResult } from 'react-beautiful-dnd'
+import ideaData from '../test/TestIdeaData'
 import IdeaDetails from '../components/card-details/IdeaDetails'
-import {useLocalStorage} from '../common/localStorage'
-import {Idea, IdeaCardType} from '../common/types'
+import { useLocalStorage } from '../common/localStorage'
+import { Idea } from '../common/types'
 
-//review this logic, especially ...
-const onDragEnd = (result: DropResult, columns: VotingState, setColumnsState: any) => {
+const onDragEnd = (result: DropResult, votingState: VotingState, setColumnsState: any) => {
   if (!result.destination) return
+
   const { source, destination } = result
 
   if (source.droppableId !== destination.droppableId) {
-    const sourceColumn: TitledColumn = columns[source.droppableId as keyof VotingState]
-    const destColumn: TitledColumn = columns[destination.droppableId as keyof VotingState]
+    const sourceColumn: TitledColumn = votingState[source.droppableId as keyof VotingState]
+    const destinationColumn: TitledColumn = votingState[destination.droppableId as keyof VotingState]
 
     const sourceItems: Idea[] = [...sourceColumn.items]
-    const destItems: Idea[] = [...destColumn.items]
+    const destinationItems: Idea[] = [...destinationColumn.items]
 
     const [removed] = sourceItems.splice(source.index, 1)
-    destItems.splice(destination.index, 0, removed)
+    destinationItems.splice(destination.index, 0, removed)
     setColumnsState({
-      ...columns,
+      ...votingState,
       [source.droppableId]: {
         ...sourceColumn,
         items: sourceItems,
       },
       [destination.droppableId]: {
-        ...destColumn,
-        items: destItems,
+        ...destinationColumn,
+        items: destinationItems,
       },
     })
   } else {
-    const column: TitledColumn = columns[source.droppableId as keyof VotingState]
-    const copiedItems: Idea[] = [...column.items]
+    const sourceColumn: TitledColumn = votingState[source.droppableId as keyof VotingState]
+    const copiedItems: Idea[] = [...sourceColumn.items]
     const [removed] = copiedItems.splice(source.index, 1)
     copiedItems.splice(destination.index, 0, removed)
     setColumnsState({
-      ...columns,
+      ...votingState,
       [source.droppableId]: {
-        column,
+        ...sourceColumn,
         items: copiedItems,
       },
     })
   }
-}
-
-const onDragStart = (result: DragStart, columns: VotingState, setCanVote: Function) => {
-  (columns[2].items.length === 3 && result.source.droppableId === '1') ? setCanVote(false) : setCanVote(true)
 }
 
 type TitledColumn = {
@@ -62,21 +53,18 @@ type TitledColumn = {
 
 type VotingState = {
   '1': TitledColumn,
-  '2': TitledColumn
+  '2': TitledColumn;
 }
 
 export default function Voting() {
-
   const theme = useMantineTheme()
-
-  const backgroundColor =
-    theme.colorScheme === 'dark' ? theme.colors.gray[7] : theme.colors.dark[1]
+  const backgroundColor = theme.colorScheme === 'dark' ? theme.colors.gray[7] : theme.colors.dark[1]
 
   //TODO exchange it with real backend call
   const defaultColumnsFromBackend: VotingState = {
     '1': {
       name: 'All ideas',
-      items: [],
+      items: [...ideaData],
     },
     '2': {
       name: 'Your Votes',
@@ -84,8 +72,10 @@ export default function Voting() {
     }
   }
 
-  const [columnsState, setColumnsState] = useLocalStorage("current-voting-state", defaultColumnsFromBackend)
-  const [canVote, setCanVote] = useState(true)
+  const [columnsState, setcolumnsState] = useLocalStorage("current-voting-state", defaultColumnsFromBackend)
+
+  const [readyToVote, setReadyToVote] = useState(columnsState[2].items.length === 3)
+  useEffect(() => setReadyToVote(columnsState[2].items.length === 3), [columnsState]);
 
   //TODO exchange it with real backend call
   function submitVote() {
@@ -94,7 +84,7 @@ export default function Voting() {
     console.log(columnsState['2'].items)
   }
 
-  const toDraggableIdea = (item: Idea, index: number) => {
+  const mapIdeaToDraggableIdea = (item: Idea, index: number) => {
     return <Draggable
       key={item.id}
       draggableId={item.id}
@@ -115,7 +105,7 @@ export default function Voting() {
             <IdeaDetails
               idea={item}
               isLoading={false}
-              type={IdeaCardType.Voting} />
+              type={'voting'} />
           </div>
         )
       }}
@@ -155,6 +145,7 @@ export default function Voting() {
           ml={'sm'}
           onClick={submitVote}
           style={{ width: 175 }}
+          disabled={!readyToVote}
         >
           Submit vote
         </Button>
@@ -162,8 +153,7 @@ export default function Voting() {
 
       <div style={{ display: 'flex', paddingTop: '25px' }}>
         <DragDropContext
-          onDragEnd={result => onDragEnd(result, columnsState, setColumnsState)}
-          onDragStart={result => onDragStart(result, columnsState, setCanVote)}
+          onDragEnd={result => onDragEnd(result, columnsState, setcolumnsState)}
         >
           {Object.entries(columnsState)
             .map(([columnId, column]) => (
@@ -210,7 +200,7 @@ export default function Voting() {
                     <Droppable
                       droppableId={columnId}
                       key={columnId}
-                      isDropDisabled={isOutOfVotesForColumn(columnId)}
+                      isDropDisabled={readyToVote && columnId === '2'}
                     >
                       {(provided, snapshot) => (
                         <div
@@ -227,7 +217,7 @@ export default function Voting() {
                             scrollbarWidth: 'none',
                           }}
                         >
-                          {column.items.map(toDraggableIdea)}
+                          {column.items.map(mapIdeaToDraggableIdea)}
                           {provided.placeholder}
                         </div>
                       )}
@@ -240,8 +230,4 @@ export default function Voting() {
       </div>
     </div>
   )
-
-  function isOutOfVotesForColumn(columnId: string): boolean | undefined {
-    return !canVote && columnId === '2'
-  }
 }
