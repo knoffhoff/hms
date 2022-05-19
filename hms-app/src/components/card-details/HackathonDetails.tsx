@@ -50,6 +50,12 @@ const useStyles = createStyles((theme) => ({
   },
 }))
 
+enum Enum {
+  Header = 'HEADER',
+  FullInfo = 'FULLINFO',
+  Archive = 'ARCHIVE',
+}
+
 export default function HackathonDetails(props: IProps) {
   const { classes } = useStyles()
   const { hackathonId, type } = props
@@ -275,7 +281,7 @@ export default function HackathonDetails(props: IProps) {
       {hackathonData.startDate &&
         !isHackathonLoading &&
         !isHackathonError &&
-        type === 'header' && (
+        type === Enum.Header && (
           <div>
             <h2>Title: {hackathonData.title}</h2>
             <h2>
@@ -287,7 +293,7 @@ export default function HackathonDetails(props: IProps) {
             <IdeaCardList
               ideas={relevantIdeaList}
               columnSize={6}
-              type={'Archive'}
+              type={Enum.Archive}
               isLoading={isIdeaLoading}
             />
           </div>
@@ -296,7 +302,7 @@ export default function HackathonDetails(props: IProps) {
       {hackathonData.startDate &&
         !isHackathonLoading &&
         !isHackathonError &&
-        type === 'fullInfo' && (
+        type === Enum.FullInfo && (
           <Card withBorder radius="md" p="md" className={classes.card}>
             <Card.Section className={classes.section}>
               <Text size="md" mt="xs">

@@ -3,6 +3,11 @@ import HackathonDetails from '../components/card-details/HackathonDetails'
 import HackathonSelectDropdown from '../components/HackathonSelectDropdown'
 import { Title } from '@mantine/core'
 
+enum Enum {
+  Archive = 'ARCHIVE',
+  Header = 'HEADER',
+}
+
 export default function Archive() {
   const [selectedHackathonId, setSelectedHackathonId] = useState('')
 
@@ -11,13 +16,13 @@ export default function Archive() {
       <Title order={1}>Archive</Title>
       <HackathonSelectDropdown
         setHackathonId={setSelectedHackathonId}
-        context={'archive'}
+        context={Enum.Archive}
       />
 
       <div>
         <HackathonDetails
           hackathonId={selectedHackathonId.toString()}
-          type={'header'}
+          type={Enum.Header}
         />
       </div>
     </>

@@ -8,6 +8,11 @@ type Props = {
   context: string
 }
 
+enum Enum {
+  Archive = 'ARCHIVE',
+  IdeaPortal = 'IDEAPORTAL',
+}
+
 export default function HackathonSelectDropdown({
   setHackathonId,
   context,
@@ -33,11 +38,11 @@ export default function HackathonSelectDropdown({
 
   function getHackathonsForContext(): HackathonPreview[] {
     switch (context) {
-      case 'archive':
+      case Enum.Archive:
         return hackathonList.filter((hackathon) => {
           return new Date(hackathon.endDate) < new Date(today)
         })
-      case 'idea-portal':
+      case Enum.IdeaPortal:
         return hackathonList.filter((hackathon) => {
           return new Date(hackathon.endDate) >= new Date(today)
         })

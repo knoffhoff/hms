@@ -12,6 +12,10 @@ import { CheckIcon } from '@modulz/radix-icons'
 import HackathonSelectDropdown from '../components/HackathonSelectDropdown'
 import RelevantIdeasLoader from '../components/RelevantIdeasLoader'
 
+enum Enum {
+  IdeaPortal = 'IDEAPORTAL',
+}
+
 function IdeaPortal() {
   const [searchTerm, setSearchTerm] = useState('')
   const [isLoading, setIsLoading] = useState(true)
@@ -121,7 +125,7 @@ function IdeaPortal() {
       <Group position={'apart'} py={20}>
         <HackathonSelectDropdown
           setHackathonId={setSelectedHackathonId}
-          context={'idea-portal'}
+          context={Enum.IdeaPortal}
         />
 
         <Input

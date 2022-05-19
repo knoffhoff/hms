@@ -21,6 +21,10 @@ const useStyles = createStyles((theme) => ({
   },
 }))
 
+enum Enum {
+  FullInfo = 'FULLINFO',
+}
+
 function AllHackathonList() {
   const { classes } = useStyles()
   const [isError, setIsError] = useState(false)
@@ -52,7 +56,7 @@ function AllHackathonList() {
         </div>
       }
     >
-      <HackathonDetails hackathonId={hackathon.id} type={'fullInfo'} />
+      <HackathonDetails hackathonId={hackathon.id} type={Enum.FullInfo} />
     </Accordion.Item>,
   ])
 
