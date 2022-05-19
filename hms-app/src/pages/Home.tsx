@@ -30,15 +30,7 @@ function Home() {
 
   const loadSelectedHackathon = () => {
     getHackathonDetails(selectedHackathonId).then((data) => {
-      setHackathonData({
-        id: data.id,
-        title: data.title,
-        startDate: new Date(data.startDate),
-        endDate: new Date(data.endDate),
-        participants: data.participants,
-        categories: data.categories,
-        ideas: data.ideas,
-      })
+      setHackathonData(data)
     })
   }
 
