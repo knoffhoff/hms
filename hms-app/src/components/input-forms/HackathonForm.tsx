@@ -30,10 +30,10 @@ const useStyles = createStyles((theme) => ({
   },
 }))
 
-type IProps = { context: string; hackathonID: string | null }
+type IProps = { context: string; hackathonId: string | null }
 
 function HackathonForm(props: IProps) {
-  const { context, hackathonID } = props
+  const { context, hackathonId } = props
   const { classes } = useStyles()
   const today = new Date()
   const [startDateValue, setStartDateValue] = useState<Date | null>(new Date())
@@ -54,18 +54,19 @@ function HackathonForm(props: IProps) {
       autoClose: false,
       disallowClose: true,
     })
-    createHackathon(hackathonTitle, startDateValue!, endDateValue!).then((r) =>
-      setTimeout(() => {
-        console.log(r)
-        updateNotification({
-          id: 'hackathon-load',
-          color: 'teal',
-          title: 'Hackathon was created',
-          message: 'Notification will close in 2 seconds',
-          icon: <CheckIcon />,
-          autoClose: 2000,
-        })
-      }, 3000)
+    createHackathon(hackathonTitle, startDateValue!, endDateValue!).then(
+      (response) =>
+        setTimeout(() => {
+          console.log(response)
+          updateNotification({
+            id: 'hackathon-load',
+            color: 'teal',
+            title: 'Hackathon was created',
+            message: 'Notification will close in 2 seconds',
+            icon: <CheckIcon />,
+            autoClose: 2000,
+          })
+        }, 3000)
     )
   }
 
@@ -80,13 +81,13 @@ function HackathonForm(props: IProps) {
       disallowClose: true,
     })
     editHackathon(
-      hackathonID!,
+      hackathonId!,
       hackathonTitle,
       startDateValue!,
       endDateValue!
-    ).then((r) =>
+    ).then((response) =>
       setTimeout(() => {
-        console.log(r)
+        console.log(response)
         updateNotification({
           id: 'hackathon-load',
           color: 'teal',

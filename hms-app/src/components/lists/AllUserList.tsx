@@ -59,7 +59,7 @@ export default function AllUserList() {
         </div>
       }
     >
-      <UserDetails userID={user.id} />
+      <UserDetails userId={user.id} />
     </Accordion.Item>,
   ])
 

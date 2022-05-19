@@ -4,7 +4,7 @@ import { Button, Card, createStyles, Group, Modal, Text } from '@mantine/core'
 import { deleteParticipant } from '../../actions/ParticipantActions'
 
 type IProps = {
-  participantID: string
+  participantId: string
   user: UserPreview
 }
 
@@ -32,11 +32,11 @@ const useStyles = createStyles((theme) => ({
 
 export default function ParticipantDetails(props: IProps) {
   const { classes } = useStyles()
-  const { participantID, user } = props
+  const { participantId, user } = props
   const [opened, setOpened] = useState(false)
 
   const deleteSelectedParticipant = () => {
-    deleteParticipant(participantID).then((data) => {
+    deleteParticipant(participantId).then((data) => {
       setOpened(false)
     })
   }
@@ -48,7 +48,7 @@ export default function ParticipantDetails(props: IProps) {
           <Text size="lg" mt="xs">
             {user.firstName} {user.lastName}
           </Text>
-          <Text size={'sm'}>Participant ID: {participantID}</Text>
+          <Text size={'sm'}>Participant ID: {participantId}</Text>
           <Text size={'sm'}>User ID: {user.id}</Text>
         </Card.Section>
 

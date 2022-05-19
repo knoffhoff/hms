@@ -4,21 +4,21 @@ import { Hackathon, Idea } from '../common/types'
 import { getIdeaDetails } from '../actions/IdeaActions'
 
 type Props = {
-  selectedHackweek: string
+  selectedHackathonId: string
   setRelevantIdea: (relevantIdeaList: Idea[]) => void
   setHackathon: (hackathonData: Hackathon) => void
   setLoading: (boolean: boolean) => void
 }
 
 export default function RelevantIdeasLoader({
-  selectedHackweek,
+  selectedHackathonId,
   setRelevantIdea,
   setHackathon,
   setLoading,
 }: Props) {
-  const [relevantIdeaList, setRelevantIdeaList] = useState([] as Idea[])
+  const [relevantIdeaList, setRelevantIdeaList] = useState<Idea[]>([])
   const [isLoading, setIsLoading] = useState(true)
-  const [hackathonData, setHackathonData] = useState({
+  const [hackathonData, setHackathonData] = useState<Hackathon>({
     id: 'string',
     title: 'string',
     startDate: new Date(),
@@ -26,8 +26,8 @@ export default function RelevantIdeasLoader({
     participants: [],
     categories: undefined,
     ideas: [],
-  } as Hackathon)
-  const [ideaData, setIdeaData] = useState({
+  })
+  const [ideaData, setIdeaData] = useState<Idea>({
     id: 'string',
     owner: undefined,
     hackathon: undefined,
@@ -39,52 +39,44 @@ export default function RelevantIdeasLoader({
     requiredSkills: [],
     category: undefined,
     creationDate: new Date(),
-  } as Idea)
+  })
 
-  const loadSelectedHackathonData = () => {
-    getHackathonDetails(selectedHackweek).then((data) => {
-      setHackathonData({
-        id: data.id,
-        title: data.title,
-        startDate: data.startDate,
-        endDate: data.endDate,
-        participants: data.participants,
-        categories: data.categories,
-        ideas: data.ideas,
-      })
+  const loadSelectedHackathon = () => {
+    getHackathonDetails(selectedHackathonId).then((data) => {
+      setHackathonData(data)
     })
   }
 
   const loadRelevantIdeaDetails = () => {
     hackathonData.ideas?.map((ideaPreviews) => {
       getIdeaDetails(ideaPreviews.id).then((data) => {
-        setIdeaData({
-          id: data.id,
-          owner: data.owner,
-          hackathon: data.hackathon,
-          participants: data.participants,
-          title: data.title,
-          description: data.description,
-          problem: data.problem,
-          goal: data.goal,
-          requiredSkills: data.requiredSkills,
-          category: data.category,
-          creationDate: data.creationDate,
-        })
+        setIdeaData(data)
         setIsLoading(false)
       })
     })
   }
 
   useEffect(() => {
-    loadSelectedHackathonData()
-  }, [selectedHackweek])
+    localStorage.getItem(selectedHackathonId)
+      ? setHackathonData(JSON.parse(localStorage.getItem(selectedHackathonId)!))
+      : loadSelectedHackathon()
+  }, [selectedHackathonId])
+
+  useEffect(() => {
+    localStorage.getItem(hackathonData.id)
+      ? console.log(
+          'id exist',
+          JSON.parse(localStorage.getItem(hackathonData.id)!)
+        )
+      : localStorage.setItem(hackathonData.id, JSON.stringify(hackathonData))
+  }, [hackathonData])
 
   useEffect(() => {
     setRelevantIdeaList((relevantIdeaList) => {
       return []
     })
     loadRelevantIdeaDetails()
+    setHackathon(hackathonData)
   }, [hackathonData])
 
   useEffect(() => {
@@ -103,9 +95,11 @@ export default function RelevantIdeasLoader({
 
   useEffect(() => {
     setRelevantIdea(relevantIdeaList)
-    setHackathon(hackathonData)
+  }, [relevantIdeaList])
+
+  useEffect(() => {
     setLoading(isLoading)
-  }, [relevantIdeaList, hackathonData, isLoading])
+  }, [isLoading])
 
   return <div />
 }

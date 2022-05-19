@@ -1,17 +1,26 @@
 import React, { useEffect, useState } from 'react'
 import { getListOfHackathons } from '../actions/HackathonActions'
-import { Select } from '@mantine/core'
+import { Select, SelectItem } from '@mantine/core'
 import { HackathonPreview } from '../common/types'
 
 type Props = {
-  setHackathonID: (hackthonID: string) => void
+  setHackathonId: (hackthonID: string) => void
+  context: string
 }
 
-export default function HackathonSelectDropdown(setHackathonID: Props) {
-  const [selectedHackweek, setSelectedHackweek] = useState('')
+enum Enum {
+  Archive = 'ARCHIVE',
+  IdeaPortal = 'IDEAPORTAL',
+}
+
+export default function HackathonSelectDropdown({
+  setHackathonId,
+  context,
+}: Props) {
   const [isError, setIsError] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
-  const [hackathonList, setHackathonList] = useState([] as HackathonPreview[])
+  const [hackathonList, setHackathonList] = useState<HackathonPreview[]>([])
+  const today = new Date().setHours(0, 0, 0, 0)
 
   const loadHackathons = () => {
     getListOfHackathons().then(
@@ -27,38 +36,55 @@ export default function HackathonSelectDropdown(setHackathonID: Props) {
     )
   }
 
-  const hackathonMap = hackathonList.map((hackathon, index) => ({
-    value: hackathon.id,
-    label:
-      hackathon.title +
-      ' ' +
-      new Date(hackathon.startDate).toLocaleDateString() +
-      '-' +
-      new Date(hackathon.endDate).toLocaleDateString(),
-  }))
+  function getHackathonsSelectItems(): SelectItem[] {
+    switch (context) {
+      case Enum.Archive:
+        return hackathonList
+          .filter((hackathon) => new Date(hackathon.endDate) < new Date(today))
+          .map((hackathon) => mapHackathonToSelectItem(hackathon))
+      case Enum.IdeaPortal:
+        return hackathonList
+          .filter((hackathon) => new Date(hackathon.endDate) >= new Date(today))
+          .map((hackathon) => mapHackathonToSelectItem(hackathon))
+    }
+    return hackathonList.map((hackathon) => mapHackathonToSelectItem(hackathon))
+  }
 
-  const selectChange = (value: string) => {
-    setSelectedHackweek(value)
+  function mapHackathonToSelectItem(hackathon: HackathonPreview): SelectItem {
+    return {
+      value: hackathon.id,
+      label:
+        hackathon.title +
+        ' ' +
+        new Date(hackathon.startDate).toLocaleString(undefined, {
+          year: 'numeric',
+          month: '2-digit',
+          day: '2-digit',
+        }) +
+        '-' +
+        new Date(hackathon.endDate).toLocaleString(undefined, {
+          year: 'numeric',
+          month: '2-digit',
+          day: '2-digit',
+        }),
+    }
   }
 
   useEffect(() => {
     loadHackathons()
   }, [])
 
-  useEffect(() => {
-    setHackathonID.setHackathonID(selectedHackweek)
-  }, [selectedHackweek])
-
   return (
     <>
+      {isError && <div>Ups something went wrong...</div>}
       {isLoading && !isError && <div>hackathon select is loading...</div>}
       {!isLoading && !isError && (
         <div style={{ width: 385 }}>
           <Select
             placeholder={'select a Hackathon'}
             maxDropdownHeight={280}
-            data={hackathonMap}
-            onChange={selectChange}
+            data={getHackathonsSelectItems()}
+            onChange={setHackathonId}
           />
         </div>
       )}

@@ -15,7 +15,7 @@ import { SkillPreview } from '../../common/types'
 import { getListOfSkills } from '../../actions/SkillActions'
 
 type IProps = {
-  userID: string
+  userId: string
 }
 
 const useStyles = createStyles((theme) => ({
@@ -38,7 +38,7 @@ const useStyles = createStyles((theme) => ({
 
 export default function EditUserForm(props: IProps) {
   const { classes } = useStyles()
-  const { userID } = props
+  const { userId } = props
   const [isError, setIsError] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
   const [availableSkills, setAvailableSkills] = useState([] as SkillPreview[])
@@ -53,12 +53,12 @@ export default function EditUserForm(props: IProps) {
   })
 
   const loadSelectedUser = () => {
-    getUserDetails(userID).then(
+    getUserDetails(userId).then(
       (data) => {
         setIsError(false)
         setIsLoading(false)
         setUser({
-          id: userID,
+          id: userId,
           lastName: data.lastName,
           firstName: data.firstName,
           emailAddress: data.emailAddress,

@@ -1,3 +1,5 @@
+import { Hackathon } from '../common/types'
+
 const core_url = process.env.REACT_APP_CORE_URL
 
 export const getListOfHackathons = () => {
@@ -14,7 +16,9 @@ export const getListOfHackathons = () => {
     .catch((err) => console.log(err))
 }
 
-export const getHackathonDetails = (hackathonID: string) => {
+export const getHackathonDetails = (
+  hackathonID: string
+): Promise<Hackathon> => {
   return fetch(`${core_url}/hackathon/${hackathonID}`, {
     method: 'GET',
     headers: {

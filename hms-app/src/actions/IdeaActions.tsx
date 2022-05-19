@@ -10,9 +10,7 @@ export const getIdeaList = (hackathonID: string) => {
       'Content-Type': 'application/json',
     },
   })
-    .then((data) => {
-      return data.json()
-    })
+    .then((data) => data.json())
     .catch((err) => console.log(err))
 }
 
@@ -24,9 +22,7 @@ export const getIdeaDetails = (ideaID: string): Promise<Idea> => {
       'Content-Type': 'application/json',
     },
   })
-    .then((data) => {
-      return data.json()
-    })
+    .then((data) => data.json())
     .catch((err) => console.log(err))
 }
 
@@ -73,9 +69,7 @@ export const createIdea = (
       categoryId: categories.toString(),
     }),
   })
-    .then((response) => {
-      return response.json()
-    })
+    .then((data) => data.json())
     .catch((err) => console.log(err))
 }
 
@@ -107,8 +101,6 @@ export const editIdea = (
       categoryId: categories.toString(),
     }),
   })
-    .then((response) => {
-      return response.json()
-    })
+    .then((data) => data.json())
     .catch((err) => console.log(err))
 }

@@ -24,7 +24,7 @@ import CategoryDetails from './CategoryDetails'
 import { Link } from 'react-router-dom'
 
 type IProps = {
-  hackathonID: string
+  hackathonId: string
   type: string
 }
 
@@ -50,9 +50,15 @@ const useStyles = createStyles((theme) => ({
   },
 }))
 
+enum Enum {
+  Header = 'HEADER',
+  FullInfo = 'FULLINFO',
+  Archive = 'ARCHIVE',
+}
+
 export default function HackathonDetails(props: IProps) {
   const { classes } = useStyles()
-  const { hackathonID, type } = props
+  const { hackathonId, type } = props
   const [deleteModalOpened, setDeleteModalOpened] = useState(false)
   const [editModalOpened, setEditModalOpened] = useState(false)
   const [isHackathonError, setIsHackathonError] = useState(false)
@@ -84,10 +90,10 @@ export default function HackathonDetails(props: IProps) {
   const [relevantIdeaList, setRelevantIdeaList] = useState([] as Idea[])
 
   const loadSelectedHackathon = () => {
-    getHackathonDetails(hackathonID).then(
+    getHackathonDetails(hackathonId).then(
       (data) => {
         setHackathonData({
-          id: hackathonID,
+          id: hackathonId,
           title: data.title,
           startDate: data.startDate,
           endDate: data.endDate,
@@ -135,7 +141,7 @@ export default function HackathonDetails(props: IProps) {
   }
 
   const deleteSelectedHackathon = () => {
-    deleteHackathon(hackathonID).then((data) => {
+    deleteHackathon(hackathonId).then((data) => {
       setDeleteModalOpened(false)
     })
   }
@@ -144,7 +150,7 @@ export default function HackathonDetails(props: IProps) {
     loadSelectedHackathon()
     setRelevantIdeaList([])
     setIsHackathonLoading(true)
-  }, [hackathonID])
+  }, [hackathonId])
 
   useEffect(() => {
     loadRelevantIdeaDetails()
@@ -176,7 +182,7 @@ export default function HackathonDetails(props: IProps) {
         }
       >
         <ParticipantDetails
-          participantID={participant.id}
+          participantId={participant.id}
           user={participant.user}
         />
       </Accordion.Item>
@@ -192,7 +198,7 @@ export default function HackathonDetails(props: IProps) {
         </div>
       }
     >
-      <CategoryDetails categoryID={category.id.toString()} />
+      <CategoryDetails categoryId={category.id.toString()} />
     </Accordion.Item>
   ))
 
@@ -249,7 +255,7 @@ export default function HackathonDetails(props: IProps) {
       withCloseButton={false}
     >
       Edit Hackathon
-      <HackathonForm context={'edit'} hackathonID={hackathonData.id} />
+      <HackathonForm context={'edit'} hackathonId={hackathonData.id} />
       {isHackathonLoading && <div>Loading...</div>}
       <p>
         (This window will automatically close as soon as the category is
@@ -275,19 +281,19 @@ export default function HackathonDetails(props: IProps) {
       {hackathonData.startDate &&
         !isHackathonLoading &&
         !isHackathonError &&
-        type === 'header' && (
+        type === Enum.Header && (
           <div>
             <h2>Title: {hackathonData.title}</h2>
             <h2>
-              Start Date: {new Date(hackathonData.startDate).toDateString()}
-              End Date: {new Date(hackathonData.endDate).toDateString()}
+              Start Date: {new Date(hackathonData.startDate).toDateString()} End
+              Date: {new Date(hackathonData.endDate).toDateString()}
             </h2>
             <h2>All Ideas ({hackathonData.ideas?.length})</h2>
 
             <IdeaCardList
               ideas={relevantIdeaList}
               columnSize={6}
-              type={'Archive'}
+              type={Enum.Archive}
               isLoading={isIdeaLoading}
             />
           </div>
@@ -296,7 +302,7 @@ export default function HackathonDetails(props: IProps) {
       {hackathonData.startDate &&
         !isHackathonLoading &&
         !isHackathonError &&
-        type === 'fullInfo' && (
+        type === Enum.FullInfo && (
           <Card withBorder radius="md" p="md" className={classes.card}>
             <Card.Section className={classes.section}>
               <Text size="md" mt="xs">
@@ -335,9 +341,9 @@ export default function HackathonDetails(props: IProps) {
                     label={'Add Category'}
                   >
                     <CategoryForm
-                      hackathonID={hackathonData.id}
+                      hackathonId={hackathonData.id}
                       context={'new'}
-                      categoryID={''}
+                      categoryId={''}
                     />
                   </Accordion.Item>
                   {allCategories}

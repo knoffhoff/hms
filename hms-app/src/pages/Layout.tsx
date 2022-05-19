@@ -10,7 +10,7 @@ import HeaderMenu from '../components/HeaderMenu'
 import { useLocalStorage } from '../common/localStorage'
 
 const menuLinks = [
-  { link: 'home', label: 'Home' },
+  { link: '', label: 'Home' },
   {
     link: 'ideas',
     label: 'Idea Portal',
@@ -29,11 +29,14 @@ const menuLinks = [
 
 const defaultColorSchemeLocalStorageKey: string = 'color-scheme'
 const defaultColorScheme: ColorScheme = 'light'
-const toggleColorScheme = (colorScheme: ColorScheme) => colorScheme === 'dark' ? 'light' : 'dark';
+const toggleColorScheme = (colorScheme: ColorScheme) =>
+  colorScheme === 'dark' ? 'light' : 'dark'
 
 const Layout = () => {
-
-  const [colorScheme, setColorScheme] = useLocalStorage<ColorScheme>(defaultColorSchemeLocalStorageKey, defaultColorScheme);
+  const [colorScheme, setColorScheme] = useLocalStorage<ColorScheme>(
+    defaultColorSchemeLocalStorageKey,
+    defaultColorScheme
+  )
 
   return (
     <ColorSchemeProvider
