@@ -44,12 +44,20 @@ function Home() {
 
   useEffect(() => {
     loadHackathons()
+    localStorage.getItem('last')
+      ? setSelectedHackathonId(JSON.parse(localStorage.getItem('last')!))
+      : console.log('no last hackathon')
   }, [])
 
   useEffect(() => {
     localStorage.getItem(selectedHackathonId)
       ? setHackathonData(JSON.parse(localStorage.getItem(selectedHackathonId)!))
       : loadSelectedHackathon()
+
+    //Todo: solve the problem that on render it always got set to an empty string
+    selectedHackathonId
+      ? localStorage.setItem('last', JSON.stringify(selectedHackathonId))
+      : console.log('no selectedHackathon id?')
   }, [selectedHackathonId])
 
   useEffect(() => {
