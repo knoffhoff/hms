@@ -61,7 +61,6 @@ function Home() {
   }, [selectedHackathonId])
 
   useEffect(() => {
-    //Todo: write this data into localstorage
     localStorage.getItem(hackathonData.id)
       ? console.log(
           'id exist',

@@ -27,7 +27,6 @@ export default function RelevantIdeasLoader({
     categories: undefined,
     ideas: [],
   })
-
   const [ideaData, setIdeaData] = useState<Idea>({
     id: 'string',
     owner: undefined,
@@ -62,6 +61,15 @@ export default function RelevantIdeasLoader({
       ? setHackathonData(JSON.parse(localStorage.getItem(selectedHackathonId)!))
       : loadSelectedHackathon()
   }, [selectedHackathonId])
+
+  useEffect(() => {
+    localStorage.getItem(hackathonData.id)
+      ? console.log(
+          'id exist',
+          JSON.parse(localStorage.getItem(hackathonData.id)!)
+        )
+      : localStorage.setItem(hackathonData.id, JSON.stringify(hackathonData))
+  }, [hackathonData])
 
   useEffect(() => {
     setRelevantIdeaList((relevantIdeaList) => {
