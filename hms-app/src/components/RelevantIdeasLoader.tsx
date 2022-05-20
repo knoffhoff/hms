@@ -17,7 +17,7 @@ export default function RelevantIdeasLoader({
   setLoading,
 }: Props) {
   const [relevantIdeaList, setRelevantIdeaList] = useState<Idea[]>([])
-  const [isLoading, setIsLoading] = useState(true)
+  const [isThisLoading, setIsThisLoading] = useState(true)
   const [hackathonData, setHackathonData] = useState<Hackathon>({
     id: 'string',
     title: 'string',
@@ -51,7 +51,7 @@ export default function RelevantIdeasLoader({
     hackathonData.ideas?.map((ideaPreviews) => {
       getIdeaDetails(ideaPreviews.id).then((data) => {
         setIdeaData(data)
-        setIsLoading(false)
+        setIsThisLoading(false)
       })
     })
   }
@@ -98,8 +98,8 @@ export default function RelevantIdeasLoader({
   }, [relevantIdeaList])
 
   useEffect(() => {
-    setLoading(isLoading)
-  }, [isLoading])
+    setLoading(isThisLoading)
+  }, [isThisLoading])
 
   return <div />
 }

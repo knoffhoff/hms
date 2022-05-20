@@ -3,7 +3,9 @@ import { Hackathon, Idea, ParticipantPreview } from '../common/types'
 import IdeaCardList from '../components/lists/IdeaCardList'
 import React, { useEffect, useState } from 'react'
 import IdeaForm from '../components/input-forms/IdeaForm'
-import HackathonSelectDropdown from '../components/HackathonSelectDropdown'
+import HackathonSelectDropdown, {
+  HackathonDropdownMode,
+} from '../components/HackathonSelectDropdown'
 import RelevantIdeasLoader from '../components/RelevantIdeasLoader'
 
 export default function YourIdeas() {
@@ -44,7 +46,7 @@ export default function YourIdeas() {
       <Title order={1}>Your ideas</Title>
       <HackathonSelectDropdown
         setHackathonId={setSelectedHackathonId}
-        context={'your-ideas'}
+        context={HackathonDropdownMode.YourIdeas}
       />
 
       <RelevantIdeasLoader
