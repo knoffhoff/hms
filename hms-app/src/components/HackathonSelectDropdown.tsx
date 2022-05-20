@@ -22,7 +22,8 @@ export default function HackathonSelectDropdown({
   const [isError, setIsError] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
   const [hackathonList, setHackathonList] = useState<HackathonPreview[]>([])
-  const today = new Date().setHours(0, 0, 0, 0)
+  const today = new Date()
+  today.setHours(0, 0, 0, 0)
 
   const loadHackathons = () => {
     getListOfHackathons().then(
@@ -42,11 +43,11 @@ export default function HackathonSelectDropdown({
     switch (context) {
       case HackathonDropdownMode.Archive:
         return hackathonList
-          .filter((hackathon) => new Date(hackathon.endDate) < new Date(today))
+          .filter((hackathon) => hackathon.endDate < today)
           .map((hackathon) => mapHackathonToSelectItem(hackathon))
       case HackathonDropdownMode.IdeaPortal:
         return hackathonList
-          .filter((hackathon) => new Date(hackathon.endDate) >= new Date(today))
+          .filter((hackathon) => hackathon.endDate >= today)
           .map((hackathon) => mapHackathonToSelectItem(hackathon))
     }
     return hackathonList.map((hackathon) => mapHackathonToSelectItem(hackathon))
