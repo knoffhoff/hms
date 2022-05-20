@@ -49,13 +49,13 @@ export default function RelevantIdeasLoader({
       : console.log('id was empty')
   }
 
-  const loadRelevantIdeaDetails = () => {
-    hackathonData.ideas?.map((ideaPreviews) => {
-      getIdeaDetails(ideaPreviews.id).then((data) => {
-        setIdeaData(data)
-        setIsLoading(false)
-      })
+  const loadIdeaDetails = () => {
+    hackathonData.ideas!.map((ideaPreview) => {
+      getIdeaDetails(ideaPreview.id).then((ideaDetails) =>
+        setIdeaData(ideaDetails)
+      )
     })
+    setIsLoading(false)
   }
 
   useEffect(() => {
@@ -77,7 +77,7 @@ export default function RelevantIdeasLoader({
     setRelevantIdeaList((relevantIdeaList) => {
       return []
     })
-    loadRelevantIdeaDetails()
+    loadIdeaDetails()
     setHackathon(hackathonData)
   }, [hackathonData])
 
