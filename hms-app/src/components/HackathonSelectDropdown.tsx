@@ -72,7 +72,9 @@ export default function HackathonSelectDropdown({
 
   useEffect(() => {
     localStorage.getItem('lastSelectedHackathonId')
-      ? setHackathonId(JSON.parse(localStorage.getItem('last')!))
+      ? setHackathonId(
+          JSON.parse(localStorage.getItem('lastSelectedHackathonId')!)
+        )
       : console.log('no last hackathon')
 
     loadHackathons()
