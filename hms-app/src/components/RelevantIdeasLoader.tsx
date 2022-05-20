@@ -42,9 +42,11 @@ export default function RelevantIdeasLoader({
   })
 
   const loadSelectedHackathon = () => {
-    getHackathonDetails(selectedHackathonId).then((data) => {
-      setHackathonData(data)
-    })
+    selectedHackathonId !== ''
+      ? getHackathonDetails(selectedHackathonId).then((data) => {
+          setHackathonData(data)
+        })
+      : console.log('id was empty')
   }
 
   const loadRelevantIdeaDetails = () => {
@@ -63,7 +65,7 @@ export default function RelevantIdeasLoader({
   }, [selectedHackathonId])
 
   useEffect(() => {
-    localStorage.getItem(hackathonData.id)
+    localStorage.getItem(selectedHackathonId)
       ? console.log(
           'id exist',
           JSON.parse(localStorage.getItem(hackathonData.id)!)

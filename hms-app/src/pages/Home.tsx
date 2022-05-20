@@ -21,6 +21,14 @@ function Home() {
     ideas: [],
   })
 
+  const getNextHackathon = hackathonList.filter((hackathon) => {
+    return new Date(hackathon.startDate) > today
+  })
+
+  const timeTillNextHackathon = !isLoading
+    ? new Date(getNextHackathon[0].startDate).getTime() - today.getTime()
+    : today.getTime()
+
   const loadHackathons = () => {
     getListOfHackathons().then((data) => {
       setHackathonList(data.hackathons)
@@ -36,26 +44,11 @@ function Home() {
       : console.log('id was empty')
   }
 
-  const getNextHackathon = hackathonList.filter((hackathon) => {
-    return new Date(hackathon.startDate) > today
-  })
-
-  const timeTillNextHackathon = !isLoading
-    ? new Date(getNextHackathon[0].startDate).getTime() - today.getTime()
-    : today.getTime()
-
   useEffect(() => {
     loadHackathons()
-    localStorage.getItem('last')
-      ? setSelectedHackathonId(JSON.parse(localStorage.getItem('last')!))
-      : console.log('no last hackathon')
   }, [])
 
   useEffect(() => {
-    selectedHackathonId !== ''
-      ? localStorage.setItem('last', JSON.stringify(selectedHackathonId))
-      : setSelectedHackathonId(JSON.parse(localStorage.getItem('last')!))
-
     localStorage.getItem(selectedHackathonId)
       ? setHackathonData(JSON.parse(localStorage.getItem(selectedHackathonId)!))
       : loadSelectedHackathon()

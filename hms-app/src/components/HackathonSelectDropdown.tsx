@@ -71,8 +71,17 @@ export default function HackathonSelectDropdown({
   }
 
   useEffect(() => {
+    localStorage.getItem('lastSelectedHackathonId')
+      ? setHackathonId(JSON.parse(localStorage.getItem('last')!))
+      : console.log('no last hackathon')
+
     loadHackathons()
   }, [])
+
+  function onChange(value: string) {
+    localStorage.setItem('lastSelectedHackathonId', JSON.stringify(value))
+    setHackathonId(value)
+  }
 
   return (
     <>
@@ -84,7 +93,7 @@ export default function HackathonSelectDropdown({
             placeholder={'select a Hackathon'}
             maxDropdownHeight={280}
             data={getHackathonsSelectItems()}
-            onChange={setHackathonId}
+            onChange={onChange}
           />
         </div>
       )}
