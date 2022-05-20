@@ -51,7 +51,7 @@ export default function YourIdeas() {
 
       <RelevantIdeasLoader
         setHackathon={setHackathon}
-        setRelevantIdea={setRelevantIdeas}
+        setRelevantIdeas={setRelevantIdeas}
         selectedHackathonId={selectedHackathonId}
         setLoading={setIsLoading}
       />

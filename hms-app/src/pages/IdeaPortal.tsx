@@ -136,7 +136,7 @@ function IdeaPortal() {
 
       <RelevantIdeasLoader
         setHackathon={setHackathonData}
-        setRelevantIdea={setRelevantIdeas}
+        setRelevantIdeas={setRelevantIdeas}
         selectedHackathonId={selectedHackathonId}
         setLoading={setIsLoading}
       />
