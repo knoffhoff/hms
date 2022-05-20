@@ -21,9 +21,9 @@ export const parseHackathon = (json: any): Hackathon =>
     title: json.title,
     startDate: new Date(json.startDate),
     endDate: new Date(json.endDate),
-    ideas: parseIdeaPreviews(json.ideas),
-    categories: parseCategoryPreviews(json.categories),
-    participants: parseParticipantPreviews(json.participants),
+    ideas: json.ideas ? parseIdeaPreviews(json.ideas) : [],
+    categories: json.ideas ? parseCategoryPreviews(json.categories) : [],
+    participants: json.ideas ? parseParticipantPreviews(json.participants) : [],
   } as Hackathon)
 
 export const parseHackathons = (jsonArray: any[]): Hackathon[] =>
