@@ -29,9 +29,11 @@ function Home() {
   }
 
   const loadSelectedHackathon = () => {
-    getHackathonDetails(selectedHackathonId).then((data) => {
-      setHackathonData(data)
-    })
+    selectedHackathonId !== ''
+      ? getHackathonDetails(selectedHackathonId).then((data) => {
+          setHackathonData(data)
+        })
+      : console.log('id was empty')
   }
 
   const getNextHackathon = hackathonList.filter((hackathon) => {
@@ -50,14 +52,13 @@ function Home() {
   }, [])
 
   useEffect(() => {
+    selectedHackathonId !== ''
+      ? localStorage.setItem('last', JSON.stringify(selectedHackathonId))
+      : setSelectedHackathonId(JSON.parse(localStorage.getItem('last')!))
+
     localStorage.getItem(selectedHackathonId)
       ? setHackathonData(JSON.parse(localStorage.getItem(selectedHackathonId)!))
       : loadSelectedHackathon()
-
-    //Todo: solve the problem that on render it always got set to an empty string
-    selectedHackathonId
-      ? localStorage.setItem('last', JSON.stringify(selectedHackathonId))
-      : console.log('no selectedHackathon id?')
   }, [selectedHackathonId])
 
   useEffect(() => {
