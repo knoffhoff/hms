@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Hackathon, HackathonPreview } from '../common/types'
+import { Hackathon, HackathonPreview, Idea } from '../common/types'
 import {
   getHackathonDetails,
   getListOfHackathons,
@@ -7,11 +7,14 @@ import {
 import HackathonSelectDropdown, {
   HackathonDropdownMode,
 } from '../components/HackathonSelectDropdown'
+import RelevantIdeasLoader from '../components/RelevantIdeasLoader'
 
 function Home() {
   const [hackathonList, setHackathonList] = useState<HackathonPreview[]>([])
-  const [isLoading, setIsLoading] = useState(true)
+  const [isHackathonsLoading, setIsHackathonsLoading] = useState(true)
+  const [isIdeaLoading, setIsIdeaLoading] = useState(true)
   const [selectedHackathonId, setSelectedHackathonId] = useState('')
+  const [relevantIdeaList, setRelevantIdeas] = useState<Idea[]>([])
   const today = new Date()
   const [hackathonData, setHackathonData] = useState<Hackathon>({
     id: 'string',
@@ -27,46 +30,30 @@ function Home() {
     return new Date(hackathon.startDate) > today
   })
 
-  const timeTillNextHackathon = !isLoading
+  const timeTillNextHackathon = !isHackathonsLoading
     ? new Date(getNextHackathon[0].startDate).getTime() - today.getTime()
     : today.getTime()
 
   const loadHackathons = () => {
     getListOfHackathons().then((data) => {
       setHackathonList(data)
-      setIsLoading(false)
+      setIsHackathonsLoading(false)
     })
-  }
-
-  const loadSelectedHackathon = () => {
-    selectedHackathonId !== ''
-      ? getHackathonDetails(selectedHackathonId).then((data) => {
-          setHackathonData(data)
-        })
-      : console.log('id was empty')
   }
 
   useEffect(() => {
     loadHackathons()
   }, [])
 
-  useEffect(() => {
-    localStorage.getItem(selectedHackathonId)
-      ? setHackathonData(JSON.parse(localStorage.getItem(selectedHackathonId)!))
-      : loadSelectedHackathon()
-  }, [selectedHackathonId])
-
-  useEffect(() => {
-    localStorage.getItem(hackathonData.id)
-      ? console.log(
-          'id exist',
-          JSON.parse(localStorage.getItem(hackathonData.id)!)
-        )
-      : localStorage.setItem(hackathonData.id, JSON.stringify(hackathonData))
-  }, [hackathonData])
-
   return (
     <>
+      <RelevantIdeasLoader
+        setHackathon={setHackathonData}
+        setRelevantIdeas={setRelevantIdeas}
+        selectedHackathonId={selectedHackathonId}
+        setLoading={setIsIdeaLoading}
+      />
+
       <h1>this is the Startpage</h1>
       <h2>Welcome! here we will give you a short tutorial for this site</h2>
       <p>
@@ -81,7 +68,7 @@ function Home() {
         ipsum dolor sit amet.
       </p>
 
-      {!isLoading && (
+      {!isHackathonsLoading && (
         <h1>
           Time till next Hackathon{' '}
           {

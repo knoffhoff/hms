@@ -58,6 +58,10 @@ export default function Archive() {
         </div>
       )}
 
+      {!(hackathon.endDate < today) && (
+        <div>To see upcoming hackathons please visit the Idea Portal</div>
+      )}
+
       {isLoading && selectedHackathonId && <div>Loading...</div>}
     </>
   )

@@ -176,6 +176,10 @@ function IdeaPortal() {
         </div>
       )}
 
+      {!(new Date(hackathonData.endDate) > today) && (
+        <div>To see past hackathons please visit the Archive</div>
+      )}
+
       {isLoading && selectedHackathonId && <div>Loading...</div>}
     </>
   )
