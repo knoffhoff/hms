@@ -21,6 +21,7 @@ export default function Archive() {
     categories: undefined,
     ideas: [],
   } as Hackathon)
+  const today = new Date()
 
   return (
     <>
@@ -37,7 +38,7 @@ export default function Archive() {
         setLoading={setIsLoading}
       />
 
-      {!isLoading && (
+      {!isLoading && hackathon.endDate < today && (
         <div>
           <h2>{hackathon.title}</h2>
           <h2>

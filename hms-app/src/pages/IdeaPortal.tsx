@@ -27,7 +27,7 @@ function IdeaPortal() {
     hackathonId: '',
     participantId: '',
   })
-  const [hackathonData, setHackathonData] = useState({
+  const [hackathonData, setHackathonData] = useState<Hackathon>({
     id: 'string',
     title: 'string',
     startDate: new Date(),
@@ -35,7 +35,8 @@ function IdeaPortal() {
     participants: [],
     categories: undefined,
     ideas: [],
-  } as Hackathon)
+  })
+  const today = new Date()
 
   const handleChangeSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value)
@@ -142,36 +143,35 @@ function IdeaPortal() {
         setLoading={setIsLoading}
       />
 
-      {!isLoading && (
-        <Button
-          disabled={buttonIsDisabled}
-          onClick={
-            participantCheck
-              ? removeHackathonParticipant
-              : addHackathonParticipant
-          }
-          color={participantCheck ? 'red' : 'blue'}
-        >
-          {participantCheck ? 'Leave Hackathon' : 'Join Hackathon'}
-        </Button>
-      )}
-
-      {!isLoading && (
+      {!isLoading && new Date(hackathonData.endDate) > today && (
         <div>
-          <h2>{hackathonData.title}</h2>
-          <h2>
-            Start Date: {new Date(hackathonData.startDate).toDateString()} End
-            Date: {new Date(hackathonData.endDate).toDateString()}
-          </h2>
-          <h2>All Ideas ({filteredIdeas.length})</h2>
-
+          <Button
+            disabled={buttonIsDisabled}
+            onClick={
+              participantCheck
+                ? removeHackathonParticipant
+                : addHackathonParticipant
+            }
+            color={participantCheck ? 'red' : 'blue'}
+          >
+            {participantCheck ? 'Leave Hackathon' : 'Join Hackathon'}
+          </Button>
           <div>
-            <IdeaCardList
-              ideas={filteredIdeas}
-              columnSize={6}
-              type={IdeaDetailsCaller.IdeaPortal}
-              isLoading={false}
-            />
+            <h2>{hackathonData.title}</h2>
+            <h2>
+              Start Date: {new Date(hackathonData.startDate).toDateString()} End
+              Date: {new Date(hackathonData.endDate).toDateString()}
+            </h2>
+            <h2>All Ideas ({filteredIdeas.length})</h2>
+
+            <div>
+              <IdeaCardList
+                ideas={filteredIdeas}
+                columnSize={6}
+                type={IdeaDetailsCaller.IdeaPortal}
+                isLoading={false}
+              />
+            </div>
           </div>
         </div>
       )}
