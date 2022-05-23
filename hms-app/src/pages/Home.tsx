@@ -1,9 +1,5 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { Hackathon, HackathonPreview, Idea } from '../common/types'
-import {
-  getHackathonDetails,
-  getListOfHackathons,
-} from '../actions/HackathonActions'
 import HackathonSelectDropdown, {
   HackathonDropdownMode,
 } from '../components/HackathonSelectDropdown'
@@ -25,25 +21,16 @@ function Home() {
     categories: undefined,
     ideas: [],
   })
-
-  const getNextHackathon = hackathonList.filter((hackathon) => {
-    return new Date(hackathon.startDate) > today
+  const [nextHackathon, setNextHackathon] = useState<HackathonPreview>({
+    endDate: new Date(),
+    id: '',
+    startDate: new Date(),
+    title: '',
   })
 
   const timeTillNextHackathon = !isHackathonsLoading
-    ? new Date(getNextHackathon[0].startDate).getTime() - today.getTime()
+    ? nextHackathon.startDate.getTime() - today.getTime()
     : today.getTime()
-
-  const loadHackathons = () => {
-    getListOfHackathons().then((data) => {
-      setHackathonList(data)
-      setIsHackathonsLoading(false)
-    })
-  }
-
-  useEffect(() => {
-    loadHackathons()
-  }, [])
 
   return (
     <>
@@ -69,16 +56,19 @@ function Home() {
       </p>
 
       {!isHackathonsLoading && (
-        <h1>
-          Time till next Hackathon{' '}
-          {
-            (timeTillNextHackathon / (1000 * 3600 * 24))
-              .toString()
-              .split('.')[0]
-          }{' '}
-          days and {Math.round(timeTillNextHackathon / (1000 * 60 * 60)) % 24}{' '}
-          hours
-        </h1>
+        <div>
+          <h1>
+            Time till next Hackathon{' '}
+            {
+              (timeTillNextHackathon / (1000 * 3600 * 24))
+                .toString()
+                .split('.')[0]
+            }{' '}
+            days and {Math.round(timeTillNextHackathon / (1000 * 60 * 60)) % 24}{' '}
+            hours
+          </h1>
+          <h2>Next Hackathon: {nextHackathon.title}</h2>
+        </div>
       )}
 
       {!!selectedHackathonId && (
@@ -94,6 +84,7 @@ function Home() {
       <HackathonSelectDropdown
         setHackathonId={setSelectedHackathonId}
         context={HackathonDropdownMode.Home}
+        setNextHackathon={setNextHackathon}
       />
     </>
   )
