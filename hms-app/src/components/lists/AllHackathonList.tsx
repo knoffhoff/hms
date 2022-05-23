@@ -2,7 +2,9 @@ import { Group, Button, createStyles, Card, Accordion } from '@mantine/core'
 import React, { useEffect, useState } from 'react'
 import { getListOfHackathons } from '../../actions/HackathonActions'
 import { HackathonPreview } from '../../common/types'
-import HackathonDetails from '../card-details/HackathonDetails'
+import HackathonDetails, {
+  HackathonDetailsType,
+} from '../card-details/HackathonDetails'
 
 const useStyles = createStyles((theme) => ({
   card: {
@@ -35,7 +37,7 @@ function AllHackathonList() {
         setIsError(false)
         setIsLoading(false)
         setHackathonList({
-          hackathons: data.hackathons,
+          hackathons: data,
         })
       },
       () => {
@@ -52,7 +54,10 @@ function AllHackathonList() {
         </div>
       }
     >
-      <HackathonDetails hackathonID={hackathon.id} type={'fullInfo'} />
+      <HackathonDetails
+        hackathonId={hackathon.id}
+        type={HackathonDetailsType.FullInfo}
+      />
     </Accordion.Item>,
   ])
 

@@ -23,9 +23,9 @@ import { createIdea, editIdea, getIdeaDetails } from '../../actions/IdeaActions'
 
 type IProps = {
   hackathon: HackathonPreview
-  participantID: string
+  participantId: string
   context: string
-  ideaID: string | null
+  ideaId: string | null
   setOpened?: (boolean: boolean) => void
   idea?: Idea
 }
@@ -49,7 +49,7 @@ const useStyles = createStyles((theme) => ({
 }))
 
 function IdeaForm(props: IProps) {
-  const { hackathon, participantID, context, ideaID, setOpened, idea } = props
+  const { hackathon, participantId, context, ideaId, setOpened, idea } = props
   const { classes } = useStyles()
   const [isLoading, setIsLoading] = useState(true)
   const [buttonIsDisabled, setButtonIsDisabled] = useState(false)
@@ -62,7 +62,7 @@ function IdeaForm(props: IProps) {
   })
   const [categories, setCategories] = useState<string[]>([])
   const [ideaText, setIdeaText] = useState({
-    ownerId: participantID,
+    ownerId: participantId,
     hackathonId: hackathon.id,
     title: '',
     description: '',
@@ -167,7 +167,7 @@ function IdeaForm(props: IProps) {
       autoClose: false,
       disallowClose: true,
     })
-    editIdea(ideaID!, ideaText, skills, categories).then((r) =>
+    editIdea(ideaId!, ideaText, skills, categories).then((r) =>
       setTimeout(() => {
         setButtonIsDisabled(false)
         if (setOpened) {
@@ -197,9 +197,9 @@ function IdeaForm(props: IProps) {
   useEffect(() => {
     setIdeaText((prevIdeaText) => ({
       ...prevIdeaText,
-      ownerId: participantID.toString(),
+      ownerId: participantId.toString(),
     }))
-  }, [participantID])
+  }, [participantId])
 
   useEffect(() => {
     loadAvailableCategories()

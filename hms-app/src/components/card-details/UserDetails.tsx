@@ -12,7 +12,6 @@ import {
   Text,
   useMantineTheme,
 } from '@mantine/core'
-import HackathonForm from '../input-forms/HackathonForm'
 import EditUserForm from '../input-forms/EditUserForm'
 
 const useStyles = createStyles((theme) => ({
@@ -37,10 +36,10 @@ const useStyles = createStyles((theme) => ({
   },
 }))
 
-export default function UserDetails(props: { userID: string }) {
+export default function UserDetails(props: { userId: string }) {
   const theme = useMantineTheme()
   const { classes } = useStyles()
-  const { userID } = props
+  const { userId } = props
   const [deleteModalOpened, setDeleteModalOpened] = useState(false)
   const [editModalOpened, setEditModalOpened] = useState(false)
   const [isUserError, setIsUserError] = useState(false)
@@ -57,7 +56,8 @@ export default function UserDetails(props: { userID: string }) {
   } as User)
 
   const loadSelectedUser = () => {
-    getUserDetails(userID).then(
+    setIsUserLoading(true)
+    getUserDetails(userId).then(
       (data) => {
         setUser(data)
         setIsUserLoading(false)
@@ -71,15 +71,14 @@ export default function UserDetails(props: { userID: string }) {
   }
 
   const deleteSelectedUser = () => {
-    deleteUser(userID).then((data) => {
+    deleteUser(userId).then((data) => {
       setDeleteModalOpened(false)
     })
   }
 
   useEffect(() => {
     loadSelectedUser()
-    setIsUserLoading(true)
-  }, [userID])
+  }, [userId])
 
   const deleteModal = (
     <Modal
@@ -110,7 +109,7 @@ export default function UserDetails(props: { userID: string }) {
       withCloseButton={false}
     >
       Edit User
-      <EditUserForm userID={userID} />
+      <EditUserForm userId={userId} />
       {isUserLoading && <div>Loading...</div>}
       <p>
         (This window will automatically close as soon as the user is deleted)

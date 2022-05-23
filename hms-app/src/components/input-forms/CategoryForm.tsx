@@ -9,8 +9,8 @@ import { showNotification, updateNotification } from '@mantine/notifications'
 import { CheckIcon } from '@modulz/radix-icons'
 
 type IProps = {
-  hackathonID: string
-  categoryID: string
+  hackathonId: string
+  categoryId: string
   context: string
 }
 
@@ -34,26 +34,26 @@ const useStyles = createStyles((theme) => ({
 
 export default function CategoryForm(props: IProps) {
   const { classes } = useStyles()
-  const { hackathonID, categoryID, context } = props
+  const { hackathonId, categoryId, context } = props
   const [isError, setIsError] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
   const [category, setCategory] = useState({
-    hackathonID: hackathonID,
-    categoryID: categoryID,
+    hackathonID: hackathonId,
+    categoryID: categoryId,
     title: '',
     description: '',
   })
 
   const loadSelectedCategory = () => {
-    getCategoryDetails(categoryID).then(
+    getCategoryDetails(categoryId).then(
       (data) => {
         setIsError(false)
         setIsLoading(false)
         setCategory({
           title: data.title,
           description: data.description,
-          hackathonID: hackathonID,
-          categoryID: categoryID,
+          hackathonID: hackathonId,
+          categoryID: categoryId,
         })
       },
       () => {
@@ -103,7 +103,7 @@ export default function CategoryForm(props: IProps) {
     event.preventDefault()
     setCategory((prevState) => ({
       ...prevState,
-      hackathonID: hackathonID.toString(),
+      hackathonID: hackathonId,
     }))
     showNotification({
       id: 'category-load',

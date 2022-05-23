@@ -8,7 +8,7 @@ import {
 import CategoryForm from '../input-forms/CategoryForm'
 
 type IProps = {
-  categoryID: string
+  categoryId: string
 }
 
 const useStyles = createStyles((theme) => ({
@@ -35,7 +35,7 @@ const useStyles = createStyles((theme) => ({
 
 export default function CategoryDetails(props: IProps) {
   const { classes } = useStyles()
-  const { categoryID } = props
+  const { categoryId } = props
   const [deleteModalOpened, setDeleteModalOpened] = useState(false)
   const [editModalOpened, setEditModalOpened] = useState(false)
   const [isError, setIsError] = useState(false)
@@ -48,7 +48,7 @@ export default function CategoryDetails(props: IProps) {
   } as Category)
 
   const loadSelectedCategory = () => {
-    getCategoryDetails(categoryID).then(
+    getCategoryDetails(categoryId).then(
       (data) => {
         setIsError(false)
         setIsLoading(false)
@@ -107,9 +107,9 @@ export default function CategoryDetails(props: IProps) {
     >
       Edit Category
       <CategoryForm
-        categoryID={categoryData.id}
+        categoryId={categoryData.id}
         context={'edit'}
-        hackathonID={''}
+        hackathonId={''}
       />
       {isLoading && <div>Loading...</div>}
       <p>
