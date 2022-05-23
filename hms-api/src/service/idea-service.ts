@@ -3,7 +3,7 @@
 import {
   getParticipant,
   getParticipants,
-  participantExists,
+  participantExistsForHackathon,
 } from '../repository/participant-repository';
 import {
   getHackathon,
@@ -42,7 +42,7 @@ export async function createIdea(
     requiredSkills: Uuid[],
     categoryId: Uuid,
 ): Promise<Idea> {
-  if (!await participantExists(ownerId, hackathonId)) {
+  if (!await participantExistsForHackathon(ownerId, hackathonId)) {
     throw new ReferenceNotFoundError(`Cannot create Idea, ` +
         `Owner (Participant) with id: ${ownerId} does not exist ` +
         `in Hackathon with id: ${hackathonId}`);

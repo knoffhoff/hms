@@ -69,8 +69,18 @@ export function mockQuery(items: { [key: string]: AttributeValue }[]): void {
   mockSend.mockResolvedValue({Items: items} as QueryCommandOutput);
 }
 
+export function mockQueryOnce(
+    items: { [key: string]: AttributeValue }[],
+): void {
+  mockSend.mockResolvedValueOnce({Items: items} as QueryCommandOutput);
+}
+
 export function mockPutItem(): void {
   mockSend.mockResolvedValue({} as PutItemCommandOutput);
+}
+
+export function mockPutItemOnce(): void {
+  mockSend.mockResolvedValueOnce({} as PutItemCommandOutput);
 }
 
 export function mockDeleteItem(

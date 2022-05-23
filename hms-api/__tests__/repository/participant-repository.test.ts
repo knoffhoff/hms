@@ -2,8 +2,9 @@ import {
   mockDeleteItem,
   mockGetItem,
   mockGetItemOnce,
-  mockPutItem,
+  mockPutItemOnce,
   mockQuery,
+  mockQueryOnce,
   mockSend,
   participantByHackathonIdIndex,
   participantTable,
@@ -13,8 +14,8 @@ import {
   getParticipant,
   getParticipants,
   listParticipants,
-  participantExists,
-  putParticipant,
+  participantExistsForHackathon,
+  putParticipant
 } from '../../src/repository/participant-repository';
 import Uuid, {uuid} from '../../src/util/Uuid';
 import NotFoundError from '../../src/error/NotFoundError';
@@ -25,6 +26,7 @@ import {
 } from './domain/participant-maker';
 import Participant from '../../src/repository/domain/Participant';
 import {AttributeValue} from '@aws-sdk/client-dynamodb';
+import InvalidStateError from '../../src/error/InvalidStateError';
 
 describe('Get Participant', () => {
   test('Participant doesn\'t exist', async () => {
@@ -48,9 +50,10 @@ describe('Get Participant', () => {
 
 describe('Put Participant', () => {
   test('Happy Path', async () => {
-    mockPutItem();
-    const expected = randomParticipant();
+    mockQueryOnce(null);
+    mockPutItemOnce();
 
+    const expected = randomParticipant();
     await putParticipant(expected);
 
     expect(mockSend).toHaveBeenCalledWith(
@@ -62,7 +65,23 @@ describe('Put Participant', () => {
         }));
   });
 
-  // TODO add a test for the ConditionalCheckFailedException
+  test('Participant already exists', async () => {
+    mockQueryOnce([]);
+    mockPutItemOnce();
+
+    const expected = randomParticipant();
+    await expect(putParticipant(expected))
+        .rejects
+        .toThrow(InvalidStateError);
+
+    expect(mockSend).not.toHaveBeenCalledWith(
+        expect.objectContaining({
+          input: expect.objectContaining({
+            TableName: participantTable,
+            Item: itemFromParticipant(expected),
+          }),
+        }));
+  });
 });
 
 describe('Delete Participant', () => {
@@ -194,7 +213,7 @@ describe('Participant Exists', () => {
     const id = uuid();
     mockGetItem(null);
 
-    expect(await participantExists(id, uuid())).toBe(false);
+    expect(await participantExistsForHackathon(id, uuid())).toBe(false);
 
     getExpected(id);
   });
@@ -205,7 +224,7 @@ describe('Participant Exists', () => {
       hackathonId: {S: uuid()},
     });
 
-    expect(await participantExists(id, uuid())).toBe(false);
+    expect(await participantExistsForHackathon(id, uuid())).toBe(false);
 
     getExpected(id);
   });
@@ -217,7 +236,7 @@ describe('Participant Exists', () => {
       hackathonId: {S: hackathonId},
     });
 
-    expect(await participantExists(id, hackathonId)).toBe(true);
+    expect(await participantExistsForHackathon(id, hackathonId)).toBe(true);
 
     getExpected(id);
   });

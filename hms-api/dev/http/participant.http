@@ -8,8 +8,8 @@ POST {{host}}/restapis/{{api_id}}/local/_user_request_/participant
 Content-Type: application/json
 
 {
-  "userId": "{{user_id}}",
-  "hackathonId": "{{hackathon_id}}"
+  "userId": "629f52c9-df29-491b-82a4-bdd80806338d",
+  "hackathonId": "4eb2d486-c786-431e-a4fd-4c093ed30642"
 }
 
 ###
@@ -18,4 +18,4 @@ GET {{host}}/restapis/{{api_id}}/local/_user_request_/participant/{{participant_
 
 ###
 # @name Remove Participant
-DELETE {{host}}/restapis/{{api_id}}/local/_user_request_/participant/{{participant_id}}
+DELETE {{host}}/restapis/{{api_id}}/local/_user_request_/participant/e27fb873-fd63-4c43-a00b-4593a3662953
