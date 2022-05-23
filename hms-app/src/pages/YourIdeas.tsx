@@ -7,9 +7,9 @@ import HackathonSelectDropdown, {
   HackathonDropdownMode,
 } from '../components/HackathonSelectDropdown'
 import RelevantIdeasLoader from '../components/RelevantIdeasLoader'
+import { IdeaDetailsCaller } from '../components/card-details/IdeaDetails'
 
 export default function YourIdeas() {
-  const [participantId, setParticipantId] = useState('')
   const userID = '629f52c9-df29-491b-82a4-bdd80806338d'
   const [selectedHackathonId, setSelectedHackathonId] = useState('')
   const [relevantIdeas, setRelevantIdeas] = useState<Idea[]>([])
@@ -23,23 +23,22 @@ export default function YourIdeas() {
     categories: undefined,
     ideas: [],
   } as Hackathon)
+  const [participantCheck, setParticipantCheck] = useState(false)
   const today = new Date()
 
   const filteredIdeas = relevantIdeas.filter((item) => {
     return item.owner?.user.id.includes(userID)
   })
 
-  const userParticipant: ParticipantPreview = hackathon.participants?.find(
-    (participant) => participant.user.id === userID
-  )!
+  const findParticipant: ParticipantPreview | void = hackathon.participants
+    ? hackathon.participants.find(
+        (participant) => participant.user.id === userID
+      )
+    : undefined
 
   useEffect(() => {
-    setParticipantId(userParticipant?.id)
+    setParticipantCheck(!!findParticipant)
   }, [hackathon])
-
-  function isParticipant(): boolean {
-    return !!participantId.toString()
-  }
 
   return (
     <>
@@ -64,7 +63,7 @@ export default function YourIdeas() {
             {new Date(hackathon.endDate).toDateString()}
           </h2>
 
-          {isParticipant() && (
+          {participantCheck && (
             <div>
               <div>
                 {!(hackathon.endDate < today) && (
@@ -76,7 +75,7 @@ export default function YourIdeas() {
                       <IdeaForm
                         ideaId={'null'}
                         hackathon={hackathon}
-                        participantId={participantId}
+                        participantId={findParticipant!.id}
                         context={'new'}
                       />
                     </Accordion.Item>
@@ -87,12 +86,12 @@ export default function YourIdeas() {
               <IdeaCardList
                 ideas={filteredIdeas}
                 columnSize={6}
-                type={'owner'}
+                type={IdeaDetailsCaller.Owner}
                 isLoading={false}
               />
             </div>
           )}
-          {!isParticipant() && (
+          {!participantCheck && (
             <div>you haven't participated in this hackathon</div>
           )}
         </div>

@@ -23,10 +23,6 @@ const useStyles = createStyles((theme) => ({
   },
 }))
 
-enum Enum {
-  FullInfo = 'FULLINFO',
-}
-
 function AllHackathonList() {
   const { classes } = useStyles()
   const [isError, setIsError] = useState(false)

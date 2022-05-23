@@ -115,9 +115,6 @@ export default function HeaderMenu({ links }: HeaderSearchProps) {
       <Container>
         <div className={classes.inner}>
           <h1>HMS</h1>
-          <Button onClick={() => localStorage.clear()}>
-            Clear Localstorage
-          </Button>
           <Group spacing={5} className={classes.links}>
             <SwitchToggle />
             {items}

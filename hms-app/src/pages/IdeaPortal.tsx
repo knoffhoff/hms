@@ -13,6 +13,7 @@ import HackathonSelectDropdown, {
   HackathonDropdownMode,
 } from '../components/HackathonSelectDropdown'
 import RelevantIdeasLoader from '../components/RelevantIdeasLoader'
+import { IdeaDetailsCaller } from '../components/card-details/IdeaDetails'
 
 function IdeaPortal() {
   const [searchTerm, setSearchTerm] = useState('')
@@ -168,7 +169,7 @@ function IdeaPortal() {
             <IdeaCardList
               ideas={filteredIdeas}
               columnSize={6}
-              type={'idea-portal'}
+              type={IdeaDetailsCaller.IdeaPortal}
               isLoading={false}
             />
           </div>

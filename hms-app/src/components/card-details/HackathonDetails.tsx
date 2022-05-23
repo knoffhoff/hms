@@ -17,7 +17,7 @@ import {
   Modal,
 } from '@mantine/core'
 import ParticipantDetails from './ParticipantDetails'
-import IdeaDetails from './IdeaDetails'
+import IdeaDetails, { IdeaDetailsCaller } from './IdeaDetails'
 import CategoryForm from '../input-forms/CategoryForm'
 import HackathonForm from '../input-forms/HackathonForm'
 import CategoryDetails from './CategoryDetails'
@@ -210,7 +210,11 @@ export default function HackathonDetails(props: IProps) {
         </div>
       }
     >
-      <IdeaDetails idea={idea} type={'admin'} isLoading={isIdeaLoading} />
+      <IdeaDetails
+        idea={idea}
+        type={IdeaDetailsCaller.Admin}
+        isLoading={isIdeaLoading}
+      />
     </Accordion.Item>
   ))
 
@@ -292,7 +296,7 @@ export default function HackathonDetails(props: IProps) {
             <IdeaCardList
               ideas={relevantIdeaList}
               columnSize={6}
-              type={HackathonDetailsType.Header}
+              type={IdeaDetailsCaller.Header}
               isLoading={isIdeaLoading}
             />
           </div>

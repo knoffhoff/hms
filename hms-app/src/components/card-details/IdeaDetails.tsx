@@ -21,7 +21,16 @@ import { Spoiler } from '@mantine/core'
 type IProps = {
   idea: Idea
   isLoading: boolean
-  type: string
+  type: IdeaDetailsCaller
+}
+
+export enum IdeaDetailsCaller {
+  Voting = 'VOTING',
+  Admin = 'ADMIN',
+  Owner = 'OWNER',
+  IdeaPortal = 'IDEA_PORTAL',
+  Header = 'HEADER',
+  Archive = 'ARCHIVE',
 }
 
 const useStyles = createStyles((theme) => ({
@@ -63,7 +72,7 @@ export default function IdeaDetails(props: IProps) {
 
   const { idea, type, isLoading } = props
   const MAX_TITLE_LENGTH = 45
-  const MAX_DESCRIPTION_LENGTH = type === 'voting' ? 200 : 245
+  const MAX_DESCRIPTION_LENGTH = type === IdeaDetailsCaller.Voting ? 200 : 245
 
   const participantData = idea.participants?.map((participant, index) => (
     <div
@@ -238,7 +247,7 @@ export default function IdeaDetails(props: IProps) {
             </Card.Section>
           </Spoiler>
 
-          {type !== 'voting' && (
+          {type !== IdeaDetailsCaller.Voting && (
             <>
               <Card.Section className={classes.section}>
                 <Text mt="md" className={classes.label} color="dimmed">
@@ -256,31 +265,36 @@ export default function IdeaDetails(props: IProps) {
                 </Group>
               </Card.Section>
 
-              {type !== 'admin' && type !== 'owner' && (
-                <Accordion
-                  state={accordionState}
-                  onChange={setAccordionState.setState}
-                >
-                  <Accordion.Item
-                    mt="sm"
-                    style={{ border: 'none' }}
-                    label={
-                      !accordionState['0'] ? 'Show details' : 'Hide details'
-                    }
+              {type !== IdeaDetailsCaller.Admin &&
+                type !== IdeaDetailsCaller.Owner && (
+                  <Accordion
+                    state={accordionState}
+                    onChange={setAccordionState.setState}
                   >
-                    <div>{ideaDetails()}</div>
+                    <Accordion.Item
+                      mt="sm"
+                      style={{ border: 'none' }}
+                      label={
+                        !accordionState['0'] ? 'Show details' : 'Hide details'
+                      }
+                    >
+                      <div>{ideaDetails()}</div>
 
-                    <Group mt="xs" position={'right'} style={{ paddingTop: 5 }}>
-                      <Button variant={'outline'} color={'yellow'}>
-                        Add to Favorites
-                      </Button>
-                      <Button>Participate</Button>
-                    </Group>
-                  </Accordion.Item>
-                </Accordion>
-              )}
+                      <Group
+                        mt="xs"
+                        position={'right'}
+                        style={{ paddingTop: 5 }}
+                      >
+                        <Button variant={'outline'} color={'yellow'}>
+                          Add to Favorites
+                        </Button>
+                        <Button>Participate</Button>
+                      </Group>
+                    </Accordion.Item>
+                  </Accordion>
+                )}
 
-              {type === 'owner' && (
+              {type === IdeaDetailsCaller.Owner && (
                 <Accordion
                   state={accordionState}
                   onChange={setAccordionState.setState}
@@ -311,7 +325,7 @@ export default function IdeaDetails(props: IProps) {
                 </Accordion>
               )}
 
-              {type === 'admin' && (
+              {type === IdeaDetailsCaller.Admin && (
                 <>
                   <div>{ideaDetails()}</div>
                   <Group position="left" mt="xl">
