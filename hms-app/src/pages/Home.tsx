@@ -4,7 +4,9 @@ import {
   getHackathonDetails,
   getListOfHackathons,
 } from '../actions/HackathonActions'
-import HackathonSelectDropdown from '../components/HackathonSelectDropdown'
+import HackathonSelectDropdown, {
+  HackathonDropdownMode,
+} from '../components/HackathonSelectDropdown'
 
 function Home() {
   const [hackathonList, setHackathonList] = useState<HackathonPreview[]>([])
@@ -31,7 +33,7 @@ function Home() {
 
   const loadHackathons = () => {
     getListOfHackathons().then((data) => {
-      setHackathonList(data.hackathons)
+      setHackathonList(data)
       setIsLoading(false)
     })
   }
@@ -104,7 +106,7 @@ function Home() {
 
       <HackathonSelectDropdown
         setHackathonId={setSelectedHackathonId}
-        context={'home'}
+        context={HackathonDropdownMode.Home}
       />
     </>
   )

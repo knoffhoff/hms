@@ -5,12 +5,14 @@ import { HackathonPreview } from '../common/types'
 
 type Props = {
   setHackathonId: (hackthonID: string) => void
-  context: string
+  context: HackathonDropdownMode
 }
 
-enum Enum {
+export enum HackathonDropdownMode {
   Archive = 'ARCHIVE',
-  IdeaPortal = 'IDEAPORTAL',
+  IdeaPortal = 'IDEA_PORTAL',
+  Home = 'HOME',
+  YourIdeas = 'YOUR_IDEAS',
 }
 
 export default function HackathonSelectDropdown({
@@ -20,12 +22,13 @@ export default function HackathonSelectDropdown({
   const [isError, setIsError] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
   const [hackathonList, setHackathonList] = useState<HackathonPreview[]>([])
-  const today = new Date().setHours(0, 0, 0, 0)
+  const today = new Date()
+  today.setHours(0, 0, 0, 0)
 
   const loadHackathons = () => {
     getListOfHackathons().then(
       (data) => {
-        setHackathonList(data.hackathons)
+        setHackathonList(data)
         setIsLoading(false)
         setIsError(false)
       },
@@ -38,13 +41,13 @@ export default function HackathonSelectDropdown({
 
   function getHackathonsSelectItems(): SelectItem[] {
     switch (context) {
-      case Enum.Archive:
+      case HackathonDropdownMode.Archive:
         return hackathonList
-          .filter((hackathon) => new Date(hackathon.endDate) < new Date(today))
+          .filter((hackathon) => hackathon.endDate < today)
           .map((hackathon) => mapHackathonToSelectItem(hackathon))
-      case Enum.IdeaPortal:
+      case HackathonDropdownMode.IdeaPortal:
         return hackathonList
-          .filter((hackathon) => new Date(hackathon.endDate) >= new Date(today))
+          .filter((hackathon) => hackathon.endDate >= today)
           .map((hackathon) => mapHackathonToSelectItem(hackathon))
     }
     return hackathonList.map((hackathon) => mapHackathonToSelectItem(hackathon))
@@ -56,13 +59,13 @@ export default function HackathonSelectDropdown({
       label:
         hackathon.title +
         ' ' +
-        new Date(hackathon.startDate).toLocaleString(undefined, {
+        hackathon.startDate.toLocaleString(undefined, {
           year: 'numeric',
           month: '2-digit',
           day: '2-digit',
         }) +
         '-' +
-        new Date(hackathon.endDate).toLocaleString(undefined, {
+        hackathon.endDate.toLocaleString(undefined, {
           year: 'numeric',
           month: '2-digit',
           day: '2-digit',

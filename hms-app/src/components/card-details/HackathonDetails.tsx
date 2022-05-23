@@ -23,11 +23,6 @@ import HackathonForm from '../input-forms/HackathonForm'
 import CategoryDetails from './CategoryDetails'
 import { Link } from 'react-router-dom'
 
-type IProps = {
-  hackathonId: string
-  type: string
-}
-
 const useStyles = createStyles((theme) => ({
   card: {
     backgroundColor:
@@ -50,10 +45,14 @@ const useStyles = createStyles((theme) => ({
   },
 }))
 
-enum Enum {
+type IProps = {
+  hackathonId: string
+  type: HackathonDetailsType
+}
+
+export enum HackathonDetailsType {
   Header = 'HEADER',
   FullInfo = 'FULLINFO',
-  Archive = 'ARCHIVE',
 }
 
 export default function HackathonDetails(props: IProps) {
@@ -281,7 +280,7 @@ export default function HackathonDetails(props: IProps) {
       {hackathonData.startDate &&
         !isHackathonLoading &&
         !isHackathonError &&
-        type === Enum.Header && (
+        type === HackathonDetailsType.Header && (
           <div>
             <h2>Title: {hackathonData.title}</h2>
             <h2>
@@ -293,7 +292,7 @@ export default function HackathonDetails(props: IProps) {
             <IdeaCardList
               ideas={relevantIdeaList}
               columnSize={6}
-              type={Enum.Archive}
+              type={HackathonDetailsType.Header}
               isLoading={isIdeaLoading}
             />
           </div>
@@ -302,7 +301,7 @@ export default function HackathonDetails(props: IProps) {
       {hackathonData.startDate &&
         !isHackathonLoading &&
         !isHackathonError &&
-        type === Enum.FullInfo && (
+        type === HackathonDetailsType.FullInfo && (
           <Card withBorder radius="md" p="md" className={classes.card}>
             <Card.Section className={classes.section}>
               <Text size="md" mt="xs">

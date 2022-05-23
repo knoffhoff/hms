@@ -103,7 +103,7 @@ export default function CategoryForm(props: IProps) {
     event.preventDefault()
     setCategory((prevState) => ({
       ...prevState,
-      hackathonID: hackathonId.toString(),
+      hackathonID: hackathonId,
     }))
     showNotification({
       id: 'category-load',

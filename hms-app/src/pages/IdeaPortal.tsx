@@ -9,12 +9,10 @@ import {
 } from '../actions/ParticipantActions'
 import { showNotification, updateNotification } from '@mantine/notifications'
 import { CheckIcon } from '@modulz/radix-icons'
-import HackathonSelectDropdown from '../components/HackathonSelectDropdown'
+import HackathonSelectDropdown, {
+  HackathonDropdownMode,
+} from '../components/HackathonSelectDropdown'
 import RelevantIdeasLoader from '../components/RelevantIdeasLoader'
-
-enum Enum {
-  IdeaPortal = 'IDEAPORTAL',
-}
 
 function IdeaPortal() {
   const [searchTerm, setSearchTerm] = useState('')
@@ -125,7 +123,7 @@ function IdeaPortal() {
       <Group position={'apart'} py={20}>
         <HackathonSelectDropdown
           setHackathonId={setSelectedHackathonId}
-          context={Enum.IdeaPortal}
+          context={HackathonDropdownMode.IdeaPortal}
         />
 
         <Input
@@ -138,7 +136,7 @@ function IdeaPortal() {
 
       <RelevantIdeasLoader
         setHackathon={setHackathonData}
-        setRelevantIdea={setRelevantIdeas}
+        setRelevantIdeas={setRelevantIdeas}
         selectedHackathonId={selectedHackathonId}
         setLoading={setIsLoading}
       />

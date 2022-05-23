@@ -56,6 +56,7 @@ export default function UserDetails(props: { userId: string }) {
   } as User)
 
   const loadSelectedUser = () => {
+    setIsUserLoading(true)
     getUserDetails(userId).then(
       (data) => {
         setUser(data)
@@ -77,7 +78,6 @@ export default function UserDetails(props: { userId: string }) {
 
   useEffect(() => {
     loadSelectedUser()
-    setIsUserLoading(true)
   }, [userId])
 
   const deleteModal = (

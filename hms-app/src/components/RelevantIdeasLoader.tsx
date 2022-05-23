@@ -5,19 +5,19 @@ import { getIdeaDetails } from '../actions/IdeaActions'
 
 type Props = {
   selectedHackathonId: string
-  setRelevantIdea: (relevantIdeaList: Idea[]) => void
+  setRelevantIdeas: (relevantIdeaList: Idea[]) => void
   setHackathon: (hackathonData: Hackathon) => void
   setLoading: (boolean: boolean) => void
 }
 
 export default function RelevantIdeasLoader({
   selectedHackathonId,
-  setRelevantIdea,
+  setRelevantIdeas,
   setHackathon,
   setLoading,
 }: Props) {
   const [relevantIdeaList, setRelevantIdeaList] = useState<Idea[]>([])
-  const [isLoading, setIsLoading] = useState(true)
+  const [isThisLoading, setIsThisLoading] = useState(true)
   const [hackathonData, setHackathonData] = useState<Hackathon>({
     id: 'string',
     title: 'string',
@@ -55,7 +55,7 @@ export default function RelevantIdeasLoader({
         setIdeaData(ideaDetails)
       )
     })
-    setIsLoading(false)
+    setIsThisLoading(false)
   }
 
   useEffect(() => {
@@ -96,12 +96,12 @@ export default function RelevantIdeasLoader({
   }, [ideaData])
 
   useEffect(() => {
-    setRelevantIdea(relevantIdeaList)
+    setRelevantIdeas(relevantIdeaList)
   }, [relevantIdeaList])
 
   useEffect(() => {
-    setLoading(isLoading)
-  }, [isLoading])
+    setLoading(isThisLoading)
+  }, [isThisLoading])
 
   return <div />
 }

@@ -10,7 +10,6 @@ import {
   Container,
   Avatar,
   useMantineColorScheme,
-  Button,
 } from '@mantine/core'
 import { useBooleanToggle } from '@mantine/hooks'
 import { ChevronDown } from 'tabler-icons-react'

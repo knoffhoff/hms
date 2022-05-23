@@ -1,2 +1,1 @@
 # Hackathon Management System
-
