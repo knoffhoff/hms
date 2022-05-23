@@ -15,7 +15,7 @@ import {
   getParticipants,
   listParticipants,
   participantExistsForHackathon,
-  putParticipant
+  putParticipant,
 } from '../../src/repository/participant-repository';
 import Uuid, {uuid} from '../../src/util/Uuid';
 import NotFoundError from '../../src/error/NotFoundError';
