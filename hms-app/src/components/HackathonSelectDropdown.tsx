@@ -86,15 +86,16 @@ export default function HackathonSelectDropdown({
         )
       : console.log('no last hackathon')
 
-    console.log('getNextHackathon', getNextHackathon)
-
     loadHackathons()
   }, [])
 
   useEffect(() => {
-    console.log('getNextHackathon', getNextHackathon)
     if (setNextHackathon) {
       setNextHackathon(getNextHackathon!)
+    }
+
+    if (!!getNextHackathon) {
+      localStorage.setItem('nextHackathon', JSON.stringify(getNextHackathon))
     }
   }, [hackathonList])
 

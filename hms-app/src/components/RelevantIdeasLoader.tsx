@@ -5,9 +5,9 @@ import { getIdeaDetails } from '../actions/IdeaActions'
 
 type Props = {
   selectedHackathonId: string
-  setRelevantIdeas: (relevantIdeaList: Idea[]) => void
+  setRelevantIdeas?: (relevantIdeaList: Idea[]) => void
   setHackathon: (hackathonData: Hackathon) => void
-  setLoading: (boolean: boolean) => void
+  setLoading?: (boolean: boolean) => void
 }
 
 export default function RelevantIdeasLoader({
@@ -96,11 +96,15 @@ export default function RelevantIdeasLoader({
   }, [ideaData])
 
   useEffect(() => {
-    setRelevantIdeas(relevantIdeaList)
+    if (setRelevantIdeas) {
+      setRelevantIdeas(relevantIdeaList)
+    }
   }, [relevantIdeaList])
 
   useEffect(() => {
-    setLoading(isThisLoading)
+    if (setLoading) {
+      setLoading(isThisLoading)
+    }
   }, [isThisLoading])
 
   return <div />

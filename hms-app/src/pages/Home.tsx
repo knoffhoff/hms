@@ -1,26 +1,8 @@
-import React, { useState } from 'react'
-import { Hackathon, HackathonPreview, Idea } from '../common/types'
-import HackathonSelectDropdown, {
-  HackathonDropdownMode,
-} from '../components/HackathonSelectDropdown'
-import RelevantIdeasLoader from '../components/RelevantIdeasLoader'
+import React, { useEffect, useState } from 'react'
+import { HackathonPreview } from '../common/types'
 
 function Home() {
-  const [hackathonList, setHackathonList] = useState<HackathonPreview[]>([])
-  const [isHackathonsLoading, setIsHackathonsLoading] = useState(true)
-  const [isIdeaLoading, setIsIdeaLoading] = useState(true)
-  const [selectedHackathonId, setSelectedHackathonId] = useState('')
-  const [relevantIdeaList, setRelevantIdeas] = useState<Idea[]>([])
   const today = new Date()
-  const [hackathonData, setHackathonData] = useState<Hackathon>({
-    id: 'string',
-    title: 'string',
-    startDate: new Date(),
-    endDate: new Date(),
-    participants: [],
-    categories: undefined,
-    ideas: [],
-  })
   const [nextHackathon, setNextHackathon] = useState<HackathonPreview>({
     endDate: new Date(),
     id: '',
@@ -28,19 +10,20 @@ function Home() {
     title: '',
   })
 
-  const timeTillNextHackathon = !isHackathonsLoading
-    ? nextHackathon.startDate.getTime() - today.getTime()
-    : today.getTime()
+  useEffect(() => {
+    if (localStorage.getItem('nextHackathon')) {
+      setNextHackathon(JSON.parse(localStorage.getItem('nextHackathon')!))
+    }
+  }, [])
+
+  function timeTillNextHackathon() {
+    return !!nextHackathon.id
+      ? new Date(nextHackathon.startDate).getTime() - today.getTime()
+      : 0
+  }
 
   return (
     <>
-      <RelevantIdeasLoader
-        setHackathon={setHackathonData}
-        setRelevantIdeas={setRelevantIdeas}
-        selectedHackathonId={selectedHackathonId}
-        setLoading={setIsIdeaLoading}
-      />
-
       <h1>this is the Startpage</h1>
       <h2>Welcome! here we will give you a short tutorial for this site</h2>
       <p>
@@ -55,37 +38,27 @@ function Home() {
         ipsum dolor sit amet.
       </p>
 
-      {!isHackathonsLoading && (
+      {!!localStorage.getItem('nextHackathon') && (
         <div>
-          <h1>
+          <h2>
             Time till next Hackathon{' '}
             {
-              (timeTillNextHackathon / (1000 * 3600 * 24))
+              (timeTillNextHackathon() / (1000 * 3600 * 24))
                 .toString()
                 .split('.')[0]
             }{' '}
-            days and {Math.round(timeTillNextHackathon / (1000 * 60 * 60)) % 24}{' '}
-            hours
-          </h1>
-          <h2>Next Hackathon: {nextHackathon.title}</h2>
-        </div>
-      )}
-
-      {!!selectedHackathonId && (
-        <div>
-          <h2>{hackathonData.title}</h2>
-          <h2>
-            Start Date: {new Date(hackathonData.startDate).toDateString()}
+            days and{' '}
+            {Math.round(timeTillNextHackathon() / (1000 * 60 * 60)) % 24} hours
           </h2>
-          <h2> End Date: {new Date(hackathonData.endDate).toDateString()}</h2>
+          <div>Next Hackathon: {nextHackathon.title}</div>
+          <div>
+            Start Date: {new Date(nextHackathon.startDate).toLocaleDateString()}
+          </div>
+          <div>
+            End Date: {new Date(nextHackathon.endDate).toLocaleDateString()}
+          </div>
         </div>
       )}
-
-      <HackathonSelectDropdown
-        setHackathonId={setSelectedHackathonId}
-        context={HackathonDropdownMode.Home}
-        setNextHackathon={setNextHackathon}
-      />
     </>
   )
 }
