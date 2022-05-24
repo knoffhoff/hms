@@ -68,7 +68,7 @@ const mockGetParticipants = jest.fn();
 jest.spyOn(participantRepository, 'getParticipants')
     .mockImplementation(mockGetParticipants);
 const mockParticipantExists = jest.fn();
-jest.spyOn(participantRepository, 'participantExists')
+jest.spyOn(participantRepository, 'participantExistsForHackathon')
     .mockImplementation(mockParticipantExists);
 
 const mockGetUser = jest.fn();

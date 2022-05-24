@@ -30,6 +30,7 @@ provider:
     IDEA_BY_OWNER_ID_INDEX: idea-by-ownerId
     PARTICIPANT_TABLE: participant
     PARTICIPANT_BY_HACKATHON_ID_INDEX: participant-by-hackathonId
+    PARTICIPANT_BY_HACKATHON_ID_USER_ID_INDEX: participant-by-hackathonId-userId
   iam:
     role:
       statements:
@@ -368,6 +369,8 @@ resources:
             AttributeType: S
           - AttributeName: hackathonId
             AttributeType: S
+          - AttributeName: userId
+            AttributeType: S
         KeySchema:
           - AttributeName: id
             KeyType: HASH
@@ -377,6 +380,14 @@ resources:
               - AttributeName: hackathonId
                 KeyType: HASH
               - AttributeName: id
+                KeyType: RANG
+            Projection:
+              ProjectionType: ALL
+          - IndexName: ${self:provider.environment.PARTICIPANT_BY_HACKATHON_ID_USER_ID_INDEX}
+            KeySchema:
+              - AttributeName: hackathonId
+                KeyType: HASH
+              - AttributeName: userId
                 KeyType: RANG
             Projection:
               ProjectionType: ALL
