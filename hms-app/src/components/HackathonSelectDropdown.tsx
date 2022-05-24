@@ -19,24 +19,19 @@ export default function HackathonSelectDropdown({
   setHackathonId,
   context,
 }: Props) {
-  const [isError, setIsError] = useState(false)
-  const [isLoading, setIsLoading] = useState(true)
   const [hackathonList, setHackathonList] = useState<HackathonPreview[]>([])
+  const [isLoading, setIsLoading] = useState(true)
   const today = new Date()
   today.setHours(0, 0, 0, 0)
 
   const loadHackathons = () => {
-    getListOfHackathons().then(
-      (data) => {
-        setHackathonList(data)
-        setIsLoading(false)
-        setIsError(false)
-      },
-      () => {
-        setIsError(true)
-        setIsLoading(false)
-      }
-    )
+    !!localStorage.getItem('hackathonList')
+      ? setHackathonList(JSON.parse(localStorage.getItem('hackathonList')!))
+      : setHackathonList([])
+
+    !!localStorage.getItem('hackathonList')
+      ? setIsLoading(false)
+      : setIsLoading(true)
   }
 
   const getNextHackathon = hackathonList.find((hackathon) => {
@@ -97,12 +92,12 @@ export default function HackathonSelectDropdown({
     localStorage.setItem('lastSelectedHackathonId', JSON.stringify(value))
     setHackathonId(value)
   }
+  console.log(hackathonList)
 
   return (
     <>
-      {isError && <div>Ups something went wrong...</div>}
-      {isLoading && !isError && <div>hackathon select is loading...</div>}
-      {!isLoading && !isError && (
+      {isLoading && <div>hackathon select is loading...</div>}
+      {!isLoading && (
         <div style={{ width: 385 }}>
           <Select
             placeholder={'select a Hackathon'}
