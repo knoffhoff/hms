@@ -8,8 +8,8 @@ POST {{host}}/restapis/{{api_id}}/local/_user_request_/participant
 Content-Type: application/json
 
 {
-  "userId": "629f52c9-df29-491b-82a4-bdd80806338d",
-  "hackathonId": "4eb2d486-c786-431e-a4fd-4c093ed30642"
+  "userId": "{{user_id}}",
+  "hackathonId": "{{hackathon_id}}"
 }
 
 ###
