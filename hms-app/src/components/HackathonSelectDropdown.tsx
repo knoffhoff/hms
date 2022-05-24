@@ -6,7 +6,6 @@ import { HackathonPreview } from '../common/types'
 type Props = {
   setHackathonId: (hackthonID: string) => void
   context: HackathonDropdownMode
-  setNextHackathon?: (nextHackathon: HackathonPreview) => void
 }
 
 export enum HackathonDropdownMode {
@@ -19,7 +18,6 @@ export enum HackathonDropdownMode {
 export default function HackathonSelectDropdown({
   setHackathonId,
   context,
-  setNextHackathon,
 }: Props) {
   const [isError, setIsError] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
@@ -90,10 +88,6 @@ export default function HackathonSelectDropdown({
   }, [])
 
   useEffect(() => {
-    if (setNextHackathon) {
-      setNextHackathon(getNextHackathon!)
-    }
-
     if (!!getNextHackathon) {
       localStorage.setItem('nextHackathon', JSON.stringify(getNextHackathon))
     }
