@@ -18,4 +18,4 @@ GET {{host}}/restapis/{{api_id}}/local/_user_request_/participant/{{participant_
 
 ###
 # @name Remove Participant
-DELETE {{host}}/restapis/{{api_id}}/local/_user_request_/participant/e27fb873-fd63-4c43-a00b-4593a3662953
+DELETE {{host}}/restapis/{{api_id}}/local/_user_request_/participant/{{participant_id}}
