@@ -1,11 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { HackathonPreview } from '../common/types'
-import { useSelector, useDispatch } from 'react-redux'
 
 function Home() {
   const today = new Date()
-  const count = useSelector()
-  const dispatch = useDispatch()
   const [nextHackathon, setNextHackathon] = useState<HackathonPreview>({
     endDate: new Date(),
     id: '',
