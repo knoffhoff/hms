@@ -80,6 +80,8 @@ export default function HeaderMenu({ links }: HeaderSearchProps) {
   const [isError, setIsError] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
   const [hackathonList, setHackathonList] = useState<HackathonPreview[]>([])
+  const today = new Date()
+  today.setHours(0, 0, 0, 0)
 
   const loadHackathons = () => {
     getListOfHackathons().then(
@@ -95,6 +97,16 @@ export default function HeaderMenu({ links }: HeaderSearchProps) {
       }
     )
   }
+
+  const getNextHackathon = hackathonList.find((hackathon) => {
+    return new Date(hackathon.startDate) > today
+  })
+
+  useEffect(() => {
+    if (!!getNextHackathon) {
+      localStorage.setItem('nextHackathon', JSON.stringify(getNextHackathon))
+    }
+  }, [hackathonList])
 
   useEffect(() => {
     loadHackathons()

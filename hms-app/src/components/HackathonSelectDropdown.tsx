@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import { getListOfHackathons } from '../actions/HackathonActions'
 import { Select, SelectItem } from '@mantine/core'
-import { HackathonPreview } from '../common/types'
+import { HackathonPreview, parseHackathons } from '../common/types'
 
 type Props = {
   setHackathonId: (hackthonID: string) => void
@@ -26,17 +25,15 @@ export default function HackathonSelectDropdown({
 
   const loadHackathons = () => {
     !!localStorage.getItem('hackathonList')
-      ? setHackathonList(JSON.parse(localStorage.getItem('hackathonList')!))
+      ? setHackathonList(
+          parseHackathons(JSON.parse(localStorage.getItem('hackathonList')!))
+        )
       : setHackathonList([])
 
     !!localStorage.getItem('hackathonList')
       ? setIsLoading(false)
       : setIsLoading(true)
   }
-
-  const getNextHackathon = hackathonList.find((hackathon) => {
-    return new Date(hackathon.startDate) > today
-  })
 
   function getHackathonsSelectItems(): SelectItem[] {
     switch (context) {
@@ -82,17 +79,10 @@ export default function HackathonSelectDropdown({
     loadHackathons()
   }, [])
 
-  useEffect(() => {
-    if (!!getNextHackathon) {
-      localStorage.setItem('nextHackathon', JSON.stringify(getNextHackathon))
-    }
-  }, [hackathonList])
-
   function onChange(value: string) {
     localStorage.setItem('lastSelectedHackathonId', JSON.stringify(value))
     setHackathonId(value)
   }
-  console.log(hackathonList)
 
   return (
     <>
