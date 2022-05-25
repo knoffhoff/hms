@@ -167,7 +167,7 @@ function IdeaPortal() {
         setLoading={setIsLoading}
       />
 
-      {!isLoading && hackathonData.endDate > today && (
+      {!isLoading && new Date(hackathonData.endDate) > today && (
         <div>
           <Button
             disabled={buttonIsDisabled}
@@ -183,8 +183,8 @@ function IdeaPortal() {
           <div>
             <h2>{hackathonData.title}</h2>
             <h2>
-              Start Date: {hackathonData.startDate.toDateString()} End Date:{' '}
-              {hackathonData.endDate.toDateString()}
+              Start Date: {new Date(hackathonData.startDate).toDateString()} End
+              Date: {new Date(hackathonData.endDate).toDateString()}
             </h2>
             <h2>All Ideas ({filteredIdeas.length})</h2>
 
@@ -200,7 +200,7 @@ function IdeaPortal() {
         </div>
       )}
 
-      {!(hackathonData.endDate > today) && (
+      {!(new Date(hackathonData.endDate) > today) && (
         <div>To see past hackathons please visit the Archive</div>
       )}
 

@@ -38,7 +38,7 @@ export default function Archive() {
         setLoading={setIsLoading}
       />
 
-      {!isLoading && hackathon.endDate < today && (
+      {!isLoading && new Date(hackathon.endDate) < today && (
         <div>
           <h2>{hackathon.title}</h2>
           <h2>
@@ -58,7 +58,7 @@ export default function Archive() {
         </div>
       )}
 
-      {!(hackathon.endDate < today) && (
+      {!(new Date(hackathon.endDate) < today) && (
         <div>To see upcoming hackathons please visit the Idea Portal</div>
       )}
 
