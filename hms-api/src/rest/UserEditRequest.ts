@@ -2,7 +2,7 @@
 
 import Uuid from '../util/Uuid';
 
-class SkillEditRequest {
+class UserEditRequest {
   lastName: string;
   firstName: string;
   skills: Uuid[];
@@ -20,9 +20,9 @@ class SkillEditRequest {
     this.imageUrl = imageUrl;
   }
 
-  static parse(body: string): SkillEditRequest {
+  static parse(body: string): UserEditRequest {
     const json = JSON.parse(body);
-    return new SkillEditRequest(
+    return new UserEditRequest(
         json.lastName,
         json.firstName,
         json.skills,
@@ -31,4 +31,4 @@ class SkillEditRequest {
   }
 }
 
-export default SkillEditRequest;
+export default UserEditRequest;
