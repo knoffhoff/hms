@@ -3,6 +3,7 @@ import { HackathonPreview } from '../common/types'
 
 function Home() {
   const today = new Date()
+  today.setHours(0, 0, 0, 0)
   const [nextHackathon, setNextHackathon] = useState<HackathonPreview>({
     endDate: new Date(),
     id: '',
