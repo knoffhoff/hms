@@ -133,6 +133,13 @@ functions:
           path: user
           method: post
           cors: true
+  editUser:
+    handler: src/handler/user/edit.edit
+    events:
+      - http:
+          path: user/{id}
+          method: put
+          cors: true
   listAllUser:
     handler: src/handler/user/list.list
     events:
@@ -226,6 +233,13 @@ functions:
       - http:
           path: skill
           method: post
+          cors: true
+  editSkill:
+    handler: src/handler/skill/edit.edit
+    events:
+      - http:
+          path: skill/{id}
+          method: put
           cors: true
   listAllSkill:
     handler: src/handler/skill/list.list

@@ -13,6 +13,16 @@ Content-Type: application/json
 }
 
 ###
+# @name Edit Skill
+PUT {{host}}/restapis/{{api_id}}/local/_user_request_/skill/{{skill_id}}
+Content-Type: application/json
+
+{
+  "name": "Chess",
+  "description": "It's a sport!"
+}
+
+###
 # @name Get Skill
 GET {{host}}/restapis/{{api_id}}/local/_user_request_/skill/{{skill_id}}
 
