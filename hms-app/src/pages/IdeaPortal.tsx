@@ -2,7 +2,12 @@ import React, { useEffect, useState } from 'react'
 import { Input, Group, Title, Button } from '@mantine/core'
 import { Search } from 'tabler-icons-react'
 import IdeaCardList from '../components/lists/IdeaCardList'
-import { Hackathon, Idea, ParticipantPreview } from '../common/types'
+import {
+  Hackathon,
+  HackathonPreview,
+  Idea,
+  ParticipantPreview,
+} from '../common/types'
 import {
   createHackathonParticipant,
   deleteParticipant,
@@ -28,8 +33,8 @@ function IdeaPortal() {
     participantId: '',
   })
   const [hackathonData, setHackathonData] = useState<Hackathon>({
-    id: 'string',
-    title: 'string',
+    id: '',
+    title: '',
     startDate: new Date(),
     endDate: new Date(),
     participants: [],
@@ -37,6 +42,25 @@ function IdeaPortal() {
     ideas: [],
   })
   const today = new Date()
+  const [nextHackathon, setNextHackathon] = useState<HackathonPreview>({
+    endDate: new Date(),
+    id: '',
+    startDate: new Date(),
+    title: '',
+  })
+
+  useEffect(() => {
+    if (localStorage.getItem('nextHackathon')) {
+      setNextHackathon(JSON.parse(localStorage.getItem('nextHackathon')!))
+    }
+
+    console.log('hackathonData.endDate', hackathonData.endDate)
+    console.log('today', today)
+  }, [])
+
+  useEffect(() => {
+    !!hackathonData.id ? console.log('hm') : setHackathonData(nextHackathon)
+  }, [nextHackathon])
 
   const handleChangeSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value)

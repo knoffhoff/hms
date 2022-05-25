@@ -1,5 +1,10 @@
 import { Accordion, Title } from '@mantine/core'
-import { Hackathon, Idea, ParticipantPreview } from '../common/types'
+import {
+  Hackathon,
+  HackathonPreview,
+  Idea,
+  ParticipantPreview,
+} from '../common/types'
 import IdeaCardList from '../components/lists/IdeaCardList'
 import React, { useEffect, useState } from 'react'
 import IdeaForm from '../components/input-forms/IdeaForm'
@@ -25,6 +30,23 @@ export default function YourIdeas() {
   } as Hackathon)
   const [participantCheck, setParticipantCheck] = useState(false)
   const today = new Date()
+
+  const [nextHackathon, setNextHackathon] = useState<HackathonPreview>({
+    endDate: new Date(),
+    id: '',
+    startDate: new Date(),
+    title: '',
+  })
+
+  useEffect(() => {
+    if (localStorage.getItem('nextHackathon')) {
+      setNextHackathon(JSON.parse(localStorage.getItem('nextHackathon')!))
+    }
+  }, [])
+
+  useEffect(() => {
+    !!hackathon.id ? console.log('hm') : setHackathon(nextHackathon)
+  }, [nextHackathon])
 
   const filteredIdeas = relevantIdeas.filter((item) => {
     return item.owner?.user.id.includes(userID)
