@@ -5,13 +5,16 @@ import './index.css'
 import App from './App'
 import reportWebVitals from './reportWebVitals'
 import { NotificationsProvider } from '@mantine/notifications'
+import { Provider } from 'react-redux'
 
 ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
-      <NotificationsProvider>
-        <App />
-      </NotificationsProvider>
+      <Provider store={store}>
+        <NotificationsProvider>
+          <App />
+        </NotificationsProvider>
+      </Provider>
     </BrowserRouter>
   </React.StrictMode>,
   document.getElementById('root')
