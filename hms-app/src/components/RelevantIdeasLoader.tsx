@@ -19,8 +19,8 @@ export default function RelevantIdeasLoader({
   const [relevantIdeaList, setRelevantIdeaList] = useState<Idea[]>([])
   const [isThisLoading, setIsThisLoading] = useState(true)
   const [hackathonData, setHackathonData] = useState<Hackathon>({
-    id: 'string',
-    title: 'string',
+    id: '',
+    title: '',
     startDate: new Date(),
     endDate: new Date(),
     participants: [],

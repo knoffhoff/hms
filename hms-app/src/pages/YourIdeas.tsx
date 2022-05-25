@@ -15,8 +15,8 @@ export default function YourIdeas() {
   const [relevantIdeas, setRelevantIdeas] = useState<Idea[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [hackathon, setHackathon] = useState({
-    id: 'string',
-    title: 'string',
+    id: '',
+    title: '',
     startDate: new Date(),
     endDate: new Date(),
     participants: [],
@@ -55,7 +55,7 @@ export default function YourIdeas() {
         setLoading={setIsLoading}
       />
 
-      {!isLoading && (
+      {!isLoading && !!hackathon.id && (
         <div>
           <h2>{hackathon.title}</h2>
           <h2>
