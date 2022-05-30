@@ -16,6 +16,7 @@ import ReferenceNotFoundError from '../error/ReferenceNotFoundError';
 import UserResponse from '../rest/UserResponse';
 import UserListResponse from '../rest/UserListResponse';
 import UserDeleteResponse from '../rest/UserDeleteResponse';
+import NotFoundError from '../error/NotFoundError';
 
 export async function createUser(
     lastName: string,
@@ -56,6 +57,27 @@ export async function getUserResponse(id: Uuid): Promise<UserResponse> {
 export async function getUserListResponse(): Promise<UserListResponse> {
   const users = await listUsers();
   return UserListResponse.from(users);
+}
+
+export async function editUser(
+    id: Uuid,
+    lastName: string,
+    firstName: string,
+    skills: Uuid[],
+    imageUrl: string,
+): Promise<void> {
+  try {
+    const existing = await getUser(id);
+    existing.lastName = lastName;
+    existing.firstName = firstName;
+    existing.skills = skills;
+    existing.imageUrl = imageUrl;
+
+    await putUser(existing);
+  } catch (e) {
+    throw new NotFoundError(`Cannot edit User with id: ${id}, ` +
+        `it does not exist`);
+  }
 }
 
 export async function removeUser(id: Uuid): Promise<UserDeleteResponse> {
