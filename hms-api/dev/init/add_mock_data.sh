@@ -30,8 +30,8 @@ $PUT --table-name hackathon --item '{
 $PUT --table-name hackathon --item '{
     "id": {"S": "4eb2d486-c786-431e-a4fd-4c093ed30642"},
     "title": {"S": "Current Hackathon"},
-    "startDate": {"S": "2022-05-23"},
-    "endDate": {"S": "2022-05-27"},
+    "startDate": {"S": "2022-05-30"},
+    "endDate": {"S": "2022-06-03"},
     "creationDate": {"S": "2022-01-14"},
     "participantIds": {"SS": [
       "e27fb873-fd63-4c43-a00b-4593a3662953",
