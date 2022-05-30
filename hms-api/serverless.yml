@@ -2,17 +2,29 @@ service: hms-api
 
 plugins:
   - serverless-plugin-typescript
-  - serverless-localstack
+  - serverless-dynamodb-local
+  - serverless-offline
+#  - serverless-localstack
 
 custom:
-  localstack:
-    debug: true
-    stages: [ local ]
-    autostart: true
-    lambda:
-      mountCode: false
-    docker:
-      sudo: false
+  dynamodb:
+    stages:
+      - local
+    port: 8000
+    inMemory: true
+    heapInitial: 200m
+    heapMax: 1g
+    migrate: true
+    seed: true
+    convertEmptyValues: true
+#  localstack:
+#    debug: true
+#    stages: [ local ]
+#    autostart: true
+#    lambda:
+#      mountCode: false
+#    docker:
+#      sudo: false
 
 provider:
   name: aws
