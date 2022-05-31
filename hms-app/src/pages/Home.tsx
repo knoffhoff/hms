@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { HackathonPreview } from '../common/types'
 import { createStyles, Timeline, Text } from '@mantine/core'
+import './timeline.css'
 
 const useStyles = createStyles((theme) => ({
   container: {
@@ -136,6 +137,113 @@ function Home() {
     </div>
   )
 
+  const timeline4 = (
+    <div>
+      <ul className="timeline" id="timeline">
+        <li className={registrationOpenDate < today ? 'li complete' : 'li'}>
+          <div className="timestamp">
+            <Text>Registration and Idea submission open</Text>
+            <Text color="dimmed" size="sm">
+              {registrationOpenDate.toLocaleDateString()}
+            </Text>
+          </div>
+          <div className="status">
+            <h4>
+              {
+                Math.abs(
+                  (registrationOpenDate.getTime() - today.getTime()) /
+                    (1000 * 3600 * 24)
+                )
+                  .toString()
+                  .split('.')[0]
+              }{' '}
+              {registrationOpenDate < today ? 'days ago' : 'days left'}
+            </h4>
+          </div>
+        </li>
+
+        <li className={registrationClosedDate < today ? 'li complete' : 'li'}>
+          <div className="timestamp">
+            <Text>Registration and Idea submission deadline!</Text>
+            <Text color="dimmed" size="sm">
+              {registrationClosedDate.toLocaleDateString()}{' '}
+            </Text>
+          </div>
+          <div className="status">
+            <h4>
+              {
+                Math.abs(
+                  (registrationClosedDate.getTime() - today.getTime()) /
+                    (1000 * 3600 * 24)
+                )
+                  .toString()
+                  .split('.')[0]
+              }{' '}
+              {registrationClosedDate < today ? 'days ago' : 'days left'}
+            </h4>
+          </div>
+        </li>
+
+        <li className={nextHackathon.startDate < today ? 'li complete' : 'li'}>
+          <div className="timestamp">
+            <Text>Start Date</Text>
+            <Text color="dimmed" size="sm">
+              {new Date(nextHackathon.startDate).toLocaleDateString()}
+            </Text>
+          </div>
+          <div className="status">
+            <h4>
+              {
+                (timeTillNextHackathonStart() / (1000 * 3600 * 24))
+                  .toString()
+                  .split('.')[0]
+              }{' '}
+              {nextHackathon.startDate < today ? 'days ago' : 'days left'}
+            </h4>
+          </div>
+        </li>
+
+        <li className={nextHackathon.endDate < today ? 'li complete' : 'li'}>
+          <div className="timestamp">
+            <Text>End Date</Text>
+            <Text color="dimmed" size="sm">
+              {new Date(nextHackathon.endDate).toLocaleDateString()}
+            </Text>
+          </div>
+          <div className="status">
+            <h4>
+              {
+                (timeTillNextHackathonEnd() / (1000 * 3600 * 24))
+                  .toString()
+                  .split('.')[0]
+              }{' '}
+              {nextHackathon.endDate < today ? 'days ago' : 'days left'}
+            </h4>
+          </div>
+        </li>
+
+        <li className="li">
+          <div className="timestamp">
+            <Text>award ceremony</Text>
+            <Text color="dimmed" size="sm">
+              {new Date(nextHackathon.endDate).toLocaleDateString()}
+            </Text>
+          </div>
+          <div className="status">
+            <h4>
+              {
+                (timeTillNextHackathonEnd() / (1000 * 3600 * 24) + 1)
+                  .toString()
+                  .split('.')[0]
+              }{' '}
+              days left
+            </h4>
+          </div>
+        </li>
+      </ul>
+    </div>
+  )
+
   return (
     <>
       <h1>Welcome to the Hack-week Management System</h1>
@@ -160,6 +268,7 @@ function Home() {
             End Date: {new Date(nextHackathon.endDate).toLocaleDateString()}
           </div>
           {timeline}
+          {timeline4}
         </div>
       )}
 
