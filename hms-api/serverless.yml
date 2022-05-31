@@ -4,7 +4,6 @@ plugins:
   - serverless-plugin-typescript
   - serverless-dynamodb-local
   - serverless-offline
-#  - serverless-localstack
 
 custom:
   dynamodb:
@@ -33,15 +32,6 @@ custom:
             rawsources: [./dev/init/user-seed.json]
           - table: skill
             rawsources: [./dev/init/skill-seed.json]
-
-#  localstack:
-#    debug: true
-#    stages: [ local ]
-#    autostart: true
-#    lambda:
-#      mountCode: false
-#    docker:
-#      sudo: false
 
 provider:
   name: aws

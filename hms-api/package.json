@@ -16,7 +16,6 @@
     "eslint": "8.16.0",
     "eslint-config-google": "0.14.0",
     "jest": "27.5.1",
-    "serverless-localstack": "0.4.36",
     "serverless-offline": "^8.8.0",
     "serverless-plugin-typescript": "2.1.2",
     "ts-jest": "27.1.4",
