@@ -1,7 +1,7 @@
 #!/bin/bash
 # TODO make it so this script also clears out the DB before putting data in
 
-PUT='aws --endpoint-url=http://localhost:4566 --region eu-central-1 dynamodb put-item '
+PUT='aws --endpoint-url=http://localhost:8000 --region eu-central-1 dynamodb put-item '
 
 $PUT --table-name hackathon --item '{
     "id": {"S": "e955fe4b-7ce7-4904-ae6f-22a8985f74a8"},

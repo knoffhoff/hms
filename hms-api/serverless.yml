@@ -10,13 +10,30 @@ custom:
   dynamodb:
     stages:
       - local
-    port: 8000
-    inMemory: true
-    heapInitial: 200m
-    heapMax: 1g
-    migrate: true
-    seed: true
-    convertEmptyValues: true
+    start:
+      port: 8000
+      inMemory: true
+      heapInitial: 200m
+      heapMax: 1g
+      migrate: true
+      seed: true
+      convertEmptyValues: true
+    seed:
+      local:
+        sources:
+          - table: hackathon
+            rawsources: [./dev/init/hackathon-seed.json]
+          - table: category
+            rawsources: [./dev/init/category-seed.json]
+          - table: idea
+            rawsources: [./dev/init/idea-seed.json]
+          - table: participant
+            rawsources: [./dev/init/participant-seed.json]
+          - table: user
+            rawsources: [./dev/init/user-seed.json]
+          - table: skill
+            rawsources: [./dev/init/skill-seed.json]
+
 #  localstack:
 #    debug: true
 #    stages: [ local ]

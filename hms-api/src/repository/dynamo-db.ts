@@ -8,7 +8,8 @@ export function getClient(): DynamoDBClient {
     const endpoint = 'http://' + process.env.LOCALSTACK_HOSTNAME + ':4566';
     return new DynamoDBClient({endpoint: endpoint});
   } else {
-    return new DynamoDBClient({});
+    const endpoint = 'http://localhost:8000';
+    return new DynamoDBClient({endpoint: endpoint});
   }
 }
 
