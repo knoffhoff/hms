@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { HackathonPreview } from '../common/types'
-import { createStyles } from '@mantine/core'
+import { createStyles, Timeline, Text } from '@mantine/core'
 
 const useStyles = createStyles((theme) => ({
   container: {
@@ -28,6 +28,10 @@ function Home() {
     startDate: new Date(),
     title: '',
   })
+  const registrationOpenDate = new Date(nextHackathon.startDate)
+  registrationOpenDate.setDate(registrationOpenDate.getDate() - 84)
+  const registrationClosedDate = new Date(nextHackathon.startDate)
+  registrationClosedDate.setDate(registrationClosedDate.getDate() - 1)
 
   useEffect(() => {
     if (localStorage.getItem('nextHackathon')) {
@@ -35,11 +39,102 @@ function Home() {
     }
   }, [])
 
-  function timeTillNextHackathon() {
+  function timeTillNextHackathonStart() {
     return !!nextHackathon.id
       ? new Date(nextHackathon.startDate).getTime() - today.getTime()
       : 0
   }
+
+  function timeTillNextHackathonEnd() {
+    return !!nextHackathon.id
+      ? new Date(nextHackathon.endDate).getTime() - today.getTime()
+      : 0
+  }
+
+  const timeline = (
+    <div style={{ padding: 5 }}>
+      <Timeline active={3} reverseActive bulletSize={24} lineWidth={2}>
+        <Timeline.Item title="Registration and Idea submission open">
+          <Text color="dimmed" size="sm">
+            {registrationOpenDate.toLocaleDateString()}
+          </Text>
+          <Text size="xs" mt={4}>
+            {
+              Math.abs(
+                (registrationOpenDate.getTime() - today.getTime()) /
+                  (1000 * 3600 * 24)
+              )
+                .toString()
+                .split('.')[0]
+            }{' '}
+            {registrationOpenDate < today ? 'days ago' : 'days left'}
+          </Text>
+        </Timeline.Item>
+
+        <Timeline.Item
+          title="Registration and Idea submission deadline!"
+          lineVariant="dashed"
+        >
+          <Text color="dimmed" size="sm">
+            {registrationClosedDate.toLocaleDateString()}
+          </Text>
+          <Text size="xs" mt={4}>
+            {
+              Math.abs(
+                (registrationClosedDate.getTime() - today.getTime()) /
+                  (1000 * 3600 * 24)
+              )
+                .toString()
+                .split('.')[0]
+            }{' '}
+            {registrationClosedDate < today ? 'days ago' : 'days left'}
+          </Text>
+        </Timeline.Item>
+
+        <Timeline.Item title="Start Date" lineVariant="dashed">
+          <Text color="dimmed" size="sm">
+            {new Date(nextHackathon.startDate).toLocaleDateString()}
+          </Text>
+          <Text size="xs" mt={4}>
+            {
+              (timeTillNextHackathonStart() / (1000 * 3600 * 24))
+                .toString()
+                .split('.')[0]
+            }{' '}
+            {nextHackathon.startDate < today ? 'days ago' : 'days left'}
+          </Text>
+        </Timeline.Item>
+
+        <Timeline.Item title="End Date" lineVariant="dashed">
+          <Text color="dimmed" size="sm">
+            {new Date(nextHackathon.endDate).toLocaleDateString()}
+          </Text>
+          <Text size="xs" mt={4}>
+            {
+              (timeTillNextHackathonEnd() / (1000 * 3600 * 24))
+                .toString()
+                .split('.')[0]
+            }{' '}
+            {nextHackathon.endDate < today ? 'days ago' : 'days left'}
+          </Text>
+        </Timeline.Item>
+
+        <Timeline.Item title="award ceremony">
+          <Text color="dimmed" size="sm">
+            {new Date(nextHackathon.endDate).toLocaleDateString()}
+          </Text>
+          <Text size="xs" mt={4}>
+            {
+              (timeTillNextHackathonEnd() / (1000 * 3600 * 24) + 1)
+                .toString()
+                .split('.')[0]
+            }{' '}
+            days left
+          </Text>
+        </Timeline.Item>
+      </Timeline>
+    </div>
+  )
 
   return (
     <>
@@ -49,12 +144,13 @@ function Home() {
           <h2 style={{ textAlign: 'center' }}>Next Hackathon in</h2>
           <h2 style={{ textAlign: 'center' }}>
             {
-              (timeTillNextHackathon() / (1000 * 3600 * 24))
+              (timeTillNextHackathonStart() / (1000 * 3600 * 24))
                 .toString()
                 .split('.')[0]
             }{' '}
             days and{' '}
-            {Math.round(timeTillNextHackathon() / (1000 * 60 * 60)) % 24} hours
+            {Math.round(timeTillNextHackathonStart() / (1000 * 60 * 60)) % 24}{' '}
+            hours
           </h2>
           <div>Next Hackathon: {nextHackathon.title}</div>
           <div>
@@ -63,6 +159,7 @@ function Home() {
           <div>
             End Date: {new Date(nextHackathon.endDate).toLocaleDateString()}
           </div>
+          {timeline}
         </div>
       )}
 
