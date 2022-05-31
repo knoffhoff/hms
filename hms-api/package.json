@@ -4,7 +4,7 @@
   "scripts": {
     "test": "jest",
     "build": "sls package",
-    "start": "sls deploy --stage local",
+    "start": "sls offline start --stage local",
     "stop": "sls remove --stage local"
   },
   "license": "ISC",
