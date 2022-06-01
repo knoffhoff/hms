@@ -85,9 +85,9 @@ function Home() {
   }, [nextHackathon])
 
   const timelineStepper = (
-    <Stepper active={active} breakpoint="sm" pt={15} pb={15}>
+    <Stepper iconSize={35} active={active} breakpoint="sm" pt={15} pb={15}>
       <Stepper.Step
-        style={{ maxWidth: 200 }}
+        style={{ maxWidth: 175 }}
         loading={active === 0}
         label={getLabel(registrationOpenDate.getTime())}
         description={
@@ -96,7 +96,7 @@ function Home() {
         }
       />
       <Stepper.Step
-        style={{ maxWidth: 200 }}
+        style={{ maxWidth: 175 }}
         loading={active === 1}
         label={getLabel(registrationClosedDate.getTime())}
         description={
@@ -105,7 +105,7 @@ function Home() {
         }
       />
       <Stepper.Step
-        style={{ maxWidth: 200 }}
+        style={{ maxWidth: 175 }}
         loading={active === 2}
         label={getLabel(timeTillNextHackathonStart())}
         description={
@@ -113,7 +113,7 @@ function Home() {
         }
       />
       <Stepper.Step
-        style={{ maxWidth: 200 }}
+        style={{ maxWidth: 175 }}
         loading={active === 3}
         label={getLabel(timeTillNextHackathonEnd())}
         description={
@@ -121,7 +121,7 @@ function Home() {
         }
       />
       <Stepper.Step
-        style={{ maxWidth: 200 }}
+        style={{ maxWidth: 175 }}
         loading={active === 4}
         label={getLabel(timeTillNextHackathonEnd())}
         description={
