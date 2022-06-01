@@ -1,11 +1,8 @@
 import React, { useState } from 'react'
-import HackathonDetails, {
-  HackathonDetailsType,
-} from '../components/card-details/HackathonDetails'
-import HackathonSelectDropdown, {
-  HackathonDropdownMode,
-} from '../components/HackathonSelectDropdown'
+import HackathonDetails from '../components/card-details/HackathonDetails'
+import HackathonSelectDropdown from '../components/HackathonSelectDropdown'
 import { Title } from '@mantine/core'
+import { HackathonDetailsType, HackathonDropdownMode } from '../common/types'
 
 export default function Archive() {
   const [selectedHackathonId, setSelectedHackathonId] = useState('')

@@ -2,7 +2,6 @@ import { deleteUser, getUserDetails } from '../../actions/UserActions'
 import React, { useEffect, useState } from 'react'
 import { User } from '../../common/types'
 import {
-  Accordion,
   Badge,
   Button,
   Card,

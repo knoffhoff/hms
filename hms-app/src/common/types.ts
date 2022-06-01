@@ -1,3 +1,15 @@
+export enum HackathonDropdownMode {
+  Archive = 'ARCHIVE',
+  IdeaPortal = 'IDEA_PORTAL',
+  Home = 'HOME',
+  YourIdeas = 'YOUR_IDEAS',
+}
+
+export enum HackathonDetailsType {
+  Header = 'HEADER',
+  FullInfo = 'FULLINFO',
+}
+
 export type HackathonPreview = {
   id: string
   title: string

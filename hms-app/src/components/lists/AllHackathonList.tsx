@@ -1,10 +1,8 @@
 import { Group, Button, createStyles, Card, Accordion } from '@mantine/core'
 import React, { useEffect, useState } from 'react'
 import { getListOfHackathons } from '../../actions/HackathonActions'
-import { HackathonPreview } from '../../common/types'
-import HackathonDetails, {
-  HackathonDetailsType,
-} from '../card-details/HackathonDetails'
+import { HackathonPreview, HackathonDetailsType } from '../../common/types'
+import HackathonDetails from '../card-details/HackathonDetails'
 
 const useStyles = createStyles((theme) => ({
   card: {

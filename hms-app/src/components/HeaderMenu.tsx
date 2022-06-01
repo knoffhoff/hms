@@ -5,14 +5,12 @@ import {
   Header,
   Menu,
   Group,
-  Center,
   Burger,
   Container,
   Avatar,
   useMantineColorScheme,
 } from '@mantine/core'
 import { useBooleanToggle } from '@mantine/hooks'
-import { ChevronDown } from 'tabler-icons-react'
 import { SwitchToggle } from './ThemeSwitchToggle'
 
 const useStyles = createStyles((theme) => ({

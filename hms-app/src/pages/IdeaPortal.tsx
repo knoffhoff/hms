@@ -2,16 +2,14 @@ import React, { useEffect, useState } from 'react'
 import { Input, Group, Title, Button } from '@mantine/core'
 import { Search } from 'tabler-icons-react'
 import IdeaCardList from '../components/lists/IdeaCardList'
-import { Hackathon, Idea, ParticipantPreview } from '../common/types'
+import { Hackathon, Idea, HackathonDropdownMode } from '../common/types'
 import {
   createHackathonParticipant,
   deleteParticipant,
 } from '../actions/ParticipantActions'
 import { showNotification, updateNotification } from '@mantine/notifications'
 import { CheckIcon } from '@modulz/radix-icons'
-import HackathonSelectDropdown, {
-  HackathonDropdownMode,
-} from '../components/HackathonSelectDropdown'
+import HackathonSelectDropdown from '../components/HackathonSelectDropdown'
 import RelevantIdeasLoader from '../components/RelevantIdeasLoader'
 
 function IdeaPortal() {

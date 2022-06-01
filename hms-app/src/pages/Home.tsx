@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react'
-import { Hackathon, HackathonPreview } from '../common/types'
+import {
+  Hackathon,
+  HackathonPreview,
+  HackathonDropdownMode,
+} from '../common/types'
 import {
   getHackathonDetails,
   getListOfHackathons,
 } from '../actions/HackathonActions'
-import HackathonSelectDropdown, {
-  HackathonDropdownMode,
-} from '../components/HackathonSelectDropdown'
+import HackathonSelectDropdown from '../components/HackathonSelectDropdown'
 
 function Home() {
   const [hackathonList, setHackathonList] = useState<HackathonPreview[]>([])
