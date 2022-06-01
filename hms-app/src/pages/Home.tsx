@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { HackathonPreview } from '../common/types'
-import { createStyles, Timeline, Text } from '@mantine/core'
-import './timeline.css'
+import { createStyles, Stepper } from '@mantine/core'
 
 const useStyles = createStyles((theme) => ({
   container: {
@@ -21,18 +20,59 @@ const useStyles = createStyles((theme) => ({
 
 function Home() {
   const { classes } = useStyles()
-  const today = new Date()
-  today.setHours(0, 0, 0, 0)
+
   const [nextHackathon, setNextHackathon] = useState<HackathonPreview>({
     endDate: new Date(),
     id: '',
     startDate: new Date(),
     title: '',
   })
+  const [active, setActive] = useState(0)
+
+  const today = new Date()
+  today.setHours(0, 0, 0, 0)
+
   const registrationOpenDate = new Date(nextHackathon.startDate)
   registrationOpenDate.setDate(registrationOpenDate.getDate() - 84)
+
   const registrationClosedDate = new Date(nextHackathon.startDate)
-  registrationClosedDate.setDate(registrationClosedDate.getDate() - 1)
+  registrationClosedDate.setDate(registrationClosedDate.getDate() - 77)
+
+  function timeTillNextHackathonStart() {
+    return !!nextHackathon.id ? new Date(nextHackathon.startDate).getTime() : 0
+  }
+
+  function timeTillNextHackathonEnd() {
+    return !!nextHackathon.id ? new Date(nextHackathon.endDate).getTime() : 0
+  }
+
+  function setActiveTimeline() {
+    if (registrationOpenDate < today && registrationClosedDate > today) {
+      setActive(1)
+    } else if (
+      registrationClosedDate < today &&
+      new Date(nextHackathon.startDate) > today
+    ) {
+      setActive(2)
+    } else if (
+      new Date(nextHackathon.startDate) < today &&
+      new Date(nextHackathon.endDate) > today
+    ) {
+      setActive(3)
+    } else {
+      setActive(4)
+    }
+  }
+
+  function getLabel(LabelDate: number) {
+    return (
+      Math.abs((LabelDate - today.getTime()) / (1000 * 3600 * 24))
+        .toString()
+        .split('.')[0] +
+      ' ' +
+      (new Date(LabelDate) < today ? 'days ago' : 'days left')
+    )
+  }
 
   useEffect(() => {
     if (localStorage.getItem('nextHackathon')) {
@@ -40,208 +80,56 @@ function Home() {
     }
   }, [])
 
-  function timeTillNextHackathonStart() {
-    return !!nextHackathon.id
-      ? new Date(nextHackathon.startDate).getTime() - today.getTime()
-      : 0
-  }
+  useEffect(() => {
+    setActiveTimeline()
+  }, [nextHackathon])
 
-  function timeTillNextHackathonEnd() {
-    return !!nextHackathon.id
-      ? new Date(nextHackathon.endDate).getTime() - today.getTime()
-      : 0
-  }
-
-  const timeline = (
-    <div style={{ padding: 5 }}>
-      <Timeline active={3} reverseActive bulletSize={24} lineWidth={2}>
-        <Timeline.Item title="Registration and Idea submission open">
-          <Text color="dimmed" size="sm">
-            {registrationOpenDate.toLocaleDateString()}
-          </Text>
-          <Text size="xs" mt={4}>
-            {
-              Math.abs(
-                (registrationOpenDate.getTime() - today.getTime()) /
-                  (1000 * 3600 * 24)
-              )
-                .toString()
-                .split('.')[0]
-            }{' '}
-            {registrationOpenDate < today ? 'days ago' : 'days left'}
-          </Text>
-        </Timeline.Item>
-
-        <Timeline.Item
-          title="Registration and Idea submission deadline!"
-          lineVariant="dashed"
-        >
-          <Text color="dimmed" size="sm">
-            {registrationClosedDate.toLocaleDateString()}
-          </Text>
-          <Text size="xs" mt={4}>
-            {
-              Math.abs(
-                (registrationClosedDate.getTime() - today.getTime()) /
-                  (1000 * 3600 * 24)
-              )
-                .toString()
-                .split('.')[0]
-            }{' '}
-            {registrationClosedDate < today ? 'days ago' : 'days left'}
-          </Text>
-        </Timeline.Item>
-
-        <Timeline.Item title="Start Date" lineVariant="dashed">
-          <Text color="dimmed" size="sm">
-            {new Date(nextHackathon.startDate).toLocaleDateString()}
-          </Text>
-          <Text size="xs" mt={4}>
-            {
-              (timeTillNextHackathonStart() / (1000 * 3600 * 24))
-                .toString()
-                .split('.')[0]
-            }{' '}
-            {nextHackathon.startDate < today ? 'days ago' : 'days left'}
-          </Text>
-        </Timeline.Item>
-
-        <Timeline.Item title="End Date" lineVariant="dashed">
-          <Text color="dimmed" size="sm">
-            {new Date(nextHackathon.endDate).toLocaleDateString()}
-          </Text>
-          <Text size="xs" mt={4}>
-            {
-              (timeTillNextHackathonEnd() / (1000 * 3600 * 24))
-                .toString()
-                .split('.')[0]
-            }{' '}
-            {nextHackathon.endDate < today ? 'days ago' : 'days left'}
-          </Text>
-        </Timeline.Item>
-
-        <Timeline.Item title="award ceremony">
-          <Text color="dimmed" size="sm">
-            {new Date(nextHackathon.endDate).toLocaleDateString()}
-          </Text>
-          <Text size="xs" mt={4}>
-            {
-              (timeTillNextHackathonEnd() / (1000 * 3600 * 24) + 1)
-                .toString()
-                .split('.')[0]
-            }{' '}
-            days left
-          </Text>
-        </Timeline.Item>
-      </Timeline>
-    </div>
-  )
-
-  const timeline4 = (
-    <div>
-      <ul className="timeline" id="timeline">
-        <li className={registrationOpenDate < today ? 'li complete' : 'li'}>
-          <div className="timestamp">
-            <Text>Registration and Idea submission open</Text>
-            <Text color="dimmed" size="sm">
-              {registrationOpenDate.toLocaleDateString()}
-            </Text>
-          </div>
-          <div className="status">
-            <h4>
-              {
-                Math.abs(
-                  (registrationOpenDate.getTime() - today.getTime()) /
-                    (1000 * 3600 * 24)
-                )
-                  .toString()
-                  .split('.')[0]
-              }{' '}
-              {registrationOpenDate < today ? 'days ago' : 'days left'}
-            </h4>
-          </div>
-        </li>
-
-        <li className={registrationClosedDate < today ? 'li complete' : 'li'}>
-          <div className="timestamp">
-            <Text>Registration and Idea submission deadline!</Text>
-            <Text color="dimmed" size="sm">
-              {registrationClosedDate.toLocaleDateString()}{' '}
-            </Text>
-          </div>
-          <div className="status">
-            <h4>
-              {
-                Math.abs(
-                  (registrationClosedDate.getTime() - today.getTime()) /
-                    (1000 * 3600 * 24)
-                )
-                  .toString()
-                  .split('.')[0]
-              }{' '}
-              {registrationClosedDate < today ? 'days ago' : 'days left'}
-            </h4>
-          </div>
-        </li>
-
-        <li className={nextHackathon.startDate < today ? 'li complete' : 'li'}>
-          <div className="timestamp">
-            <Text>Start Date</Text>
-            <Text color="dimmed" size="sm">
-              {new Date(nextHackathon.startDate).toLocaleDateString()}
-            </Text>
-          </div>
-          <div className="status">
-            <h4>
-              {
-                (timeTillNextHackathonStart() / (1000 * 3600 * 24))
-                  .toString()
-                  .split('.')[0]
-              }{' '}
-              {nextHackathon.startDate < today ? 'days ago' : 'days left'}
-            </h4>
-          </div>
-        </li>
-
-        <li className={nextHackathon.endDate < today ? 'li complete' : 'li'}>
-          <div className="timestamp">
-            <Text>End Date</Text>
-            <Text color="dimmed" size="sm">
-              {new Date(nextHackathon.endDate).toLocaleDateString()}
-            </Text>
-          </div>
-          <div className="status">
-            <h4>
-              {
-                (timeTillNextHackathonEnd() / (1000 * 3600 * 24))
-                  .toString()
-                  .split('.')[0]
-              }{' '}
-              {nextHackathon.endDate < today ? 'days ago' : 'days left'}
-            </h4>
-          </div>
-        </li>
-
-        <li className="li">
-          <div className="timestamp">
-            <Text>award ceremony</Text>
-            <Text color="dimmed" size="sm">
-              {new Date(nextHackathon.endDate).toLocaleDateString()}
-            </Text>
-          </div>
-          <div className="status">
-            <h4>
-              {
-                (timeTillNextHackathonEnd() / (1000 * 3600 * 24) + 1)
-                  .toString()
-                  .split('.')[0]
-              }{' '}
-              days left
-            </h4>
-          </div>
-        </li>
-      </ul>
-    </div>
+  const timelineStepper = (
+    <Stepper active={active} breakpoint="sm" pt={15} pb={15}>
+      <Stepper.Step
+        style={{ maxWidth: 200 }}
+        loading={active === 0}
+        label={getLabel(registrationOpenDate.getTime())}
+        description={
+          'Registration and Idea submission open ' +
+          registrationOpenDate.toLocaleDateString()
+        }
+      />
+      <Stepper.Step
+        style={{ maxWidth: 200 }}
+        loading={active === 1}
+        label={getLabel(registrationClosedDate.getTime())}
+        description={
+          'Registration and Idea submission deadline! ' +
+          registrationClosedDate.toLocaleDateString()
+        }
+      />
+      <Stepper.Step
+        style={{ maxWidth: 200 }}
+        loading={active === 2}
+        label={getLabel(timeTillNextHackathonStart())}
+        description={
+          'Start Date ' + new Date(nextHackathon.startDate).toLocaleDateString()
+        }
+      />
+      <Stepper.Step
+        style={{ maxWidth: 200 }}
+        loading={active === 3}
+        label={getLabel(timeTillNextHackathonEnd())}
+        description={
+          'End Date ' + new Date(nextHackathon.endDate).toLocaleDateString()
+        }
+      />
+      <Stepper.Step
+        style={{ maxWidth: 200 }}
+        loading={active === 4}
+        label={getLabel(timeTillNextHackathonEnd())}
+        description={
+          'award ceremony ' +
+          new Date(nextHackathon.endDate).toLocaleDateString()
+        }
+      />
+    </Stepper>
   )
 
   return (
@@ -252,12 +140,15 @@ function Home() {
           <h2 style={{ textAlign: 'center' }}>Next Hackathon in</h2>
           <h2 style={{ textAlign: 'center' }}>
             {
-              (timeTillNextHackathonStart() / (1000 * 3600 * 24))
+              (
+                (timeTillNextHackathonStart() - today.getTime()) /
+                (1000 * 3600 * 24)
+              )
                 .toString()
                 .split('.')[0]
             }{' '}
             days and{' '}
-            {Math.round(timeTillNextHackathonStart() / (1000 * 60 * 60)) % 24}{' '}
+            {Math.round(timeTillNextHackathonStart() / (1000 * 3600)) % 24}{' '}
             hours
           </h2>
           <div>Next Hackathon: {nextHackathon.title}</div>
@@ -267,8 +158,7 @@ function Home() {
           <div>
             End Date: {new Date(nextHackathon.endDate).toLocaleDateString()}
           </div>
-          {timeline}
-          {timeline4}
+          {timelineStepper}
         </div>
       )}
 
