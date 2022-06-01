@@ -4,7 +4,6 @@
 import {getClient} from './dynamo-db';
 import {
   AttributeValue,
-  ConditionalCheckFailedException,
   DeleteItemCommand,
   GetItemCommand,
   PutItemCommand,
@@ -37,28 +36,21 @@ export async function listParticipants(
 }
 
 export async function putParticipant(participant: Participant): Promise<void> {
-  try {
-    await dynamoDBClient.send(new PutItemCommand({
-      TableName: process.env.PARTICIPANT_TABLE,
-      Item: {
-        userId: {S: participant.userId},
-        hackathonId: {S: participant.hackathonId},
-        id: {S: participant.id},
-        creationDate: {S: participant.creationDate.toISOString()},
-      },
-      ConditionExpression: `hackathonId = :hId AND userId = :uId`,
-      ExpressionAttributeValues: {
-        ':hId': {'S': participant.hackathonId},
-        ':uId': {'S': participant.userId},
-      },
-    }));
-  } catch (e) {
-    if (e instanceof ConditionalCheckFailedException) {
-      throw new InvalidStateError(`Cannot create Participant for ` +
-          `User with id: ${participant.userId} and ` +
-          `Hackathon with id: ${participant.hackathonId}, it already exists`);
-    }
+  if (await participantAlreadyExists(participant)) {
+    throw new InvalidStateError(`Cannot create Participant for ` +
+        `User with id: ${participant.userId} and ` +
+        `Hackathon with id: ${participant.hackathonId}, it already exists`);
   }
+
+  await dynamoDBClient.send(new PutItemCommand({
+    TableName: process.env.PARTICIPANT_TABLE,
+    Item: {
+      userId: {S: participant.userId},
+      hackathonId: {S: participant.hackathonId},
+      id: {S: participant.id},
+      creationDate: {S: participant.creationDate.toISOString()},
+    },
+  }));
 }
 
 export async function getParticipant(id: Uuid): Promise<Participant> {
@@ -83,7 +75,23 @@ export async function getParticipants(ids: Uuid[]): Promise<Participant[]> {
   return participants;
 }
 
-export async function participantExists(
+export async function participantAlreadyExists(
+    participant: Participant,
+): Promise<boolean> {
+  const output = await dynamoDBClient.send(new QueryCommand({
+    TableName: process.env.PARTICIPANT_TABLE,
+    IndexName: process.env.PARTICIPANT_BY_HACKATHON_ID_USER_ID_INDEX,
+    KeyConditionExpression: 'hackathonId = :hId AND userId = :uId',
+    ExpressionAttributeValues: {
+      ':hId': {'S': participant.hackathonId},
+      ':uId': {'S': participant.userId},
+    },
+  }));
+
+  return !!output.Items;
+}
+
+export async function participantExistsForHackathon(
     id: Uuid,
     hackathonId: Uuid,
 ): Promise<boolean> {

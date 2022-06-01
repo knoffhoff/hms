@@ -2,17 +2,36 @@ service: hms-api
 
 plugins:
   - serverless-plugin-typescript
-  - serverless-localstack
+  - serverless-dynamodb-local
+  - serverless-offline
 
 custom:
-  localstack:
-    debug: true
-    stages: [ local ]
-    autostart: true
-    lambda:
-      mountCode: false
-    docker:
-      sudo: false
+  dynamodb:
+    stages:
+      - local
+    start:
+      port: 8000
+      inMemory: true
+      heapInitial: 200m
+      heapMax: 1g
+      migrate: true
+      seed: true
+      convertEmptyValues: true
+    seed:
+      local:
+        sources:
+          - table: hackathon
+            rawsources: [./dev/init/hackathon-seed.json]
+          - table: category
+            rawsources: [./dev/init/category-seed.json]
+          - table: idea
+            rawsources: [./dev/init/idea-seed.json]
+          - table: participant
+            rawsources: [./dev/init/participant-seed.json]
+          - table: user
+            rawsources: [./dev/init/user-seed.json]
+          - table: skill
+            rawsources: [./dev/init/skill-seed.json]
 
 provider:
   name: aws
@@ -30,6 +49,7 @@ provider:
     IDEA_BY_OWNER_ID_INDEX: idea-by-ownerId
     PARTICIPANT_TABLE: participant
     PARTICIPANT_BY_HACKATHON_ID_INDEX: participant-by-hackathonId
+    PARTICIPANT_BY_HACKATHON_ID_USER_ID_INDEX: participant-by-hackathonId-userId
   iam:
     role:
       statements:
@@ -368,6 +388,8 @@ resources:
             AttributeType: S
           - AttributeName: hackathonId
             AttributeType: S
+          - AttributeName: userId
+            AttributeType: S
         KeySchema:
           - AttributeName: id
             KeyType: HASH
@@ -377,6 +399,14 @@ resources:
               - AttributeName: hackathonId
                 KeyType: HASH
               - AttributeName: id
+                KeyType: RANG
+            Projection:
+              ProjectionType: ALL
+          - IndexName: ${self:provider.environment.PARTICIPANT_BY_HACKATHON_ID_USER_ID_INDEX}
+            KeySchema:
+              - AttributeName: hackathonId
+                KeyType: HASH
+              - AttributeName: userId
                 KeyType: RANG
             Projection:
               ProjectionType: ALL
