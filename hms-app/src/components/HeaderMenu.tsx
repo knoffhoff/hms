@@ -29,7 +29,7 @@ const useStyles = createStyles((theme) => ({
     },
   },
 
-  burger: {
+  menu: {
     [theme.fn.largerThan('sm')]: {
       display: 'none',
     },
@@ -75,40 +75,29 @@ export default function HeaderMenu({ links }: HeaderSearchProps) {
   const [opened, toggleOpened] = useBooleanToggle(false)
   const { classes } = useStyles()
 
-  const items = links.map((link) => {
-    const menuItems = link.links?.map((item) => (
-      <Menu.Item key={item.link}>{item.label}</Menu.Item>
-    ))
-
-    if (menuItems) {
-      return (
-        <Menu
-          key={link.label}
-          trigger="hover"
-          delay={0}
-          transitionDuration={0}
-          placement="end"
-          gutter={1}
-          control={
-            <Link to={link.link} className={classes.link}>
-              <Center>
-                <span className={classes.linkLabel}>{link.label}</span>
-                <ChevronDown size={12} />
-              </Center>
-            </Link>
-          }
-        >
-          {menuItems}
-        </Menu>
-      )
-    }
-
+  const fullscreenMenu = links.map((link) => {
     return (
       <Link key={link.label} to={link.link} className={classes.link}>
         {link.label}
       </Link>
     )
   })
+
+  const smallScreenMenu = (
+    <Menu
+      opened={opened}
+      className={classes.menu}
+      control={
+        <Burger opened={opened} onClick={() => toggleOpened()} size="sm" />
+      }
+    >
+      {links.map((link) => (
+        <Menu.Item component={Link} to={link.link}>
+          {link.label}
+        </Menu.Item>
+      ))}
+    </Menu>
+  )
 
   return (
     <Header height={56}>
@@ -117,17 +106,12 @@ export default function HeaderMenu({ links }: HeaderSearchProps) {
           <h1>HMS</h1>
           <Group spacing={5} className={classes.links}>
             <SwitchToggle />
-            {items}
+            {fullscreenMenu}
             <Avatar color="indigo" radius="xl">
               JP
             </Avatar>
           </Group>
-          <Burger
-            opened={opened}
-            onClick={() => toggleOpened()}
-            className={classes.burger}
-            size="sm"
-          />
+          {smallScreenMenu}
         </div>
       </Container>
     </Header>
