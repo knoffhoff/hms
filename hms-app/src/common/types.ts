@@ -10,6 +10,17 @@ export enum HackathonDetailsType {
   FullInfo = 'FULLINFO',
 }
 
+export enum HackathonStatus {
+  RegistrationOpen = 'REGISTRATION_OPEN',
+  RegistrationClosed = 'REGISTRATION_CLOSED',
+
+  HackathonOpen = 'HACKATHON_OPEN',
+  HackathonClosed = 'HACKATHON_CLOSED',
+
+  VotingOpen = 'VOTING_OPEN',
+  VotingClosed = 'VOTING_CLOSED',
+}
+
 export type HackathonPreview = {
   id: string
   title: string
@@ -25,6 +36,7 @@ export type Hackathon = {
   participants?: ParticipantPreview[]
   categories?: CategoryPreview[]
   ideas?: IdeaPreview[]
+  status?: HackathonStatus[]
 }
 
 export const parseHackathon = (json: any): Hackathon =>
@@ -34,8 +46,11 @@ export const parseHackathon = (json: any): Hackathon =>
     startDate: new Date(json.startDate),
     endDate: new Date(json.endDate),
     ideas: json.ideas ? parseIdeaPreviews(json.ideas) : [],
-    categories: json.ideas ? parseCategoryPreviews(json.categories) : [],
-    participants: json.ideas ? parseParticipantPreviews(json.participants) : [],
+    categories: json.categories ? parseCategoryPreviews(json.categories) : [],
+    participants: json.participants
+      ? parseParticipantPreviews(json.participants)
+      : [],
+    status: json.status ? json.status : [],
   } as Hackathon)
 
 export const parseHackathons = (jsonArray: any[]): Hackathon[] =>
