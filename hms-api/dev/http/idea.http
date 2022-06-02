@@ -37,6 +37,10 @@ Content-Type: application/json
 }
 
 ###
+# @name Join Idea
+PUT {{host}}/restapis/{{api_id}}/local/_user_request_/idea/{{idea_id}}/join/{{participant_id}}
+
+###
 # @name Get Idea
 GET {{host}}/idea/{{idea_id}}
 
