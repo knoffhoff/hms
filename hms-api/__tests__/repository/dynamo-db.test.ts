@@ -1,18 +1,18 @@
 import {getClient, safeTransformArray} from '../../src/repository/dynamo-db';
 
 describe('getClient()', () => {
-  const isLocal = process.env.IS_LOCAL;
+  const isLocal = process.env.IS_OFFLINE;
 
   beforeAll(() => {
     process.env.AWS_REGION = 'eu-central-1';
   });
 
   afterEach(() => {
-    process.env.IS_LOCAL = isLocal;
+    process.env.IS_OFFLINE = isLocal;
   });
 
   test('Endpoint is properly set offline on', async () => {
-    process.env.IS_LOCAL = 'true';
+    process.env.IS_OFFLINE = 'true';
 
     const endpoint = await getClient().config.endpoint();
     expect(endpoint.protocol).toBe('http:');
@@ -23,7 +23,7 @@ describe('getClient()', () => {
   });
 
   test('Endpoint is properly set offline off', async () => {
-    process.env.IS_LOCAL = 'false';
+    process.env.IS_OFFLINE = 'false';
 
     const endpoint = await getClient().config.endpoint();
     expect(endpoint.protocol).toBe('https:');

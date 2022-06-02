@@ -3,7 +3,7 @@
 import {AttributeValue as AV, DynamoDBClient} from '@aws-sdk/client-dynamodb';
 
 export function getClient(): DynamoDBClient {
-  if (process.env.IS_LOCAL === 'true') {
+  if (process.env.IS_OFFLINE === 'true') {
     const endpoint = 'http://localhost:8000';
     return new DynamoDBClient({endpoint: endpoint});
   } else {
