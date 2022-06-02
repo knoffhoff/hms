@@ -1,25 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { HackathonPreview } from '../common/types'
-import { createStyles, Stepper, Text, Title } from '@mantine/core'
-
-const useStyles = createStyles((theme) => ({
-  container: {
-    display: 'block',
-    lineHeight: 1,
-    padding: '8px 12px',
-    borderRadius: theme.radius.md,
-    textDecoration: 'none',
-    backgroundColor:
-      theme.colorScheme === 'dark'
-        ? theme.colors.dark[4]
-        : theme.colors.dark[0],
-    fontSize: theme.fontSizes.sm,
-    fontWeight: 500,
-  },
-}))
+import { Stepper, Title, Text } from '@mantine/core'
+import { styles } from '../common/styles'
 
 function Home() {
-  const { classes } = useStyles()
+  const { classes } = styles()
 
   const [nextHackathon, setNextHackathon] = useState<HackathonPreview>({
     endDate: new Date(),

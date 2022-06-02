@@ -4,7 +4,7 @@ import {
   getHackathonDetails,
 } from '../../actions/HackathonActions'
 import IdeaCardList from '../lists/IdeaCardList'
-import { Hackathon, Idea } from '../../common/types'
+import { Hackathon, HackathonDetailsType, Idea } from '../../common/types'
 import { getIdeaDetails } from '../../actions/IdeaActions'
 import {
   Accordion,
@@ -26,11 +26,6 @@ import { styles } from '../../common/styles'
 type IProps = {
   hackathonId: string
   type: HackathonDetailsType
-}
-
-export enum HackathonDetailsType {
-  Header = 'HEADER',
-  FullInfo = 'FULLINFO',
 }
 
 export default function HackathonDetails(props: IProps) {

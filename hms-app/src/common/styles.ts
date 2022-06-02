@@ -83,4 +83,18 @@ export const styles = createStyles((theme) => ({
   simpleBorder: {
     border: '1px solid',
   },
+
+  container: {
+    display: 'block',
+    lineHeight: 1,
+    padding: '8px 12px',
+    borderRadius: theme.radius.md,
+    textDecoration: 'none',
+    backgroundColor:
+      theme.colorScheme === 'dark'
+        ? theme.colors.dark[4]
+        : theme.colors.dark[0],
+    fontSize: theme.fontSizes.sm,
+    fontWeight: 500,
+  },
 }))

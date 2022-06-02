@@ -1,18 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import {
-  Header,
-  Menu,
-  Group,
-  Center,
-  Burger,
-  Container,
-  Avatar,
-} from '@mantine/core'
+import { Header, Menu, Group, Burger, Container, Avatar } from '@mantine/core'
 import { useBooleanToggle } from '@mantine/hooks'
-import { ChevronDown } from 'tabler-icons-react'
 import { SwitchToggle } from './ThemeSwitchToggle'
 import { styles } from '../common/styles'
+import { HackathonPreview } from '../common/types'
+import { getListOfHackathons } from '../actions/HackathonActions'
 
 interface HeaderSearchProps {
   links: {
@@ -61,40 +54,30 @@ export default function HeaderMenu({ links }: HeaderSearchProps) {
     loadHackathons()
   }, [])
 
-  const items = links.map((link) => {
-    const menuItems = link.links?.map((item) => (
-      <Menu.Item key={item.link}>{item.label}</Menu.Item>
-    ))
-
-    if (menuItems) {
-      return (
-        <Menu
-          key={link.label}
-          trigger="hover"
-          delay={0}
-          transitionDuration={0}
-          placement="end"
-          gutter={1}
-          control={
-            <Link to={link.link} className={classes.link}>
-              <Center>
-                <span className={classes.linkLabel}>{link.label}</span>
-                <ChevronDown size={12} />
-              </Center>
-            </Link>
-          }
-        >
-          {menuItems}
-        </Menu>
-      )
-    }
-
+  const fullscreenMenu = links.map((link) => {
     return (
       <Link key={link.label} to={link.link} className={classes.link}>
         {link.label}
       </Link>
     )
   })
+
+  const smallScreenMenu = (
+    <Menu
+      opened={opened}
+      className={classes.headerBurger}
+      control={
+        <Burger opened={opened} onClick={() => toggleOpened()} size="sm" />
+      }
+    >
+      {links.map((link) => (
+        <Menu.Item component={Link} to={link.link}>
+          {link.label}
+        </Menu.Item>
+      ))}
+      <SwitchToggle />
+    </Menu>
+  )
 
   return (
     <Header height={56}>
@@ -103,17 +86,12 @@ export default function HeaderMenu({ links }: HeaderSearchProps) {
           <h1>HMS</h1>
           <Group spacing={5} className={classes.headerLinks}>
             <SwitchToggle />
-            {items}
+            {fullscreenMenu}
             <Avatar color="indigo" radius="xl">
               JP
             </Avatar>
           </Group>
-          <Burger
-            opened={opened}
-            onClick={() => toggleOpened()}
-            className={classes.headerBurger}
-            size="sm"
-          />
+          {smallScreenMenu}
         </div>
       </Container>
     </Header>

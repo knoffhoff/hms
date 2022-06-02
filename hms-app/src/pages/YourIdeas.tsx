@@ -1,13 +1,16 @@
 import { Accordion, Title } from '@mantine/core'
-import { Hackathon, Idea, ParticipantPreview } from '../common/types'
+import {
+  Hackathon,
+  HackathonDropdownMode,
+  Idea,
+  ParticipantPreview,
+} from '../common/types'
 import IdeaCardList from '../components/lists/IdeaCardList'
 import React, { useEffect, useState } from 'react'
 import IdeaForm from '../components/input-forms/IdeaForm'
-import HackathonSelectDropdown, {
-  HackathonDropdownMode,
-} from '../components/HackathonSelectDropdown'
 import RelevantIdeasLoader from '../components/RelevantIdeasLoader'
 import { styles } from '../common/styles'
+import HackathonSelectDropdown from '../components/HackathonSelectDropdown'
 
 export default function YourIdeas() {
   const { classes } = styles()

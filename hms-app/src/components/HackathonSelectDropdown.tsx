@@ -1,18 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { getListOfHackathons } from '../actions/HackathonActions'
 import { Select, SelectItem } from '@mantine/core'
-import { HackathonPreview } from '../common/types'
+import { HackathonPreview, HackathonDropdownMode } from '../common/types'
 
 type Props = {
   setHackathonId: (hackthonID: string) => void
   context: HackathonDropdownMode
-}
-
-export enum HackathonDropdownMode {
-  Archive = 'ARCHIVE',
-  IdeaPortal = 'IDEA_PORTAL',
-  Home = 'HOME',
-  YourIdeas = 'YOUR_IDEAS',
 }
 
 export default function HackathonSelectDropdown({
