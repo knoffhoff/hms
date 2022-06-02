@@ -68,8 +68,6 @@ interface HeaderSearchProps {
 }
 
 export default function HeaderMenu({ links }: HeaderSearchProps) {
-  const { colorScheme, toggleColorScheme } = useMantineColorScheme()
-  const dark = colorScheme === 'dark'
   const [opened, toggleOpened] = useBooleanToggle(false)
   const { classes } = useStyles()
 
@@ -94,6 +92,7 @@ export default function HeaderMenu({ links }: HeaderSearchProps) {
           {link.label}
         </Menu.Item>
       ))}
+      <SwitchToggle />
     </Menu>
   )
 
