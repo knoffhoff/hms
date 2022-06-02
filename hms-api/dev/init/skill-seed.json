@@ -1,0 +1,27 @@
+[
+  {
+  "id": {"S": "c02e0957-610e-43eb-8c37-651afc208c8f"},
+  "name": {"S": "frontend"},
+  "description": {"S": "Pretty programming"}
+  },
+  {
+  "id": {"S": "5e283cba-3ed6-4c2a-ad11-4d269fce3d43"},
+  "name": {"S": "backend"},
+  "description": {"S": "Programming for the basement kids"}
+  },
+  {
+  "id": {"S": "dc6a6f0b-06bf-46cb-b8b1-1c3c17db197c"},
+  "name": {"S": "design"},
+  "description": {"S": "Designing things and making them pretty"}
+  },
+  {
+  "id": {"S": "0c27e6c6-4a33-4b1f-a15e-46a8bed218e8"},
+  "name": {"S": "bear handling"},
+  "description": {"S": "You can handle bears... without getting eaten"}
+  },
+  {
+  "id": {"S": "7242a9e2-8af9-40c1-aa4c-af76faa013ca"},
+  "name": {"S": "bee handling"},
+  "description": {"S": "You can handle bees... and not get stung too much"}
+  }
+]
