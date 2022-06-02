@@ -1,11 +1,10 @@
 /* eslint-disable require-jsdoc */
 
 import {AttributeValue as AV, DynamoDBClient} from '@aws-sdk/client-dynamodb';
-import runningLocalStack from '../util/running-localstack';
 
 export function getClient(): DynamoDBClient {
-  if (runningLocalStack()) {
-    const endpoint = 'http://' + process.env.LOCALSTACK_HOSTNAME + ':4566';
+  if (process.env.stage === 'local') {
+    const endpoint = 'http://localhost:8000';
     return new DynamoDBClient({endpoint: endpoint});
   } else {
     return new DynamoDBClient({});

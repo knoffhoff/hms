@@ -1,10 +1,10 @@
 ###
 # @name List all Participants
-GET {{host}}/restapis/{{api_id}}/local/_user_request_/hackathon/{{hackathon_id}}/participants
+GET {{host}}/hackathon/{{hackathon_id}}/participants
 
 ###
 # @name Create Participant
-POST {{host}}/restapis/{{api_id}}/local/_user_request_/participant
+POST {{host}}/participant
 Content-Type: application/json
 
 {
@@ -14,8 +14,8 @@ Content-Type: application/json
 
 ###
 # @name Get Participant
-GET {{host}}/restapis/{{api_id}}/local/_user_request_/participant/{{participant_id}}
+GET {{host}}/participant/{{participant_id}}
 
 ###
 # @name Remove Participant
-DELETE {{host}}/restapis/{{api_id}}/local/_user_request_/participant/{{participant_id}}
+DELETE {{host}}/participant/{{participant_id}}

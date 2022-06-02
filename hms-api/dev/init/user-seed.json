@@ -1,0 +1,62 @@
+[
+  {
+  "id": {"S": "629f52c9-df29-491b-82a4-bdd80806338d"},
+  "firstName": {"S": "Greg"},
+  "lastName": {"S": "Greggson"},
+  "emailAddress": {"S": "greg.greggson@internet.com"},
+  "roles": {"SS": ["Admin", "Participant"]},
+  "skills": {"SS": ["c02e0957-610e-43eb-8c37-651afc208c8f", "5e283cba-3ed6-4c2a-ad11-4d269fce3d43"]},
+  "imageUrl": {"S": ""},
+  "creationDate": {"S": "2021-03-01"}
+  },
+  {
+  "id": {"S": "c3480d57-5670-4364-b0cc-9038a83de628"},
+  "firstName": {"S": "Susy"},
+  "lastName": {"S": "Q"},
+  "emailAddress": {"S": "susy.q@internet.com"},
+  "roles": {"SS": ["Participant"]},
+  "skills": {"SS": ["0c27e6c6-4a33-4b1f-a15e-46a8bed218e8", "5e283cba-3ed6-4c2a-ad11-4d269fce3d43"]},
+  "imageUrl": {"S": ""},
+  "creationDate": {"S": "2021-03-02"}
+  },
+  {
+  "id": {"S": "c16785af-d7bd-442c-b3f5-257fad9ad2ac"},
+  "firstName": {"S": "Dart"},
+  "lastName": {"S": "Mouth"},
+  "emailAddress": {"S": "dart.mouth@internet.com"},
+  "roles": {"SS": ["Participant"]},
+  "skills": {"SS": ["dc6a6f0b-06bf-46cb-b8b1-1c3c17db197c", "c02e0957-610e-43eb-8c37-651afc208c8f", "5e283cba-3ed6-4c2a-ad11-4d269fce3d43"]},
+  "imageUrl": {"S": ""},
+  "creationDate": {"S": "2021-03-03"}
+  },
+  {
+  "id": {"S": "c34a519a-be46-410c-828e-0f806cfca620"},
+  "firstName": {"S": "Cor"},
+  "lastName": {"S": "Nell"},
+  "emailAddress": {"S": "cor.nell@internet.com"},
+  "roles": {"SS": ["Participant"]},
+  "skills": {"SS": ["7242a9e2-8af9-40c1-aa4c-af76faa013ca", "beer handling", "dc6a6f0b-06bf-46cb-b8b1-1c3c17db197c"]},
+  "imageUrl": {"S": ""},
+  "creationDate": {"S": "2021-03-03"}
+  },
+  {
+  "id": {"S": "f6fa2b8e-68ed-4486-b8df-f93b87ff23e5"},
+  "firstName": {"S": "Baldy"},
+  "lastName": {"S": "McBaldhead"},
+  "emailAddress": {"S": "baldy.mcbaldhead@internet.com"},
+  "roles": {"SS": ["Participant"]},
+  "skills": {"SS": ["7242a9e2-8af9-40c1-aa4c-af76faa013ca", "dc6a6f0b-06bf-46cb-b8b1-1c3c17db197c"]},
+  "imageUrl": {"S": ""},
+  "creationDate": {"S": "2021-03-05"}
+  },
+  {
+  "id": {"S": "9b184ff3-8b63-4807-a3c6-89973c126d75"},
+  "firstName": {"S": "Micheal"},
+  "lastName": {"S": "Scott"},
+  "emailAddress": {"S": "m.g.s@internet.com"},
+  "roles": {"SS": ["Participant"]},
+  "skills": {"NULL": true},
+  "imageUrl": {"S": ""},
+  "creationDate": {"S": "2021-03-06"}
+  }
+]

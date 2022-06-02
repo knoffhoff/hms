@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import {
   Header,
@@ -25,6 +25,41 @@ interface HeaderSearchProps {
 export default function HeaderMenu({ links }: HeaderSearchProps) {
   const [opened, toggleOpened] = useBooleanToggle(false)
   const { classes } = styles()
+
+  const [isError, setIsError] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
+  const [hackathonList, setHackathonList] = useState<HackathonPreview[]>([])
+  const today = new Date()
+  today.setHours(0, 0, 0, 0)
+
+  const loadHackathons = () => {
+    getListOfHackathons().then(
+      (data) => {
+        localStorage.setItem('hackathonList', JSON.stringify(data))
+        setHackathonList(data)
+        setIsLoading(false)
+        setIsError(false)
+      },
+      () => {
+        setIsError(true)
+        setIsLoading(false)
+      }
+    )
+  }
+
+  const getNextHackathon = hackathonList.find((hackathon) => {
+    return new Date(hackathon.startDate) > today
+  })
+
+  useEffect(() => {
+    if (!!getNextHackathon) {
+      localStorage.setItem('nextHackathon', JSON.stringify(getNextHackathon))
+    }
+  }, [hackathonList])
+
+  useEffect(() => {
+    loadHackathons()
+  }, [])
 
   const items = links.map((link) => {
     const menuItems = link.links?.map((item) => (

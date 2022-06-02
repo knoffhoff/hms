@@ -1,10 +1,10 @@
 ###
 # @name List all Users
-GET {{host}}/restapis/{{api_id}}/local/_user_request_/users
+GET {{host}}/users
 
 ###
 # @name Create User
-POST {{host}}/restapis/{{api_id}}/local/_user_request_/user
+POST {{host}}/user
 Content-Type: application/json
 
 {
@@ -18,7 +18,7 @@ Content-Type: application/json
 
 ###
 # @name Edit User
-PUT {{host}}/restapis/{{api_id}}/local/_user_request_/user/{{user_id}}
+PUT {{host}}/user/{{user_id}}
 Content-Type: application/json
 
 {
@@ -30,8 +30,8 @@ Content-Type: application/json
 
 ###
 # @name Get User
-GET {{host}}/restapis/{{api_id}}/local/_user_request_/user/{{user_id}}
+GET {{host}}/user/{{user_id}}
 
 ###
 # @name Remove User
-DELETE {{host}}/restapis/{{api_id}}/local/_user_request_/user/{{user_id}}
+DELETE {{host}}/user/{{user_id}}
