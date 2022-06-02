@@ -1,27 +1,29 @@
 import {getClient, safeTransformArray} from '../../src/repository/dynamo-db';
-import * as RunningLocalStack from '../../src/util/running-localstack';
 
 describe('getClient()', () => {
-  const hostname = 'localstack';
+  const isLocal = process.env.IS_LOCAL;
 
   beforeAll(() => {
     process.env.AWS_REGION = 'eu-central-1';
-    process.env.LOCALSTACK_HOSTNAME = hostname;
   });
 
-  test('Endpoint is properly set when LocalStack on', async () => {
-    jest.spyOn(RunningLocalStack, 'default').mockImplementation(() => true);
+  afterEach(() => {
+    process.env.IS_LOCAL = isLocal;
+  });
+
+  test('Endpoint is properly set offline on', async () => {
+    process.env.IS_LOCAL = 'true';
 
     const endpoint = await getClient().config.endpoint();
     expect(endpoint.protocol).toBe('http:');
-    expect(endpoint.hostname).toBe(hostname);
-    expect(endpoint.port).toBe(4566);
+    expect(endpoint.hostname).toBe('localhost');
+    expect(endpoint.port).toBe(8000);
     expect(endpoint.path).toBe('/');
     expect(endpoint.query).toBe(undefined);
   });
 
-  test('Endpoint is properly set when LocalStack off', async () => {
-    jest.spyOn(RunningLocalStack, 'default').mockImplementation(() => false);
+  test('Endpoint is properly set offline off', async () => {
+    process.env.IS_LOCAL = 'false';
 
     const endpoint = await getClient().config.endpoint();
     expect(endpoint.protocol).toBe('https:');
