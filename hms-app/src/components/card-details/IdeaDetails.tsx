@@ -6,7 +6,6 @@ import {
   useMantineTheme,
   Group,
   Badge,
-  createStyles,
   Accordion,
   Avatar,
   AvatarsGroup,
@@ -17,6 +16,7 @@ import { Idea } from '../../common/types'
 import { deleteIdea } from '../../actions/IdeaActions'
 import IdeaForm from '../input-forms/IdeaForm'
 import { Spoiler } from '@mantine/core'
+import { styles } from '../../common/styles'
 
 type IProps = {
   idea: Idea
@@ -24,30 +24,8 @@ type IProps = {
   type: string
 }
 
-const useStyles = createStyles((theme) => ({
-  card: {
-    backgroundColor:
-      theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.white,
-  },
-
-  section: {
-    borderBottom: `1px solid ${
-      theme.colorScheme === 'dark' ? theme.colors.dark[4] : theme.colors.gray[3]
-    }`,
-    paddingLeft: theme.spacing.md,
-    paddingRight: theme.spacing.md,
-    paddingBottom: theme.spacing.md,
-  },
-
-  label: {
-    textTransform: 'uppercase',
-    fontSize: theme.fontSizes.xs,
-    fontWeight: 700,
-  },
-}))
-
 export default function IdeaDetails(props: IProps) {
-  const { classes } = useStyles()
+  const { classes } = styles()
   const theme = useMantineTheme()
   const [deleteModalOpened, setDeleteModalOpened] = useState(false)
   const [editModalOpened, setEditModalOpened] = useState(false)
@@ -136,7 +114,7 @@ export default function IdeaDetails(props: IProps) {
   const ideaDetails = () => {
     return (
       <div>
-        <Card.Section className={classes.section}>
+        <Card.Section className={classes.borderSection}>
           <Text mt="md" className={classes.label} color="dimmed">
             Problem
           </Text>
@@ -145,7 +123,7 @@ export default function IdeaDetails(props: IProps) {
           </Text>
         </Card.Section>
 
-        <Card.Section className={classes.section}>
+        <Card.Section className={classes.borderSection}>
           <Text mt="md" className={classes.label} color="dimmed">
             Goal
           </Text>
@@ -202,7 +180,7 @@ export default function IdeaDetails(props: IProps) {
         <Card withBorder radius="md" p="md" className={classes.card}>
           <Spoiler maxHeight={140} showLabel="Show more" hideLabel="Hide">
             <Card.Section
-              className={classes.section}
+              className={classes.borderSection}
               mt="md"
               style={{ height: 180 }}
             >
@@ -240,7 +218,7 @@ export default function IdeaDetails(props: IProps) {
 
           {type !== 'voting' && (
             <>
-              <Card.Section className={classes.section}>
+              <Card.Section className={classes.borderSection}>
                 <Text mt="md" className={classes.label} color="dimmed">
                   Skills required
                 </Text>

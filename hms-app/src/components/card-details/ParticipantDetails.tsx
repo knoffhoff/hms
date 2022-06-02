@@ -1,37 +1,16 @@
 import React, { useState } from 'react'
 import { UserPreview } from '../../common/types'
-import { Button, Card, createStyles, Group, Modal, Text } from '@mantine/core'
+import { Button, Card, Group, Modal, Text } from '@mantine/core'
 import { deleteParticipant } from '../../actions/ParticipantActions'
+import { styles } from '../../common/styles'
 
 type IProps = {
   participantId: string
   user: UserPreview
 }
 
-const useStyles = createStyles((theme) => ({
-  card: {
-    backgroundColor:
-      theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.white,
-  },
-  section: {
-    borderBottom: `1px solid ${
-      theme.colorScheme === 'dark' ? theme.colors.dark[4] : theme.colors.gray[3]
-    }`,
-    paddingLeft: theme.spacing.md,
-    paddingRight: theme.spacing.md,
-    paddingBottom: theme.spacing.md,
-    fontSize: theme.fontSizes.md,
-    fontWeight: 500,
-  },
-  label: {
-    textTransform: 'uppercase',
-    fontSize: theme.fontSizes.xs,
-    fontWeight: 700,
-  },
-}))
-
 export default function ParticipantDetails(props: IProps) {
-  const { classes } = useStyles()
+  const { classes } = styles()
   const { participantId, user } = props
   const [opened, setOpened] = useState(false)
 
@@ -44,7 +23,7 @@ export default function ParticipantDetails(props: IProps) {
   return (
     <>
       <Card withBorder radius="md" p="md" className={classes.card}>
-        <Card.Section className={classes.section}>
+        <Card.Section className={classes.borderSection}>
           <Text size="lg" mt="xs">
             {user.firstName} {user.lastName}
           </Text>
@@ -52,7 +31,7 @@ export default function ParticipantDetails(props: IProps) {
           <Text size={'sm'}>User ID: {user.id}</Text>
         </Card.Section>
 
-        <Card.Section className={classes.section}>
+        <Card.Section className={classes.borderSection}>
           <Text mt="md" className={classes.label} color="dimmed">
             E-mail:
           </Text>
@@ -61,7 +40,7 @@ export default function ParticipantDetails(props: IProps) {
           </Text>
         </Card.Section>
 
-        <Card.Section className={classes.section}>
+        <Card.Section className={classes.borderSection}>
           <Modal
             centered
             opened={opened}

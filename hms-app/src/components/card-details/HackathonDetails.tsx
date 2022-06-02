@@ -10,7 +10,6 @@ import {
   Accordion,
   Button,
   Card,
-  createStyles,
   Group,
   SimpleGrid,
   Text,
@@ -22,28 +21,7 @@ import CategoryForm from '../input-forms/CategoryForm'
 import HackathonForm from '../input-forms/HackathonForm'
 import CategoryDetails from './CategoryDetails'
 import { Link } from 'react-router-dom'
-
-const useStyles = createStyles((theme) => ({
-  card: {
-    backgroundColor:
-      theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.white,
-  },
-  section: {
-    borderBottom: `1px solid ${
-      theme.colorScheme === 'dark' ? theme.colors.dark[4] : theme.colors.gray[3]
-    }`,
-    paddingLeft: theme.spacing.md,
-    paddingRight: theme.spacing.md,
-    paddingBottom: theme.spacing.md,
-    fontSize: theme.fontSizes.md,
-    fontWeight: 500,
-  },
-  label: {
-    textTransform: 'uppercase',
-    fontSize: theme.fontSizes.xs,
-    fontWeight: 700,
-  },
-}))
+import { styles } from '../../common/styles'
 
 type IProps = {
   hackathonId: string
@@ -56,7 +34,7 @@ export enum HackathonDetailsType {
 }
 
 export default function HackathonDetails(props: IProps) {
-  const { classes } = useStyles()
+  const { classes } = styles()
   const { hackathonId, type } = props
   const [deleteModalOpened, setDeleteModalOpened] = useState(false)
   const [editModalOpened, setEditModalOpened] = useState(false)
@@ -303,14 +281,14 @@ export default function HackathonDetails(props: IProps) {
         !isHackathonError &&
         type === HackathonDetailsType.FullInfo && (
           <Card withBorder radius="md" p="md" className={classes.card}>
-            <Card.Section className={classes.section}>
+            <Card.Section className={classes.borderSection}>
               <Text size="md" mt="xs">
                 {hackathonData.title}
               </Text>
               <Text size={'xs'}>ID: {hackathonData.id}</Text>
             </Card.Section>
 
-            <Card.Section className={classes.section}>
+            <Card.Section className={classes.borderSection}>
               <SimpleGrid cols={2} breakpoints={[{ maxWidth: 'sm', cols: 1 }]}>
                 <Card.Section>
                   <Text size="sm" mt="xs">
@@ -336,7 +314,7 @@ export default function HackathonDetails(props: IProps) {
               >
                 <Accordion iconPosition="right">
                   <Accordion.Item
-                    style={{ border: '1px solid' }}
+                    className={classes.simpleBorder}
                     label={'Add Category'}
                   >
                     <CategoryForm
@@ -387,7 +365,7 @@ export default function HackathonDetails(props: IProps) {
               </Accordion.Item>
             </Accordion>
 
-            <Card.Section className={classes.section}>
+            <Card.Section className={classes.borderSection}>
               <Group position="left" mt="xl">
                 {deleteModal}
                 <Button

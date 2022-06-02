@@ -1,4 +1,4 @@
-import { Textarea, Group, Button, createStyles, Card } from '@mantine/core'
+import { Textarea, Group, Button, Card } from '@mantine/core'
 import React, { useEffect, useState } from 'react'
 import {
   addCategory,
@@ -7,6 +7,7 @@ import {
 } from '../../actions/CategoryActions'
 import { showNotification, updateNotification } from '@mantine/notifications'
 import { CheckIcon } from '@modulz/radix-icons'
+import { styles } from '../../common/styles'
 
 type IProps = {
   hackathonId: string
@@ -14,26 +15,8 @@ type IProps = {
   context: string
 }
 
-const useStyles = createStyles((theme) => ({
-  card: {
-    backgroundColor:
-      theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.white,
-  },
-  section: {
-    borderBottom: `1px solid ${
-      theme.colorScheme === 'dark' ? theme.colors.dark[4] : theme.colors.gray[3]
-    }`,
-    paddingLeft: theme.spacing.md,
-    paddingRight: theme.spacing.md,
-    paddingBottom: theme.spacing.md,
-    textTransform: 'uppercase',
-    fontSize: theme.fontSizes.md,
-    fontWeight: 500,
-  },
-}))
-
 export default function CategoryForm(props: IProps) {
-  const { classes } = useStyles()
+  const { classes } = styles()
   const { hackathonId, categoryId, context } = props
   const [isError, setIsError] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
@@ -140,7 +123,7 @@ export default function CategoryForm(props: IProps) {
       )}
       {!isLoading && (
         <Card withBorder radius="md" p="md" className={classes.card}>
-          <Card.Section className={classes.section}>
+          <Card.Section className={classes.borderSection}>
             <Textarea
               label="Title"
               mt="sm"
@@ -153,7 +136,7 @@ export default function CategoryForm(props: IProps) {
               value={category.title}
             />
           </Card.Section>
-          <Card.Section className={classes.section}>
+          <Card.Section className={classes.borderSection}>
             <Textarea
               label="Description"
               mt="sm"

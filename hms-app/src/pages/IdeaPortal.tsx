@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Input, Group, Title, Button } from '@mantine/core'
 import { Search } from 'tabler-icons-react'
 import IdeaCardList from '../components/lists/IdeaCardList'
-import { Hackathon, Idea, ParticipantPreview } from '../common/types'
+import { Hackathon, Idea } from '../common/types'
 import {
   createHackathonParticipant,
   deleteParticipant,

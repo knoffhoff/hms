@@ -2,43 +2,20 @@ import { deleteUser, getUserDetails } from '../../actions/UserActions'
 import React, { useEffect, useState } from 'react'
 import { User } from '../../common/types'
 import {
-  Accordion,
   Badge,
   Button,
   Card,
-  createStyles,
   Group,
   Modal,
   Text,
   useMantineTheme,
 } from '@mantine/core'
 import EditUserForm from '../input-forms/EditUserForm'
-
-const useStyles = createStyles((theme) => ({
-  card: {
-    backgroundColor:
-      theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.white,
-  },
-  section: {
-    borderBottom: `1px solid ${
-      theme.colorScheme === 'dark' ? theme.colors.dark[4] : theme.colors.gray[3]
-    }`,
-    paddingLeft: theme.spacing.md,
-    paddingRight: theme.spacing.md,
-    paddingBottom: theme.spacing.md,
-    fontSize: theme.fontSizes.md,
-    fontWeight: 500,
-  },
-  label: {
-    textTransform: 'uppercase',
-    fontSize: theme.fontSizes.xs,
-    fontWeight: 700,
-  },
-}))
+import { styles } from '../../common/styles'
 
 export default function UserDetails(props: { userId: string }) {
   const theme = useMantineTheme()
-  const { classes } = useStyles()
+  const { classes } = styles()
   const { userId } = props
   const [deleteModalOpened, setDeleteModalOpened] = useState(false)
   const [editModalOpened, setEditModalOpened] = useState(false)
@@ -133,7 +110,7 @@ export default function UserDetails(props: { userId: string }) {
 
       {!isUserLoading && !isUserError && (
         <Card withBorder radius="md" p="md" className={classes.card}>
-          <Card.Section className={classes.section}>
+          <Card.Section className={classes.borderSection}>
             <Text mt="md" className={classes.label} color="dimmed">
               Name
             </Text>
@@ -146,14 +123,14 @@ export default function UserDetails(props: { userId: string }) {
             </Text>
           </Card.Section>
 
-          <Card.Section className={classes.section}>
+          <Card.Section className={classes.borderSection}>
             <Text mt="md" className={classes.label} color="dimmed">
               E-mail
             </Text>
             <Text size={'md'}>{user.emailAddress}</Text>
           </Card.Section>
 
-          <Card.Section className={classes.section}>
+          <Card.Section className={classes.borderSection}>
             <Text mt="md" className={classes.label} color="dimmed">
               Roles
             </Text>
@@ -169,7 +146,7 @@ export default function UserDetails(props: { userId: string }) {
             </Group>
           </Card.Section>
 
-          <Card.Section className={classes.section}>
+          <Card.Section className={classes.borderSection}>
             <Text mt="md" className={classes.label} color="dimmed">
               Skills
             </Text>
@@ -185,7 +162,7 @@ export default function UserDetails(props: { userId: string }) {
             </Group>
           </Card.Section>
 
-          <Card.Section className={classes.section}>
+          <Card.Section className={classes.borderSection}>
             <Group position="left" mt="xl">
               {deleteModal}
               <Button color={'red'} onClick={() => setDeleteModalOpened(true)}>
