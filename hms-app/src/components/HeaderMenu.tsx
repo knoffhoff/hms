@@ -1,63 +1,16 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import {
-  createStyles,
   Header,
   Menu,
   Group,
   Burger,
   Container,
   Avatar,
-  useMantineColorScheme,
 } from '@mantine/core'
 import { useBooleanToggle } from '@mantine/hooks'
 import { SwitchToggle } from './ThemeSwitchToggle'
-
-const useStyles = createStyles((theme) => ({
-  inner: {
-    height: 56,
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-
-  links: {
-    [theme.fn.smallerThan('sm')]: {
-      display: 'none',
-    },
-  },
-
-  menu: {
-    [theme.fn.largerThan('sm')]: {
-      display: 'none',
-    },
-  },
-
-  link: {
-    display: 'block',
-    lineHeight: 1,
-    padding: '8px 12px',
-    borderRadius: theme.radius.sm,
-    textDecoration: 'none',
-    color:
-      theme.colorScheme === 'dark'
-        ? theme.colors.dark[0]
-        : theme.colors.gray[7],
-    fontSize: theme.fontSizes.sm,
-    fontWeight: 500,
-
-    '&:hover': {
-      backgroundColor:
-        theme.colorScheme === 'dark'
-          ? theme.colors.dark[6]
-          : theme.colors.gray[0],
-    },
-  },
-
-  linkLabel: {
-    marginRight: 5,
-  },
-}))
+import { styles } from '../common/styles'
 
 interface HeaderSearchProps {
   links: {
@@ -69,7 +22,42 @@ interface HeaderSearchProps {
 
 export default function HeaderMenu({ links }: HeaderSearchProps) {
   const [opened, toggleOpened] = useBooleanToggle(false)
-  const { classes } = useStyles()
+  const { classes } = styles()
+
+  const [isError, setIsError] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
+  const [hackathonList, setHackathonList] = useState<HackathonPreview[]>([])
+  const today = new Date()
+  today.setHours(0, 0, 0, 0)
+
+  const loadHackathons = () => {
+    getListOfHackathons().then(
+      (data) => {
+        localStorage.setItem('hackathonList', JSON.stringify(data))
+        setHackathonList(data)
+        setIsLoading(false)
+        setIsError(false)
+      },
+      () => {
+        setIsError(true)
+        setIsLoading(false)
+      }
+    )
+  }
+
+  const getNextHackathon = hackathonList.find((hackathon) => {
+    return new Date(hackathon.startDate) > today
+  })
+
+  useEffect(() => {
+    if (!!getNextHackathon) {
+      localStorage.setItem('nextHackathon', JSON.stringify(getNextHackathon))
+    }
+  }, [hackathonList])
+
+  useEffect(() => {
+    loadHackathons()
+  }, [])
 
   const fullscreenMenu = links.map((link) => {
     return (
@@ -99,9 +87,9 @@ export default function HeaderMenu({ links }: HeaderSearchProps) {
   return (
     <Header height={56}>
       <Container>
-        <div className={classes.inner}>
+        <div className={classes.header}>
           <h1>HMS</h1>
-          <Group spacing={5} className={classes.links}>
+          <Group spacing={5} className={classes.headerLinks}>
             <SwitchToggle />
             {fullscreenMenu}
             <Avatar color="indigo" radius="xl">

@@ -1,28 +1,14 @@
-import { Group, Button, createStyles, Card, Accordion } from '@mantine/core'
+import { Group, Button, Card, Accordion } from '@mantine/core'
 import React, { useEffect, useState } from 'react'
 import { getListOfHackathons } from '../../actions/HackathonActions'
-import { HackathonPreview, HackathonDetailsType } from '../../common/types'
-import HackathonDetails from '../card-details/HackathonDetails'
-
-const useStyles = createStyles((theme) => ({
-  card: {
-    backgroundColor:
-      theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.white,
-  },
-  section: {
-    borderBottom: `1px solid ${
-      theme.colorScheme === 'dark' ? theme.colors.dark[4] : theme.colors.gray[3]
-    }`,
-    paddingLeft: theme.spacing.md,
-    paddingRight: theme.spacing.md,
-    paddingBottom: theme.spacing.md,
-    fontSize: theme.fontSizes.md,
-    fontWeight: 500,
-  },
-}))
+import { HackathonPreview } from '../../common/types'
+import HackathonDetails, {
+  HackathonDetailsType,
+} from '../card-details/HackathonDetails'
+import { styles } from '../../common/styles'
 
 function AllHackathonList() {
-  const { classes } = useStyles()
+  const { classes } = styles()
   const [isError, setIsError] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
   const [hackathonList, setHackathonList] = useState({
@@ -71,7 +57,7 @@ function AllHackathonList() {
   return (
     <>
       <Card withBorder radius="md" p="md" className={classes.card}>
-        <Card.Section className={classes.section}>
+        <Card.Section className={classes.borderSection}>
           <Group position="left" mt="xl">
             {!isLoading && <Button onClick={refreshList}>Refresh list</Button>}
             {isLoading && <div>Loading...</div>}

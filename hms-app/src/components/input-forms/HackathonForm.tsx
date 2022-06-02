@@ -1,40 +1,16 @@
-import {
-  Textarea,
-  Group,
-  Button,
-  createStyles,
-  Card,
-  SimpleGrid,
-} from '@mantine/core'
+import { Textarea, Group, Button, Card, SimpleGrid } from '@mantine/core'
 import React, { useState } from 'react'
 import { DatePicker } from '@mantine/dates'
 import { createHackathon, editHackathon } from '../../actions/HackathonActions'
 import { showNotification, updateNotification } from '@mantine/notifications'
 import { CheckIcon } from '@modulz/radix-icons'
-
-const useStyles = createStyles((theme) => ({
-  card: {
-    backgroundColor:
-      theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.white,
-  },
-  section: {
-    borderBottom: `1px solid ${
-      theme.colorScheme === 'dark' ? theme.colors.dark[4] : theme.colors.gray[3]
-    }`,
-    paddingLeft: theme.spacing.md,
-    paddingRight: theme.spacing.md,
-    paddingBottom: theme.spacing.md,
-    textTransform: 'uppercase',
-    fontSize: theme.fontSizes.md,
-    fontWeight: 500,
-  },
-}))
+import { styles } from '../../common/styles'
 
 type IProps = { context: string; hackathonId: string | null }
 
 function HackathonForm(props: IProps) {
   const { context, hackathonId } = props
-  const { classes } = useStyles()
+  const { classes } = styles()
   const today = new Date()
   const [startDateValue, setStartDateValue] = useState<Date | null>(new Date())
   const [endDateValue, setEndDateValue] = useState<Date | null>(new Date())
@@ -107,7 +83,7 @@ function HackathonForm(props: IProps) {
   return (
     <>
       <Card withBorder radius="md" p="md" className={classes.card}>
-        <Card.Section className={classes.section}>
+        <Card.Section className={classes.borderSection}>
           <Textarea
             label="Title"
             mt="sm"
@@ -119,7 +95,7 @@ function HackathonForm(props: IProps) {
             name="title"
           />
         </Card.Section>
-        <Card.Section className={classes.section}>
+        <Card.Section className={classes.borderSection}>
           <SimpleGrid cols={2} breakpoints={[{ maxWidth: 'sm', cols: 1 }]}>
             <DatePicker
               label={'Start Date'}

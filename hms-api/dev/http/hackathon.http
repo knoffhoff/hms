@@ -1,10 +1,10 @@
 ###
 # @name List all Hackathons
-GET {{host}}/restapis/{{api_id}}/local/_user_request_/hackathons
+GET {{host}}/hackathons
 
 ###
 # @name Create Hackathon
-POST {{host}}/restapis/{{api_id}}/local/_user_request_/hackathon
+POST {{host}}/hackathon
 Content-Type: application/json
 
 {
@@ -15,7 +15,7 @@ Content-Type: application/json
 
 ###
 # @name Edit Hackathon
-PUT {{host}}/restapis/{{api_id}}/local/_user_request_/hackathon/{{hackathon_id}}
+PUT {{host}}/hackathon/{{hackathon_id}}
 Content-Type: application/json
 
 {
@@ -26,8 +26,8 @@ Content-Type: application/json
 
 ###
 # @name Get Hackathon
-GET {{host}}/restapis/{{api_id}}/local/_user_request_/hackathon/{{hackathon_id}}
+GET {{host}}/hackathon/{{hackathon_id}}
 
 ###
 # @name Remove Hackathon
-DELETE {{host}}/restapis/{{api_id}}/local/_user_request_/hackathon/{{hackathon_id}}
+DELETE {{host}}/hackathon/{{hackathon_id}}

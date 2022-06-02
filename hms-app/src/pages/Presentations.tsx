@@ -1,39 +1,13 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import {
-  Avatar,
-  Badge,
-  Button,
-  Card,
-  createStyles,
-  Grid,
-  Group,
-  Text,
-} from '@mantine/core'
+import { Avatar, Badge, Button, Card, Grid, Group, Text } from '@mantine/core'
 import { useFullscreen } from '@mantine/hooks'
 import { Idea, UserPreview } from '../common/types'
 import Carousel from 'nuka-carousel'
-
-const useStyles = createStyles((theme) => ({
-  card: {
-    backgroundColor: 'lightblue',
-  },
-  section: {
-    paddingLeft: theme.spacing.md,
-    paddingRight: theme.spacing.md,
-    paddingBottom: theme.spacing.md,
-    fontSize: theme.fontSizes.md,
-    fontWeight: 500,
-  },
-  label: {
-    textTransform: 'uppercase',
-    fontSize: theme.fontSizes.xl,
-    fontWeight: 700,
-  },
-}))
+import { styles } from '../common/styles'
 
 export default function Presentations() {
-  const { classes } = useStyles()
+  const { classes } = styles()
   const { ref, toggle, fullscreen } = useFullscreen()
   // @ts-ignore
   const allIdeas = JSON.parse(localStorage.getItem('ideas'))
@@ -50,16 +24,22 @@ export default function Presentations() {
           radius="md"
           p="md"
           style={{ height: '99vh' }}
-          className={classes.card}
+          className={classes.presentationsCards}
         >
-          <Card.Section style={{ height: '6%' }} className={classes.section}>
+          <Card.Section
+            style={{ height: '6%' }}
+            className={classes.noBorderSection}
+          >
             <Text className={classes.label}>Title</Text>
             <Text mt="sm" style={{ backgroundColor: 'white' }}>
               {idea.title}
             </Text>
           </Card.Section>
 
-          <Card.Section style={{ height: '25%' }} className={classes.section}>
+          <Card.Section
+            style={{ height: '25%' }}
+            className={classes.noBorderSection}
+          >
             <Grid align="center">
               <Grid.Col span={8}>
                 <Card.Section style={{ height: '100%' }}>
@@ -100,7 +80,10 @@ export default function Presentations() {
             </Grid>
           </Card.Section>
 
-          <Card.Section style={{ height: '20%' }} className={classes.section}>
+          <Card.Section
+            style={{ height: '20%' }}
+            className={classes.noBorderSection}
+          >
             <Text className={classes.label}>Problem</Text>
             <Text
               mt="sm"
@@ -113,14 +96,20 @@ export default function Presentations() {
             </Text>
           </Card.Section>
 
-          <Card.Section style={{ height: '20%' }} className={classes.section}>
+          <Card.Section
+            style={{ height: '20%' }}
+            className={classes.noBorderSection}
+          >
             <Text className={classes.label}>Goal</Text>
             <Text mt="sm" style={{ backgroundColor: 'white', height: '15vh' }}>
               {idea.goal}
             </Text>
           </Card.Section>
 
-          <Card.Section style={{ height: '20%' }} className={classes.section}>
+          <Card.Section
+            style={{ height: '20%' }}
+            className={classes.noBorderSection}
+          >
             <Grid>
               <Grid.Col span={6}>
                 <Card.Section>

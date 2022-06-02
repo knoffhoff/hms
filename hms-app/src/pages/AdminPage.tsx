@@ -3,8 +3,11 @@ import { Accordion } from '@mantine/core'
 import HackathonForm from '../components/input-forms/HackathonForm'
 import AllHackathonList from '../components/lists/AllHackathonList'
 import AllUserList from '../components/lists/AllUserList'
+import { styles } from '../common/styles'
 
 function AdminPage() {
+  const { classes } = styles()
+
   return (
     <>
       <h1>Hello Admin </h1>
@@ -12,7 +15,7 @@ function AdminPage() {
 
       <Accordion mb={30}>
         <Accordion.Item
-          style={{ border: '1px solid' }}
+          className={classes.simpleBorder}
           label={'Create new hackathon'}
         >
           <HackathonForm hackathonId={null} context={'new'} />
@@ -21,7 +24,7 @@ function AdminPage() {
 
       <Accordion mb={30}>
         <Accordion.Item
-          style={{ border: '1px solid' }}
+          className={classes.simpleBorder}
           label={'Hackathon list'}
         >
           <AllHackathonList />
@@ -29,7 +32,7 @@ function AdminPage() {
       </Accordion>
 
       <Accordion mb={30}>
-        <Accordion.Item style={{ border: '1px solid' }} label={'User list'}>
+        <Accordion.Item className={classes.simpleBorder} label={'User list'}>
           <AllUserList />
         </Accordion.Item>
       </Accordion>

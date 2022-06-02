@@ -1,40 +1,19 @@
 import React, { useEffect, useState } from 'react'
 import { Category } from '../../common/types'
-import { Button, Card, createStyles, Group, Modal, Text } from '@mantine/core'
+import { Button, Card, Group, Modal, Text } from '@mantine/core'
 import {
   deleteCategory,
   getCategoryDetails,
 } from '../../actions/CategoryActions'
 import CategoryForm from '../input-forms/CategoryForm'
+import { styles } from '../../common/styles'
 
 type IProps = {
   categoryId: string
 }
 
-const useStyles = createStyles((theme) => ({
-  card: {
-    backgroundColor:
-      theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.white,
-  },
-  section: {
-    borderBottom: `1px solid ${
-      theme.colorScheme === 'dark' ? theme.colors.dark[4] : theme.colors.gray[3]
-    }`,
-    paddingLeft: theme.spacing.md,
-    paddingRight: theme.spacing.md,
-    paddingBottom: theme.spacing.md,
-    fontSize: theme.fontSizes.md,
-    fontWeight: 500,
-  },
-  label: {
-    textTransform: 'uppercase',
-    fontSize: theme.fontSizes.xs,
-    fontWeight: 700,
-  },
-}))
-
 export default function CategoryDetails(props: IProps) {
-  const { classes } = useStyles()
+  const { classes } = styles()
   const { categoryId } = props
   const [deleteModalOpened, setDeleteModalOpened] = useState(false)
   const [editModalOpened, setEditModalOpened] = useState(false)
@@ -135,13 +114,13 @@ export default function CategoryDetails(props: IProps) {
 
       {!isLoading && !isError && (
         <Card withBorder radius="md" p="md" className={classes.card}>
-          <Card.Section className={classes.section}>
+          <Card.Section className={classes.borderSection}>
             <Text size="md" mt="xs">
               {categoryData.title}
             </Text>
             <Text size={'xs'}>ID: {categoryData.id}</Text>
           </Card.Section>
-          <Card.Section className={classes.section}>
+          <Card.Section className={classes.borderSection}>
             <Text mt="md" className={classes.label} color="dimmed">
               Description:
             </Text>
@@ -149,7 +128,7 @@ export default function CategoryDetails(props: IProps) {
               {categoryData.description}
             </Text>
           </Card.Section>
-          <Card.Section className={classes.section}>
+          <Card.Section className={classes.borderSection}>
             <Group position="left" mt="xl">
               {deleteModal}
               <Button color={'red'} onClick={() => setDeleteModalOpened(true)}>
