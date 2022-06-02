@@ -79,4 +79,8 @@ export const styles = createStyles((theme) => ({
     justifyContent: 'space-between',
     alignItems: 'center',
   },
+
+  simpleBorder: {
+    border: '1px solid',
+  },
 }))

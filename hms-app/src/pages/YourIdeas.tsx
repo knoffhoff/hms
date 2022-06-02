@@ -7,8 +7,10 @@ import HackathonSelectDropdown, {
   HackathonDropdownMode,
 } from '../components/HackathonSelectDropdown'
 import RelevantIdeasLoader from '../components/RelevantIdeasLoader'
+import { styles } from '../common/styles'
 
 export default function YourIdeas() {
+  const { classes } = styles()
   const [participantId, setParticipantId] = useState('')
   const userID = '629f52c9-df29-491b-82a4-bdd80806338d'
   const [selectedHackathonId, setSelectedHackathonId] = useState('')
@@ -70,7 +72,7 @@ export default function YourIdeas() {
                 {!(hackathon.endDate < today) && (
                   <Accordion mb={30} pt={10} iconPosition="left">
                     <Accordion.Item
-                      style={{ border: '1px solid' }}
+                      className={classes.simpleBorder}
                       label={'Create new idea'}
                     >
                       <IdeaForm
