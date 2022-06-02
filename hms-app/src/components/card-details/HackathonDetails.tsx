@@ -314,7 +314,7 @@ export default function HackathonDetails(props: IProps) {
               >
                 <Accordion iconPosition="right">
                   <Accordion.Item
-                    style={{ border: '1px solid' }}
+                    className={classes.simpleBorder}
                     label={'Add Category'}
                   >
                     <CategoryForm
