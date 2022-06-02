@@ -1,17 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import {
-  Hackathon,
-  HackathonPreview,
-  HackathonDropdownMode,
-} from '../common/types'
-import {
-  getHackathonDetails,
-  getListOfHackathons,
-} from '../actions/HackathonActions'
-import HackathonSelectDropdown from '../components/HackathonSelectDropdown'
+import { HackathonPreview } from '../common/types'
+import { Stepper, Title, Text } from '@mantine/core'
+import { styles } from '../common/styles'
 
 function Home() {
-  const { classes } = useStyles()
+  const { classes } = styles()
 
   const [nextHackathon, setNextHackathon] = useState<HackathonPreview>({
     endDate: new Date(),

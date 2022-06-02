@@ -1,10 +1,8 @@
 import { Group, Button, Card, Accordion } from '@mantine/core'
 import React, { useEffect, useState } from 'react'
 import { getListOfHackathons } from '../../actions/HackathonActions'
-import { HackathonPreview } from '../../common/types'
-import HackathonDetails, {
-  HackathonDetailsType,
-} from '../card-details/HackathonDetails'
+import { HackathonDetailsType, HackathonPreview } from '../../common/types'
+import HackathonDetails from '../card-details/HackathonDetails'
 import { styles } from '../../common/styles'
 
 function AllHackathonList() {

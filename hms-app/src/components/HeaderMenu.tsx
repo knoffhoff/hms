@@ -1,16 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import {
-  Header,
-  Menu,
-  Group,
-  Burger,
-  Container,
-  Avatar,
-} from '@mantine/core'
+import { Header, Menu, Group, Burger, Container, Avatar } from '@mantine/core'
 import { useBooleanToggle } from '@mantine/hooks'
 import { SwitchToggle } from './ThemeSwitchToggle'
 import { styles } from '../common/styles'
+import { HackathonPreview } from '../common/types'
+import { getListOfHackathons } from '../actions/HackathonActions'
 
 interface HeaderSearchProps {
   links: {
@@ -70,7 +65,7 @@ export default function HeaderMenu({ links }: HeaderSearchProps) {
   const smallScreenMenu = (
     <Menu
       opened={opened}
-      className={classes.menu}
+      className={classes.headerBurger}
       control={
         <Burger opened={opened} onClick={() => toggleOpened()} size="sm" />
       }
