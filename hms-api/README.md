@@ -26,8 +26,8 @@ the [Serverless](https://www.serverless.com/framework/docs) framework.
 ### Running Locally
 
 When running on the HMS API locally for development and testing purposes, the AWS resources are mocked
-using [LocalStack](https://localstack.cloud/) inside of [Docker](https://docs.docker.com/get-started/). This allows for
-developers to work and test in a realistic environment without occurring any additional costs.
+using the Plugins: [Serverless Offline](https://www.serverless.com/plugins/serverless-offline/) and [Serverless DynamoDB Local](https://www.serverless.com/plugins/serverless-dynamodb-local). This allows for
+developers to work and test in a local environment without occurring any additional costs.
 
 ## Application Structure
 
@@ -40,17 +40,15 @@ in the Handler layer by use of the [handler-wrapper](src/handler/handler-wrapper
 
 In order to develop for the HMS API one will need a number of tools and languages installed on their system:
 
-| Tool        | Installation Instructions                                                     | Purpose                             |
-|-------------|-------------------------------------------------------------------------------|-------------------------------------|
-| NVM         | https://github.com/nvm-sh/nvm#installing-and-updating                         | Installing and managing Node.js/NPM |
-| Node.js     | https://github.com/nvm-sh/nvm#usage                                           | Writing code                        |
-| NPM         | https://github.com/nvm-sh/nvm#usage                                           | Node package management             |
-| Jest        | `npm install jest --global`                                                   | Running unit tests                  |
-| Serverless  | https://www.serverless.com/framework/docs/getting-started                     | Building and deploying code         |
-| Docker      | https://docs.docker.com/get-docker                                            | Running LocalStack                  |
-| Python3/PIP | https://www.python.org/downloads                                              | Installing LocalStack               |
-| Localstack  | https://github.com/localstack/localstack#installing                           | Mocking AWS resources               |
-| AWS CLI     | https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html | Making requests to LocalStack/AWS   |
+| Tool       | Installation Instructions                                                     | Purpose                             |
+|------------|-------------------------------------------------------------------------------|-------------------------------------|
+| NVM        | https://github.com/nvm-sh/nvm#installing-and-updating                         | Installing and managing Node.js/NPM |
+| Node.js    | https://github.com/nvm-sh/nvm#usage                                           | Writing code                        |
+| NPM        | https://github.com/nvm-sh/nvm#usage                                           | Node package management             |
+| Jest       | `npm install jest --global`                                                   | Running unit tests                  |
+| Serverless | https://www.serverless.com/framework/docs/getting-started                     | Building and deploying code         |
+| AWS CLI    | https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html | Making requests to LocalStack/AWS   |
+| Java       |                                                                               | Installing DynamoDB Local           |
 
 ### First Time Setup
 
@@ -59,6 +57,11 @@ Node.js packages. This can be accomplished by running the following from within 
 
 ```shell
 npm install
+```
+followed by:
+
+```shell
+sls dynamodb install
 ```
 
 Anytime a package in [package.json](package.json) is added or updated this should be run again to
@@ -101,66 +104,11 @@ sls invoke local --function <function_name>
 To make HTTP requests to the HMS API while using a Jetbrains IDE you can make use of the `xxx.http` files in
 the [dev](dev) folder in this repository.
 
-#### Local Testing
-
-In order for the `xxx.http` files to run properly using the `local` environment they need to have the correct `api_id`
-set. This is a value from API gateway and is regenerated for every new localstack docker container that is started. The
-value is printed out during the startup of the localstack image, but can be retrieved at any time using the AWS CLI. To
-do so run the following AWS CLI command in your terminal:
-
-```shell
-aws --endpoint-url=http://localhost:4566 --region eu-central-1 apigateway get-rest-apis
-```
-
-That should output something like:
-
-```json
-{
-  "items": [
-    {
-      "id": "wvba2myirg",
-      "name": "local-hms-api",
-      "description": "",
-      "createdDate": 1649401759,
-      "version": "V1",
-      "binaryMediaTypes": [],
-      "apiKeySource": "HEADER",
-      "endpointConfiguration": {
-        "types": [
-          "EDGE"
-        ]
-      },
-      "tags": {},
-      "disableExecuteApiEndpoint": false
-    }
-  ]
-}
-```
-
-The value needed is the one in the `id` field. Copy that value and paste it into
-the [http-client.env.json](dev/http/http-client.env.json) file in the `local.api_id` field:
-
-```json
-{
-  "local": {
-    "api_id": "wvba2myirg"
-  }
-}
-```
 
 ##### Mock Data
 
-To facilitate manual testing of the HMS-App and HMS-API mock data can be loaded into the database. This is performed by
-using the [add_mock_data.sh](dev/init/add_mock_data.sh) script. This should be done **AFTER** starting up the HMS-API
-locally and will make requests using the AWS CLI.
-
-On Linux/OSX run:
-
-```shell
-./add_mock_data.sh
-```
-
-At present there is no Windows version of this file, but can be added when the need arises.
+To facilitate manual testing of the HMS-App and HMS-API mock data can be loaded into the database. This migrating and
+seeding the Database is performed automatically with sls offline and can be adjusted in serverless.yml.
 
 ## Deploying
 
@@ -179,7 +127,7 @@ found [here](https://www.serverless.com/framework/docs/providers/aws/cli-referen
 **THIS SECTION IS INCOMPLETE AND NEEDS SOME WORK**
 
 [//]: # (TODO currently this needs to be run twice... it is like Serverless doesn't wait for LocalStack to be running properly :shrug:)
-In order to start up the LocalStack environment and deploy the HMS API locally you can run:
+In order to start up the HMS API locally you can run:
 
 ```shell
 npm start
