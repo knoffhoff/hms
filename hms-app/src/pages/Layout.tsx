@@ -8,6 +8,7 @@ import {
 } from '@mantine/core'
 import HeaderMenu from '../components/HeaderMenu'
 import { useLocalStorage } from '../common/localStorage'
+import {useAppDispatch, useAppSelector} from "../hooks";
 
 const menuLinks = [
   { link: '', label: 'Home' },
@@ -33,6 +34,8 @@ const toggleColorScheme = (colorScheme: ColorScheme) =>
   colorScheme === 'dark' ? 'light' : 'dark'
 
 const Layout = () => {
+  const dispatch = useAppDispatch()
+
   const [colorScheme, setColorScheme] = useLocalStorage<ColorScheme>(
     defaultColorSchemeLocalStorageKey,
     defaultColorScheme

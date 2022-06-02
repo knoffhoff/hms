@@ -159,12 +159,23 @@ export default function HeaderMenu({ links }: HeaderSearchProps) {
               JP
             </Avatar>
           </Group>
-          <Burger
-            opened={opened}
-            onClick={() => toggleOpened()}
-            className={classes.burger}
-            size="sm"
-          />
+          <Menu
+              delay={0}
+              transitionDuration={0}
+              placement="end"
+              gutter={1}
+              control={
+                <Burger
+                    opened={opened}
+                    onClick={() => toggleOpened()}
+                    className={classes.burger}
+                    size="sm"
+                />
+              }>
+            <Menu.Item>qwe</Menu.Item>
+            <Menu.Item>qwe</Menu.Item>
+            <Menu.Item>qwe</Menu.Item>
+          </Menu>
         </div>
       </Container>
     </Header>

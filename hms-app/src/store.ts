@@ -1,12 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit'
-import counterReducer from './features/counter/counterSlice'
+import hackathonReducer from './common/redux/hackathonSlice'
 
 export const store = configureStore({
   reducer: {
-    counter: counterReducer,
-    /*posts: postsReducer,
-    comments: commentsReducer,
-    users: usersReducer*/
+    hackathons: hackathonReducer,
+
   },
 })
 

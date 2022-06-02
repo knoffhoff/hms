@@ -1,7 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { HackathonPreview } from '../common/types'
+import { useAppSelector, useAppDispatch } from '../hooks'
 
 function Home() {
+  const hackathonState = useAppSelector((state) => state.hackathons)
+  const dispatch = useAppDispatch()
+
   const today = new Date()
   today.setHours(0, 0, 0, 0)
   const [nextHackathon, setNextHackathon] = useState<HackathonPreview>({
@@ -12,14 +16,13 @@ function Home() {
   })
 
   useEffect(() => {
-    if (localStorage.getItem('nextHackathon')) {
-      setNextHackathon(JSON.parse(localStorage.getItem('nextHackathon')!))
+    if (hackathonState.hackathons.length > 0) {
+      const next = hackathonState.hackathons[0]
+      if (next) {
+        setNextHackathon(next)
+      }
     }
-  }, [])
-
-  useEffect(() => {
-    console.log('huhu')
-  }, [nextHackathon])
+  },[]);
 
   function timeTillNextHackathon() {
     return !!nextHackathon.id
