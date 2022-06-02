@@ -1,7 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import {
-  createStyles,
   Header,
   Menu,
   Group,
@@ -9,57 +8,11 @@ import {
   Burger,
   Container,
   Avatar,
-  useMantineColorScheme,
 } from '@mantine/core'
 import { useBooleanToggle } from '@mantine/hooks'
 import { ChevronDown } from 'tabler-icons-react'
 import { SwitchToggle } from './ThemeSwitchToggle'
-
-const useStyles = createStyles((theme) => ({
-  inner: {
-    height: 56,
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-
-  links: {
-    [theme.fn.smallerThan('sm')]: {
-      display: 'none',
-    },
-  },
-
-  burger: {
-    [theme.fn.largerThan('sm')]: {
-      display: 'none',
-    },
-  },
-
-  link: {
-    display: 'block',
-    lineHeight: 1,
-    padding: '8px 12px',
-    borderRadius: theme.radius.sm,
-    textDecoration: 'none',
-    color:
-      theme.colorScheme === 'dark'
-        ? theme.colors.dark[0]
-        : theme.colors.gray[7],
-    fontSize: theme.fontSizes.sm,
-    fontWeight: 500,
-
-    '&:hover': {
-      backgroundColor:
-        theme.colorScheme === 'dark'
-          ? theme.colors.dark[6]
-          : theme.colors.gray[0],
-    },
-  },
-
-  linkLabel: {
-    marginRight: 5,
-  },
-}))
+import { styles } from '../common/styles'
 
 interface HeaderSearchProps {
   links: {
@@ -70,10 +23,8 @@ interface HeaderSearchProps {
 }
 
 export default function HeaderMenu({ links }: HeaderSearchProps) {
-  const { colorScheme, toggleColorScheme } = useMantineColorScheme()
-  const dark = colorScheme === 'dark'
   const [opened, toggleOpened] = useBooleanToggle(false)
-  const { classes } = useStyles()
+  const { classes } = styles()
 
   const items = links.map((link) => {
     const menuItems = link.links?.map((item) => (
@@ -113,9 +64,9 @@ export default function HeaderMenu({ links }: HeaderSearchProps) {
   return (
     <Header height={56}>
       <Container>
-        <div className={classes.inner}>
+        <div className={classes.header}>
           <h1>HMS</h1>
-          <Group spacing={5} className={classes.links}>
+          <Group spacing={5} className={classes.headerLinks}>
             <SwitchToggle />
             {items}
             <Avatar color="indigo" radius="xl">
@@ -125,7 +76,7 @@ export default function HeaderMenu({ links }: HeaderSearchProps) {
           <Burger
             opened={opened}
             onClick={() => toggleOpened()}
-            className={classes.burger}
+            className={classes.headerBurger}
             size="sm"
           />
         </div>

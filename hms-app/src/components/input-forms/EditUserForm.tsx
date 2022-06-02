@@ -2,7 +2,6 @@ import {
   Textarea,
   Group,
   Button,
-  createStyles,
   Card,
   CheckboxGroup,
   Checkbox,
@@ -13,31 +12,14 @@ import { CheckIcon } from '@modulz/radix-icons'
 import { editUser, getUserDetails } from '../../actions/UserActions'
 import { SkillPreview } from '../../common/types'
 import { getListOfSkills } from '../../actions/SkillActions'
+import { styles } from '../../common/styles'
 
 type IProps = {
   userId: string
 }
 
-const useStyles = createStyles((theme) => ({
-  card: {
-    backgroundColor:
-      theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.white,
-  },
-  section: {
-    borderBottom: `1px solid ${
-      theme.colorScheme === 'dark' ? theme.colors.dark[4] : theme.colors.gray[3]
-    }`,
-    paddingLeft: theme.spacing.md,
-    paddingRight: theme.spacing.md,
-    paddingBottom: theme.spacing.md,
-    textTransform: 'uppercase',
-    fontSize: theme.fontSizes.md,
-    fontWeight: 500,
-  },
-}))
-
 export default function EditUserForm(props: IProps) {
-  const { classes } = useStyles()
+  const { classes } = styles()
   const { userId } = props
   const [isError, setIsError] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
@@ -133,7 +115,7 @@ export default function EditUserForm(props: IProps) {
       )}
       {!isLoading && (
         <Card withBorder radius="md" p="md" className={classes.card}>
-          <Card.Section className={classes.section}>
+          <Card.Section className={classes.borderSection}>
             <Textarea
               label="First Name"
               mt="sm"
@@ -146,7 +128,7 @@ export default function EditUserForm(props: IProps) {
               value={user.firstName}
             />
           </Card.Section>
-          <Card.Section className={classes.section}>
+          <Card.Section className={classes.borderSection}>
             <Textarea
               label="Last Name"
               mt="sm"
@@ -158,7 +140,7 @@ export default function EditUserForm(props: IProps) {
               value={user.lastName}
             />
           </Card.Section>
-          <Card.Section className={classes.section}>
+          <Card.Section className={classes.borderSection}>
             <Textarea
               label="E-mail"
               mt="sm"
@@ -170,7 +152,7 @@ export default function EditUserForm(props: IProps) {
               value={user.emailAddress}
             />
           </Card.Section>
-          <Card.Section className={classes.section}>
+          <Card.Section className={classes.borderSection}>
             <CheckboxGroup
               mt="sm"
               color="gray"

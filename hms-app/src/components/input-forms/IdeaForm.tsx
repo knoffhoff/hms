@@ -4,7 +4,6 @@ import {
   Button,
   CheckboxGroup,
   Checkbox,
-  createStyles,
   Card,
   Text,
 } from '@mantine/core'
@@ -19,7 +18,8 @@ import { getListOfSkills } from '../../actions/SkillActions'
 import { getListOfCategories } from '../../actions/CategoryActions'
 import { showNotification, updateNotification } from '@mantine/notifications'
 import { CheckIcon } from '@modulz/radix-icons'
-import { createIdea, editIdea, getIdeaDetails } from '../../actions/IdeaActions'
+import { createIdea, editIdea } from '../../actions/IdeaActions'
+import { styles } from '../../common/styles'
 
 type IProps = {
   hackathon: HackathonPreview
@@ -30,27 +30,9 @@ type IProps = {
   idea?: Idea
 }
 
-const useStyles = createStyles((theme) => ({
-  card: {
-    backgroundColor:
-      theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.white,
-  },
-  section: {
-    borderBottom: `1px solid ${
-      theme.colorScheme === 'dark' ? theme.colors.dark[4] : theme.colors.gray[3]
-    }`,
-    paddingLeft: theme.spacing.md,
-    paddingRight: theme.spacing.md,
-    paddingBottom: theme.spacing.md,
-    textTransform: 'uppercase',
-    fontSize: theme.fontSizes.md,
-    fontWeight: 500,
-  },
-}))
-
 function IdeaForm(props: IProps) {
   const { hackathon, participantId, context, ideaId, setOpened, idea } = props
-  const { classes } = useStyles()
+  const { classes } = styles()
   const [isLoading, setIsLoading] = useState(true)
   const [buttonIsDisabled, setButtonIsDisabled] = useState(false)
   const [availableSkills, setAvailableSkills] = useState({
@@ -211,10 +193,10 @@ function IdeaForm(props: IProps) {
         {isLoading && <div>Loading relevant data...</div>}
         {!isLoading && (
           <div>
-            <Card.Section className={classes.section}>
+            <Card.Section className={classes.borderSection}>
               <Text mt="sm">hackathon: {hackathon.title}</Text>
             </Card.Section>
-            <Card.Section className={classes.section}>
+            <Card.Section className={classes.borderSection}>
               <Textarea
                 label="Title"
                 mt="sm"
@@ -227,7 +209,7 @@ function IdeaForm(props: IProps) {
                 value={ideaText.title}
               />
             </Card.Section>
-            <Card.Section className={classes.section}>
+            <Card.Section className={classes.borderSection}>
               <Textarea
                 mt="sm"
                 label="Description"
@@ -241,7 +223,7 @@ function IdeaForm(props: IProps) {
                 value={ideaText.description}
               />
             </Card.Section>
-            <Card.Section className={classes.section}>
+            <Card.Section className={classes.borderSection}>
               <Textarea
                 label="Problem"
                 mt="sm"
@@ -254,7 +236,7 @@ function IdeaForm(props: IProps) {
                 value={ideaText.problem}
               />
             </Card.Section>
-            <Card.Section className={classes.section}>
+            <Card.Section className={classes.borderSection}>
               <Textarea
                 label="Goal"
                 mt="sm"
@@ -269,7 +251,7 @@ function IdeaForm(props: IProps) {
             </Card.Section>
 
             <>
-              <Card.Section className={classes.section}>
+              <Card.Section className={classes.borderSection}>
                 <CheckboxGroup
                   mt="sm"
                   color="gray"
@@ -283,7 +265,7 @@ function IdeaForm(props: IProps) {
                   {skillsList}
                 </CheckboxGroup>
               </Card.Section>
-              <Card.Section className={classes.section}>
+              <Card.Section className={classes.borderSection}>
                 <CheckboxGroup
                   mt="sm"
                   color="gray"
