@@ -47,8 +47,8 @@ In order to develop for the HMS API one will need a number of tools and language
 | NPM        | https://github.com/nvm-sh/nvm#usage                                           | Node package management             |
 | Jest       | `npm install jest --global`                                                   | Running unit tests                  |
 | Serverless | https://www.serverless.com/framework/docs/getting-started                     | Building and deploying code         |
-| AWS CLI    | https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html | Making requests to LocalStack/AWS   |
-| Java       |                                                                               | Installing DynamoDB Local           |
+| AWS CLI    | https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html | Making requests to AWS              |
+| Java       | https://sdkman.io/                                                            | Installing DynamoDB Local           |
 
 ### First Time Setup
 

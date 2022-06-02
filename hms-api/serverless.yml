@@ -11,7 +11,7 @@ custom:
       - local
     start:
       port: 8000
-      inMemory: true
+      inMemory: false
       heapInitial: 200m
       heapMax: 1g
       migrate: true
