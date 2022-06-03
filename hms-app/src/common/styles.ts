@@ -1,6 +1,7 @@
 import { createStyles } from '@mantine/core'
 
 const borderRadius = 15
+const headerItemBorder = borderRadius / 2
 
 export const styles = createStyles((theme) => ({
   presentationsCards: {
@@ -63,7 +64,7 @@ export const styles = createStyles((theme) => ({
     display: 'block',
     lineHeight: 1,
     padding: '8px 12px',
-    borderRadius: borderRadius / 2,
+    borderRadius: headerItemBorder,
     textDecoration: 'none',
     color:
       theme.colorScheme === 'dark'

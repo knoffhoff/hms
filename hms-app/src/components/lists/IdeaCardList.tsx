@@ -1,5 +1,5 @@
 import React from 'react'
-import { Idea, IdeaCardTypes } from '../../common/types'
+import { Idea, IdeaCardType } from '../../common/types'
 import { Grid } from '@mantine/core'
 import IdeaDetails from '../card-details/IdeaDetails'
 
@@ -7,7 +7,7 @@ type IProps = {
   ideas: Idea[]
   isLoading: boolean
   columnSize: number
-  type: IdeaCardTypes
+  type: IdeaCardType
 }
 
 export default function IdeaCardList(props: IProps) {

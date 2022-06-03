@@ -6,7 +6,7 @@ import {
   Hackathon,
   Idea,
   HackathonDropdownMode,
-  IdeaCardTypes,
+  IdeaCardType,
 } from '../common/types'
 import {
   createHackathonParticipant,
@@ -171,7 +171,7 @@ function IdeaPortal() {
             <IdeaCardList
               ideas={filteredIdeas}
               columnSize={6}
-              type={IdeaCardTypes.Other}
+              type={IdeaCardType.IdeaPortal}
               isLoading={false}
             />
           </div>

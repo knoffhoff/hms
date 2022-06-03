@@ -10,11 +10,12 @@ export enum HackathonDetailsType {
   FullInfo = 'FULLINFO',
 }
 
-export enum IdeaCardTypes {
+export enum IdeaCardType {
   Owner = 'OWNER',
   Admin = 'ADMIN',
   Voting = 'VOTING',
-  Other = 'OTHER',
+  HackathonDetails = 'HACKATHON_DETAILS',
+  IdeaPortal = 'IDEA_PORTAL',
 }
 
 export enum HackathonStatus {

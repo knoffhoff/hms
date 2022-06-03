@@ -8,7 +8,7 @@ import {
   Hackathon,
   HackathonDetailsType,
   Idea,
-  IdeaCardTypes,
+  IdeaCardType,
 } from '../../common/types'
 import { getIdeaDetails } from '../../actions/IdeaActions'
 import {
@@ -190,7 +190,7 @@ export default function HackathonDetails(props: IProps) {
     >
       <IdeaDetails
         idea={idea}
-        type={IdeaCardTypes.Admin}
+        type={IdeaCardType.Admin}
         isLoading={isIdeaLoading}
       />
     </Accordion.Item>
@@ -276,7 +276,7 @@ export default function HackathonDetails(props: IProps) {
             <IdeaCardList
               ideas={relevantIdeaList}
               columnSize={6}
-              type={IdeaCardTypes.Other}
+              type={IdeaCardType.HackathonDetails}
               isLoading={isIdeaLoading}
             />
           </div>

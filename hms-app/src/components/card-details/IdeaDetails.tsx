@@ -13,7 +13,7 @@ import {
   useAccordionState,
   useMantineTheme,
 } from '@mantine/core'
-import { Idea, IdeaCardTypes } from '../../common/types'
+import { Idea, IdeaCardType } from '../../common/types'
 import { deleteIdea } from '../../actions/IdeaActions'
 import IdeaForm from '../input-forms/IdeaForm'
 import { styles } from '../../common/styles'
@@ -21,7 +21,7 @@ import { styles } from '../../common/styles'
 type IProps = {
   idea: Idea
   isLoading: boolean
-  type: IdeaCardTypes
+  type: IdeaCardType
 }
 
 export default function IdeaDetails(props: IProps) {
@@ -169,7 +169,7 @@ export default function IdeaDetails(props: IProps) {
     <>
       {!isLoading && (
         <Card withBorder className={classes.card}>
-          <Spoiler maxHeight={140} showLabel="Show more" hideLabel="Hide">
+          <Spoiler maxHeight={130} showLabel="Show more" hideLabel="Hide">
             <Card.Section className={classes.borderSection}>
               <Group noWrap>
                 <Group
@@ -201,7 +201,7 @@ export default function IdeaDetails(props: IProps) {
             </Card.Section>
           </Spoiler>
 
-          {type !== IdeaCardTypes.Voting && (
+          {type !== IdeaCardType.Voting && (
             <>
               <Card.Section className={classes.borderSection}>
                 <Text className={classes.label}>Skills required</Text>
@@ -217,7 +217,7 @@ export default function IdeaDetails(props: IProps) {
                 </Group>
               </Card.Section>
 
-              {type !== IdeaCardTypes.Admin && type !== IdeaCardTypes.Owner && (
+              {type === IdeaCardType.IdeaPortal && (
                 <Accordion
                   state={accordionState}
                   onChange={setAccordionState.setState}
@@ -240,7 +240,7 @@ export default function IdeaDetails(props: IProps) {
                 </Accordion>
               )}
 
-              {type === IdeaCardTypes.Owner && (
+              {type === IdeaCardType.Owner && (
                 <Accordion
                   state={accordionState}
                   onChange={setAccordionState.setState}
@@ -270,7 +270,7 @@ export default function IdeaDetails(props: IProps) {
                 </Accordion>
               )}
 
-              {type === IdeaCardTypes.Admin && (
+              {type === IdeaCardType.Admin && (
                 <>
                   <div>{ideaDetails()}</div>
                   <Group position="left" mt="xl">

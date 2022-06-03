@@ -3,7 +3,7 @@ import {
   Hackathon,
   HackathonDropdownMode,
   Idea,
-  IdeaCardTypes,
+  IdeaCardType,
   ParticipantPreview,
 } from '../common/types'
 import IdeaCardList from '../components/lists/IdeaCardList'
@@ -93,7 +93,7 @@ export default function YourIdeas() {
               <IdeaCardList
                 ideas={filteredIdeas}
                 columnSize={6}
-                type={IdeaCardTypes.Owner}
+                type={IdeaCardType.Owner}
                 isLoading={false}
               />
             </div>
