@@ -122,11 +122,10 @@ export default function CategoryForm(props: IProps) {
         </div>
       )}
       {!isLoading && (
-        <Card withBorder radius="md" p="md" className={classes.card}>
+        <Card withBorder className={classes.card}>
           <Card.Section className={classes.borderSection}>
             <Textarea
               label="Title"
-              mt="sm"
               required
               placeholder="Title"
               maxRows={1}
@@ -134,18 +133,19 @@ export default function CategoryForm(props: IProps) {
               onChange={handleChange}
               name="title"
               value={category.title}
+              className={classes.label}
             />
           </Card.Section>
           <Card.Section className={classes.borderSection}>
             <Textarea
               label="Description"
-              mt="sm"
               placeholder="Description"
               maxRows={1}
               autosize
               onChange={handleChange}
               name="description"
               value={category.description}
+              className={classes.label}
             />
           </Card.Section>
           <Group position="right" mt="xl">

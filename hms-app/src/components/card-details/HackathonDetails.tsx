@@ -4,16 +4,21 @@ import {
   getHackathonDetails,
 } from '../../actions/HackathonActions'
 import IdeaCardList from '../lists/IdeaCardList'
-import { Hackathon, HackathonDetailsType, Idea } from '../../common/types'
+import {
+  Hackathon,
+  HackathonDetailsType,
+  Idea,
+  IdeaCardType,
+} from '../../common/types'
 import { getIdeaDetails } from '../../actions/IdeaActions'
 import {
   Accordion,
   Button,
   Card,
   Group,
+  Modal,
   SimpleGrid,
   Text,
-  Modal,
 } from '@mantine/core'
 import ParticipantDetails from './ParticipantDetails'
 import IdeaDetails from './IdeaDetails'
@@ -183,7 +188,11 @@ export default function HackathonDetails(props: IProps) {
         </div>
       }
     >
-      <IdeaDetails idea={idea} type={'admin'} isLoading={isIdeaLoading} />
+      <IdeaDetails
+        idea={idea}
+        type={IdeaCardType.Admin}
+        isLoading={isIdeaLoading}
+      />
     </Accordion.Item>
   ))
 
@@ -199,23 +208,25 @@ export default function HackathonDetails(props: IProps) {
       onClose={() => setDeleteModalOpened(false)}
       withCloseButton={false}
     >
-      Are you sure you want to delete this hackathon?
-      <h4>Title: {hackathonData.title}</h4>
-      <h4>
+      <Text className={classes.text}>
+        Are you sure you want to delete this hackathon?
+      </Text>
+      <Text className={classes.title}>Title: {hackathonData.title}</Text>
+      <Text className={classes.title}>
         Start Date:
         {new Date(hackathonData.startDate).toDateString()}
-      </h4>
-      <h4>
+      </Text>
+      <Text className={classes.title}>
         End Date:
         {new Date(hackathonData.endDate).toDateString()}
-      </h4>
+      </Text>
       <Button color={'red'} onClick={() => deleteSelectedHackathon()}>
         Yes delete this hackathon
       </Button>
-      <p>
+      <Text className={classes.text}>
         (This window will automatically closed as soon as the hackathon is
         deleted)
-      </p>
+      </Text>
     </Modal>
   )
 
@@ -226,13 +237,13 @@ export default function HackathonDetails(props: IProps) {
       onClose={() => setEditModalOpened(false)}
       withCloseButton={false}
     >
-      Edit Hackathon
+      <Text className={classes.title}>Edit Hackathon</Text>
       <HackathonForm context={'edit'} hackathonId={hackathonData.id} />
       {isHackathonLoading && <div>Loading...</div>}
-      <p>
-        (This window will automatically close as soon as the category is
-        deleted)
-      </p>
+      <Text className={classes.text}>
+        (This window will automatically closed as soon as the hackathon is
+        changed)
+      </Text>
     </Modal>
   )
 
@@ -240,13 +251,13 @@ export default function HackathonDetails(props: IProps) {
     <>
       {isHackathonError && (
         <div>
-          <h3>Error loading hackathons</h3>
-          <p>something went wrong.</p>
+          <Text className={classes.title}>Error loading hackathons</Text>
+          <Text className={classes.text}>something went wrong.</Text>
         </div>
       )}
       {isHackathonLoading && (
         <div>
-          <h3>Hackathon details are loading...</h3>
+          <Text className={classes.text}>Hackathon details are loading...</Text>
         </div>
       )}
 
@@ -265,7 +276,7 @@ export default function HackathonDetails(props: IProps) {
             <IdeaCardList
               ideas={relevantIdeaList}
               columnSize={6}
-              type={HackathonDetailsType.Header}
+              type={IdeaCardType.HackathonDetails}
               isLoading={isIdeaLoading}
             />
           </div>
@@ -275,24 +286,22 @@ export default function HackathonDetails(props: IProps) {
         !isHackathonLoading &&
         !isHackathonError &&
         type === HackathonDetailsType.FullInfo && (
-          <Card withBorder radius="md" p="md" className={classes.card}>
+          <Card withBorder className={classes.card}>
             <Card.Section className={classes.borderSection}>
-              <Text size="md" mt="xs">
-                {hackathonData.title}
-              </Text>
-              <Text size={'xs'}>ID: {hackathonData.id}</Text>
+              <Text className={classes.title}>{hackathonData.title}</Text>
+              <Text className={classes.text}>ID: {hackathonData.id}</Text>
             </Card.Section>
 
             <Card.Section className={classes.borderSection}>
               <SimpleGrid cols={2} breakpoints={[{ maxWidth: 'sm', cols: 1 }]}>
                 <Card.Section>
-                  <Text size="sm" mt="xs">
+                  <Text className={classes.title}>
                     Start Date:{' '}
                     {new Date(hackathonData.startDate).toDateString()}
                   </Text>
                 </Card.Section>
                 <Card.Section>
-                  <Text size="sm" mt="xs">
+                  <Text className={classes.title}>
                     End Date: {new Date(hackathonData.endDate).toDateString()}
                   </Text>
                 </Card.Section>
@@ -302,14 +311,14 @@ export default function HackathonDetails(props: IProps) {
             <Accordion iconPosition="left" offsetIcon={false}>
               <Accordion.Item
                 label={
-                  <Text className={classes.label} color="dimmed">
+                  <Text className={classes.label}>
                     Categories ( {allCategories?.length} )
                   </Text>
                 }
               >
                 <Accordion iconPosition="right">
                   <Accordion.Item
-                    className={classes.simpleBorder}
+                    className={classes.borderAccordion}
                     label={'Add Category'}
                   >
                     <CategoryForm
@@ -326,7 +335,7 @@ export default function HackathonDetails(props: IProps) {
             <Accordion iconPosition="left" offsetIcon={false}>
               <Accordion.Item
                 label={
-                  <Text className={classes.label} color="dimmed">
+                  <Text className={classes.label}>
                     Participants ( {allParticipants?.length} )
                   </Text>
                 }
@@ -338,7 +347,7 @@ export default function HackathonDetails(props: IProps) {
             <Accordion iconPosition="left" offsetIcon={false}>
               <Accordion.Item
                 label={
-                  <Text className={classes.label} color="dimmed">
+                  <Text className={classes.label}>
                     Ideas ( {allIdeas?.length} )
                   </Text>
                 }

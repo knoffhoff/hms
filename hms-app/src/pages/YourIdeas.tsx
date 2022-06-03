@@ -3,6 +3,7 @@ import {
   Hackathon,
   HackathonDropdownMode,
   Idea,
+  IdeaCardType,
   ParticipantPreview,
 } from '../common/types'
 import IdeaCardList from '../components/lists/IdeaCardList'
@@ -73,10 +74,10 @@ export default function YourIdeas() {
             <div>
               <div>
                 {!(hackathon.endDate < today) && (
-                  <Accordion mb={30} pt={10} iconPosition="left">
+                  <Accordion>
                     <Accordion.Item
-                      className={classes.simpleBorder}
                       label={'Create new idea'}
+                      className={classes.borderAccordion}
                     >
                       <IdeaForm
                         ideaId={'null'}
@@ -92,7 +93,7 @@ export default function YourIdeas() {
               <IdeaCardList
                 ideas={filteredIdeas}
                 columnSize={6}
-                type={'owner'}
+                type={IdeaCardType.Owner}
                 isLoading={false}
               />
             </div>

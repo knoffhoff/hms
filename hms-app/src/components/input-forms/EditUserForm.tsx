@@ -114,11 +114,10 @@ export default function EditUserForm(props: IProps) {
         </div>
       )}
       {!isLoading && (
-        <Card withBorder radius="md" p="md" className={classes.card}>
+        <Card withBorder className={classes.card}>
           <Card.Section className={classes.borderSection}>
             <Textarea
               label="First Name"
-              mt="sm"
               required
               placeholder="First Name"
               maxRows={1}
@@ -126,40 +125,39 @@ export default function EditUserForm(props: IProps) {
               onChange={handleChange}
               name="First Name"
               value={user.firstName}
+              className={classes.label}
             />
           </Card.Section>
           <Card.Section className={classes.borderSection}>
             <Textarea
               label="Last Name"
-              mt="sm"
               placeholder="Last Name"
               maxRows={1}
               autosize
               onChange={handleChange}
               name="Last Name"
               value={user.lastName}
+              className={classes.label}
             />
           </Card.Section>
           <Card.Section className={classes.borderSection}>
             <Textarea
               label="E-mail"
-              mt="sm"
               placeholder="E-mail"
               maxRows={1}
               autosize
               onChange={handleChange}
               name="E-mail"
               value={user.emailAddress}
+              className={classes.label}
             />
           </Card.Section>
           <Card.Section className={classes.borderSection}>
             <CheckboxGroup
-              mt="sm"
-              color="gray"
               label="Skills"
-              spacing="md"
               onChange={setSkills}
               required
+              className={classes.label}
             >
               {skillsList}
             </CheckboxGroup>

@@ -189,17 +189,18 @@ function IdeaForm(props: IProps) {
 
   return (
     <>
-      <Card withBorder radius="md" p="md" className={classes.card}>
+      <Card withBorder className={classes.card}>
         {isLoading && <div>Loading relevant data...</div>}
         {!isLoading && (
           <div>
             <Card.Section className={classes.borderSection}>
-              <Text mt="sm">hackathon: {hackathon.title}</Text>
+              <Text className={classes.title}>
+                Hackathon: {hackathon.title}
+              </Text>
             </Card.Section>
             <Card.Section className={classes.borderSection}>
               <Textarea
                 label="Title"
-                mt="sm"
                 required
                 placeholder="Title"
                 maxRows={1}
@@ -207,11 +208,11 @@ function IdeaForm(props: IProps) {
                 onChange={handleChange}
                 name="title"
                 value={ideaText.title}
+                className={classes.label}
               />
             </Card.Section>
             <Card.Section className={classes.borderSection}>
               <Textarea
-                mt="sm"
                 label="Description"
                 required
                 placeholder="Description"
@@ -221,12 +222,12 @@ function IdeaForm(props: IProps) {
                 onChange={handleChange}
                 name="description"
                 value={ideaText.description}
+                className={classes.label}
               />
             </Card.Section>
             <Card.Section className={classes.borderSection}>
               <Textarea
                 label="Problem"
-                mt="sm"
                 placeholder="which problelm does it solve (optional)"
                 minRows={2}
                 maxRows={3}
@@ -234,12 +235,12 @@ function IdeaForm(props: IProps) {
                 onChange={handleChange}
                 name="problem"
                 value={ideaText.problem}
+                className={classes.label}
               />
             </Card.Section>
             <Card.Section className={classes.borderSection}>
               <Textarea
                 label="Goal"
-                mt="sm"
                 placeholder="the goal for the hackweek is... (optional)"
                 minRows={2}
                 maxRows={3}
@@ -247,34 +248,31 @@ function IdeaForm(props: IProps) {
                 onChange={handleChange}
                 name="goal"
                 value={ideaText.goal}
+                className={classes.label}
               />
             </Card.Section>
 
             <>
               <Card.Section className={classes.borderSection}>
                 <CheckboxGroup
-                  mt="sm"
-                  color="gray"
                   label="Required skills"
                   description="chose one or more required skills"
-                  spacing="md"
                   onChange={setSkills}
                   required
                   value={skills}
+                  className={classes.label}
                 >
                   {skillsList}
                 </CheckboxGroup>
               </Card.Section>
               <Card.Section className={classes.borderSection}>
                 <CheckboxGroup
-                  mt="sm"
-                  color="gray"
                   label="Category"
                   description="chose one or more categories"
-                  spacing="md"
                   onChange={setCategories}
                   required
                   value={categories}
+                  className={classes.label}
                 >
                   {categoriesList}
                 </CheckboxGroup>

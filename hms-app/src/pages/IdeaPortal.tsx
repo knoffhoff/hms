@@ -2,7 +2,12 @@ import React, { useEffect, useState } from 'react'
 import { Input, Group, Title, Button } from '@mantine/core'
 import { Search } from 'tabler-icons-react'
 import IdeaCardList from '../components/lists/IdeaCardList'
-import { Hackathon, Idea, HackathonDropdownMode } from '../common/types'
+import {
+  Hackathon,
+  Idea,
+  HackathonDropdownMode,
+  IdeaCardType,
+} from '../common/types'
 import {
   createHackathonParticipant,
   deleteParticipant,
@@ -166,7 +171,7 @@ function IdeaPortal() {
             <IdeaCardList
               ideas={filteredIdeas}
               columnSize={6}
-              type={'idea-portal'}
+              type={IdeaCardType.IdeaPortal}
               isLoading={false}
             />
           </div>
