@@ -82,17 +82,17 @@ function HackathonForm(props: IProps) {
 
   return (
     <>
-      <Card withBorder radius="md" p="md" className={classes.card}>
+      <Card withBorder className={classes.card}>
         <Card.Section className={classes.borderSection}>
           <Textarea
             label="Title"
-            mt="sm"
             required
             placeholder="Title"
             maxRows={1}
             autosize
             onChange={handleChange}
             name="title"
+            className={classes.label}
           />
         </Card.Section>
         <Card.Section className={classes.borderSection}>
@@ -103,6 +103,7 @@ function HackathonForm(props: IProps) {
               onChange={setStartDateValue}
               excludeDate={(date) => date < today}
               required
+              className={classes.label}
             />
             <DatePicker
               label={'End Date'}
@@ -110,6 +111,7 @@ function HackathonForm(props: IProps) {
               onChange={setEndDateValue}
               excludeDate={(date) => date < startDateValue!}
               required
+              className={classes.label}
             />
           </SimpleGrid>
         </Card.Section>

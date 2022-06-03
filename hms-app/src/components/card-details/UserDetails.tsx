@@ -64,17 +64,19 @@ export default function UserDetails(props: { userId: string }) {
       onClose={() => setDeleteModalOpened(false)}
       withCloseButton={false}
     >
-      Are you sure you want to delete this user?
-      <h4>
+      <Text className={classes.text}>
+        Are you sure you want to delete this user?
+      </Text>
+      <Text className={classes.title}>
         Name: {user.firstName} {user.lastName}
-      </h4>
-      <h4>E-mail: {user.emailAddress}</h4>
+      </Text>
+      <Text className={classes.title}>E-mail: {user.emailAddress}</Text>
       <Button color={'red'} onClick={() => deleteSelectedUser()}>
         Yes delete this user
       </Button>
-      <p>
+      <Text className={classes.text}>
         (This window will automatically closed as soon as the user is deleted)
-      </p>
+      </Text>
     </Modal>
   )
 
@@ -85,12 +87,12 @@ export default function UserDetails(props: { userId: string }) {
       onClose={() => setEditModalOpened(false)}
       withCloseButton={false}
     >
-      Edit User
+      <Text className={classes.title}>Edit User</Text>
       <EditUserForm userId={userId} />
       {isUserLoading && <div>Loading...</div>}
-      <p>
+      <Text className={classes.text}>
         (This window will automatically close as soon as the user is deleted)
-      </p>
+      </Text>
     </Modal>
   )
 
@@ -98,42 +100,36 @@ export default function UserDetails(props: { userId: string }) {
     <>
       {isUserError && !isUserLoading && (
         <div>
-          <h3>Error loading user</h3>
-          <p>something went wrong.</p>
+          <Text className={classes.title}>Error loading user</Text>
+          <Text className={classes.text}>something went wrong.</Text>
         </div>
       )}
       {isUserLoading && !isUserError && (
         <div>
-          <h3>User details are loading...</h3>
+          <Text className={classes.title}>User details are loading...</Text>
         </div>
       )}
 
       {!isUserLoading && !isUserError && (
-        <Card withBorder radius="md" p="md" className={classes.card}>
+        <Card withBorder className={classes.card}>
           <Card.Section className={classes.borderSection}>
-            <Text mt="md" className={classes.label} color="dimmed">
-              Name
-            </Text>
-            <Text size="md" mt="xs">
+            <Text className={classes.label}>Name</Text>
+            <Text className={classes.text}>
               {user.firstName} {user.lastName}
             </Text>
-            <Text size={'xs'}>ID: {user.id}</Text>
+            <Text size={'xs'}>User ID: {user.id}</Text>
             <Text size={'xs'}>
               Creation Date: {user.creationDate?.toString()}
             </Text>
           </Card.Section>
 
           <Card.Section className={classes.borderSection}>
-            <Text mt="md" className={classes.label} color="dimmed">
-              E-mail
-            </Text>
-            <Text size={'md'}>{user.emailAddress}</Text>
+            <Text className={classes.label}>E-mail</Text>
+            <Text className={classes.text}>{user.emailAddress}</Text>
           </Card.Section>
 
           <Card.Section className={classes.borderSection}>
-            <Text mt="md" className={classes.label} color="dimmed">
-              Roles
-            </Text>
+            <Text className={classes.label}>Roles</Text>
             <Group spacing={7} mt={5}>
               {user.roles?.map((role, index) => (
                 <Badge
@@ -147,9 +143,7 @@ export default function UserDetails(props: { userId: string }) {
           </Card.Section>
 
           <Card.Section className={classes.borderSection}>
-            <Text mt="md" className={classes.label} color="dimmed">
-              Skills
-            </Text>
+            <Text className={classes.label}>Skills</Text>
             <Group spacing={7} mt={5}>
               {user.skills?.map((skill, index) => (
                 <Badge

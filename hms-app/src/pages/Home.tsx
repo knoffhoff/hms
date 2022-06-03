@@ -72,7 +72,7 @@ function Home() {
   const timelineStepper = (
     <Stepper iconSize={35} active={active} breakpoint="sm" pt={15} pb={15}>
       <Stepper.Step
-        style={{ maxWidth: 175 }}
+        className={classes.stepperStep}
         loading={active === 0}
         label={getLabel(registrationOpenDate.getTime())}
         description={
@@ -81,7 +81,7 @@ function Home() {
         }
       />
       <Stepper.Step
-        style={{ maxWidth: 175 }}
+        className={classes.stepperStep}
         loading={active === 1}
         label={getLabel(registrationClosedDate.getTime())}
         description={
@@ -90,7 +90,7 @@ function Home() {
         }
       />
       <Stepper.Step
-        style={{ maxWidth: 175 }}
+        className={classes.stepperStep}
         loading={active === 2}
         label={getLabel(timeTillNextHackathonStart())}
         description={
@@ -98,7 +98,7 @@ function Home() {
         }
       />
       <Stepper.Step
-        style={{ maxWidth: 175 }}
+        className={classes.stepperStep}
         loading={active === 3}
         label={getLabel(timeTillNextHackathonEnd())}
         description={
@@ -106,7 +106,7 @@ function Home() {
         }
       />
       <Stepper.Step
-        style={{ maxWidth: 175 }}
+        className={classes.stepperStep}
         loading={active === 4}
         label={getLabel(timeTillNextHackathonEnd())}
         description={
@@ -138,11 +138,13 @@ function Home() {
             {Math.round(timeTillNextHackathonStart() / (1000 * 3600)) % 24}{' '}
             hours
           </Title>
-          <Text>Next Hackathon: {nextHackathon.title}</Text>
-          <Text>
+          <Text className={classes.title}>
+            Next Hackathon: {nextHackathon.title}
+          </Text>
+          <Text className={classes.title}>
             Start Date: {new Date(nextHackathon.startDate).toLocaleDateString()}
           </Text>
-          <Text>
+          <Text className={classes.title}>
             End Date: {new Date(nextHackathon.endDate).toLocaleDateString()}
           </Text>
           {timelineStepper}
@@ -151,8 +153,8 @@ function Home() {
 
       <div className={classes.container}>
         <div>
-          <Title order={3}>What is a Hack-week?</Title>
-          <Text>
+          <Text className={classes.title}>What is a Hack-week?</Text>
+          <Text className={classes.text}>
             In our case, a Hack-week is more or less self - explaining ;) we
             will have a 5-Day long Hack-week that starts on Monday with Idea
             Pitches and ends on Friday with some cool project presentations and
@@ -160,8 +162,8 @@ function Home() {
           </Text>
         </div>
         <div>
-          <Title order={3}>Why should I Participate?</Title>
-          <Text>
+          <Text className={classes.title}>Why should I Participate?</Text>
+          <Text className={classes.text}>
             Maybe you have a great idea that you have wanted to work on for
             years? Use the chance to build a prototype! Maybe you want to learn
             or test a new framework? Then this is your save space! You have a
@@ -170,22 +172,17 @@ function Home() {
         </div>
       </div>
 
-      <div
-        style={{
-          marginTop: 10,
-        }}
-        className={classes.container}
-      >
+      <div className={classes.container}>
         <div>
-          <Title order={3}>How to use this site?</Title>
-          <Text>
+          <Text className={classes.title}>How to use this site?</Text>
+          <Text className={classes.text}>
             In the HMS you will be able to participate in a Hackathon, submit
             ideas, see all other ideas and vote for the best idea in the end.
           </Text>
         </div>
         <div>
-          <Title order={3}>How to participate?</Title>
-          <Text>
+          <Text className={classes.title}>How to participate?</Text>
+          <Text className={classes.text}>
             If you want to participate in a Hackathon, navigate to the Idea
             Portal page, select a Hackathon and click on the participate button
           </Text>
@@ -193,8 +190,8 @@ function Home() {
           here--- ---add screenshot from participate button here---
         </div>
         <div>
-          <Title order={3}>How to find Ideas?</Title>
-          <Text>
+          <Text className={classes.title}>How to find Ideas?</Text>
+          <Text className={classes.text}>
             In the Idea Portal, you can select all upcoming Hackathons to see a
             list of submitted ideas. Also, you have the opportunity to search
             for specific idea titles or to only display your favorite ideas. The
@@ -208,8 +205,8 @@ function Home() {
           ---add screenshot of a expanded idea card---
         </div>
         <div>
-          <Title order={3}>How to submit Ideas?</Title>
-          <Text>
+          <Text className={classes.title}>How to submit Ideas?</Text>
+          <Text className={classes.text}>
             If you are already registered for a hackathon and want to submit
             your own ideas, navigate to the "Your Ideas" page. In the "Your
             Ideas" page, you can select the Hackathon you want to submit a new
@@ -224,17 +221,17 @@ function Home() {
           buttons---{' '}
         </div>
         <div>
-          <Title order={3}>How to find old Hackathons?</Title>
-          <Text>
+          <Text className={classes.title}>How to find old Hackathons?</Text>
+          <Text className={classes.text}>
             If you are interested in Past Hackathons or want to find an old idea
             that you remember, you can use the Archive. In the Archive you will
             find a selection of all past hackathons with their submitted ideas.
           </Text>
         </div>
         <div>
-          <Title order={3}>
+          <Text className={classes.title}>
             How the Voting and the Hackathon itself will work?
-          </Title>
+          </Text>
           ---add explanation about the voting system--- ---add space for
           specific explanation?---
         </div>

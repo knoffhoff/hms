@@ -22,22 +22,18 @@ export default function ParticipantDetails(props: IProps) {
 
   return (
     <>
-      <Card withBorder radius="md" p="md" className={classes.card}>
+      <Card withBorder className={classes.card}>
         <Card.Section className={classes.borderSection}>
-          <Text size="lg" mt="xs">
+          <Text className={classes.title}>
             {user.firstName} {user.lastName}
           </Text>
-          <Text size={'sm'}>Participant ID: {participantId}</Text>
-          <Text size={'sm'}>User ID: {user.id}</Text>
+          <Text className={classes.text}>Participant ID: {participantId}</Text>
+          <Text className={classes.text}>User ID: {user.id}</Text>
         </Card.Section>
 
         <Card.Section className={classes.borderSection}>
-          <Text mt="md" className={classes.label} color="dimmed">
-            E-mail:
-          </Text>
-          <Text size="md" mt="xs">
-            email needs to be added
-          </Text>
+          <Text className={classes.label}>E-mail:</Text>
+          <Text className={classes.text}>email needs to be added</Text>
         </Card.Section>
 
         <Card.Section className={classes.borderSection}>
@@ -47,18 +43,21 @@ export default function ParticipantDetails(props: IProps) {
             onClose={() => setOpened(false)}
             withCloseButton={false}
           >
-            Are you sure you want to delete this participant?
-            <h4>
+            <Text className={classes.text}>
+              Are you sure you want to delete this participant?
+            </Text>
+            <Text className={classes.title}>
               {user.firstName} {user.lastName}
-            </h4>
+            </Text>
             <Button color={'red'} onClick={() => deleteSelectedParticipant()}>
               Yes delete this participant
             </Button>
-            <p>
+            <Text className={classes.text}>
               (This window will automatically close as soon as the participant
               is deleted)
-            </p>
+            </Text>
           </Modal>
+
           <Group position="left" mt="xl">
             <Button color={'red'} onClick={() => setOpened(true)}>
               Delete

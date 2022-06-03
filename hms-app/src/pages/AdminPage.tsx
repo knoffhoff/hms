@@ -13,26 +13,26 @@ function AdminPage() {
       <h1>Hello Admin </h1>
       <h2>Nice to see you</h2>
 
-      <Accordion mb={30}>
+      <Accordion className={classes.accordionList}>
         <Accordion.Item
-          className={classes.simpleBorder}
+          className={classes.borderAccordion}
           label={'Create new hackathon'}
         >
           <HackathonForm hackathonId={null} context={'new'} />
         </Accordion.Item>
       </Accordion>
 
-      <Accordion mb={30}>
+      <Accordion className={classes.accordionList}>
         <Accordion.Item
-          className={classes.simpleBorder}
+          className={classes.borderAccordion}
           label={'Hackathon list'}
         >
           <AllHackathonList />
         </Accordion.Item>
       </Accordion>
 
-      <Accordion mb={30}>
-        <Accordion.Item className={classes.simpleBorder} label={'User list'}>
+      <Accordion className={classes.accordionList}>
+        <Accordion.Item className={classes.borderAccordion} label={'User list'}>
           <AllUserList />
         </Accordion.Item>
       </Accordion>

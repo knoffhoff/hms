@@ -10,6 +10,13 @@ export enum HackathonDetailsType {
   FullInfo = 'FULLINFO',
 }
 
+export enum IdeaCardTypes {
+  Owner = 'OWNER',
+  Admin = 'ADMIN',
+  Voting = 'VOTING',
+  Other = 'OTHER',
+}
+
 export enum HackathonStatus {
   RegistrationOpen = 'REGISTRATION_OPEN',
   RegistrationClosed = 'REGISTRATION_CLOSED',

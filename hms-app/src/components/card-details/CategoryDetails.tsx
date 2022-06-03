@@ -63,17 +63,19 @@ export default function CategoryDetails(props: IProps) {
       onClose={() => setDeleteModalOpened(false)}
       withCloseButton={false}
     >
-      Are you sure you want to delete this category?
-      <h4>Title: {categoryData.title}</h4>
+      <Text className={classes.text}>
+        Are you sure you want to delete this category?
+      </Text>
+      <Text className={classes.title}>Title: {categoryData.title}</Text>
       {!isLoading && (
         <Button color={'red'} onClick={() => deleteSelectedCategory()}>
           Yes delete this category
         </Button>
       )}
-      <p>
+      <Text className={classes.text}>
         (This window will automatically close as soon as the category is
         deleted)
-      </p>
+      </Text>
     </Modal>
   )
 
@@ -84,17 +86,17 @@ export default function CategoryDetails(props: IProps) {
       onClose={() => setEditModalOpened(false)}
       withCloseButton={false}
     >
-      Edit Category
+      <Text className={classes.title}>Edit Category</Text>
       <CategoryForm
         categoryId={categoryData.id}
         context={'edit'}
         hackathonId={''}
       />
       {isLoading && <div>Loading...</div>}
-      <p>
+      <Text className={classes.text}>
         (This window will automatically close as soon as the category is
         deleted)
-      </p>
+      </Text>
     </Modal>
   )
 
@@ -102,31 +104,25 @@ export default function CategoryDetails(props: IProps) {
     <>
       {isError && !isLoading && (
         <div>
-          <h3>Error loading hackathons</h3>
-          <p>something went wrong.</p>
+          <Text className={classes.title}>Error loading Category</Text>
+          <Text className={classes.text}>something went wrong.</Text>
         </div>
       )}
       {isLoading && !isError && (
         <div>
-          <h3>Category details are loading...</h3>
+          <Text className={classes.text}>Category details are loading...</Text>
         </div>
       )}
 
       {!isLoading && !isError && (
-        <Card withBorder radius="md" p="md" className={classes.card}>
+        <Card withBorder className={classes.card}>
           <Card.Section className={classes.borderSection}>
-            <Text size="md" mt="xs">
-              {categoryData.title}
-            </Text>
-            <Text size={'xs'}>ID: {categoryData.id}</Text>
+            <Text className={classes.title}>{categoryData.title}</Text>
+            <Text className={classes.text}>ID: {categoryData.id}</Text>
           </Card.Section>
           <Card.Section className={classes.borderSection}>
-            <Text mt="md" className={classes.label} color="dimmed">
-              Description:
-            </Text>
-            <Text size="md" mt="xs">
-              {categoryData.description}
-            </Text>
+            <Text className={classes.label}>Description:</Text>
+            <Text className={classes.text}>{categoryData.description}</Text>
           </Card.Section>
           <Card.Section className={classes.borderSection}>
             <Group position="left" mt="xl">

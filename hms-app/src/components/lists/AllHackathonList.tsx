@@ -54,7 +54,7 @@ function AllHackathonList() {
 
   return (
     <>
-      <Card withBorder radius="md" p="md" className={classes.card}>
+      <Card withBorder className={classes.card}>
         <Card.Section className={classes.borderSection}>
           <Group position="left" mt="xl">
             {!isLoading && <Button onClick={refreshList}>Refresh list</Button>}
