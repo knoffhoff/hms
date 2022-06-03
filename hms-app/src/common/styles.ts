@@ -63,7 +63,7 @@ export const styles = createStyles((theme) => ({
     display: 'block',
     lineHeight: 1,
     padding: '8px 12px',
-    borderRadius: theme.radius.sm,
+    borderRadius: borderRadius / 2,
     textDecoration: 'none',
     color:
       theme.colorScheme === 'dark'
