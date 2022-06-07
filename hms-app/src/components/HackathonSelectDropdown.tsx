@@ -1,38 +1,35 @@
 import React, { useEffect, useState } from 'react'
+import { getListOfHackathons } from '../actions/HackathonActions'
 import { Select, SelectItem } from '@mantine/core'
-import { HackathonPreview, parseHackathons } from '../common/types'
+import { HackathonPreview, HackathonDropdownMode } from '../common/types'
 
 type Props = {
   setHackathonId: (hackthonID: string) => void
   context: HackathonDropdownMode
 }
 
-export enum HackathonDropdownMode {
-  Archive = 'ARCHIVE',
-  IdeaPortal = 'IDEA_PORTAL',
-  Home = 'HOME',
-  YourIdeas = 'YOUR_IDEAS',
-}
-
 export default function HackathonSelectDropdown({
   setHackathonId,
   context,
 }: Props) {
-  const [hackathonList, setHackathonList] = useState<HackathonPreview[]>([])
+  const [isError, setIsError] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
+  const [hackathonList, setHackathonList] = useState<HackathonPreview[]>([])
   const today = new Date()
   today.setHours(0, 0, 0, 0)
 
   const loadHackathons = () => {
-    !!localStorage.getItem('hackathonList')
-      ? setHackathonList(
-          parseHackathons(JSON.parse(localStorage.getItem('hackathonList')!))
-        )
-      : setHackathonList([])
-
-    !!localStorage.getItem('hackathonList')
-      ? setIsLoading(false)
-      : setIsLoading(true)
+    getListOfHackathons().then(
+      (data) => {
+        setHackathonList(data)
+        setIsLoading(false)
+        setIsError(false)
+      },
+      () => {
+        setIsError(true)
+        setIsLoading(false)
+      }
+    )
   }
 
   function getHackathonsSelectItems(): SelectItem[] {
@@ -70,30 +67,20 @@ export default function HackathonSelectDropdown({
   }
 
   useEffect(() => {
-    localStorage.getItem('lastSelectedHackathonId')
-      ? setHackathonId(
-          JSON.parse(localStorage.getItem('lastSelectedHackathonId')!)
-        )
-      : console.log('no last hackathon')
-
     loadHackathons()
   }, [])
 
-  function onChange(value: string) {
-    localStorage.setItem('lastSelectedHackathonId', JSON.stringify(value))
-    setHackathonId(value)
-  }
-
   return (
     <>
-      {isLoading && <div>hackathon select is loading...</div>}
-      {!isLoading && (
+      {isError && <div>Ups something went wrong...</div>}
+      {isLoading && !isError && <div>hackathon select is loading...</div>}
+      {!isLoading && !isError && (
         <div style={{ width: 385 }}>
           <Select
             placeholder={'select a Hackathon'}
             maxDropdownHeight={280}
             data={getHackathonsSelectItems()}
-            onChange={onChange}
+            onChange={setHackathonId}
           />
         </div>
       )}

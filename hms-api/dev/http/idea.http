@@ -1,10 +1,10 @@
 ###
 # @name List all Ideas
-GET {{host}}/restapis/{{api_id}}/local/_user_request_/hackathon/{{hackathon_id}}/ideas
+GET {{host}}/hackathon/{{hackathon_id}}/ideas
 
 ###
 # @name Create Idea
-POST {{host}}/restapis/{{api_id}}/local/_user_request_/idea
+POST {{host}}/idea
 Content-Type: application/json
 
 {
@@ -22,7 +22,7 @@ Content-Type: application/json
 
 ###
 # @name Edit Idea
-PUT {{host}}/restapis/{{api_id}}/local/_user_request_/idea/{{idea_id}}
+PUT {{host}}/idea/{{idea_id}}
 Content-Type: application/json
 
 {
@@ -37,9 +37,13 @@ Content-Type: application/json
 }
 
 ###
+# @name Join Idea
+PUT {{host}}/restapis/{{api_id}}/local/_user_request_/idea/{{idea_id}}/join/{{participant_id}}
+
+###
 # @name Get Idea
-GET {{host}}/restapis/{{api_id}}/local/_user_request_/idea/{{idea_id}}
+GET {{host}}/idea/{{idea_id}}
 
 ###
 # @name Remove Idea
-DELETE {{host}}/restapis/{{api_id}}/local/_user_request_/idea/{{idea_id}}
+DELETE {{host}}/idea/{{idea_id}}

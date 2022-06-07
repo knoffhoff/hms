@@ -1,67 +1,51 @@
 import { Accordion, Title } from '@mantine/core'
 import {
   Hackathon,
-  HackathonPreview,
+  HackathonDropdownMode,
   Idea,
+  IdeaCardType,
   ParticipantPreview,
 } from '../common/types'
 import IdeaCardList from '../components/lists/IdeaCardList'
 import React, { useEffect, useState } from 'react'
 import IdeaForm from '../components/input-forms/IdeaForm'
-import HackathonSelectDropdown, {
-  HackathonDropdownMode,
-} from '../components/HackathonSelectDropdown'
 import RelevantIdeasLoader from '../components/RelevantIdeasLoader'
-import { IdeaDetailsCaller } from '../components/card-details/IdeaDetails'
+import { styles } from '../common/styles'
+import HackathonSelectDropdown from '../components/HackathonSelectDropdown'
 
 export default function YourIdeas() {
+  const { classes } = styles()
+  const [participantId, setParticipantId] = useState('')
   const userID = '629f52c9-df29-491b-82a4-bdd80806338d'
   const [selectedHackathonId, setSelectedHackathonId] = useState('')
   const [relevantIdeas, setRelevantIdeas] = useState<Idea[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [hackathon, setHackathon] = useState({
-    id: '',
-    title: '',
+    id: 'string',
+    title: 'string',
     startDate: new Date(),
     endDate: new Date(),
     participants: [],
     categories: undefined,
     ideas: [],
   } as Hackathon)
-  const [participantCheck, setParticipantCheck] = useState(false)
   const today = new Date()
-  today.setHours(0, 0, 0, 0)
-
-  const [nextHackathon, setNextHackathon] = useState<HackathonPreview>({
-    endDate: new Date(),
-    id: '',
-    startDate: new Date(),
-    title: '',
-  })
-
-  useEffect(() => {
-    if (localStorage.getItem('nextHackathon')) {
-      setNextHackathon(JSON.parse(localStorage.getItem('nextHackathon')!))
-    }
-  }, [])
-
-  useEffect(() => {
-    !!hackathon.id ? console.log('hm') : setHackathon(nextHackathon)
-  }, [nextHackathon])
 
   const filteredIdeas = relevantIdeas.filter((item) => {
     return item.owner?.user.id.includes(userID)
   })
 
-  const findParticipant: ParticipantPreview | void = hackathon.participants
-    ? hackathon.participants.find(
-        (participant) => participant.user.id === userID
-      )
-    : undefined
+  const userParticipant: ParticipantPreview = hackathon.participants?.find(
+    (participant) => participant.user.id === userID
+  )!
 
   useEffect(() => {
-    setParticipantCheck(!!findParticipant)
+    setParticipantId(userParticipant?.id)
   }, [hackathon])
+
+  function isParticipant(): boolean {
+    return !!participantId.toString()
+  }
 
   return (
     <>
@@ -78,7 +62,7 @@ export default function YourIdeas() {
         setLoading={setIsLoading}
       />
 
-      {!isLoading && !!hackathon.id && (
+      {!isLoading && (
         <div>
           <h2>{hackathon.title}</h2>
           <h2>
@@ -86,19 +70,19 @@ export default function YourIdeas() {
             {new Date(hackathon.endDate).toDateString()}
           </h2>
 
-          {participantCheck && (
+          {isParticipant() && (
             <div>
               <div>
                 {!(hackathon.endDate < today) && (
-                  <Accordion mb={30} pt={10} iconPosition="left">
+                  <Accordion>
                     <Accordion.Item
-                      style={{ border: '1px solid' }}
                       label={'Create new idea'}
+                      className={classes.borderAccordion}
                     >
                       <IdeaForm
                         ideaId={'null'}
                         hackathon={hackathon}
-                        participantId={findParticipant!.id}
+                        participantId={participantId}
                         context={'new'}
                       />
                     </Accordion.Item>
@@ -109,12 +93,12 @@ export default function YourIdeas() {
               <IdeaCardList
                 ideas={filteredIdeas}
                 columnSize={6}
-                type={IdeaDetailsCaller.Owner}
+                type={IdeaCardType.Owner}
                 isLoading={false}
               />
             </div>
           )}
-          {!participantCheck && (
+          {!isParticipant() && (
             <div>you haven't participated in this hackathon</div>
           )}
         </div>

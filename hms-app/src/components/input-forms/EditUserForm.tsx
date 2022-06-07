@@ -2,7 +2,6 @@ import {
   Textarea,
   Group,
   Button,
-  createStyles,
   Card,
   CheckboxGroup,
   Checkbox,
@@ -13,31 +12,14 @@ import { CheckIcon } from '@modulz/radix-icons'
 import { editUser, getUserDetails } from '../../actions/UserActions'
 import { SkillPreview } from '../../common/types'
 import { getListOfSkills } from '../../actions/SkillActions'
+import { styles } from '../../common/styles'
 
 type IProps = {
   userId: string
 }
 
-const useStyles = createStyles((theme) => ({
-  card: {
-    backgroundColor:
-      theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.white,
-  },
-  section: {
-    borderBottom: `1px solid ${
-      theme.colorScheme === 'dark' ? theme.colors.dark[4] : theme.colors.gray[3]
-    }`,
-    paddingLeft: theme.spacing.md,
-    paddingRight: theme.spacing.md,
-    paddingBottom: theme.spacing.md,
-    textTransform: 'uppercase',
-    fontSize: theme.fontSizes.md,
-    fontWeight: 500,
-  },
-}))
-
 export default function EditUserForm(props: IProps) {
-  const { classes } = useStyles()
+  const { classes } = styles()
   const { userId } = props
   const [isError, setIsError] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
@@ -132,11 +114,10 @@ export default function EditUserForm(props: IProps) {
         </div>
       )}
       {!isLoading && (
-        <Card withBorder radius="md" p="md" className={classes.card}>
-          <Card.Section className={classes.section}>
+        <Card withBorder className={classes.card}>
+          <Card.Section className={classes.borderSection}>
             <Textarea
               label="First Name"
-              mt="sm"
               required
               placeholder="First Name"
               maxRows={1}
@@ -144,40 +125,39 @@ export default function EditUserForm(props: IProps) {
               onChange={handleChange}
               name="First Name"
               value={user.firstName}
+              className={classes.label}
             />
           </Card.Section>
-          <Card.Section className={classes.section}>
+          <Card.Section className={classes.borderSection}>
             <Textarea
               label="Last Name"
-              mt="sm"
               placeholder="Last Name"
               maxRows={1}
               autosize
               onChange={handleChange}
               name="Last Name"
               value={user.lastName}
+              className={classes.label}
             />
           </Card.Section>
-          <Card.Section className={classes.section}>
+          <Card.Section className={classes.borderSection}>
             <Textarea
               label="E-mail"
-              mt="sm"
               placeholder="E-mail"
               maxRows={1}
               autosize
               onChange={handleChange}
               name="E-mail"
               value={user.emailAddress}
+              className={classes.label}
             />
           </Card.Section>
-          <Card.Section className={classes.section}>
+          <Card.Section className={classes.borderSection}>
             <CheckboxGroup
-              mt="sm"
-              color="gray"
               label="Skills"
-              spacing="md"
               onChange={setSkills}
               required
+              className={classes.label}
             >
               {skillsList}
             </CheckboxGroup>

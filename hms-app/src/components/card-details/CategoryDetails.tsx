@@ -1,40 +1,19 @@
 import React, { useEffect, useState } from 'react'
 import { Category } from '../../common/types'
-import { Button, Card, createStyles, Group, Modal, Text } from '@mantine/core'
+import { Button, Card, Group, Modal, Text } from '@mantine/core'
 import {
   deleteCategory,
   getCategoryDetails,
 } from '../../actions/CategoryActions'
 import CategoryForm from '../input-forms/CategoryForm'
+import { styles } from '../../common/styles'
 
 type IProps = {
   categoryId: string
 }
 
-const useStyles = createStyles((theme) => ({
-  card: {
-    backgroundColor:
-      theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.white,
-  },
-  section: {
-    borderBottom: `1px solid ${
-      theme.colorScheme === 'dark' ? theme.colors.dark[4] : theme.colors.gray[3]
-    }`,
-    paddingLeft: theme.spacing.md,
-    paddingRight: theme.spacing.md,
-    paddingBottom: theme.spacing.md,
-    fontSize: theme.fontSizes.md,
-    fontWeight: 500,
-  },
-  label: {
-    textTransform: 'uppercase',
-    fontSize: theme.fontSizes.xs,
-    fontWeight: 700,
-  },
-}))
-
 export default function CategoryDetails(props: IProps) {
-  const { classes } = useStyles()
+  const { classes } = styles()
   const { categoryId } = props
   const [deleteModalOpened, setDeleteModalOpened] = useState(false)
   const [editModalOpened, setEditModalOpened] = useState(false)
@@ -84,17 +63,19 @@ export default function CategoryDetails(props: IProps) {
       onClose={() => setDeleteModalOpened(false)}
       withCloseButton={false}
     >
-      Are you sure you want to delete this category?
-      <h4>Title: {categoryData.title}</h4>
+      <Text className={classes.text}>
+        Are you sure you want to delete this category?
+      </Text>
+      <Text className={classes.title}>Title: {categoryData.title}</Text>
       {!isLoading && (
         <Button color={'red'} onClick={() => deleteSelectedCategory()}>
           Yes delete this category
         </Button>
       )}
-      <p>
+      <Text className={classes.text}>
         (This window will automatically close as soon as the category is
         deleted)
-      </p>
+      </Text>
     </Modal>
   )
 
@@ -105,17 +86,17 @@ export default function CategoryDetails(props: IProps) {
       onClose={() => setEditModalOpened(false)}
       withCloseButton={false}
     >
-      Edit Category
+      <Text className={classes.title}>Edit Category</Text>
       <CategoryForm
         categoryId={categoryData.id}
         context={'edit'}
         hackathonId={''}
       />
       {isLoading && <div>Loading...</div>}
-      <p>
+      <Text className={classes.text}>
         (This window will automatically close as soon as the category is
         deleted)
-      </p>
+      </Text>
     </Modal>
   )
 
@@ -123,33 +104,27 @@ export default function CategoryDetails(props: IProps) {
     <>
       {isError && !isLoading && (
         <div>
-          <h3>Error loading hackathons</h3>
-          <p>something went wrong.</p>
+          <Text className={classes.title}>Error loading Category</Text>
+          <Text className={classes.text}>something went wrong.</Text>
         </div>
       )}
       {isLoading && !isError && (
         <div>
-          <h3>Category details are loading...</h3>
+          <Text className={classes.text}>Category details are loading...</Text>
         </div>
       )}
 
       {!isLoading && !isError && (
-        <Card withBorder radius="md" p="md" className={classes.card}>
-          <Card.Section className={classes.section}>
-            <Text size="md" mt="xs">
-              {categoryData.title}
-            </Text>
-            <Text size={'xs'}>ID: {categoryData.id}</Text>
+        <Card withBorder className={classes.card}>
+          <Card.Section className={classes.borderSection}>
+            <Text className={classes.title}>{categoryData.title}</Text>
+            <Text className={classes.text}>ID: {categoryData.id}</Text>
           </Card.Section>
-          <Card.Section className={classes.section}>
-            <Text mt="md" className={classes.label} color="dimmed">
-              Description:
-            </Text>
-            <Text size="md" mt="xs">
-              {categoryData.description}
-            </Text>
+          <Card.Section className={classes.borderSection}>
+            <Text className={classes.label}>Description:</Text>
+            <Text className={classes.text}>{categoryData.description}</Text>
           </Card.Section>
-          <Card.Section className={classes.section}>
+          <Card.Section className={classes.borderSection}>
             <Group position="left" mt="xl">
               {deleteModal}
               <Button color={'red'} onClick={() => setDeleteModalOpened(true)}>

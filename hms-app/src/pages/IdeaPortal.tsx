@@ -4,9 +4,9 @@ import { Search } from 'tabler-icons-react'
 import IdeaCardList from '../components/lists/IdeaCardList'
 import {
   Hackathon,
-  HackathonPreview,
   Idea,
-  ParticipantPreview,
+  HackathonDropdownMode,
+  IdeaCardType,
 } from '../common/types'
 import {
   createHackathonParticipant,
@@ -14,11 +14,8 @@ import {
 } from '../actions/ParticipantActions'
 import { showNotification, updateNotification } from '@mantine/notifications'
 import { CheckIcon } from '@modulz/radix-icons'
-import HackathonSelectDropdown, {
-  HackathonDropdownMode,
-} from '../components/HackathonSelectDropdown'
+import HackathonSelectDropdown from '../components/HackathonSelectDropdown'
 import RelevantIdeasLoader from '../components/RelevantIdeasLoader'
-import { IdeaDetailsCaller } from '../components/card-details/IdeaDetails'
 
 function IdeaPortal() {
   const [searchTerm, setSearchTerm] = useState('')
@@ -32,34 +29,15 @@ function IdeaPortal() {
     hackathonId: '',
     participantId: '',
   })
-  const [hackathon, setHackathon] = useState<Hackathon>({
-    id: '',
-    title: '',
+  const [hackathonData, setHackathonData] = useState({
+    id: 'string',
+    title: 'string',
     startDate: new Date(),
     endDate: new Date(),
     participants: [],
     categories: undefined,
     ideas: [],
-  })
-  const today = new Date()
-  today.setHours(0, 0, 0, 0)
-
-  const [nextHackathon, setNextHackathon] = useState<HackathonPreview>({
-    endDate: new Date(),
-    id: '',
-    startDate: new Date(),
-    title: '',
-  })
-
-  useEffect(() => {
-    if (localStorage.getItem('nextHackathon')) {
-      setNextHackathon(JSON.parse(localStorage.getItem('nextHackathon')!))
-    }
-  }, [])
-
-  useEffect(() => {
-    !!hackathon.id ? console.log('hm') : setHackathon(nextHackathon)
-  }, [nextHackathon])
+  } as Hackathon)
 
   const handleChangeSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value)
@@ -69,11 +47,9 @@ function IdeaPortal() {
     return item.title?.toLowerCase().includes(searchTerm.toLowerCase())
   })
 
-  const findParticipant: ParticipantPreview | void = hackathon.participants
-    ? hackathon.participants.find(
-        (participant) => participant.user.id === participantInfo.userId
-      )
-    : undefined
+  const findParticipant = hackathonData.participants?.find(
+    (participant) => participant.user.id === participantInfo.userId
+  )!
 
   const addHackathonParticipant = () => {
     setButtonisDisabled(true)
@@ -119,7 +95,7 @@ function IdeaPortal() {
       autoClose: false,
       disallowClose: true,
     })
-    deleteParticipant(findParticipant!.id).then((r) => {
+    deleteParticipant(findParticipant.id).then((r) => {
       console.log('participant deleted with id ', r)
       setButtonisDisabled(false)
       setParticipantCheck(false)
@@ -142,7 +118,7 @@ function IdeaPortal() {
 
   useEffect(() => {
     setParticipantCheck(!!findParticipant)
-  }, [hackathon])
+  }, [hackathonData])
 
   return (
     <>
@@ -162,47 +138,44 @@ function IdeaPortal() {
       </Group>
 
       <RelevantIdeasLoader
-        setHackathon={setHackathon}
+        setHackathon={setHackathonData}
         setRelevantIdeas={setRelevantIdeas}
         selectedHackathonId={selectedHackathonId}
         setLoading={setIsLoading}
       />
 
-      {!isLoading && new Date(hackathon.endDate) > today && (
-        <div>
-          <Button
-            disabled={buttonIsDisabled}
-            onClick={
-              participantCheck
-                ? removeHackathonParticipant
-                : addHackathonParticipant
-            }
-            color={participantCheck ? 'red' : 'blue'}
-          >
-            {participantCheck ? 'Leave Hackathon' : 'Join Hackathon'}
-          </Button>
-          <div>
-            <h2>{hackathon.title}</h2>
-            <h2>
-              Start Date: {new Date(hackathon.startDate).toDateString()} End
-              Date: {new Date(hackathon.endDate).toDateString()}
-            </h2>
-            <h2>All Ideas ({filteredIdeas.length})</h2>
-
-            <div>
-              <IdeaCardList
-                ideas={filteredIdeas}
-                columnSize={6}
-                type={IdeaDetailsCaller.IdeaPortal}
-                isLoading={false}
-              />
-            </div>
-          </div>
-        </div>
+      {!isLoading && (
+        <Button
+          disabled={buttonIsDisabled}
+          onClick={
+            participantCheck
+              ? removeHackathonParticipant
+              : addHackathonParticipant
+          }
+          color={participantCheck ? 'red' : 'blue'}
+        >
+          {participantCheck ? 'Leave Hackathon' : 'Join Hackathon'}
+        </Button>
       )}
 
-      {!(new Date(hackathon.endDate) > today) && (
-        <div>To see past hackathons please visit the Archive</div>
+      {!isLoading && (
+        <div>
+          <h2>{hackathonData.title}</h2>
+          <h2>
+            Start Date: {new Date(hackathonData.startDate).toDateString()} End
+            Date: {new Date(hackathonData.endDate).toDateString()}
+          </h2>
+          <h2>All Ideas ({filteredIdeas.length})</h2>
+
+          <div>
+            <IdeaCardList
+              ideas={filteredIdeas}
+              columnSize={6}
+              type={IdeaCardType.IdeaPortal}
+              isLoading={false}
+            />
+          </div>
+        </div>
       )}
 
       {isLoading && selectedHackathonId && <div>Loading...</div>}

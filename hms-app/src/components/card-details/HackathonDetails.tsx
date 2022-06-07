@@ -4,59 +4,37 @@ import {
   getHackathonDetails,
 } from '../../actions/HackathonActions'
 import IdeaCardList from '../lists/IdeaCardList'
-import { Hackathon, Idea } from '../../common/types'
+import {
+  Hackathon,
+  HackathonDetailsType,
+  Idea,
+  IdeaCardType,
+} from '../../common/types'
 import { getIdeaDetails } from '../../actions/IdeaActions'
 import {
   Accordion,
   Button,
   Card,
-  createStyles,
   Group,
+  Modal,
   SimpleGrid,
   Text,
-  Modal,
 } from '@mantine/core'
 import ParticipantDetails from './ParticipantDetails'
-import IdeaDetails, { IdeaDetailsCaller } from './IdeaDetails'
+import IdeaDetails from './IdeaDetails'
 import CategoryForm from '../input-forms/CategoryForm'
 import HackathonForm from '../input-forms/HackathonForm'
 import CategoryDetails from './CategoryDetails'
 import { Link } from 'react-router-dom'
-
-const useStyles = createStyles((theme) => ({
-  card: {
-    backgroundColor:
-      theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.white,
-  },
-  section: {
-    borderBottom: `1px solid ${
-      theme.colorScheme === 'dark' ? theme.colors.dark[4] : theme.colors.gray[3]
-    }`,
-    paddingLeft: theme.spacing.md,
-    paddingRight: theme.spacing.md,
-    paddingBottom: theme.spacing.md,
-    fontSize: theme.fontSizes.md,
-    fontWeight: 500,
-  },
-  label: {
-    textTransform: 'uppercase',
-    fontSize: theme.fontSizes.xs,
-    fontWeight: 700,
-  },
-}))
+import { styles } from '../../common/styles'
 
 type IProps = {
   hackathonId: string
   type: HackathonDetailsType
 }
 
-export enum HackathonDetailsType {
-  Header = 'HEADER',
-  FullInfo = 'FULLINFO',
-}
-
 export default function HackathonDetails(props: IProps) {
-  const { classes } = useStyles()
+  const { classes } = styles()
   const { hackathonId, type } = props
   const [deleteModalOpened, setDeleteModalOpened] = useState(false)
   const [editModalOpened, setEditModalOpened] = useState(false)
@@ -212,7 +190,7 @@ export default function HackathonDetails(props: IProps) {
     >
       <IdeaDetails
         idea={idea}
-        type={IdeaDetailsCaller.Admin}
+        type={IdeaCardType.Admin}
         isLoading={isIdeaLoading}
       />
     </Accordion.Item>
@@ -230,23 +208,25 @@ export default function HackathonDetails(props: IProps) {
       onClose={() => setDeleteModalOpened(false)}
       withCloseButton={false}
     >
-      Are you sure you want to delete this hackathon?
-      <h4>Title: {hackathonData.title}</h4>
-      <h4>
+      <Text className={classes.text}>
+        Are you sure you want to delete this hackathon?
+      </Text>
+      <Text className={classes.title}>Title: {hackathonData.title}</Text>
+      <Text className={classes.title}>
         Start Date:
         {new Date(hackathonData.startDate).toDateString()}
-      </h4>
-      <h4>
+      </Text>
+      <Text className={classes.title}>
         End Date:
         {new Date(hackathonData.endDate).toDateString()}
-      </h4>
+      </Text>
       <Button color={'red'} onClick={() => deleteSelectedHackathon()}>
         Yes delete this hackathon
       </Button>
-      <p>
+      <Text className={classes.text}>
         (This window will automatically closed as soon as the hackathon is
         deleted)
-      </p>
+      </Text>
     </Modal>
   )
 
@@ -257,13 +237,13 @@ export default function HackathonDetails(props: IProps) {
       onClose={() => setEditModalOpened(false)}
       withCloseButton={false}
     >
-      Edit Hackathon
+      <Text className={classes.title}>Edit Hackathon</Text>
       <HackathonForm context={'edit'} hackathonId={hackathonData.id} />
       {isHackathonLoading && <div>Loading...</div>}
-      <p>
-        (This window will automatically close as soon as the category is
-        deleted)
-      </p>
+      <Text className={classes.text}>
+        (This window will automatically closed as soon as the hackathon is
+        changed)
+      </Text>
     </Modal>
   )
 
@@ -271,13 +251,13 @@ export default function HackathonDetails(props: IProps) {
     <>
       {isHackathonError && (
         <div>
-          <h3>Error loading hackathons</h3>
-          <p>something went wrong.</p>
+          <Text className={classes.title}>Error loading hackathons</Text>
+          <Text className={classes.text}>something went wrong.</Text>
         </div>
       )}
       {isHackathonLoading && (
         <div>
-          <h3>Hackathon details are loading...</h3>
+          <Text className={classes.text}>Hackathon details are loading...</Text>
         </div>
       )}
 
@@ -296,7 +276,7 @@ export default function HackathonDetails(props: IProps) {
             <IdeaCardList
               ideas={relevantIdeaList}
               columnSize={6}
-              type={IdeaDetailsCaller.Header}
+              type={IdeaCardType.HackathonDetails}
               isLoading={isIdeaLoading}
             />
           </div>
@@ -306,24 +286,22 @@ export default function HackathonDetails(props: IProps) {
         !isHackathonLoading &&
         !isHackathonError &&
         type === HackathonDetailsType.FullInfo && (
-          <Card withBorder radius="md" p="md" className={classes.card}>
-            <Card.Section className={classes.section}>
-              <Text size="md" mt="xs">
-                {hackathonData.title}
-              </Text>
-              <Text size={'xs'}>ID: {hackathonData.id}</Text>
+          <Card withBorder className={classes.card}>
+            <Card.Section className={classes.borderSection}>
+              <Text className={classes.title}>{hackathonData.title}</Text>
+              <Text className={classes.text}>ID: {hackathonData.id}</Text>
             </Card.Section>
 
-            <Card.Section className={classes.section}>
+            <Card.Section className={classes.borderSection}>
               <SimpleGrid cols={2} breakpoints={[{ maxWidth: 'sm', cols: 1 }]}>
                 <Card.Section>
-                  <Text size="sm" mt="xs">
+                  <Text className={classes.title}>
                     Start Date:{' '}
                     {new Date(hackathonData.startDate).toDateString()}
                   </Text>
                 </Card.Section>
                 <Card.Section>
-                  <Text size="sm" mt="xs">
+                  <Text className={classes.title}>
                     End Date: {new Date(hackathonData.endDate).toDateString()}
                   </Text>
                 </Card.Section>
@@ -333,14 +311,14 @@ export default function HackathonDetails(props: IProps) {
             <Accordion iconPosition="left" offsetIcon={false}>
               <Accordion.Item
                 label={
-                  <Text className={classes.label} color="dimmed">
+                  <Text className={classes.label}>
                     Categories ( {allCategories?.length} )
                   </Text>
                 }
               >
                 <Accordion iconPosition="right">
                   <Accordion.Item
-                    style={{ border: '1px solid' }}
+                    className={classes.borderAccordion}
                     label={'Add Category'}
                   >
                     <CategoryForm
@@ -357,7 +335,7 @@ export default function HackathonDetails(props: IProps) {
             <Accordion iconPosition="left" offsetIcon={false}>
               <Accordion.Item
                 label={
-                  <Text className={classes.label} color="dimmed">
+                  <Text className={classes.label}>
                     Participants ( {allParticipants?.length} )
                   </Text>
                 }
@@ -369,7 +347,7 @@ export default function HackathonDetails(props: IProps) {
             <Accordion iconPosition="left" offsetIcon={false}>
               <Accordion.Item
                 label={
-                  <Text className={classes.label} color="dimmed">
+                  <Text className={classes.label}>
                     Ideas ( {allIdeas?.length} )
                   </Text>
                 }
@@ -391,7 +369,7 @@ export default function HackathonDetails(props: IProps) {
               </Accordion.Item>
             </Accordion>
 
-            <Card.Section className={classes.section}>
+            <Card.Section className={classes.borderSection}>
               <Group position="left" mt="xl">
                 {deleteModal}
                 <Button

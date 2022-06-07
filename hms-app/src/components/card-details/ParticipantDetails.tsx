@@ -1,37 +1,16 @@
 import React, { useState } from 'react'
 import { UserPreview } from '../../common/types'
-import { Button, Card, createStyles, Group, Modal, Text } from '@mantine/core'
+import { Button, Card, Group, Modal, Text } from '@mantine/core'
 import { deleteParticipant } from '../../actions/ParticipantActions'
+import { styles } from '../../common/styles'
 
 type IProps = {
   participantId: string
   user: UserPreview
 }
 
-const useStyles = createStyles((theme) => ({
-  card: {
-    backgroundColor:
-      theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.white,
-  },
-  section: {
-    borderBottom: `1px solid ${
-      theme.colorScheme === 'dark' ? theme.colors.dark[4] : theme.colors.gray[3]
-    }`,
-    paddingLeft: theme.spacing.md,
-    paddingRight: theme.spacing.md,
-    paddingBottom: theme.spacing.md,
-    fontSize: theme.fontSizes.md,
-    fontWeight: 500,
-  },
-  label: {
-    textTransform: 'uppercase',
-    fontSize: theme.fontSizes.xs,
-    fontWeight: 700,
-  },
-}))
-
 export default function ParticipantDetails(props: IProps) {
-  const { classes } = useStyles()
+  const { classes } = styles()
   const { participantId, user } = props
   const [opened, setOpened] = useState(false)
 
@@ -43,43 +22,42 @@ export default function ParticipantDetails(props: IProps) {
 
   return (
     <>
-      <Card withBorder radius="md" p="md" className={classes.card}>
-        <Card.Section className={classes.section}>
-          <Text size="lg" mt="xs">
+      <Card withBorder className={classes.card}>
+        <Card.Section className={classes.borderSection}>
+          <Text className={classes.title}>
             {user.firstName} {user.lastName}
           </Text>
-          <Text size={'sm'}>Participant ID: {participantId}</Text>
-          <Text size={'sm'}>User ID: {user.id}</Text>
+          <Text className={classes.text}>Participant ID: {participantId}</Text>
+          <Text className={classes.text}>User ID: {user.id}</Text>
         </Card.Section>
 
-        <Card.Section className={classes.section}>
-          <Text mt="md" className={classes.label} color="dimmed">
-            E-mail:
-          </Text>
-          <Text size="md" mt="xs">
-            email needs to be added
-          </Text>
+        <Card.Section className={classes.borderSection}>
+          <Text className={classes.label}>E-mail:</Text>
+          <Text className={classes.text}>email needs to be added</Text>
         </Card.Section>
 
-        <Card.Section className={classes.section}>
+        <Card.Section className={classes.borderSection}>
           <Modal
             centered
             opened={opened}
             onClose={() => setOpened(false)}
             withCloseButton={false}
           >
-            Are you sure you want to delete this participant?
-            <h4>
+            <Text className={classes.text}>
+              Are you sure you want to delete this participant?
+            </Text>
+            <Text className={classes.title}>
               {user.firstName} {user.lastName}
-            </h4>
+            </Text>
             <Button color={'red'} onClick={() => deleteSelectedParticipant()}>
               Yes delete this participant
             </Button>
-            <p>
+            <Text className={classes.text}>
               (This window will automatically close as soon as the participant
               is deleted)
-            </p>
+            </Text>
           </Modal>
+
           <Group position="left" mt="xl">
             <Button color={'red'} onClick={() => setOpened(true)}>
               Delete

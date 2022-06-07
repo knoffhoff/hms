@@ -11,6 +11,7 @@ import {
   mockSend,
 } from './dynamo-db-mock';
 import {
+  addParticipantToIdea,
   deleteIdea,
   deleteParticipantFromIdea,
   getIdea,
@@ -97,6 +98,27 @@ describe('Delete Idea', () => {
           }),
         }),
     );
+  });
+});
+
+describe('Add Participant to Idea', () => {
+  test('Happy Path', async () => {
+    const ideaId = uuid();
+    const participantId = uuid();
+
+    await addParticipantToIdea(ideaId, participantId);
+
+    expect(mockSend).toHaveBeenCalledWith(
+        expect.objectContaining({
+          input: expect.objectContaining({
+            TableName: process.env.IDEA_TABLE,
+            Key: {id: {S: ideaId}},
+            UpdateExpression: 'ADD participantIds :participant_id',
+            ExpressionAttributeValues: {
+              ':participant_id': {SS: [participantId]},
+            },
+          }),
+        }));
   });
 });
 

@@ -1,10 +1,10 @@
 ###
 # @name List all Skills
-GET {{host}}/restapis/{{api_id}}/local/_user_request_/skills
+GET {{host}}/skills
 
 ###
 # @name Create Skill
-POST {{host}}/restapis/{{api_id}}/local/_user_request_/skill
+POST {{host}}/skill
 Content-Type: application/json
 
 {
@@ -13,9 +13,19 @@ Content-Type: application/json
 }
 
 ###
+# @name Edit Skill
+PUT {{host}}/skill/{{skill_id}}
+Content-Type: application/json
+
+{
+  "name": "Chess",
+  "description": "It's a sport!"
+}
+
+###
 # @name Get Skill
-GET {{host}}/restapis/{{api_id}}/local/_user_request_/skill/{{skill_id}}
+GET {{host}}/skill/{{skill_id}}
 
 ###
 # @name Remove Skill
-DELETE {{host}}/restapis/{{api_id}}/local/_user_request_/skill/{{skill_id}}
+DELETE {{host}}/skill/{{skill_id}}

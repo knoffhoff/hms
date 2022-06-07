@@ -1,62 +1,31 @@
 import React, { useState } from 'react'
 import {
-  Card,
-  Text,
-  Button,
-  useMantineTheme,
-  Group,
-  Badge,
-  createStyles,
   Accordion,
   Avatar,
   AvatarsGroup,
-  useAccordionState,
+  Badge,
+  Button,
+  Card,
+  Group,
   Modal,
+  Spoiler,
+  Text,
+  useAccordionState,
+  useMantineTheme,
 } from '@mantine/core'
-import { Idea } from '../../common/types'
+import { Idea, IdeaCardType } from '../../common/types'
 import { deleteIdea } from '../../actions/IdeaActions'
 import IdeaForm from '../input-forms/IdeaForm'
-import { Spoiler } from '@mantine/core'
+import { styles } from '../../common/styles'
 
 type IProps = {
   idea: Idea
   isLoading: boolean
-  type: IdeaDetailsCaller
+  type: IdeaCardType
 }
-
-export enum IdeaDetailsCaller {
-  Voting = 'VOTING',
-  Admin = 'ADMIN',
-  Owner = 'OWNER',
-  IdeaPortal = 'IDEA_PORTAL',
-  Header = 'HEADER',
-  Archive = 'ARCHIVE',
-}
-
-const useStyles = createStyles((theme) => ({
-  card: {
-    backgroundColor:
-      theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.white,
-  },
-
-  section: {
-    borderBottom: `1px solid ${
-      theme.colorScheme === 'dark' ? theme.colors.dark[4] : theme.colors.gray[3]
-    }`,
-    paddingLeft: theme.spacing.md,
-    paddingRight: theme.spacing.md,
-    paddingBottom: theme.spacing.md,
-  },
-
-  label: {
-    textTransform: 'uppercase',
-    fontSize: theme.fontSizes.xs,
-    fontWeight: 700,
-  },
-}))
 
 export default function IdeaDetails(props: IProps) {
-  const { classes } = useStyles()
+  const { classes } = styles()
   const theme = useMantineTheme()
   const [deleteModalOpened, setDeleteModalOpened] = useState(false)
   const [editModalOpened, setEditModalOpened] = useState(false)
@@ -72,7 +41,6 @@ export default function IdeaDetails(props: IProps) {
 
   const { idea, type, isLoading } = props
   const MAX_TITLE_LENGTH = 45
-  const MAX_DESCRIPTION_LENGTH = type === IdeaDetailsCaller.Voting ? 200 : 245
 
   const participantData = idea.participants?.map((participant, index) => (
     <div
@@ -87,7 +55,9 @@ export default function IdeaDetails(props: IProps) {
           'https://avatars.githubusercontent.com/u/10353856?s=460&u=88394dfd67727327c1f7670a1764dc38a8a24831&v=4'
         }
       />
-      {participant.user.firstName} {participant.user.lastName}
+      <Text className={classes.text}>
+        {participant.user.firstName} {participant.user.lastName}
+      </Text>
     </div>
   ))
 
@@ -108,14 +78,16 @@ export default function IdeaDetails(props: IProps) {
       onClose={() => setDeleteModalOpened(false)}
       withCloseButton={false}
     >
-      Are you sure you want to delete this idea?
-      <h4>Title: {idea.title}</h4>
+      <Text className={classes.text}>
+        Are you sure you want to delete this idea?
+      </Text>
+      <Text className={classes.title}>Title: {idea.title}</Text>
       <Button color={'red'} onClick={() => deleteSelectedIdea()}>
         Yes, delete this idea
       </Button>
-      <p>
+      <Text className={classes.text}>
         (This window will automatically close as soon as the idea is deleted)
-      </p>
+      </Text>
     </Modal>
   )
 
@@ -127,7 +99,7 @@ export default function IdeaDetails(props: IProps) {
       withCloseButton={false}
       size="55%"
     >
-      Edit Idea
+      <Text className={classes.title}>Edit Idea</Text>
       <IdeaForm
         ideaId={idea.id}
         idea={idea}
@@ -136,31 +108,23 @@ export default function IdeaDetails(props: IProps) {
         hackathon={idea.hackathon!}
         setOpened={closeEditModal}
       />
-      <p>
-        (This window will automatically close as soon as the idea is edited)
-      </p>
+      <Text className={classes.text}>
+        (This window will automatically close as soon as the idea is changed)
+      </Text>
     </Modal>
   )
 
   const ideaDetails = () => {
     return (
       <div>
-        <Card.Section className={classes.section}>
-          <Text mt="md" className={classes.label} color="dimmed">
-            Problem
-          </Text>
-          <Text size="sm" mt="xs">
-            {idea.problem}
-          </Text>
+        <Card.Section className={classes.borderSection}>
+          <Text className={classes.label}>Problem</Text>
+          <Text className={classes.text}>{idea.problem}</Text>
         </Card.Section>
 
-        <Card.Section className={classes.section}>
-          <Text mt="md" className={classes.label} color="dimmed">
-            Goal
-          </Text>
-          <Text size="sm" mt="xs">
-            {idea.goal}
-          </Text>
+        <Card.Section className={classes.borderSection}>
+          <Text className={classes.label}>Goal</Text>
+          <Text className={classes.text}>{idea.goal}</Text>
         </Card.Section>
 
         <Accordion
@@ -172,9 +136,7 @@ export default function IdeaDetails(props: IProps) {
             label={
               !participantAccordionState['0'] ? (
                 <div>
-                  <Text className={classes.label} color="dimmed">
-                    Current participants
-                  </Text>
+                  <Text className={classes.label}>Current participants</Text>
                   <Group spacing={7} mt={5}>
                     <AvatarsGroup limit={5}>
                       {idea.participants?.map((participant, index) => (
@@ -192,9 +154,7 @@ export default function IdeaDetails(props: IProps) {
                   </Group>
                 </div>
               ) : (
-                <Text className={classes.label} color="dimmed">
-                  Current participants
-                </Text>
+                <Text className={classes.label}>Current participants</Text>
               )
             }
           >
@@ -208,13 +168,9 @@ export default function IdeaDetails(props: IProps) {
   return (
     <>
       {!isLoading && (
-        <Card withBorder radius="md" p="md" className={classes.card}>
-          <Spoiler maxHeight={140} showLabel="Show more" hideLabel="Hide">
-            <Card.Section
-              className={classes.section}
-              mt="md"
-              style={{ height: 180 }}
-            >
+        <Card withBorder className={classes.card}>
+          <Spoiler maxHeight={130} showLabel="Show more" hideLabel="Hide">
+            <Card.Section className={classes.borderSection}>
               <Group noWrap>
                 <Group
                   direction={'column'}
@@ -235,24 +191,20 @@ export default function IdeaDetails(props: IProps) {
                   </Badge>
                 </Group>
 
-                <Text size="lg" weight={500}>
+                <Text className={classes.title}>
                   {idea.title?.slice(0, MAX_TITLE_LENGTH)}
                   {idea.title?.length > MAX_TITLE_LENGTH ? '...' : ''}
                 </Text>
               </Group>
 
-              <Text size="sm" mt="xs">
-                {idea.description}
-              </Text>
+              <Text className={classes.text}>{idea.description}</Text>
             </Card.Section>
           </Spoiler>
 
-          {type !== IdeaDetailsCaller.Voting && (
+          {type !== IdeaCardType.Voting && (
             <>
-              <Card.Section className={classes.section}>
-                <Text mt="md" className={classes.label} color="dimmed">
-                  Skills required
-                </Text>
+              <Card.Section className={classes.borderSection}>
+                <Text className={classes.label}>Skills required</Text>
                 <Group spacing={7} mt={5}>
                   {idea.requiredSkills?.map((skill) => (
                     <Badge
@@ -265,43 +217,36 @@ export default function IdeaDetails(props: IProps) {
                 </Group>
               </Card.Section>
 
-              {type !== IdeaDetailsCaller.Admin &&
-                type !== IdeaDetailsCaller.Owner && (
-                  <Accordion
-                    state={accordionState}
-                    onChange={setAccordionState.setState}
-                  >
-                    <Accordion.Item
-                      mt="sm"
-                      style={{ border: 'none' }}
-                      label={
-                        !accordionState['0'] ? 'Show details' : 'Hide details'
-                      }
-                    >
-                      <div>{ideaDetails()}</div>
-
-                      <Group
-                        mt="xs"
-                        position={'right'}
-                        style={{ paddingTop: 5 }}
-                      >
-                        <Button variant={'outline'} color={'yellow'}>
-                          Add to Favorites
-                        </Button>
-                        <Button>Participate</Button>
-                      </Group>
-                    </Accordion.Item>
-                  </Accordion>
-                )}
-
-              {type === IdeaDetailsCaller.Owner && (
+              {type === IdeaCardType.IdeaPortal && (
                 <Accordion
                   state={accordionState}
                   onChange={setAccordionState.setState}
                 >
                   <Accordion.Item
-                    mt="sm"
-                    style={{ border: 'none' }}
+                    className={classes.noBorderAccordion}
+                    label={
+                      !accordionState['0'] ? 'Show details' : 'Hide details'
+                    }
+                  >
+                    <div>{ideaDetails()}</div>
+
+                    <Group mt="xs" position={'right'} style={{ paddingTop: 5 }}>
+                      <Button variant={'outline'} color={'yellow'}>
+                        Add to Favorites
+                      </Button>
+                      <Button>Participate</Button>
+                    </Group>
+                  </Accordion.Item>
+                </Accordion>
+              )}
+
+              {type === IdeaCardType.Owner && (
+                <Accordion
+                  state={accordionState}
+                  onChange={setAccordionState.setState}
+                >
+                  <Accordion.Item
+                    className={classes.noBorderAccordion}
                     label={
                       !accordionState['0'] ? 'Show details' : 'Hide details'
                     }
@@ -325,7 +270,7 @@ export default function IdeaDetails(props: IProps) {
                 </Accordion>
               )}
 
-              {type === IdeaDetailsCaller.Admin && (
+              {type === IdeaCardType.Admin && (
                 <>
                   <div>{ideaDetails()}</div>
                   <Group position="left" mt="xl">

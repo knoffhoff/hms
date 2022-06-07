@@ -1,10 +1,10 @@
 ###
 # @name List all Categories
-GET {{host}}/restapis/{{api_id}}/local/_user_request_/hackathon/{{hackathon_id}}/categories
+GET {{host}}/hackathon/{{hackathon_id}}/categories
 
 ###
 # @name Create Category
-POST {{host}}/restapis/{{api_id}}/local/_user_request_/category
+POST {{host}}/category
 Content-Type: application/json
 
 {
@@ -15,7 +15,7 @@ Content-Type: application/json
 
 ###
 # @name Edit Category
-PUT {{host}}/restapis/{{api_id}}/local/_user_request_/category/{{category_id}}
+PUT {{host}}/category/{{category_id}}
 Content-Type: application/json
 
 {
@@ -25,8 +25,8 @@ Content-Type: application/json
 
 ###
 # @name Get Category
-GET {{host}}/restapis/{{api_id}}/local/_user_request_/category/{{category_id}}
+GET {{host}}/category/{{category_id}}
 
 ###
 # @name Remove Category
-DELETE {{host}}/restapis/{{api_id}}/local/_user_request_/category/{{category_id}}
+DELETE {{host}}/category/{{category_id}}

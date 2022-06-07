@@ -1,5 +1,6 @@
 import {
   createUser,
+  editUser,
   extractUser,
   getUserListResponse,
   getUserResponse,
@@ -23,6 +24,7 @@ import NotFoundError from '../../src/error/NotFoundError';
 import UserResponse from '../../src/rest/UserResponse';
 import UserListResponse from '../../src/rest/UserListResponse';
 import UserDeleteResponse from '../../src/rest/UserDeleteResponse';
+import User from '../../src/repository/domain/User';
 
 const mockGetSkills = jest.fn();
 jest.spyOn(skillRepository, 'getSkills')
@@ -93,6 +95,50 @@ describe('Create Idea', () => {
       skills: expected.skills,
       imageUrl: expected.imageUrl,
     }));
+  });
+});
+
+describe('Edit User', () => {
+  test('Happy Path', async () => {
+    const oldUser = randomUser();
+    const lastName = 'Nach';
+    const firstName = 'Vor';
+    const skills = [uuid(), uuid()];
+    const imageUrl = 'www.a.new.image.com/img.png';
+    const expected = new User(
+        lastName,
+        firstName,
+        oldUser.emailAddress,
+        oldUser.roles,
+        skills,
+        imageUrl,
+        oldUser.id,
+        oldUser.creationDate);
+
+    mockGetUser.mockResolvedValue(oldUser);
+
+    await editUser(oldUser.id, lastName, firstName, skills, imageUrl);
+
+    expect(mockPutUser).toHaveBeenCalledWith(expected);
+  });
+
+  test('User is missing', async () => {
+    const id = uuid();
+
+    mockGetUser.mockImplementation(() => {
+      throw new Error('Uh oh');
+    });
+
+    await expect(editUser(
+        id,
+        'Nach',
+        'Vor',
+        [uuid()],
+        'www.aol.com/img.png'))
+        .rejects
+        .toThrow(NotFoundError);
+    expect(mockPutUser).not.toHaveBeenCalled();
+    expect(mockGetUser).toHaveBeenCalledWith(id);
   });
 });
 

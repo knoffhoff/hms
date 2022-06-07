@@ -1,13 +1,13 @@
 import React from 'react'
-import { Idea } from '../../common/types'
+import { Idea, IdeaCardType } from '../../common/types'
 import { Grid } from '@mantine/core'
-import IdeaDetails, { IdeaDetailsCaller } from '../card-details/IdeaDetails'
+import IdeaDetails from '../card-details/IdeaDetails'
 
 type IProps = {
   ideas: Idea[]
   isLoading: boolean
   columnSize: number
-  type: IdeaDetailsCaller
+  type: IdeaCardType
 }
 
 export default function IdeaCardList(props: IProps) {
