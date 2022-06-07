@@ -144,6 +144,22 @@ functions:
           path: idea/{id}
           method: delete
           cors: true
+  joinIdea:
+    handler: src/handler/idea/join.join
+    events:
+      - http:
+          # TODO this should be done using a userId from the token
+          path: idea/{ideaId}/join/{participantId}
+          method: put
+          cors: true
+  leaveIdea:
+    handler: src/handler/idea/leave.leave
+    events:
+      - http:
+          # TODO this should be done using a userId from the token
+          path: idea/{ideaId}/leave/{participantId}
+          method: put
+          cors: true
 
   createUser:
     handler: src/handler/user/create.create

@@ -12,6 +12,7 @@ import {
 import {categoryExists, getCategory} from '../repository/category-repository';
 import {getSkills, skillExists} from '../repository/skill-repository';
 import {
+  addParticipantToIdea,
   deleteIdea,
   deleteParticipantFromIdea,
   getIdea,
@@ -31,6 +32,7 @@ import IdeaListResponse from '../rest/IdeaListResponse';
 import IdeaDeleteResponse from '../rest/IdeaDeleteResponse';
 import DeletionError from '../error/DeletionError';
 import NotFoundError from '../error/NotFoundError';
+import InvalidStateError from '../error/InvalidStateError';
 
 export async function createIdea(
     ownerId: Uuid,
@@ -200,6 +202,46 @@ export async function getIdeaListResponse(
   const ideas = await listIdeasForHackathon(hackathonId);
 
   return IdeaListResponse.from(ideas, hackathonId);
+}
+
+export async function removeParticipant(
+    ideaId: Uuid,
+    participantId: Uuid,
+): Promise<void> {
+  await deleteParticipantFromIdea(ideaId, participantId);
+}
+
+export async function addParticipant(
+    ideaId: Uuid,
+    participantId: Uuid,
+): Promise<void> {
+  let idea;
+  try {
+    idea = await getIdea(ideaId);
+  } catch (e) {
+    throw new NotFoundError(
+        `Cannot add Participant with id: ${participantId} ` +
+        `to Idea with id ${ideaId}, ` +
+        `Idea does not exist`);
+  }
+
+  let participant;
+  try {
+    participant = await getParticipant(participantId);
+  } catch (e) {
+    throw new NotFoundError(
+        `Cannot add Participant with id: ${participantId} ` +
+        `to Idea with id ${ideaId}, Participant does not exist`);
+  }
+
+  if (idea.hackathonId !== participant.hackathonId) {
+    throw new InvalidStateError(
+        `Cannot add Participant with id: ${participantId} ` +
+        `to Idea with id ${ideaId}, ` +
+        `they are in different Hackathons`);
+  }
+
+  await addParticipantToIdea(ideaId, participantId);
 }
 
 export async function removeIdea(
