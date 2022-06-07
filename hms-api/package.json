@@ -21,7 +21,7 @@
     "serverless-dynamodb-local": "^0.2.40",
     "ts-jest": "27.1.4",
     "ts-node": "10.8.1",
-    "typescript": "4.7.2",
+    "typescript": "4.7.3",
     "uuid": "8.3.2"
   },
   "dependencies": {
