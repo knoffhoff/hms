@@ -236,37 +236,22 @@ export default function IdeaDetails(props: IProps) {
                     </Group>
                   )}
 
-                  {type === IdeaCardType.Owner && (
-                    <Group position="left" mt="xl">
-                      {deleteModal}
-                      <Button
-                        color={'red'}
-                        onClick={() => setDeleteModalOpened(true)}
-                      >
-                        Delete
-                      </Button>
-                      {editModal}
-                      <Button onClick={() => setEditModalOpened(true)}>
-                        Edit
-                      </Button>
-                    </Group>
-                  )}
-
-                  {type === IdeaCardType.Admin && (
-                    <Group position="left" mt="xl">
-                      {deleteModal}
-                      <Button
-                        color={'red'}
-                        onClick={() => setDeleteModalOpened(true)}
-                      >
-                        Delete
-                      </Button>
-                      {editModal}
-                      <Button onClick={() => setEditModalOpened(true)}>
-                        Edit
-                      </Button>
-                    </Group>
-                  )}
+                  {type === IdeaCardType.Owner ||
+                    (type === IdeaCardType.Admin && (
+                      <Group position="left" mt="xl">
+                        {deleteModal}
+                        <Button
+                          color={'red'}
+                          onClick={() => setDeleteModalOpened(true)}
+                        >
+                          Delete
+                        </Button>
+                        {editModal}
+                        <Button onClick={() => setEditModalOpened(true)}>
+                          Edit
+                        </Button>
+                      </Group>
+                    ))}
                 </Accordion.Item>
               </Accordion>
             </>
