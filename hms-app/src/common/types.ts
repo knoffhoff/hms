@@ -14,8 +14,8 @@ export enum IdeaCardType {
   Owner = 'OWNER',
   Admin = 'ADMIN',
   Voting = 'VOTING',
-  HackathonDetails = 'HACKATHON_DETAILS',
   IdeaPortal = 'IDEA_PORTAL',
+  Archive = 'ARCHIVE',
 }
 
 export enum HackathonStatus {
