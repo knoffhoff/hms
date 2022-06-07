@@ -8,17 +8,20 @@ import Uuid, {uuid} from '../../util/Uuid';
 class Hackathon {
   id: Uuid;
   title: string;
+  description: string;
   startDate: Date;
   endDate: Date;
   creationDate: Date;
 
   constructor(
       title: string,
+      description: string,
       startDate: Date,
       endDate: Date,
   );
   constructor(
       title: string,
+      description: string,
       startDate: Date,
       endDate: Date,
       id: Uuid,
@@ -27,15 +30,17 @@ class Hackathon {
 
   constructor(
       title: string,
+      description: string,
       startDate: Date,
       endDate: Date,
       id: Uuid = uuid(),
       creationDate: Date = new Date(),
   ) {
-    this.id = id;
     this.title = title;
+    this.description = description;
     this.startDate = startDate;
     this.endDate = endDate;
+    this.id = id;
     this.creationDate = creationDate;
   }
 }

@@ -157,6 +157,7 @@ const itemFromHackathon = (
 ): { [key: string]: AttributeValue } => ({
   id: {S: hackathon.id},
   title: {S: hackathon.title},
+  description: {S: hackathon.description},
   startDate: {S: hackathon.startDate.toISOString()},
   endDate: {S: hackathon.endDate.toISOString()},
   creationDate: {S: hackathon.creationDate.toISOString()},
