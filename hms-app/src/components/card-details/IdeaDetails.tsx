@@ -217,77 +217,43 @@ export default function IdeaDetails(props: IProps) {
                 </Group>
               </Card.Section>
 
-              {type === IdeaCardType.IdeaPortal && (
-                <Accordion
-                  state={accordionState}
-                  onChange={setAccordionState.setState}
+              <Accordion
+                state={accordionState}
+                onChange={setAccordionState.setState}
+              >
+                <Accordion.Item
+                  className={classes.noBorderAccordion}
+                  label={!accordionState['0'] ? 'Show details' : 'Hide details'}
                 >
-                  <Accordion.Item
-                    className={classes.noBorderAccordion}
-                    label={
-                      !accordionState['0'] ? 'Show details' : 'Hide details'
-                    }
-                  >
-                    <div>{ideaDetails()}</div>
+                  <div>{ideaDetails()}</div>
 
+                  {type === IdeaCardType.IdeaPortal && (
                     <Group mt="xs" position={'right'} style={{ paddingTop: 5 }}>
                       <Button variant={'outline'} color={'yellow'}>
                         Add to Favorites
                       </Button>
                       <Button>Participate</Button>
                     </Group>
-                  </Accordion.Item>
-                </Accordion>
-              )}
+                  )}
 
-              {type === IdeaCardType.Owner && (
-                <Accordion
-                  state={accordionState}
-                  onChange={setAccordionState.setState}
-                >
-                  <Accordion.Item
-                    className={classes.noBorderAccordion}
-                    label={
-                      !accordionState['0'] ? 'Show details' : 'Hide details'
-                    }
-                  >
-                    <div>{ideaDetails()}</div>
-
-                    <Group position="left" mt="xl">
-                      {deleteModal}
-                      <Button
-                        color={'red'}
-                        onClick={() => setDeleteModalOpened(true)}
-                      >
-                        Delete
-                      </Button>
-                      {editModal}
-                      <Button onClick={() => setEditModalOpened(true)}>
-                        Edit
-                      </Button>
-                    </Group>
-                  </Accordion.Item>
-                </Accordion>
-              )}
-
-              {type === IdeaCardType.Admin && (
-                <>
-                  <div>{ideaDetails()}</div>
-                  <Group position="left" mt="xl">
-                    {deleteModal}
-                    <Button
-                      color={'red'}
-                      onClick={() => setDeleteModalOpened(true)}
-                    >
-                      Delete
-                    </Button>
-                    {editModal}
-                    <Button onClick={() => setEditModalOpened(true)}>
-                      Edit
-                    </Button>
-                  </Group>
-                </>
-              )}
+                  {type === IdeaCardType.Owner ||
+                    (type === IdeaCardType.Admin && (
+                      <Group position="left" mt="xl">
+                        {deleteModal}
+                        <Button
+                          color={'red'}
+                          onClick={() => setDeleteModalOpened(true)}
+                        >
+                          Delete
+                        </Button>
+                        {editModal}
+                        <Button onClick={() => setEditModalOpened(true)}>
+                          Edit
+                        </Button>
+                      </Group>
+                    ))}
+                </Accordion.Item>
+              </Accordion>
             </>
           )}
         </Card>
