@@ -1,10 +1,14 @@
-import { useEffect, useState } from 'react'
-import { Button, Title, useMantineTheme, Text, Group } from '@mantine/core'
-import { DragDropContext, Draggable, DragStart, Droppable, DropResult } from 'react-beautiful-dnd'
-import ideaData from '../test/TestIdeaData'
+import {useEffect, useState} from 'react'
+import {Button, Group, Text, Title, useMantineTheme} from '@mantine/core'
+import {
+  DragDropContext,
+  Draggable,
+  Droppable,
+  DropResult
+} from 'react-beautiful-dnd'
 import IdeaDetails from '../components/card-details/IdeaDetails'
-import { useLocalStorage } from '../common/localStorage'
-import { Idea } from '../common/types'
+import {useLocalStorage} from '../common/localStorage'
+import {Idea, IdeaCardType} from '../common/types'
 
 const onDragEnd = (result: DropResult, votingState: VotingState, setColumnsState: Function) => {
   if (!result.destination) return
@@ -59,7 +63,7 @@ type VotingState = {
 const defaultColumnsFromBackend: VotingState = {
   '1': {
     name: 'All ideas',
-    items: [...ideaData],
+    items: [],
   },
   '2': {
     name: 'Your Votes',
@@ -107,7 +111,7 @@ export default function Voting() {
             <IdeaDetails
               idea={item}
               isLoading={false}
-              type={'voting'} />
+              type={IdeaCardType.Voting} />
           </div>
         )
       }}
@@ -155,7 +159,7 @@ export default function Voting() {
 
       <div style={{ display: 'flex', paddingTop: '25px' }}>
         <DragDropContext
-          onDragStart={result => {
+          onDragStart={_ => {
             setDragEnabled(false)
             setReadyToVote(false)
           }}
