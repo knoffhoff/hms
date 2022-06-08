@@ -1,7 +1,7 @@
 /* eslint-disable require-jsdoc */
 
 export default class {
-  failures: string[];
+  failures = [] as string[];
 
   addFailure(failure: string): void {
     this.failures.push(failure);
