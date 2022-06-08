@@ -16,6 +16,6 @@ function getOrDefaultStorageValue<S>(key: string, defaultValue: S): S {
      */
 export function useLocalStorage<S>(key: string, defaultValue: S): [S, Dispatch<SetStateAction<S>>] {
     const [value, setValue] = useState<S>(() => getOrDefaultStorageValue(key, defaultValue));
-    useEffect(() => localStorage.setItem(key, JSON.stringify(value)));
+    useEffect(() => localStorage.setItem(key, JSON.stringify(value)), [key, value]);
     return [value, setValue];
 }
