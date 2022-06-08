@@ -8,12 +8,12 @@ import Skill from '../repository/domain/Skill';
 
 class UserResponse {
   id: Uuid;
-  lastName: string;
+  lastName?: string;
   firstName: string;
   emailAddress: string;
   roles: string[];
   skills: SkillPreviewResponse[];
-  imageUrl: string;
+  imageUrl?: string;
   creationDate: Date;
 
   constructor(

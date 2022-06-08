@@ -1,6 +1,7 @@
 /* eslint-disable require-jsdoc */
 
 import Uuid, {uuid} from '../../util/Uuid';
+import ValidationResult from '../../error/ValidationResult';
 
 /**
  * A Skill is any technical, personal, or other kind of skill that a User has
@@ -29,6 +30,14 @@ class Skill {
    * May be empty
    */
   description: string;
+
+  validate(): ValidationResult {
+    const result = new ValidationResult();
+    if (this.name.length === 0) {
+      result.addFailure('name has length 0');
+    }
+    return result;
+  }
 
   constructor(
       name: string,

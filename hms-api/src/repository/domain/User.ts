@@ -1,5 +1,8 @@
+/* eslint-disable require-jsdoc */
+
 import Uuid, {uuid} from '../../util/Uuid';
 import Role from './Role';
+import ValidationResult from '../../error/ValidationResult';
 
 /**
  * A User is a representation of a person within the HMS
@@ -67,6 +70,18 @@ export default class {
    */
   creationDate: Date;
 
+  validate(): ValidationResult {
+    const result = new ValidationResult();
+    if (this.firstName.length === 0) {
+      result.addFailure('firstName has length 0');
+    }
+
+    if (this.roles.length === 0) {
+      result.addFailure('roles has length 0');
+    }
+    return result;
+  }
+
   constructor(
       lastName: string,
       firstName: string,
@@ -86,7 +101,6 @@ export default class {
       creationDate: Date,
   );
 
-  // eslint-disable-next-line require-jsdoc
   constructor(
       lastName: string,
       firstName: string,

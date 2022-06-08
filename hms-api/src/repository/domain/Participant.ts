@@ -1,3 +1,5 @@
+/* eslint-disable require-jsdoc */
+
 import Uuid, {uuid} from '../../util/Uuid';
 
 /**
@@ -43,7 +45,6 @@ export default class {
       creationDate: Date,
   );
 
-  // eslint-disable-next-line require-jsdoc
   constructor(
       userId: Uuid,
       hackathonId: Uuid,

@@ -1,6 +1,7 @@
 /* eslint-disable require-jsdoc */
 
 import Uuid, {uuid} from '../../util/Uuid';
+import ValidationResult from '../../error/ValidationResult';
 
 /**
  * An Idea is a concept on which Participants work during the Hackathon
@@ -84,6 +85,14 @@ class Idea {
    * Generated upon creation
    */
   creationDate: Date;
+
+  validate(): ValidationResult {
+    const result = new ValidationResult();
+    if (this.title.length === 0) {
+      result.addFailure('title has length 0');
+    }
+    return result;
+  }
 
   constructor(
       ownerId: Uuid,

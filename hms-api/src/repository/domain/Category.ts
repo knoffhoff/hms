@@ -1,6 +1,7 @@
 /* eslint-disable require-jsdoc */
 
 import Uuid, {uuid} from '../../util/Uuid';
+import ValidationResult from '../../error/ValidationResult';
 
 /**
  * A Category is meant to group a number of Ideas for a Hackathon into a group
@@ -35,6 +36,14 @@ class Category {
    * The ID of the Hackathon to which the Category belongs
    */
   hackathonId: Uuid;
+
+  validate(): ValidationResult {
+    const result = new ValidationResult();
+    if (this.title.length === 0) {
+      result.addFailure('title has length 0');
+    }
+    return result;
+  }
 
   constructor(
       title: string,

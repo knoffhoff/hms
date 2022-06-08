@@ -33,6 +33,7 @@ import IdeaDeleteResponse from '../rest/IdeaDeleteResponse';
 import DeletionError from '../error/DeletionError';
 import NotFoundError from '../error/NotFoundError';
 import InvalidStateError from '../error/InvalidStateError';
+import ValidationError from '../error/ValidationError';
 
 export async function createIdea(
     ownerId: Uuid,
@@ -74,6 +75,11 @@ export async function createIdea(
       requiredSkills,
       categoryId,
   );
+  const result = idea.validate();
+  if (result.hasFailed()) {
+    throw new ValidationError(`Cannot create Idea`, result);
+  }
+
   await putIdea(idea);
   return idea;
 }
@@ -87,7 +93,7 @@ export async function editIdea(
     requiredSkills: Uuid[],
     categoryId: Uuid,
 ): Promise<void> {
-  let existing;
+  let existing: Idea;
   try {
     existing = await getIdea(id);
   } catch (e) {
@@ -114,6 +120,12 @@ export async function editIdea(
   existing.goal = goal;
   existing.requiredSkills = requiredSkills;
   existing.categoryId = categoryId;
+
+  const result = existing.validate();
+  if (result.hasFailed()) {
+    throw new ValidationError(`Cannot edit Idea with id ${id}`, result);
+  }
+
   await putIdea(existing);
 }
 

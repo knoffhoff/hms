@@ -1,6 +1,7 @@
 /* eslint-disable require-jsdoc */
 
 import Uuid, {uuid} from '../../util/Uuid';
+import ValidationResult from '../../error/ValidationResult';
 
 /**
  * A Hackathon is collection of Participants, Categories, and Ideas.
@@ -56,6 +57,19 @@ class Hackathon {
    * Generated upon creation
    */
   creationDate: Date;
+
+  validate(): ValidationResult {
+    const result = new ValidationResult();
+    if (this.title.length === 0) {
+      result.addFailure('title has length 0');
+    }
+
+    if (this.startDate >= this.endDate) {
+      result.addFailure(`startDate (${this.startDate}) ` +
+          `is after endDate (${this.endDate})`);
+    }
+    return result;
+  }
 
   constructor(
       title: string,

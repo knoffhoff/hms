@@ -19,6 +19,7 @@ import CategoryDeleteResponse from '../rest/CategoryDeleteResponse';
 import {removeIdeasForCategory} from './idea-service';
 import NotFoundError from '../error/NotFoundError';
 import DeletionError from '../error/DeletionError';
+import ValidationError from '../error/ValidationError';
 
 export async function createCategory(
     title: string,
@@ -31,6 +32,11 @@ export async function createCategory(
   }
 
   const category = new Category(title, description, hackathonId);
+  const result = category.validate();
+  if (result.hasFailed()) {
+    throw new ValidationError(`Cannot create Category`, result);
+  }
+
   await putCategory(category);
   return category;
 }
@@ -40,16 +46,22 @@ export async function editCategory(
     title: string,
     description: string,
 ): Promise<void> {
+  let existing: Category;
   try {
-    const existing = await getCategory(id);
+    existing = await getCategory(id);
     existing.title = title;
     existing.description = description;
-
-    await putCategory(existing);
   } catch (e) {
     throw new NotFoundError(`Cannot edit Category with id: ${id}, ` +
         `it does not exist`);
   }
+
+  const result = existing.validate();
+  if (result.hasFailed()) {
+    throw new ValidationError(`Cannot edit Category with id ${id}`, result);
+  }
+
+  await putCategory(existing);
 }
 
 export async function getCategoryResponse(id: Uuid): Promise<CategoryResponse> {
