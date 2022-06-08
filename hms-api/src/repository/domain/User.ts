@@ -2,16 +2,69 @@ import Uuid, {uuid} from '../../util/Uuid';
 import Role from './Role';
 
 /**
- * A User is a representation of a person in the HMS API.
+ * A User is a representation of a person within the HMS
+ *
+ * A User maps to 0 or more Participants
+ *
+ * A User has 0 or more Skills
  */
 export default class {
+  /**
+   * The ID of the User
+   *
+   * Generated upon creation
+   */
   id: Uuid;
-  lastName: string;
+
+  /**
+   * The last name of the User
+   *
+   * May be null
+   */
+  lastName?: string;
+
+  /**
+   * The first name of the User
+   *
+   * Must have text (cannot be empty)
+   */
   firstName: string;
+
+  /**
+   * The email address of the User
+   *
+   * Must be a valid email address
+   */
   emailAddress: string;
+
+  /**
+   * The roles which the User has
+   *
+   * Should have at least 1 value
+   */
   roles: Role[];
+
+  /**
+   * The skills which the User has
+   *
+   * May be empty
+   */
   skills: Uuid[];
-  imageUrl: string;
+
+  /**
+   * An image depicting the user, or anything else of their choosing
+   *
+   * May be null
+   *
+   * TODO this could be a URL
+   */
+  imageUrl?: string;
+
+  /**
+   * The date on which the User was created
+   *
+   * Generated upon creation
+   */
   creationDate: Date;
 
   constructor(
