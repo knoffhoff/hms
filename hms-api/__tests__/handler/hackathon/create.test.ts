@@ -20,6 +20,7 @@ describe('Create Hackathon', () => {
 
     expect(mockCreateHackathon).toHaveBeenCalledWith(
         expected.title,
+        expected.description,
         expected.startDate,
         expected.endDate,
     );
@@ -76,6 +77,7 @@ describe('Create Hackathon', () => {
 const toEvent = (hackathon: Hackathon): any => ({
   body: JSON.stringify(new HackathonCreateRequest(
       hackathon.title,
+      hackathon.description,
       hackathon.startDate,
       hackathon.endDate)),
 });

@@ -87,6 +87,7 @@ describe('Create Hackathon', () => {
 
     expect(await createHackathon(
         expected.title,
+        expected.description,
         expected.startDate,
         expected.endDate,
     )).toEqual(expect.objectContaining({
@@ -106,6 +107,7 @@ describe('Create Hackathon', () => {
 
     await expect(createHackathon(
         expected.title,
+        expected.description,
         expected.endDate,
         expected.startDate))
         .rejects
@@ -118,6 +120,7 @@ describe('Create Hackathon', () => {
 
     await expect(createHackathon(
         expected.title,
+        expected.description,
         expected.startDate,
         expected.startDate))
         .rejects
@@ -130,10 +133,13 @@ describe('Edit Hackathon', () => {
   test('Happy Path', async () => {
     const oldHackathon = randomHackathon();
     const title = 'Worst Hackathon Ever';
+    const description = 'Lots of very, very, VERY important information ' +
+        'about the hackathon and stuff';
     const startDate = new Date('2000-01-01');
     const endDate = new Date('2000-04-04');
     const expected = new Hackathon(
         title,
+        description,
         startDate,
         endDate,
         oldHackathon.id,
@@ -141,7 +147,12 @@ describe('Edit Hackathon', () => {
 
     mockGetHackathon.mockResolvedValue(oldHackathon);
 
-    await editHackathon(oldHackathon.id, title, startDate, endDate);
+    await editHackathon(
+        oldHackathon.id,
+        title,
+        description,
+        startDate,
+        endDate);
 
     expect(mockPutHackathon).toHaveBeenCalledWith(expected);
   });
@@ -151,6 +162,7 @@ describe('Edit Hackathon', () => {
 
     await expect(editHackathon(
         expected.id,
+        expected.description,
         expected.title,
         expected.endDate,
         expected.startDate))
@@ -165,6 +177,7 @@ describe('Edit Hackathon', () => {
 
     await expect(editHackathon(
         expected.id,
+        expected.description,
         expected.title,
         expected.startDate,
         expected.startDate))
@@ -184,6 +197,7 @@ describe('Edit Hackathon', () => {
     await expect(editHackathon(
         id,
         'Anything',
+        'A crappy description...',
         new Date(),
         new Date(new Date().getTime() + 10000)))
         .rejects

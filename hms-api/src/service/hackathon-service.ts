@@ -25,6 +25,7 @@ import {removeParticipantsForHackathon} from './participant-service';
 
 export async function createHackathon(
     title: string,
+    description: string,
     startDate: Date,
     endDate: Date,
 ): Promise<Hackathon> {
@@ -33,7 +34,7 @@ export async function createHackathon(
         `startDate (${startDate}) is after endDate (${endDate})`);
   }
 
-  const hackathon = new Hackathon(title, startDate, endDate);
+  const hackathon = new Hackathon(title, description, startDate, endDate);
 
   await putHackathon(hackathon);
 
@@ -86,7 +87,8 @@ export async function getHackathonResponse(
   );
 }
 
-export async function getHackathonListResponse(): Promise<HackathonListResponse> {
+export async function getHackathonListResponse(
+): Promise<HackathonListResponse> {
   const hackathons = await listHackathons();
   return HackathonListResponse.from(hackathons);
 }
@@ -94,6 +96,7 @@ export async function getHackathonListResponse(): Promise<HackathonListResponse>
 export async function editHackathon(
     id: Uuid,
     title: string,
+    description: string,
     startDate: Date,
     endDate: Date,
 ): Promise<void> {
@@ -105,6 +108,7 @@ export async function editHackathon(
   try {
     const existing = await getHackathon(id);
     existing.title = title;
+    existing.description = description;
     existing.startDate = startDate;
     existing.endDate = endDate;
 

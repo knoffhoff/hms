@@ -10,6 +10,7 @@ export async function create(event, context, callback) {
     const request = HackathonCreateRequest.parse(event.body);
     const hackathon = await createHackathon(
         request.title,
+        request.description,
         request.startDate,
         request.endDate,
     );

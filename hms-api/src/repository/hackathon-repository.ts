@@ -34,6 +34,7 @@ export async function putHackathon(hackathon: Hackathon) {
     TableName: table,
     Item: {
       title: {S: hackathon.title},
+      description: {S: hackathon.description},
       startDate: {S: hackathon.startDate.toISOString()},
       endDate: {S: hackathon.endDate.toISOString()},
       id: {S: hackathon.id},
@@ -83,6 +84,7 @@ export async function deleteHackathon(id: Uuid) {
 function itemToHackathon(item: { [key: string]: AttributeValue }): Hackathon {
   return new Hackathon(
       item.title.S,
+      item.description.S,
       new Date(item.startDate.S),
       new Date(item.endDate.S),
       item.id.S!,

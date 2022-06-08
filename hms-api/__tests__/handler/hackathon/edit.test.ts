@@ -13,6 +13,7 @@ jest.spyOn(hackathonService, 'editHackathon')
 describe('Edit Hackathon', () => {
   test('Happy Path', async () => {
     const title = 'New fancy title';
+    const description = 'Lorem ipsum dollar dollar bills y\'all';
     const startDate = new Date();
     const endDate = new Date(new Date().getTime() + 10000);
     const id = uuid();
@@ -21,10 +22,13 @@ describe('Edit Hackathon', () => {
     mockEditHackathon.mockImplementation(() => {
     });
 
-    await edit(toEvent(title, startDate, endDate, id), null, callback);
+    await edit(
+        toEvent(title, description, startDate, endDate, id),
+        null,
+        callback);
 
     expect(mockEditHackathon)
-        .toHaveBeenCalledWith(id, title, startDate, endDate);
+        .toHaveBeenCalledWith(id, title, description, startDate, endDate);
     expect(callback)
         .toHaveBeenCalledWith(null, {
           statusCode: 200,
@@ -39,6 +43,7 @@ describe('Edit Hackathon', () => {
 
   test('Throws InvalidStateError', async () => {
     const title = 'New fancy title';
+    const description = 'Lorem ipsum dollar dollar bills y\'all';
     const startDate = new Date();
     const endDate = new Date(new Date().getTime() + 10000);
     const id = uuid();
@@ -49,10 +54,13 @@ describe('Edit Hackathon', () => {
       throw new InvalidStateError(errorMessage);
     });
 
-    await edit(toEvent(title, startDate, endDate, id), null, callback);
+    await edit(
+        toEvent(title, description, startDate, endDate, id),
+        null,
+        callback);
 
     expect(mockEditHackathon)
-        .toHaveBeenCalledWith(id, title, startDate, endDate);
+        .toHaveBeenCalledWith(id, title, description, startDate, endDate);
     expect(callback)
         .toHaveBeenCalledWith(null, {
           statusCode: 400,
@@ -67,6 +75,7 @@ describe('Edit Hackathon', () => {
 
   test('Throws NotFoundError', async () => {
     const title = 'New fancy title';
+    const description = 'Lorem ipsum dollar dollar bills y\'all';
     const startDate = new Date();
     const endDate = new Date(new Date().getTime() + 10000);
     const id = uuid();
@@ -77,10 +86,13 @@ describe('Edit Hackathon', () => {
       throw new NotFoundError(errorMessage);
     });
 
-    await edit(toEvent(title, startDate, endDate, id), null, callback);
+    await edit(
+        toEvent(title, description, startDate, endDate, id),
+        null,
+        callback);
 
     expect(mockEditHackathon)
-        .toHaveBeenCalledWith(id, title, startDate, endDate);
+        .toHaveBeenCalledWith(id, title, description, startDate, endDate);
     expect(callback)
         .toHaveBeenCalledWith(null, {
           statusCode: 404,
@@ -95,6 +107,7 @@ describe('Edit Hackathon', () => {
 
   test('Throws Error', async () => {
     const title = 'New fancy title';
+    const description = 'Lorem ipsum dollar dollar bills y\'all';
     const startDate = new Date();
     const endDate = new Date(new Date().getTime() + 10000);
     const id = uuid();
@@ -105,10 +118,13 @@ describe('Edit Hackathon', () => {
       throw new Error(errorMessage);
     });
 
-    await edit(toEvent(title, startDate, endDate, id), null, callback);
+    await edit(
+        toEvent(title, description, startDate, endDate, id),
+        null,
+        callback);
 
     expect(mockEditHackathon)
-        .toHaveBeenCalledWith(id, title, startDate, endDate);
+        .toHaveBeenCalledWith(id, title, description, startDate, endDate);
     expect(callback)
         .toHaveBeenCalledWith(null, {
           statusCode: 500,
@@ -124,12 +140,14 @@ describe('Edit Hackathon', () => {
 
 const toEvent = (
     title: string,
+    description: string,
     startDate: Date,
     endDate: Date,
     id: Uuid,
 ): any => ({
   body: JSON.stringify(new HackathonEditRequest(
       title,
+      description,
       startDate,
       endDate,
   )),
