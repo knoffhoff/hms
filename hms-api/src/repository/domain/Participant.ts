@@ -1,6 +1,7 @@
 /* eslint-disable require-jsdoc */
 
 import Uuid, {uuid} from '../../util/Uuid';
+import ValidationResult from '../../error/ValidationResult';
 
 /**
  * A Participant represents a single User participating in a single Hackathon
@@ -33,6 +34,22 @@ export default class {
    * Generated upon creation
    */
   creationDate: Date;
+
+  validate(): ValidationResult {
+    const result = new ValidationResult();
+    if (!this.id) {
+      result.addFailure('id is null or empty');
+    }
+
+    if (!this.userId) {
+      result.addFailure('userId is null or empty');
+    }
+
+    if (!this.hackathonId) {
+      result.addFailure('hackathonId is null or empty');
+    }
+    return result;
+  }
 
   constructor(
       userId: Uuid,

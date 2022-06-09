@@ -88,8 +88,44 @@ class Idea {
 
   validate(): ValidationResult {
     const result = new ValidationResult();
-    if (this.title.length === 0) {
-      result.addFailure('title has length 0');
+    if (!this.id) {
+      result.addFailure('id is null or empty');
+    }
+
+    if (!this.ownerId) {
+      result.addFailure('ownerId is null or empty');
+    }
+
+    if (!this.hackathonId) {
+      result.addFailure('hackathonId is null or empty');
+    }
+
+    if (!this.participantIds) {
+      result.addFailure('participantIds is null');
+    }
+
+    if (!this.title) {
+      result.addFailure('title is null or empty');
+    }
+
+    if (this.description === null || this.description === undefined) {
+      result.addFailure('description is null');
+    }
+
+    if (this.problem === null || this.problem === undefined) {
+      result.addFailure('problem is null');
+    }
+
+    if (this.goal === null || this.goal === undefined) {
+      result.addFailure('goal is null');
+    }
+
+    if (!this.requiredSkills) {
+      result.addFailure('requiredSkills is null or empty');
+    }
+
+    if (!this.categoryId) {
+      result.addFailure('categoryId is null or empty');
     }
     return result;
   }

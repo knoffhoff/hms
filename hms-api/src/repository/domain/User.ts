@@ -37,6 +37,8 @@ export default class {
    * The email address of the User
    *
    * Must be a valid email address
+   *
+   * TODO validate the email address
    */
   emailAddress: string;
 
@@ -72,12 +74,24 @@ export default class {
 
   validate(): ValidationResult {
     const result = new ValidationResult();
-    if (this.firstName.length === 0) {
-      result.addFailure('firstName has length 0');
+    if (!this.id) {
+      result.addFailure('id is null or empty');
     }
 
-    if (this.roles.length === 0) {
-      result.addFailure('roles has length 0');
+    if (!this.firstName) {
+      result.addFailure('firstName is null or empty');
+    }
+
+    if (!this.emailAddress) {
+      result.addFailure('emailAddress is null or empty');
+    }
+
+    if (!this.roles || this.roles.length === 0) {
+      result.addFailure('roles is null or empty');
+    }
+
+    if (!this.skills) {
+      result.addFailure('skills is null');
     }
     return result;
   }

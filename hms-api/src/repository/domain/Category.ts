@@ -39,8 +39,20 @@ class Category {
 
   validate(): ValidationResult {
     const result = new ValidationResult();
-    if (this.title.length === 0) {
-      result.addFailure('title has length 0');
+    if (!this.id) {
+      result.addFailure('id is null or empty');
+    }
+
+    if (!this.title) {
+      result.addFailure('title is null or empty');
+    }
+
+    if (this.description === null || this.description === undefined) {
+      result.addFailure('description is null');
+    }
+
+    if (!this.hackathonId) {
+      result.addFailure('hackathonId is null or empty');
     }
     return result;
   }

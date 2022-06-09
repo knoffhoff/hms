@@ -33,8 +33,16 @@ class Skill {
 
   validate(): ValidationResult {
     const result = new ValidationResult();
-    if (this.name.length === 0) {
-      result.addFailure('name has length 0');
+    if (!this.id) {
+      result.addFailure('id is null or empty');
+    }
+
+    if (!this.name) {
+      result.addFailure('name is null or empty');
+    }
+
+    if (this.description === null || this.description === undefined) {
+      result.addFailure('description is null');
     }
     return result;
   }
