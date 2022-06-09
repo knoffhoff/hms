@@ -25,6 +25,9 @@ import UserResponse from '../../src/rest/UserResponse';
 import UserListResponse from '../../src/rest/UserListResponse';
 import UserDeleteResponse from '../../src/rest/UserDeleteResponse';
 import User from '../../src/repository/domain/User';
+import ValidationResult from '../../src/error/ValidationResult';
+import {randomCategory} from '../repository/domain/category-maker';
+import ValidationError from '../../src/error/ValidationError';
 
 const mockGetSkills = jest.fn();
 jest.spyOn(skillRepository, 'getSkills')
@@ -49,7 +52,22 @@ const mockDeleteUser = jest.fn();
 jest.spyOn(userRepository, 'deleteUser')
     .mockImplementation(mockDeleteUser);
 
-describe('Create Idea', () => {
+describe('Create User', () => {
+  test('Validation Error', async () => {
+    mockSkillExists.mockResolvedValue(true);
+
+    await expect(
+        createUser(
+            'lastNaaaaaame',
+            '',
+            'e.m@i.l',
+            [uuid()],
+            [uuid()],
+            'image.url'))
+        .rejects
+        .toThrow(ValidationError);
+  });
+
   test('Missing Skill', async () => {
     mockSkillExists.mockResolvedValue(false);
 
@@ -120,6 +138,26 @@ describe('Edit User', () => {
     await editUser(oldUser.id, lastName, firstName, skills, imageUrl);
 
     expect(mockPutUser).toHaveBeenCalledWith(expected);
+  });
+
+  test('Validation Error', async () => {
+    const failedValidation = new ValidationResult();
+    failedValidation.addFailure('FAILURE');
+
+    const mockUser = randomCategory();
+    jest.spyOn(mockUser, 'validate')
+        .mockReturnValue(failedValidation);
+    mockGetUser.mockResolvedValue(mockUser);
+
+    await expect(
+        editUser(
+            uuid(),
+            'lastNaaaaaame',
+            'fiiiiiiirstName',
+            [uuid()],
+            'image.url'))
+        .rejects
+        .toThrow(ValidationError);
   });
 
   test('User is missing', async () => {

@@ -24,6 +24,8 @@ import * as categoryRepository from '../../src/repository/category-repository';
 import * as hackathonRepository
   from '../../src/repository/hackathon-repository';
 import * as ideaService from '../../src/service/idea-service';
+import ValidationError from '../../src/error/ValidationError';
+import ValidationResult from '../../src/error/ValidationResult';
 
 const mockHackathonExists = jest.fn();
 jest.spyOn(hackathonRepository, 'hackathonExists')
@@ -50,17 +52,6 @@ jest.spyOn(ideaService, 'removeIdeasForCategory')
     .mockImplementation(mockRemoveIdeasForCategory);
 
 describe('Create Category', () => {
-  test('Missing hackathon', async () => {
-    mockHackathonExists.mockResolvedValue(false);
-
-    await expect(createCategory('title', 'description', uuid()))
-        .rejects
-        .toThrow(ReferenceNotFoundError);
-
-    expect(mockPutCategory).not.toHaveBeenCalled();
-    expect(mockDeleteCategory).not.toHaveBeenCalled();
-  });
-
   test('Happy Path', async () => {
     mockHackathonExists.mockResolvedValue(true);
 
@@ -83,6 +74,23 @@ describe('Create Category', () => {
     }));
     expect(mockDeleteCategory).not.toHaveBeenCalled();
   });
+
+  test('Validation Error', async () => {
+    await expect(createCategory('', 'descriiiiption', uuid()))
+        .rejects
+        .toThrow(ValidationError);
+  });
+
+  test('Missing hackathon', async () => {
+    mockHackathonExists.mockResolvedValue(false);
+
+    await expect(createCategory('title', 'description', uuid()))
+        .rejects
+        .toThrow(ReferenceNotFoundError);
+
+    expect(mockPutCategory).not.toHaveBeenCalled();
+    expect(mockDeleteCategory).not.toHaveBeenCalled();
+  });
 });
 
 describe('Edit Category', () => {
@@ -102,6 +110,20 @@ describe('Edit Category', () => {
 
     expect(mockGetCategory).toHaveBeenCalledWith(oldCategory.id);
     expect(mockPutCategory).toHaveBeenCalledWith(expected);
+  });
+
+  test('Validation Error', async () => {
+    const failedValidation = new ValidationResult();
+    failedValidation.addFailure('FAILURE');
+
+    const mockCategory = randomCategory();
+    jest.spyOn(mockCategory, 'validate')
+        .mockReturnValue(failedValidation);
+    mockGetCategory.mockResolvedValue(mockCategory);
+
+    await expect(editCategory(uuid(), 'tiiitle', 'descriiiiption'))
+        .rejects
+        .toThrow(ValidationError);
   });
 
   test('Category is missing', async () => {

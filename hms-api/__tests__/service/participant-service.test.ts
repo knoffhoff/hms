@@ -26,6 +26,7 @@ import * as hackathonRepository
   from '../../src/repository/hackathon-repository';
 import * as userRepository from '../../src/repository/user-repository';
 import * as ideaService from '../../src/service/idea-service';
+import ValidationError from '../../src/error/ValidationError';
 
 const mockPutParticipant = jest.fn();
 jest.spyOn(participantRepository, 'putParticipant')
@@ -65,6 +66,15 @@ jest.spyOn(ideaService, 'removeParticipantFromIdeas')
     .mockImplementation(mockRemoveParticipantFromIdeas);
 
 describe('Create Participant', () => {
+  test('Validation Error', async () => {
+    mockHackathonExists.mockResolvedValue(true);
+    mockUserExists.mockResolvedValue(true);
+
+    await expect(createParticipant(null, uuid()))
+        .rejects
+        .toThrow(ValidationError);
+  });
+
   test('Missing Hackathon', async () => {
     mockHackathonExists.mockResolvedValue(false);
     mockUserExists.mockResolvedValue(true);

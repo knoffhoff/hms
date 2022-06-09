@@ -34,6 +34,7 @@ import * as ideaRepository from '../../src/repository/idea-repository';
 import * as ideaService from '../../src/service/idea-service';
 import DeletionError from '../../src/error/DeletionError';
 import ValidationError from '../../src/error/ValidationError';
+import ValidationResult from '../../src/error/ValidationResult';
 
 const mockPutHackathon = jest.fn();
 jest.spyOn(hackathonRepository, 'putHackathon')
@@ -102,6 +103,17 @@ describe('Create Hackathon', () => {
     }));
   });
 
+  test('Validation Error', async () => {
+    await expect(
+        createHackathon(
+            '',
+            'descriiiiption',
+            new Date(),
+            new Date()))
+        .rejects
+        .toThrow(ValidationError);
+  });
+
   test('StartDate > EndDate', async () => {
     const expected = randomHackathon();
 
@@ -155,6 +167,26 @@ describe('Edit Hackathon', () => {
         endDate);
 
     expect(mockPutHackathon).toHaveBeenCalledWith(expected);
+  });
+
+  test('Validation Error', async () => {
+    const failedValidation = new ValidationResult();
+    failedValidation.addFailure('FAILURE');
+
+    const mockHackathon = randomHackathon();
+    jest.spyOn(mockHackathon, 'validate')
+        .mockReturnValue(failedValidation);
+    mockGetHackathon.mockResolvedValue(mockHackathon);
+
+    await expect(
+        editHackathon(
+            uuid(),
+            'tiiitle',
+            'descriiiiption',
+            new Date(),
+            new Date()))
+        .rejects
+        .toThrow(ValidationError);
   });
 
   test('StartDate > EndDate', async () => {
