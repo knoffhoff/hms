@@ -4,7 +4,6 @@ import hackathonReducer from './common/redux/hackathonSlice'
 export const store = configureStore({
   reducer: {
     hackathons: hackathonReducer,
-
   },
 })
 

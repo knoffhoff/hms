@@ -1,28 +1,11 @@
 import React, { useState } from 'react'
-import HackathonSelectDropdown, {
-  HackathonDropdownMode,
-} from '../components/HackathonSelectDropdown'
+import HackathonDetails from '../components/card-details/HackathonDetails'
+import HackathonSelectDropdown from '../components/HackathonSelectDropdown'
 import { Title } from '@mantine/core'
-import RelevantIdeasLoader from '../components/RelevantIdeasLoader'
-import { Hackathon, Idea } from '../common/types'
-import IdeaCardList from '../components/lists/IdeaCardList'
-import { IdeaDetailsCaller } from '../components/card-details/IdeaDetails'
+import { HackathonDetailsType, HackathonDropdownMode } from '../common/types'
 
 export default function Archive() {
   const [selectedHackathonId, setSelectedHackathonId] = useState('')
-  const [relevantIdeas, setRelevantIdeas] = useState<Idea[]>([])
-  const [isLoading, setIsLoading] = useState(true)
-  const [hackathon, setHackathon] = useState({
-    id: 'string',
-    title: 'string',
-    startDate: new Date(),
-    endDate: new Date(),
-    participants: [],
-    categories: undefined,
-    ideas: [],
-  } as Hackathon)
-  const today = new Date()
-  today.setHours(0, 0, 0, 0)
 
   return (
     <>
@@ -32,38 +15,12 @@ export default function Archive() {
         context={HackathonDropdownMode.Archive}
       />
 
-      <RelevantIdeasLoader
-        setHackathon={setHackathon}
-        setRelevantIdeas={setRelevantIdeas}
-        selectedHackathonId={selectedHackathonId}
-        setLoading={setIsLoading}
-      />
-
-      {!isLoading && new Date(hackathon.endDate) < today && (
-        <div>
-          <h2>{hackathon.title}</h2>
-          <h2>
-            Start Date: {new Date(hackathon.startDate).toDateString()} End Date:{' '}
-            {new Date(hackathon.endDate).toDateString()}
-          </h2>
-          <h2>All Ideas ({relevantIdeas.length})</h2>
-
-          <div>
-            <IdeaCardList
-              ideas={relevantIdeas}
-              columnSize={6}
-              type={IdeaDetailsCaller.Archive}
-              isLoading={false}
-            />
-          </div>
-        </div>
-      )}
-
-      {!(new Date(hackathon.endDate) < today) && (
-        <div>To see upcoming hackathons please visit the Idea Portal</div>
-      )}
-
-      {isLoading && selectedHackathonId && <div>Loading...</div>}
+      <div>
+        <HackathonDetails
+          hackathonId={selectedHackathonId}
+          type={HackathonDetailsType.Header}
+        />
+      </div>
     </>
   )
 }

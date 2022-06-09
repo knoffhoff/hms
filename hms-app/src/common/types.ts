@@ -47,6 +47,17 @@ export type Hackathon = {
   status?: HackathonStatus[]
 }
 
+export type HackathonSerializable = {
+  id: string
+  title: string
+  startDate: string
+  endDate: string
+  participants?: ParticipantPreview[]
+  categories?: CategoryPreview[]
+  ideas?: IdeaPreview[]
+  status?: HackathonStatus[]
+}
+
 export const parseHackathon = (json: any): Hackathon =>
   ({
     id: json.id,

@@ -44,7 +44,8 @@ export default function YourIdeas() {
   }, [hackathon])
 
   function isParticipant(): boolean {
-    return !!participantId.toString()
+    //return !!participantId.toString()
+    return true
   }
 
   return (
