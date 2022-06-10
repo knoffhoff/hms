@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Input, Group, Title, Button } from '@mantine/core'
+import { Input, Group, Title, Button, Select } from '@mantine/core'
 import { Search } from 'tabler-icons-react'
 import IdeaCardList from '../components/lists/IdeaCardList'
 import {
