@@ -151,12 +151,12 @@ const parseUserPreview = (json: any): UserPreview =>
 
 export type User = {
   id: string
-  lastName: string
+  lastName?: string
   firstName: string
   emailAddress: string
   roles: string[]
   skills: SkillPreview[]
-  imageUrl: string
+  imageUrl?: string
   creationDate: Date
 }
 

@@ -17,6 +17,7 @@ import UserResponse from '../rest/UserResponse';
 import UserListResponse from '../rest/UserListResponse';
 import UserDeleteResponse from '../rest/UserDeleteResponse';
 import NotFoundError from '../error/NotFoundError';
+import ValidationError from '../error/ValidationError';
 
 export async function createUser(
     lastName: string,
@@ -36,6 +37,11 @@ export async function createUser(
       skills,
       imageUrl,
   );
+  const result = user.validate();
+  if (result.hasFailed()) {
+    throw new ValidationError('Cannot create User', result);
+  }
+
   await putUser(user);
   return user;
 }
@@ -66,18 +72,24 @@ export async function editUser(
     skills: Uuid[],
     imageUrl: string,
 ): Promise<void> {
+  let existing: User;
   try {
-    const existing = await getUser(id);
+    existing = await getUser(id);
     existing.lastName = lastName;
     existing.firstName = firstName;
     existing.skills = skills;
     existing.imageUrl = imageUrl;
-
-    await putUser(existing);
   } catch (e) {
     throw new NotFoundError(`Cannot edit User with id: ${id}, ` +
         `it does not exist`);
   }
+
+  const result = existing.validate();
+  if (result.hasFailed()) {
+    throw new ValidationError(`Cannot edit User with id: ${id}`, result);
+  }
+
+  await putUser(existing);
 }
 
 export async function removeUser(id: Uuid): Promise<UserDeleteResponse> {

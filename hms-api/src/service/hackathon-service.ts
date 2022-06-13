@@ -17,11 +17,11 @@ import ReferenceNotFoundError from '../error/ReferenceNotFoundError';
 import HackathonListResponse from '../rest/HackathonListResponse';
 import HackathonDeleteResponse from '../rest/HackathonDeleteResponse';
 import NotFoundError from '../error/NotFoundError';
-import InvalidStateError from '../error/InvalidStateError';
 import {removeIdeasForHackathon} from './idea-service';
 import DeletionError from '../error/DeletionError';
 import {removeCategoriesForHackathon} from './category-service';
 import {removeParticipantsForHackathon} from './participant-service';
+import ValidationError from '../error/ValidationError';
 
 export async function createHackathon(
     title: string,
@@ -29,12 +29,11 @@ export async function createHackathon(
     startDate: Date,
     endDate: Date,
 ): Promise<Hackathon> {
-  if (endDate <= startDate) {
-    throw new InvalidStateError(`Cannot create Hackathon, ` +
-        `startDate (${startDate}) is after endDate (${endDate})`);
-  }
-
   const hackathon = new Hackathon(title, description, startDate, endDate);
+  const result = hackathon.validate();
+  if (result.hasFailed()) {
+    throw new ValidationError(`Cannot create Hackathon`, result);
+  }
 
   await putHackathon(hackathon);
 
@@ -100,23 +99,24 @@ export async function editHackathon(
     startDate: Date,
     endDate: Date,
 ): Promise<void> {
-  if (endDate <= startDate) {
-    throw new InvalidStateError(`Cannot edit Hackathon with id ${id}, ` +
-        `startDate (${startDate}) is after endDate (${endDate})`);
-  }
-
+  let existing: Hackathon;
   try {
-    const existing = await getHackathon(id);
+    existing = await getHackathon(id);
     existing.title = title;
     existing.description = description;
     existing.startDate = startDate;
     existing.endDate = endDate;
-
-    await putHackathon(existing);
   } catch (e) {
     throw new NotFoundError(`Cannot edit Hackathon with id: ${id}, ` +
         `it does not exist`);
   }
+
+  const result = existing.validate();
+  if (result.hasFailed()) {
+    throw new ValidationError(`Cannot edit Hackathon with id: ${id}`, result);
+  }
+
+  await putHackathon(existing);
 }
 
 export async function removeHackathon(

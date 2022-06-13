@@ -21,7 +21,6 @@ import ReferenceNotFoundError from '../../src/error/ReferenceNotFoundError';
 import NotFoundError from '../../src/error/NotFoundError';
 import HackathonListResponse from '../../src/rest/HackathonListResponse';
 import HackathonDeleteResponse from '../../src/rest/HackathonDeleteResponse';
-import InvalidStateError from '../../src/error/InvalidStateError';
 import Hackathon from '../../src/repository/domain/Hackathon';
 import * as hackathonRepository
   from '../../src/repository/hackathon-repository';
@@ -34,6 +33,8 @@ import * as categoryService from '../../src/service/category-service';
 import * as ideaRepository from '../../src/repository/idea-repository';
 import * as ideaService from '../../src/service/idea-service';
 import DeletionError from '../../src/error/DeletionError';
+import ValidationError from '../../src/error/ValidationError';
+import ValidationResult from '../../src/error/ValidationResult';
 
 const mockPutHackathon = jest.fn();
 jest.spyOn(hackathonRepository, 'putHackathon')
@@ -102,6 +103,17 @@ describe('Create Hackathon', () => {
     }));
   });
 
+  test('Validation Error', async () => {
+    await expect(
+        createHackathon(
+            '',
+            'descriiiiption',
+            new Date(),
+            new Date()))
+        .rejects
+        .toThrow(ValidationError);
+  });
+
   test('StartDate > EndDate', async () => {
     const expected = randomHackathon();
 
@@ -111,7 +123,7 @@ describe('Create Hackathon', () => {
         expected.endDate,
         expected.startDate))
         .rejects
-        .toThrow(InvalidStateError);
+        .toThrow(ValidationError);
     expect(mockPutHackathon).not.toHaveBeenCalled();
   });
 
@@ -124,7 +136,7 @@ describe('Create Hackathon', () => {
         expected.startDate,
         expected.startDate))
         .rejects
-        .toThrow(InvalidStateError);
+        .toThrow(ValidationError);
     expect(mockPutHackathon).not.toHaveBeenCalled();
   });
 });
@@ -157,6 +169,26 @@ describe('Edit Hackathon', () => {
     expect(mockPutHackathon).toHaveBeenCalledWith(expected);
   });
 
+  test('Validation Error', async () => {
+    const failedValidation = new ValidationResult();
+    failedValidation.addFailure('FAILURE');
+
+    const mockHackathon = randomHackathon();
+    jest.spyOn(mockHackathon, 'validate')
+        .mockReturnValue(failedValidation);
+    mockGetHackathon.mockResolvedValue(mockHackathon);
+
+    await expect(
+        editHackathon(
+            uuid(),
+            'tiiitle',
+            'descriiiiption',
+            new Date(),
+            new Date()))
+        .rejects
+        .toThrow(ValidationError);
+  });
+
   test('StartDate > EndDate', async () => {
     const expected = randomHackathon();
 
@@ -167,9 +199,9 @@ describe('Edit Hackathon', () => {
         expected.endDate,
         expected.startDate))
         .rejects
-        .toThrow(InvalidStateError);
+        .toThrow(ValidationError);
+    expect(mockGetHackathon).toHaveBeenCalledWith(expected.id);
     expect(mockPutHackathon).not.toHaveBeenCalled();
-    expect(mockGetHackathon).not.toHaveBeenCalled();
   });
 
   test('StartDate === EndDate', async () => {
@@ -182,9 +214,9 @@ describe('Edit Hackathon', () => {
         expected.startDate,
         expected.startDate))
         .rejects
-        .toThrow(InvalidStateError);
+        .toThrow(ValidationError);
+    expect(mockGetHackathon).toHaveBeenCalledWith(expected.id);
     expect(mockPutHackathon).not.toHaveBeenCalled();
-    expect(mockGetHackathon).not.toHaveBeenCalled();
   });
 
   test('Hackathon is missing', async () => {

@@ -3,6 +3,7 @@
 import NotFoundError from '../error/NotFoundError';
 import ReferenceNotFoundError from '../error/ReferenceNotFoundError';
 import InvalidStateError from '../error/InvalidStateError';
+import ValidationError from '../error/ValidationError';
 
 const headers = {
   'Access-Control-Allow-Origin': '*',
@@ -33,6 +34,12 @@ export function buildNotFoundErrorResponse(error: NotFoundError): any {
 }
 
 export function buildInvalidStateErrorResponse(error: InvalidStateError): any {
+  return buildResponse(400, {
+    errorMessage: error.message,
+  });
+}
+
+export function buildValidationErrorResponse(error: ValidationError): any {
   return buildResponse(400, {
     errorMessage: error.message,
   });

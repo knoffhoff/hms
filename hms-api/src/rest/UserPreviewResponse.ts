@@ -5,10 +5,10 @@ import User from '../repository/domain/User';
 
 class UserPreviewResponse {
   id: Uuid;
-  lastName: string;
+  lastName?: string;
   firstName: string;
   emailAddress: string;
-  imageUrl: string;
+  imageUrl?: string;
 
   constructor(
       id: Uuid,

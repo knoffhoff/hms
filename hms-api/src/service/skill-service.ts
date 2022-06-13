@@ -12,12 +12,18 @@ import SkillResponse from '../rest/SkillResponse';
 import SkillListResponse from '../rest/SkillListResponse';
 import SkillDeleteResponse from '../rest/SkillDeleteResponse';
 import NotFoundError from '../error/NotFoundError';
+import ValidationError from '../error/ValidationError';
 
 export async function createSkill(
     name: string,
     description: string,
 ): Promise<Skill> {
   const skill = new Skill(name, description);
+  const result = skill.validate();
+  if (result.hasFailed()) {
+    throw new ValidationError(`Cannot create Skill`, result);
+  }
+
   await putSkill(skill);
   return skill;
 }
@@ -27,16 +33,22 @@ export async function editSkill(
     name: string,
     description: string,
 ): Promise<void> {
+  let existing;
   try {
-    const existing = await getSkill(id);
+    existing = await getSkill(id);
     existing.name = name;
     existing.description = description;
-
-    await putSkill(existing);
   } catch (e) {
     throw new NotFoundError(`Cannot edit Skill with id: ${id}, ` +
         `it does not exist`);
   }
+
+  const result = existing.validate();
+  if (result.hasFailed()) {
+    throw new ValidationError(`Cannot edit Skill with id: ${id}`, result);
+  }
+
+  await putSkill(existing);
 }
 
 export async function getSkillResponse(id: Uuid): Promise<SkillResponse> {

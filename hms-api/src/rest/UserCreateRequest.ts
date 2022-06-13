@@ -4,12 +4,12 @@ import Uuid from '../util/Uuid';
 import Role, {mapStringToRoles} from '../repository/domain/Role';
 
 class UserCreateRequest {
-  lastName: string;
+  lastName?: string;
   firstName: string;
   emailAddress: string;
   roles: Role[];
   skills: Uuid[];
-  imageUrl: string;
+  imageUrl?: string;
 
   constructor(
       lastName: string,
