@@ -44,7 +44,7 @@ export default function YourIdeas() {
   }, [hackathon])
 
   function isParticipant(): boolean {
-    return !!participantId.toString()
+    return participantId !== undefined && participantId !== ''
   }
 
   return (
