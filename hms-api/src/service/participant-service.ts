@@ -22,6 +22,7 @@ import ParticipantDeleteResponse from '../rest/ParticipantDeleteResponse';
 import {removeIdeasForOwner, removeParticipantFromIdeas} from './idea-service';
 import DeletionError from '../error/DeletionError';
 import NotFoundError from '../error/NotFoundError';
+import ValidationError from '../error/ValidationError';
 
 export async function createParticipant(
     userId: Uuid,
@@ -36,6 +37,11 @@ export async function createParticipant(
   }
 
   const participant = new Participant(userId, hackathonId);
+  const result = participant.validate();
+  if (result.hasFailed()) {
+    throw new ValidationError('Cannot create Participant', result);
+  }
+
   await putParticipant(participant);
 
   return participant;

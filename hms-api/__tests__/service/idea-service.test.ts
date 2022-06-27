@@ -38,6 +38,8 @@ import * as skillRepository from '../../src/repository/skill-repository';
 import * as userRepository from '../../src/repository/user-repository';
 import * as ideaRepository from '../../src/repository/idea-repository';
 import InvalidStateError from '../../src/error/InvalidStateError';
+import ValidationResult from '../../src/error/ValidationResult';
+import ValidationError from '../../src/error/ValidationError';
 
 const mockPutIdea = jest.fn();
 jest.spyOn(ideaRepository, 'putIdea')
@@ -106,6 +108,26 @@ jest.spyOn(skillRepository, 'skillExists')
     .mockImplementation(mockSkillExists);
 
 describe('Create Idea', () => {
+  test('Validation Error', async () => {
+    mockParticipantExists.mockResolvedValue(true);
+    mockHackathonExists.mockResolvedValue(true);
+    mockCategoryExists.mockResolvedValue(true);
+    mockSkillExists.mockResolvedValue(true);
+
+    await expect(
+        createIdea(
+            uuid(),
+            uuid(),
+            '',
+            'descriiiiption',
+            '1 + 1 = x',
+            'toooooorrr',
+            [uuid()],
+            uuid()))
+        .rejects
+        .toThrow(ValidationError);
+  });
+
   test('Missing Participant', async () => {
     mockParticipantExists.mockResolvedValue(false);
     mockHackathonExists.mockResolvedValue(true);
@@ -276,6 +298,32 @@ describe('Edit Idea', () => {
     expect(mockSkillExists).toHaveBeenCalledWith(requiredSkills[0]);
     expect(mockSkillExists).toHaveBeenCalledWith(requiredSkills[1]);
     expect(mockPutIdea).toHaveBeenCalledWith(expected);
+  });
+
+  test('Validation Error', async () => {
+    mockGetIdea.mockResolvedValue(randomIdea());
+    mockCategoryExists.mockResolvedValue(true);
+    mockSkillExists.mockResolvedValue(true);
+
+    const failedValidation = new ValidationResult();
+    failedValidation.addFailure('FAILURE');
+
+    const mockIdea = randomHackathon();
+    jest.spyOn(mockIdea, 'validate')
+        .mockReturnValue(failedValidation);
+    mockGetIdea.mockResolvedValue(mockIdea);
+
+    await expect(
+        editIdea(
+            uuid(),
+            'tiiitle',
+            'descriiiiption',
+            '1 + 1 = x',
+            'toooooorrr',
+            [uuid()],
+            uuid()))
+        .rejects
+        .toThrow(ValidationError);
   });
 
   test('Idea is missing', async () => {

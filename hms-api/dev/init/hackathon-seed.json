@@ -2,6 +2,7 @@
   {
     "id": {"S": "e955fe4b-7ce7-4904-ae6f-22a8985f74a8"},
     "title": {"S": "Previous Hackathon"},
+    "description": {"S": "This is the previously run hackathon, it's already over.  It was pretty great and a few people participated which made it honestly the best previously run hackathon ever!"},
     "startDate": {"S": "2021-12-13"},
     "endDate": {"S": "2021-12-17"},
     "creationDate": {"S": "2021-10-19"},
@@ -25,6 +26,7 @@
   {
     "id": {"S": "4eb2d486-c786-431e-a4fd-4c093ed30642"},
     "title": {"S": "Current Hackathon"},
+    "description": {"S": "THIS HACKATHON IS HAPPENING RIGHT NOW!!!! Just look at all those participants and ideas! It's so epic! It is certainly the greatest hackathon happened at this very moment!"},
     "startDate": {"S": "2022-06-20"},
     "endDate": {"S": "2022-06-24"},
     "creationDate": {"S": "2022-01-14"},
@@ -53,6 +55,7 @@
   {
     "id": {"S": "a1c60aba-f846-4208-b4b8-1caaec031aea"},
     "title": {"S": "Next Hackathon"},
+    "description": {"S":  "This is the upcoming hackathon, it's not totally planned yet.  However, it's going the be the biggest, baddest, nerdiest, most sweaty palm acne faced geekathon you have ever seen!!!"},
     "startDate": {"S": "2022-08-15"},
     "endDate": {"S": "2022-08-19"},
     "creationDate": {"S": "2022-03-01"},

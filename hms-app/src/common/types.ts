@@ -14,8 +14,8 @@ export enum IdeaCardType {
   Owner = 'OWNER',
   Admin = 'ADMIN',
   Voting = 'VOTING',
-  HackathonDetails = 'HACKATHON_DETAILS',
   IdeaPortal = 'IDEA_PORTAL',
+  Archive = 'ARCHIVE',
 }
 
 export enum HackathonStatus {
@@ -162,12 +162,12 @@ const parseUserPreview = (json: any): UserPreview =>
 
 export type User = {
   id: string
-  lastName: string
+  lastName?: string
   firstName: string
   emailAddress: string
   roles: string[]
   skills: SkillPreview[]
-  imageUrl: string
+  imageUrl?: string
   creationDate: Date
 }
 

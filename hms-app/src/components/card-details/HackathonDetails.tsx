@@ -276,7 +276,7 @@ export default function HackathonDetails(props: IProps) {
             <IdeaCardList
               ideas={relevantIdeaList}
               columnSize={6}
-              type={IdeaCardType.HackathonDetails}
+              type={IdeaCardType.Archive}
               isLoading={isIdeaLoading}
             />
           </div>

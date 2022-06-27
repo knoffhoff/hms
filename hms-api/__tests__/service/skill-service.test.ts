@@ -13,6 +13,9 @@ import NotFoundError from '../../src/error/NotFoundError';
 import SkillListResponse from '../../src/rest/SkillListResponse';
 import SkillDeleteResponse from '../../src/rest/SkillDeleteResponse';
 import * as skillRepository from '../../src/repository/skill-repository';
+import ValidationResult from '../../src/error/ValidationResult';
+import {randomCategory} from '../repository/domain/category-maker';
+import ValidationError from '../../src/error/ValidationError';
 
 const mockPutSkill = jest.fn();
 jest.spyOn(skillRepository, 'putSkill')
@@ -44,6 +47,12 @@ describe('Create Skill', () => {
       description: expected.description,
     }));
   });
+
+  test('Validation Error', async () => {
+    await expect(createSkill('', 'descriiiiption'))
+        .rejects
+        .toThrow(ValidationError);
+  });
 });
 
 describe('Edit Skill', () => {
@@ -61,6 +70,20 @@ describe('Edit Skill', () => {
     await editSkill(oldSkill.id, title, description);
 
     expect(mockPutSkill).toHaveBeenCalledWith(expected);
+  });
+
+  test('Validation Error', async () => {
+    const failedValidation = new ValidationResult();
+    failedValidation.addFailure('FAILURE');
+
+    const mockSkill = randomCategory();
+    jest.spyOn(mockSkill, 'validate')
+        .mockReturnValue(failedValidation);
+    mockGetSkill.mockResolvedValue(mockSkill);
+
+    await expect(editSkill(uuid(), 'naaaaaaame', 'descriiiiption'))
+        .rejects
+        .toThrow(ValidationError);
   });
 
   test('Skill is missing', async () => {
