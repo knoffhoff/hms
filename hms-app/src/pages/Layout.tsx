@@ -8,6 +8,14 @@ import {
 } from '@mantine/core'
 import HeaderMenu from '../components/HeaderMenu'
 import { useLocalStorage } from '../common/localStorage'
+import { useAppDispatch } from '../hooks'
+import {
+  mapHackathonToSerializable,
+  setHackathonList,
+  setNextHackathon,
+} from '../common/redux/hackathonSlice'
+import { useEffect } from 'react'
+import { getListOfHackathons } from '../actions/HackathonActions'
 
 const menuLinks = [
   { link: '', label: 'Home' },
@@ -33,10 +41,28 @@ const toggleColorScheme = (colorScheme: ColorScheme) =>
   colorScheme === 'dark' ? 'light' : 'dark'
 
 const Layout = () => {
+  const dispatch = useAppDispatch()
+
   const [colorScheme, setColorScheme] = useLocalStorage<ColorScheme>(
     defaultColorSchemeLocalStorageKey,
     defaultColorScheme
   )
+
+  useEffect(() => {
+    const getHackathons = async () => {
+      const hackathons = await getListOfHackathons()
+      dispatch(setHackathonList(hackathons.map(mapHackathonToSerializable)))
+
+      const nextHackathon = hackathons.find((hackathon) => {
+        return new Date(hackathon.startDate) > new Date()
+      })
+
+      if (!!nextHackathon)
+        dispatch(setNextHackathon(mapHackathonToSerializable(nextHackathon)))
+    }
+
+    getHackathons()
+  }, [])
 
   return (
     <ColorSchemeProvider

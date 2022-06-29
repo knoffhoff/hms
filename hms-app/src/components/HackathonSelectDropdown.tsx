@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { getListOfHackathons } from '../actions/HackathonActions'
 import { Select, SelectItem } from '@mantine/core'
 import { HackathonPreview, HackathonDropdownMode } from '../common/types'
+import { AlertCircle, Loader, Refresh } from 'tabler-icons-react'
 
 type Props = {
   setHackathonId: (hackthonID: string) => void
@@ -72,8 +73,18 @@ export default function HackathonSelectDropdown({
 
   return (
     <>
-      {isError && <div>Ups something went wrong...</div>}
-      {isLoading && !isError && <div>hackathon select is loading...</div>}
+      {isError && (
+        <Select
+          data={['']}
+          placeholder={'Could not fetch hackathons'}
+          icon={<AlertCircle />}
+          disabled
+          error
+        ></Select>
+      )}
+      {isLoading && !isError && (
+        <Select data={['']} placeholder={'Loading...'} disabled></Select>
+      )}
       {!isLoading && !isError && (
         <div style={{ width: 385 }}>
           <Select

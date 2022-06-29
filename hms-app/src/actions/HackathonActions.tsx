@@ -1,8 +1,14 @@
-import { Hackathon, parseHackathon, parseHackathons } from '../common/types'
+import {
+  Hackathon,
+  HackathonPreview,
+  parseHackathon,
+  parseHackathons,
+  parseHackathonPreviews,
+} from '../common/types'
 
 const core_url = process.env.REACT_APP_CORE_URL
 
-export const getListOfHackathons = (): Promise<Hackathon[]> => {
+export const getListOfHackathons = (): Promise<HackathonPreview[]> => {
   return fetch(`${core_url}/hackathons`, {
     method: 'GET',
     headers: {
@@ -11,7 +17,7 @@ export const getListOfHackathons = (): Promise<Hackathon[]> => {
     },
   })
     .then((data) => data.json())
-    .then((json) => parseHackathons(json.hackathons))
+    .then((json) => parseHackathonPreviews(json.hackathons))
     .catch((err) => {
       console.log(err)
       throw err

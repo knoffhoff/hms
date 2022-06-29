@@ -5,9 +5,9 @@ import { getIdeaDetails } from '../actions/IdeaActions'
 
 type Props = {
   selectedHackathonId: string
-  setRelevantIdeas: (relevantIdeaList: Idea[]) => void
+  setRelevantIdeas?: (relevantIdeaList: Idea[]) => void
   setHackathon: (hackathonData: Hackathon) => void
-  setLoading: (boolean: boolean) => void
+  setLoading?: (boolean: boolean) => void
 }
 
 export default function RelevantIdeasLoader({
@@ -19,8 +19,8 @@ export default function RelevantIdeasLoader({
   const [relevantIdeaList, setRelevantIdeaList] = useState<Idea[]>([])
   const [isThisLoading, setIsThisLoading] = useState(true)
   const [hackathonData, setHackathonData] = useState<Hackathon>({
-    id: 'string',
-    title: 'string',
+    id: '',
+    title: '',
     startDate: new Date(),
     endDate: new Date(),
     participants: [],
@@ -42,18 +42,20 @@ export default function RelevantIdeasLoader({
   })
 
   const loadSelectedHackathon = () => {
-    getHackathonDetails(selectedHackathonId).then((data) => {
-      setHackathonData(data)
-    })
+    selectedHackathonId !== ''
+      ? getHackathonDetails(selectedHackathonId).then((data) => {
+          setHackathonData(data)
+        })
+      : console.log('id was empty')
   }
 
-  const loadRelevantIdeaDetails = () => {
-    hackathonData.ideas?.map((ideaPreviews) => {
-      getIdeaDetails(ideaPreviews.id).then((data) => {
-        setIdeaData(data)
-        setIsThisLoading(false)
-      })
+  const loadIdeaDetails = () => {
+    hackathonData.ideas!.map((ideaPreview) => {
+      getIdeaDetails(ideaPreview.id).then((ideaDetails) =>
+        setIdeaData(ideaDetails)
+      )
     })
+    setIsThisLoading(false)
   }
 
   useEffect(() => {
@@ -63,7 +65,7 @@ export default function RelevantIdeasLoader({
   }, [selectedHackathonId])
 
   useEffect(() => {
-    localStorage.getItem(hackathonData.id)
+    localStorage.getItem(selectedHackathonId)
       ? console.log(
           'id exist',
           JSON.parse(localStorage.getItem(hackathonData.id)!)
@@ -75,7 +77,7 @@ export default function RelevantIdeasLoader({
     setRelevantIdeaList((relevantIdeaList) => {
       return []
     })
-    loadRelevantIdeaDetails()
+    loadIdeaDetails()
     setHackathon(hackathonData)
   }, [hackathonData])
 
@@ -94,11 +96,15 @@ export default function RelevantIdeasLoader({
   }, [ideaData])
 
   useEffect(() => {
-    setRelevantIdeas(relevantIdeaList)
+    if (setRelevantIdeas) {
+      setRelevantIdeas(relevantIdeaList)
+    }
   }, [relevantIdeaList])
 
   useEffect(() => {
-    setLoading(isThisLoading)
+    if (setLoading) {
+      setLoading(isThisLoading)
+    }
   }, [isThisLoading])
 
   return <div />
