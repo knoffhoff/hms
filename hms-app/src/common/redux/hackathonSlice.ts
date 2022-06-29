@@ -9,16 +9,16 @@ interface HackathonState {
 const initialState: HackathonState = {
   hackathons: [
     {
-      id: '1234',
-      title: 'Hackathon 1',
+      id: '33a892ba-8a9e-4edf-947a-f421c86a14b5',
+      title: '',
       startDate: '2020-01-01T00:00:00.000Z',
       endDate: '2020-01-02T00:00:00.000Z',
       participants: [],
     },
   ],
   nextHackathon: {
-    id: '1234',
-    title: 'Hackathon 1',
+    id: '33a892ba-8a9e-4edf-947a-f421c86a14b5',
+    title: '',
     startDate: '2020-01-01T00:00:00.000Z',
     endDate: '2020-01-02T00:00:00.000Z',
     participants: [],
