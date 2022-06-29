@@ -3,6 +3,7 @@ import {
   HackathonPreview,
   parseHackathon,
   parseHackathons,
+  parseHackathonPreviews,
 } from '../common/types'
 
 const core_url = process.env.REACT_APP_CORE_URL
@@ -16,7 +17,7 @@ export const getListOfHackathons = (): Promise<HackathonPreview[]> => {
     },
   })
     .then((data) => data.json())
-    .then((json) => parseHackathons(json.hackathons))
+    .then((json) => parseHackathonPreviews(json.hackathons))
     .catch((err) => {
       console.log(err)
       throw err

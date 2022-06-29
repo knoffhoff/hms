@@ -36,7 +36,6 @@ export const mapHackathonToSerializable = (
     participants: hackathon.participants,
     categories: hackathon.categories,
     ideas: hackathon.ideas,
-    status: hackathon.status,
   } as HackathonSerializable)
 
 export const hackathonSlice = createSlice({

@@ -44,7 +44,6 @@ export type Hackathon = {
   participants?: ParticipantPreview[]
   categories?: CategoryPreview[]
   ideas?: IdeaPreview[]
-  status?: HackathonStatus[]
 }
 
 export type HackathonSerializable = {
@@ -55,7 +54,6 @@ export type HackathonSerializable = {
   participants?: ParticipantPreview[]
   categories?: CategoryPreview[]
   ideas?: IdeaPreview[]
-  status?: HackathonStatus[]
 }
 
 export const parseHackathon = (json: any): Hackathon =>
@@ -69,11 +67,21 @@ export const parseHackathon = (json: any): Hackathon =>
     participants: json.participants
       ? parseParticipantPreviews(json.participants)
       : [],
-    status: json.status ? json.status : [],
   } as Hackathon)
+
+export const parseHackathonPreview = (json: any): HackathonPreview =>
+  ({
+    id: json.id,
+    title: json.title,
+    startDate: new Date(json.startDate),
+    endDate: new Date(json.endDate),
+  } as HackathonPreview)
 
 export const parseHackathons = (jsonArray: any[]): Hackathon[] =>
   jsonArray.map((json) => parseHackathon(json))
+
+export const parseHackathonPreviews = (jsonArray: any[]): HackathonPreview[] =>
+  jsonArray.map((json) => parseHackathonPreview(json))
 
 export type IdeaPreview = {
   id: string
