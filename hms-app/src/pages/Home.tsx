@@ -9,7 +9,7 @@ import {
 } from '@mantine/core'
 import { styles } from '../common/styles'
 import { useAppSelector } from '../hooks'
-import { qAndAList } from './HomeQandAContent'
+import { qAndAList } from '../common/HomeQandAContent'
 
 function Home() {
   const { classes } = styles()
