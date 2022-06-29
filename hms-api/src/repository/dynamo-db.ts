@@ -7,8 +7,7 @@ export function getClient(): DynamoDBClient {
     const endpoint = 'http://localhost:8000';
     return new DynamoDBClient({endpoint: endpoint});
   } else {
-    const endpoint = 'http://localhost:8000';
-    return new DynamoDBClient({endpoint: endpoint});
+    return new DynamoDBClient({});
   }
 }
 
