@@ -21,6 +21,7 @@ export default function RelevantIdeasLoader({
   const [hackathonData, setHackathonData] = useState<Hackathon>({
     id: '',
     title: '',
+    description: '',
     startDate: new Date(),
     endDate: new Date(),
     participants: [],

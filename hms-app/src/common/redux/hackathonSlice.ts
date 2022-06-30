@@ -31,6 +31,7 @@ export const mapHackathonToSerializable = (
   ({
     id: hackathon.id,
     title: hackathon.title,
+    description: hackathon.description,
     startDate: hackathon.startDate.toISOString(),
     endDate: hackathon.endDate.toISOString(),
     participants: hackathon.participants,
