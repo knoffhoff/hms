@@ -15,6 +15,7 @@ import {
   Accordion,
   Button,
   Card,
+  Container,
   Group,
   Modal,
   SimpleGrid,
@@ -259,9 +260,11 @@ export default function HackathonDetails(props: IProps) {
             <h2>All Ideas ({hackathonData.ideas?.length})</h2>
 
             {type === HackathonDetailsType.Archive && (
-              <RichTextEditor readOnly value={value!} onChange={onChange}>
-                {hackathonData.description}
-              </RichTextEditor>
+              <Container>
+                <RichTextEditor readOnly value={value!} onChange={onChange}>
+                  {hackathonData.description}
+                </RichTextEditor>
+              </Container>
             )}
 
             <IdeaCardList

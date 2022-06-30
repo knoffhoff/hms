@@ -155,21 +155,21 @@ function Home() {
               ' hours'}
           </Title>
           <Text align={'center'} className={classes.title}>
-            Title: {nextHackathon.title}
+            {nextHackathon.title}
           </Text>
           <Text align={'center'} className={classes.title}>
-            Start date: {new Date(nextHackathon.startDate).toLocaleDateString()}
+            {new Date(nextHackathon.startDate).toLocaleDateString()} -{' '}
+            {new Date(nextHackathon.endDate).toLocaleDateString()}
           </Text>
-          <Text align={'center'} className={classes.title}>
-            End date: {new Date(nextHackathon.endDate).toLocaleDateString()}
-          </Text>
-          <RichTextEditor
-            readOnly
-            value={nextHackathon.description!}
-            onChange={onChange}
-          >
-            {nextHackathon.description}
-          </RichTextEditor>
+          <Container>
+            <RichTextEditor
+              readOnly
+              value={nextHackathon.description!}
+              onChange={onChange}
+            >
+              {nextHackathon.description}
+            </RichTextEditor>
+          </Container>
           {timelineStepper}
         </div>
       }
