@@ -8,6 +8,7 @@ export enum HackathonDropdownMode {
 export enum HackathonDetailsType {
   Header = 'HEADER',
   FullInfo = 'FULLINFO',
+  Archive = 'ARCHIVE',
 }
 
 export enum IdeaCardType {
@@ -32,6 +33,7 @@ export enum HackathonStatus {
 export type HackathonPreview = {
   id: string
   title: string
+  description?: string
   startDate: Date
   endDate: Date
 }
@@ -76,6 +78,7 @@ export const parseHackathonPreview = (json: any): HackathonPreview =>
   ({
     id: json.id,
     title: json.title,
+    description: json.description,
     startDate: new Date(json.startDate),
     endDate: new Date(json.endDate),
   } as HackathonPreview)

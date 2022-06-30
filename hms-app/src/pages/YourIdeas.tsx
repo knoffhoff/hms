@@ -23,6 +23,7 @@ export default function YourIdeas() {
   const [hackathon, setHackathon] = useState({
     id: 'string',
     title: 'string',
+    description: 'string',
     startDate: new Date(),
     endDate: new Date(),
     participants: [],

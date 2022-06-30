@@ -18,7 +18,7 @@ export default function Archive() {
       <div>
         <HackathonDetails
           hackathonId={selectedHackathonId}
-          type={HackathonDetailsType.Header}
+          type={HackathonDetailsType.Archive}
         />
       </div>
     </>

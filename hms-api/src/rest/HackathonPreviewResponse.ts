@@ -1,34 +1,37 @@
 /* eslint-disable require-jsdoc */
 
-import Uuid from '../util/Uuid';
-import Hackathon from '../repository/domain/Hackathon';
+import Uuid from "../util/Uuid";
+import Hackathon from "../repository/domain/Hackathon";
 
 class HackathonPreviewResponse {
   id: Uuid;
   title: string;
+  description: string;
   startDate: Date;
   endDate: Date;
 
   constructor(
-      id: Uuid,
-      title: string,
-      startDate: Date,
-      endDate: Date,
+    id: Uuid,
+    title: string,
+    description: string,
+    startDate: Date,
+    endDate: Date
   ) {
     this.id = id;
     this.title = title;
+    this.description = description;
     this.startDate = startDate;
     this.endDate = endDate;
   }
 
-  static from = (
-      hackathon: Hackathon,
-  ): HackathonPreviewResponse => new HackathonPreviewResponse(
+  static from = (hackathon: Hackathon): HackathonPreviewResponse =>
+    new HackathonPreviewResponse(
       hackathon.id,
       hackathon.title,
+      hackathon.description,
       hackathon.startDate,
-      hackathon.endDate,
-  );
+      hackathon.endDate
+    );
 
   static fromArray(hackathons: Hackathon[]): HackathonPreviewResponse[] {
     const previews: HackathonPreviewResponse[] = [];
@@ -39,8 +42,8 @@ class HackathonPreviewResponse {
   }
 
   static compare(
-      a: HackathonPreviewResponse,
-      b: HackathonPreviewResponse,
+    a: HackathonPreviewResponse,
+    b: HackathonPreviewResponse
   ): number {
     let diff = a.startDate.getTime() - b.startDate.getTime();
 

@@ -248,7 +248,8 @@ export default function HackathonDetails(props: IProps) {
       {hackathonData.startDate &&
         !isHackathonLoading &&
         !isHackathonError &&
-        type === HackathonDetailsType.Header && (
+        (type === HackathonDetailsType.Header ||
+          type === HackathonDetailsType.Archive) && (
           <div>
             <h2>Title: {hackathonData.title}</h2>
             <h2>
@@ -256,6 +257,12 @@ export default function HackathonDetails(props: IProps) {
               Date: {new Date(hackathonData.endDate).toDateString()}
             </h2>
             <h2>All Ideas ({hackathonData.ideas?.length})</h2>
+
+            {type === HackathonDetailsType.Archive && (
+              <RichTextEditor readOnly value={value!} onChange={onChange}>
+                {hackathonData.description}
+              </RichTextEditor>
+            )}
 
             <IdeaCardList
               ideas={relevantIdeaList}
