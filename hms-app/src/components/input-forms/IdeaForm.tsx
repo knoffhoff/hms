@@ -52,6 +52,7 @@ function IdeaForm(props: IProps) {
     goal: '',
     creationDate: new Date(),
   })
+  const allowedIdeaTitleLength = 100
 
   const setIdea = () => {
     if (idea) {
@@ -100,6 +101,9 @@ function IdeaForm(props: IProps) {
       hackathonId: hackathon.id,
       [event.target.name]: event.target.value,
     }))
+    ideaText.title.length > allowedIdeaTitleLength
+      ? setButtonIsDisabled(true)
+      : setButtonIsDisabled(false)
   }
 
   function createThisIdea(event: React.MouseEvent<HTMLButtonElement>) {
@@ -202,6 +206,11 @@ function IdeaForm(props: IProps) {
               <Textarea
                 label="Title"
                 required
+                error={
+                  ideaText.title.length > allowedIdeaTitleLength
+                    ? 'max 100 words'
+                    : false
+                }
                 placeholder="Title"
                 maxRows={1}
                 autosize
