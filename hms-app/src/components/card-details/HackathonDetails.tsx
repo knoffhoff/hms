@@ -261,7 +261,7 @@ export default function HackathonDetails(props: IProps) {
         </div>
       )}
 
-      {hackathonData.startDate &&
+      {hackathonData.startDate > new Date(1) &&
         !isHackathonLoading &&
         !isHackathonError &&
         type === HackathonDetailsType.Header && (
@@ -282,7 +282,7 @@ export default function HackathonDetails(props: IProps) {
           </div>
         )}
 
-      {hackathonData.startDate &&
+      {hackathonData.startDate > new Date(1) &&
         !isHackathonLoading &&
         !isHackathonError &&
         type === HackathonDetailsType.FullInfo && (

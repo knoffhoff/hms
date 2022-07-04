@@ -2,6 +2,7 @@ import { getHackathonDetails } from '../actions/HackathonActions'
 import React, { useEffect, useState } from 'react'
 import { Hackathon, Idea } from '../common/types'
 import { getIdeaDetails } from '../actions/IdeaActions'
+import { useAppSelector } from '../hooks'
 
 type Props = {
   selectedHackathonId: string
@@ -42,11 +43,9 @@ export default function RelevantIdeasLoader({
   })
 
   const loadSelectedHackathon = () => {
-    selectedHackathonId !== ''
-      ? getHackathonDetails(selectedHackathonId).then((data) => {
-          setHackathonData(data)
-        })
-      : console.log('id was empty')
+    getHackathonDetails(selectedHackathonId).then((data) => {
+      setHackathonData(data)
+    })
   }
 
   const loadIdeaDetails = () => {
@@ -59,19 +58,8 @@ export default function RelevantIdeasLoader({
   }
 
   useEffect(() => {
-    localStorage.getItem(selectedHackathonId)
-      ? setHackathonData(JSON.parse(localStorage.getItem(selectedHackathonId)!))
-      : loadSelectedHackathon()
+    loadSelectedHackathon()
   }, [selectedHackathonId])
-
-  useEffect(() => {
-    localStorage.getItem(selectedHackathonId)
-      ? console.log(
-          'id exist',
-          JSON.parse(localStorage.getItem(hackathonData.id)!)
-        )
-      : localStorage.setItem(hackathonData.id, JSON.stringify(hackathonData))
-  }, [hackathonData])
 
   useEffect(() => {
     setRelevantIdeaList((relevantIdeaList) => {

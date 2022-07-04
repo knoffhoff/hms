@@ -20,7 +20,7 @@ export default function YourIdeas() {
   const [selectedHackathonId, setSelectedHackathonId] = useState('')
   const [relevantIdeas, setRelevantIdeas] = useState<Idea[]>([])
   const [isLoading, setIsLoading] = useState(true)
-  const [hackathon, setHackathon] = useState({
+  const [hackathonData, setHackathonData] = useState({
     id: 'string',
     title: 'string',
     startDate: new Date(),
@@ -35,13 +35,13 @@ export default function YourIdeas() {
     return item.owner?.user.id.includes(userID)
   })
 
-  const userParticipant: ParticipantPreview = hackathon.participants?.find(
+  const userParticipant: ParticipantPreview = hackathonData.participants?.find(
     (participant) => participant.user.id === userID
   )!
 
   useEffect(() => {
     setParticipantId(userParticipant?.id)
-  }, [hackathon])
+  }, [hackathonData])
 
   function isParticipant(): boolean {
     return participantId !== undefined && participantId !== ''
@@ -56,24 +56,24 @@ export default function YourIdeas() {
       />
 
       <RelevantIdeasLoader
-        setHackathon={setHackathon}
+        setHackathon={setHackathonData}
         setRelevantIdeas={setRelevantIdeas}
         selectedHackathonId={selectedHackathonId}
         setLoading={setIsLoading}
       />
 
-      {!isLoading && (
+      {!isLoading && hackathonData.startDate > new Date(1) && (
         <div>
-          <h2>{hackathon.title}</h2>
+          <h2>{hackathonData.title}</h2>
           <h2>
-            Start Date: {new Date(hackathon.startDate).toDateString()} End Date:{' '}
-            {new Date(hackathon.endDate).toDateString()}
+            Start Date: {new Date(hackathonData.startDate).toDateString()} End
+            Date: {new Date(hackathonData.endDate).toDateString()}
           </h2>
 
           {isParticipant() && (
             <div>
               <div>
-                {!(hackathon.endDate < today) && (
+                {!(hackathonData.endDate < today) && (
                   <Accordion>
                     <Accordion.Item
                       label={'Create new idea'}
@@ -81,7 +81,7 @@ export default function YourIdeas() {
                     >
                       <IdeaForm
                         ideaId={'null'}
-                        hackathon={hackathon}
+                        hackathon={hackathonData}
                         participantId={participantId}
                         context={'new'}
                       />
