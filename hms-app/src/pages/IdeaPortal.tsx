@@ -136,22 +136,20 @@ function IdeaPortal() {
         setLoading={setIsLoading}
       />
 
-      {!isLoading && (
-        <Button
-          disabled={buttonIsDisabled}
-          onClick={
-            participantCheck
-              ? removeHackathonParticipant
-              : addHackathonParticipant
-          }
-          color={participantCheck ? 'red' : 'blue'}
-        >
-          {participantCheck ? 'Leave Hackathon' : 'Join Hackathon'}
-        </Button>
-      )}
-
       {!isLoading && hackathonData.startDate > new Date(1) && (
         <div>
+          <Button
+            disabled={buttonIsDisabled}
+            onClick={
+              participantCheck
+                ? removeHackathonParticipant
+                : addHackathonParticipant
+            }
+            color={participantCheck ? 'red' : 'blue'}
+          >
+            {participantCheck ? 'Leave Hackathon' : 'Join Hackathon'}
+          </Button>
+
           <h2>{hackathonData.title}</h2>
           <h2>
             Start Date: {new Date(hackathonData.startDate).toDateString()} End
