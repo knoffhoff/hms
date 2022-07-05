@@ -4,7 +4,7 @@ import { Header, Menu, Group, Burger, Container, Avatar } from '@mantine/core'
 import { useBooleanToggle } from '@mantine/hooks'
 import { SwitchToggle } from './ThemeSwitchToggle'
 import { styles } from '../common/styles'
-import { HeaderActiveColor } from '../common/constants'
+import { HEADER_ACTIVE_COLOR } from '../common/constants'
 
 interface HeaderSearchProps {
   links: {
@@ -30,7 +30,7 @@ export default function HeaderMenu({ links }: HeaderSearchProps) {
         style={{
           backgroundColor:
             location.pathname.slice(1) === link.link
-              ? HeaderActiveColor
+              ? HEADER_ACTIVE_COLOR
               : undefined,
         }}
       >
