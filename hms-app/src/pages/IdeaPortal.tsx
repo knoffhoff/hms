@@ -29,15 +29,7 @@ function IdeaPortal() {
     hackathonId: '',
     participantId: '',
   })
-  const [hackathonData, setHackathonData] = useState({
-    id: 'string',
-    title: 'string',
-    startDate: new Date(),
-    endDate: new Date(),
-    participants: [],
-    categories: undefined,
-    ideas: [],
-  } as Hackathon)
+  const [hackathonData, setHackathonData] = useState({} as Hackathon)
 
   const handleChangeSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value)
@@ -144,22 +136,20 @@ function IdeaPortal() {
         setLoading={setIsLoading}
       />
 
-      {!isLoading && (
-        <Button
-          disabled={buttonIsDisabled}
-          onClick={
-            participantCheck
-              ? removeHackathonParticipant
-              : addHackathonParticipant
-          }
-          color={participantCheck ? 'red' : 'blue'}
-        >
-          {participantCheck ? 'Leave Hackathon' : 'Join Hackathon'}
-        </Button>
-      )}
-
-      {!isLoading && (
+      {!isLoading && hackathonData.startDate > new Date(1) && (
         <div>
+          <Button
+            disabled={buttonIsDisabled}
+            onClick={
+              participantCheck
+                ? removeHackathonParticipant
+                : addHackathonParticipant
+            }
+            color={participantCheck ? 'red' : 'blue'}
+          >
+            {participantCheck ? 'Leave Hackathon' : 'Join Hackathon'}
+          </Button>
+
           <h2>{hackathonData.title}</h2>
           <h2>
             Start Date: {new Date(hackathonData.startDate).toDateString()} End
@@ -172,7 +162,7 @@ function IdeaPortal() {
               ideas={filteredIdeas}
               columnSize={6}
               type={IdeaCardType.IdeaPortal}
-              isLoading={false}
+              isLoading={isLoading}
             />
           </div>
         </div>
