@@ -1,9 +1,10 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { Header, Menu, Group, Burger, Container, Avatar } from '@mantine/core'
 import { useBooleanToggle } from '@mantine/hooks'
 import { SwitchToggle } from './ThemeSwitchToggle'
 import { styles } from '../common/styles'
+import { HEADER_ACTIVE_COLOR } from '../common/constants'
 
 interface HeaderSearchProps {
   links: {
@@ -18,10 +19,21 @@ export default function HeaderMenu({ links }: HeaderSearchProps) {
   const { classes } = styles()
   const today = new Date()
   today.setHours(0, 0, 0, 0)
+  const location = useLocation()
 
   const fullscreenMenu = links.map((link) => {
     return (
-      <Link key={link.label} to={link.link} className={classes.link}>
+      <Link
+        key={link.label}
+        to={link.link}
+        className={classes.link}
+        style={{
+          backgroundColor:
+            location.pathname.slice(1) === link.link
+              ? HEADER_ACTIVE_COLOR
+              : undefined,
+        }}
+      >
         {link.label}
       </Link>
     )
