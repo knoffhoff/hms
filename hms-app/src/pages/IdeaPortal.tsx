@@ -16,6 +16,7 @@ import { showNotification, updateNotification } from '@mantine/notifications'
 import { CheckIcon } from '@modulz/radix-icons'
 import HackathonSelectDropdown from '../components/HackathonSelectDropdown'
 import RelevantIdeasLoader from '../components/RelevantIdeasLoader'
+import { NULL_DATE } from '../common/constants'
 
 function IdeaPortal() {
   const [searchTerm, setSearchTerm] = useState('')
@@ -29,15 +30,7 @@ function IdeaPortal() {
     hackathonId: '',
     participantId: '',
   })
-  const [hackathonData, setHackathonData] = useState({
-    id: 'string',
-    title: 'string',
-    startDate: new Date(),
-    endDate: new Date(),
-    participants: [],
-    categories: undefined,
-    ideas: [],
-  } as Hackathon)
+  const [hackathonData, setHackathonData] = useState({} as Hackathon)
 
   const handleChangeSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value)
@@ -144,22 +137,20 @@ function IdeaPortal() {
         setLoading={setIsLoading}
       />
 
-      {!isLoading && (
-        <Button
-          disabled={buttonIsDisabled}
-          onClick={
-            participantCheck
-              ? removeHackathonParticipant
-              : addHackathonParticipant
-          }
-          color={participantCheck ? 'red' : 'blue'}
-        >
-          {participantCheck ? 'Leave Hackathon' : 'Join Hackathon'}
-        </Button>
-      )}
-
-      {!isLoading && (
+      {!isLoading && hackathonData.startDate !== NULL_DATE && (
         <div>
+          <Button
+            disabled={buttonIsDisabled}
+            onClick={
+              participantCheck
+                ? removeHackathonParticipant
+                : addHackathonParticipant
+            }
+            color={participantCheck ? 'red' : 'blue'}
+          >
+            {participantCheck ? 'Leave Hackathon' : 'Join Hackathon'}
+          </Button>
+
           <h2>{hackathonData.title}</h2>
           <h2>
             Start Date: {new Date(hackathonData.startDate).toDateString()} End
@@ -172,7 +163,7 @@ function IdeaPortal() {
               ideas={filteredIdeas}
               columnSize={6}
               type={IdeaCardType.IdeaPortal}
-              isLoading={false}
+              isLoading={isLoading}
             />
           </div>
         </div>

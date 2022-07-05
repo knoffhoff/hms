@@ -4,6 +4,7 @@ import { Hackathon, HackathonSerializable } from '../types'
 interface HackathonState {
   hackathons: HackathonSerializable[]
   nextHackathon: HackathonSerializable
+  lastSelectedHackathon: HackathonSerializable
 }
 
 const initialState: HackathonState = {
@@ -17,6 +18,13 @@ const initialState: HackathonState = {
     },
   ],
   nextHackathon: {
+    id: '33a892ba-8a9e-4edf-947a-f421c86a14b5',
+    title: '',
+    startDate: '2020-01-01T00:00:00.000Z',
+    endDate: '2020-01-02T00:00:00.000Z',
+    participants: [],
+  },
+  lastSelectedHackathon: {
     id: '33a892ba-8a9e-4edf-947a-f421c86a14b5',
     title: '',
     startDate: '2020-01-01T00:00:00.000Z',
