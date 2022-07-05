@@ -40,7 +40,7 @@ export default function IdeaDetails(props: IProps) {
     })
 
   const { idea, type, isLoading } = props
-  const MAX_TITLE_LENGTH = 45
+  const MAX_TITLE_LENGTH = 100
 
   const participantData = idea.participants?.map((participant, index) => (
     <div
