@@ -27,7 +27,7 @@ import HackathonForm from '../input-forms/HackathonForm'
 import CategoryDetails from './CategoryDetails'
 import { Link } from 'react-router-dom'
 import { styles } from '../../common/styles'
-import { NULL_DATE } from '../../common/variables'
+import { NULL_DATE } from '../../common/constants'
 
 type IProps = {
   hackathonId: string
@@ -262,7 +262,7 @@ export default function HackathonDetails(props: IProps) {
         </div>
       )}
 
-      {hackathonData.startDate != NULL_DATE &&
+      {hackathonData.startDate !== NULL_DATE &&
         !isHackathonLoading &&
         !isHackathonError &&
         type === HackathonDetailsType.Header && (
@@ -283,7 +283,7 @@ export default function HackathonDetails(props: IProps) {
           </div>
         )}
 
-      {hackathonData.startDate != NULL_DATE &&
+      {hackathonData.startDate !== NULL_DATE &&
         !isHackathonLoading &&
         !isHackathonError &&
         type === HackathonDetailsType.FullInfo && (

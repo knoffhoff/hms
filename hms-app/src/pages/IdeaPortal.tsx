@@ -16,6 +16,7 @@ import { showNotification, updateNotification } from '@mantine/notifications'
 import { CheckIcon } from '@modulz/radix-icons'
 import HackathonSelectDropdown from '../components/HackathonSelectDropdown'
 import RelevantIdeasLoader from '../components/RelevantIdeasLoader'
+import { NULL_DATE } from '../common/constants'
 
 function IdeaPortal() {
   const [searchTerm, setSearchTerm] = useState('')
@@ -136,7 +137,7 @@ function IdeaPortal() {
         setLoading={setIsLoading}
       />
 
-      {!isLoading && hackathonData.startDate > new Date(1) && (
+      {!isLoading && hackathonData.startDate !== NULL_DATE && (
         <div>
           <Button
             disabled={buttonIsDisabled}
