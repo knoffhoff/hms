@@ -28,7 +28,6 @@ export default function HeaderMenu({ links }: HeaderSearchProps) {
   const loadHackathons = () => {
     getListOfHackathons().then(
       (data) => {
-        localStorage.setItem('hackathonList', JSON.stringify(data))
         setHackathonList(data)
         setIsLoading(false)
         setIsError(false)
@@ -39,16 +38,6 @@ export default function HeaderMenu({ links }: HeaderSearchProps) {
       }
     )
   }
-
-  const getNextHackathon = hackathonList.find((hackathon) => {
-    return new Date(hackathon.startDate) > today
-  })
-
-  useEffect(() => {
-    if (!!getNextHackathon) {
-      localStorage.setItem('nextHackathon', JSON.stringify(getNextHackathon))
-    }
-  }, [hackathonList])
 
   useEffect(() => {
     loadHackathons()
