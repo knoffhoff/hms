@@ -15,6 +15,7 @@ import {
   Accordion,
   Button,
   Card,
+  Container,
   Group,
   Modal,
   SimpleGrid, Switch,
@@ -27,6 +28,8 @@ import HackathonForm from '../input-forms/HackathonForm'
 import CategoryDetails from './CategoryDetails'
 import { Link } from 'react-router-dom'
 import { styles } from '../../common/styles'
+import { RichTextEditor } from '@mantine/rte'
+import { NULL_DATE } from '../../common/constants'
 
 type IProps = {
   hackathonId: string
@@ -45,6 +48,7 @@ export default function HackathonDetails(props: IProps) {
   const [hackathonData, setHackathonData] = useState({} as Hackathon)
   const [ideaData, setIdeaData] = useState({} as Idea)
   const [relevantIdeaList, setRelevantIdeaList] = useState([] as Idea[])
+  const [value, onChange] = useState(hackathonData.description)
 
   const [registrationOpen, setRegistrationOpen] = useState(false)
   const [votingOpen, setVotingOpen] = useState(false)
@@ -225,10 +229,11 @@ export default function HackathonDetails(props: IProps) {
         </div>
       )}
 
-      {hackathonData.startDate &&
+      {hackathonData.startDate !== NULL_DATE &&
         !isHackathonLoading &&
         !isHackathonError &&
-        type === HackathonDetailsType.Header && (
+        (type === HackathonDetailsType.Header ||
+          type === HackathonDetailsType.Archive) && (
           <div>
             <h2>Title: {hackathonData.title}</h2>
             <h2>
@@ -236,6 +241,14 @@ export default function HackathonDetails(props: IProps) {
               Date: {new Date(hackathonData.endDate).toDateString()}
             </h2>
             <h2>All Ideas ({hackathonData.ideas?.length})</h2>
+
+            {type === HackathonDetailsType.Archive && (
+              <Container>
+                <RichTextEditor readOnly value={value!} onChange={onChange}>
+                  {hackathonData.description}
+                </RichTextEditor>
+              </Container>
+            )}
 
             <IdeaCardList
               ideas={relevantIdeaList}
@@ -246,7 +259,7 @@ export default function HackathonDetails(props: IProps) {
           </div>
         )}
 
-      {hackathonData.startDate &&
+      {hackathonData.startDate !== NULL_DATE &&
         !isHackathonLoading &&
         !isHackathonError &&
         type === HackathonDetailsType.FullInfo && (
@@ -286,6 +299,13 @@ export default function HackathonDetails(props: IProps) {
                   </Text>
                 </Card.Section>
               </SimpleGrid>
+            </Card.Section>
+
+            <Card.Section className={classes.borderSection}>
+              <Text className={classes.title}>Description:</Text>
+              <RichTextEditor readOnly value={value!} onChange={onChange}>
+                {hackathonData.description}
+              </RichTextEditor>
             </Card.Section>
 
             <Accordion iconPosition="left" offsetIcon={false}>

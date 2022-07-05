@@ -5,6 +5,7 @@ import { createHackathon, editHackathon } from '../../actions/HackathonActions'
 import { showNotification, updateNotification } from '@mantine/notifications'
 import { CheckIcon } from '@modulz/radix-icons'
 import { styles } from '../../common/styles'
+import { RichTextEditor } from '@mantine/rte'
 
 type IProps = { context: string; hackathonId: string | null }
 
@@ -15,6 +16,7 @@ function HackathonForm(props: IProps) {
   const [startDateValue, setStartDateValue] = useState<Date | null>(new Date())
   const [endDateValue, setEndDateValue] = useState<Date | null>(new Date())
   const [hackathonTitle, setHackathonTitle] = useState('')
+  const [DescriptionValue, onChange] = useState('')
 
   function handleChange(event: React.ChangeEvent<HTMLTextAreaElement>) {
     setHackathonTitle(event.target.value)
@@ -30,19 +32,23 @@ function HackathonForm(props: IProps) {
       autoClose: false,
       disallowClose: true,
     })
-    createHackathon(hackathonTitle, startDateValue!, endDateValue!).then(
-      (response) =>
-        setTimeout(() => {
-          console.log(response)
-          updateNotification({
-            id: 'hackathon-load',
-            color: 'teal',
-            title: 'Hackathon was created',
-            message: 'Notification will close in 2 seconds',
-            icon: <CheckIcon />,
-            autoClose: 2000,
-          })
-        }, 3000)
+    createHackathon(
+      hackathonTitle,
+      DescriptionValue,
+      startDateValue!,
+      endDateValue!
+    ).then((response) =>
+      setTimeout(() => {
+        console.log(response)
+        updateNotification({
+          id: 'hackathon-load',
+          color: 'teal',
+          title: 'Hackathon was created',
+          message: 'Notification will close in 2 seconds',
+          icon: <CheckIcon />,
+          autoClose: 2000,
+        })
+      }, 3000)
     )
   }
 
@@ -59,6 +65,7 @@ function HackathonForm(props: IProps) {
     editHackathon(
       hackathonId!,
       hackathonTitle,
+      DescriptionValue,
       startDateValue!,
       endDateValue!
     ).then((response) =>
@@ -115,6 +122,11 @@ function HackathonForm(props: IProps) {
             />
           </SimpleGrid>
         </Card.Section>
+
+        <Card.Section className={classes.borderSection}>
+          <RichTextEditor value={DescriptionValue} onChange={onChange} />
+        </Card.Section>
+
         <Group position="right" mt="xl">
           {context === 'edit' && (
             <Button disabled={!submitIsEnabled()} onClick={editThisHackathon}>

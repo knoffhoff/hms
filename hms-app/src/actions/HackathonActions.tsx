@@ -44,6 +44,7 @@ export const getHackathonDetails = (
 
 export const createHackathon = (
   title: string,
+  DescriptionValue: string,
   startDate: Date,
   endDate: Date
 ) => {
@@ -55,6 +56,7 @@ export const createHackathon = (
     },
     body: JSON.stringify({
       title: title,
+      description: DescriptionValue,
       startDate: startDate.toString(),
       endDate: endDate.toString(),
     }),
@@ -68,6 +70,7 @@ export const createHackathon = (
 export const editHackathon = (
   hackathonID: string,
   title: string,
+  DescriptionValue: string,
   startDate: Date,
   endDate: Date
 ) => {
@@ -79,6 +82,7 @@ export const editHackathon = (
     },
     body: JSON.stringify({
       title: title,
+      description: DescriptionValue,
       startDate: startDate.toString(),
       endDate: endDate.toString(),
     }),

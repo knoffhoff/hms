@@ -10,6 +10,7 @@ import {
 import { styles } from '../common/styles'
 import { useAppSelector } from '../hooks'
 import { qAndAList } from '../common/HomeQandAContent'
+import { RichTextEditor } from '@mantine/rte'
 
 function Home() {
   const { classes } = styles()
@@ -22,6 +23,7 @@ function Home() {
     openDate: new Date(),
     closeDate: new Date(),
   })
+  const [value, onChange] = useState('')
 
   const nextHackathon = useAppSelector(
     (state) => state.hackathons.nextHackathon
@@ -35,6 +37,7 @@ function Home() {
       openDate: openDate,
       closeDate: new Date(nextHackathon.startDate),
     })
+    console.log(nextHackathon)
   }, [nextHackathon])
 
   const getTimeDifferenceToNow = (dateString: string) => {
@@ -152,14 +155,21 @@ function Home() {
               ' hours'}
           </Title>
           <Text align={'center'} className={classes.title}>
-            Title: {nextHackathon.title}
+            {nextHackathon.title}
           </Text>
           <Text align={'center'} className={classes.title}>
-            Start date: {new Date(nextHackathon.startDate).toLocaleDateString()}
+            {new Date(nextHackathon.startDate).toLocaleDateString()} -{' '}
+            {new Date(nextHackathon.endDate).toLocaleDateString()}
           </Text>
-          <Text align={'center'} className={classes.title}>
-            End date: {new Date(nextHackathon.endDate).toLocaleDateString()}
-          </Text>
+          <Container>
+            <RichTextEditor
+              readOnly
+              value={nextHackathon.description!}
+              onChange={onChange}
+            >
+              {nextHackathon.description}
+            </RichTextEditor>
+          </Container>
           {timelineStepper}
         </div>
       }
