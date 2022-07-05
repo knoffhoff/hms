@@ -208,7 +208,7 @@ function IdeaForm(props: IProps) {
                 required
                 error={
                   ideaText.title.length > allowedIdeaTitleLength
-                    ? 'max 100 words'
+                    ? 'max ' + allowedIdeaTitleLength + ' chars'
                     : false
                 }
                 placeholder="Title"
