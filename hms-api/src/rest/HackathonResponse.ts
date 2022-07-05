@@ -1,14 +1,14 @@
 /* eslint-disable require-jsdoc */
 
-import Uuid from "../util/Uuid";
-import ParticipantPreviewResponse from "./ParticipantPreviewResponse";
-import CategoryPreviewResponse from "./CategoryPreviewResponse";
-import IdeaPreviewResponse from "./IdeaPreviewResponse";
-import Hackathon from "../repository/domain/Hackathon";
-import Category from "../repository/domain/Category";
-import Participant from "../repository/domain/Participant";
-import Idea from "../repository/domain/Idea";
-import User from "../repository/domain/User";
+import Uuid from '../util/Uuid';
+import ParticipantPreviewResponse from './ParticipantPreviewResponse';
+import CategoryPreviewResponse from './CategoryPreviewResponse';
+import IdeaPreviewResponse from './IdeaPreviewResponse';
+import Hackathon from '../repository/domain/Hackathon';
+import Category from '../repository/domain/Category';
+import Participant from '../repository/domain/Participant';
+import Idea from '../repository/domain/Idea';
+import User from '../repository/domain/User';
 
 class HackathonResponse {
   id: Uuid;
@@ -47,7 +47,7 @@ class HackathonResponse {
     participants: Participant[],
     users: User[],
     categories: Category[],
-    ideas: Idea[]
+    ideas: Idea[],
   ): HackathonResponse =>
     new HackathonResponse(
       hackathon.id,
