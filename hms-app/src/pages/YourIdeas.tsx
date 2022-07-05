@@ -1,4 +1,4 @@
-import { Accordion, Title } from '@mantine/core'
+import { Accordion, Text, Title } from '@mantine/core'
 import {
   Hackathon,
   HackathonDropdownMode,
@@ -12,6 +12,7 @@ import IdeaForm from '../components/input-forms/IdeaForm'
 import RelevantIdeasLoader from '../components/RelevantIdeasLoader'
 import { styles } from '../common/styles'
 import HackathonSelectDropdown from '../components/HackathonSelectDropdown'
+import { NULL_DATE } from '../common/constants'
 
 export default function YourIdeas() {
   const { classes } = styles()
@@ -20,7 +21,7 @@ export default function YourIdeas() {
   const [selectedHackathonId, setSelectedHackathonId] = useState('')
   const [relevantIdeas, setRelevantIdeas] = useState<Idea[]>([])
   const [isLoading, setIsLoading] = useState(true)
-  const [hackathon, setHackathon] = useState({
+  const [hackathonData, setHackathonData] = useState({
     id: 'string',
     title: 'string',
     description: 'string',
@@ -36,13 +37,13 @@ export default function YourIdeas() {
     return item.owner?.user.id.includes(userID)
   })
 
-  const userParticipant: ParticipantPreview = hackathon.participants?.find(
+  const userParticipant: ParticipantPreview = hackathonData.participants?.find(
     (participant) => participant.user.id === userID
   )!
 
   useEffect(() => {
     setParticipantId(userParticipant?.id)
-  }, [hackathon])
+  }, [hackathonData])
 
   function isParticipant(): boolean {
     return participantId !== undefined && participantId !== ''
@@ -57,24 +58,28 @@ export default function YourIdeas() {
       />
 
       <RelevantIdeasLoader
-        setHackathon={setHackathon}
+        setHackathon={setHackathonData}
         setRelevantIdeas={setRelevantIdeas}
         selectedHackathonId={selectedHackathonId}
         setLoading={setIsLoading}
       />
 
-      {!isLoading && (
+      {!isLoading && hackathonData.startDate !== NULL_DATE && (
         <div>
-          <h2>{hackathon.title}</h2>
-          <h2>
-            Start Date: {new Date(hackathon.startDate).toDateString()} End Date:{' '}
-            {new Date(hackathon.endDate).toDateString()}
-          </h2>
+          <Text align={'center'} className={classes.title}>
+            Title: {hackathonData.title}
+          </Text>
+          <Text align={'center'} className={classes.title}>
+            Start date: {new Date(hackathonData.startDate).toLocaleDateString()}
+          </Text>
+          <Text align={'center'} className={classes.title}>
+            End date: {new Date(hackathonData.endDate).toLocaleDateString()}
+          </Text>
 
           {isParticipant() && (
             <div>
               <div>
-                {!(hackathon.endDate < today) && (
+                {!(hackathonData.endDate < today) && (
                   <Accordion>
                     <Accordion.Item
                       label={'Create new idea'}
@@ -82,7 +87,7 @@ export default function YourIdeas() {
                     >
                       <IdeaForm
                         ideaId={'null'}
-                        hackathon={hackathon}
+                        hackathon={hackathonData}
                         participantId={participantId}
                         context={'new'}
                       />

@@ -27,8 +27,8 @@
     "id": {"S": "4eb2d486-c786-431e-a4fd-4c093ed30642"},
     "title": {"S": "Current Hackathon"},
     "description": {"S": "THIS HACKATHON IS HAPPENING RIGHT NOW!!!! Just look at all those participants and ideas! It's so epic! It is certainly the greatest hackathon happened at this very moment!"},
-    "startDate": {"S": "2022-06-27"},
-    "endDate": {"S": "2022-06-31"},
+    "startDate": {"S": "2022-07-25"},
+    "endDate": {"S": "2022-07-29"},
     "creationDate": {"S": "2022-01-14"},
     "participantIds": {"SS": [
       "e27fb873-fd63-4c43-a00b-4593a3662953",

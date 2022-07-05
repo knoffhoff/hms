@@ -40,7 +40,7 @@ export default function IdeaDetails(props: IProps) {
     })
 
   const { idea, type, isLoading } = props
-  const MAX_TITLE_LENGTH = 45
+  const MAX_TITLE_LENGTH = 100
 
   const participantData = idea.participants?.map((participant, index) => (
     <div
@@ -236,22 +236,21 @@ export default function IdeaDetails(props: IProps) {
                     </Group>
                   )}
 
-                  {type === IdeaCardType.Owner ||
-                    (type === IdeaCardType.Admin && (
-                      <Group position="left" mt="xl">
-                        {deleteModal}
-                        <Button
-                          color={'red'}
-                          onClick={() => setDeleteModalOpened(true)}
-                        >
-                          Delete
-                        </Button>
-                        {editModal}
-                        <Button onClick={() => setEditModalOpened(true)}>
-                          Edit
-                        </Button>
-                      </Group>
-                    ))}
+                  {(type === IdeaCardType.Admin || IdeaCardType.Owner) && (
+                    <Group position="left" mt="xl">
+                      {deleteModal}
+                      <Button
+                        color={'red'}
+                        onClick={() => setDeleteModalOpened(true)}
+                      >
+                        Delete
+                      </Button>
+                      {editModal}
+                      <Button onClick={() => setEditModalOpened(true)}>
+                        Edit
+                      </Button>
+                    </Group>
+                  )}
                 </Accordion.Item>
               </Accordion>
             </>

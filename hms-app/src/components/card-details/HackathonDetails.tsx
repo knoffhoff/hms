@@ -29,6 +29,7 @@ import CategoryDetails from './CategoryDetails'
 import { Link } from 'react-router-dom'
 import { styles } from '../../common/styles'
 import { RichTextEditor } from '@mantine/rte'
+import { NULL_DATE } from '../../common/constants'
 
 type IProps = {
   hackathonId: string
@@ -246,7 +247,7 @@ export default function HackathonDetails(props: IProps) {
         </div>
       )}
 
-      {hackathonData.startDate &&
+      {hackathonData.startDate !== NULL_DATE &&
         !isHackathonLoading &&
         !isHackathonError &&
         (type === HackathonDetailsType.Header ||
@@ -276,7 +277,7 @@ export default function HackathonDetails(props: IProps) {
           </div>
         )}
 
-      {hackathonData.startDate &&
+      {hackathonData.startDate !== NULL_DATE &&
         !isHackathonLoading &&
         !isHackathonError &&
         type === HackathonDetailsType.FullInfo && (
