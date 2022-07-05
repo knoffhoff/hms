@@ -27,7 +27,7 @@ import HackathonForm from '../input-forms/HackathonForm'
 import CategoryDetails from './CategoryDetails'
 import { Link } from 'react-router-dom'
 import { styles } from '../../common/styles'
-import { NULL_DATE } from '../../common/variables'
+import { NULL_DATE } from '../../common/constants'
 
 type IProps = {
   hackathonId: string

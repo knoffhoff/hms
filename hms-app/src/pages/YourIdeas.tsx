@@ -1,4 +1,4 @@
-import { Accordion, Title } from '@mantine/core'
+import { Accordion, Text, Title } from '@mantine/core'
 import {
   Hackathon,
   HackathonDropdownMode,
@@ -12,6 +12,7 @@ import IdeaForm from '../components/input-forms/IdeaForm'
 import RelevantIdeasLoader from '../components/RelevantIdeasLoader'
 import { styles } from '../common/styles'
 import HackathonSelectDropdown from '../components/HackathonSelectDropdown'
+import { NULL_DATE } from '../common/constants'
 
 export default function YourIdeas() {
   const { classes } = styles()
@@ -62,13 +63,17 @@ export default function YourIdeas() {
         setLoading={setIsLoading}
       />
 
-      {!isLoading && hackathonData.startDate > new Date(1) && (
+      {!isLoading && hackathonData.startDate != NULL_DATE && (
         <div>
-          <h2>{hackathonData.title}</h2>
-          <h2>
-            Start Date: {new Date(hackathonData.startDate).toDateString()} End
-            Date: {new Date(hackathonData.endDate).toDateString()}
-          </h2>
+          <Text align={'center'} className={classes.title}>
+            Title: {hackathonData.title}
+          </Text>
+          <Text align={'center'} className={classes.title}>
+            Start date: {new Date(hackathonData.startDate).toLocaleDateString()}
+          </Text>
+          <Text align={'center'} className={classes.title}>
+            End date: {new Date(hackathonData.endDate).toLocaleDateString()}
+          </Text>
 
           {isParticipant() && (
             <div>
