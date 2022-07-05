@@ -15,6 +15,7 @@ import {
   Accordion,
   Button,
   Card,
+  Container,
   Group,
   Modal,
   SimpleGrid,
@@ -27,6 +28,7 @@ import HackathonForm from '../input-forms/HackathonForm'
 import CategoryDetails from './CategoryDetails'
 import { Link } from 'react-router-dom'
 import { styles } from '../../common/styles'
+import { RichTextEditor } from '@mantine/rte'
 import { NULL_DATE } from '../../common/constants'
 
 type IProps = {
@@ -46,6 +48,7 @@ export default function HackathonDetails(props: IProps) {
   const [hackathonData, setHackathonData] = useState({
     id: 'string',
     title: 'string',
+    description: 'string',
     startDate: new Date(),
     endDate: new Date(),
     participants: [],
@@ -66,19 +69,13 @@ export default function HackathonDetails(props: IProps) {
     creationDate: new Date(),
   } as Idea)
   const [relevantIdeaList, setRelevantIdeaList] = useState([] as Idea[])
+  const [value, onChange] = useState(hackathonData.description)
 
   const loadSelectedHackathon = () => {
     getHackathonDetails(hackathonId).then(
       (data) => {
-        setHackathonData({
-          id: hackathonId,
-          title: data.title,
-          startDate: data.startDate,
-          endDate: data.endDate,
-          participants: data.participants,
-          categories: data.categories,
-          ideas: data.ideas,
-        })
+        setHackathonData(data)
+        onChange(data.description)
         setIsHackathonLoading(false)
         setIsHackathonError(false)
       },
@@ -93,19 +90,7 @@ export default function HackathonDetails(props: IProps) {
     hackathonData.ideas?.map((ideaPreviews) => {
       getIdeaDetails(ideaPreviews.id).then(
         (data) => {
-          setIdeaData({
-            id: data.id,
-            owner: data.owner,
-            hackathon: data.hackathon,
-            participants: data.participants,
-            title: data.title,
-            description: data.description,
-            problem: data.problem,
-            goal: data.goal,
-            requiredSkills: data.requiredSkills,
-            category: data.category,
-            creationDate: data.creationDate,
-          })
+          setIdeaData(data)
           setIsIdeaLoading(false)
           setIsIdeaError(false)
         },
@@ -265,7 +250,8 @@ export default function HackathonDetails(props: IProps) {
       {hackathonData.startDate !== NULL_DATE &&
         !isHackathonLoading &&
         !isHackathonError &&
-        type === HackathonDetailsType.Header && (
+        (type === HackathonDetailsType.Header ||
+          type === HackathonDetailsType.Archive) && (
           <div>
             <h2>Title: {hackathonData.title}</h2>
             <h2>
@@ -273,6 +259,14 @@ export default function HackathonDetails(props: IProps) {
               Date: {new Date(hackathonData.endDate).toDateString()}
             </h2>
             <h2>All Ideas ({hackathonData.ideas?.length})</h2>
+
+            {type === HackathonDetailsType.Archive && (
+              <Container>
+                <RichTextEditor readOnly value={value!} onChange={onChange}>
+                  {hackathonData.description}
+                </RichTextEditor>
+              </Container>
+            )}
 
             <IdeaCardList
               ideas={relevantIdeaList}
@@ -307,6 +301,13 @@ export default function HackathonDetails(props: IProps) {
                   </Text>
                 </Card.Section>
               </SimpleGrid>
+            </Card.Section>
+
+            <Card.Section className={classes.borderSection}>
+              <Text className={classes.title}>Description:</Text>
+              <RichTextEditor readOnly value={value!} onChange={onChange}>
+                {hackathonData.description}
+              </RichTextEditor>
             </Card.Section>
 
             <Accordion iconPosition="left" offsetIcon={false}>

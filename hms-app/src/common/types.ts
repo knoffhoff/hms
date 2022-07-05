@@ -8,6 +8,7 @@ export enum HackathonDropdownMode {
 export enum HackathonDetailsType {
   Header = 'HEADER',
   FullInfo = 'FULLINFO',
+  Archive = 'ARCHIVE',
 }
 
 export enum IdeaCardType {
@@ -32,6 +33,7 @@ export enum HackathonStatus {
 export type HackathonPreview = {
   id: string
   title: string
+  description?: string
   startDate: Date
   endDate: Date
 }
@@ -39,6 +41,7 @@ export type HackathonPreview = {
 export type Hackathon = {
   id: string
   title: string
+  description?: string
   startDate: Date
   endDate: Date
   participants?: ParticipantPreview[]
@@ -49,6 +52,7 @@ export type Hackathon = {
 export type HackathonSerializable = {
   id: string
   title: string
+  description?: string
   startDate: string
   endDate: string
   participants?: ParticipantPreview[]
@@ -60,6 +64,7 @@ export const parseHackathon = (json: any): Hackathon =>
   ({
     id: json.id,
     title: json.title,
+    description: json.description,
     startDate: new Date(json.startDate),
     endDate: new Date(json.endDate),
     ideas: json.ideas ? parseIdeaPreviews(json.ideas) : [],
@@ -73,6 +78,7 @@ export const parseHackathonPreview = (json: any): HackathonPreview =>
   ({
     id: json.id,
     title: json.title,
+    description: json.description,
     startDate: new Date(json.startDate),
     endDate: new Date(json.endDate),
   } as HackathonPreview)
