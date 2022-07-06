@@ -337,7 +337,8 @@ export default function IdeaDetails(props: IProps) {
                     </Group>
                   )}
 
-                  {(type === IdeaCardType.Admin || IdeaCardType.Owner) && (
+                  {(type === IdeaCardType.Admin ||
+                    type === IdeaCardType.Owner) && (
                     <Group position="left" mt="xl">
                       {deleteModal}
                       <Button
