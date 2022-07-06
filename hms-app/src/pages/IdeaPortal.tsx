@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Input, Group, Title, Button } from '@mantine/core'
+import {Input, Group, Title, Button, Text} from '@mantine/core'
 import { Search } from 'tabler-icons-react'
 import IdeaCardList from '../components/lists/IdeaCardList'
 import {
@@ -17,8 +17,10 @@ import { CheckIcon } from '@modulz/radix-icons'
 import HackathonSelectDropdown from '../components/HackathonSelectDropdown'
 import RelevantIdeasLoader from '../components/RelevantIdeasLoader'
 import { NULL_DATE } from '../common/constants'
+import {styles} from "../common/styles";
 
 function IdeaPortal() {
+  const { classes } = styles()
   const [searchTerm, setSearchTerm] = useState('')
   const [isLoading, setIsLoading] = useState(true)
   const [participantCheck, setParticipantCheck] = useState(false)
@@ -151,12 +153,15 @@ function IdeaPortal() {
             {participantCheck ? 'Leave Hackathon' : 'Join Hackathon'}
           </Button>
 
-          <h2>{hackathonData.title}</h2>
-          <h2>
-            Start Date: {new Date(hackathonData.startDate).toDateString()} End
-            Date: {new Date(hackathonData.endDate).toDateString()}
-          </h2>
-          <h2>All Ideas ({filteredIdeas.length})</h2>
+          <Text align={'center'} className={classes.title}>
+            Title: {hackathonData.title}
+          </Text>
+          <Text align={'center'} className={classes.title}>
+            Start date: {new Date(hackathonData.startDate).toLocaleDateString()}
+          </Text>
+          <Text align={'center'} className={classes.title}>
+            End date: {new Date(hackathonData.endDate).toLocaleDateString()}
+          </Text>
 
           <div>
             <IdeaCardList
