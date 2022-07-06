@@ -247,7 +247,7 @@ export default function HackathonDetails(props: IProps) {
         </div>
       )}
 
-      {hackathonData.startDate !== NULL_DATE &&
+      {hackathonData.startDate !== NULL_DATE && hackathonData.startDate.toString() !== 'Invalid Date' &&
         !isHackathonLoading &&
         !isHackathonError &&
         (type === HackathonDetailsType.Header ||
@@ -277,7 +277,7 @@ export default function HackathonDetails(props: IProps) {
           </div>
         )}
 
-      {hackathonData.startDate !== NULL_DATE &&
+      {hackathonData.startDate !== NULL_DATE && hackathonData.startDate.toString() !== 'Invalid Date' &&
         !isHackathonLoading &&
         !isHackathonError &&
         type === HackathonDetailsType.FullInfo && (

@@ -64,7 +64,7 @@ export default function YourIdeas() {
         setLoading={setIsLoading}
       />
 
-      {!isLoading && hackathonData.startDate !== NULL_DATE && (
+      {!isLoading && hackathonData.startDate !== NULL_DATE && hackathonData.startDate.toString() !== 'Invalid Date' && (
         <div>
           <Text align={'center'} className={classes.title}>
             Title: {hackathonData.title}

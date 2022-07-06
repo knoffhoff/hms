@@ -137,7 +137,7 @@ function IdeaPortal() {
         setLoading={setIsLoading}
       />
 
-      {!isLoading && hackathonData.startDate !== NULL_DATE && (
+      {!isLoading && hackathonData.startDate !== NULL_DATE && hackathonData.startDate.toString() !== 'Invalid Date' &&(
         <div>
           <Button
             disabled={buttonIsDisabled}
