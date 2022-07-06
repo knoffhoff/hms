@@ -35,6 +35,40 @@ export const createHackathonParticipant = (
     .catch((err) => console.log(err))
 }
 
+export const createIdeaParticipant = (
+  idea_id: string,
+  participant_id: string
+) => {
+  return fetch(`${core_url}/idea/${idea_id}/join/${participant_id}`, {
+    method: 'PUT',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+  })
+    .then((response) => {
+      return response.json()
+    })
+    .catch((err) => console.log(err))
+}
+
+export const removeIdeaParticipant = (
+  idea_id: string,
+  participant_id: string
+) => {
+  return fetch(`${core_url}/idea/${idea_id}/leave/${participant_id}`, {
+    method: 'PUT',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+  })
+    .then((response) => {
+      return response.json()
+    })
+    .catch((err) => console.log(err))
+}
+
 export const getParticipantDetails = (participantID: string) => {
   return fetch(`${core_url}/category/${participantID}`, {
     method: 'GET',
