@@ -186,12 +186,7 @@ function Home() {
               <Text size="sm" style={{ lineHeight: 1.5 }}>
                 {qAndA.answer}
               </Text>
-              <Image
-                radius="md"
-                src={qAndA.image}
-                alt="Random image"
-                caption={qAndA.imageText}
-              />
+              <Image radius="md" src={qAndA.image} caption={qAndA.imageText} />
             </Card>
           ))}
         </SimpleGrid>

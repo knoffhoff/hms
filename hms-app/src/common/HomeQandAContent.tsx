@@ -1,4 +1,5 @@
 import image from '../images/testPic.png'
+import header from '../images/header.png'
 
 export const qAndAList = [
   /*{
@@ -13,10 +14,17 @@ export const qAndAList = [
     image: image,
     imageText: 'Test Image',
   },
-  {
+  /*{
     question: 'How to use this site?',
     answer:
       'In the HMS you will be able to participate in a Hackathon, submit ideas, see all other ideas and vote for the best idea in the end.',
+  },*/
+  {
+    question: 'How to use this site?',
+    answer:
+      'In the Header of the Hackathon Management system (HMS) you can switch between different pages, in which you can participate in specific hackathons and view or submit your own ideas.',
+    image: header,
+    imageText: 'header',
   },
   {
     question: 'Why should I Participate?',
