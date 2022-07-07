@@ -1,18 +1,27 @@
+import image from '../images/testPic.png'
+
 export const qAndAList = [
-  {
+  /*{
     question: 'What is Hackathon?',
     answer:
       'In our case, a Hackathon is more or less self - explaining ;) we will have a 5-Day long hackweek that starts on Monday with Idea Pitches and ends on Friday with some cool project presentations and a winner celebration.',
-  },
+  },*/
   {
-    question: 'Why should I Participate?',
+    question: 'What is a Hackathon?',
     answer:
-      'Maybe you have a great idea that you have wanted to work on for years? Use the chance to build a prototype! Maybe you want to learn or test a new framework? Then this is your save space! You have a solution for an existing problem? Come and find allies for it.',
+      'A hackathon is a design sprint-like event, in which often computer programmers and others involved in software development, including graphic designers, interface designers, product managers, project managers, domain experts, and others collaborate intensively on software projects. source: Wikipedia',
+    image: image,
+    imageText: 'Test Image',
   },
   {
     question: 'How to use this site?',
     answer:
       'In the HMS you will be able to participate in a Hackathon, submit ideas, see all other ideas and vote for the best idea in the end.',
+  },
+  {
+    question: 'Why should I Participate?',
+    answer:
+      'Maybe you have a great idea that you have wanted to work on for years? Use the chance to build a prototype! Maybe you want to learn or test a new framework? Then this is your save space! You have a solution for an existing problem? Come and find allies for it.',
   },
   {
     question: 'How to participate?',
