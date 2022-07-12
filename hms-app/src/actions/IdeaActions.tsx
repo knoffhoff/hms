@@ -1,37 +1,54 @@
 import { Idea } from '../common/types'
+import { IPublicClientApplication } from '@azure/msal-browser'
+import { getIdToken } from '../common/actionAuth'
 
 const core_url = process.env.REACT_APP_CORE_URL
 
-export const getIdeaList = (hackathonID: string) => {
+export const getIdeaList = async (
+  instance: IPublicClientApplication,
+  hackathonID: string
+) => {
+  const idToken = await getIdToken(instance)
   return fetch(`${core_url}/hackathon/${hackathonID}/ideas`, {
     method: 'GET',
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
+      Authorization: `Bearer ${idToken}`,
     },
   })
     .then((data) => data.json())
     .catch((err) => console.log(err))
 }
 
-export const getIdeaDetails = (ideaID: string): Promise<Idea> => {
+export const getIdeaDetails = async (
+  instance: IPublicClientApplication,
+  ideaID: string
+): Promise<Idea> => {
+  const idToken = await getIdToken(instance)
   return fetch(`${core_url}/idea/${ideaID}`, {
     method: 'GET',
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
+      Authorization: `Bearer ${idToken}`,
     },
   })
     .then((data) => data.json())
     .catch((err) => console.log(err))
 }
 
-export const deleteIdea = (ideaID: string) => {
+export const deleteIdea = async (
+  instance: IPublicClientApplication,
+  ideaID: string
+) => {
+  const idToken = await getIdToken(instance)
   return fetch(`${core_url}/idea/${ideaID}`, {
     method: 'DELETE',
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
+      Authorization: `Bearer ${idToken}`,
     },
   })
     .then((response) => {
@@ -40,7 +57,8 @@ export const deleteIdea = (ideaID: string) => {
     .catch((err) => console.log(err))
 }
 
-export const createIdea = (
+export const createIdea = async (
+  instance: IPublicClientApplication,
   idea: {
     ownerId: string
     hackathonId: string
@@ -52,11 +70,13 @@ export const createIdea = (
   skills: string[],
   categories: string[]
 ) => {
+  const idToken = await getIdToken(instance)
   return fetch(`${core_url}/idea`, {
     method: 'POST',
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
+      Authorization: `Bearer ${idToken}`,
     },
     body: JSON.stringify({
       ownerId: idea.ownerId,
@@ -73,7 +93,8 @@ export const createIdea = (
     .catch((err) => console.log(err))
 }
 
-export const editIdea = (
+export const editIdea = async (
+  instance: IPublicClientApplication,
   ideaID: string,
   idea: {
     ownerId: string
@@ -86,11 +107,13 @@ export const editIdea = (
   skills: string[],
   categories: string[]
 ) => {
+  const idToken = await getIdToken(instance)
   return fetch(`${core_url}/idea/${ideaID}`, {
     method: 'PUT',
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
+      Authorization: `Bearer ${idToken}`,
     },
     body: JSON.stringify({
       title: idea.title,

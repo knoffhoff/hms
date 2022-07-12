@@ -20,6 +20,7 @@ import { showNotification, updateNotification } from '@mantine/notifications'
 import { CheckIcon } from '@modulz/radix-icons'
 import { createIdea, editIdea } from '../../actions/IdeaActions'
 import { styles } from '../../common/styles'
+import { useMsal } from '@azure/msal-react'
 
 type IProps = {
   hackathon: HackathonPreview
@@ -31,6 +32,7 @@ type IProps = {
 }
 
 function IdeaForm(props: IProps) {
+  const { instance } = useMsal()
   const { hackathon, participantId, context, ideaId, setOpened, idea } = props
   const { classes } = styles()
   const [isLoading, setIsLoading] = useState(true)
@@ -67,7 +69,7 @@ function IdeaForm(props: IProps) {
   }
 
   const loadAvailableSkills = () => {
-    getListOfSkills().then((data) => {
+    getListOfSkills(instance).then((data) => {
       setAvailableSkills({
         ...availableSkills,
         skills: data.skills,
@@ -76,7 +78,7 @@ function IdeaForm(props: IProps) {
   }
 
   const loadAvailableCategories = () => {
-    getListOfCategories(hackathon.id).then((data) => {
+    getListOfCategories(instance, hackathon.id).then((data) => {
       setAvailableCategories({
         ...availableCategories,
         categories: data.categories,
@@ -117,7 +119,7 @@ function IdeaForm(props: IProps) {
       autoClose: false,
       disallowClose: true,
     })
-    createIdea(ideaText, skills, categories).then((r) =>
+    createIdea(instance, ideaText, skills, categories).then((r) =>
       setTimeout(() => {
         console.log('r', r)
         setButtonIsDisabled(false)
@@ -153,7 +155,7 @@ function IdeaForm(props: IProps) {
       autoClose: false,
       disallowClose: true,
     })
-    editIdea(ideaId!, ideaText, skills, categories).then((r) =>
+    editIdea(instance, ideaId!, ideaText, skills, categories).then((r) =>
       setTimeout(() => {
         setButtonIsDisabled(false)
         if (setOpened) {

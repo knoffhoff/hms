@@ -1,11 +1,16 @@
+import { IPublicClientApplication } from '@azure/msal-browser'
+import { getIdToken } from '../common/actionAuth'
+
 const core_url = process.env.REACT_APP_CORE_URL
 
-export const getListOfUsers = () => {
+export const getListOfUsers = async (instance: IPublicClientApplication) => {
+  const idToken = await getIdToken(instance)
   return fetch(`${core_url}/users`, {
     method: 'GET',
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
+      Authorization: `Bearer ${idToken}`,
     },
   })
     .then((data) => {
@@ -14,12 +19,17 @@ export const getListOfUsers = () => {
     .catch((err) => console.log(err))
 }
 
-export const getUserDetails = (userID: string) => {
+export const getUserDetails = async (
+  instance: IPublicClientApplication,
+  userID: string
+) => {
+  const idToken = await getIdToken(instance)
   return fetch(`${core_url}/user/${userID}`, {
     method: 'GET',
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
+      Authorization: `Bearer ${idToken}`,
     },
   })
     .then((data) => {
@@ -28,12 +38,17 @@ export const getUserDetails = (userID: string) => {
     .catch((err) => console.log(err))
 }
 
-export const deleteUser = (userID: string) => {
+export const deleteUser = async (
+  instance: IPublicClientApplication,
+  userID: string
+) => {
+  const idToken = await getIdToken(instance)
   return fetch(`${core_url}/hackathon/${userID}`, {
     method: 'DELETE',
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
+      Authorization: `Bearer ${idToken}`,
     },
   })
     .then((response) => {
@@ -42,7 +57,8 @@ export const deleteUser = (userID: string) => {
     .catch((err) => console.log(err))
 }
 
-export const editUser = (
+export const editUser = async (
+  instance: IPublicClientApplication,
   user: {
     id: string
     lastName: string
@@ -53,11 +69,13 @@ export const editUser = (
   },
   skills: string[]
 ) => {
+  const idToken = await getIdToken(instance)
   return fetch(`${core_url}/user/${user.id}`, {
     method: 'PUT',
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
+      Authorization: `Bearer ${idToken}`,
     },
     body: JSON.stringify({
       skills: skills,

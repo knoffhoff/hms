@@ -4,8 +4,10 @@ import { getListOfHackathons } from '../../actions/HackathonActions'
 import { HackathonDetailsType, HackathonPreview } from '../../common/types'
 import HackathonDetails from '../card-details/HackathonDetails'
 import { styles } from '../../common/styles'
+import { useMsal } from '@azure/msal-react'
 
 function AllHackathonList() {
+  const { instance } = useMsal()
   const { classes } = styles()
   const [isError, setIsError] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
@@ -14,7 +16,7 @@ function AllHackathonList() {
   })
 
   const loadHackathons = () => {
-    getListOfHackathons().then(
+    getListOfHackathons(instance).then(
       (data) => {
         setIsError(false)
         setIsLoading(false)

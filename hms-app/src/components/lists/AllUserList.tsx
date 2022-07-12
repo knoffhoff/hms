@@ -4,8 +4,10 @@ import { UserPreview } from '../../common/types'
 import { getListOfUsers } from '../../actions/UserActions'
 import UserDetails from '../card-details/UserDetails'
 import { styles } from '../../common/styles'
+import { useMsal } from '@azure/msal-react'
 
 export default function AllUserList() {
+  const { instance } = useMsal()
   const { classes } = styles()
   const [isError, setIsError] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
@@ -14,7 +16,7 @@ export default function AllUserList() {
   })
 
   const loadUsers = () => {
-    getListOfUsers().then(
+    getListOfUsers(instance).then(
       (data) => {
         setIsError(false)
         setIsLoading(false)

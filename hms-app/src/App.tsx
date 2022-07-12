@@ -13,18 +13,20 @@ import Presentations from './pages/Presentations'
 
 function App() {
   return (
-    <Routes>
-      <Route path="/" element={<Layout />}>
-        <Route index element={<Home />} />
-        <Route path="ideas" element={<IdeaPortal />} />
-        <Route path="your-ideas" element={<YourIdeas />} />
-        <Route path="archive" element={<Archive />} />
-        <Route path="voting" element={<Voting />} />
-        <Route path="admin" element={<AdminPage />} />
-        <Route path="*" element={<NoPage />} />
-      </Route>
-      <Route path={'presentations'} element={<Presentations />} />
-    </Routes>
+    <>
+      <Routes>
+        <Route path="/" element={<Layout />}>
+          <Route index element={<Home />} />
+          <Route path="ideas" element={<IdeaPortal />} />
+          <Route path="your-ideas" element={<YourIdeas />} />
+          <Route path="archive" element={<Archive />} />
+          <Route path="voting" element={<Voting />} />
+          <Route path="admin" element={<AdminPage />} />
+          <Route path="*" element={<NoPage />} />
+        </Route>
+        <Route path={'presentations'} element={<Presentations />} />
+      </Routes>
+    </>
   )
 }
 

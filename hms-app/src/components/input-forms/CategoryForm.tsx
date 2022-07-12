@@ -8,6 +8,7 @@ import {
 import { showNotification, updateNotification } from '@mantine/notifications'
 import { CheckIcon } from '@modulz/radix-icons'
 import { styles } from '../../common/styles'
+import { useMsal } from '@azure/msal-react'
 
 type IProps = {
   hackathonId: string
@@ -16,6 +17,7 @@ type IProps = {
 }
 
 export default function CategoryForm(props: IProps) {
+  const { instance } = useMsal()
   const { classes } = styles()
   const { hackathonId, categoryId, context } = props
   const [isError, setIsError] = useState(false)
@@ -28,7 +30,7 @@ export default function CategoryForm(props: IProps) {
   })
 
   const loadSelectedCategory = () => {
-    getCategoryDetails(categoryId).then(
+    getCategoryDetails(instance, categoryId).then(
       (data) => {
         setIsError(false)
         setIsLoading(false)
@@ -68,7 +70,7 @@ export default function CategoryForm(props: IProps) {
       autoClose: false,
       disallowClose: true,
     })
-    editCategory(category).then((r) =>
+    editCategory(instance, category).then((r) =>
       setTimeout(() => {
         updateNotification({
           id: 'category-load',
@@ -96,7 +98,7 @@ export default function CategoryForm(props: IProps) {
       autoClose: false,
       disallowClose: true,
     })
-    addCategory(category).then((r) =>
+    addCategory(instance, category).then((r) =>
       setTimeout(() => {
         updateNotification({
           id: 'category-load',

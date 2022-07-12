@@ -14,8 +14,12 @@ import {
   setHackathonList,
   setNextHackathon,
 } from '../common/redux/hackathonSlice'
-import { useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { getListOfHackathons } from '../actions/HackathonActions'
+import { useIsAuthenticated, useMsal } from '@azure/msal-react'
+import Login from './Login'
+
+const USE_AZURE_AUTH = process.env.REACT_APP_USE_AZURE_AUTH === 'true'
 
 const menuLinks = [
   { link: '', label: 'Home' },
@@ -41,8 +45,10 @@ const toggleColorScheme = (colorScheme: ColorScheme) =>
   colorScheme === 'dark' ? 'light' : 'dark'
 
 const Layout = () => {
+  const { instance } = useMsal()
+  let isAuthenticated = useIsAuthenticated()
+  if (!USE_AZURE_AUTH) isAuthenticated = true
   const dispatch = useAppDispatch()
-
   const [colorScheme, setColorScheme] = useLocalStorage<ColorScheme>(
     defaultColorSchemeLocalStorageKey,
     defaultColorScheme
@@ -50,7 +56,7 @@ const Layout = () => {
 
   useEffect(() => {
     const getHackathons = async () => {
-      const hackathons = await getListOfHackathons()
+      const hackathons = await getListOfHackathons(instance)
       dispatch(setHackathonList(hackathons.map(mapHackathonToSerializable)))
 
       const nextHackathon = hackathons.find((hackathon) => {
@@ -70,22 +76,25 @@ const Layout = () => {
       toggleColorScheme={() => setColorScheme(toggleColorScheme(colorScheme))}
     >
       <MantineProvider theme={{ colorScheme }} withGlobalStyles>
-        <AppShell
-          header={<HeaderMenu links={menuLinks} />}
-          styles={(theme) => ({
-            main: {
-              backgroundColor:
-                theme.colorScheme === 'dark'
-                  ? theme.colors.dark[8]
-                  : theme.colors.gray[0],
-              minHeight: 'calc(100vh - 56px)',
-            },
-          })}
-        >
-          <Container size={'xl'} pt={50}>
-            <Outlet />
-          </Container>
-        </AppShell>
+        {isAuthenticated && (
+          <AppShell
+            header={<HeaderMenu links={menuLinks} />}
+            styles={(theme) => ({
+              main: {
+                backgroundColor:
+                  theme.colorScheme === 'dark'
+                    ? theme.colors.dark[8]
+                    : theme.colors.gray[0],
+                minHeight: 'calc(100vh - 56px)',
+              },
+            })}
+          >
+            <Container size={'xl'} pt={50}>
+              <Outlet />
+            </Container>
+          </AppShell>
+        )}
+        {!isAuthenticated && <Login />}
       </MantineProvider>
     </ColorSchemeProvider>
   )

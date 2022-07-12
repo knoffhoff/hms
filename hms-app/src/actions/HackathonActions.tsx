@@ -5,15 +5,22 @@ import {
   parseHackathons,
   parseHackathonPreviews,
 } from '../common/types'
+import { IPublicClientApplication } from '@azure/msal-browser'
+import { getIdToken } from '../common/actionAuth'
 
 const core_url = process.env.REACT_APP_CORE_URL
 
-export const getListOfHackathons = (): Promise<HackathonPreview[]> => {
+// TODO: Add authentication to all request headers like this:
+export const getListOfHackathons = async (
+  instance: IPublicClientApplication
+): Promise<HackathonPreview[]> => {
+  const idToken = await getIdToken(instance)
   return fetch(`${core_url}/hackathons`, {
     method: 'GET',
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
+      Authorization: `Bearer ${idToken}`,
     },
   })
     .then((data) => data.json())
@@ -24,14 +31,17 @@ export const getListOfHackathons = (): Promise<HackathonPreview[]> => {
     })
 }
 
-export const getHackathonDetails = (
+export const getHackathonDetails = async (
+  instance: IPublicClientApplication,
   hackathonID: string
 ): Promise<Hackathon> => {
+  const idToken = await getIdToken(instance)
   return fetch(`${core_url}/hackathon/${hackathonID}`, {
     method: 'GET',
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
+      Authorization: `Bearer ${idToken}`,
     },
   })
     .then((data) => data.json())
@@ -42,17 +52,20 @@ export const getHackathonDetails = (
     })
 }
 
-export const createHackathon = (
+export const createHackathon = async (
+  instance: IPublicClientApplication,
   title: string,
   DescriptionValue: string,
   startDate: Date,
   endDate: Date
 ) => {
+  const idToken = await getIdToken(instance)
   return fetch(`${core_url}/hackathon`, {
     method: 'POST',
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
+      Authorization: `Bearer ${idToken}`,
     },
     body: JSON.stringify({
       title: title,
@@ -67,18 +80,21 @@ export const createHackathon = (
     .catch((err) => console.log(err))
 }
 
-export const editHackathon = (
+export const editHackathon = async (
+  instance: IPublicClientApplication,
   hackathonID: string,
   title: string,
   DescriptionValue: string,
   startDate: Date,
   endDate: Date
 ) => {
+  const idToken = await getIdToken(instance)
   return fetch(`${core_url}/hackathon/${hackathonID}`, {
     method: 'PUT',
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
+      Authorization: `Bearer ${idToken}`,
     },
     body: JSON.stringify({
       title: title,
@@ -93,12 +109,17 @@ export const editHackathon = (
     .catch((err) => console.log(err))
 }
 
-export const deleteHackathon = (hackathonID: string) => {
+export const deleteHackathon = async (
+  instance: IPublicClientApplication,
+  hackathonID: string
+) => {
+  const idToken = await getIdToken(instance)
   return fetch(`${core_url}/hackathon/${hackathonID}`, {
     method: 'DELETE',
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
+      Authorization: `Bearer ${idToken}`,
     },
   })
     .then((response) => {

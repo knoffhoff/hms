@@ -17,7 +17,7 @@ export default function Presentations() {
   }
 
   function getIdeasList() {
-    return allIdeas.map((idea: Idea) => (
+    return allIdeas.map((idea: Idea, index: number) => (
       <div style={{ padding: 10 }}>
         <Card
           withBorder
@@ -118,34 +118,25 @@ export default function Presentations() {
             style={{ height: '20%' }}
             className={classes.noBorderSection}
           >
-            <Grid align="center">
+            <Grid>
               <Grid.Col span={6}>
                 <Card.Section>
                   <Text className={classes.label}>Skills</Text>
                   <div
                     style={{
-                      paddingTop: '1px',
                       backgroundColor: 'white',
                       height: '15vh',
                     }}
                   >
-                    <Grid>
+                    <ul>
                       {idea.requiredSkills?.map((skill, index) => (
-                        <Grid.Col span={3}>
-                          <div
-                            style={{
-                              display: 'flex',
-                              alignItems: 'center',
-                              gap: '10px',
-                            }}
-                          >
-                            <Text className={classes.presentationText}>
-                              {skill.name}
-                            </Text>
-                          </div>
-                        </Grid.Col>
+                        <li key={skill.id}>
+                          <Text className={classes.presentationText}>
+                            {skill.name}
+                          </Text>
+                        </li>
                       ))}
-                    </Grid>
+                    </ul>
                   </div>
                 </Card.Section>
               </Grid.Col>
@@ -155,7 +146,6 @@ export default function Presentations() {
                   <Text className={classes.label}>Participants</Text>
                   <div
                     style={{
-                      paddingTop: '1px',
                       backgroundColor: 'white',
                       height: '15vh',
                     }}

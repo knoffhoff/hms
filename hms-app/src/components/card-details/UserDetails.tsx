@@ -12,8 +12,10 @@ import {
 } from '@mantine/core'
 import EditUserForm from '../input-forms/EditUserForm'
 import { styles } from '../../common/styles'
+import { useMsal } from '@azure/msal-react'
 
 export default function UserDetails(props: { userId: string }) {
+  const { instance } = useMsal()
   const theme = useMantineTheme()
   const { classes } = styles()
   const { userId } = props
@@ -34,7 +36,7 @@ export default function UserDetails(props: { userId: string }) {
 
   const loadSelectedUser = () => {
     setIsUserLoading(true)
-    getUserDetails(userId).then(
+    getUserDetails(instance, userId).then(
       (data) => {
         setUser(data)
         setIsUserLoading(false)
@@ -48,7 +50,7 @@ export default function UserDetails(props: { userId: string }) {
   }
 
   const deleteSelectedUser = () => {
-    deleteUser(userId).then((data) => {
+    deleteUser(instance, userId).then((data) => {
       setDeleteModalOpened(false)
     })
   }

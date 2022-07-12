@@ -1,15 +1,23 @@
+import { IPublicClientApplication } from '@azure/msal-browser'
+import { getIdToken } from '../common/actionAuth'
+
 const core_url = process.env.REACT_APP_CORE_URL
 
-export const addCategory = (props: {
-  hackathonID: string
-  title: string
-  description: string
-}) => {
+export const addCategory = async (
+  instance: IPublicClientApplication,
+  props: {
+    hackathonID: string
+    title: string
+    description: string
+  }
+) => {
+  const idToken = await getIdToken(instance)
   return fetch(`${core_url}/category`, {
     method: 'POST',
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
+      Authorization: `Bearer ${idToken}`,
     },
     body: JSON.stringify({
       title: props.title,
@@ -23,12 +31,17 @@ export const addCategory = (props: {
     .catch((err) => console.log(err))
 }
 
-export const deleteCategory = (categoryID: string) => {
+export const deleteCategory = async (
+  instance: IPublicClientApplication,
+  categoryID: string
+) => {
+  const idToken = await getIdToken(instance)
   return fetch(`${core_url}/category/${categoryID}`, {
     method: 'DELETE',
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
+      Authorization: `Bearer ${idToken}`,
     },
   })
     .then((response) => {
@@ -37,12 +50,17 @@ export const deleteCategory = (categoryID: string) => {
     .catch((err) => console.log(err))
 }
 
-export const getListOfCategories = (hackathonID: string) => {
+export const getListOfCategories = async (
+  instance: IPublicClientApplication,
+  hackathonID: string
+) => {
+  const idToken = await getIdToken(instance)
   return fetch(`${core_url}/hackathon/${hackathonID}/categories`, {
     method: 'GET',
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
+      Authorization: `Bearer ${idToken}`,
     },
   })
     .then((data) => {
@@ -51,12 +69,17 @@ export const getListOfCategories = (hackathonID: string) => {
     .catch((err) => console.log(err))
 }
 
-export const getCategoryDetails = (categoryID: string) => {
+export const getCategoryDetails = async (
+  instance: IPublicClientApplication,
+  categoryID: string
+) => {
+  const idToken = await getIdToken(instance)
   return fetch(`${core_url}/category/${categoryID}`, {
     method: 'GET',
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
+      Authorization: `Bearer ${idToken}`,
     },
   })
     .then((data) => {
@@ -65,16 +88,21 @@ export const getCategoryDetails = (categoryID: string) => {
     .catch((err) => console.log(err))
 }
 
-export const editCategory = (props: {
-  categoryID: string
-  title: string
-  description: string
-}) => {
+export const editCategory = async (
+  instance: IPublicClientApplication,
+  props: {
+    categoryID: string
+    title: string
+    description: string
+  }
+) => {
+  const idToken = await getIdToken(instance)
   return fetch(`${core_url}/category/${props.categoryID}`, {
     method: 'PUT',
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
+      Authorization: `Bearer ${idToken}`,
     },
     body: JSON.stringify({
       title: props.title,

@@ -6,10 +6,12 @@ import { showNotification, updateNotification } from '@mantine/notifications'
 import { CheckIcon } from '@modulz/radix-icons'
 import { styles } from '../../common/styles'
 import { RichTextEditor } from '@mantine/rte'
+import { useMsal } from '@azure/msal-react'
 
 type IProps = { context: string; hackathonId: string | null }
 
 function HackathonForm(props: IProps) {
+  const { instance } = useMsal()
   const { context, hackathonId } = props
   const { classes } = styles()
   const today = new Date()
@@ -33,6 +35,7 @@ function HackathonForm(props: IProps) {
       disallowClose: true,
     })
     createHackathon(
+      instance,
       hackathonTitle,
       DescriptionValue,
       startDateValue!,
@@ -63,6 +66,7 @@ function HackathonForm(props: IProps) {
       disallowClose: true,
     })
     editHackathon(
+      instance,
       hackathonId!,
       hackathonTitle,
       DescriptionValue,

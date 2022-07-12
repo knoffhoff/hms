@@ -7,16 +7,32 @@ import reportWebVitals from './reportWebVitals'
 import { NotificationsProvider } from '@mantine/notifications'
 import { Provider } from 'react-redux'
 import { store } from './store'
+import { MsalProvider } from '@azure/msal-react'
+import { Configuration, PublicClientApplication } from '@azure/msal-browser'
+
+// MSAL configuration
+const configuration: Configuration = {
+  auth: {
+    clientId: 'c3204340-bdc2-4e36-87b9-e7cfc09034fd',
+    authority:
+      'https://login.microsoftonline.com/21956b19-fed2-44b7-90cf-b6d281c0a42a',
+    redirectUri: 'http://localhost:3001',
+  },
+}
+
+const pca = new PublicClientApplication(configuration)
 
 ReactDOM.render(
   <React.StrictMode>
-    <BrowserRouter>
-      <Provider store={store}>
-        <NotificationsProvider>
-          <App />
-        </NotificationsProvider>
-      </Provider>
-    </BrowserRouter>
+    <MsalProvider instance={pca}>
+      <BrowserRouter>
+        <Provider store={store}>
+          <NotificationsProvider>
+            <App />
+          </NotificationsProvider>
+        </Provider>
+      </BrowserRouter>
+    </MsalProvider>
   </React.StrictMode>,
   document.getElementById('root')
 )

@@ -6,3 +6,6 @@ coverage
 # misc
 .DS_Store
 /.dynamodb/
+
+public_key
+secrets.json
