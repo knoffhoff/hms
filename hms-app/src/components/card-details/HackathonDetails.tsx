@@ -19,6 +19,7 @@ import {
   Group,
   Modal,
   SimpleGrid,
+  Switch,
   Text,
 } from '@mantine/core'
 import ParticipantDetails from './ParticipantDetails'
@@ -45,37 +46,19 @@ export default function HackathonDetails(props: IProps) {
   const [isHackathonLoading, setIsHackathonLoading] = useState(true)
   const [isIdeaError, setIsIdeaError] = useState(false)
   const [isIdeaLoading, setIsIdeaLoading] = useState(true)
-  const [hackathonData, setHackathonData] = useState({
-    id: 'string',
-    title: 'string',
-    description: 'string',
-    startDate: new Date(),
-    endDate: new Date(),
-    participants: [],
-    categories: [],
-    ideas: [],
-  } as Hackathon)
-  const [ideaData, setIdeaData] = useState({
-    id: 'string',
-    owner: undefined,
-    hackathon: undefined,
-    participants: [],
-    title: 'string',
-    description: 'string',
-    problem: 'string',
-    goal: 'string',
-    requiredSkills: [],
-    category: undefined,
-    creationDate: new Date(),
-  } as Idea)
+  const [hackathonData, setHackathonData] = useState({} as Hackathon)
+  const [ideaData, setIdeaData] = useState({} as Idea)
   const [relevantIdeaList, setRelevantIdeaList] = useState([] as Idea[])
   const [value, onChange] = useState(hackathonData.description)
+
+  const [registrationOpen, setRegistrationOpen] = useState(false)
+  const [votingOpen, setVotingOpen] = useState(false)
+  const [ideaCreationOpen, setIdeaCreationOpen] = useState(false)
 
   const loadSelectedHackathon = () => {
     getHackathonDetails(hackathonId).then(
       (data) => {
         setHackathonData(data)
-        onChange(data.description)
         setIsHackathonLoading(false)
         setIsHackathonError(false)
       },
@@ -285,6 +268,22 @@ export default function HackathonDetails(props: IProps) {
             <Card.Section className={classes.borderSection}>
               <Text className={classes.title}>{hackathonData.title}</Text>
               <Text className={classes.text}>ID: {hackathonData.id}</Text>
+            </Card.Section>
+
+            <Card.Section className={classes.borderSection}>
+              <Text className={classes.title}>Set Hackathon Status</Text>
+              <Group>
+                <Text className={classes.text}>Registration opened: </Text>
+                <Switch checked={registrationOpen} onChange={(event) => setRegistrationOpen(event.currentTarget.checked)} />
+              </Group>
+              <Group>
+                <Text className={classes.text}>Idea Creation opened: </Text>
+                <Switch checked={ideaCreationOpen} onChange={(event) => setIdeaCreationOpen(event.currentTarget.checked)} />
+              </Group>
+              <Group>
+                <Text className={classes.text}>Voting opened: </Text>
+                <Switch checked={votingOpen} onChange={(event) => setVotingOpen(event.currentTarget.checked)} />
+              </Group>
             </Card.Section>
 
             <Card.Section className={classes.borderSection}>
