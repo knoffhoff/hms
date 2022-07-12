@@ -9,4 +9,5 @@ In `hms-api`
 3. In serverless.yml under `custom` make sure `useAzureAuth` is set to `true`.
 
 In `hms-app`
-1. 
+1. Copy `.env-example` and rename it to `.env`. Add your Azure AD application's account ID and redirect URL.
+2. Set `REACT_APP_USE_AZURE_AUTH` to `true` in `.env`.
