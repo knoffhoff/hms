@@ -10,7 +10,6 @@ import { getIdToken } from '../common/actionAuth'
 
 const core_url = process.env.REACT_APP_CORE_URL
 
-// TODO: Add authentication to all request headers like this:
 export const getListOfHackathons = async (
   instance: IPublicClientApplication
 ): Promise<HackathonPreview[]> => {
