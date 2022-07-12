@@ -18,7 +18,8 @@ import {
   Container,
   Group,
   Modal,
-  SimpleGrid, Switch,
+  SimpleGrid,
+  Switch,
   Text,
 } from '@mantine/core'
 import ParticipantDetails from './ParticipantDetails'
