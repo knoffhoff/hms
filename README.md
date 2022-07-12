@@ -1,9 +1,12 @@
 # Hackathon Management System
 
-This is a (manual) fork of the open-source project [Hackathon Management System](https://github.com/knoffhoff/hms)
+## Authentication
+To use authentication with Azure AD you need to do the following:
 
-Because private forks of pulic repos are not possible here is the flow to update the project ([taken from this source](https://stackoverflow.com/questions/10065526/github-how-to-make-a-fork-of-public-repository-private)):
+In `hms-api`
+1. Copy `public_key-example` and rename it to `public_key`. Add your Azure AD application's public key to the `public_key` file.
+2. Copy secrets-example.json and rename it to secrets.json. Add the respective Azure AD details to the `secrets.json` file.
+3. In serverless.yml under `custom` make sure `useAzureAuth` is set to `true`.
 
-1. `git remote add public https://github.com/knoffhoff/hms.git`
-2. `git pull public main`
-3. `git push origin main`
+In `hms-app`
+1. 
