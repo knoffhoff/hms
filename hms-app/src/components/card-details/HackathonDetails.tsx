@@ -30,6 +30,7 @@ import { Link } from 'react-router-dom'
 import { styles } from '../../common/styles'
 import { RichTextEditor } from '@mantine/rte'
 import { NULL_DATE } from '../../common/constants'
+import HackathonHeader from '../HackathonHeader'
 
 type IProps = {
   hackathonId: string
@@ -247,21 +248,14 @@ export default function HackathonDetails(props: IProps) {
         </div>
       )}
 
-      {hackathonData.startDate !== NULL_DATE && hackathonData.startDate.toString() !== 'Invalid Date' &&
+      {hackathonData.startDate !== NULL_DATE &&
+        hackathonData.startDate.toString() !== 'Invalid Date' &&
         !isHackathonLoading &&
         !isHackathonError &&
         (type === HackathonDetailsType.Header ||
           type === HackathonDetailsType.Archive) && (
           <div>
-            <Text align={'center'} className={classes.title}>
-              Title: {hackathonData.title}
-            </Text>
-            <Text align={'center'} className={classes.title}>
-              Start date: {new Date(hackathonData.startDate).toLocaleDateString()}
-            </Text>
-            <Text align={'center'} className={classes.title}>
-              End date: {new Date(hackathonData.endDate).toLocaleDateString()}
-            </Text>
+            <HackathonHeader hackathonData={hackathonData} />
 
             {type === HackathonDetailsType.Archive && (
               <Container>
@@ -280,7 +274,8 @@ export default function HackathonDetails(props: IProps) {
           </div>
         )}
 
-      {hackathonData.startDate !== NULL_DATE && hackathonData.startDate.toString() !== 'Invalid Date' &&
+      {hackathonData.startDate !== NULL_DATE &&
+        hackathonData.startDate.toString() !== 'Invalid Date' &&
         !isHackathonLoading &&
         !isHackathonError &&
         type === HackathonDetailsType.FullInfo && (
