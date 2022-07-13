@@ -13,6 +13,7 @@ import RelevantIdeasLoader from '../components/RelevantIdeasLoader'
 import { styles } from '../common/styles'
 import HackathonSelectDropdown from '../components/HackathonSelectDropdown'
 import { NULL_DATE } from '../common/constants'
+import HackathonHeader from '../components/HackathonHeader'
 
 export default function YourIdeas() {
   const { classes } = styles()
@@ -64,51 +65,45 @@ export default function YourIdeas() {
         setLoading={setIsLoading}
       />
 
-      {!isLoading && hackathonData.startDate !== NULL_DATE && hackathonData.startDate.toString() !== 'Invalid Date' && (
-        <div>
-          <Text align={'center'} className={classes.title}>
-            Title: {hackathonData.title}
-          </Text>
-          <Text align={'center'} className={classes.title}>
-            Start date: {new Date(hackathonData.startDate).toLocaleDateString()}
-          </Text>
-          <Text align={'center'} className={classes.title}>
-            End date: {new Date(hackathonData.endDate).toLocaleDateString()}
-          </Text>
+      {!isLoading &&
+        hackathonData.startDate !== NULL_DATE &&
+        hackathonData.startDate.toString() !== 'Invalid Date' && (
+          <div>
+            <HackathonHeader hackathonData={hackathonData} />
 
-          {isParticipant() && (
-            <div>
+            {isParticipant() && (
               <div>
-                {!(hackathonData.endDate < today) && (
-                  <Accordion>
-                    <Accordion.Item
-                      label={'Create new idea'}
-                      className={classes.borderAccordion}
-                    >
-                      <IdeaForm
-                        ideaId={'null'}
-                        hackathon={hackathonData}
-                        participantId={participantId}
-                        context={'new'}
-                      />
-                    </Accordion.Item>
-                  </Accordion>
-                )}
+                <div>
+                  {!(hackathonData.endDate < today) && (
+                    <Accordion>
+                      <Accordion.Item
+                        label={'Create new idea'}
+                        className={classes.borderAccordion}
+                      >
+                        <IdeaForm
+                          ideaId={'null'}
+                          hackathon={hackathonData}
+                          participantId={participantId}
+                          context={'new'}
+                        />
+                      </Accordion.Item>
+                    </Accordion>
+                  )}
+                </div>
+                <h2>Your Ideas ({filteredIdeas.length})</h2>
+                <IdeaCardList
+                  ideas={filteredIdeas}
+                  columnSize={6}
+                  type={IdeaCardType.Owner}
+                  isLoading={false}
+                />
               </div>
-              <h2>Your Ideas ({filteredIdeas.length})</h2>
-              <IdeaCardList
-                ideas={filteredIdeas}
-                columnSize={6}
-                type={IdeaCardType.Owner}
-                isLoading={false}
-              />
-            </div>
-          )}
-          {!isParticipant() && (
-            <div>you haven't participated in this hackathon</div>
-          )}
-        </div>
-      )}
+            )}
+            {!isParticipant() && (
+              <div>you haven't participated in this hackathon</div>
+            )}
+          </div>
+        )}
       {isLoading && selectedHackathonId && <div>Loading...</div>}
     </>
   )

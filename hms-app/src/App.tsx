@@ -13,7 +13,6 @@ import Presentations from './pages/Presentations'
 
 function App() {
   return (
-    <>
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
@@ -26,7 +25,6 @@ function App() {
         </Route>
         <Route path={'presentations'} element={<Presentations />} />
       </Routes>
-    </>
   )
 }
 

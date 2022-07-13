@@ -19,6 +19,7 @@ import {
   Group,
   Modal,
   SimpleGrid,
+  Switch,
   Text,
 } from '@mantine/core'
 import ParticipantDetails from './ParticipantDetails'
@@ -30,6 +31,7 @@ import { Link } from 'react-router-dom'
 import { styles } from '../../common/styles'
 import { RichTextEditor } from '@mantine/rte'
 import { NULL_DATE } from '../../common/constants'
+import HackathonHeader from '../HackathonHeader'
 import { useMsal } from '@azure/msal-react'
 
 type IProps = {
@@ -47,37 +49,19 @@ export default function HackathonDetails(props: IProps) {
   const [isHackathonLoading, setIsHackathonLoading] = useState(true)
   const [isIdeaError, setIsIdeaError] = useState(false)
   const [isIdeaLoading, setIsIdeaLoading] = useState(true)
-  const [hackathonData, setHackathonData] = useState({
-    id: 'string',
-    title: 'string',
-    description: 'string',
-    startDate: new Date(),
-    endDate: new Date(),
-    participants: [],
-    categories: [],
-    ideas: [],
-  } as Hackathon)
-  const [ideaData, setIdeaData] = useState({
-    id: 'string',
-    owner: undefined,
-    hackathon: undefined,
-    participants: [],
-    title: 'string',
-    description: 'string',
-    problem: 'string',
-    goal: 'string',
-    requiredSkills: [],
-    category: undefined,
-    creationDate: new Date(),
-  } as Idea)
+  const [hackathonData, setHackathonData] = useState({} as Hackathon)
+  const [ideaData, setIdeaData] = useState({} as Idea)
   const [relevantIdeaList, setRelevantIdeaList] = useState([] as Idea[])
   const [value, onChange] = useState(hackathonData.description)
+
+  const [registrationOpen, setRegistrationOpen] = useState(false)
+  const [votingOpen, setVotingOpen] = useState(false)
+  const [ideaCreationOpen, setIdeaCreationOpen] = useState(false)
 
   const loadSelectedHackathon = () => {
     getHackathonDetails(instance, hackathonId).then(
       (data) => {
         setHackathonData(data)
-        onChange(data.description)
         setIsHackathonLoading(false)
         setIsHackathonError(false)
       },
@@ -249,18 +233,14 @@ export default function HackathonDetails(props: IProps) {
         </div>
       )}
 
-      {hackathonData.startDate !== NULL_DATE && hackathonData.startDate.toString() !== 'Invalid Date' &&
+      {hackathonData.startDate !== NULL_DATE &&
+        hackathonData.startDate.toString() !== 'Invalid Date' &&
         !isHackathonLoading &&
         !isHackathonError &&
         (type === HackathonDetailsType.Header ||
           type === HackathonDetailsType.Archive) && (
           <div>
-            <h2>Title: {hackathonData.title}</h2>
-            <h2>
-              Start Date: {new Date(hackathonData.startDate).toDateString()} End
-              Date: {new Date(hackathonData.endDate).toDateString()}
-            </h2>
-            <h2>All Ideas ({hackathonData.ideas?.length})</h2>
+            <HackathonHeader hackathonData={hackathonData} />
 
             {type === HackathonDetailsType.Archive && (
               <Container>
@@ -279,7 +259,8 @@ export default function HackathonDetails(props: IProps) {
           </div>
         )}
 
-      {hackathonData.startDate !== NULL_DATE && hackathonData.startDate.toString() !== 'Invalid Date' &&
+      {hackathonData.startDate !== NULL_DATE &&
+        hackathonData.startDate.toString() !== 'Invalid Date' &&
         !isHackathonLoading &&
         !isHackathonError &&
         type === HackathonDetailsType.FullInfo && (

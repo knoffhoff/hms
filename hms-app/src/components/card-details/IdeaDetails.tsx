@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   Accordion,
   Avatar,
@@ -17,6 +17,12 @@ import { Idea, IdeaCardType } from '../../common/types'
 import { deleteIdea } from '../../actions/IdeaActions'
 import IdeaForm from '../input-forms/IdeaForm'
 import { styles } from '../../common/styles'
+import { showNotification, updateNotification } from '@mantine/notifications'
+import {
+  createIdeaParticipant,
+  removeIdeaParticipant,
+} from '../../actions/ParticipantActions'
+import { CheckIcon } from '@modulz/radix-icons'
 import { useMsal } from '@azure/msal-react'
 
 type IProps = {
@@ -40,6 +46,15 @@ export default function IdeaDetails(props: IProps) {
       total: 1,
       initialItem: -1,
     })
+  const [buttonIsDisabled, setButtonisDisabled] = useState(false)
+  //ToDo replace user and participant id with real data after a "user" endpoint exist
+  const [participantInfo, setParticipantInfo] = useState({
+    userId: 'f6fa2b8e-68ed-4486-b8df-f93b87ff23e5',
+    hackathonId: '',
+    participantId: 'dd4596c0-911a-49a9-826f-0b6ec8a2d0b6',
+    ideaId: '',
+  })
+  const [participantCheck, setParticipantCheck] = useState(false)
 
   const { idea, type, isLoading } = props
   const MAX_TITLE_LENGTH = 100
@@ -167,6 +182,83 @@ export default function IdeaDetails(props: IProps) {
     )
   }
 
+  const addIdeaParticipant = () => {
+    setButtonisDisabled(true)
+    showNotification({
+      id: 'participant-load',
+      loading: true,
+      title: 'Join Idea',
+      message: 'this can take a second',
+      autoClose: false,
+      disallowClose: true,
+    })
+    createIdeaParticipant(
+      instance,
+      participantInfo.ideaId,
+      participantInfo.participantId
+    ).then((r) => {
+      setTimeout(() => {
+        console.log('participant added with id', r)
+        setButtonisDisabled(false)
+        setParticipantCheck(true)
+        updateNotification({
+          id: 'participant-load',
+          color: 'teal',
+          title: 'Joined Idea',
+          message: 'Notification will close in 2 seconds',
+          icon: <CheckIcon />,
+          autoClose: 2000,
+        })
+      }, 3000)
+    })
+  }
+
+  const removeThisIdeaParticipant = () => {
+    setButtonisDisabled(true)
+    showNotification({
+      id: 'participant-load',
+      loading: true,
+      title: 'Leave Idea',
+      message: 'this can take a second',
+      autoClose: false,
+      disallowClose: true,
+    })
+    removeIdeaParticipant(
+      instance,
+      participantInfo.ideaId,
+      participantInfo.participantId
+    ).then((r) => {
+      console.log('participant removed with id ', r)
+      setButtonisDisabled(false)
+      setParticipantCheck(false)
+      setTimeout(() => {
+        updateNotification({
+          id: 'participant-load',
+          color: 'teal',
+          title: 'Left Idea',
+          message: 'Notification will close in 2 seconds',
+          icon: <CheckIcon />,
+          autoClose: 2000,
+        })
+      }, 3000)
+    })
+  }
+
+  const findParticipant = idea.participants?.find(
+    (participant) => participant.user.id === participantInfo.userId
+  )!
+
+  useEffect(() => {
+    setParticipantCheck(!!findParticipant)
+  }, [idea])
+
+  useEffect(() => {
+    setParticipantInfo((prevState) => ({
+      ...prevState,
+      ideaId: idea.id,
+    }))
+  }, [])
+
   return (
     <>
       {!isLoading && (
@@ -231,14 +323,27 @@ export default function IdeaDetails(props: IProps) {
 
                   {type === IdeaCardType.IdeaPortal && (
                     <Group mt="xs" position={'right'} style={{ paddingTop: 5 }}>
-                      <Button variant={'outline'} color={'yellow'}>
+                      {/*<Button variant={'outline'} color={'yellow'}>
                         Add to Favorites
+                      </Button>*/}
+
+                      <Button
+                        disabled={buttonIsDisabled}
+                        onClick={
+                          participantCheck
+                            ? removeThisIdeaParticipant
+                            : addIdeaParticipant
+                        }
+                        color={participantCheck ? 'red' : 'blue'}
+                      >
+                        {participantCheck ? 'Leave Idea' : 'Join Idea'}
                       </Button>
                       <Button>Participate</Button>
                     </Group>
                   )}
 
-                  {(type === IdeaCardType.Admin || IdeaCardType.Owner) && (
+                  {(type === IdeaCardType.Admin ||
+                    type === IdeaCardType.Owner) && (
                     <Group position="left" mt="xl">
                       {deleteModal}
                       <Button

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Input, Group, Title, Button } from '@mantine/core'
+import { Input, Group, Title, Button, Text } from '@mantine/core'
 import { Search } from 'tabler-icons-react'
 import IdeaCardList from '../components/lists/IdeaCardList'
 import {
@@ -17,9 +17,12 @@ import { CheckIcon } from '@modulz/radix-icons'
 import HackathonSelectDropdown from '../components/HackathonSelectDropdown'
 import RelevantIdeasLoader from '../components/RelevantIdeasLoader'
 import { NULL_DATE } from '../common/constants'
+import { styles } from '../common/styles'
+import HackathonHeader from '../components/HackathonHeader'
 import { useMsal } from '@azure/msal-react'
 
 function IdeaPortal() {
+  const { classes } = styles()
   const { instance } = useMsal()
   const [searchTerm, setSearchTerm] = useState('')
   const [isLoading, setIsLoading] = useState(true)
@@ -140,37 +143,34 @@ function IdeaPortal() {
         setLoading={setIsLoading}
       />
 
-      {!isLoading && hackathonData.startDate !== NULL_DATE && hackathonData.startDate.toString() !== 'Invalid Date' &&(
-        <div>
-          <Button
-            disabled={buttonIsDisabled}
-            onClick={
-              participantCheck
-                ? removeHackathonParticipant
-                : addHackathonParticipant
-            }
-            color={participantCheck ? 'red' : 'blue'}
-          >
-            {participantCheck ? 'Leave Hackathon' : 'Join Hackathon'}
-          </Button>
-
-          <h2>{hackathonData.title}</h2>
-          <h2>
-            Start Date: {new Date(hackathonData.startDate).toDateString()} End
-            Date: {new Date(hackathonData.endDate).toDateString()}
-          </h2>
-          <h2>All Ideas ({filteredIdeas.length})</h2>
-
+      {!isLoading &&
+        hackathonData.startDate !== NULL_DATE &&
+        hackathonData.startDate.toString() !== 'Invalid Date' && (
           <div>
-            <IdeaCardList
-              ideas={filteredIdeas}
-              columnSize={6}
-              type={IdeaCardType.IdeaPortal}
-              isLoading={isLoading}
-            />
+            <Button
+              disabled={buttonIsDisabled}
+              onClick={
+                participantCheck
+                  ? removeHackathonParticipant
+                  : addHackathonParticipant
+              }
+              color={participantCheck ? 'red' : 'blue'}
+            >
+              {participantCheck ? 'Leave Hackathon' : 'Join Hackathon'}
+            </Button>
+
+            <HackathonHeader hackathonData={hackathonData} />
+
+            <div>
+              <IdeaCardList
+                ideas={filteredIdeas}
+                columnSize={6}
+                type={IdeaCardType.IdeaPortal}
+                isLoading={isLoading}
+              />
+            </div>
           </div>
-        </div>
-      )}
+        )}
 
       {isLoading && selectedHackathonId && <div>Loading...</div>}
     </>

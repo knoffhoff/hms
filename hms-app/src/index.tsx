@@ -10,13 +10,14 @@ import { store } from './store'
 import { MsalProvider } from '@azure/msal-react'
 import { Configuration, PublicClientApplication } from '@azure/msal-browser'
 
-// MSAL configuration
+const AZURE_CLIENT_ID = process.env.REACT_APP_AZURE_CLIENT_ID || ''
+const AZURE_AUTHORITY = process.env.REACT_APP_AZURE_AUTHORITY || ''
+const REDIRECT_URI = process.env.REACT_APP_AZURE_REDIRECT_URL || ''
 const configuration: Configuration = {
   auth: {
-    clientId: 'c3204340-bdc2-4e36-87b9-e7cfc09034fd',
-    authority:
-      'https://login.microsoftonline.com/21956b19-fed2-44b7-90cf-b6d281c0a42a',
-    redirectUri: 'http://localhost:3001',
+    clientId: AZURE_CLIENT_ID,
+    authority: AZURE_AUTHORITY,
+    redirectUri: REDIRECT_URI,
   },
 }
 
