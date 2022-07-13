@@ -60,6 +60,7 @@ export default function HackathonDetails(props: IProps) {
     getHackathonDetails(hackathonId).then(
       (data) => {
         setHackathonData(data)
+        onChange(data.description)
         setIsHackathonLoading(false)
         setIsHackathonError(false)
       },
@@ -232,7 +233,7 @@ export default function HackathonDetails(props: IProps) {
       )}
 
       {hackathonData.startDate !== NULL_DATE &&
-        hackathonData.startDate.toString() !== 'Invalid Date' &&
+        hackathonData.startDate?.toString() !== 'Invalid Date' &&
         !isHackathonLoading &&
         !isHackathonError &&
         (type === HackathonDetailsType.Header ||
@@ -258,7 +259,7 @@ export default function HackathonDetails(props: IProps) {
         )}
 
       {hackathonData.startDate !== NULL_DATE &&
-        hackathonData.startDate.toString() !== 'Invalid Date' &&
+        hackathonData.startDate?.toString() !== 'Invalid Date' &&
         !isHackathonLoading &&
         !isHackathonError &&
         type === HackathonDetailsType.FullInfo && (
@@ -272,15 +273,30 @@ export default function HackathonDetails(props: IProps) {
               <Text className={classes.title}>Set Hackathon Status</Text>
               <Group>
                 <Text className={classes.text}>Registration opened: </Text>
-                <Switch checked={registrationOpen} onChange={(event) => setRegistrationOpen(event.currentTarget.checked)} />
+                <Switch
+                  checked={registrationOpen}
+                  onChange={(event) =>
+                    setRegistrationOpen(event.currentTarget.checked)
+                  }
+                />
               </Group>
               <Group>
                 <Text className={classes.text}>Idea Creation opened: </Text>
-                <Switch checked={ideaCreationOpen} onChange={(event) => setIdeaCreationOpen(event.currentTarget.checked)} />
+                <Switch
+                  checked={ideaCreationOpen}
+                  onChange={(event) =>
+                    setIdeaCreationOpen(event.currentTarget.checked)
+                  }
+                />
               </Group>
               <Group>
                 <Text className={classes.text}>Voting opened: </Text>
-                <Switch checked={votingOpen} onChange={(event) => setVotingOpen(event.currentTarget.checked)} />
+                <Switch
+                  checked={votingOpen}
+                  onChange={(event) =>
+                    setVotingOpen(event.currentTarget.checked)
+                  }
+                />
               </Group>
             </Card.Section>
 
