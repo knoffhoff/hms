@@ -1,10 +1,21 @@
 import React from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import { Header, Menu, Group, Burger, Container, Avatar } from '@mantine/core'
+import {
+  Header,
+  Menu,
+  Group,
+  Burger,
+  Container,
+  Avatar,
+  useMantineColorScheme,
+} from '@mantine/core'
 import { useBooleanToggle } from '@mantine/hooks'
 import { SwitchToggle } from './ThemeSwitchToggle'
 import { styles } from '../common/styles'
-import { HEADER_ACTIVE_COLOR } from '../common/constants'
+import {
+  HEADER_ACTIVE_COLOR_LIGHT,
+  HEADER_ACTIVE_COLOR_DARK,
+} from '../common/constants'
 
 interface HeaderSearchProps {
   links: {
@@ -15,6 +26,7 @@ interface HeaderSearchProps {
 }
 
 export default function HeaderMenu({ links }: HeaderSearchProps) {
+  const theme = useMantineColorScheme()
   const [opened, toggleOpened] = useBooleanToggle(false)
   const { classes } = styles()
   const today = new Date()
@@ -30,7 +42,9 @@ export default function HeaderMenu({ links }: HeaderSearchProps) {
         style={{
           backgroundColor:
             location.pathname.slice(1) === link.link
-              ? HEADER_ACTIVE_COLOR
+              ? theme.colorScheme === 'light'
+                ? HEADER_ACTIVE_COLOR_LIGHT
+                : HEADER_ACTIVE_COLOR_DARK
               : undefined,
         }}
       >
