@@ -62,6 +62,7 @@ export default function HackathonDetails(props: IProps) {
     getHackathonDetails(instance, hackathonId).then(
       (data) => {
         setHackathonData(data)
+        onChange(data.description)
         setIsHackathonLoading(false)
         setIsHackathonError(false)
       },

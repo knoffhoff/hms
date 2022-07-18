@@ -7,12 +7,15 @@ import {
   Burger,
   Container,
   Avatar,
-  Button,
+  useMantineColorScheme,
 } from '@mantine/core'
 import { useBooleanToggle } from '@mantine/hooks'
 import { SwitchToggle } from './ThemeSwitchToggle'
 import { styles } from '../common/styles'
-import { HEADER_ACTIVE_COLOR } from '../common/constants'
+import {
+  HEADER_ACTIVE_COLOR_LIGHT,
+  HEADER_ACTIVE_COLOR_DARK,
+} from '../common/constants'
 import { useMsal } from '@azure/msal-react'
 import { Logout } from 'tabler-icons-react'
 import { getProfilePhoto } from '../common/actionAuth'
@@ -29,6 +32,7 @@ const AZURE_ACCOUNT_ID = process.env.REACT_APP_AZURE_ACCOUNT_ID || ''
 const AZURE_REDIRECT_URL = process.env.REACT_APP_AZURE_REDIRECT_URL || ''
 
 export default function HeaderMenu({ links }: HeaderSearchProps) {
+  const theme = useMantineColorScheme()
   const [profilePhoto, setProfilePhoto] = useState('')
   const [opened, toggleOpened] = useBooleanToggle(false)
   const { classes } = styles()
@@ -69,7 +73,9 @@ export default function HeaderMenu({ links }: HeaderSearchProps) {
         style={{
           backgroundColor:
             location.pathname.slice(1) === link.link
-              ? HEADER_ACTIVE_COLOR
+              ? theme.colorScheme === 'light'
+                ? HEADER_ACTIVE_COLOR_LIGHT
+                : HEADER_ACTIVE_COLOR_DARK
               : undefined,
         }}
       >
