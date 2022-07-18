@@ -7,6 +7,7 @@ import {
   Burger,
   Container,
   Avatar,
+  Button,
   useMantineColorScheme,
 } from '@mantine/core'
 import { useBooleanToggle } from '@mantine/hooks'

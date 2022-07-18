@@ -18,7 +18,6 @@
     "jest": "27.5.1",
     "serverless-dynamodb-local": "0.2.40",
     "serverless-offline": "8.8.1",
-    "serverless-plugin-ifelse": "1.0.7",
     "serverless-plugin-typescript": "2.1.2",
     "ts-jest": "27.1.4",
     "ts-node": "10.9.1",
