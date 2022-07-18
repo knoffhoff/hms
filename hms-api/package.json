@@ -16,9 +16,9 @@
     "eslint": "8.19.0",
     "eslint-config-google": "0.14.0",
     "jest": "27.5.1",
-    "serverless-dynamodb-local": "^0.2.40",
+    "serverless-dynamodb-local": "0.2.40",
     "serverless-offline": "8.8.0",
-    "serverless-plugin-ifelse": "^1.0.7",
+    "serverless-plugin-ifelse": "1.0.7",
     "serverless-plugin-typescript": "2.1.2",
     "ts-jest": "27.1.4",
     "ts-node": "10.8.2",
@@ -27,7 +27,7 @@
   },
   "dependencies": {
     "@aws-sdk/client-dynamodb": "3.121.0",
-    "jsonwebtoken": "^8.5.1",
+    "jsonwebtoken": "8.5.1",
     "serverless-dynamodb-client": "0.0.2"
   }
 }
