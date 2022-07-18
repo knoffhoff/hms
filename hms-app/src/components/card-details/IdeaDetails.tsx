@@ -338,7 +338,6 @@ export default function IdeaDetails(props: IProps) {
                       >
                         {participantCheck ? 'Leave Idea' : 'Join Idea'}
                       </Button>
-                      <Button>Participate</Button>
                     </Group>
                   )}
 
