@@ -10,9 +10,9 @@
   "license": "ISC",
   "devDependencies": {
     "@types/jest": "27.5.0",
-    "@types/node": "18.0.4",
+    "@types/node": "18.0.6",
     "@typescript-eslint/eslint-plugin": "5.30.6",
-    "@typescript-eslint/parser": "5.30.6",
+    "@typescript-eslint/parser": "5.30.7",
     "eslint": "8.19.0",
     "eslint-config-google": "0.14.0",
     "jest": "27.5.1",
@@ -25,7 +25,7 @@
     "uuid": "8.3.2"
   },
   "dependencies": {
-    "@aws-sdk/client-dynamodb": "3.130.0",
+    "@aws-sdk/client-dynamodb": "3.131.0",
     "jsonwebtoken": "8.5.1",
     "serverless-dynamodb-client": "0.0.2"
   }
