@@ -14,12 +14,12 @@ import {
   setHackathonList,
   setNextHackathon,
 } from '../common/redux/hackathonSlice'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { getListOfHackathons } from '../actions/HackathonActions'
 import { useIsAuthenticated, useMsal } from '@azure/msal-react'
 import Login from './Login'
 
-const USE_AZURE_AUTH = process.env.REACT_APP_USE_AZURE_AUTH === 'true'
+const USE_AUTH = process.env.REACT_APP_USE_AZURE_AUTH === 'true'
 
 const menuLinks = [
   { link: '', label: 'Home' },
@@ -45,14 +45,19 @@ const toggleColorScheme = (colorScheme: ColorScheme) =>
   colorScheme === 'dark' ? 'light' : 'dark'
 
 const Layout = () => {
+  const [userAuthenticated, setUserAuthenticated] = useState(false)
   const { instance } = useMsal()
-  let isAuthenticated = useIsAuthenticated()
-  if (!USE_AZURE_AUTH) isAuthenticated = true
   const dispatch = useAppDispatch()
   const [colorScheme, setColorScheme] = useLocalStorage<ColorScheme>(
     defaultColorSchemeLocalStorageKey,
     defaultColorScheme
   )
+  let isAuthenticated = useIsAuthenticated()
+  if (!USE_AUTH) setUserAuthenticated(true)
+
+  useEffect(() => {
+    if (USE_AUTH) setUserAuthenticated(isAuthenticated)
+  }, [isAuthenticated])
 
   useEffect(() => {
     const getHackathons = async () => {
@@ -76,7 +81,7 @@ const Layout = () => {
       toggleColorScheme={() => setColorScheme(toggleColorScheme(colorScheme))}
     >
       <MantineProvider theme={{ colorScheme }} withGlobalStyles>
-        {isAuthenticated && (
+        {userAuthenticated && (
           <AppShell
             header={<HeaderMenu links={menuLinks} />}
             styles={(theme) => ({
