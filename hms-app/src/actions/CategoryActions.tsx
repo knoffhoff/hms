@@ -1,5 +1,7 @@
 import { IPublicClientApplication } from '@azure/msal-browser'
 import { getIdToken } from '../common/actionAuth'
+import CategoryDetails from '../components/card-details/CategoryDetails'
+import { buildFetchOptions } from '../common/actionOptions'
 
 const core_url = process.env.REACT_APP_CORE_URL
 
@@ -12,19 +14,12 @@ export const addCategory = async (
   }
 ) => {
   const idToken = await getIdToken(instance)
-  return fetch(`${core_url}/category`, {
-    method: 'POST',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${idToken}`,
-    },
-    body: JSON.stringify({
-      title: props.title,
-      description: props.description,
-      hackathonId: props.hackathonID,
-    }),
+  const options = buildFetchOptions('POST', idToken, {
+    title: props.title,
+    description: props.description,
+    hackathonId: props.hackathonID,
   })
+  return fetch(`${core_url}/category`, options)
     .then((response) => {
       return response.json()
     })
@@ -36,14 +31,8 @@ export const deleteCategory = async (
   categoryID: string
 ) => {
   const idToken = await getIdToken(instance)
-  return fetch(`${core_url}/category/${categoryID}`, {
-    method: 'DELETE',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${idToken}`,
-    },
-  })
+  const options = buildFetchOptions('DELETE', idToken)
+  return fetch(`${core_url}/category/${categoryID}`, options)
     .then((response) => {
       return response.json()
     })
@@ -55,14 +44,8 @@ export const getListOfCategories = async (
   hackathonID: string
 ) => {
   const idToken = await getIdToken(instance)
-  return fetch(`${core_url}/hackathon/${hackathonID}/categories`, {
-    method: 'GET',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${idToken}`,
-    },
-  })
+  const options = buildFetchOptions('GET', idToken)
+  return fetch(`${core_url}/hackathon/${hackathonID}/categories`, options)
     .then((data) => {
       return data.json()
     })
@@ -74,14 +57,8 @@ export const getCategoryDetails = async (
   categoryID: string
 ) => {
   const idToken = await getIdToken(instance)
-  return fetch(`${core_url}/category/${categoryID}`, {
-    method: 'GET',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${idToken}`,
-    },
-  })
+  const options = buildFetchOptions('GET', idToken)
+  return fetch(`${core_url}/category/${categoryID}`, options)
     .then((data) => {
       return data.json()
     })
@@ -97,18 +74,11 @@ export const editCategory = async (
   }
 ) => {
   const idToken = await getIdToken(instance)
-  return fetch(`${core_url}/category/${props.categoryID}`, {
-    method: 'PUT',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${idToken}`,
-    },
-    body: JSON.stringify({
-      title: props.title,
-      description: props.description,
-    }),
+  const options = buildFetchOptions('PUT', idToken, {
+    title: props.title,
+    description: props.description,
   })
+  return fetch(`${core_url}/category/${props.categoryID}`, options)
     .then((response) => {
       return response.json()
     })

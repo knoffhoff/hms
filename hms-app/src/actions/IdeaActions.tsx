@@ -1,6 +1,7 @@
 import { Idea } from '../common/types'
 import { IPublicClientApplication } from '@azure/msal-browser'
 import { getIdToken } from '../common/actionAuth'
+import { buildFetchOptions } from '../common/actionOptions'
 
 const core_url = process.env.REACT_APP_CORE_URL
 
@@ -9,14 +10,8 @@ export const getIdeaList = async (
   hackathonID: string
 ) => {
   const idToken = await getIdToken(instance)
-  return fetch(`${core_url}/hackathon/${hackathonID}/ideas`, {
-    method: 'GET',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${idToken}`,
-    },
-  })
+  const options = buildFetchOptions('GET', idToken)
+  return fetch(`${core_url}/hackathon/${hackathonID}/ideas`, options)
     .then((data) => data.json())
     .catch((err) => console.log(err))
 }
@@ -26,14 +21,8 @@ export const getIdeaDetails = async (
   ideaID: string
 ): Promise<Idea> => {
   const idToken = await getIdToken(instance)
-  return fetch(`${core_url}/idea/${ideaID}`, {
-    method: 'GET',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${idToken}`,
-    },
-  })
+  const options = buildFetchOptions('GET', idToken)
+  return fetch(`${core_url}/idea/${ideaID}`, options)
     .then((data) => data.json())
     .catch((err) => console.log(err))
 }
@@ -43,14 +32,8 @@ export const deleteIdea = async (
   ideaID: string
 ) => {
   const idToken = await getIdToken(instance)
-  return fetch(`${core_url}/idea/${ideaID}`, {
-    method: 'DELETE',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${idToken}`,
-    },
-  })
+  const options = buildFetchOptions('DELETE', idToken)
+  return fetch(`${core_url}/idea/${ideaID}`, options)
     .then((response) => {
       return response.json()
     })
@@ -71,24 +54,17 @@ export const createIdea = async (
   categories: string[]
 ) => {
   const idToken = await getIdToken(instance)
-  return fetch(`${core_url}/idea`, {
-    method: 'POST',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${idToken}`,
-    },
-    body: JSON.stringify({
-      ownerId: idea.ownerId,
-      hackathonId: idea.hackathonId,
-      title: idea.title,
-      description: idea.description,
-      problem: idea.problem,
-      goal: idea.goal,
-      requiredSkills: skills,
-      categoryId: categories.toString(),
-    }),
+  const options = buildFetchOptions('POST', idToken, {
+    ownerId: idea.ownerId,
+    hackathonId: idea.hackathonId,
+    title: idea.title,
+    description: idea.description,
+    problem: idea.problem,
+    goal: idea.goal,
+    requiredSkills: skills,
+    categoryId: categories.toString(),
   })
+  return fetch(`${core_url}/idea`, options)
     .then((data) => data.json())
     .catch((err) => console.log(err))
 }
@@ -108,22 +84,15 @@ export const editIdea = async (
   categories: string[]
 ) => {
   const idToken = await getIdToken(instance)
-  return fetch(`${core_url}/idea/${ideaID}`, {
-    method: 'PUT',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${idToken}`,
-    },
-    body: JSON.stringify({
-      title: idea.title,
-      description: idea.description,
-      problem: idea.problem,
-      goal: idea.goal,
-      requiredSkills: skills,
-      categoryId: categories.toString(),
-    }),
+  const options = buildFetchOptions('PUT', idToken, {
+    title: idea.title,
+    description: idea.description,
+    problem: idea.problem,
+    goal: idea.goal,
+    requiredSkills: skills,
+    categoryId: categories.toString(),
   })
+  return fetch(`${core_url}/idea/${ideaID}`, options)
     .then((data) => data.json())
     .catch((err) => console.log(err))
 }

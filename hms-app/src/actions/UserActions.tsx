@@ -1,18 +1,13 @@
 import { IPublicClientApplication } from '@azure/msal-browser'
 import { getIdToken } from '../common/actionAuth'
+import { buildFetchOptions } from '../common/actionOptions'
 
 const core_url = process.env.REACT_APP_CORE_URL
 
 export const getListOfUsers = async (instance: IPublicClientApplication) => {
   const idToken = await getIdToken(instance)
-  return fetch(`${core_url}/users`, {
-    method: 'GET',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${idToken}`,
-    },
-  })
+  const options = buildFetchOptions('GET', idToken)
+  return fetch(`${core_url}/users`, options)
     .then((data) => {
       return data.json()
     })
@@ -24,14 +19,8 @@ export const getUserDetails = async (
   userID: string
 ) => {
   const idToken = await getIdToken(instance)
-  return fetch(`${core_url}/user/${userID}`, {
-    method: 'GET',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${idToken}`,
-    },
-  })
+  const options = buildFetchOptions('GET', idToken)
+  return fetch(`${core_url}/user/${userID}`, options)
     .then((data) => {
       return data.json()
     })
@@ -43,14 +32,8 @@ export const deleteUser = async (
   userID: string
 ) => {
   const idToken = await getIdToken(instance)
-  return fetch(`${core_url}/hackathon/${userID}`, {
-    method: 'DELETE',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${idToken}`,
-    },
-  })
+  const options = buildFetchOptions('DELETE', idToken)
+  return fetch(`${core_url}/hackathon/${userID}`, options)
     .then((response) => {
       return response.json()
     })
@@ -70,22 +53,15 @@ export const editUser = async (
   skills: string[]
 ) => {
   const idToken = await getIdToken(instance)
-  return fetch(`${core_url}/user/${user.id}`, {
-    method: 'PUT',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${idToken}`,
-    },
-    body: JSON.stringify({
-      skills: skills,
-      lastName: user.lastName,
-      firstName: user.firstName,
-      emailAddress: user.emailAddress,
-      roles: user.roles,
-      imageUrl: user.imageUrl,
-    }),
+  const options = buildFetchOptions('PUT', idToken, {
+    skills,
+    lastName: user.lastName,
+    firstName: user.firstName,
+    emailAddress: user.emailAddress,
+    roles: user.roles,
+    imageUrl: user.imageUrl,
   })
+  return fetch(`${core_url}/user/${user.id}`, options)
     .then((response) => {
       return response.json()
     })

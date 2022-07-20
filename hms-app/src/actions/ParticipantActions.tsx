@@ -1,5 +1,6 @@
 import { IPublicClientApplication } from '@azure/msal-browser'
 import { getIdToken } from '../common/actionAuth'
+import { buildFetchOptions } from '../common/actionOptions'
 
 const core_url = process.env.REACT_APP_CORE_URL
 
@@ -8,14 +9,8 @@ export const deleteParticipant = async (
   participantID: string
 ) => {
   const idToken = await getIdToken(instance)
-  return fetch(`${core_url}/participant/${participantID}`, {
-    method: 'DELETE',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${idToken}`,
-    },
-  })
+  const options = buildFetchOptions('DELETE', idToken)
+  return fetch(`${core_url}/participant/${participantID}`, options)
     .then((response) => {
       return response.json()
     })
@@ -28,18 +23,11 @@ export const createHackathonParticipant = async (
   hackathonId: string
 ) => {
   const idToken = await getIdToken(instance)
-  return fetch(`${core_url}/participant`, {
-    method: 'POST',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${idToken}`,
-    },
-    body: JSON.stringify({
-      userId: userId,
-      hackathonId: hackathonId,
-    }),
+  const options = buildFetchOptions('POST', idToken, {
+    userId,
+    hackathonId,
   })
+  return fetch(`${core_url}/participant`, options)
     .then((response) => {
       return response.json()
     })
@@ -52,14 +40,8 @@ export const createIdeaParticipant = async (
   participant_id: string
 ) => {
   const idToken = await getIdToken(instance)
-  return fetch(`${core_url}/idea/${idea_id}/join/${participant_id}`, {
-    method: 'PUT',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${idToken}`,
-    },
-  })
+  const options = buildFetchOptions('PUT', idToken)
+  return fetch(`${core_url}/idea/${idea_id}/join/${participant_id}`, options)
     .then((response) => {
       return response.json()
     })
@@ -72,14 +54,8 @@ export const removeIdeaParticipant = async (
   participant_id: string
 ) => {
   const idToken = await getIdToken(instance)
-  return fetch(`${core_url}/idea/${idea_id}/leave/${participant_id}`, {
-    method: 'PUT',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${idToken}`,
-    },
-  })
+  const options = buildFetchOptions('PUT', idToken)
+  return fetch(`${core_url}/idea/${idea_id}/leave/${participant_id}`, options)
     .then((response) => {
       return response.json()
     })
@@ -91,14 +67,8 @@ export const getParticipantDetails = async (
   participantID: string
 ) => {
   const idToken = await getIdToken(instance)
-  return fetch(`${core_url}/category/${participantID}`, {
-    method: 'GET',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${idToken}`,
-    },
-  })
+  const options = buildFetchOptions('GET', idToken)
+  return fetch(`${core_url}/category/${participantID}`, options)
     .then((data) => {
       return data.json()
     })
