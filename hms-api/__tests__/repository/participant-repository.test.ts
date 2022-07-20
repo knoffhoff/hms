@@ -14,6 +14,7 @@ import {
   getParticipant,
   getParticipants,
   listParticipants,
+  participantAlreadyExists,
   participantExistsForHackathon,
   putParticipant,
 } from '../../src/repository/participant-repository';
@@ -45,6 +46,30 @@ describe('Get Participant', () => {
     expect(await getParticipant(expected.id)).toStrictEqual(expected);
 
     getExpected(expected.id);
+  });
+});
+
+describe('Participant Already Exists', () => {
+  test('Happy Path', async () => {
+    const participant = randomParticipant();
+    mockQuery([itemFromParticipant(participant)]);
+
+    expect(await participantAlreadyExists(participant))
+        .toStrictEqual(true);
+  });
+
+  test('Empty Array Response', async () => {
+    mockQuery([]);
+
+    expect(await participantAlreadyExists(randomParticipant()))
+        .toStrictEqual(false);
+  });
+
+  test('Null Response', async () => {
+    mockQuery(null);
+
+    expect(await participantAlreadyExists(randomParticipant()))
+        .toStrictEqual(false);
   });
 });
 

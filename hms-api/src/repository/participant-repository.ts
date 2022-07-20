@@ -88,7 +88,8 @@ export async function participantAlreadyExists(
     },
   }));
 
-  return !!output.Items;
+  const items = output.Items;
+  return Array.isArray(items) && items.length > 0;
 }
 
 export async function participantExistsForHackathon(
