@@ -7,6 +7,7 @@ import {
   DeleteItemCommand,
   GetItemCommand,
   PutItemCommand,
+  QueryCommand,
   ScanCommand,
 } from '@aws-sdk/client-dynamodb';
 import Uuid from '../util/Uuid';
@@ -78,6 +79,20 @@ export async function userExists(id: Uuid): Promise<boolean> {
   }));
 
   return !!output.Item;
+}
+
+export async function userExistsByEmail(
+    emailAddress: string,
+): Promise<boolean> {
+  const output = await dynamoDBClient.send(new QueryCommand({
+    TableName: process.env.USER_TABLE,
+    IndexName: process.env.USER_BY_EMAIL_ADDRESS_INDEX,
+    KeyConditionExpression: 'emailAddress = :ea',
+    ExpressionAttributeValues: {':ea': {'S': emailAddress}},
+  }));
+
+  const items = output.Items;
+  return Array.isArray(items) && items.length > 0;
 }
 
 export async function deleteUser(id: Uuid) {

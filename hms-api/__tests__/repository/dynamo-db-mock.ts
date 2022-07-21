@@ -44,6 +44,9 @@ process.env.SKILL_TABLE = skillTable;
 export const userTable = 'user-table';
 process.env.USER_TABLE = userTable;
 
+export const userByEmailAddress = 'user-by-email-address-index';
+process.env.USER_BY_EMAIL_ADDRESS_INDEX = userByEmailAddress;
+
 export const mockSend = jest.fn();
 beforeEach(mockSend.mockReset);
 

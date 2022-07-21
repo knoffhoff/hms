@@ -2,6 +2,7 @@ import {
   createUser,
   editUser,
   extractUser,
+  getUserExistsResponse,
   getUserListResponse,
   getUserResponse,
   removeUser,
@@ -28,6 +29,7 @@ import User from '../../src/repository/domain/User';
 import ValidationResult from '../../src/error/ValidationResult';
 import {randomCategory} from '../repository/domain/category-maker';
 import ValidationError from '../../src/error/ValidationError';
+import UserExistsResponse from '../../src/rest/UserExistsResponse';
 
 const mockGetSkills = jest.fn();
 jest.spyOn(skillRepository, 'getSkills')
@@ -45,6 +47,9 @@ jest.spyOn(userRepository, 'getUser')
 const mockGetUsers = jest.fn();
 jest.spyOn(userRepository, 'getUsers')
     .mockImplementation(mockGetUsers);
+const mockUserExistsByEmail = jest.fn();
+jest.spyOn(userRepository, 'userExistsByEmail')
+    .mockImplementation(mockUserExistsByEmail);
 const mockListUsers = jest.fn();
 jest.spyOn(userRepository, 'listUsers')
     .mockImplementation(mockListUsers);
@@ -225,6 +230,30 @@ describe('Get User Response', () => {
         .toThrow(NotFoundError);
     expect(mockGetUser).toHaveBeenCalledWith(id);
     expect(mockGetSkills).not.toHaveBeenCalled();
+  });
+});
+
+describe('Get User Exists Response', () => {
+  test('User Exists', async () => {
+    const email = 'eee.mmm@iii.ll';
+    const expected = UserExistsResponse.from(email, true);
+
+    mockUserExistsByEmail.mockResolvedValue(true);
+
+    expect(await getUserExistsResponse(email))
+        .toStrictEqual(expected);
+    expect(mockUserExistsByEmail).toHaveBeenCalledWith(email);
+  });
+
+  test('User Does Not Exist', async () => {
+    const email = 'eee.mmm@iii.ll';
+    const expected = UserExistsResponse.from(email, false);
+
+    mockUserExistsByEmail.mockResolvedValue(false);
+
+    expect(await getUserExistsResponse(email))
+        .toStrictEqual(expected);
+    expect(mockUserExistsByEmail).toHaveBeenCalledWith(email);
   });
 });
 
