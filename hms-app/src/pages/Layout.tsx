@@ -14,7 +14,7 @@ import {
   setHackathonList,
   setNextHackathon,
 } from '../common/redux/hackathonSlice'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { getListOfHackathons } from '../actions/HackathonActions'
 import { useIsAuthenticated, useMsal } from '@azure/msal-react'
 import Login from './Login'
@@ -39,7 +39,7 @@ const menuLinks = [
   },
 ]
 
-const defaultColorSchemeLocalStorageKey: string = 'color-scheme'
+const defaultColorSchemeLocalStorageKey = 'color-scheme'
 const defaultColorScheme: ColorScheme = 'light'
 const toggleColorScheme = (colorScheme: ColorScheme) =>
   colorScheme === 'dark' ? 'light' : 'dark'
@@ -62,7 +62,7 @@ const Layout = () => {
         return new Date(hackathon.startDate) > new Date()
       })
 
-      if (!!nextHackathon)
+      if (nextHackathon)
         dispatch(setNextHackathon(mapHackathonToSerializable(nextHackathon)))
     }
 
@@ -93,7 +93,7 @@ const Layout = () => {
             </Container>
           </AppShell>
         )}
-        {!isAuthenticated && USE_AUTH && <Login />}
+        {(!isAuthenticated && USE_AUTH) && <Login />}
       </MantineProvider>
     </ColorSchemeProvider>
   )

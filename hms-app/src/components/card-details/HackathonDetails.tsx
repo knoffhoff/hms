@@ -47,7 +47,6 @@ export default function HackathonDetails(props: IProps) {
   const [editModalOpened, setEditModalOpened] = useState(false)
   const [isHackathonError, setIsHackathonError] = useState(false)
   const [isHackathonLoading, setIsHackathonLoading] = useState(true)
-  const [isIdeaError, setIsIdeaError] = useState(false)
   const [isIdeaLoading, setIsIdeaLoading] = useState(true)
   const [hackathonData, setHackathonData] = useState({} as Hackathon)
   const [ideaData, setIdeaData] = useState({} as Idea)
@@ -79,7 +78,6 @@ export default function HackathonDetails(props: IProps) {
         (data) => {
           setIdeaData(data)
           setIsIdeaLoading(false)
-          setIsIdeaError(false)
         },
         () => {
           setIdeaData({
@@ -91,7 +89,7 @@ export default function HackathonDetails(props: IProps) {
   }
 
   const deleteSelectedHackathon = () => {
-    deleteHackathon(instance, hackathonId).then((data) => {
+    deleteHackathon(instance, hackathonId).then(() => {
       setDeleteModalOpened(false)
     })
   }

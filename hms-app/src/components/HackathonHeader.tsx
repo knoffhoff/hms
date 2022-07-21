@@ -1,7 +1,7 @@
 import { Text } from '@mantine/core'
 import React from 'react'
 import { styles } from '../common/styles'
-import { Hackathon, HackathonDetailsType } from '../common/types'
+import { Hackathon } from '../common/types'
 
 type IProps = {
   hackathonData: Hackathon

@@ -2,7 +2,7 @@ import { IPublicClientApplication } from '@azure/msal-browser'
 import { getIdToken } from '../common/actionAuth'
 import { buildFetchOptions } from '../common/actionOptions'
 
-const core_url = process.env.REACT_APP_CORE_URL
+const coreUrl = process.env.REACT_APP_CORE_URL
 
 export const deleteParticipant = async (
   instance: IPublicClientApplication,
@@ -10,7 +10,7 @@ export const deleteParticipant = async (
 ) => {
   const idToken = await getIdToken(instance)
   const options = buildFetchOptions('DELETE', idToken)
-  return fetch(`${core_url}/participant/${participantID}`, options)
+  return fetch(`${coreUrl}/participant/${participantID}`, options)
     .then((response) => {
       return response.json()
     })
@@ -27,7 +27,7 @@ export const createHackathonParticipant = async (
     userId,
     hackathonId,
   })
-  return fetch(`${core_url}/participant`, options)
+  return fetch(`${coreUrl}/participant`, options)
     .then((response) => {
       return response.json()
     })
@@ -36,12 +36,12 @@ export const createHackathonParticipant = async (
 
 export const createIdeaParticipant = async (
   instance: IPublicClientApplication,
-  idea_id: string,
-  participant_id: string
+  ideaId: string,
+  participantId: string
 ) => {
   const idToken = await getIdToken(instance)
   const options = buildFetchOptions('PUT', idToken)
-  return fetch(`${core_url}/idea/${idea_id}/join/${participant_id}`, options)
+  return fetch(`${coreUrl}/idea/${ideaId}/join/${participantId}`, options)
     .then((response) => {
       return response.json()
     })
@@ -50,12 +50,12 @@ export const createIdeaParticipant = async (
 
 export const removeIdeaParticipant = async (
   instance: IPublicClientApplication,
-  idea_id: string,
-  participant_id: string
+  ideaId: string,
+  participantId: string
 ) => {
   const idToken = await getIdToken(instance)
   const options = buildFetchOptions('PUT', idToken)
-  return fetch(`${core_url}/idea/${idea_id}/leave/${participant_id}`, options)
+  return fetch(`${coreUrl}/idea/${ideaId}/leave/${participantId}`, options)
     .then((response) => {
       return response.json()
     })
@@ -68,7 +68,7 @@ export const getParticipantDetails = async (
 ) => {
   const idToken = await getIdToken(instance)
   const options = buildFetchOptions('GET', idToken)
-  return fetch(`${core_url}/category/${participantID}`, options)
+  return fetch(`${coreUrl}/category/${participantID}`, options)
     .then((data) => {
       return data.json()
     })

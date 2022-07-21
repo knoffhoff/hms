@@ -13,7 +13,7 @@ import {
   useAccordionState,
   useMantineTheme,
 } from '@mantine/core'
-import { Idea, IdeaCardType } from '../../common/types'
+import { Idea, IdeaCardType, ParticipantPreview } from '../../common/types';
 import { deleteIdea } from '../../actions/IdeaActions'
 import IdeaForm from '../input-forms/IdeaForm'
 import { styles } from '../../common/styles'
@@ -47,7 +47,7 @@ export default function IdeaDetails(props: IProps) {
       initialItem: -1,
     })
   const [buttonIsDisabled, setButtonisDisabled] = useState(false)
-  //ToDo replace user and participant id with real data after a "user" endpoint exist
+  // ToDo replace user and participant id with real data after a "user" endpoint exist
   const [participantInfo, setParticipantInfo] = useState({
     userId: 'f6fa2b8e-68ed-4486-b8df-f93b87ff23e5',
     hackathonId: '',
@@ -65,9 +65,9 @@ export default function IdeaDetails(props: IProps) {
       style={{ display: 'flex', alignItems: 'center', gap: '10px' }}
     >
       <Avatar
-        color="indigo"
-        radius="xl"
-        size="md"
+        color='indigo'
+        radius='xl'
+        size='md'
         src={
           'https://avatars.githubusercontent.com/u/10353856?s=460&u=88394dfd67727327c1f7670a1764dc38a8a24831&v=4'
         }
@@ -79,7 +79,7 @@ export default function IdeaDetails(props: IProps) {
   ))
 
   const deleteSelectedIdea = () => {
-    deleteIdea(instance, idea.id).then((data) => {
+    deleteIdea(instance, idea.id).then(() => {
       setDeleteModalOpened(false)
     })
   }
@@ -114,14 +114,14 @@ export default function IdeaDetails(props: IProps) {
       opened={editModalOpened}
       onClose={() => setEditModalOpened(false)}
       withCloseButton={false}
-      size="55%"
+      size='55%'
     >
       <Text className={classes.title}>Edit Idea</Text>
       <IdeaForm
         ideaId={idea.id}
         idea={idea}
         context={'edit'}
-        participantId={idea.owner?.id!}
+        participantId={idea.owner ? idea.owner.id : ''}
         hackathon={idea.hackathon!}
         setOpened={closeEditModal}
       />
@@ -145,7 +145,7 @@ export default function IdeaDetails(props: IProps) {
         </Card.Section>
 
         <Accordion
-          iconPosition="right"
+          iconPosition='right'
           state={participantAccordionState}
           onChange={setParticipantAccordionState.setState}
         >
@@ -159,9 +159,9 @@ export default function IdeaDetails(props: IProps) {
                       {idea.participants?.map((participant, index) => (
                         <Avatar
                           key={index}
-                          color="indigo"
-                          radius="xl"
-                          size="md"
+                          color='indigo'
+                          radius='xl'
+                          size='md'
                           src={
                             'https://avatars.githubusercontent.com/u/10353856?s=460&u=88394dfd67727327c1f7670a1764dc38a8a24831&v=4'
                           }
@@ -244,12 +244,17 @@ export default function IdeaDetails(props: IProps) {
     })
   }
 
-  const findParticipant = idea.participants?.find(
-    (participant) => participant.user.id === participantInfo.userId
-  )!
+  let findParticipant: ParticipantPreview | null;
+  if (idea && idea.participants) {
+    findParticipant = idea.participants.find(
+      (participant) => participant.user.id === participantInfo.userId
+    )!
+  } else {
+    findParticipant = null
+  }
 
   useEffect(() => {
-    setParticipantCheck(!!findParticipant)
+    if (findParticipant) setParticipantCheck(!!findParticipant)
   }, [idea])
 
   useEffect(() => {
@@ -263,7 +268,7 @@ export default function IdeaDetails(props: IProps) {
     <>
       {!isLoading && (
         <Card withBorder className={classes.card}>
-          <Spoiler maxHeight={130} showLabel="Show more" hideLabel="Hide">
+          <Spoiler maxHeight={130} showLabel='Show more' hideLabel='Hide'>
             <Card.Section className={classes.borderSection}>
               <Group noWrap>
                 <Group
@@ -273,14 +278,14 @@ export default function IdeaDetails(props: IProps) {
                   spacing={'xs'}
                 >
                   <Avatar
-                    color="indigo"
-                    radius="xl"
-                    size="md"
+                    color='indigo'
+                    radius='xl'
+                    size='md'
                     src={
                       'https://avatars.githubusercontent.com/u/10353856?s=460&u=88394dfd67727327c1f7670a1764dc38a8a24831&v=4'
                     }
                   />
-                  <Badge size="sm">
+                  <Badge size='sm'>
                     {idea.owner?.user.firstName} {idea.owner?.user.lastName}
                   </Badge>
                 </Group>
@@ -323,7 +328,7 @@ export default function IdeaDetails(props: IProps) {
 
                   {type === IdeaCardType.IdeaPortal && (
                     <Group mt="xs" position={'right'} style={{ paddingTop: 5 }}>
-                      {/*<Button variant={'outline'} color={'yellow'}>
+                      {/* <Button variant={'outline'} color={'yellow'}>
                         Add to Favorites
                       </Button>*/}
 

@@ -23,7 +23,6 @@ export default function EditUserForm(props: IProps) {
   const { instance } = useMsal()
   const { classes } = styles()
   const { userId } = props
-  const [isError, setIsError] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
   const [availableSkills, setAvailableSkills] = useState([] as SkillPreview[])
   const [skills, setSkills] = useState<string[]>([])
@@ -39,7 +38,6 @@ export default function EditUserForm(props: IProps) {
   const loadSelectedUser = () => {
     getUserDetails(instance, userId).then(
       (data) => {
-        setIsError(false)
         setIsLoading(false)
         setUser({
           id: userId,
@@ -51,7 +49,6 @@ export default function EditUserForm(props: IProps) {
         })
       },
       () => {
-        setIsError(true)
         setIsLoading(false)
       }
     )
@@ -80,7 +77,7 @@ export default function EditUserForm(props: IProps) {
       autoClose: false,
       disallowClose: true,
     })
-    editUser(instance, user, skills).then((r) =>
+    editUser(instance, user, skills).then(() =>
       setTimeout(() => {
         updateNotification({
           id: 'user-load',
@@ -104,8 +101,8 @@ export default function EditUserForm(props: IProps) {
     })
   }
 
-  const skillsList = availableSkills.map((skill) => [
-    <Checkbox value={skill.id} label={skill.name} />,
+  const skillsList = availableSkills.map((skill, index) => [
+    <Checkbox value={skill.id} label={skill.name} key={index} />,
   ])
 
   return (
@@ -119,44 +116,44 @@ export default function EditUserForm(props: IProps) {
         <Card withBorder className={classes.card}>
           <Card.Section className={classes.borderSection}>
             <Textarea
-              label="First Name"
+              label='First Name'
               required
-              placeholder="First Name"
+              placeholder='First Name'
               maxRows={1}
               autosize
               onChange={handleChange}
-              name="First Name"
+              name='First Name'
               value={user.firstName}
               className={classes.label}
             />
           </Card.Section>
           <Card.Section className={classes.borderSection}>
             <Textarea
-              label="Last Name"
-              placeholder="Last Name"
+              label='Last Name'
+              placeholder='Last Name'
               maxRows={1}
               autosize
               onChange={handleChange}
-              name="Last Name"
+              name='Last Name'
               value={user.lastName}
               className={classes.label}
             />
           </Card.Section>
           <Card.Section className={classes.borderSection}>
             <Textarea
-              label="E-mail"
-              placeholder="E-mail"
+              label='E-mail'
+              placeholder='E-mail'
               maxRows={1}
               autosize
               onChange={handleChange}
-              name="E-mail"
+              name='E-mail'
               value={user.emailAddress}
               className={classes.label}
             />
           </Card.Section>
           <Card.Section className={classes.borderSection}>
             <CheckboxGroup
-              label="Skills"
+              label='Skills'
               onChange={setSkills}
               required
               className={classes.label}
@@ -164,7 +161,7 @@ export default function EditUserForm(props: IProps) {
               {skillsList}
             </CheckboxGroup>
           </Card.Section>
-          <Group position="right" mt="xl">
+          <Group position='right' mt='xl'>
             <Button disabled={!submitIsEnabled()} onClick={editThisUser}>
               Edit
             </Button>

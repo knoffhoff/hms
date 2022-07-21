@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react'
-import { Input, Group, Title, Button, Text } from '@mantine/core'
+import { Input, Group, Title, Button } from '@mantine/core'
 import { Search } from 'tabler-icons-react'
 import IdeaCardList from '../components/lists/IdeaCardList'
 import {
   Hackathon,
   Idea,
   HackathonDropdownMode,
-  IdeaCardType,
-} from '../common/types'
+  IdeaCardType, ParticipantPreview
+} from '../common/types';
 import {
   createHackathonParticipant,
   deleteParticipant,
@@ -17,12 +17,10 @@ import { CheckIcon } from '@modulz/radix-icons'
 import HackathonSelectDropdown from '../components/HackathonSelectDropdown'
 import RelevantIdeasLoader from '../components/RelevantIdeasLoader'
 import { NULL_DATE } from '../common/constants'
-import { styles } from '../common/styles'
 import HackathonHeader from '../components/HackathonHeader'
 import { useMsal } from '@azure/msal-react'
 
 function IdeaPortal() {
-  const { classes } = styles()
   const { instance } = useMsal()
   const [searchTerm, setSearchTerm] = useState('')
   const [isLoading, setIsLoading] = useState(true)
@@ -35,7 +33,12 @@ function IdeaPortal() {
     hackathonId: '',
     participantId: '',
   })
-  const [hackathonData, setHackathonData] = useState({} as Hackathon)
+  const [hackathonData, setHackathonData] = useState({
+    id: '',
+    title: '',
+    startDate: NULL_DATE,
+    endDate: NULL_DATE,
+  } as Hackathon)
 
   const handleChangeSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value)
@@ -45,9 +48,22 @@ function IdeaPortal() {
     return item.title?.toLowerCase().includes(searchTerm.toLowerCase())
   })
 
-  const findParticipant = hackathonData.participants?.find(
-    (participant) => participant.user.id === participantInfo.userId
-  )!
+  const findParticipant = () => {
+    let participant: ParticipantPreview;
+    if (hackathonData.participants) {
+      participant = hackathonData.participants.find(
+        (participant) => participant.user.id === participantInfo.userId
+      )!
+    } else {
+      participant = {
+        id: '',
+        user: {
+          id: '',
+        }
+      } as ParticipantPreview
+    }
+    return participant
+  }
 
   const addHackathonParticipant = () => {
     setButtonisDisabled(true)
@@ -95,7 +111,7 @@ function IdeaPortal() {
       autoClose: false,
       disallowClose: true,
     })
-    deleteParticipant(instance, findParticipant.id).then((response) => {
+    deleteParticipant(instance, findParticipant().id).then((response) => {
       console.log(response)
       setButtonisDisabled(false)
       setParticipantCheck(false)
@@ -130,8 +146,8 @@ function IdeaPortal() {
         />
 
         <Input
-          variant="default"
-          placeholder="Search for idea title..."
+          variant='default'
+          placeholder='Search for idea title...'
           icon={<Search />}
           onChange={handleChangeSearch}
         />

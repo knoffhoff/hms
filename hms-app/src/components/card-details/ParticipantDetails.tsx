@@ -17,7 +17,7 @@ export default function ParticipantDetails(props: IProps) {
   const [opened, setOpened] = useState(false)
 
   const deleteSelectedParticipant = () => {
-    deleteParticipant(instance, participantId).then((data) => {
+    deleteParticipant(instance, participantId).then(() => {
       setOpened(false)
     })
   }
@@ -60,7 +60,7 @@ export default function ParticipantDetails(props: IProps) {
             </Text>
           </Modal>
 
-          <Group position="left" mt="xl">
+          <Group position='left' mt='xl'>
             <Button color={'red'} onClick={() => setOpened(true)}>
               Delete
             </Button>

@@ -2,7 +2,6 @@ import { getHackathonDetails } from '../actions/HackathonActions'
 import React, { useEffect, useState } from 'react'
 import { Hackathon, Idea } from '../common/types'
 import { getIdeaDetails } from '../actions/IdeaActions'
-import { useAppSelector } from '../hooks'
 import { useMsal } from '@azure/msal-react'
 
 type Props = {
@@ -65,7 +64,7 @@ export default function RelevantIdeasLoader({
   }, [selectedHackathonId])
 
   useEffect(() => {
-    setRelevantIdeaList((relevantIdeaList) => {
+    setRelevantIdeaList(() => {
       return []
     })
     loadIdeaDetails()

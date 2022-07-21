@@ -3,7 +3,7 @@ import { IPublicClientApplication } from '@azure/msal-browser'
 import { getIdToken } from '../common/actionAuth'
 import { buildFetchOptions } from '../common/actionOptions'
 
-const core_url = process.env.REACT_APP_CORE_URL
+const coreUrl = process.env.REACT_APP_CORE_URL
 
 export const getIdeaList = async (
   instance: IPublicClientApplication,
@@ -11,7 +11,7 @@ export const getIdeaList = async (
 ) => {
   const idToken = await getIdToken(instance)
   const options = buildFetchOptions('GET', idToken)
-  return fetch(`${core_url}/hackathon/${hackathonID}/ideas`, options)
+  return fetch(`${coreUrl}/hackathon/${hackathonID}/ideas`, options)
     .then((data) => data.json())
     .catch((err) => console.log(err))
 }
@@ -22,7 +22,7 @@ export const getIdeaDetails = async (
 ): Promise<Idea> => {
   const idToken = await getIdToken(instance)
   const options = buildFetchOptions('GET', idToken)
-  return fetch(`${core_url}/idea/${ideaID}`, options)
+  return fetch(`${coreUrl}/idea/${ideaID}`, options)
     .then((data) => data.json())
     .catch((err) => console.log(err))
 }
@@ -33,7 +33,7 @@ export const deleteIdea = async (
 ) => {
   const idToken = await getIdToken(instance)
   const options = buildFetchOptions('DELETE', idToken)
-  return fetch(`${core_url}/idea/${ideaID}`, options)
+  return fetch(`${coreUrl}/idea/${ideaID}`, options)
     .then((response) => {
       return response.json()
     })
@@ -64,7 +64,7 @@ export const createIdea = async (
     requiredSkills: skills,
     categoryId: categories.toString(),
   })
-  return fetch(`${core_url}/idea`, options)
+  return fetch(`${coreUrl}/idea`, options)
     .then((data) => data.json())
     .catch((err) => console.log(err))
 }
@@ -92,7 +92,7 @@ export const editIdea = async (
     requiredSkills: skills,
     categoryId: categories.toString(),
   })
-  return fetch(`${core_url}/idea/${ideaID}`, options)
+  return fetch(`${coreUrl}/idea/${ideaID}`, options)
     .then((data) => data.json())
     .catch((err) => console.log(err))
 }

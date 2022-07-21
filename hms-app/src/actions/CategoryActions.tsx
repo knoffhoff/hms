@@ -1,9 +1,8 @@
 import { IPublicClientApplication } from '@azure/msal-browser'
 import { getIdToken } from '../common/actionAuth'
-import CategoryDetails from '../components/card-details/CategoryDetails'
 import { buildFetchOptions } from '../common/actionOptions'
 
-const core_url = process.env.REACT_APP_CORE_URL
+const coreUrl = process.env.REACT_APP_CORE_URL
 
 export const addCategory = async (
   instance: IPublicClientApplication,
@@ -19,7 +18,7 @@ export const addCategory = async (
     description: props.description,
     hackathonId: props.hackathonID,
   })
-  return fetch(`${core_url}/category`, options)
+  return fetch(`${coreUrl}/category`, options)
     .then((response) => {
       return response.json()
     })
@@ -32,7 +31,7 @@ export const deleteCategory = async (
 ) => {
   const idToken = await getIdToken(instance)
   const options = buildFetchOptions('DELETE', idToken)
-  return fetch(`${core_url}/category/${categoryID}`, options)
+  return fetch(`${coreUrl}/category/${categoryID}`, options)
     .then((response) => {
       return response.json()
     })
@@ -45,7 +44,7 @@ export const getListOfCategories = async (
 ) => {
   const idToken = await getIdToken(instance)
   const options = buildFetchOptions('GET', idToken)
-  return fetch(`${core_url}/hackathon/${hackathonID}/categories`, options)
+  return fetch(`${coreUrl}/hackathon/${hackathonID}/categories`, options)
     .then((data) => {
       return data.json()
     })
@@ -58,7 +57,7 @@ export const getCategoryDetails = async (
 ) => {
   const idToken = await getIdToken(instance)
   const options = buildFetchOptions('GET', idToken)
-  return fetch(`${core_url}/category/${categoryID}`, options)
+  return fetch(`${coreUrl}/category/${categoryID}`, options)
     .then((data) => {
       return data.json()
     })
@@ -78,7 +77,7 @@ export const editCategory = async (
     title: props.title,
     description: props.description,
   })
-  return fetch(`${core_url}/category/${props.categoryID}`, options)
+  return fetch(`${coreUrl}/category/${props.categoryID}`, options)
     .then((response) => {
       return response.json()
     })

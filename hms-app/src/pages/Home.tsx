@@ -23,7 +23,6 @@ function Home() {
     openDate: new Date(),
     closeDate: new Date(),
   })
-  const [value, onChange] = useState('')
 
   const nextHackathon = useAppSelector(
     (state) => state.hackathons.nextHackathon
@@ -55,11 +54,11 @@ function Home() {
   today.setHours(0, 0, 0, 0)
 
   function timeTillNextHackathonStart() {
-    return !!nextHackathon.id ? new Date(nextHackathon.startDate).getTime() : 0
+    return nextHackathon.id ? new Date(nextHackathon.startDate).getTime() : 0
   }
 
   function timeTillNextHackathonEnd() {
-    return !!nextHackathon.id ? new Date(nextHackathon.endDate).getTime() : 0
+    return nextHackathon.id ? new Date(nextHackathon.endDate).getTime() : 0
   }
 
   function setActiveTimeline() {
@@ -95,7 +94,7 @@ function Home() {
   }, [nextHackathon])
 
   const timelineStepper = (
-    <Stepper iconSize={35} active={active} breakpoint="sm" py={50}>
+    <Stepper iconSize={35} active={active} breakpoint='sm' py={50}>
       <Stepper.Step
         className={classes.stepperStep}
         loading={active === 0}
@@ -165,7 +164,7 @@ function Home() {
             <RichTextEditor
               readOnly
               value={nextHackathon.description!}
-              onChange={onChange}
+              onChange={() => {return null}}
             >
               {nextHackathon.description}
             </RichTextEditor>
@@ -177,12 +176,12 @@ function Home() {
       <Container fluid>
         <SimpleGrid cols={2} pt={20}>
           {qAndAList.map((qAndA, index) => (
-            <Card key={index} shadow="sm" p="lg">
+            <Card shadow='sm' p='lg' key={index}>
               <Text weight={800} pb={10}>
                 {qAndA.question}
               </Text>
 
-              <Text size="sm" style={{ lineHeight: 1.5 }}>
+              <Text size='sm' style={{ lineHeight: 1.5 }}>
                 {qAndA.answer}
               </Text>
             </Card>

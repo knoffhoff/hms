@@ -1,11 +1,9 @@
 import {
   Paper,
-  createStyles,
   Button,
   Title,
   Container,
   Image,
-  Text,
 } from '@mantine/core'
 import { useMsal } from '@azure/msal-react'
 import idealoIcon from '../assets/idealo-icon.png'
