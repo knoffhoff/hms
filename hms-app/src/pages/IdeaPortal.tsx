@@ -63,14 +63,15 @@ function IdeaPortal() {
       instance,
       participantInfo.userId,
       participantInfo.hackathonId
-    ).then((r) => {
+    ).then((response) => {
       setTimeout(() => {
-        console.log('participant added with id', r)
+        console.log(response)
+        console.log(hackathonData)
         setButtonisDisabled(false)
         setParticipantCheck(true)
         setParticipantInfo((prevState) => ({
           ...prevState,
-          participantId: r.id,
+          participantId: response.id,
         }))
         updateNotification({
           id: 'participant-load',
@@ -89,13 +90,13 @@ function IdeaPortal() {
     showNotification({
       id: 'participant-load',
       loading: true,
-      title: 'Left Hackathon',
+      title: 'Leave Hackathon',
       message: 'this can take a second',
       autoClose: false,
       disallowClose: true,
     })
-    deleteParticipant(instance, findParticipant.id).then((r) => {
-      console.log('participant deleted with id ', r)
+    deleteParticipant(instance, findParticipant.id).then((response) => {
+      console.log(response)
       setButtonisDisabled(false)
       setParticipantCheck(false)
       setTimeout(() => {
