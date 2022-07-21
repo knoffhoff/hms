@@ -3,6 +3,7 @@ import { UserPreview } from '../../common/types'
 import { Button, Card, Group, Modal, Text } from '@mantine/core'
 import { deleteParticipant } from '../../actions/ParticipantActions'
 import { styles } from '../../common/styles'
+import { useMsal } from '@azure/msal-react'
 
 type IProps = {
   participantId: string
@@ -10,12 +11,13 @@ type IProps = {
 }
 
 export default function ParticipantDetails(props: IProps) {
+  const { instance } = useMsal()
   const { classes } = styles()
   const { participantId, user } = props
   const [opened, setOpened] = useState(false)
 
   const deleteSelectedParticipant = () => {
-    deleteParticipant(participantId).then((data) => {
+    deleteParticipant(instance, participantId).then((data) => {
       setOpened(false)
     })
   }

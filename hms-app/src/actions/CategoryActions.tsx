@@ -1,86 +1,84 @@
+import { IPublicClientApplication } from '@azure/msal-browser'
+import { getIdToken } from '../common/actionAuth'
+import CategoryDetails from '../components/card-details/CategoryDetails'
+import { buildFetchOptions } from '../common/actionOptions'
+
 const core_url = process.env.REACT_APP_CORE_URL
 
-export const addCategory = (props: {
-  hackathonID: string
-  title: string
-  description: string
-}) => {
-  return fetch(`${core_url}/category`, {
-    method: 'POST',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      title: props.title,
-      description: props.description,
-      hackathonId: props.hackathonID,
-    }),
+export const addCategory = async (
+  instance: IPublicClientApplication,
+  props: {
+    hackathonID: string
+    title: string
+    description: string
+  }
+) => {
+  const idToken = await getIdToken(instance)
+  const options = buildFetchOptions('POST', idToken, {
+    title: props.title,
+    description: props.description,
+    hackathonId: props.hackathonID,
   })
+  return fetch(`${core_url}/category`, options)
     .then((response) => {
       return response.json()
     })
     .catch((err) => console.log(err))
 }
 
-export const deleteCategory = (categoryID: string) => {
-  return fetch(`${core_url}/category/${categoryID}`, {
-    method: 'DELETE',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-    },
-  })
-    .then((response) => {
-      return response.json()
-    })
-    .catch((err) => console.log(err))
-}
-
-export const getListOfCategories = (hackathonID: string) => {
-  return fetch(`${core_url}/hackathon/${hackathonID}/categories`, {
-    method: 'GET',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-    },
-  })
-    .then((data) => {
-      return data.json()
-    })
-    .catch((err) => console.log(err))
-}
-
-export const getCategoryDetails = (categoryID: string) => {
-  return fetch(`${core_url}/category/${categoryID}`, {
-    method: 'GET',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-    },
-  })
-    .then((data) => {
-      return data.json()
-    })
-    .catch((err) => console.log(err))
-}
-
-export const editCategory = (props: {
+export const deleteCategory = async (
+  instance: IPublicClientApplication,
   categoryID: string
-  title: string
-  description: string
-}) => {
-  return fetch(`${core_url}/category/${props.categoryID}`, {
-    method: 'PUT',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      title: props.title,
-      description: props.description,
-    }),
+) => {
+  const idToken = await getIdToken(instance)
+  const options = buildFetchOptions('DELETE', idToken)
+  return fetch(`${core_url}/category/${categoryID}`, options)
+    .then((response) => {
+      return response.json()
+    })
+    .catch((err) => console.log(err))
+}
+
+export const getListOfCategories = async (
+  instance: IPublicClientApplication,
+  hackathonID: string
+) => {
+  const idToken = await getIdToken(instance)
+  const options = buildFetchOptions('GET', idToken)
+  return fetch(`${core_url}/hackathon/${hackathonID}/categories`, options)
+    .then((data) => {
+      return data.json()
+    })
+    .catch((err) => console.log(err))
+}
+
+export const getCategoryDetails = async (
+  instance: IPublicClientApplication,
+  categoryID: string
+) => {
+  const idToken = await getIdToken(instance)
+  const options = buildFetchOptions('GET', idToken)
+  return fetch(`${core_url}/category/${categoryID}`, options)
+    .then((data) => {
+      return data.json()
+    })
+    .catch((err) => console.log(err))
+}
+
+export const editCategory = async (
+  instance: IPublicClientApplication,
+  props: {
+    categoryID: string
+    title: string
+    description: string
+  }
+) => {
+  const idToken = await getIdToken(instance)
+  const options = buildFetchOptions('PUT', idToken, {
+    title: props.title,
+    description: props.description,
   })
+  return fetch(`${core_url}/category/${props.categoryID}`, options)
     .then((response) => {
       return response.json()
     })

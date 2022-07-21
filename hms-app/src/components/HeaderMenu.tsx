@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import {
   Header,
@@ -7,6 +7,7 @@ import {
   Burger,
   Container,
   Avatar,
+  Button,
   useMantineColorScheme,
 } from '@mantine/core'
 import { useBooleanToggle } from '@mantine/hooks'
@@ -16,6 +17,9 @@ import {
   HEADER_ACTIVE_COLOR_LIGHT,
   HEADER_ACTIVE_COLOR_DARK,
 } from '../common/constants'
+import { useMsal } from '@azure/msal-react'
+import { Logout } from 'tabler-icons-react'
+import { getProfilePhoto } from '../common/actionAuth'
 
 interface HeaderSearchProps {
   links: {
@@ -25,13 +29,41 @@ interface HeaderSearchProps {
   }[]
 }
 
+const AZURE_ACCOUNT_ID = process.env.REACT_APP_AZURE_ACCOUNT_ID || ''
+const AZURE_REDIRECT_URL = process.env.REACT_APP_AZURE_REDIRECT_URL || ''
+
 export default function HeaderMenu({ links }: HeaderSearchProps) {
   const theme = useMantineColorScheme()
+  const [profilePhoto, setProfilePhoto] = useState('')
   const [opened, toggleOpened] = useBooleanToggle(false)
   const { classes } = styles()
   const today = new Date()
   today.setHours(0, 0, 0, 0)
   const location = useLocation()
+  const { instance, accounts } = useMsal()
+  const user = accounts.length > 0 ? accounts[0] : null
+
+  useEffect(() => {
+    const fetchProfilePhoto = async () => {
+      const profilePhoto = await getProfilePhoto(instance)
+      setProfilePhoto(URL.createObjectURL(profilePhoto))
+    }
+    fetchProfilePhoto()
+  }, [instance])
+
+  const logout = () => {
+    const logoutRequest = {
+      account: instance.getAccountByHomeId(AZURE_ACCOUNT_ID),
+      postLogoutRedirectUri: AZURE_REDIRECT_URL,
+    }
+    instance.logoutRedirect(logoutRequest)
+  }
+
+  function getInitials(name: string) {
+    const names = name.split(' ')
+    const initials = names.map((name) => name[0]).join('')
+    return initials
+  }
 
   const fullscreenMenu = links.map((link) => {
     return (
@@ -62,7 +94,7 @@ export default function HeaderMenu({ links }: HeaderSearchProps) {
       }
     >
       {links.map((link) => (
-        <Menu.Item component={Link} to={link.link}>
+        <Menu.Item key={link.label} component={Link} to={link.link}>
           {link.label}
         </Menu.Item>
       ))}
@@ -78,9 +110,16 @@ export default function HeaderMenu({ links }: HeaderSearchProps) {
           <Group spacing={5} className={classes.headerLinks}>
             <SwitchToggle />
             {fullscreenMenu}
-            <Avatar color="indigo" radius="xl">
-              JP
-            </Avatar>
+            {profilePhoto && <Avatar src={profilePhoto} radius={'xl'} />}
+            {!profilePhoto && (
+              <Avatar color="indigo" radius="xl">
+                {getInitials(user?.name ?? 'User User')}
+              </Avatar>
+            )}
+            <Button onClick={logout} variant={'subtle'}>
+              <Logout />
+            </Button>
+            <p></p>
           </Group>
           {smallScreenMenu}
         </div>

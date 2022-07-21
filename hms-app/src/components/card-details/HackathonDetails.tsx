@@ -32,6 +32,7 @@ import { styles } from '../../common/styles'
 import { RichTextEditor } from '@mantine/rte'
 import { NULL_DATE } from '../../common/constants'
 import HackathonHeader from '../HackathonHeader'
+import { useMsal } from '@azure/msal-react'
 
 type IProps = {
   hackathonId: string
@@ -39,6 +40,7 @@ type IProps = {
 }
 
 export default function HackathonDetails(props: IProps) {
+  const { instance } = useMsal()
   const { classes } = styles()
   const { hackathonId, type } = props
   const [deleteModalOpened, setDeleteModalOpened] = useState(false)
@@ -57,7 +59,7 @@ export default function HackathonDetails(props: IProps) {
   const [ideaCreationOpen, setIdeaCreationOpen] = useState(false)
 
   const loadSelectedHackathon = () => {
-    getHackathonDetails(hackathonId).then(
+    getHackathonDetails(instance, hackathonId).then(
       (data) => {
         setHackathonData(data)
         onChange(data.description)
@@ -73,7 +75,7 @@ export default function HackathonDetails(props: IProps) {
 
   const loadRelevantIdeaDetails = () => {
     hackathonData.ideas?.map((ideaPreviews) => {
-      getIdeaDetails(ideaPreviews.id).then(
+      getIdeaDetails(instance, ideaPreviews.id).then(
         (data) => {
           setIdeaData(data)
           setIsIdeaLoading(false)
@@ -89,7 +91,7 @@ export default function HackathonDetails(props: IProps) {
   }
 
   const deleteSelectedHackathon = () => {
-    deleteHackathon(hackathonId).then((data) => {
+    deleteHackathon(instance, hackathonId).then((data) => {
       setDeleteModalOpened(false)
     })
   }

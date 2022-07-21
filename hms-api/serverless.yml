@@ -38,6 +38,9 @@ provider:
   runtime: nodejs14.x
   region: eu-central-1
   environment:
+    AUTHORIZER_TYPE: ACTIVE_DIRECTORY
+    AZURE_AD_CLIENT_ID: ${file(./secrets.json):AZURE_AD_CLIENT_ID}
+    AZURE_AD_CLIENT_PUBLIC_KEY: ${file(./public_key)}
     HACKATHON_TABLE: hackathon
     USER_TABLE: user
     SKILL_TABLE: skill
@@ -73,6 +76,8 @@ provider:
             - arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.PARTICIPANT_TABLE}/index/*
 
 functions:
+  authorize:
+    handler: src/handler/authorize.authorize
   createHackathon:
     handler: src/handler/hackathon/create.create
     events:
@@ -80,6 +85,7 @@ functions:
           path: hackathon
           method: post
           cors: true
+          authorizer: authorize
   editHackathon:
     handler: src/handler/hackathon/edit.edit
     events:
@@ -87,6 +93,7 @@ functions:
           path: hackathon/{id}
           method: put
           cors: true
+          authorizer: authorize
   listAllHackathons:
     handler: src/handler/hackathon/list.list
     events:
@@ -94,6 +101,7 @@ functions:
           path: hackathons
           method: get
           cors: true
+          authorizer: authorize
   getHackathon:
     handler: src/handler/hackathon/get.get
     events:
@@ -101,6 +109,7 @@ functions:
           path: hackathon/{id}
           method: get
           cors: true
+          authorizer: authorize
   deleteHackathon:
     handler: src/handler/hackathon/remove.remove
     events:
@@ -108,6 +117,7 @@ functions:
           path: hackathon/{id}
           method: delete
           cors: true
+          authorizer: authorize
 
   createIdea:
     handler: src/handler/idea/create.create
@@ -116,6 +126,7 @@ functions:
           path: idea
           method: post
           cors: true
+          authorizer: authorize
   editIdea:
     handler: src/handler/idea/edit.edit
     events:
@@ -123,6 +134,7 @@ functions:
           path: idea/{id}
           method: put
           cors: true
+          authorizer: authorize
   listAllIdea:
     handler: src/handler/idea/list.list
     events:
@@ -130,6 +142,7 @@ functions:
           path: hackathon/{hackathonId}/ideas
           method: get
           cors: true
+          authorizer: authorize
   getIdea:
     handler: src/handler/idea/get.get
     events:
@@ -137,6 +150,7 @@ functions:
           path: idea/{id}
           method: get
           cors: true
+          authorizer: authorize
   deleteIdea:
     handler: src/handler/idea/remove.remove
     events:
@@ -144,6 +158,7 @@ functions:
           path: idea/{id}
           method: delete
           cors: true
+          authorizer: authorize
   joinIdea:
     handler: src/handler/idea/join.join
     events:
@@ -152,6 +167,7 @@ functions:
           path: idea/{ideaId}/join/{participantId}
           method: put
           cors: true
+          authorizer: authorize
   leaveIdea:
     handler: src/handler/idea/leave.leave
     events:
@@ -160,6 +176,7 @@ functions:
           path: idea/{ideaId}/leave/{participantId}
           method: put
           cors: true
+          authorizer: authorize
 
   createUser:
     handler: src/handler/user/create.create
@@ -168,6 +185,7 @@ functions:
           path: user
           method: post
           cors: true
+          authorizer: authorize
   editUser:
     handler: src/handler/user/edit.edit
     events:
@@ -175,6 +193,7 @@ functions:
           path: user/{id}
           method: put
           cors: true
+          authorizer: authorize
   listAllUser:
     handler: src/handler/user/list.list
     events:
@@ -182,6 +201,7 @@ functions:
           path: users
           method: get
           cors: true
+          authorizer: authorize
   getUser:
     handler: src/handler/user/get.get
     events:
@@ -189,6 +209,7 @@ functions:
           path: user/{id}
           method: get
           cors: true
+          authorizer: authorize
   deleteUser:
     handler: src/handler/user/remove.remove
     events:
@@ -196,6 +217,7 @@ functions:
           path: user/{id}
           method: delete
           cors: true
+          authorizer: authorize
 
   createParticipant:
     handler: src/handler/participant/create.create
@@ -204,6 +226,7 @@ functions:
           path: participant
           method: post
           cors: true
+          authorizer: authorize
   listAllParticipant:
     handler: src/handler/participant/list.list
     events:
@@ -211,6 +234,7 @@ functions:
           path: hackathon/{hackathonId}/participants
           method: get
           cors: true
+          authorizer: authorize
   getParticipant:
     handler: src/handler/participant/get.get
     events:
@@ -218,6 +242,7 @@ functions:
           path: participant/{id}
           method: get
           cors: true
+          authorizer: authorize
   deleteParticipant:
     handler: src/handler/participant/remove.remove
     events:
@@ -225,6 +250,7 @@ functions:
           path: participant/{id}
           method: delete
           cors: true
+          authorizer: authorize
 
   createCategory:
     handler: src/handler/category/create.create
@@ -233,6 +259,7 @@ functions:
           path: category
           method: post
           cors: true
+          authorizer: authorize
   editCategory:
     handler: src/handler/category/edit.edit
     events:
@@ -240,6 +267,7 @@ functions:
           path: category/{id}
           method: put
           cors: true
+          authorizer: authorize
   listAllCategory:
     handler: src/handler/category/list.list
     events:
@@ -247,6 +275,7 @@ functions:
           path: hackathon/{hackathonId}/categories
           method: get
           cors: true
+          authorizer: authorize
   getCategory:
     handler: src/handler/category/get.get
     events:
@@ -254,6 +283,7 @@ functions:
           path: category/{id}
           method: get
           cors: true
+          authorizer: authorize
   deleteCategory:
     handler: src/handler/category/remove.remove
     events:
@@ -261,6 +291,7 @@ functions:
           path: category/{id}
           method: delete
           cors: true
+          authorizer: authorize
 
   createSkill:
     handler: src/handler/skill/create.create
@@ -269,6 +300,7 @@ functions:
           path: skill
           method: post
           cors: true
+          authorizer: authorize
   editSkill:
     handler: src/handler/skill/edit.edit
     events:
@@ -276,6 +308,7 @@ functions:
           path: skill/{id}
           method: put
           cors: true
+          authorizer: authorize
   listAllSkill:
     handler: src/handler/skill/list.list
     events:
@@ -283,6 +316,7 @@ functions:
           path: skills
           method: get
           cors: true
+          authorizer: authorize
   getSkill:
     handler: src/handler/skill/get.get
     events:
@@ -290,6 +324,7 @@ functions:
           path: skill/{id}
           method: get
           cors: true
+          authorizer: authorize
   deleteSkill:
     handler: src/handler/skill/remove.remove
     events:
@@ -297,6 +332,7 @@ functions:
           path: skill/{id}
           method: delete
           cors: true
+          authorizer: authorize
 
 resources:
   Resources:

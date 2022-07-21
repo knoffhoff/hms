@@ -23,6 +23,7 @@ import {
   removeIdeaParticipant,
 } from '../../actions/ParticipantActions'
 import { CheckIcon } from '@modulz/radix-icons'
+import { useMsal } from '@azure/msal-react'
 
 type IProps = {
   idea: Idea
@@ -31,6 +32,7 @@ type IProps = {
 }
 
 export default function IdeaDetails(props: IProps) {
+  const { instance } = useMsal()
   const { classes } = styles()
   const theme = useMantineTheme()
   const [deleteModalOpened, setDeleteModalOpened] = useState(false)
@@ -77,7 +79,7 @@ export default function IdeaDetails(props: IProps) {
   ))
 
   const deleteSelectedIdea = () => {
-    deleteIdea(idea.id).then((data) => {
+    deleteIdea(instance, idea.id).then((data) => {
       setDeleteModalOpened(false)
     })
   }
@@ -191,6 +193,7 @@ export default function IdeaDetails(props: IProps) {
       disallowClose: true,
     })
     createIdeaParticipant(
+      instance,
       participantInfo.ideaId,
       participantInfo.participantId
     ).then((r) => {
@@ -221,6 +224,7 @@ export default function IdeaDetails(props: IProps) {
       disallowClose: true,
     })
     removeIdeaParticipant(
+      instance,
       participantInfo.ideaId,
       participantInfo.participantId
     ).then((r) => {

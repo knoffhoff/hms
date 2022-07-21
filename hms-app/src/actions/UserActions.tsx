@@ -1,48 +1,47 @@
+import { IPublicClientApplication } from '@azure/msal-browser'
+import { getIdToken } from '../common/actionAuth'
+import { buildFetchOptions } from '../common/actionOptions'
+
 const core_url = process.env.REACT_APP_CORE_URL
 
-export const getListOfUsers = () => {
-  return fetch(`${core_url}/users`, {
-    method: 'GET',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-    },
-  })
+export const getListOfUsers = async (instance: IPublicClientApplication) => {
+  const idToken = await getIdToken(instance)
+  const options = buildFetchOptions('GET', idToken)
+  return fetch(`${core_url}/users`, options)
     .then((data) => {
       return data.json()
     })
     .catch((err) => console.log(err))
 }
 
-export const getUserDetails = (userID: string) => {
-  return fetch(`${core_url}/user/${userID}`, {
-    method: 'GET',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-    },
-  })
+export const getUserDetails = async (
+  instance: IPublicClientApplication,
+  userID: string
+) => {
+  const idToken = await getIdToken(instance)
+  const options = buildFetchOptions('GET', idToken)
+  return fetch(`${core_url}/user/${userID}`, options)
     .then((data) => {
       return data.json()
     })
     .catch((err) => console.log(err))
 }
 
-export const deleteUser = (userID: string) => {
-  return fetch(`${core_url}/hackathon/${userID}`, {
-    method: 'DELETE',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-    },
-  })
+export const deleteUser = async (
+  instance: IPublicClientApplication,
+  userID: string
+) => {
+  const idToken = await getIdToken(instance)
+  const options = buildFetchOptions('DELETE', idToken)
+  return fetch(`${core_url}/hackathon/${userID}`, options)
     .then((response) => {
       return response.json()
     })
     .catch((err) => console.log(err))
 }
 
-export const editUser = (
+export const editUser = async (
+  instance: IPublicClientApplication,
   user: {
     id: string
     lastName: string
@@ -53,21 +52,16 @@ export const editUser = (
   },
   skills: string[]
 ) => {
-  return fetch(`${core_url}/user/${user.id}`, {
-    method: 'PUT',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      skills: skills,
-      lastName: user.lastName,
-      firstName: user.firstName,
-      emailAddress: user.emailAddress,
-      roles: user.roles,
-      imageUrl: user.imageUrl,
-    }),
+  const idToken = await getIdToken(instance)
+  const options = buildFetchOptions('PUT', idToken, {
+    skills,
+    lastName: user.lastName,
+    firstName: user.firstName,
+    emailAddress: user.emailAddress,
+    roles: user.roles,
+    imageUrl: user.imageUrl,
   })
+  return fetch(`${core_url}/user/${user.id}`, options)
     .then((response) => {
       return response.json()
     })

@@ -118,7 +118,7 @@ export default function Presentations() {
             style={{ height: '20%' }}
             className={classes.noBorderSection}
           >
-            <Grid align="center">
+            <Grid align={'center'}>
               <Grid.Col span={6}>
                 <Card.Section>
                   <Text className={classes.label}>Skills</Text>

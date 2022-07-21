@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { Hackathon, Idea } from '../common/types'
 import { getIdeaDetails } from '../actions/IdeaActions'
 import { useAppSelector } from '../hooks'
+import { useMsal } from '@azure/msal-react'
 
 type Props = {
   selectedHackathonId: string
@@ -17,6 +18,7 @@ export default function RelevantIdeasLoader({
   setHackathon,
   setLoading,
 }: Props) {
+  const { instance } = useMsal()
   const [relevantIdeaList, setRelevantIdeaList] = useState<Idea[]>([])
   const [isThisLoading, setIsThisLoading] = useState(true)
   const [hackathonData, setHackathonData] = useState<Hackathon>({
@@ -44,14 +46,14 @@ export default function RelevantIdeasLoader({
   })
 
   const loadSelectedHackathon = () => {
-    getHackathonDetails(selectedHackathonId).then((data) => {
+    getHackathonDetails(instance, selectedHackathonId).then((data) => {
       setHackathonData(data)
     })
   }
 
   const loadIdeaDetails = () => {
     hackathonData.ideas!.map((ideaPreview) => {
-      getIdeaDetails(ideaPreview.id).then((ideaDetails) =>
+      getIdeaDetails(instance, ideaPreview.id).then((ideaDetails) =>
         setIdeaData(ideaDetails)
       )
     })

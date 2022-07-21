@@ -176,8 +176,8 @@ function Home() {
 
       <Container fluid>
         <SimpleGrid cols={2} pt={20}>
-          {qAndAList.map((qAndA) => (
-            <Card shadow="sm" p="lg">
+          {qAndAList.map((qAndA, index) => (
+            <Card key={index} shadow="sm" p="lg">
               <Text weight={800} pb={10}>
                 {qAndA.question}
               </Text>

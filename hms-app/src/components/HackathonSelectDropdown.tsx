@@ -3,6 +3,7 @@ import { getListOfHackathons } from '../actions/HackathonActions'
 import { Select, SelectItem } from '@mantine/core'
 import { HackathonPreview, HackathonDropdownMode } from '../common/types'
 import { AlertCircle, Loader, Refresh } from 'tabler-icons-react'
+import { useMsal } from '@azure/msal-react'
 
 type Props = {
   setHackathonId: (hackthonID: string) => void
@@ -13,6 +14,7 @@ export default function HackathonSelectDropdown({
   setHackathonId,
   context,
 }: Props) {
+  const { instance } = useMsal()
   const [isError, setIsError] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
   const [hackathonList, setHackathonList] = useState<HackathonPreview[]>([])
@@ -20,7 +22,7 @@ export default function HackathonSelectDropdown({
   today.setHours(0, 0, 0, 0)
 
   const loadHackathons = () => {
-    getListOfHackathons().then(
+    getListOfHackathons(instance).then(
       (data) => {
         setHackathonList(data)
         setIsLoading(false)

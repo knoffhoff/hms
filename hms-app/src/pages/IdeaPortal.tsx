@@ -19,9 +19,11 @@ import RelevantIdeasLoader from '../components/RelevantIdeasLoader'
 import { NULL_DATE } from '../common/constants'
 import { styles } from '../common/styles'
 import HackathonHeader from '../components/HackathonHeader'
+import { useMsal } from '@azure/msal-react'
 
 function IdeaPortal() {
   const { classes } = styles()
+  const { instance } = useMsal()
   const [searchTerm, setSearchTerm] = useState('')
   const [isLoading, setIsLoading] = useState(true)
   const [participantCheck, setParticipantCheck] = useState(false)
@@ -58,6 +60,7 @@ function IdeaPortal() {
       disallowClose: true,
     })
     createHackathonParticipant(
+      instance,
       participantInfo.userId,
       participantInfo.hackathonId
     ).then((response) => {
@@ -92,7 +95,7 @@ function IdeaPortal() {
       autoClose: false,
       disallowClose: true,
     })
-    deleteParticipant(findParticipant.id).then((response) => {
+    deleteParticipant(instance, findParticipant.id).then((response) => {
       console.log(response)
       setButtonisDisabled(false)
       setParticipantCheck(false)

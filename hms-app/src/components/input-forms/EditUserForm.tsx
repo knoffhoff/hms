@@ -13,12 +13,14 @@ import { editUser, getUserDetails } from '../../actions/UserActions'
 import { SkillPreview } from '../../common/types'
 import { getListOfSkills } from '../../actions/SkillActions'
 import { styles } from '../../common/styles'
+import { useMsal } from '@azure/msal-react'
 
 type IProps = {
   userId: string
 }
 
 export default function EditUserForm(props: IProps) {
+  const { instance } = useMsal()
   const { classes } = styles()
   const { userId } = props
   const [isError, setIsError] = useState(false)
@@ -35,7 +37,7 @@ export default function EditUserForm(props: IProps) {
   })
 
   const loadSelectedUser = () => {
-    getUserDetails(userId).then(
+    getUserDetails(instance, userId).then(
       (data) => {
         setIsError(false)
         setIsLoading(false)
@@ -78,7 +80,7 @@ export default function EditUserForm(props: IProps) {
       autoClose: false,
       disallowClose: true,
     })
-    editUser(user, skills).then((r) =>
+    editUser(instance, user, skills).then((r) =>
       setTimeout(() => {
         updateNotification({
           id: 'user-load',
@@ -97,7 +99,7 @@ export default function EditUserForm(props: IProps) {
   }
 
   const loadAvailableSkills = () => {
-    getListOfSkills().then((data) => {
+    getListOfSkills(instance).then((data) => {
       setAvailableSkills(data.skills)
     })
   }

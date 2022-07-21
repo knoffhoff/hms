@@ -7,12 +7,14 @@ import {
 } from '../../actions/CategoryActions'
 import CategoryForm from '../input-forms/CategoryForm'
 import { styles } from '../../common/styles'
+import { useMsal } from '@azure/msal-react'
 
 type IProps = {
   categoryId: string
 }
 
 export default function CategoryDetails(props: IProps) {
+  const { instance } = useMsal()
   const { classes } = styles()
   const { categoryId } = props
   const [deleteModalOpened, setDeleteModalOpened] = useState(false)
@@ -27,7 +29,7 @@ export default function CategoryDetails(props: IProps) {
   } as Category)
 
   const loadSelectedCategory = () => {
-    getCategoryDetails(categoryId).then(
+    getCategoryDetails(instance, categoryId).then(
       (data) => {
         setIsError(false)
         setIsLoading(false)
@@ -46,7 +48,7 @@ export default function CategoryDetails(props: IProps) {
   }
 
   const deleteSelectedCategory = () => {
-    deleteCategory(categoryData.id).then((data) => {
+    deleteCategory(instance, categoryData.id).then((data) => {
       setDeleteModalOpened(false)
     })
   }
