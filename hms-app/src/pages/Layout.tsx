@@ -45,19 +45,13 @@ const toggleColorScheme = (colorScheme: ColorScheme) =>
   colorScheme === 'dark' ? 'light' : 'dark'
 
 const Layout = () => {
-  const [userAuthenticated, setUserAuthenticated] = useState(false)
   const { instance } = useMsal()
   const dispatch = useAppDispatch()
   const [colorScheme, setColorScheme] = useLocalStorage<ColorScheme>(
     defaultColorSchemeLocalStorageKey,
     defaultColorScheme
   )
-  let isAuthenticated = useIsAuthenticated()
-  if (!USE_AUTH) setUserAuthenticated(true)
-
-  useEffect(() => {
-    if (USE_AUTH) setUserAuthenticated(isAuthenticated)
-  }, [isAuthenticated])
+  const isAuthenticated = useIsAuthenticated()
 
   useEffect(() => {
     const getHackathons = async () => {
@@ -81,7 +75,7 @@ const Layout = () => {
       toggleColorScheme={() => setColorScheme(toggleColorScheme(colorScheme))}
     >
       <MantineProvider theme={{ colorScheme }} withGlobalStyles>
-        {userAuthenticated && (
+        {(isAuthenticated || !USE_AUTH) && (
           <AppShell
             header={<HeaderMenu links={menuLinks} />}
             styles={(theme) => ({
@@ -99,7 +93,7 @@ const Layout = () => {
             </Container>
           </AppShell>
         )}
-        {!isAuthenticated && <Login />}
+        {!isAuthenticated && USE_AUTH && <Login />}
       </MantineProvider>
     </ColorSchemeProvider>
   )
