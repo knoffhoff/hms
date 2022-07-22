@@ -20,7 +20,6 @@ export default function CategoryForm(props: IProps) {
   const { instance } = useMsal()
   const { classes } = styles()
   const { hackathonId, categoryId, context } = props
-  const [isError, setIsError] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
   const [category, setCategory] = useState({
     hackathonID: hackathonId,
@@ -32,7 +31,6 @@ export default function CategoryForm(props: IProps) {
   const loadSelectedCategory = () => {
     getCategoryDetails(instance, categoryId).then(
       (data) => {
-        setIsError(false)
         setIsLoading(false)
         setCategory({
           title: data.title,
@@ -42,7 +40,6 @@ export default function CategoryForm(props: IProps) {
         })
       },
       () => {
-        setIsError(true)
         setIsLoading(false)
       }
     )
@@ -70,7 +67,7 @@ export default function CategoryForm(props: IProps) {
       autoClose: false,
       disallowClose: true,
     })
-    editCategory(instance, category).then((r) =>
+    editCategory(instance, category).then(() =>
       setTimeout(() => {
         updateNotification({
           id: 'category-load',
@@ -98,7 +95,7 @@ export default function CategoryForm(props: IProps) {
       autoClose: false,
       disallowClose: true,
     })
-    addCategory(instance, category).then((r) =>
+    addCategory(instance, category).then(() =>
       setTimeout(() => {
         updateNotification({
           id: 'category-load',
@@ -127,30 +124,30 @@ export default function CategoryForm(props: IProps) {
         <Card withBorder className={classes.card}>
           <Card.Section className={classes.borderSection}>
             <Textarea
-              label="Title"
+              label='Title'
               required
-              placeholder="Title"
+              placeholder='Title'
               maxRows={1}
               autosize
               onChange={handleChange}
-              name="title"
+              name='title'
               value={category.title}
               className={classes.label}
             />
           </Card.Section>
           <Card.Section className={classes.borderSection}>
             <Textarea
-              label="Description"
-              placeholder="Description"
+              label='Description'
+              placeholder='Description'
               maxRows={1}
               autosize
               onChange={handleChange}
-              name="description"
+              name='description'
               value={category.description}
               className={classes.label}
             />
           </Card.Section>
-          <Group position="right" mt="xl">
+          <Group position='right' mt='xl'>
             {context === 'edit' && (
               <Button disabled={!submitIsEnabled()} onClick={editThisCategory}>
                 Edit

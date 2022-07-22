@@ -48,7 +48,7 @@ export default function CategoryDetails(props: IProps) {
   }
 
   const deleteSelectedCategory = () => {
-    deleteCategory(instance, categoryData.id).then((data) => {
+    deleteCategory(instance, categoryData.id).then(() => {
       setDeleteModalOpened(false)
     })
   }
@@ -127,7 +127,7 @@ export default function CategoryDetails(props: IProps) {
             <Text className={classes.text}>{categoryData.description}</Text>
           </Card.Section>
           <Card.Section className={classes.borderSection}>
-            <Group position="left" mt="xl">
+            <Group position='left' mt='xl'>
               {deleteModal}
               <Button color={'red'} onClick={() => setDeleteModalOpened(true)}>
                 Delete

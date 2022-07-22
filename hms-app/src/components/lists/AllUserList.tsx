@@ -9,29 +9,23 @@ import { useMsal } from '@azure/msal-react'
 export default function AllUserList() {
   const { instance } = useMsal()
   const { classes } = styles()
-  const [isError, setIsError] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
   const [userList, setUserList] = useState({
     users: [] as UserPreview[],
   })
 
   const loadUsers = () => {
-    getListOfUsers(instance).then(
-      (data) => {
-        setIsError(false)
-        setIsLoading(false)
-        setUserList({
-          users: data.users,
-        })
-      },
-      () => {
-        setIsError(true)
-      }
-    )
+    getListOfUsers(instance).then((data) => {
+      setIsLoading(false)
+      setUserList({
+        users: data.users,
+      })
+    })
   }
 
   const allUsers = userList.users.map((user, index) => [
     <Accordion.Item
+      key={user.id}
       label={
         <div>
           {index + 1}. {user.firstName} {user.lastName}
@@ -55,13 +49,13 @@ export default function AllUserList() {
     <>
       <Card withBorder className={classes.card}>
         <Card.Section className={classes.borderSection}>
-          <Group position="left" mt="xl">
+          <Group position='left' mt='xl'>
             {!isLoading && <Button onClick={refreshList}>Refresh list</Button>}
             {isLoading && <div>Loading...</div>}
           </Group>
         </Card.Section>
         <Card.Section>
-          <Accordion iconPosition="right">{allUsers}</Accordion>
+          <Accordion iconPosition='right'>{allUsers}</Accordion>
         </Card.Section>
       </Card>{' '}
     </>

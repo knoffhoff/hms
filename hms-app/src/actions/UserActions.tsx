@@ -2,12 +2,12 @@ import { IPublicClientApplication } from '@azure/msal-browser'
 import { getIdToken } from '../common/actionAuth'
 import { buildFetchOptions } from '../common/actionOptions'
 
-const core_url = process.env.REACT_APP_CORE_URL
+const coreUrl = process.env.REACT_APP_CORE_URL
 
 export const getListOfUsers = async (instance: IPublicClientApplication) => {
   const idToken = await getIdToken(instance)
   const options = buildFetchOptions('GET', idToken)
-  return fetch(`${core_url}/users`, options)
+  return fetch(`${coreUrl}/users`, options)
     .then((data) => {
       return data.json()
     })
@@ -20,7 +20,7 @@ export const getUserDetails = async (
 ) => {
   const idToken = await getIdToken(instance)
   const options = buildFetchOptions('GET', idToken)
-  return fetch(`${core_url}/user/${userID}`, options)
+  return fetch(`${coreUrl}/user/${userID}`, options)
     .then((data) => {
       return data.json()
     })
@@ -33,7 +33,7 @@ export const deleteUser = async (
 ) => {
   const idToken = await getIdToken(instance)
   const options = buildFetchOptions('DELETE', idToken)
-  return fetch(`${core_url}/hackathon/${userID}`, options)
+  return fetch(`${coreUrl}/hackathon/${userID}`, options)
     .then((response) => {
       return response.json()
     })
@@ -61,7 +61,7 @@ export const editUser = async (
     roles: user.roles,
     imageUrl: user.imageUrl,
   })
-  return fetch(`${core_url}/user/${user.id}`, options)
+  return fetch(`${coreUrl}/user/${user.id}`, options)
     .then((response) => {
       return response.json()
     })

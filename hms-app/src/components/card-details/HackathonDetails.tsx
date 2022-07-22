@@ -47,7 +47,6 @@ export default function HackathonDetails(props: IProps) {
   const [editModalOpened, setEditModalOpened] = useState(false)
   const [isHackathonError, setIsHackathonError] = useState(false)
   const [isHackathonLoading, setIsHackathonLoading] = useState(true)
-  const [isIdeaError, setIsIdeaError] = useState(false)
   const [isIdeaLoading, setIsIdeaLoading] = useState(true)
   const [hackathonData, setHackathonData] = useState({} as Hackathon)
   const [ideaData, setIdeaData] = useState({} as Idea)
@@ -79,7 +78,6 @@ export default function HackathonDetails(props: IProps) {
         (data) => {
           setIdeaData(data)
           setIsIdeaLoading(false)
-          setIsIdeaError(false)
         },
         () => {
           setIdeaData({
@@ -91,7 +89,7 @@ export default function HackathonDetails(props: IProps) {
   }
 
   const deleteSelectedHackathon = () => {
-    deleteHackathon(instance, hackathonId).then((data) => {
+    deleteHackathon(instance, hackathonId).then(() => {
       setDeleteModalOpened(false)
     })
   }
@@ -325,7 +323,7 @@ export default function HackathonDetails(props: IProps) {
               </RichTextEditor>
             </Card.Section>
 
-            <Accordion iconPosition="left" offsetIcon={false}>
+            <Accordion iconPosition='left' offsetIcon={false}>
               <Accordion.Item
                 label={
                   <Text className={classes.label}>
@@ -333,7 +331,7 @@ export default function HackathonDetails(props: IProps) {
                   </Text>
                 }
               >
-                <Accordion iconPosition="right">
+                <Accordion iconPosition='right'>
                   <Accordion.Item
                     className={classes.borderAccordion}
                     label={'Add Category'}
@@ -349,7 +347,7 @@ export default function HackathonDetails(props: IProps) {
               </Accordion.Item>
             </Accordion>
 
-            <Accordion iconPosition="left" offsetIcon={false}>
+            <Accordion iconPosition='left' offsetIcon={false}>
               <Accordion.Item
                 label={
                   <Text className={classes.label}>
@@ -357,11 +355,11 @@ export default function HackathonDetails(props: IProps) {
                   </Text>
                 }
               >
-                <Accordion iconPosition="right">{allParticipants}</Accordion>
+                <Accordion iconPosition='right'>{allParticipants}</Accordion>
               </Accordion.Item>
             </Accordion>
 
-            <Accordion iconPosition="left" offsetIcon={false}>
+            <Accordion iconPosition='left' offsetIcon={false}>
               <Accordion.Item
                 label={
                   <Text className={classes.label}>
@@ -378,16 +376,16 @@ export default function HackathonDetails(props: IProps) {
                     )
                   }
                   component={Link}
-                  to="/presentations"
+                  to='/presentations'
                 >
                   Presentations
                 </Button>
-                <Accordion iconPosition="right">{allIdeas}</Accordion>
+                <Accordion iconPosition='right'>{allIdeas}</Accordion>
               </Accordion.Item>
             </Accordion>
 
             <Card.Section className={classes.borderSection}>
-              <Group position="left" mt="xl">
+              <Group position='left' mt='xl'>
                 {deleteModal}
                 <Button
                   color={'red'}

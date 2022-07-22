@@ -1,4 +1,4 @@
-import { Accordion, Text, Title } from '@mantine/core'
+import { Accordion, Title } from '@mantine/core'
 import {
   Hackathon,
   HackathonDropdownMode,
@@ -38,12 +38,16 @@ export default function YourIdeas() {
     return item.owner?.user.id.includes(userID)
   })
 
-  const userParticipant: ParticipantPreview = hackathonData.participants?.find(
-    (participant) => participant.user.id === userID
-  )!
+  let userParticipant: ParticipantPreview | undefined
+
+  if (hackathonData && hackathonData.participants) {
+    userParticipant = hackathonData.participants.find(
+      (participant) => participant.user.id === userID
+    )
+  }
 
   useEffect(() => {
-    setParticipantId(userParticipant?.id)
+    if (userParticipant) setParticipantId(userParticipant.id)
   }, [hackathonData])
 
   function isParticipant(): boolean {
@@ -100,7 +104,7 @@ export default function YourIdeas() {
               </div>
             )}
             {!isParticipant() && (
-              <div>you haven't participated in this hackathon</div>
+              <div>you haven&apos;t participated in this hackathon</div>
             )}
           </div>
         )}

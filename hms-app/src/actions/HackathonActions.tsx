@@ -2,21 +2,20 @@ import {
   Hackathon,
   HackathonPreview,
   parseHackathon,
-  parseHackathons,
   parseHackathonPreviews,
 } from '../common/types'
 import { IPublicClientApplication } from '@azure/msal-browser'
 import { getIdToken } from '../common/actionAuth'
 import { buildFetchOptions } from '../common/actionOptions'
 
-const core_url = process.env.REACT_APP_CORE_URL
+const coreUrl = process.env.REACT_APP_CORE_URL
 
 export const getListOfHackathons = async (
   instance: IPublicClientApplication
 ): Promise<HackathonPreview[]> => {
   const idToken = await getIdToken(instance)
   const options = buildFetchOptions('GET', idToken)
-  return fetch(`${core_url}/hackathons`, options)
+  return fetch(`${coreUrl}/hackathons`, options)
     .then((data) => data.json())
     .then((json) => parseHackathonPreviews(json.hackathons))
     .catch((err) => {
@@ -31,7 +30,7 @@ export const getHackathonDetails = async (
 ): Promise<Hackathon> => {
   const idToken = await getIdToken(instance)
   const options = buildFetchOptions('GET', idToken)
-  return fetch(`${core_url}/hackathon/${hackathonID}`, options)
+  return fetch(`${coreUrl}/hackathon/${hackathonID}`, options)
     .then((data) => data.json())
     .then((json) => parseHackathon(json))
     .catch((err) => {
@@ -54,7 +53,7 @@ export const createHackathon = async (
     startDate: startDate.toString(),
     endDate: endDate.toString(),
   })
-  return fetch(`${core_url}/hackathon`, options)
+  return fetch(`${coreUrl}/hackathon`, options)
     .then((response) => {
       return response.json()
     })
@@ -76,7 +75,7 @@ export const editHackathon = async (
     startDate: startDate.toString(),
     endDate: endDate.toString(),
   })
-  return fetch(`${core_url}/hackathon/${hackathonID}`, options)
+  return fetch(`${coreUrl}/hackathon/${hackathonID}`, options)
     .then((response) => {
       return response.json()
     })
@@ -89,7 +88,7 @@ export const deleteHackathon = async (
 ) => {
   const idToken = await getIdToken(instance)
   const options = buildFetchOptions('DELETE', idToken)
-  return fetch(`${core_url}/hackathon/${hackathonID}`, options)
+  return fetch(`${coreUrl}/hackathon/${hackathonID}`, options)
     .then((response) => {
       return response.json()
     })

@@ -87,15 +87,13 @@ function IdeaForm(props: IProps) {
     })
   }
 
-  const skillsList = availableSkills.skills.map((skill, index) => [
-    <Checkbox value={skill.id} label={skill.name} />,
+  const skillsList = availableSkills.skills.map((skill) => [
+    <Checkbox value={skill.id} label={skill.name} key={skill.id} />,
   ])
 
-  const categoriesList = availableCategories?.categories?.map(
-    (category, index) => [
-      <Checkbox value={category.id} label={category.title} />,
-    ]
-  )
+  const categoriesList = availableCategories?.categories?.map((category) => [
+    <Checkbox value={category.id} label={category.title} key={category.id} />,
+  ])
 
   function handleChange(event: React.ChangeEvent<HTMLTextAreaElement>) {
     setIdeaText((prevIdeaText) => ({
@@ -206,58 +204,58 @@ function IdeaForm(props: IProps) {
             </Card.Section>
             <Card.Section className={classes.borderSection}>
               <Textarea
-                label="Title"
+                label='Title'
                 required
                 error={
                   ideaText.title.length > allowedIdeaTitleLength
                     ? 'max ' + allowedIdeaTitleLength + ' chars'
                     : false
                 }
-                placeholder="Title"
+                placeholder='Title'
                 maxRows={1}
                 autosize
                 onChange={handleChange}
-                name="title"
+                name='title'
                 value={ideaText.title}
                 className={classes.label}
               />
             </Card.Section>
             <Card.Section className={classes.borderSection}>
               <Textarea
-                label="Description"
+                label='Description'
                 required
-                placeholder="Description"
+                placeholder='Description'
                 minRows={2}
                 maxRows={3}
                 autosize
                 onChange={handleChange}
-                name="description"
+                name='description'
                 value={ideaText.description}
                 className={classes.label}
               />
             </Card.Section>
             <Card.Section className={classes.borderSection}>
               <Textarea
-                label="Problem"
-                placeholder="which problelm does it solve (optional)"
+                label='Problem'
+                placeholder='which problelm does it solve (optional)'
                 minRows={2}
                 maxRows={3}
                 autosize
                 onChange={handleChange}
-                name="problem"
+                name='problem'
                 value={ideaText.problem}
                 className={classes.label}
               />
             </Card.Section>
             <Card.Section className={classes.borderSection}>
               <Textarea
-                label="Goal"
-                placeholder="the goal for the hackweek is... (optional)"
+                label='Goal'
+                placeholder='the goal for the hackweek is... (optional)'
                 minRows={2}
                 maxRows={3}
                 autosize
                 onChange={handleChange}
-                name="goal"
+                name='goal'
                 value={ideaText.goal}
                 className={classes.label}
               />
@@ -266,8 +264,8 @@ function IdeaForm(props: IProps) {
             <>
               <Card.Section className={classes.borderSection}>
                 <CheckboxGroup
-                  label="Required skills"
-                  description="chose one or more required skills"
+                  label='Required skills'
+                  description='chose one or more required skills'
                   onChange={setSkills}
                   required
                   value={skills}
@@ -278,8 +276,8 @@ function IdeaForm(props: IProps) {
               </Card.Section>
               <Card.Section className={classes.borderSection}>
                 <CheckboxGroup
-                  label="Category"
-                  description="chose one or more categories"
+                  label='Category'
+                  description='chose one or more categories'
                   onChange={setCategories}
                   required
                   value={categories}
@@ -289,7 +287,7 @@ function IdeaForm(props: IProps) {
                 </CheckboxGroup>
               </Card.Section>
 
-              <Group position="right" mt="xl">
+              <Group position='right' mt='xl'>
                 {context === 'edit' && (
                   <Button disabled={buttonIsDisabled} onClick={editThisIdea}>
                     Edit

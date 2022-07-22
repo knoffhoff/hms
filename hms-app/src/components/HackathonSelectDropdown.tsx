@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { getListOfHackathons } from '../actions/HackathonActions'
 import { Select, SelectItem } from '@mantine/core'
 import { HackathonPreview, HackathonDropdownMode } from '../common/types'
-import { AlertCircle, Loader, Refresh } from 'tabler-icons-react'
+import { AlertCircle } from 'tabler-icons-react'
 import { useMsal } from '@azure/msal-react'
 
 type Props = {

@@ -1,0 +1,5 @@
+VPC_ID: 'vpc-0267462030ccb6541'
+SUBNET_ID_A: "subnet-0f71a0d674870b10e"
+SUBNET_ID_B: "subnet-0214d078e37327ef1"
+SUBNET_ID_C: "subnet-03e243d6589518adb"
+SCHEME: "internet-facing"

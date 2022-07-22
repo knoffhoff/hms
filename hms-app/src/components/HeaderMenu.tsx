@@ -90,7 +90,7 @@ export default function HeaderMenu({ links }: HeaderSearchProps) {
       opened={opened}
       className={classes.headerBurger}
       control={
-        <Burger opened={opened} onClick={() => toggleOpened()} size="sm" />
+        <Burger opened={opened} onClick={() => toggleOpened()} size='sm' />
       }
     >
       {links.map((link) => (
@@ -112,7 +112,7 @@ export default function HeaderMenu({ links }: HeaderSearchProps) {
             {fullscreenMenu}
             {profilePhoto && <Avatar src={profilePhoto} radius={'xl'} />}
             {!profilePhoto && (
-              <Avatar color="indigo" radius="xl">
+              <Avatar color='indigo' radius='xl'>
                 {getInitials(user?.name ?? 'User User')}
               </Avatar>
             )}

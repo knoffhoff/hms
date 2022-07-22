@@ -50,7 +50,7 @@ export default function UserDetails(props: { userId: string }) {
   }
 
   const deleteSelectedUser = () => {
-    deleteUser(instance, userId).then((data) => {
+    deleteUser(instance, userId).then(() => {
       setDeleteModalOpened(false)
     })
   }
@@ -159,7 +159,7 @@ export default function UserDetails(props: { userId: string }) {
           </Card.Section>
 
           <Card.Section className={classes.borderSection}>
-            <Group position="left" mt="xl">
+            <Group position='left' mt='xl'>
               {deleteModal}
               <Button color={'red'} onClick={() => setDeleteModalOpened(true)}>
                 Delete

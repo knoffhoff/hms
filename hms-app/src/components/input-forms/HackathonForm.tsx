@@ -96,13 +96,13 @@ function HackathonForm(props: IProps) {
       <Card withBorder className={classes.card}>
         <Card.Section className={classes.borderSection}>
           <Textarea
-            label="Title"
+            label='Title'
             required
-            placeholder="Title"
+            placeholder='Title'
             maxRows={1}
             autosize
             onChange={handleChange}
-            name="title"
+            name='title'
             className={classes.label}
           />
         </Card.Section>
@@ -131,7 +131,7 @@ function HackathonForm(props: IProps) {
           <RichTextEditor value={DescriptionValue} onChange={onChange} />
         </Card.Section>
 
-        <Group position="right" mt="xl">
+        <Group position='right' mt='xl'>
           {context === 'edit' && (
             <Button disabled={!submitIsEnabled()} onClick={editThisHackathon}>
               Edit

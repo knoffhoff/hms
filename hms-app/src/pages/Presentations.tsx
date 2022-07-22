@@ -9,16 +9,18 @@ import { styles } from '../common/styles'
 export default function Presentations() {
   const { classes } = styles()
   const { ref, toggle, fullscreen } = useFullscreen()
-  // @ts-ignore
-  const allIdeas = JSON.parse(localStorage.getItem('ideas'))
+  const ideasFromLocalStorage = localStorage.getItem('ideas')
+  const allIdeas = ideasFromLocalStorage
+    ? JSON.parse(ideasFromLocalStorage)
+    : []
 
   function renderName(user: UserPreview): string {
     return user.firstName + (user.lastName ? ' ' + user.lastName : '')
   }
 
   function getIdeasList() {
-    return allIdeas.map((idea: Idea) => (
-      <div style={{ padding: 10 }}>
+    return allIdeas.map((idea: Idea, index: number) => (
+      <div style={{ padding: 10 }} key={index}>
         <Card
           withBorder
           style={{ height: '99vh' }}
@@ -42,7 +44,7 @@ export default function Presentations() {
             style={{ height: '25%' }}
             className={classes.noBorderSection}
           >
-            <Grid align="center">
+            <Grid align='center'>
               <Grid.Col span={8}>
                 <Card.Section style={{ height: '100%' }}>
                   <Text className={classes.label}>Description</Text>
@@ -68,14 +70,14 @@ export default function Presentations() {
                     spacing={'xs'}
                   >
                     <Avatar
-                      color="indigo"
-                      radius="xl"
-                      size="xl"
+                      color='indigo'
+                      radius='xl'
+                      size='xl'
                       src={
                         'https://avatars.githubusercontent.com/u/10353856?s=460&u=88394dfd67727327c1f7670a1764dc38a8a24831&v=4'
                       }
                     />
-                    <Badge size="md">
+                    <Badge size='md'>
                       {idea.owner?.user.firstName} {idea.owner?.user.lastName}
                     </Badge>
                   </Group>
@@ -131,7 +133,7 @@ export default function Presentations() {
                   >
                     <Grid>
                       {idea.requiredSkills?.map((skill, index) => (
-                        <Grid.Col span={3}>
+                        <Grid.Col span={3} key={index}>
                           <div
                             style={{
                               display: 'flex',
@@ -162,7 +164,7 @@ export default function Presentations() {
                   >
                     <Grid>
                       {idea.participants?.map((participant, index) => (
-                        <Grid.Col span={4}>
+                        <Grid.Col span={4} key={index}>
                           <div
                             style={{
                               display: 'flex',
@@ -171,9 +173,9 @@ export default function Presentations() {
                             }}
                           >
                             <Avatar
-                              color="indigo"
-                              radius="xl"
-                              size="md"
+                              color='indigo'
+                              radius='xl'
+                              size='md'
                               src={
                                 'https://avatars.githubusercontent.com/u/10353856?s=460&u=88394dfd67727327c1f7670a1764dc38a8a24831&v=4'
                               }
@@ -198,7 +200,7 @@ export default function Presentations() {
   return (
     <>
       <h1>Fullscreen page for presentations</h1>
-      <Button component={Link} to="/admin">
+      <Button component={Link} to='/admin'>
         Back
       </Button>
       <Button onClick={toggle} color={fullscreen ? 'red' : 'blue'}>
