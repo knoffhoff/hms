@@ -9,7 +9,7 @@ import ReferenceNotFoundError from '../../../src/error/ReferenceNotFoundError';
 
 const mockGetUser = jest.fn();
 jest.spyOn(userService, 'getUserResponse')
-    .mockImplementation((mockGetUser));
+    .mockImplementation(mockGetUser);
 
 describe('Get User', () => {
   test('Happy Path', async () => {

@@ -5,6 +5,7 @@ import {
   mockPutItem,
   mockQuery,
   mockSend,
+  userByEmailAddress,
   userTable,
 } from './dynamo-db-mock';
 import {
@@ -14,6 +15,7 @@ import {
   listUsers,
   putUser,
   userExists,
+  userExistsByEmail,
 } from '../../src/repository/user-repository';
 import Uuid, {uuid} from '../../src/util/Uuid';
 import NotFoundError from '../../src/error/NotFoundError';
@@ -193,6 +195,45 @@ describe('User Exists', () => {
   });
 });
 
+describe('User Exists By Email', () => {
+  test('Happy Path', async () => {
+    const user = randomUser();
+    mockQuery([itemFromUser(user)]);
+
+    expect(await userExistsByEmail(user.emailAddress)).toBe(true);
+
+    queryEmailAddressIndexExpected(user.emailAddress);
+  });
+
+  // TODO this hopefully never happens...
+  test('Multiple items returned', async () => {
+    const user = randomUser();
+    mockQuery([itemFromUser(user), itemFromUser(randomUser())]);
+
+    expect(await userExistsByEmail(user.emailAddress)).toBe(true);
+
+    queryEmailAddressIndexExpected(user.emailAddress);
+  });
+
+  test('Items is empty array', async () => {
+    mockQuery([]);
+
+    const email = 'e.m@i.l';
+    expect(await userExistsByEmail(email)).toBe(false);
+
+    queryEmailAddressIndexExpected(email);
+  });
+
+  test('Items is null', async () => {
+    mockQuery(null);
+
+    const email = 'e.m@i.l';
+    expect(await userExistsByEmail(email)).toBe(false);
+
+    queryEmailAddressIndexExpected(email);
+  });
+});
+
 const itemFromUser = (user: User): { [key: string]: AttributeValue } => ({
   lastName: {S: user.lastName},
   firstName: {S: user.firstName},
@@ -221,3 +262,13 @@ const listExpected = () =>
         }),
       }));
 
+const queryEmailAddressIndexExpected = (emailAddress: string) =>
+  expect(mockSend).toHaveBeenCalledWith(
+      expect.objectContaining({
+        input: expect.objectContaining({
+          TableName: userTable,
+          IndexName: userByEmailAddress,
+          KeyConditionExpression: 'emailAddress = :ea',
+          ExpressionAttributeValues: {':ea': {'S': emailAddress}},
+        }),
+      }));

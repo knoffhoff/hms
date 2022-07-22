@@ -33,5 +33,9 @@ Content-Type: application/json
 GET {{host}}/user/{{user_id}}
 
 ###
+# @name User Exists
+GET {{host}}/user/exists/{{user_email}}
+
+###
 # @name Remove User
 DELETE {{host}}/user/{{user_id}}
