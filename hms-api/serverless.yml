@@ -379,7 +379,7 @@ resources:
               - AttributeName: emailAddress
                 KeyType: HASH
               - AttributeName: id
-                KeyType: RANG
+                KeyType: RANGE
             Projection:
               ProjectionType: ALL
 
@@ -416,7 +416,7 @@ resources:
               - AttributeName: hackathonId
                 KeyType: HASH
               - AttributeName: id
-                KeyType: RANG
+                KeyType: RANGE
             Projection:
               ProjectionType: ALL
 
@@ -444,7 +444,7 @@ resources:
               - AttributeName: hackathonId
                 KeyType: HASH
               - AttributeName: id
-                KeyType: RANG
+                KeyType: RANGE
             Projection:
               ProjectionType: ALL
           - IndexName: ${self:provider.environment.IDEA_BY_CATEGORY_ID_INDEX}
@@ -452,7 +452,7 @@ resources:
               - AttributeName: categoryId
                 KeyType: HASH
               - AttributeName: id
-                KeyType: RANG
+                KeyType: RANGE
             Projection:
               ProjectionType: ALL
           - IndexName: ${self:provider.environment.IDEA_BY_OWNER_ID_INDEX}
@@ -460,7 +460,7 @@ resources:
               - AttributeName: ownerId
                 KeyType: HASH
               - AttributeName: id
-                KeyType: RANG
+                KeyType: RANGE
             Projection:
               ProjectionType: ALL
 
@@ -486,7 +486,7 @@ resources:
               - AttributeName: hackathonId
                 KeyType: HASH
               - AttributeName: id
-                KeyType: RANG
+                KeyType: RANGE
             Projection:
               ProjectionType: ALL
           - IndexName: ${self:provider.environment.PARTICIPANT_BY_HACKATHON_ID_USER_ID_INDEX}
@@ -494,6 +494,6 @@ resources:
               - AttributeName: hackathonId
                 KeyType: HASH
               - AttributeName: userId
-                KeyType: RANG
+                KeyType: RANGE
             Projection:
               ProjectionType: ALL
