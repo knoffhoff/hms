@@ -164,7 +164,9 @@ function Home() {
             <RichTextEditor
               readOnly
               value={nextHackathon.description!}
-              onChange={() => {return null}}
+              onChange={() => {
+                return null
+              }}
             >
               {nextHackathon.description}
             </RichTextEditor>

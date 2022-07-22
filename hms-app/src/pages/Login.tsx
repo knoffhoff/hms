@@ -1,10 +1,4 @@
-import {
-  Paper,
-  Button,
-  Title,
-  Container,
-  Image,
-} from '@mantine/core'
+import { Paper, Button, Title, Container, Image } from '@mantine/core'
 import { useMsal } from '@azure/msal-react'
 import idealoIcon from '../assets/idealo-icon.png'
 import { SwitchToggle } from '../components/ThemeSwitchToggle'
@@ -24,7 +18,7 @@ const Login = () => {
       <Container size={420} pt={200}>
         <Paper withBorder shadow={'md'} radius={'md'} p={30}>
           <Title
-            align="center"
+            align='center'
             sx={(theme) => ({
               fontFamily: `Greycliff CF, ${theme.fontFamily}`,
               fontWeight: 900,
@@ -32,7 +26,7 @@ const Login = () => {
           >
             Welcome to idealo Hackweek!
           </Title>
-          <Button fullWidth mt="xl" onClick={login} size={'md'} mb={30}>
+          <Button fullWidth mt='xl' onClick={login} size={'md'} mb={30}>
             <Image src={idealoIcon} width={20} mr={10} radius={2} />
             Sign in with idealo SSO
           </Button>

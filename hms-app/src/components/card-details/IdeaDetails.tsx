@@ -13,7 +13,7 @@ import {
   useAccordionState,
   useMantineTheme,
 } from '@mantine/core'
-import { Idea, IdeaCardType, ParticipantPreview } from '../../common/types';
+import { Idea, IdeaCardType, ParticipantPreview } from '../../common/types'
 import { deleteIdea } from '../../actions/IdeaActions'
 import IdeaForm from '../input-forms/IdeaForm'
 import { styles } from '../../common/styles'
@@ -244,7 +244,7 @@ export default function IdeaDetails(props: IProps) {
     })
   }
 
-  let findParticipant: ParticipantPreview | null;
+  let findParticipant: ParticipantPreview | null
   if (idea && idea.participants) {
     findParticipant = idea.participants.find(
       (participant) => participant.user.id === participantInfo.userId
@@ -327,7 +327,7 @@ export default function IdeaDetails(props: IProps) {
                   <div>{ideaDetails()}</div>
 
                   {type === IdeaCardType.IdeaPortal && (
-                    <Group mt="xs" position={'right'} style={{ paddingTop: 5 }}>
+                    <Group mt='xs' position={'right'} style={{ paddingTop: 5 }}>
                       {/* <Button variant={'outline'} color={'yellow'}>
                         Add to Favorites
                       </Button>*/}
@@ -348,7 +348,7 @@ export default function IdeaDetails(props: IProps) {
 
                   {(type === IdeaCardType.Admin ||
                     type === IdeaCardType.Owner) && (
-                    <Group position="left" mt="xl">
+                    <Group position='left' mt='xl'>
                       {deleteModal}
                       <Button
                         color={'red'}

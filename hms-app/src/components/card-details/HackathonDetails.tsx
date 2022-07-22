@@ -323,7 +323,7 @@ export default function HackathonDetails(props: IProps) {
               </RichTextEditor>
             </Card.Section>
 
-            <Accordion iconPosition="left" offsetIcon={false}>
+            <Accordion iconPosition='left' offsetIcon={false}>
               <Accordion.Item
                 label={
                   <Text className={classes.label}>
@@ -331,7 +331,7 @@ export default function HackathonDetails(props: IProps) {
                   </Text>
                 }
               >
-                <Accordion iconPosition="right">
+                <Accordion iconPosition='right'>
                   <Accordion.Item
                     className={classes.borderAccordion}
                     label={'Add Category'}
@@ -347,7 +347,7 @@ export default function HackathonDetails(props: IProps) {
               </Accordion.Item>
             </Accordion>
 
-            <Accordion iconPosition="left" offsetIcon={false}>
+            <Accordion iconPosition='left' offsetIcon={false}>
               <Accordion.Item
                 label={
                   <Text className={classes.label}>
@@ -355,11 +355,11 @@ export default function HackathonDetails(props: IProps) {
                   </Text>
                 }
               >
-                <Accordion iconPosition="right">{allParticipants}</Accordion>
+                <Accordion iconPosition='right'>{allParticipants}</Accordion>
               </Accordion.Item>
             </Accordion>
 
-            <Accordion iconPosition="left" offsetIcon={false}>
+            <Accordion iconPosition='left' offsetIcon={false}>
               <Accordion.Item
                 label={
                   <Text className={classes.label}>
@@ -376,16 +376,16 @@ export default function HackathonDetails(props: IProps) {
                     )
                   }
                   component={Link}
-                  to="/presentations"
+                  to='/presentations'
                 >
                   Presentations
                 </Button>
-                <Accordion iconPosition="right">{allIdeas}</Accordion>
+                <Accordion iconPosition='right'>{allIdeas}</Accordion>
               </Accordion.Item>
             </Accordion>
 
             <Card.Section className={classes.borderSection}>
-              <Group position="left" mt="xl">
+              <Group position='left' mt='xl'>
                 {deleteModal}
                 <Button
                   color={'red'}

@@ -13,7 +13,7 @@ import { Idea, IdeaCardType } from '../common/types'
 const onDragEnd = (
   result: DropResult,
   votingState: VotingState,
-  setColumnsState: (votingState: any) => void,
+  setColumnsState: (votingState: any) => void
 ) => {
   if (!result.destination) return
 

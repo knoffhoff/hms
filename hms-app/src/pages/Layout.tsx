@@ -93,7 +93,7 @@ const Layout = () => {
             </Container>
           </AppShell>
         )}
-        {(!isAuthenticated && USE_AUTH) && <Login />}
+        {!isAuthenticated && USE_AUTH && <Login />}
       </MantineProvider>
     </ColorSchemeProvider>
   )

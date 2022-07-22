@@ -112,7 +112,7 @@ export default function HeaderMenu({ links }: HeaderSearchProps) {
             {fullscreenMenu}
             {profilePhoto && <Avatar src={profilePhoto} radius={'xl'} />}
             {!profilePhoto && (
-              <Avatar color="indigo" radius="xl">
+              <Avatar color='indigo' radius='xl'>
                 {getInitials(user?.name ?? 'User User')}
               </Avatar>
             )}

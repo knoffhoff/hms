@@ -10,7 +10,9 @@ export default function Presentations() {
   const { classes } = styles()
   const { ref, toggle, fullscreen } = useFullscreen()
   const ideasFromLocalStorage = localStorage.getItem('ideas')
-  const allIdeas = ideasFromLocalStorage ? JSON.parse(ideasFromLocalStorage) : []
+  const allIdeas = ideasFromLocalStorage
+    ? JSON.parse(ideasFromLocalStorage)
+    : []
 
   function renderName(user: UserPreview): string {
     return user.firstName + (user.lastName ? ' ' + user.lastName : '')

@@ -38,7 +38,7 @@ export default function YourIdeas() {
     return item.owner?.user.id.includes(userID)
   })
 
-  let userParticipant: ParticipantPreview | undefined;
+  let userParticipant: ParticipantPreview | undefined
 
   if (hackathonData && hackathonData.participants) {
     userParticipant = hackathonData.participants.find(

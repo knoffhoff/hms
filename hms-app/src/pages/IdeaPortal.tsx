@@ -6,8 +6,9 @@ import {
   Hackathon,
   Idea,
   HackathonDropdownMode,
-  IdeaCardType, ParticipantPreview
-} from '../common/types';
+  IdeaCardType,
+  ParticipantPreview,
+} from '../common/types'
 import {
   createHackathonParticipant,
   deleteParticipant,
@@ -49,7 +50,7 @@ function IdeaPortal() {
   })
 
   const findParticipant = () => {
-    let participant: ParticipantPreview;
+    let participant: ParticipantPreview
     if (hackathonData.participants) {
       participant = hackathonData.participants.find(
         (participant) => participant.user.id === participantInfo.userId
@@ -59,7 +60,7 @@ function IdeaPortal() {
         id: '',
         user: {
           id: '',
-        }
+        },
       } as ParticipantPreview
     }
     return participant
