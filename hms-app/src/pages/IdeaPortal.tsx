@@ -53,7 +53,7 @@ function IdeaPortal() {
     let participant: ParticipantPreview
     if (hackathonData.participants) {
       participant = hackathonData.participants.find(
-        (participant) => participant.user.id === participantInfo.userId
+        (p) => p.user.id === participantInfo.userId
       )!
     } else {
       participant = {
