@@ -38,11 +38,12 @@ provider:
   runtime: nodejs14.x
   region: eu-central-1
   environment:
-    AUTHORIZER_TYPE: ACTIVE_DIRECTORY
+    AUTHORIZER_TYPE: ALWAYS_PASS
     AZURE_AD_CLIENT_ID: ${file(./secrets.json):AZURE_AD_CLIENT_ID}
     AZURE_AD_CLIENT_PUBLIC_KEY: ${file(./public_key)}
     HACKATHON_TABLE: hackathon
     USER_TABLE: user
+    USER_BY_EMAIL_ADDRESS_INDEX: user-by-emailAddress
     SKILL_TABLE: skill
     CATEGORY_TABLE: category
     CATEGORY_BY_HACKATHON_ID_INDEX: category-by-hackathonId
@@ -67,6 +68,7 @@ provider:
           Resource:
             - arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.HACKATHON_TABLE}
             - arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.USER_TABLE}
+            - arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.USER_TABLE}/index/*
             - arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.SKILL_TABLE}
             - arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.CATEGORY_TABLE}
             - arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.CATEGORY_TABLE}/index/*
@@ -207,6 +209,14 @@ functions:
     events:
       - http:
           path: user/{id}
+          method: get
+          cors: true
+          authorizer: authorize
+  userExists:
+    handler: src/handler/user/exists.exists
+    events:
+      - http:
+          path: user/exists/{email}
           method: get
           cors: true
           authorizer: authorize
@@ -358,9 +368,20 @@ resources:
         AttributeDefinitions:
           - AttributeName: id
             AttributeType: S
+          - AttributeName: emailAddress
+            AttributeType: S
         KeySchema:
           - AttributeName: id
             KeyType: HASH
+        GlobalSecondaryIndexes:
+          - IndexName: ${self:provider.environment.USER_BY_EMAIL_ADDRESS_INDEX}
+            KeySchema:
+              - AttributeName: emailAddress
+                KeyType: HASH
+              - AttributeName: id
+                KeyType: RANG
+            Projection:
+              ProjectionType: ALL
 
     skillTable:
       Type: AWS::DynamoDB::Table

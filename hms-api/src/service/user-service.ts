@@ -6,6 +6,7 @@ import {
   getUsers,
   listUsers,
   putUser,
+  userExistsByEmail,
 } from '../repository/user-repository';
 import {getSkills, skillExists} from '../repository/skill-repository';
 import Participant from '../repository/domain/Participant';
@@ -18,6 +19,7 @@ import UserListResponse from '../rest/UserListResponse';
 import UserDeleteResponse from '../rest/UserDeleteResponse';
 import NotFoundError from '../error/NotFoundError';
 import ValidationError from '../error/ValidationError';
+import UserExistsResponse from '../rest/UserExistsResponse';
 
 export async function createUser(
     lastName: string,
@@ -58,6 +60,14 @@ export async function getUserResponse(id: Uuid): Promise<UserResponse> {
   }
 
   return UserResponse.from(user, skills);
+}
+
+export async function getUserExistsResponse(
+    email: string,
+): Promise<UserExistsResponse> {
+  const exists = await userExistsByEmail(email);
+
+  return UserExistsResponse.from(email, exists);
 }
 
 export async function getUserListResponse(): Promise<UserListResponse> {
