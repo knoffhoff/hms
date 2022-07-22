@@ -15,18 +15,17 @@ export default function AllUserList() {
   })
 
   const loadUsers = () => {
-    getListOfUsers(instance).then(
-      (data) => {
-        setIsLoading(false)
-        setUserList({
-          users: data.users,
-        })
-      },
-    )
+    getListOfUsers(instance).then((data) => {
+      setIsLoading(false)
+      setUserList({
+        users: data.users,
+      })
+    })
   }
 
   const allUsers = userList.users.map((user, index) => [
-    <Accordion.Item key={index}
+    <Accordion.Item
+      key={user.id}
       label={
         <div>
           {index + 1}. {user.firstName} {user.lastName}

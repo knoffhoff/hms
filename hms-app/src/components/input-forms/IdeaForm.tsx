@@ -87,15 +87,13 @@ function IdeaForm(props: IProps) {
     })
   }
 
-  const skillsList = availableSkills.skills.map((skill, index) => [
-    <Checkbox value={skill.id} label={skill.name} key={index} />,
+  const skillsList = availableSkills.skills.map((skill) => [
+    <Checkbox value={skill.id} label={skill.name} key={skill.id} />,
   ])
 
-  const categoriesList = availableCategories?.categories?.map(
-    (category, index) => [
-      <Checkbox value={category.id} label={category.title} key={index} />,
-    ]
-  )
+  const categoriesList = availableCategories?.categories?.map((category) => [
+    <Checkbox value={category.id} label={category.title} key={category.id} />,
+  ])
 
   function handleChange(event: React.ChangeEvent<HTMLTextAreaElement>) {
     setIdeaText((prevIdeaText) => ({

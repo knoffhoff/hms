@@ -15,18 +15,17 @@ function AllHackathonList() {
   })
 
   const loadHackathons = () => {
-    getListOfHackathons(instance).then(
-      (data) => {
-        setIsLoading(false)
-        setHackathonList({
-          hackathons: data,
-        })
-      },
-    )
+    getListOfHackathons(instance).then((data) => {
+      setIsLoading(false)
+      setHackathonList({
+        hackathons: data,
+      })
+    })
   }
 
   const allHackathons = hackathonList.hackathons.map((hackathon, index) => [
-    <Accordion.Item key={index}
+    <Accordion.Item
+      key={hackathon.id}
       label={
         <div>
           {index + 1}. {hackathon.title}
