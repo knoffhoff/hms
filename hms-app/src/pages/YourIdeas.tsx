@@ -104,7 +104,7 @@ export default function YourIdeas() {
               </div>
             )}
             {!isParticipant() && (
-              <div>you haven&apost participated in this hackathon</div>
+              <div>you haven&apos;t participated in this hackathon</div>
             )}
           </div>
         )}
