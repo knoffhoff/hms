@@ -9,6 +9,7 @@ import { showNotification, updateNotification } from '@mantine/notifications'
 import { CheckIcon } from '@modulz/radix-icons'
 import { styles } from '../../common/styles'
 import { useMsal } from '@azure/msal-react'
+import { joinButtonColor } from '../../common/colors'
 
 type IProps = {
   hackathonId: string
@@ -149,12 +150,17 @@ export default function CategoryForm(props: IProps) {
           </Card.Section>
           <Group position='right' mt='xl'>
             {context === 'edit' && (
-              <Button disabled={!submitIsEnabled()} onClick={editThisCategory}>
+              <Button
+                style={{ backgroundColor: joinButtonColor }}
+                disabled={!submitIsEnabled()}
+                onClick={editThisCategory}
+              >
                 Edit
               </Button>
             )}
             {context === 'new' && (
               <Button
+                style={{ backgroundColor: joinButtonColor }}
                 disabled={!submitIsEnabled()}
                 onClick={createThisCategory}
               >

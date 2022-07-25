@@ -14,6 +14,7 @@ import { SkillPreview } from '../../common/types'
 import { getListOfSkills } from '../../actions/SkillActions'
 import { styles } from '../../common/styles'
 import { useMsal } from '@azure/msal-react'
+import { joinButtonColor } from '../../common/colors'
 
 type IProps = {
   userId: string
@@ -162,7 +163,11 @@ export default function EditUserForm(props: IProps) {
             </CheckboxGroup>
           </Card.Section>
           <Group position='right' mt='xl'>
-            <Button disabled={!submitIsEnabled()} onClick={editThisUser}>
+            <Button
+              style={{ backgroundColor: joinButtonColor }}
+              disabled={!submitIsEnabled()}
+              onClick={editThisUser}
+            >
               Edit
             </Button>
           </Group>

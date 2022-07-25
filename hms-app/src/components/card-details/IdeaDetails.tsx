@@ -24,6 +24,7 @@ import {
 } from '../../actions/ParticipantActions'
 import { CheckIcon } from '@modulz/radix-icons'
 import { useMsal } from '@azure/msal-react'
+import { joinButtonColor, leaveButtonColor } from '../../common/colors'
 
 type IProps = {
   idea: Idea
@@ -99,7 +100,10 @@ export default function IdeaDetails(props: IProps) {
         Are you sure you want to delete this idea?
       </Text>
       <Text className={classes.title}>Title: {idea.title}</Text>
-      <Button color={'red'} onClick={() => deleteSelectedIdea()}>
+      <Button
+        style={{ backgroundColor: leaveButtonColor }}
+        onClick={() => deleteSelectedIdea()}
+      >
         Yes, delete this idea
       </Button>
       <Text className={classes.text}>
@@ -339,7 +343,11 @@ export default function IdeaDetails(props: IProps) {
                             ? removeThisIdeaParticipant
                             : addIdeaParticipant
                         }
-                        color={participantCheck ? 'red' : 'blue'}
+                        style={{
+                          backgroundColor: participantCheck
+                            ? leaveButtonColor
+                            : joinButtonColor,
+                        }}
                       >
                         {participantCheck ? 'Leave Idea' : 'Join Idea'}
                       </Button>
@@ -351,13 +359,20 @@ export default function IdeaDetails(props: IProps) {
                     <Group position='left' mt='xl'>
                       {deleteModal}
                       <Button
-                        color={'red'}
+                        style={{
+                          backgroundColor: leaveButtonColor,
+                        }}
                         onClick={() => setDeleteModalOpened(true)}
                       >
                         Delete
                       </Button>
                       {editModal}
-                      <Button onClick={() => setEditModalOpened(true)}>
+                      <Button
+                        style={{
+                          backgroundColor: joinButtonColor,
+                        }}
+                        onClick={() => setEditModalOpened(true)}
+                      >
                         Edit
                       </Button>
                     </Group>

@@ -33,6 +33,11 @@ import { RichTextEditor } from '@mantine/rte'
 import { NULL_DATE } from '../../common/constants'
 import HackathonHeader from '../HackathonHeader'
 import { useMsal } from '@azure/msal-react'
+import {
+  joinButtonColor,
+  leaveButtonColor,
+  reloadButtonColor,
+} from '../../common/colors'
 
 type IProps = {
   hackathonId: string
@@ -191,7 +196,10 @@ export default function HackathonDetails(props: IProps) {
         End Date:
         {new Date(hackathonData.endDate).toDateString()}
       </Text>
-      <Button color={'red'} onClick={() => deleteSelectedHackathon()}>
+      <Button
+        style={{ backgroundColor: leaveButtonColor }}
+        onClick={() => deleteSelectedHackathon()}
+      >
         Yes delete this hackathon
       </Button>
       <Text className={classes.text}>
@@ -368,6 +376,7 @@ export default function HackathonDetails(props: IProps) {
                 }
               >
                 <Button
+                  style={{ backgroundColor: joinButtonColor }}
                   mb={20}
                   onClick={() =>
                     localStorage.setItem(
@@ -388,15 +397,23 @@ export default function HackathonDetails(props: IProps) {
               <Group position='left' mt='xl'>
                 {deleteModal}
                 <Button
-                  color={'red'}
+                  style={{ backgroundColor: leaveButtonColor }}
                   onClick={() => setDeleteModalOpened(true)}
                 >
                   Delete
                 </Button>
                 {editModal}
-                <Button onClick={() => setEditModalOpened(true)}>Edit</Button>
+                <Button
+                  style={{ backgroundColor: joinButtonColor }}
+                  onClick={() => setEditModalOpened(true)}
+                >
+                  Edit
+                </Button>
                 {!isHackathonLoading && (
-                  <Button color={'green'} onClick={() => refreshList()}>
+                  <Button
+                    style={{ backgroundColor: reloadButtonColor }}
+                    onClick={() => refreshList()}
+                  >
                     Reload
                   </Button>
                 )}

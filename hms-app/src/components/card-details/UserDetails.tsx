@@ -13,6 +13,11 @@ import {
 import EditUserForm from '../input-forms/EditUserForm'
 import { styles } from '../../common/styles'
 import { useMsal } from '@azure/msal-react'
+import {
+  joinButtonColor,
+  leaveButtonColor,
+  reloadButtonColor,
+} from '../../common/colors'
 
 export default function UserDetails(props: { userId: string }) {
   const { instance } = useMsal()
@@ -73,7 +78,10 @@ export default function UserDetails(props: { userId: string }) {
         Name: {user.firstName} {user.lastName}
       </Text>
       <Text className={classes.title}>E-mail: {user.emailAddress}</Text>
-      <Button color={'red'} onClick={() => deleteSelectedUser()}>
+      <Button
+        style={{ backgroundColor: leaveButtonColor }}
+        onClick={() => deleteSelectedUser()}
+      >
         Yes delete this user
       </Button>
       <Text className={classes.text}>
@@ -161,12 +169,23 @@ export default function UserDetails(props: { userId: string }) {
           <Card.Section className={classes.borderSection}>
             <Group position='left' mt='xl'>
               {deleteModal}
-              <Button color={'red'} onClick={() => setDeleteModalOpened(true)}>
+              <Button
+                style={{ backgroundColor: leaveButtonColor }}
+                onClick={() => setDeleteModalOpened(true)}
+              >
                 Delete
               </Button>
               {editModal}
-              <Button onClick={() => setEditModalOpened(true)}>Edit</Button>
-              <Button color={'green'} onClick={() => loadSelectedUser()}>
+              <Button
+                style={{ backgroundColor: joinButtonColor }}
+                onClick={() => setEditModalOpened(true)}
+              >
+                Edit
+              </Button>
+              <Button
+                style={{ backgroundColor: reloadButtonColor }}
+                onClick={() => loadSelectedUser()}
+              >
                 Reload
               </Button>
             </Group>

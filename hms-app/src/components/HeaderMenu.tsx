@@ -16,7 +16,9 @@ import { styles } from '../common/styles'
 import {
   HEADER_ACTIVE_COLOR_LIGHT,
   HEADER_ACTIVE_COLOR_DARK,
-} from '../common/constants'
+  primaryColor1,
+  TEXT_COLOR_WHITE,
+} from '../common/colors'
 import { useMsal } from '@azure/msal-react'
 import { Logout } from 'tabler-icons-react'
 import { getProfilePhoto } from '../common/actionAuth'
@@ -103,10 +105,10 @@ export default function HeaderMenu({ links }: HeaderSearchProps) {
   )
 
   return (
-    <Header height={56}>
+    <Header height={56} style={{ backgroundColor: primaryColor1 }}>
       <Container>
         <div className={classes.header}>
-          <h1>HMS</h1>
+          <h1 style={{ color: TEXT_COLOR_WHITE }}>HMS</h1>
           <Group spacing={5} className={classes.headerLinks}>
             <SwitchToggle />
             {fullscreenMenu}
