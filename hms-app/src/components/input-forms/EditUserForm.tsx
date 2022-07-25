@@ -14,7 +14,7 @@ import { SkillPreview } from '../../common/types'
 import { getListOfSkills } from '../../actions/SkillActions'
 import { styles } from '../../common/styles'
 import { useMsal } from '@azure/msal-react'
-import { JOIN_BUTTON_COLOR } from '../../common/colors'
+import { dark2, JOIN_BUTTON_COLOR } from '../../common/colors'
 
 type IProps = {
   userId: string
@@ -164,7 +164,9 @@ export default function EditUserForm(props: IProps) {
           </Card.Section>
           <Group position='right' mt='xl'>
             <Button
-              style={{ backgroundColor: JOIN_BUTTON_COLOR }}
+              style={{
+                backgroundColor: submitIsEnabled() ? JOIN_BUTTON_COLOR : dark2,
+              }}
               disabled={!submitIsEnabled()}
               onClick={editThisUser}
             >

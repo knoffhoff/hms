@@ -7,7 +7,7 @@ import { CheckIcon } from '@modulz/radix-icons'
 import { styles } from '../../common/styles'
 import { RichTextEditor } from '@mantine/rte'
 import { useMsal } from '@azure/msal-react'
-import { JOIN_BUTTON_COLOR } from '../../common/colors'
+import { dark2, dark3, JOIN_BUTTON_COLOR } from '../../common/colors'
 
 type IProps = { context: string; hackathonId: string | null }
 
@@ -135,7 +135,9 @@ function HackathonForm(props: IProps) {
         <Group position='right' mt='xl'>
           {context === 'edit' && (
             <Button
-              style={{ backgroundColor: JOIN_BUTTON_COLOR }}
+              style={{
+                backgroundColor: submitIsEnabled() ? JOIN_BUTTON_COLOR : dark2,
+              }}
               disabled={!submitIsEnabled()}
               onClick={editThisHackathon}
             >
@@ -144,7 +146,9 @@ function HackathonForm(props: IProps) {
           )}
           {context === 'new' && (
             <Button
-              style={{ backgroundColor: JOIN_BUTTON_COLOR }}
+              style={{
+                backgroundColor: submitIsEnabled() ? JOIN_BUTTON_COLOR : dark2,
+              }}
               disabled={!submitIsEnabled()}
               onClick={createThisHackathon}
             >
