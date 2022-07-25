@@ -82,10 +82,10 @@ export default function HackathonSelectDropdown({
           icon={<AlertCircle />}
           disabled
           error
-        ></Select>
+        />
       )}
       {isLoading && !isError && (
-        <Select data={['']} placeholder={'Loading...'} disabled></Select>
+        <Select data={['']} placeholder={'Loading...'} disabled />
       )}
       {!isLoading && !isError && (
         <div style={{ width: 385 }}>

@@ -63,7 +63,7 @@ export default function CategoryForm(props: IProps) {
       id: 'category-load',
       loading: true,
       title: 'Category is uploading',
-      message: 'this can take a second',
+      message: undefined,
       autoClose: false,
       disallowClose: true,
     })
@@ -72,8 +72,8 @@ export default function CategoryForm(props: IProps) {
         updateNotification({
           id: 'category-load',
           color: 'teal',
-          title: 'Categorie was added',
-          message: 'Notification will close in 2 seconds',
+          title: 'Category was added',
+          message: undefined,
           icon: <CheckIcon />,
           autoClose: 2000,
         })
@@ -91,7 +91,7 @@ export default function CategoryForm(props: IProps) {
       id: 'category-load',
       loading: true,
       title: 'Category is uploading',
-      message: 'this can take a second',
+      message: undefined,
       autoClose: false,
       disallowClose: true,
     })
@@ -100,8 +100,8 @@ export default function CategoryForm(props: IProps) {
         updateNotification({
           id: 'category-load',
           color: 'teal',
-          title: 'Categorie was added',
-          message: 'Notification will close in 2 seconds',
+          title: 'Category was added',
+          message: undefined,
           icon: <CheckIcon />,
           autoClose: 2000,
         })
