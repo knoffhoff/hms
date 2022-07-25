@@ -36,7 +36,6 @@ function Home() {
       openDate: openDate,
       closeDate: new Date(nextHackathon.startDate),
     })
-    console.log(nextHackathon)
   }, [nextHackathon])
 
   const getTimeDifferenceToNow = (dateString: string) => {
@@ -53,15 +52,8 @@ function Home() {
   const today = new Date()
   today.setHours(0, 0, 0, 0)
 
-  function timeTillNextHackathonStart() {
-    return nextHackathon.id ? new Date(nextHackathon.startDate).getTime() : 0
-  }
-
-  function timeTillNextHackathonEnd() {
-    return nextHackathon.id ? new Date(nextHackathon.endDate).getTime() : 0
-  }
-
   function setActiveTimeline() {
+    // ToDo: access Hackathon status and set active state
     if (registration.openDate < today && registration.closeDate > today) {
       setActive(1)
     } else if (
@@ -75,18 +67,8 @@ function Home() {
     ) {
       setActive(3)
     } else {
-      setActive(4)
+      setActive(0)
     }
-  }
-
-  function getLabel(LabelDate: number) {
-    return (
-      Math.abs((LabelDate - today.getTime()) / (1000 * 3600 * 24))
-        .toString()
-        .split('.')[0] +
-      ' ' +
-      (new Date(LabelDate) < today ? 'days ago' : 'days left')
-    )
   }
 
   useEffect(() => {
@@ -97,46 +79,20 @@ function Home() {
     <Stepper iconSize={35} active={active} breakpoint='sm' py={50}>
       <Stepper.Step
         className={classes.stepperStep}
-        loading={active === 0}
-        label={getLabel(registration.openDate.getTime())}
-        description={
-          'Registration and Idea submission open ' +
-          registration.openDate.toLocaleDateString()
-        }
+        label={'Registration and Idea submission open '}
       />
       <Stepper.Step
         className={classes.stepperStep}
-        loading={active === 1}
-        label={getLabel(registration.closeDate.getTime())}
-        description={
-          'Registration and Idea submission deadline! ' +
-          registration.closeDate.toLocaleDateString()
-        }
+        label={'Registration and Idea submission closed! '}
       />
       <Stepper.Step
         className={classes.stepperStep}
-        loading={active === 2}
-        label={getLabel(timeTillNextHackathonStart())}
-        description={
-          'Start Date ' + new Date(nextHackathon.startDate).toLocaleDateString()
-        }
+        label={'Hackathon Started'}
       />
+      <Stepper.Step className={classes.stepperStep} label={'Voting Open'} />
       <Stepper.Step
         className={classes.stepperStep}
-        loading={active === 3}
-        label={getLabel(timeTillNextHackathonEnd())}
-        description={
-          'End Date ' + new Date(nextHackathon.endDate).toLocaleDateString()
-        }
-      />
-      <Stepper.Step
-        className={classes.stepperStep}
-        loading={active === 4}
-        label={getLabel(timeTillNextHackathonEnd())}
-        description={
-          'award ceremony ' +
-          new Date(nextHackathon.endDate).toLocaleDateString()
-        }
+        label={'Voting and Hackathon Ended'}
       />
     </Stepper>
   )
@@ -171,7 +127,6 @@ function Home() {
               {nextHackathon.description}
             </RichTextEditor>
           </Container>
-          {timelineStepper}
         </div>
       }
 
