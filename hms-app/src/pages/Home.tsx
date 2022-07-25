@@ -36,7 +36,6 @@ function Home() {
       openDate: openDate,
       closeDate: new Date(nextHackathon.startDate),
     })
-    console.log(nextHackathon)
   }, [nextHackathon])
 
   const getTimeDifferenceToNow = (dateString: string) => {
@@ -68,7 +67,7 @@ function Home() {
     ) {
       setActive(3)
     } else {
-      setActive(4)
+      setActive(0)
     }
   }
 
@@ -80,27 +79,19 @@ function Home() {
     <Stepper iconSize={35} active={active} breakpoint='sm' py={50}>
       <Stepper.Step
         className={classes.stepperStep}
-        loading={active === 0}
         label={'Registration and Idea submission open '}
       />
       <Stepper.Step
         className={classes.stepperStep}
-        loading={active === 1}
         label={'Registration and Idea submission closed! '}
       />
       <Stepper.Step
         className={classes.stepperStep}
-        loading={active === 2}
         label={'Hackathon Started'}
       />
+      <Stepper.Step className={classes.stepperStep} label={'Voting Open'} />
       <Stepper.Step
         className={classes.stepperStep}
-        loading={active === 3}
-        label={'Voting Open'}
-      />
-      <Stepper.Step
-        className={classes.stepperStep}
-        loading={active === 4}
         label={'Voting and Hackathon Ended'}
       />
     </Stepper>
@@ -136,7 +127,6 @@ function Home() {
               {nextHackathon.description}
             </RichTextEditor>
           </Container>
-          {timelineStepper}
         </div>
       }
 
