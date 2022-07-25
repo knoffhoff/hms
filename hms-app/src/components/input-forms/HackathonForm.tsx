@@ -30,7 +30,7 @@ function HackathonForm(props: IProps) {
       id: 'hackathon-load',
       loading: true,
       title: 'Hackathon is uploading',
-      message: 'this can take a second',
+      message: undefined,
       autoClose: false,
       disallowClose: true,
     })
@@ -47,7 +47,7 @@ function HackathonForm(props: IProps) {
           id: 'hackathon-load',
           color: 'teal',
           title: 'Hackathon was created',
-          message: 'Notification will close in 2 seconds',
+          message: undefined,
           icon: <CheckIcon />,
           autoClose: 2000,
         })
@@ -61,7 +61,7 @@ function HackathonForm(props: IProps) {
       id: 'hackathon-load',
       loading: true,
       title: 'Hackathon is uploading',
-      message: 'this can take a second',
+      message: undefined,
       autoClose: false,
       disallowClose: true,
     })
@@ -79,7 +79,7 @@ function HackathonForm(props: IProps) {
           id: 'hackathon-load',
           color: 'teal',
           title: 'Hackathon was edited',
-          message: 'Notification will close in 2 seconds',
+          message: undefined,
           icon: <CheckIcon />,
           autoClose: 2000,
         })

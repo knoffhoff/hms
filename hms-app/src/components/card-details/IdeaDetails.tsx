@@ -188,7 +188,7 @@ export default function IdeaDetails(props: IProps) {
       id: 'participant-load',
       loading: true,
       title: 'Join Idea',
-      message: 'this can take a second',
+      message: undefined,
       autoClose: false,
       disallowClose: true,
     })
@@ -205,7 +205,7 @@ export default function IdeaDetails(props: IProps) {
           id: 'participant-load',
           color: 'teal',
           title: 'Joined Idea',
-          message: 'Notification will close in 2 seconds',
+          message: undefined,
           icon: <CheckIcon />,
           autoClose: 2000,
         })
@@ -219,7 +219,7 @@ export default function IdeaDetails(props: IProps) {
       id: 'participant-load',
       loading: true,
       title: 'Leave Idea',
-      message: 'this can take a second',
+      message: undefined,
       autoClose: false,
       disallowClose: true,
     })
@@ -236,7 +236,7 @@ export default function IdeaDetails(props: IProps) {
           id: 'participant-load',
           color: 'teal',
           title: 'Left Idea',
-          message: 'Notification will close in 2 seconds',
+          message: undefined,
           icon: <CheckIcon />,
           autoClose: 2000,
         })
