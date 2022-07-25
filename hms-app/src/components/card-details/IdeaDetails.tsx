@@ -24,7 +24,7 @@ import {
 } from '../../actions/ParticipantActions'
 import { CheckIcon } from '@modulz/radix-icons'
 import { useMsal } from '@azure/msal-react'
-import { joinButtonColor, leaveButtonColor } from '../../common/colors'
+import { JOIN_BUTTON_COLOR, LEAVE_BUTTON_COLOR } from '../../common/colors'
 
 type IProps = {
   idea: Idea
@@ -101,7 +101,7 @@ export default function IdeaDetails(props: IProps) {
       </Text>
       <Text className={classes.title}>Title: {idea.title}</Text>
       <Button
-        style={{ backgroundColor: leaveButtonColor }}
+        style={{ backgroundColor: LEAVE_BUTTON_COLOR }}
         onClick={() => deleteSelectedIdea()}
       >
         Yes, delete this idea
@@ -345,8 +345,8 @@ export default function IdeaDetails(props: IProps) {
                         }
                         style={{
                           backgroundColor: participantCheck
-                            ? leaveButtonColor
-                            : joinButtonColor,
+                            ? LEAVE_BUTTON_COLOR
+                            : JOIN_BUTTON_COLOR,
                         }}
                       >
                         {participantCheck ? 'Leave Idea' : 'Join Idea'}
@@ -360,7 +360,7 @@ export default function IdeaDetails(props: IProps) {
                       {deleteModal}
                       <Button
                         style={{
-                          backgroundColor: leaveButtonColor,
+                          backgroundColor: LEAVE_BUTTON_COLOR,
                         }}
                         onClick={() => setDeleteModalOpened(true)}
                       >
@@ -369,7 +369,7 @@ export default function IdeaDetails(props: IProps) {
                       {editModal}
                       <Button
                         style={{
-                          backgroundColor: joinButtonColor,
+                          backgroundColor: JOIN_BUTTON_COLOR,
                         }}
                         onClick={() => setEditModalOpened(true)}
                       >

@@ -20,7 +20,7 @@ import RelevantIdeasLoader from '../components/RelevantIdeasLoader'
 import { NULL_DATE } from '../common/constants'
 import HackathonHeader from '../components/HackathonHeader'
 import { useMsal } from '@azure/msal-react'
-import { joinButtonColor, leaveButtonColor } from '../common/colors'
+import { JOIN_BUTTON_COLOR, LEAVE_BUTTON_COLOR } from '../common/colors'
 
 function IdeaPortal() {
   const { instance } = useMsal()
@@ -175,8 +175,8 @@ function IdeaPortal() {
               }
               style={{
                 backgroundColor: participantCheck
-                  ? leaveButtonColor
-                  : joinButtonColor,
+                  ? LEAVE_BUTTON_COLOR
+                  : JOIN_BUTTON_COLOR,
               }}
             >
               {participantCheck ? 'Leave Hackathon' : 'Join Hackathon'}

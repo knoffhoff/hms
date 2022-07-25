@@ -24,9 +24,9 @@ export const TEXT_COLOR_WHITE = '#FFFFFF'
 export const PAGE_BACKGROUND_LIGHT = '#fafafa'
 export const PAGE_BACKGROUND_DARK = dark4
 
-export const primaryColor1 = blue4
-export const primaryColor2 = orange3
+export const PRIMARY_COLOR_1 = blue4
+export const PRIMARY_COLOR_2 = orange3
 
-export const joinButtonColor = blue2
-export const leaveButtonColor = orange4
-export const reloadButtonColor = 'green'
+export const JOIN_BUTTON_COLOR = blue2
+export const LEAVE_BUTTON_COLOR = orange4
+export const RELOAD_BUTTON_COLOR = 'green'

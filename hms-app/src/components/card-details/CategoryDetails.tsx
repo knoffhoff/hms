@@ -8,7 +8,7 @@ import {
 import CategoryForm from '../input-forms/CategoryForm'
 import { styles } from '../../common/styles'
 import { useMsal } from '@azure/msal-react'
-import { joinButtonColor, leaveButtonColor } from '../../common/colors'
+import { JOIN_BUTTON_COLOR, LEAVE_BUTTON_COLOR } from '../../common/colors'
 
 type IProps = {
   categoryId: string
@@ -72,7 +72,7 @@ export default function CategoryDetails(props: IProps) {
       <Text className={classes.title}>Title: {categoryData.title}</Text>
       {!isLoading && (
         <Button
-          style={{ backgroundColor: leaveButtonColor }}
+          style={{ backgroundColor: LEAVE_BUTTON_COLOR }}
           onClick={() => deleteSelectedCategory()}
         >
           Yes delete this category
@@ -134,14 +134,14 @@ export default function CategoryDetails(props: IProps) {
             <Group position='left' mt='xl'>
               {deleteModal}
               <Button
-                style={{ backgroundColor: leaveButtonColor }}
+                style={{ backgroundColor: LEAVE_BUTTON_COLOR }}
                 onClick={() => setDeleteModalOpened(true)}
               >
                 Delete
               </Button>
               {editModal}
               <Button
-                style={{ backgroundColor: joinButtonColor }}
+                style={{ backgroundColor: JOIN_BUTTON_COLOR }}
                 onClick={() => setEditModalOpened(true)}
               >
                 Edit

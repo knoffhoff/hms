@@ -21,7 +21,7 @@ import { CheckIcon } from '@modulz/radix-icons'
 import { createIdea, editIdea } from '../../actions/IdeaActions'
 import { styles } from '../../common/styles'
 import { useMsal } from '@azure/msal-react'
-import { joinButtonColor } from '../../common/colors'
+import { JOIN_BUTTON_COLOR } from '../../common/colors'
 
 type IProps = {
   hackathon: HackathonPreview
@@ -291,7 +291,7 @@ function IdeaForm(props: IProps) {
               <Group position='right' mt='xl'>
                 {context === 'edit' && (
                   <Button
-                    style={{ backgroundColor: joinButtonColor }}
+                    style={{ backgroundColor: JOIN_BUTTON_COLOR }}
                     disabled={buttonIsDisabled}
                     onClick={editThisIdea}
                   >
@@ -300,7 +300,7 @@ function IdeaForm(props: IProps) {
                 )}
                 {context === 'new' && (
                   <Button
-                    style={{ backgroundColor: joinButtonColor }}
+                    style={{ backgroundColor: JOIN_BUTTON_COLOR }}
                     disabled={buttonIsDisabled}
                     onClick={createThisIdea}
                   >

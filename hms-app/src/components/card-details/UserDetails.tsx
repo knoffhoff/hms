@@ -14,9 +14,9 @@ import EditUserForm from '../input-forms/EditUserForm'
 import { styles } from '../../common/styles'
 import { useMsal } from '@azure/msal-react'
 import {
-  joinButtonColor,
-  leaveButtonColor,
-  reloadButtonColor,
+  JOIN_BUTTON_COLOR,
+  LEAVE_BUTTON_COLOR,
+  RELOAD_BUTTON_COLOR,
 } from '../../common/colors'
 
 export default function UserDetails(props: { userId: string }) {
@@ -79,7 +79,7 @@ export default function UserDetails(props: { userId: string }) {
       </Text>
       <Text className={classes.title}>E-mail: {user.emailAddress}</Text>
       <Button
-        style={{ backgroundColor: leaveButtonColor }}
+        style={{ backgroundColor: LEAVE_BUTTON_COLOR }}
         onClick={() => deleteSelectedUser()}
       >
         Yes delete this user
@@ -170,20 +170,20 @@ export default function UserDetails(props: { userId: string }) {
             <Group position='left' mt='xl'>
               {deleteModal}
               <Button
-                style={{ backgroundColor: leaveButtonColor }}
+                style={{ backgroundColor: LEAVE_BUTTON_COLOR }}
                 onClick={() => setDeleteModalOpened(true)}
               >
                 Delete
               </Button>
               {editModal}
               <Button
-                style={{ backgroundColor: joinButtonColor }}
+                style={{ backgroundColor: JOIN_BUTTON_COLOR }}
                 onClick={() => setEditModalOpened(true)}
               >
                 Edit
               </Button>
               <Button
-                style={{ backgroundColor: reloadButtonColor }}
+                style={{ backgroundColor: RELOAD_BUTTON_COLOR }}
                 onClick={() => loadSelectedUser()}
               >
                 Reload

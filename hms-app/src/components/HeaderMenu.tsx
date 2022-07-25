@@ -16,7 +16,7 @@ import { styles } from '../common/styles'
 import {
   HEADER_ACTIVE_COLOR_LIGHT,
   HEADER_ACTIVE_COLOR_DARK,
-  primaryColor1,
+  PRIMARY_COLOR_1,
   TEXT_COLOR_WHITE,
 } from '../common/colors'
 import { useMsal } from '@azure/msal-react'
@@ -105,7 +105,7 @@ export default function HeaderMenu({ links }: HeaderSearchProps) {
   )
 
   return (
-    <Header height={56} style={{ backgroundColor: primaryColor1 }}>
+    <Header height={56} style={{ backgroundColor: PRIMARY_COLOR_1 }}>
       <Container>
         <div className={classes.header}>
           <h1 style={{ color: TEXT_COLOR_WHITE }}>HMS</h1>

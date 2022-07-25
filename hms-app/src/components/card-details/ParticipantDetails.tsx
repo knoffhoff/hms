@@ -4,7 +4,7 @@ import { Button, Card, Group, Modal, Text } from '@mantine/core'
 import { deleteParticipant } from '../../actions/ParticipantActions'
 import { styles } from '../../common/styles'
 import { useMsal } from '@azure/msal-react'
-import { leaveButtonColor } from '../../common/colors'
+import { LEAVE_BUTTON_COLOR } from '../../common/colors'
 
 type IProps = {
   participantId: string
@@ -53,7 +53,7 @@ export default function ParticipantDetails(props: IProps) {
               {user.firstName} {user.lastName}
             </Text>
             <Button
-              style={{ backgroundColor: leaveButtonColor }}
+              style={{ backgroundColor: LEAVE_BUTTON_COLOR }}
               onClick={() => deleteSelectedParticipant()}
             >
               Yes delete this participant
@@ -66,7 +66,7 @@ export default function ParticipantDetails(props: IProps) {
 
           <Group position='left' mt='xl'>
             <Button
-              style={{ backgroundColor: leaveButtonColor }}
+              style={{ backgroundColor: LEAVE_BUTTON_COLOR }}
               onClick={() => setOpened(true)}
             >
               Delete
