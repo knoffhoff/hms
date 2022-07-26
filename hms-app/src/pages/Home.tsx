@@ -6,7 +6,6 @@ import {
   Container,
   SimpleGrid,
   Card,
-  Image,
 } from '@mantine/core'
 import { styles } from '../common/styles'
 import { useAppSelector } from '../hooks'
@@ -186,7 +185,6 @@ function Home() {
               <Text size="sm" style={{ lineHeight: 1.5 }}>
                 {qAndA.answer}
               </Text>
-              <Image radius="md" src={qAndA.image} caption={qAndA.imageText} />
             </Card>
           ))}
         </SimpleGrid>
