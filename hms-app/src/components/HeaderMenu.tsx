@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import {
+  Image,
   Header,
   Menu,
   Group,
@@ -22,6 +23,7 @@ import {
 import { useMsal } from '@azure/msal-react'
 import { Logout } from 'tabler-icons-react'
 import { getProfilePhoto } from '../common/actionAuth'
+import { LOGO } from '../common/constants'
 
 interface HeaderSearchProps {
   links: {
@@ -108,7 +110,10 @@ export default function HeaderMenu({ links }: HeaderSearchProps) {
     <Header height={56} style={{ backgroundColor: PRIMARY_COLOR_1 }}>
       <Container>
         <div className={classes.header}>
-          <h1 style={{ color: TEXT_COLOR_WHITE }}>HMS</h1>
+          <Group spacing={1}>
+            <Image height={56} mt={30} src={LOGO} caption={'LOGO'} />{' '}
+            <h1 style={{ color: TEXT_COLOR_WHITE }}>Hackweek</h1>
+          </Group>
           <Group spacing={5} className={classes.headerLinks}>
             <SwitchToggle />
             {fullscreenMenu}
