@@ -40,6 +40,7 @@ provider:
   environment:
     AUTHORIZER_TYPE: ALWAYS_PASS
     AZURE_AD_CLIENT_ID: ${file(./secrets.json):AZURE_AD_CLIENT_ID}
+    AZURE_AD_ISSUER: ${file(./secrets.json):AZURE_AD_ISSUER}
     AZURE_AD_CLIENT_PUBLIC_KEY: ${file(./public_key)}
     HACKATHON_TABLE: hackathon
     USER_TABLE: user
@@ -54,6 +55,7 @@ provider:
     PARTICIPANT_TABLE: participant
     PARTICIPANT_BY_HACKATHON_ID_INDEX: participant-by-hackathonId
     PARTICIPANT_BY_HACKATHON_ID_USER_ID_INDEX: participant-by-hackathonId-userId
+    ADMIN_USERS: ${file(./secrets.json):ADMIN_USERS}
   iam:
     role:
       statements:
