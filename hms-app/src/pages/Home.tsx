@@ -117,15 +117,17 @@ function Home() {
             {new Date(nextHackathon.endDate).toLocaleDateString()}
           </Text>
           <Container>
-            <RichTextEditor
-              readOnly
-              value={nextHackathon.description!}
-              onChange={() => {
-                return null
-              }}
-            >
-              {nextHackathon.description}
-            </RichTextEditor>
+            {nextHackathon.description && (
+              <RichTextEditor
+                readOnly
+                value={nextHackathon.description}
+                onChange={() => {
+                  return null
+                }}
+              >
+                {nextHackathon.description}
+              </RichTextEditor>
+            )}
           </Container>
         </div>
       }
