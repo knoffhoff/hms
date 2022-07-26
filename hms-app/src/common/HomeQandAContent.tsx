@@ -8,7 +8,7 @@ export const qAndAList = [
   {
     question: 'How to use this site?',
     answer:
-      'In the Header of the Hackathon Management system (HMS) you can switch between different pages, in which you can participate in specific hackathons and view or submit your own ideas.',
+      'In the Navbar of the Hackathon Management system (HMS) you can switch between different pages, in which you can participate in specific hackathons and view or submit your own ideas.',
   },
   {
     question: 'Reasons to Participate?',
@@ -35,9 +35,9 @@ export const qAndAList = [
     answer:
       'If you are interested in Past Hackathons or want to find an old idea that you remember, you can use the Archive. In the Archive you will find a selection of all past hackathons with their submitted ideas.',
   },
-  {
+  /*{
     question: 'How the Voting and the Hackathon itself will work?',
     answer:
       '---add explanation about the voting system--- ---add space for specific explanation?---',
-  },
+  },*/
 ]
