@@ -113,7 +113,7 @@ function IdeaForm(props: IProps) {
       id: 'idea-load',
       loading: true,
       title: 'Create idea',
-      message: 'this can take a second',
+      message: undefined,
       autoClose: false,
       disallowClose: true,
     })
@@ -134,7 +134,7 @@ function IdeaForm(props: IProps) {
           id: 'idea-load',
           color: 'teal',
           title: 'Idea was created',
-          message: 'Notification will close in 2 seconds',
+          message: undefined,
           icon: <CheckIcon />,
           autoClose: 2000,
         })
@@ -149,7 +149,7 @@ function IdeaForm(props: IProps) {
       id: 'idea-load',
       loading: true,
       title: 'Edit idea',
-      message: 'this can take a second',
+      message: undefined,
       autoClose: false,
       disallowClose: true,
     })
@@ -164,7 +164,7 @@ function IdeaForm(props: IProps) {
           id: 'idea-load',
           color: 'teal',
           title: 'Idea was Edited',
-          message: 'Notification will close in 2 seconds',
+          message: undefined,
           icon: <CheckIcon />,
           autoClose: 2000,
         })

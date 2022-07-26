@@ -73,7 +73,7 @@ export default function EditUserForm(props: IProps) {
       id: 'user-load',
       loading: true,
       title: 'User is uploading',
-      message: 'this can take a second',
+      message: undefined,
       autoClose: false,
       disallowClose: true,
     })
@@ -83,7 +83,7 @@ export default function EditUserForm(props: IProps) {
           id: 'user-load',
           color: 'teal',
           title: 'User was added',
-          message: 'Notification will close in 2 seconds',
+          message: undefined,
           icon: <CheckIcon />,
           autoClose: 2000,
         })

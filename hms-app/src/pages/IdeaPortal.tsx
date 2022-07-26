@@ -72,7 +72,7 @@ function IdeaPortal() {
       id: 'participant-load',
       loading: true,
       title: 'Join Hackathon',
-      message: 'this can take a second',
+      message: undefined,
       autoClose: false,
       disallowClose: true,
     })
@@ -94,7 +94,7 @@ function IdeaPortal() {
           id: 'participant-load',
           color: 'teal',
           title: 'Joined Hackathon',
-          message: 'Notification will close in 2 seconds',
+          message: undefined,
           icon: <CheckIcon />,
           autoClose: 2000,
         })
@@ -108,7 +108,7 @@ function IdeaPortal() {
       id: 'participant-load',
       loading: true,
       title: 'Leave Hackathon',
-      message: 'this can take a second',
+      message: undefined,
       autoClose: false,
       disallowClose: true,
     })
@@ -121,7 +121,7 @@ function IdeaPortal() {
           id: 'participant-load',
           color: 'teal',
           title: 'Left Hackathon',
-          message: 'Notification will close in 2 seconds',
+          message: undefined,
           icon: <CheckIcon />,
           autoClose: 2000,
         })
@@ -134,7 +134,7 @@ function IdeaPortal() {
   }, [selectedHackathonId])
 
   useEffect(() => {
-    setParticipantCheck(!!findParticipant)
+    setParticipantCheck(!!findParticipant())
   }, [hackathonData])
 
   return (
