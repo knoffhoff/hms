@@ -82,7 +82,7 @@ class Hackathon {
 
     if (this.startDate >= this.endDate) {
       result.addFailure(
-        `startDate (${this.startDate}) ` + `is after endDate (${this.endDate})`,
+        `startDate (${this.startDate}) is after endDate (${this.endDate})`,
       );
     }
     return result;
