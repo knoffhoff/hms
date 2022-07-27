@@ -48,7 +48,7 @@ export async function getHackathonResponse(
     participants = await listParticipants(id);
   } catch (e) {
     throw new ReferenceNotFoundError(
-      `Cannot get Hackathon with id: ${id}, ` + `unable to list Participants`,
+      `Cannot get Hackathon with id: ${id}, unable to list Participants`,
     );
   }
 
