@@ -119,7 +119,7 @@ export async function deleteUser(id: Uuid) {
   }
 
   throw new NotFoundError(
-    `Cannot delete User with id: ${id}, ` + `it does not exist`,
+    `Cannot delete User with id: ${id}, it does not exist`,
   );
 }
 
