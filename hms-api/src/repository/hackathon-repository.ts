@@ -88,7 +88,7 @@ export async function deleteHackathon(id: Uuid) {
   }
 
   throw new NotFoundError(
-    `Cannot delete Hackathon with id: ${id}, ` + `it does not exist`,
+    `Cannot delete Hackathon with id: ${id}, it does not exist`,
   );
 }
 
