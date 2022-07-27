@@ -1,0 +1,11 @@
+./dist
+./build
+./node_modules
+./.build
+./.dynamodb
+./.serverless
+./coverage
+public_key
+public_key-example
+secrets.json
+secrets-example.json
