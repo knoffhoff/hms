@@ -15,7 +15,7 @@ import { styles } from '../../common/styles'
 import { useMsal } from '@azure/msal-react'
 import {
   JOIN_BUTTON_COLOR,
-  LEAVE_BUTTON_COLOR,
+  DELETE_BUTTON_COLOR,
   RELOAD_BUTTON_COLOR,
 } from '../../common/colors'
 
@@ -79,7 +79,7 @@ export default function UserDetails(props: { userId: string }) {
       </Text>
       <Text className={classes.title}>E-mail: {user.emailAddress}</Text>
       <Button
-        style={{ backgroundColor: LEAVE_BUTTON_COLOR }}
+        style={{ backgroundColor: DELETE_BUTTON_COLOR }}
         onClick={() => deleteSelectedUser()}
       >
         Yes delete this user
@@ -170,7 +170,7 @@ export default function UserDetails(props: { userId: string }) {
             <Group position='left' mt='xl'>
               {deleteModal}
               <Button
-                style={{ backgroundColor: LEAVE_BUTTON_COLOR }}
+                style={{ backgroundColor: DELETE_BUTTON_COLOR }}
                 onClick={() => setDeleteModalOpened(true)}
               >
                 Delete

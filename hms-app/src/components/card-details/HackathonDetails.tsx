@@ -35,7 +35,7 @@ import HackathonHeader from '../HackathonHeader'
 import { useMsal } from '@azure/msal-react'
 import {
   JOIN_BUTTON_COLOR,
-  LEAVE_BUTTON_COLOR,
+  DELETE_BUTTON_COLOR,
   RELOAD_BUTTON_COLOR,
 } from '../../common/colors'
 
@@ -197,7 +197,7 @@ export default function HackathonDetails(props: IProps) {
         {new Date(hackathonData.endDate).toDateString()}
       </Text>
       <Button
-        style={{ backgroundColor: LEAVE_BUTTON_COLOR }}
+        style={{ backgroundColor: DELETE_BUTTON_COLOR }}
         onClick={() => deleteSelectedHackathon()}
       >
         Yes delete this hackathon
@@ -397,7 +397,7 @@ export default function HackathonDetails(props: IProps) {
               <Group position='left' mt='xl'>
                 {deleteModal}
                 <Button
-                  style={{ backgroundColor: LEAVE_BUTTON_COLOR }}
+                  style={{ backgroundColor: DELETE_BUTTON_COLOR }}
                   onClick={() => setDeleteModalOpened(true)}
                 >
                   Delete

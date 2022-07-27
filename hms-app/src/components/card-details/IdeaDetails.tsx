@@ -24,7 +24,11 @@ import {
 } from '../../actions/ParticipantActions'
 import { CheckIcon } from '@modulz/radix-icons'
 import { useMsal } from '@azure/msal-react'
-import { JOIN_BUTTON_COLOR, LEAVE_BUTTON_COLOR } from '../../common/colors'
+import {
+  JOIN_BUTTON_COLOR,
+  DELETE_BUTTON_COLOR,
+  LEAVE_BUTTON_COLOR,
+} from '../../common/colors'
 
 type IProps = {
   idea: Idea
@@ -101,7 +105,7 @@ export default function IdeaDetails(props: IProps) {
       </Text>
       <Text className={classes.title}>Title: {idea.title}</Text>
       <Button
-        style={{ backgroundColor: LEAVE_BUTTON_COLOR }}
+        style={{ backgroundColor: DELETE_BUTTON_COLOR }}
         onClick={() => deleteSelectedIdea()}
       >
         Yes, delete this idea
@@ -360,7 +364,7 @@ export default function IdeaDetails(props: IProps) {
                       {deleteModal}
                       <Button
                         style={{
-                          backgroundColor: LEAVE_BUTTON_COLOR,
+                          backgroundColor: DELETE_BUTTON_COLOR,
                         }}
                         onClick={() => setDeleteModalOpened(true)}
                       >
