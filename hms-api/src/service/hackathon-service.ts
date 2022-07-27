@@ -77,7 +77,7 @@ export async function getHackathonResponse(
     ideas = await listIdeasForHackathon(id);
   } catch (e) {
     throw new ReferenceNotFoundError(
-      `Cannot get Hackathon with id: ${id}, ` + `unable to list Ideas`,
+      `Cannot get Hackathon with id: ${id}, unable to list Ideas`,
     );
   }
 
