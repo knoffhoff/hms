@@ -135,7 +135,7 @@ export async function deleteParticipant(id: Uuid): Promise<Participant> {
   }
 
   throw new NotFoundError(
-    `Cannot delete Participant with id: ${id}, ` + `it does not exist`,
+    `Cannot delete Participant with id: ${id}, it does not exist`,
   );
 }
 
