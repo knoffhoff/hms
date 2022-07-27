@@ -22,7 +22,7 @@ export default function MyIdeas() {
   const [selectedHackathonId, setSelectedHackathonId] = useState('')
   const [relevantIdeas, setRelevantIdeas] = useState<Idea[]>([])
   const [isLoading, setIsLoading] = useState(true)
-  const [hackathonData, setHackathonData] = useState({
+  const [hackathonData, setHackathonData] = useState<Hackathon>({
     id: 'string',
     title: 'string',
     description: 'string',
