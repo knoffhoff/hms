@@ -154,7 +154,7 @@ export async function deleteIdea(id: Uuid): Promise<Idea> {
   }
 
   throw new NotFoundError(
-    `Cannot delete Idea with id ${id}, ` + `it does not exist`,
+    `Cannot delete Idea with id ${id}, it does not exist`,
   );
 }
 
