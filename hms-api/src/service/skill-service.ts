@@ -40,7 +40,7 @@ export async function editSkill(
     existing.description = description;
   } catch (e) {
     throw new NotFoundError(
-      `Cannot edit Skill with id: ${id}, ` + `it does not exist`,
+      `Cannot edit Skill with id: ${id}, it does not exist`,
     );
   }
 
