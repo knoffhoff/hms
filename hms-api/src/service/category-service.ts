@@ -55,7 +55,7 @@ export async function editCategory(
     existing.description = description;
   } catch (e) {
     throw new NotFoundError(
-      `Cannot edit Category with id: ${id}, ` + `it does not exist`,
+      `Cannot edit Category with id: ${id}, it does not exist`,
     );
   }
 
