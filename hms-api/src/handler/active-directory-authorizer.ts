@@ -1,5 +1,5 @@
 import {verify} from 'jsonwebtoken';
-import {generatePolicy} from './lambdaPolicyGenerator';
+import {generatePolicy} from './lambda-policy-generator';
 
 const AZURE_AD_CLIENT_ID = process.env.AZURE_AD_CLIENT_ID;
 const AZURE_AD_ISSUER = process.env.AZURE_AD_ISSUER;
