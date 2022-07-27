@@ -108,7 +108,7 @@ export default function HeaderMenu({ links }: HeaderSearchProps) {
 
   return (
     <Header height={56} style={{ backgroundColor: PRIMARY_COLOR_1 }}>
-      <Container>
+      <Container size={1300}>
         <div className={classes.header}>
           <Group spacing={1}>
             <Image height={56} mt={30} src={LOGO} caption={'LOGO'} />{' '}
