@@ -18,6 +18,7 @@ import React, { useEffect } from 'react'
 import { getListOfHackathons } from '../actions/HackathonActions'
 import { useIsAuthenticated, useMsal } from '@azure/msal-react'
 import Login from './Login'
+import { PAGE_BACKGROUND_DARK, PAGE_BACKGROUND_LIGHT } from '../common/colors'
 
 const USE_AUTH = process.env.REACT_APP_USE_AZURE_AUTH === 'true'
 
@@ -81,9 +82,9 @@ const Layout = () => {
             styles={(theme) => ({
               main: {
                 backgroundColor:
-                  theme.colorScheme === 'dark'
-                    ? theme.colors.dark[8]
-                    : theme.colors.gray[0],
+                  theme.colorScheme === 'light'
+                    ? PAGE_BACKGROUND_LIGHT
+                    : PAGE_BACKGROUND_DARK,
                 minHeight: 'calc(100vh - 56px)',
               },
             })}

@@ -1,4 +1,13 @@
 import { createStyles } from '@mantine/core'
+import {
+  HEADER_ACTIVE_COLOR_DARK,
+  HEADER_ACTIVE_COLOR_LIGHT,
+  HEADER_HOVER_COLOR_DARK,
+  HEADER_HOVER_COLOR_LIGHT,
+  TEXT_COLOR_DARK,
+  TEXT_COLOR_LIGHT,
+  TEXT_COLOR_WHITE,
+} from './colors'
 
 const borderRadius = 15
 const headerItemBorder = borderRadius / 2
@@ -66,18 +75,15 @@ export const styles = createStyles((theme) => ({
     padding: '8px 12px',
     borderRadius: headerItemBorder,
     textDecoration: 'none',
-    color:
-      theme.colorScheme === 'dark'
-        ? theme.colors.dark[0]
-        : theme.colors.gray[7],
+    color: TEXT_COLOR_WHITE,
     fontSize: theme.fontSizes.sm,
     fontWeight: 500,
 
     '&:hover': {
       backgroundColor:
-        theme.colorScheme === 'dark'
-          ? theme.colors.dark[6]
-          : theme.colors.gray[0],
+        theme.colorScheme === 'light'
+          ? HEADER_HOVER_COLOR_LIGHT
+          : HEADER_HOVER_COLOR_DARK,
     },
   },
 
