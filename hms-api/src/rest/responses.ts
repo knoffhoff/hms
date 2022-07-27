@@ -20,7 +20,7 @@ export function buildResponse(statusCode: number, bodyObject: any): any {
 }
 
 export function buildReferenceNotFoundErrorResponse(
-    error: ReferenceNotFoundError,
+  error: ReferenceNotFoundError,
 ): any {
   return buildResponse(400, {
     errorMessage: error.message,

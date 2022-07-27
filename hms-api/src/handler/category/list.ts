@@ -6,7 +6,8 @@ import {getCategoryListResponse} from '../../service/category-service';
 export async function list(event, context, callback) {
   await wrapHandler(async () => {
     const responseBody = await getCategoryListResponse(
-        event.pathParameters.hackathonId);
+      event.pathParameters.hackathonId,
+    );
     callback(null, buildResponse(200, responseBody));
   }, callback);
 }

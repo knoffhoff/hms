@@ -15,8 +15,8 @@ import NotFoundError from '../error/NotFoundError';
 import ValidationError from '../error/ValidationError';
 
 export async function createSkill(
-    name: string,
-    description: string,
+  name: string,
+  description: string,
 ): Promise<Skill> {
   const skill = new Skill(name, description);
   const result = skill.validate();
@@ -29,9 +29,9 @@ export async function createSkill(
 }
 
 export async function editSkill(
-    id: Uuid,
-    name: string,
-    description: string,
+  id: Uuid,
+  name: string,
+  description: string,
 ): Promise<void> {
   let existing;
   try {
@@ -39,8 +39,9 @@ export async function editSkill(
     existing.name = name;
     existing.description = description;
   } catch (e) {
-    throw new NotFoundError(`Cannot edit Skill with id: ${id}, ` +
-        `it does not exist`);
+    throw new NotFoundError(
+      `Cannot edit Skill with id: ${id}, ` + `it does not exist`,
+    );
   }
 
   const result = existing.validate();

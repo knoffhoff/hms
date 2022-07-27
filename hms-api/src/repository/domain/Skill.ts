@@ -47,21 +47,10 @@ class Skill {
     return result;
   }
 
-  constructor(
-      name: string,
-      description: string,
-  );
-  constructor(
-      name: string,
-      description: string,
-      id: Uuid,
-  );
+  constructor(name: string, description: string);
+  constructor(name: string, description: string, id: Uuid);
 
-  constructor(
-      name: string,
-      description: string,
-      id: Uuid = uuid(),
-  ) {
+  constructor(name: string, description: string, id: Uuid = uuid()) {
     this.id = id;
     this.name = name;
     this.description = description;

@@ -25,15 +25,18 @@ import NotFoundError from '../error/NotFoundError';
 import ValidationError from '../error/ValidationError';
 
 export async function createParticipant(
-    userId: Uuid,
-    hackathonId: Uuid,
+  userId: Uuid,
+  hackathonId: Uuid,
 ): Promise<Participant> {
-  if (!await hackathonExists(hackathonId)) {
-    throw new ReferenceNotFoundError(`Cannot create Participant, ` +
-        `Hackathon with id: ${hackathonId} does not exist`);
-  } else if (!await userExists(userId)) {
-    throw new ReferenceNotFoundError(`Cannot create Participant, ` +
-        `User with id: ${userId} does not exist`);
+  if (!(await hackathonExists(hackathonId))) {
+    throw new ReferenceNotFoundError(
+      `Cannot create Participant, ` +
+        `Hackathon with id: ${hackathonId} does not exist`,
+    );
+  } else if (!(await userExists(userId))) {
+    throw new ReferenceNotFoundError(
+      `Cannot create Participant, ` + `User with id: ${userId} does not exist`,
+    );
   }
 
   const participant = new Participant(userId, hackathonId);
@@ -48,7 +51,7 @@ export async function createParticipant(
 }
 
 export async function getParticipantResponse(
-    id: Uuid,
+  id: Uuid,
 ): Promise<ParticipantResponse> {
   const participant = await getParticipant(id);
 
@@ -56,28 +59,33 @@ export async function getParticipantResponse(
   try {
     user = await getUser(participant.userId);
   } catch (e) {
-    throw new ReferenceNotFoundError(`Cannot get Participant with id ${id}, ` +
-        `unable to get User with id ${participant.userId}`);
+    throw new ReferenceNotFoundError(
+      `Cannot get Participant with id ${id}, ` +
+        `unable to get User with id ${participant.userId}`,
+    );
   }
 
   let hackathon;
   try {
     hackathon = await getHackathon(participant.hackathonId);
   } catch (e) {
-    throw new ReferenceNotFoundError(`Cannot get Participant with id ${id}, ` +
-        `unable to get Hackathon with id ${participant.hackathonId}`);
+    throw new ReferenceNotFoundError(
+      `Cannot get Participant with id ${id}, ` +
+        `unable to get Hackathon with id ${participant.hackathonId}`,
+    );
   }
 
   return ParticipantResponse.from(participant, user, hackathon);
 }
 
 export async function getParticipantListResponse(
-    hackathonId: Uuid,
+  hackathonId: Uuid,
 ): Promise<ParticipantListResponse> {
-  if (!await hackathonExists(hackathonId)) {
+  if (!(await hackathonExists(hackathonId))) {
     throw new NotFoundError(
-        `Cannot list Participants for Hackathon with id: ${hackathonId}, ` +
-        `it does not exist`);
+      `Cannot list Participants for Hackathon with id: ${hackathonId}, ` +
+        `it does not exist`,
+    );
   }
 
   const participants = await listParticipants(hackathonId);
@@ -87,25 +95,28 @@ export async function getParticipantListResponse(
     users = await usersFor(participants);
   } catch (e) {
     throw new ReferenceNotFoundError(
-        `Could not list Participants for Hackathon with id: ${hackathonId}, ` +
-        `unable to list linked Users`);
+      `Could not list Participants for Hackathon with id: ${hackathonId}, ` +
+        `unable to list linked Users`,
+    );
   }
 
   return new ParticipantListResponse(
-      ParticipantPreviewResponse.fromArray(participants, users),
-      hackathonId,
+    ParticipantPreviewResponse.fromArray(participants, users),
+    hackathonId,
   );
 }
 
 export async function removeParticipant(
-    id: Uuid,
+  id: Uuid,
 ): Promise<ParticipantDeleteResponse> {
   try {
     await removeIdeasForOwner(id);
     await removeParticipantFromIdeas(id);
   } catch (e) {
-    throw new DeletionError(`Unable to remove Participant with id ${id}, ` +
-        `nested failure is: ${e.message}`);
+    throw new DeletionError(
+      `Unable to remove Participant with id ${id}, ` +
+        `nested failure is: ${e.message}`,
+    );
   }
 
   await deleteParticipant(id);
@@ -113,7 +124,7 @@ export async function removeParticipant(
 }
 
 export async function removeParticipantsForHackathon(
-    hackathonId: Uuid,
+  hackathonId: Uuid,
 ): Promise<void> {
   const participants = await listParticipants(hackathonId);
   for (const participant of participants) {

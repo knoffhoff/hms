@@ -9,9 +9,9 @@ export async function create(event, context, callback) {
   await wrapHandler(async () => {
     const request = CategoryCreateRequest.parse(event.body);
     const category = await createCategory(
-        request.title,
-        request.description,
-        request.hackathonId,
+      request.title,
+      request.description,
+      request.hackathonId,
     );
 
     callback(null, buildResponse(201, new CategoryCreateResponse(category.id)));

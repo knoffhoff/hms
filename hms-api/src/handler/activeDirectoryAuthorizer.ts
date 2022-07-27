@@ -33,9 +33,9 @@ export const authorizeWithActiveDirectory = (event, context, callback) => {
         }
         return callback(
           null,
-          generatePolicy(decoded.sub, 'Allow', event.methodArn)
+          generatePolicy(decoded.sub, 'Allow', event.methodArn),
         );
-      }
+      },
     );
   } catch (err) {
     return callback('Unauthorized');

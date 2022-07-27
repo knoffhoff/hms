@@ -26,17 +26,17 @@ class IdeaResponse {
   creationDate: Date;
 
   constructor(
-      id: Uuid,
-      owner: ParticipantPreviewResponse,
-      hackathon: HackathonPreviewResponse,
-      participants: ParticipantPreviewResponse[],
-      title: string,
-      description: string,
-      problem: string,
-      goal: string,
-      requiredSkills: SkillPreviewResponse[],
-      category: CategoryPreviewResponse,
-      creationDate: Date,
+    id: Uuid,
+    owner: ParticipantPreviewResponse,
+    hackathon: HackathonPreviewResponse,
+    participants: ParticipantPreviewResponse[],
+    title: string,
+    description: string,
+    problem: string,
+    goal: string,
+    requiredSkills: SkillPreviewResponse[],
+    category: CategoryPreviewResponse,
+    creationDate: Date,
   ) {
     this.id = id;
     this.owner = owner;
@@ -52,15 +52,16 @@ class IdeaResponse {
   }
 
   static from = (
-      idea: Idea,
-      ownerParticipant: Participant,
-      ownerUser: User,
-      hackathon: Hackathon,
-      participants: Participant[],
-      users: User[],
-      skills: Skill[],
-      category: Category,
-  ): IdeaResponse => new IdeaResponse(
+    idea: Idea,
+    ownerParticipant: Participant,
+    ownerUser: User,
+    hackathon: Hackathon,
+    participants: Participant[],
+    users: User[],
+    skills: Skill[],
+    category: Category,
+  ): IdeaResponse =>
+    new IdeaResponse(
       idea.id,
       ParticipantPreviewResponse.from(ownerParticipant, ownerUser),
       HackathonPreviewResponse.from(hackathon),
@@ -72,7 +73,7 @@ class IdeaResponse {
       SkillPreviewResponse.fromArray(skills),
       CategoryPreviewResponse.from(category),
       idea.creationDate,
-  );
+    );
 }
 
 export default IdeaResponse;

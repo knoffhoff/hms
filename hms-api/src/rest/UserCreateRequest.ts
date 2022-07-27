@@ -1,7 +1,7 @@
 /* eslint-disable require-jsdoc */
 
-import Uuid from "../util/Uuid";
-import Role, { mapStringToRoles } from "../repository/domain/Role";
+import Uuid from '../util/Uuid';
+import Role, {mapStringToRoles} from '../repository/domain/Role';
 
 class UserCreateRequest {
   lastName?: string;
@@ -15,7 +15,7 @@ class UserCreateRequest {
     firstName: string,
     emailAddress: string,
     skills: Uuid[],
-    imageUrl: string
+    imageUrl: string,
   ) {
     this.lastName = lastName;
     this.firstName = firstName;
@@ -31,7 +31,7 @@ class UserCreateRequest {
       json.firstName,
       json.emailAddress,
       json.skills,
-      json.imageUrl
+      json.imageUrl,
     );
   }
 }

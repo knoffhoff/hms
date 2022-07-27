@@ -31,7 +31,7 @@ export async function createUser(
   firstName: string,
   emailAddress: string,
   skills: Uuid[],
-  imageUrl: string
+  imageUrl: string,
 ): Promise<User> {
   await verifyAllSkillsExist(skills);
 
@@ -46,7 +46,7 @@ export async function createUser(
     emailAddress,
     roles,
     skills,
-    imageUrl
+    imageUrl,
   );
   const result = user.validate();
   if (result.hasFailed()) {
@@ -66,7 +66,7 @@ export async function getUserResponse(id: Uuid): Promise<UserResponse> {
   } catch (e) {
     throw new ReferenceNotFoundError(
       `Cannot get User with id: ${id}, ` +
-        `unable to get Skills with ids: ${user.skills}`
+        `unable to get Skills with ids: ${user.skills}`,
     );
   }
 
@@ -74,7 +74,7 @@ export async function getUserResponse(id: Uuid): Promise<UserResponse> {
 }
 
 export async function getUserExistsResponse(
-  email: string
+  email: string,
 ): Promise<UserExistsResponse> {
   const exists = await userExistsByEmail(email);
 
@@ -91,7 +91,7 @@ export async function editUser(
   lastName: string,
   firstName: string,
   skills: Uuid[],
-  imageUrl: string
+  imageUrl: string,
 ): Promise<void> {
   let existing: User;
   try {
@@ -102,7 +102,7 @@ export async function editUser(
     existing.imageUrl = imageUrl;
   } catch (e) {
     throw new NotFoundError(
-      `Cannot edit User with id: ${id}, ` + 'it does not exist'
+      `Cannot edit User with id: ${id}, ` + 'it does not exist',
     );
   }
 
@@ -131,7 +131,7 @@ async function verifyAllSkillsExist(skillIds: Uuid[]): Promise<void> {
   for (const skillId of skillIds) {
     if (!(await skillExists(skillId))) {
       throw new ReferenceNotFoundError(
-        'Cannot create Idea, ' + `Skill with id: ${skillId} does not exist`
+        `Cannot create Idea, Skill with id: ${skillId} does not exist`,
       );
     }
   }

@@ -24,10 +24,10 @@ import {removeParticipantsForHackathon} from './participant-service';
 import ValidationError from '../error/ValidationError';
 
 export async function createHackathon(
-    title: string,
-    description: string,
-    startDate: Date,
-    endDate: Date,
+  title: string,
+  description: string,
+  startDate: Date,
+  endDate: Date,
 ): Promise<Hackathon> {
   const hackathon = new Hackathon(title, description, startDate, endDate);
   const result = hackathon.validate();
@@ -41,63 +41,67 @@ export async function createHackathon(
 }
 
 export async function getHackathonResponse(
-    id: Uuid,
+  id: Uuid,
 ): Promise<HackathonResponse> {
   let participants;
   try {
     participants = await listParticipants(id);
   } catch (e) {
-    throw new ReferenceNotFoundError(`Cannot get Hackathon with id: ${id}, ` +
-        `unable to list Participants`);
+    throw new ReferenceNotFoundError(
+      `Cannot get Hackathon with id: ${id}, ` + `unable to list Participants`,
+    );
   }
 
   let users;
   try {
     users = await usersFor(participants);
   } catch (e) {
-    throw new ReferenceNotFoundError(`Cannot get Hackathon with id: ${id}, ` +
+    throw new ReferenceNotFoundError(
+      `Cannot get Hackathon with id: ${id}, ` +
         `unable to find Users for Participants ` +
-        `${participants.map((p) => p.id)}`);
+        `${participants.map((p) => p.id)}`,
+    );
   }
 
   let categories;
   try {
     categories = await listCategories(id);
   } catch (e) {
-    throw new ReferenceNotFoundError(`Cannot get Hackathon with id: ${id}, ` +
-        `unable to list Categories`);
+    throw new ReferenceNotFoundError(
+      `Cannot get Hackathon with id: ${id}, ` + `unable to list Categories`,
+    );
   }
 
   let ideas;
   try {
     ideas = await listIdeasForHackathon(id);
   } catch (e) {
-    throw new ReferenceNotFoundError(`Cannot get Hackathon with id: ${id}, ` +
-        `unable to list Ideas`);
+    throw new ReferenceNotFoundError(
+      `Cannot get Hackathon with id: ${id}, ` + `unable to list Ideas`,
+    );
   }
 
   const hackathon = await getHackathon(id);
   return HackathonResponse.from(
-      hackathon,
-      participants,
-      users,
-      categories,
-      ideas,
+    hackathon,
+    participants,
+    users,
+    categories,
+    ideas,
   );
 }
 
-export async function getHackathonListResponse(
-): Promise<HackathonListResponse> {
+export async function getHackathonListResponse(): Promise<HackathonListResponse> {
   const hackathons = await listHackathons();
   return HackathonListResponse.from(hackathons);
 }
 
 export async function editHackathon(
-    id: Uuid,
-    title: string,
-    description: string,
-    startDate: Date,
-    endDate: Date,
+  id: Uuid,
+  title: string,
+  description: string,
+  startDate: Date,
+  endDate: Date,
 ): Promise<void> {
   let existing: Hackathon;
   try {
@@ -107,8 +111,9 @@ export async function editHackathon(
     existing.startDate = startDate;
     existing.endDate = endDate;
   } catch (e) {
-    throw new NotFoundError(`Cannot edit Hackathon with id: ${id}, ` +
-        `it does not exist`);
+    throw new NotFoundError(
+      `Cannot edit Hackathon with id: ${id}, ` + `it does not exist`,
+    );
   }
 
   const result = existing.validate();
@@ -120,15 +125,17 @@ export async function editHackathon(
 }
 
 export async function removeHackathon(
-    id: Uuid,
+  id: Uuid,
 ): Promise<HackathonDeleteResponse> {
   try {
     await removeIdeasForHackathon(id);
     await removeCategoriesForHackathon(id);
     await removeParticipantsForHackathon(id);
   } catch (e) {
-    throw new DeletionError(`Unable to remove Hackathon with id: ${id}, ` +
-        `nested failure is: ${e.message}`);
+    throw new DeletionError(
+      `Unable to remove Hackathon with id: ${id}, ` +
+        `nested failure is: ${e.message}`,
+    );
   }
   await deleteHackathon(id);
   return new HackathonDeleteResponse(id);

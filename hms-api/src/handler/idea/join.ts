@@ -10,8 +10,9 @@ export async function join(event, context, callback) {
     const participantId = event.pathParameters.participantId;
     await addParticipant(ideaId, participantId);
 
-    callback(null, buildResponse(
-        200,
-        new IdeaJoinResponse(ideaId, participantId)));
+    callback(
+      null,
+      buildResponse(200, new IdeaJoinResponse(ideaId, participantId)),
+    );
   }, callback);
 }

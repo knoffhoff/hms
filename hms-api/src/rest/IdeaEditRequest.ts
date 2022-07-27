@@ -11,12 +11,12 @@ class IdeaEditRequest {
   categoryId: Uuid;
 
   constructor(
-      title: string,
-      description: string,
-      problem: string,
-      goal: string,
-      requiredSkills: Uuid[],
-      categoryId: Uuid,
+    title: string,
+    description: string,
+    problem: string,
+    goal: string,
+    requiredSkills: Uuid[],
+    categoryId: Uuid,
   ) {
     this.title = title;
     this.description = description;
@@ -29,12 +29,12 @@ class IdeaEditRequest {
   static parse(body: string): IdeaEditRequest {
     const json = JSON.parse(body);
     return new IdeaEditRequest(
-        json.title,
-        json.description,
-        json.problem,
-        json.goal,
-        json.requiredSkills,
-        json.categoryId,
+      json.title,
+      json.description,
+      json.problem,
+      json.goal,
+      json.requiredSkills,
+      json.categoryId,
     );
   }
 }

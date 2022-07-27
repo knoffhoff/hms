@@ -1,5 +1,5 @@
-import { alwaysPass } from "./allPassAuthorizer";
-import { authorizeWithActiveDirectory } from "./activeDirectoryAuthorizer";
+import {alwaysPass} from './allPassAuthorizer';
+import {authorizeWithActiveDirectory} from './activeDirectoryAuthorizer';
 
 const AUTHORIZER_TYPE = process.env.AUTHORIZER_TYPE || 'ALWAYS_PASS';
 

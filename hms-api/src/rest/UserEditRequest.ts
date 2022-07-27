@@ -9,10 +9,10 @@ class UserEditRequest {
   imageUrl: string;
 
   constructor(
-      lastName: string,
-      firstName: string,
-      skills: Uuid[],
-      imageUrl: string,
+    lastName: string,
+    firstName: string,
+    skills: Uuid[],
+    imageUrl: string,
   ) {
     this.lastName = lastName;
     this.firstName = firstName;
@@ -23,10 +23,10 @@ class UserEditRequest {
   static parse(body: string): UserEditRequest {
     const json = JSON.parse(body);
     return new UserEditRequest(
-        json.lastName,
-        json.firstName,
-        json.skills,
-        json.imageUrl,
+      json.lastName,
+      json.firstName,
+      json.skills,
+      json.imageUrl,
     );
   }
 }

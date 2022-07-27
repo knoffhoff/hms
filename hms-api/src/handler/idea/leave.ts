@@ -10,8 +10,9 @@ export async function leave(event, context, callback) {
     const participantId = event.pathParameters.participantId;
     await removeParticipant(ideaId, participantId);
 
-    callback(null, buildResponse(
-        200,
-        new IdeaLeaveResponse(ideaId, participantId)));
+    callback(
+      null,
+      buildResponse(200, new IdeaLeaveResponse(ideaId, participantId)),
+    );
   }, callback);
 }

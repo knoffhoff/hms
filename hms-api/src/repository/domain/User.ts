@@ -97,33 +97,33 @@ export default class {
   }
 
   constructor(
-      lastName: string,
-      firstName: string,
-      emailAddress: string,
-      roles: Role[],
-      skills: Uuid[],
-      imageUrl: string,
+    lastName: string,
+    firstName: string,
+    emailAddress: string,
+    roles: Role[],
+    skills: Uuid[],
+    imageUrl: string,
   );
   constructor(
-      lastName: string,
-      firstName: string,
-      emailAddress: string,
-      roles: Role[],
-      skills: Uuid[],
-      imageUrl: string,
-      id: Uuid,
-      creationDate: Date,
+    lastName: string,
+    firstName: string,
+    emailAddress: string,
+    roles: Role[],
+    skills: Uuid[],
+    imageUrl: string,
+    id: Uuid,
+    creationDate: Date,
   );
 
   constructor(
-      lastName: string,
-      firstName: string,
-      emailAddress: string,
-      roles: Role[],
-      skills: Uuid[],
-      imageUrl: string,
-      id: Uuid = uuid(),
-      creationDate: Date = new Date(),
+    lastName: string,
+    firstName: string,
+    emailAddress: string,
+    roles: Role[],
+    skills: Uuid[],
+    imageUrl: string,
+    id: Uuid = uuid(),
+    creationDate: Date = new Date(),
   ) {
     this.lastName = lastName;
     this.firstName = firstName;

@@ -1,4 +1,3 @@
-
 export const generatePolicy = (principalId, effect, resource) => {
   const authResponse: any = {};
   authResponse.principalId = principalId;
@@ -15,4 +14,3 @@ export const generatePolicy = (principalId, effect, resource) => {
   }
   return authResponse;
 };
-

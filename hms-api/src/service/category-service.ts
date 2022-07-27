@@ -22,13 +22,15 @@ import DeletionError from '../error/DeletionError';
 import ValidationError from '../error/ValidationError';
 
 export async function createCategory(
-    title: string,
-    description: string,
-    hackathonId: Uuid,
+  title: string,
+  description: string,
+  hackathonId: Uuid,
 ): Promise<Category> {
-  if (!await hackathonExists(hackathonId)) {
-    throw new ReferenceNotFoundError(`Cannot create Category, ` +
-        `Hackathon with id: ${hackathonId} does not exist`);
+  if (!(await hackathonExists(hackathonId))) {
+    throw new ReferenceNotFoundError(
+      `Cannot create Category, ` +
+        `Hackathon with id: ${hackathonId} does not exist`,
+    );
   }
 
   const category = new Category(title, description, hackathonId);
@@ -42,9 +44,9 @@ export async function createCategory(
 }
 
 export async function editCategory(
-    id: Uuid,
-    title: string,
-    description: string,
+  id: Uuid,
+  title: string,
+  description: string,
 ): Promise<void> {
   let existing: Category;
   try {
@@ -52,8 +54,9 @@ export async function editCategory(
     existing.title = title;
     existing.description = description;
   } catch (e) {
-    throw new NotFoundError(`Cannot edit Category with id: ${id}, ` +
-        `it does not exist`);
+    throw new NotFoundError(
+      `Cannot edit Category with id: ${id}, ` + `it does not exist`,
+    );
   }
 
   const result = existing.validate();
@@ -71,20 +74,23 @@ export async function getCategoryResponse(id: Uuid): Promise<CategoryResponse> {
   try {
     hackathon = await getHackathon(category.hackathonId);
   } catch (e) {
-    throw new ReferenceNotFoundError(`Cannot get Category with id: ${id}, ` +
-        `reference Hackathon with id: ${category.hackathonId} does not exist`);
+    throw new ReferenceNotFoundError(
+      `Cannot get Category with id: ${id}, ` +
+        `reference Hackathon with id: ${category.hackathonId} does not exist`,
+    );
   }
 
   return CategoryResponse.from(category, hackathon);
 }
 
 export async function getCategoryListResponse(
-    hackathonId: Uuid,
+  hackathonId: Uuid,
 ): Promise<CategoryListResponse> {
-  if (!await hackathonExists(hackathonId)) {
+  if (!(await hackathonExists(hackathonId))) {
     throw new NotFoundError(
-        `Cannot list Categories for Hackathon with id: ${hackathonId}, ` +
-        `it does not exist`);
+      `Cannot list Categories for Hackathon with id: ${hackathonId}, ` +
+        `it does not exist`,
+    );
   }
 
   const categories = await listCategories(hackathonId);
@@ -93,13 +99,15 @@ export async function getCategoryListResponse(
 }
 
 export async function removeCategory(
-    id: Uuid,
+  id: Uuid,
 ): Promise<CategoryDeleteResponse> {
   try {
     await removeIdeasForCategory(id);
   } catch (e) {
-    throw new DeletionError(`Unable to remove Category with id ${id}, ` +
-        `nested failure is: ${e.message}`);
+    throw new DeletionError(
+      `Unable to remove Category with id ${id}, ` +
+        `nested failure is: ${e.message}`,
+    );
   }
 
   await deleteCategory(id);
@@ -107,7 +115,7 @@ export async function removeCategory(
 }
 
 export async function removeCategoriesForHackathon(
-    hackathonId: Uuid,
+  hackathonId: Uuid,
 ): Promise<void> {
   const categories = await listCategories(hackathonId);
   for (const category of categories) {
