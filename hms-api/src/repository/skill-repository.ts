@@ -93,7 +93,7 @@ export async function deleteSkill(id: Uuid): Promise<Skill> {
   }
 
   throw new NotFoundError(
-    `Cannot delete Skill with id: ${id}, ` + `it does not exist`,
+    `Cannot delete Skill with id: ${id}, it does not exist`,
   );
 }
 
