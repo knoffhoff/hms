@@ -105,7 +105,7 @@ const Layout = () => {
     if (isAuthenticated) {
       getProfileDetails()
     }
-  }, [instance])
+  }, [instance, isAuthenticated])
 
   useEffect(() => {
     const getHackathons = async () => {
@@ -129,7 +129,7 @@ const Layout = () => {
       toggleColorScheme={() => setColorScheme(toggleColorScheme(colorScheme))}
     >
       <MantineProvider theme={{ colorScheme }} withGlobalStyles>
-        {(isAuthenticated || !USE_AUTH) && (
+        {((isAuthenticated && user !== undefined) || !USE_AUTH) && (
           <UserContext.Provider value={user}>
             <AppShell
               header={<HeaderMenu links={menuLinks} />}
@@ -149,7 +149,7 @@ const Layout = () => {
             </AppShell>
           </UserContext.Provider>
         )}
-        {!isAuthenticated && USE_AUTH && <Login />}
+        {(!isAuthenticated || !user) && USE_AUTH && <Login isAuthenticated={isAuthenticated} user={user} />}
       </MantineProvider>
     </ColorSchemeProvider>
   )
