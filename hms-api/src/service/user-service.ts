@@ -102,7 +102,7 @@ export async function editUser(
     existing.imageUrl = imageUrl;
   } catch (e) {
     throw new NotFoundError(
-      `Cannot edit User with id: ${id}, ` + 'it does not exist',
+      `Cannot edit User with id: ${id}, it does not exist`,
     );
   }
 
