@@ -67,7 +67,7 @@ export async function createIdea(
   for (const skillId of requiredSkills) {
     if (!(await skillExists(skillId))) {
       throw new ReferenceNotFoundError(
-        `Cannot create Idea, ` + `Skill with id: ${skillId} does not exist`,
+        `Cannot create Idea, Skill with id: ${skillId} does not exist`,
       );
     }
   }
