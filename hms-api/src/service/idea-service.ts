@@ -105,7 +105,7 @@ export async function editIdea(
     existing = await getIdea(id);
   } catch (e) {
     throw new NotFoundError(
-      `Cannot edit Idea with id: ${id}, ` + `it does not exist`,
+      `Cannot edit Idea with id: ${id}, it does not exist`,
     );
   }
 
