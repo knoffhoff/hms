@@ -49,7 +49,7 @@ export default function HackathonDetails(props: IProps) {
   const [isHackathonLoading, setIsHackathonLoading] = useState(true)
   const [isIdeaLoading, setIsIdeaLoading] = useState(true)
   const [hackathonData, setHackathonData] = useState({} as Hackathon)
-  const [ideaData, setIdeaData] = useState({} as Idea)
+  const [ideaData, setIdeaData] = useState<Idea>()
   const [relevantIdeaList, setRelevantIdeaList] = useState([] as Idea[])
   const [value, onChange] = useState(hackathonData.description)
 
@@ -74,17 +74,10 @@ export default function HackathonDetails(props: IProps) {
 
   const loadRelevantIdeaDetails = () => {
     hackathonData.ideas?.map((ideaPreviews) => {
-      getIdeaDetails(instance, ideaPreviews.id).then(
-        (data) => {
-          setIdeaData(data)
-          setIsIdeaLoading(false)
-        },
-        () => {
-          setIdeaData({
-            ...ideaData,
-          })
-        }
-      )
+      getIdeaDetails(instance, ideaPreviews.id).then((data) => {
+        setIdeaData(data)
+        setIsIdeaLoading(false)
+      })
     })
   }
 
@@ -105,17 +98,18 @@ export default function HackathonDetails(props: IProps) {
   }, [hackathonData])
 
   useEffect(() => {
-    if (
-      !relevantIdeaList
-        .map((relevant) => {
-          return relevant.id
+    if (ideaData)
+      if (
+        !relevantIdeaList
+          .map((relevant) => {
+            return relevant.id
+          })
+          .includes(ideaData.id)
+      ) {
+        setRelevantIdeaList((relevantIdeaList) => {
+          return [...relevantIdeaList, ideaData]
         })
-        .includes(ideaData.id)
-    ) {
-      setRelevantIdeaList((relevantIdeaList) => {
-        return [...relevantIdeaList, ideaData]
-      })
-    }
+      }
   }, [ideaData])
 
   const allParticipants = hackathonData.participants?.map(

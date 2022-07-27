@@ -2,7 +2,7 @@ export enum HackathonDropdownMode {
   Archive = 'ARCHIVE',
   IdeaPortal = 'IDEA_PORTAL',
   Home = 'HOME',
-  YourIdeas = 'YOUR_IDEAS',
+  MyIdeas = 'MY_IDEAS',
 }
 
 export enum HackathonDetailsType {

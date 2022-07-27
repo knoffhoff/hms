@@ -27,7 +27,7 @@ const menuLinks = [
     link: 'ideas',
     label: 'Idea Portal',
   },
-  { link: 'your-ideas', label: 'Your Ideas' },
+  { link: 'my-ideas', label: 'My Ideas' },
   {
     link: 'archive',
     label: 'Archive',
