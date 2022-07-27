@@ -1,5 +1,5 @@
 import {verify} from 'jsonwebtoken';
-import { generatePolicy } from "./lambdaPolicyGenerator";
+import {generatePolicy} from './lambda-policy-generator';
 
 const AZURE_AD_CLIENT_ID = process.env.AZURE_AD_CLIENT_ID;
 const AZURE_AD_ISSUER = process.env.AZURE_AD_ISSUER;
@@ -23,21 +23,21 @@ export const authorizeWithActiveDirectory = (event, context, callback) => {
 
   try {
     verify(
-      tokenValue,
-      AZURE_AD_CLIENT_PUBLIC_KEY,
-      options,
-      (verifyError, decoded) => {
-        if (verifyError) {
-          console.log(`Token invalid. ${verifyError}`);
-          return callback('Unauthorized');
-        }
-        return callback(
-          null,
-          generatePolicy(decoded.sub, 'Allow', event.methodArn)
-        );
-      }
+        tokenValue,
+        AZURE_AD_CLIENT_PUBLIC_KEY,
+        options,
+        (verifyError, decoded) => {
+          if (verifyError) {
+            console.log(`Token invalid. ${verifyError}`);
+            return callback('Unauthorized');
+          }
+          return callback(
+              null,
+              generatePolicy(decoded.sub, 'Allow', event.methodArn),
+          );
+        },
     );
   } catch (err) {
     return callback('Unauthorized');
   }
-}
+};
