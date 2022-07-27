@@ -35,7 +35,7 @@ export async function createParticipant(
     );
   } else if (!(await userExists(userId))) {
     throw new ReferenceNotFoundError(
-      `Cannot create Participant, ` + `User with id: ${userId} does not exist`,
+      `Cannot create Participant, User with id: ${userId} does not exist`,
     );
   }
 
