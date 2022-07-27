@@ -97,7 +97,7 @@ export async function deleteCategory(id: Uuid): Promise<Category> {
   }
 
   throw new NotFoundError(
-    `Cannot delete Category with id: ${id}, ` + `it does not exist`,
+    `Cannot delete Category with id: ${id}, it does not exist`,
   );
 }
 
