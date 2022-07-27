@@ -65,9 +65,9 @@ export async function getUserResponse(id: Uuid): Promise<UserResponse> {
 export async function getUserExistsResponse(
     email: string,
 ): Promise<UserExistsResponse> {
-  const exists = await userExistsByEmail(email);
+  const {id, exists} = await userExistsByEmail(email);
 
-  return UserExistsResponse.from(email, exists);
+  return UserExistsResponse.from(id, email, exists);
 }
 
 export async function getUserListResponse(): Promise<UserListResponse> {

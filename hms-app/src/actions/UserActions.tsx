@@ -1,6 +1,7 @@
 import { IPublicClientApplication } from '@azure/msal-browser'
 import { getIdToken } from '../common/actionAuth'
 import { buildFetchOptions } from '../common/actionOptions'
+import { ActiveDirectoryUser } from '../common/types'
 
 const coreUrl = process.env.REACT_APP_CORE_URL
 
@@ -64,6 +65,19 @@ export const editUser = async (
   return fetch(`${coreUrl}/user/${user.id}`, options)
     .then((response) => {
       return response.json()
+    })
+    .catch((err) => console.log(err))
+}
+
+export const getUserExists = async (
+  instance: IPublicClientApplication,
+  user: ActiveDirectoryUser
+) => {
+  const idToken = await getIdToken(instance)
+  const options = buildFetchOptions('GET', idToken)
+  return fetch(`${coreUrl}/user/exists/${user.mail}`, options)
+    .then((data) => {
+      return data.json()
     })
     .catch((err) => console.log(err))
 }

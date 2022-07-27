@@ -83,7 +83,7 @@ export async function userExists(id: Uuid): Promise<boolean> {
 
 export async function userExistsByEmail(
     emailAddress: string,
-): Promise<boolean> {
+): Promise<{id: string, exists: boolean}> {
   const output = await dynamoDBClient.send(new QueryCommand({
     TableName: process.env.USER_TABLE,
     IndexName: process.env.USER_BY_EMAIL_ADDRESS_INDEX,
@@ -92,7 +92,9 @@ export async function userExistsByEmail(
   }));
 
   const items = output.Items;
-  return Array.isArray(items) && items.length > 0;
+  const exists = Array.isArray(items) && items.length > 0;
+  const id = items[0]?.id.S;
+  return {id, exists};
 }
 
 export async function deleteUser(id: Uuid) {
