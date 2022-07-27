@@ -8,13 +8,18 @@ export const orange2 = '#ff9f00'
 export const orange3 = '#FF6600'
 export const orange4 = '#e63b00'
 
+export const whiteAlpha30 = 'rgba(255,255,255,0.3)'
+export const orange3Alpha80 = 'rgba(255,102,0,0.8)'
+
 export const dark1 = '#e0e0e0'
 export const dark2 = '#bfbfbf'
 export const dark3 = '#767676'
 export const dark4 = '#262626'
 
-export const HEADER_ACTIVE_COLOR_LIGHT = orange3
-export const HEADER_ACTIVE_COLOR_DARK = orange3
+export const HEADER_ACTIVE_COLOR_LIGHT = orange3Alpha80
+export const HEADER_ACTIVE_COLOR_DARK = orange3Alpha80
+export const HEADER_HOVER_COLOR_LIGHT = whiteAlpha30
+export const HEADER_HOVER_COLOR_DARK = whiteAlpha30
 
 export const TEXT_COLOR_LIGHT = '#FFFFFF'
 export const TEXT_COLOR_DARK = '#FFFFFF'

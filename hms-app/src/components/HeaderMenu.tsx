@@ -19,6 +19,7 @@ import {
   HEADER_ACTIVE_COLOR_DARK,
   PRIMARY_COLOR_1,
   TEXT_COLOR_WHITE,
+  PRIMARY_COLOR_2,
 } from '../common/colors'
 import { useMsal } from '@azure/msal-react'
 import { Logout } from 'tabler-icons-react'
@@ -107,7 +108,13 @@ export default function HeaderMenu({ links }: HeaderSearchProps) {
   )
 
   return (
-    <Header height={56} style={{ backgroundColor: PRIMARY_COLOR_1 }}>
+    <Header
+      height={56}
+      style={{
+        backgroundColor:
+          theme.colorScheme === 'light' ? PRIMARY_COLOR_1 : PRIMARY_COLOR_1,
+      }}
+    >
       <Container size={1300}>
         <div className={classes.header}>
           <Group spacing={1}>
