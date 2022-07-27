@@ -7,23 +7,23 @@ import {
   listUsers,
   putUser,
   userExistsByEmail,
-} from "../repository/user-repository";
-import { getSkills, skillExists } from "../repository/skill-repository";
-import Participant from "../repository/domain/Participant";
-import User from "../repository/domain/User";
-import Uuid from "../util/Uuid";
-import Role from "../repository/domain/Role";
-import ReferenceNotFoundError from "../error/ReferenceNotFoundError";
-import UserResponse from "../rest/UserResponse";
-import UserListResponse from "../rest/UserListResponse";
-import UserDeleteResponse from "../rest/UserDeleteResponse";
-import NotFoundError from "../error/NotFoundError";
-import ValidationError from "../error/ValidationError";
-import UserExistsResponse from "../rest/UserExistsResponse";
+} from '../repository/user-repository';
+import {getSkills, skillExists} from '../repository/skill-repository';
+import Participant from '../repository/domain/Participant';
+import User from '../repository/domain/User';
+import Uuid from '../util/Uuid';
+import Role from '../repository/domain/Role';
+import ReferenceNotFoundError from '../error/ReferenceNotFoundError';
+import UserResponse from '../rest/UserResponse';
+import UserListResponse from '../rest/UserListResponse';
+import UserDeleteResponse from '../rest/UserDeleteResponse';
+import NotFoundError from '../error/NotFoundError';
+import ValidationError from '../error/ValidationError';
+import UserExistsResponse from '../rest/UserExistsResponse';
 
-const ADMIN_USERS = (): String[] => {
-  const adminUserString = process.env.ADMIN_USERS || "";
-  return adminUserString.split(",");
+const ADMIN_USERS = (): string[] => {
+  const adminUserString = process.env.ADMIN_USERS || '';
+  return adminUserString.split(',');
 };
 
 export async function createUser(
@@ -50,7 +50,7 @@ export async function createUser(
   );
   const result = user.validate();
   if (result.hasFailed()) {
-    throw new ValidationError("Cannot create User", result);
+    throw new ValidationError('Cannot create User', result);
   }
 
   await putUser(user);
@@ -102,7 +102,7 @@ export async function editUser(
     existing.imageUrl = imageUrl;
   } catch (e) {
     throw new NotFoundError(
-      `Cannot edit User with id: ${id}, ` + `it does not exist`
+      `Cannot edit User with id: ${id}, ` + 'it does not exist'
     );
   }
 
@@ -131,7 +131,7 @@ async function verifyAllSkillsExist(skillIds: Uuid[]): Promise<void> {
   for (const skillId of skillIds) {
     if (!(await skillExists(skillId))) {
       throw new ReferenceNotFoundError(
-        `Cannot create Idea, ` + `Skill with id: ${skillId} does not exist`
+        'Cannot create Idea, ' + `Skill with id: ${skillId} does not exist`
       );
     }
   }
