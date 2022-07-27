@@ -112,7 +112,7 @@ export async function editHackathon(
     existing.endDate = endDate;
   } catch (e) {
     throw new NotFoundError(
-      `Cannot edit Hackathon with id: ${id}, ` + `it does not exist`,
+      `Cannot edit Hackathon with id: ${id}, it does not exist`,
     );
   }
 
