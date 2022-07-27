@@ -41,6 +41,26 @@ export const deleteUser = async (
     .catch((err) => console.log(err))
 }
 
+export const createUser = async (
+  instance: IPublicClientApplication,
+  AdUser: ActiveDirectoryUser
+) => {
+  const idToken = await getIdToken(instance)
+  const options = buildFetchOptions('POST', idToken, {
+    lastName: AdUser.surname,
+    firstName: AdUser.givenName,
+    emailAddress: AdUser.mail,
+    roles: ['Participant'],
+    skills: [],
+    imageUrl: ''
+  })
+  return fetch(`${coreUrl}/user`, options)
+    .then((response) => {
+      return response.json()
+    })
+    .catch((err) => console.log(err))
+}
+
 export const editUser = async (
   instance: IPublicClientApplication,
   user: {

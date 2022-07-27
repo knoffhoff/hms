@@ -35,7 +35,7 @@ export const qAndAList = [
     answer:
       'If you are interested in Past Hackathons or want to find an old idea that you remember, you can use the Archive. In the Archive you will find a selection of all past hackathons with their submitted ideas.',
   },
-  /*{
+  /* {
     question: 'How the Voting and the Hackathon itself will work?',
     answer:
       '---add explanation about the voting system--- ---add space for specific explanation?---',
