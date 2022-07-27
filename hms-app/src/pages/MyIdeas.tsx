@@ -56,10 +56,10 @@ export default function MyIdeas() {
 
   return (
     <>
-      <Title order={1}>Your ideas</Title>
+      <Title order={1}>My ideas</Title>
       <HackathonSelectDropdown
         setHackathonId={setSelectedHackathonId}
-        context={HackathonDropdownMode.YourIdeas}
+        context={HackathonDropdownMode.MyIdeas}
       />
 
       <RelevantIdeasLoader
@@ -94,7 +94,7 @@ export default function MyIdeas() {
                     </Accordion>
                   )}
                 </div>
-                <h2>Your Ideas ({filteredIdeas.length})</h2>
+                <h2>My Ideas ({filteredIdeas.length})</h2>
                 <IdeaCardList
                   ideas={filteredIdeas}
                   columnSize={6}
