@@ -76,7 +76,7 @@ export class HmsInfrastructureStack extends Stack {
         {
           httpStatus: 403,
           responseHttpStatus: 403,
-          responsePagePath: "/error.html",
+          responsePagePath: "/index.html",
           ttl: Duration.minutes(30),
         },
       ],
