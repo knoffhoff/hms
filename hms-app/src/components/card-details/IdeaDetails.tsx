@@ -219,7 +219,7 @@ export default function IdeaDetails(props: IProps) {
       title: 'Join Idea',
       message: undefined,
       autoClose: false,
-      disallowClose: true,
+      disallowClose: false,
     })
     createIdeaParticipant(
       instance,
@@ -262,7 +262,7 @@ export default function IdeaDetails(props: IProps) {
       title: 'Leave Idea',
       message: undefined,
       autoClose: false,
-      disallowClose: true,
+      disallowClose: false,
     })
     removeIdeaParticipant(
       instance,
@@ -324,9 +324,9 @@ export default function IdeaDetails(props: IProps) {
     <>
       {!isLoading && (
         <Card withBorder className={classes.card}>
-          <Spoiler maxHeight={130} showLabel='Show more' hideLabel='Hide'>
+          <Spoiler maxHeight={145} showLabel='Show more' hideLabel='Hide'>
             <Card.Section className={classes.borderSection}>
-              <Group noWrap>
+              <Group noWrap mb={15}>
                 <Group
                   direction={'column'}
                   align={'center'}

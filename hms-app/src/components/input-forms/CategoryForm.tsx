@@ -66,7 +66,7 @@ export default function CategoryForm(props: IProps) {
       title: 'Category is uploading',
       message: undefined,
       autoClose: false,
-      disallowClose: true,
+      disallowClose: false,
     })
     editCategory(instance, category).then((response) =>
       setTimeout(() => {
@@ -106,7 +106,7 @@ export default function CategoryForm(props: IProps) {
       title: 'Category is uploading',
       message: undefined,
       autoClose: false,
-      disallowClose: true,
+      disallowClose: false,
     })
     addCategory(instance, category).then((response) =>
       setTimeout(() => {

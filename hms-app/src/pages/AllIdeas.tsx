@@ -91,7 +91,7 @@ function AllIdeas() {
       title: 'Join Hackathon',
       message: undefined,
       autoClose: false,
-      disallowClose: true,
+      disallowClose: false,
     })
     createHackathonParticipant(
       instance,
@@ -137,7 +137,7 @@ function AllIdeas() {
       title: 'Leave Hackathon',
       message: undefined,
       autoClose: false,
-      disallowClose: true,
+      disallowClose: false,
     })
     deleteParticipant(instance, findParticipant().id).then((response) => {
       console.log(response)

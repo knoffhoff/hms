@@ -105,9 +105,11 @@ export default function MyIdeas() {
                     </Accordion.Item>
                   </Accordion>
                 )}
-                <Title order={2} mt={50} mb={30}>
-                  You have submitted {filteredIdeas.length} ideas:
-                </Title>
+                {filteredIdeas.length > 0 && (
+                  <Title order={2} mt={50} mb={30}>
+                    You have submitted {filteredIdeas.length} ideas:
+                  </Title>
+                )}
                 <IdeaCardList
                   ideas={filteredIdeas}
                   columnSize={6}
