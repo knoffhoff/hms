@@ -59,7 +59,7 @@ const Layout = () => {
         { link: '', label: 'Home' },
         {
           link: 'ideas',
-          label: 'Idea Portal',
+          label: 'All Ideas',
         },
         { link: 'my-ideas', label: 'My Ideas' },
       ])

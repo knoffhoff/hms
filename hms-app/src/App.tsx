@@ -3,15 +3,14 @@ import { Route, Routes } from 'react-router-dom'
 import Layout from './pages/Layout'
 import './App.css'
 import Home from './pages/Home'
-import IdeaPortal from './pages/IdeaPortal'
+import AllIdeas from './pages/AllIdeas'
 import MyIdeas from './pages/MyIdeas'
 import Archive from './pages/Archive'
 import NoPage from './pages/NoPage'
 import Voting from './pages/Voting'
-import AdminPage from './pages/AdminPage'
+import Admin from './pages/Admin'
 import Presentations from './pages/Presentations'
 import { useAppSelector } from './hooks'
-import { User } from './common/types'
 import { UserSerializable } from './common/redux/userSlice'
 
 function App() {
@@ -24,13 +23,13 @@ function App() {
     <Routes>
       <Route path='/' element={<Layout />}>
         <Route index element={<Home />} />
-        <Route path='ideas' element={<IdeaPortal />} />
+        <Route path='ideas' element={<AllIdeas />} />
         <Route path='my-ideas' element={<MyIdeas />} />
         {isAdmin(stateUser) && (
           <>
             <Route path='archive' element={<Archive />} />
             <Route path='voting' element={<Voting />} />
-            <Route path='admin' element={<AdminPage />} />
+            <Route path='admin' element={<Admin />} />
           </>
         )}
         <Route path='*' element={<NoPage />} />
