@@ -118,7 +118,7 @@ export default function HeaderMenu({ links }: HeaderSearchProps) {
       <Container size={1300}>
         <div className={classes.header}>
           <Group spacing={1}>
-            <Image height={56} mt={30} src={LOGO} caption={'LOGO'} />{' '}
+            <Image height={56} width={120} src={LOGO} />{' '}
             <h1 style={{ color: TEXT_COLOR_WHITE }}>Hackweek</h1>
           </Group>
           <Group spacing={5} className={classes.headerLinks}>
