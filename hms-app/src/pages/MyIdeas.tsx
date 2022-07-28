@@ -50,12 +50,6 @@ export default function MyIdeas() {
     } else return undefined
   }
 
-  // if (hackathonData && hackathonData.participants) {
-  //   userParticipant = hackathonData.participants.find(
-  //     (participant) => participant.user.id === userID
-  //   )
-  // }
-
   useEffect(() => {
     const participant = userParticipant()
     if (participant) setParticipantId(participant.id)
