@@ -1,4 +1,4 @@
-import { Accordion, Title } from '@mantine/core'
+import { Accordion, Group, Text, Title, Badge } from '@mantine/core'
 import {
   Hackathon,
   HackathonDropdownMode,
@@ -14,6 +14,7 @@ import { styles } from '../common/styles'
 import HackathonSelectDropdown from '../components/HackathonSelectDropdown'
 import { NULL_DATE } from '../common/constants'
 import HackathonHeader from '../components/HackathonHeader'
+import { ArrowUp } from 'tabler-icons-react'
 
 export default function MyIdeas() {
   const { classes } = styles()
@@ -56,11 +57,19 @@ export default function MyIdeas() {
 
   return (
     <>
-      <Title order={1}>My ideas</Title>
-      <HackathonSelectDropdown
-        setHackathonId={setSelectedHackathonId}
-        context={HackathonDropdownMode.MyIdeas}
-      />
+      <Group position={'apart'} my={20}>
+        <HackathonSelectDropdown
+          setHackathonId={setSelectedHackathonId}
+          context={HackathonDropdownMode.MyIdeas}
+        />
+      </Group>
+
+      {selectedHackathonId === '' && (
+        <>
+          <ArrowUp size={'70px'} />
+          <Text size={'lg'}>Select a hackathon here</Text>
+        </>
+      )}
 
       <RelevantIdeasLoader
         setHackathon={setHackathonData}
@@ -72,41 +81,41 @@ export default function MyIdeas() {
       {!isLoading &&
         hackathonData.startDate !== NULL_DATE &&
         hackathonData.startDate.toString() !== 'Invalid Date' && (
-          <div>
+          <>
             <HackathonHeader hackathonData={hackathonData} />
 
             {isParticipant() && (
-              <div>
-                <div>
-                  {!(hackathonData.endDate < today) && (
-                    <Accordion>
-                      <Accordion.Item
-                        label={'Create new idea'}
-                        className={classes.borderAccordion}
-                      >
-                        <IdeaForm
-                          ideaId={'null'}
-                          hackathon={hackathonData}
-                          participantId={participantId}
-                          context={'new'}
-                        />
-                      </Accordion.Item>
-                    </Accordion>
-                  )}
-                </div>
-                <h2>My Ideas ({filteredIdeas.length})</h2>
+              <>
+                {!(hackathonData.endDate < today) && (
+                  <Accordion>
+                    <Accordion.Item
+                      label={'Create new idea'}
+                      className={classes.borderAccordion}
+                    >
+                      <IdeaForm
+                        ideaId={'null'}
+                        hackathon={hackathonData}
+                        participantId={participantId}
+                        context={'new'}
+                      />
+                    </Accordion.Item>
+                  </Accordion>
+                )}
+                <Title order={2} mt={50} mb={30}>
+                  You have submitted {filteredIdeas.length} ideas:
+                </Title>
                 <IdeaCardList
                   ideas={filteredIdeas}
                   columnSize={6}
                   type={IdeaCardType.Owner}
                   isLoading={false}
                 />
-              </div>
+              </>
             )}
             {!isParticipant() && (
               <div>you haven&apos;t participated in this hackathon</div>
             )}
-          </div>
+          </>
         )}
       {isLoading && selectedHackathonId && <div>Loading...</div>}
     </>

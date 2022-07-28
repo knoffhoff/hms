@@ -133,13 +133,14 @@ const HeroHeader = (props: { nextHackathon: HackathonSerializable }) => {
 
         <Center my={25}>
           <Badge
-            size={'lg'}
+            size={'xl'}
             variant='gradient'
             gradient={
               theme.colorScheme === 'dark'
                 ? { from: 'teal', to: 'blue', deg: 60 }
                 : { from: '#ed6ea0', to: '#ec8c69', deg: 35 }
             }
+            radius={'xs'}
           >
             {new Date(props.nextHackathon.startDate).toLocaleDateString()}
             {' - '}
