@@ -1,17 +1,18 @@
 import React from 'react'
-import { Accordion } from '@mantine/core'
+import { Accordion, Title } from '@mantine/core'
 import HackathonForm from '../components/input-forms/HackathonForm'
 import AllHackathonList from '../components/lists/AllHackathonList'
 import AllUserList from '../components/lists/AllUserList'
 import { styles } from '../common/styles'
 
-function AdminPage() {
+function Admin() {
   const { classes } = styles()
 
   return (
     <>
-      <h1>Hello Admin </h1>
-      <h2>Nice to see you</h2>
+      <Title order={1} mt={20} mb={50}>
+        Administration
+      </Title>
 
       <Accordion className={classes.accordionList}>
         <Accordion.Item
@@ -40,4 +41,4 @@ function AdminPage() {
   )
 }
 
-export default AdminPage
+export default Admin

@@ -16,12 +16,16 @@ import {
 } from '../common/redux/hackathonSlice'
 import React, { useEffect, useState, createContext } from 'react'
 import { getListOfHackathons } from '../actions/HackathonActions'
-import { createUser, getUserDetails, getUserExists } from '../actions/UserActions';
+import {
+  createUser,
+  getUserDetails,
+  getUserExists,
+} from '../actions/UserActions'
 import { useIsAuthenticated, useMsal } from '@azure/msal-react'
 import Login from './Login'
 import { PAGE_BACKGROUND_DARK, PAGE_BACKGROUND_LIGHT } from '../common/colors'
 import { getProfile } from '../common/actionAuth'
-import { ActiveDirectoryUser, UserPreview } from '../common/types';
+import { ActiveDirectoryUser, UserPreview } from '../common/types'
 
 const USE_AUTH = process.env.REACT_APP_USE_AZURE_AUTH === 'true'
 
@@ -29,7 +33,7 @@ const menuLinks = [
   { link: '', label: 'Home' },
   {
     link: 'ideas',
-    label: 'Idea Portal',
+    label: 'All ideas',
   },
   { link: 'my-ideas', label: 'My Ideas' },
   {
@@ -149,7 +153,9 @@ const Layout = () => {
             </AppShell>
           </UserContext.Provider>
         )}
-        {(!isAuthenticated || !user) && USE_AUTH && <Login isAuthenticated={isAuthenticated} user={user} />}
+        {(!isAuthenticated || !user) && USE_AUTH && (
+          <Login isAuthenticated={isAuthenticated} user={user} />
+        )}
       </MantineProvider>
     </ColorSchemeProvider>
   )
