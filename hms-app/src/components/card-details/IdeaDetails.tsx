@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import {
   Accordion,
   Avatar,
@@ -29,6 +29,8 @@ import {
   DELETE_BUTTON_COLOR,
   LEAVE_BUTTON_COLOR,
 } from '../../common/colors'
+import { HackathonParticipantContext } from '../../pages/AllIdeas'
+import { UserContext } from '../../pages/Layout'
 
 type IProps = {
   idea: Idea
@@ -37,6 +39,8 @@ type IProps = {
 }
 
 export default function IdeaDetails(props: IProps) {
+  const hackathonParticipantId = useContext(HackathonParticipantContext)
+  const user = useContext(UserContext)
   const { instance } = useMsal()
   const { classes } = styles()
   const theme = useMantineTheme()
@@ -54,12 +58,21 @@ export default function IdeaDetails(props: IProps) {
   const [buttonIsDisabled, setButtonisDisabled] = useState(false)
   // ToDo replace user and participant id with real data after a "user" endpoint exist
   const [participantInfo, setParticipantInfo] = useState({
-    userId: 'f6fa2b8e-68ed-4486-b8df-f93b87ff23e5',
-    hackathonId: '',
-    participantId: 'dd4596c0-911a-49a9-826f-0b6ec8a2d0b6',
+    userId: '',
+    participantId: '',
     ideaId: '',
   })
   const [participantCheck, setParticipantCheck] = useState(false)
+
+  useEffect(() => {
+    if (user) {
+      setParticipantInfo({
+        userId: user.id,
+        participantId: hackathonParticipantId,
+        ideaId: participantInfo.ideaId,
+      })
+    }
+  }, [user, hackathonParticipantId])
 
   const { idea, type, isLoading } = props
   const MAX_TITLE_LENGTH = 100
