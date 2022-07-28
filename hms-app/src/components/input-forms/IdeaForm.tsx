@@ -113,7 +113,7 @@ function IdeaForm(props: IProps) {
       title: 'Create idea',
       message: undefined,
       autoClose: false,
-      disallowClose: true,
+      // disallowClose: true,
     })
     createIdea(instance, ideaText, skills, categories).then((response) =>
       setTimeout(() => {
