@@ -8,7 +8,7 @@ import {
 } from '@mantine/core'
 import HeaderMenu from '../components/HeaderMenu'
 import { useLocalStorage } from '../common/localStorage'
-import { useAppDispatch } from '../hooks'
+import { useAppDispatch, useAppSelector } from '../hooks'
 import {
   mapHackathonToSerializable,
   setHackathonList,
@@ -16,32 +16,19 @@ import {
 } from '../common/redux/hackathonSlice'
 import React, { useEffect, useState, createContext } from 'react'
 import { getListOfHackathons } from '../actions/HackathonActions'
-import { createUser, getUserDetails, getUserExists } from '../actions/UserActions';
+import {
+  createUser,
+  getUserDetails,
+  getUserExists,
+} from '../actions/UserActions'
 import { useIsAuthenticated, useMsal } from '@azure/msal-react'
 import Login from './Login'
 import { PAGE_BACKGROUND_DARK, PAGE_BACKGROUND_LIGHT } from '../common/colors'
 import { getProfile } from '../common/actionAuth'
-import { ActiveDirectoryUser, UserPreview } from '../common/types';
+import { ActiveDirectoryUser, User, UserPreview } from '../common/types'
+import { setUserState } from '../common/redux/userSlice'
 
 const USE_AUTH = process.env.REACT_APP_USE_AZURE_AUTH === 'true'
-
-const menuLinks = [
-  { link: '', label: 'Home' },
-  {
-    link: 'ideas',
-    label: 'Idea Portal',
-  },
-  { link: 'my-ideas', label: 'My Ideas' },
-  {
-    link: 'archive',
-    label: 'Archive',
-  },
-  { link: 'voting', label: 'Voting' },
-  {
-    link: 'admin',
-    label: 'Admin',
-  },
-]
 
 export const UserContext = createContext({} as UserPreview | undefined)
 const defaultColorSchemeLocalStorageKey = 'color-scheme'
@@ -58,6 +45,35 @@ const Layout = () => {
     defaultColorSchemeLocalStorageKey,
     defaultColorScheme
   )
+  const stateUser = useAppSelector((state) => state.user.user)
+  const [menuLinks, setMenuLinks] = useState<{ link: string; label: string }[]>(
+    []
+  )
+  const isAdmin = (user: User) => {
+    console.log('isAdmin', user.roles)
+    return user && user.roles && user.roles.includes('Admin')
+  }
+
+  useEffect(() => {
+    if (isAuthenticated && user) {
+      setMenuLinks([
+        { link: '', label: 'Home' },
+        {
+          link: 'ideas',
+          label: 'Idea Portal',
+        },
+        { link: 'my-ideas', label: 'My Ideas' },
+      ])
+      if (isAdmin(stateUser)) {
+        setMenuLinks([
+          ...menuLinks,
+          { link: 'archive', label: 'Archive' },
+          { link: 'voting', label: 'Voting' },
+          { link: 'admin', label: 'Admin' },
+        ])
+      }
+    }
+  }, [user])
 
   const userExistsInDb = async (user: ActiveDirectoryUser) => {
     try {
@@ -101,6 +117,7 @@ const Layout = () => {
       }
       const dbUser = await getDbUser(userId)
       setUser(dbUser)
+      dispatch(setUserState(dbUser))
     }
     if (isAuthenticated) {
       getProfileDetails()
@@ -149,7 +166,9 @@ const Layout = () => {
             </AppShell>
           </UserContext.Provider>
         )}
-        {(!isAuthenticated || !user) && USE_AUTH && <Login isAuthenticated={isAuthenticated} user={user} />}
+        {(!isAuthenticated || !user) && USE_AUTH && (
+          <Login isAuthenticated={isAuthenticated} user={user} />
+        )}
       </MantineProvider>
     </ColorSchemeProvider>
   )
