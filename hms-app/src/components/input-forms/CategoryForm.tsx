@@ -163,6 +163,7 @@ export default function CategoryForm(props: IProps) {
           <Card.Section className={classes.borderSection}>
             <Textarea
               label='Description'
+              required
               placeholder='Description'
               maxRows={1}
               autosize
