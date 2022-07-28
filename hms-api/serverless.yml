@@ -35,7 +35,7 @@ custom:
 
 provider:
   name: aws
-  runtime: nodejs14.x
+  runtime: nodejs16.x
   region: eu-central-1
   environment:
     AUTHORIZER_TYPE: ACTIVE_DIRECTORY
