@@ -104,7 +104,7 @@ function AllIdeas() {
           ...prevState,
           participantId: response.id,
         }))
-        if (JSON.stringify(response).toString().includes('errorMessage')) {
+        if (JSON.stringify(response).toString().includes('error')) {
           setParticipantCheck(false)
           updateNotification({
             id: 'participant-load',
@@ -143,7 +143,7 @@ function AllIdeas() {
       console.log(response)
       setButtonisDisabled(false)
       setTimeout(() => {
-        if (JSON.stringify(response).toString().includes('errorMessage')) {
+        if (JSON.stringify(response).toString().includes('error')) {
           setParticipantCheck(true)
           updateNotification({
             id: 'participant-load',

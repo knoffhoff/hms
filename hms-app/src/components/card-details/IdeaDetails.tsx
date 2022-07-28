@@ -263,7 +263,7 @@ export default function IdeaDetails(props: IProps) {
     ).then((response) => {
       setButtonisDisabled(false)
       setTimeout(() => {
-        if (JSON.stringify(response).toString().includes('errorMessage')) {
+        if (JSON.stringify(response).toString().includes('error')) {
           setParticipantCheck(true)
           updateNotification({
             id: 'participant-load',

@@ -56,7 +56,7 @@ function HackathonForm(props: IProps) {
         ).then((response) =>
           setTimeout(() => {
             console.log(response)
-            if (JSON.stringify(response).toString().includes('errorMessage')) {
+            if (JSON.stringify(response).toString().includes('error')) {
               updateNotification({
                 id: 'participant-load',
                 color: 'red',
@@ -101,7 +101,7 @@ function HackathonForm(props: IProps) {
     ).then((response) =>
       setTimeout(() => {
         console.log(response)
-        if (JSON.stringify(response).toString().includes('errorMessage')) {
+        if (JSON.stringify(response).toString().includes('error')) {
           updateNotification({
             id: 'participant-load',
             color: 'red',

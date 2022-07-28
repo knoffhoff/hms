@@ -128,7 +128,7 @@ function IdeaForm(props: IProps) {
           problem: '',
           goal: '',
         }))
-        if (JSON.stringify(response).toString().includes('errorMessage')) {
+        if (JSON.stringify(response).toString().includes('error')) {
           updateNotification({
             id: 'participant-load',
             color: 'red',
@@ -169,7 +169,7 @@ function IdeaForm(props: IProps) {
         if (setOpened) {
           setOpened(false)
         }
-        if (JSON.stringify(response).toString().includes('errorMessage')) {
+        if (JSON.stringify(response).toString().includes('error')) {
           updateNotification({
             id: 'participant-load',
             color: 'red',
