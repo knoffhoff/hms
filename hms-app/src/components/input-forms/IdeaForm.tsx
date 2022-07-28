@@ -160,7 +160,7 @@ function IdeaForm(props: IProps) {
       title: 'Edit idea',
       message: undefined,
       autoClose: false,
-      disallowClose: true,
+      // disallowClose: true,
     })
     editIdea(instance, ideaId!, ideaText, skills, categories).then((response) =>
       setTimeout(() => {
