@@ -12,10 +12,10 @@ class CategoryResponse {
   hackathon: HackathonPreviewResponse;
 
   constructor(
-      id: Uuid,
-      title: string,
-      description: string,
-      hackathon: HackathonPreviewResponse,
+    id: Uuid,
+    title: string,
+    description: string,
+    hackathon: HackathonPreviewResponse,
   ) {
     this.id = id;
     this.title = title;
@@ -23,15 +23,13 @@ class CategoryResponse {
     this.hackathon = hackathon;
   }
 
-  static from = (
-      category: Category,
-      hackathon: Hackathon,
-  ) => new CategoryResponse(
+  static from = (category: Category, hackathon: Hackathon) =>
+    new CategoryResponse(
       category.id,
       category.title,
       category.description,
       HackathonPreviewResponse.from(hackathon),
-  );
+    );
 }
 
 export default CategoryResponse;

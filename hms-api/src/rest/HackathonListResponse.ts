@@ -10,11 +10,8 @@ class HackathonListResponse {
     this.hackathons = hackathons;
   }
 
-  static from = (
-      hackathons: Hackathon[],
-  ): HackathonListResponse => new HackathonListResponse(
-      HackathonPreviewResponse.fromArray(hackathons),
-  );
+  static from = (hackathons: Hackathon[]): HackathonListResponse =>
+    new HackathonListResponse(HackathonPreviewResponse.fromArray(hackathons));
 }
 
 export default HackathonListResponse;

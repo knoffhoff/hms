@@ -14,4 +14,3 @@ export const generatePolicy = (principalId, effect, resource) => {
   }
   return authResponse;
 };
-

@@ -23,14 +23,16 @@ import NotFoundError from '../error/NotFoundError';
 const dynamoDBClient: DynamoDBClient = getClient();
 
 export async function listIdeasForHackathon(
-    hackathonId: Uuid,
+  hackathonId: Uuid,
 ): Promise<Idea[]> {
-  const output = await dynamoDBClient.send(new QueryCommand({
-    TableName: process.env.IDEA_TABLE,
-    IndexName: process.env.IDEA_BY_HACKATHON_ID_INDEX,
-    KeyConditionExpression: 'hackathonId = :hId',
-    ExpressionAttributeValues: {':hId': {'S': hackathonId}},
-  }));
+  const output = await dynamoDBClient.send(
+    new QueryCommand({
+      TableName: process.env.IDEA_TABLE,
+      IndexName: process.env.IDEA_BY_HACKATHON_ID_INDEX,
+      KeyConditionExpression: 'hackathonId = :hId',
+      ExpressionAttributeValues: {':hId': {S: hackathonId}},
+    }),
+  );
 
   const items = output.Items;
   if (items) {
@@ -38,18 +40,19 @@ export async function listIdeasForHackathon(
   }
 
   throw new NotFoundError(
-      `Ideas for Hackathon with id: ${hackathonId} not found`);
+    `Ideas for Hackathon with id: ${hackathonId} not found`,
+  );
 }
 
-export async function listIdeasForCategory(
-    categoryId: Uuid,
-): Promise<Idea[]> {
-  const output = await dynamoDBClient.send(new QueryCommand({
-    TableName: process.env.IDEA_TABLE,
-    IndexName: process.env.IDEA_BY_CATEGORY_ID_INDEX,
-    KeyConditionExpression: 'categoryId = :cId',
-    ExpressionAttributeValues: {':cId': {'S': categoryId}},
-  }));
+export async function listIdeasForCategory(categoryId: Uuid): Promise<Idea[]> {
+  const output = await dynamoDBClient.send(
+    new QueryCommand({
+      TableName: process.env.IDEA_TABLE,
+      IndexName: process.env.IDEA_BY_CATEGORY_ID_INDEX,
+      KeyConditionExpression: 'categoryId = :cId',
+      ExpressionAttributeValues: {':cId': {S: categoryId}},
+    }),
+  );
 
   const items = output.Items;
   if (items) {
@@ -57,17 +60,20 @@ export async function listIdeasForCategory(
   }
 
   throw new NotFoundError(
-      `Ideas for Category with id: ${categoryId} not found`);
+    `Ideas for Category with id: ${categoryId} not found`,
+  );
 }
 
 export async function listIdeasForParticipant(
-    participantId: Uuid,
+  participantId: Uuid,
 ): Promise<Idea[]> {
-  const output = await dynamoDBClient.send(new ScanCommand({
-    TableName: process.env.IDEA_TABLE,
-    FilterExpression: 'contains(participantIds, :pId)',
-    ExpressionAttributeValues: {':pId': {'S': participantId}},
-  }));
+  const output = await dynamoDBClient.send(
+    new ScanCommand({
+      TableName: process.env.IDEA_TABLE,
+      FilterExpression: 'contains(participantIds, :pId)',
+      ExpressionAttributeValues: {':pId': {S: participantId}},
+    }),
+  );
 
   const items = output.Items;
   if (items) {
@@ -75,16 +81,19 @@ export async function listIdeasForParticipant(
   }
 
   throw new NotFoundError(
-      `Ideas for Participant with id: ${participantId} not found`);
+    `Ideas for Participant with id: ${participantId} not found`,
+  );
 }
 
 export async function listIdeasForOwner(ownerId: Uuid): Promise<Idea[]> {
-  const output = await dynamoDBClient.send(new QueryCommand({
-    TableName: process.env.IDEA_TABLE,
-    IndexName: process.env.IDEA_BY_OWNER_ID_INDEX,
-    KeyConditionExpression: 'ownerId = :oId',
-    ExpressionAttributeValues: {':oId': {'S': ownerId}},
-  }));
+  const output = await dynamoDBClient.send(
+    new QueryCommand({
+      TableName: process.env.IDEA_TABLE,
+      IndexName: process.env.IDEA_BY_OWNER_ID_INDEX,
+      KeyConditionExpression: 'ownerId = :oId',
+      ExpressionAttributeValues: {':oId': {S: ownerId}},
+    }),
+  );
 
   const items = output.Items;
   if (items) {
@@ -94,32 +103,34 @@ export async function listIdeasForOwner(ownerId: Uuid): Promise<Idea[]> {
   throw new NotFoundError(`Ideas for Owner with id: ${ownerId} not found`);
 }
 
-export async function putIdea(
-    idea: Idea,
-): Promise<void> {
-  await dynamoDBClient.send(new PutItemCommand({
-    TableName: process.env.IDEA_TABLE,
-    Item: {
-      ownerId: {S: idea.ownerId},
-      hackathonId: {S: idea.hackathonId},
-      participantIds: safeTransformArray(idea.participantIds),
-      title: {S: idea.title},
-      description: {S: idea.description},
-      problem: {S: idea.problem},
-      goal: {S: idea.goal},
-      requiredSkills: safeTransformArray(idea.requiredSkills),
-      categoryId: {S: idea.categoryId},
-      id: {S: idea.id},
-      creationDate: {S: idea.creationDate.toISOString()},
-    },
-  }));
+export async function putIdea(idea: Idea): Promise<void> {
+  await dynamoDBClient.send(
+    new PutItemCommand({
+      TableName: process.env.IDEA_TABLE,
+      Item: {
+        ownerId: {S: idea.ownerId},
+        hackathonId: {S: idea.hackathonId},
+        participantIds: safeTransformArray(idea.participantIds),
+        title: {S: idea.title},
+        description: {S: idea.description},
+        problem: {S: idea.problem},
+        goal: {S: idea.goal},
+        requiredSkills: safeTransformArray(idea.requiredSkills),
+        categoryId: {S: idea.categoryId},
+        id: {S: idea.id},
+        creationDate: {S: idea.creationDate.toISOString()},
+      },
+    }),
+  );
 }
 
 export async function getIdea(id: Uuid): Promise<Idea> {
-  const output = await dynamoDBClient.send(new GetItemCommand({
-    TableName: process.env.IDEA_TABLE,
-    Key: {id: {S: id}},
-  }));
+  const output = await dynamoDBClient.send(
+    new GetItemCommand({
+      TableName: process.env.IDEA_TABLE,
+      Key: {id: {S: id}},
+    }),
+  );
 
   const item = output.Item;
   if (item) {
@@ -130,60 +141,67 @@ export async function getIdea(id: Uuid): Promise<Idea> {
 }
 
 export async function deleteIdea(id: Uuid): Promise<Idea> {
-  const output = await dynamoDBClient.send(new DeleteItemCommand({
-    TableName: process.env.IDEA_TABLE,
-    Key: {id: {S: id}},
-    ReturnValues: 'ALL_OLD',
-  }));
+  const output = await dynamoDBClient.send(
+    new DeleteItemCommand({
+      TableName: process.env.IDEA_TABLE,
+      Key: {id: {S: id}},
+      ReturnValues: 'ALL_OLD',
+    }),
+  );
 
   if (output.Attributes) {
     return itemToIdea(output.Attributes);
   }
 
-  throw new NotFoundError(`Cannot delete Idea with id ${id}, ` +
-      `it does not exist`);
+  throw new NotFoundError(
+    `Cannot delete Idea with id ${id}, it does not exist`,
+  );
 }
 
 export async function addParticipantToIdea(
-    ideaId: Uuid,
-    participantId: Uuid,
+  ideaId: Uuid,
+  participantId: Uuid,
 ): Promise<void> {
-  await dynamoDBClient.send(new UpdateItemCommand({
-    TableName: process.env.IDEA_TABLE,
-    Key: {id: {S: ideaId}},
-    UpdateExpression: 'ADD participantIds :participant_id',
-    ExpressionAttributeValues: {
-      ':participant_id': {SS: [participantId]},
-    },
-  }));
+  await dynamoDBClient.send(
+    new UpdateItemCommand({
+      TableName: process.env.IDEA_TABLE,
+      Key: {id: {S: ideaId}},
+      UpdateExpression: 'ADD participantIds :participant_id',
+      ExpressionAttributeValues: {
+        ':participant_id': {SS: [participantId]},
+      },
+    }),
+  );
 }
 
 export async function deleteParticipantFromIdea(
-    ideaId: Uuid,
-    participantId: Uuid,
+  ideaId: Uuid,
+  participantId: Uuid,
 ): Promise<void> {
-  await dynamoDBClient.send(new UpdateItemCommand({
-    TableName: process.env.IDEA_TABLE,
-    Key: {id: {S: ideaId}},
-    UpdateExpression: 'DELETE participantIds :participant_id',
-    ExpressionAttributeValues: {
-      ':participant_id': {SS: [participantId]},
-    },
-  }));
+  await dynamoDBClient.send(
+    new UpdateItemCommand({
+      TableName: process.env.IDEA_TABLE,
+      Key: {id: {S: ideaId}},
+      UpdateExpression: 'DELETE participantIds :participant_id',
+      ExpressionAttributeValues: {
+        ':participant_id': {SS: [participantId]},
+      },
+    }),
+  );
 }
 
-function itemToIdea(item: { [key: string]: AttributeValue }): Idea {
+function itemToIdea(item: {[key: string]: AttributeValue}): Idea {
   return new Idea(
-      item.ownerId.S,
-      item.hackathonId.S,
-      item.title.S,
-      item.description.S,
-      item.problem.S,
-      item.goal.S,
-      safeTransformSSMember(item.requiredSkills),
-      item.categoryId.S,
-      item.id.S!,
-      new Date(item.creationDate.S!),
-      safeTransformSSMember(item.participantIds),
+    item.ownerId.S,
+    item.hackathonId.S,
+    item.title.S,
+    item.description.S,
+    item.problem.S,
+    item.goal.S,
+    safeTransformSSMember(item.requiredSkills),
+    item.categoryId.S,
+    item.id.S!,
+    new Date(item.creationDate.S!),
+    safeTransformSSMember(item.participantIds),
   );
 }

@@ -9,14 +9,14 @@ export async function create(event, context, callback) {
   await wrapHandler(async () => {
     const request = IdeaCreateRequest.parse(event.body);
     const idea = await createIdea(
-        request.ownerId,
-        request.hackathonId,
-        request.title,
-        request.description,
-        request.problem,
-        request.goal,
-        request.requiredSkills,
-        request.categoryId,
+      request.ownerId,
+      request.hackathonId,
+      request.title,
+      request.description,
+      request.problem,
+      request.goal,
+      request.requiredSkills,
+      request.categoryId,
     );
 
     callback(null, buildResponse(201, new IdeaCreateResponse(idea.id)));

@@ -7,10 +7,10 @@ class HackathonCreateRequest {
   endDate: Date;
 
   constructor(
-      title: string,
-      description: string,
-      startDate: Date,
-      endDate: Date,
+    title: string,
+    description: string,
+    startDate: Date,
+    endDate: Date,
   ) {
     this.title = title;
     this.description = description;
@@ -21,10 +21,10 @@ class HackathonCreateRequest {
   static parse(body: string): HackathonCreateRequest {
     const json = JSON.parse(body);
     return new HackathonCreateRequest(
-        json.title,
-        json.description,
-        new Date(json.startDate),
-        new Date(json.endDate),
+      json.title,
+      json.description,
+      new Date(json.startDate),
+      new Date(json.endDate),
     );
   }
 }

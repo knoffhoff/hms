@@ -30,7 +30,7 @@ class HackathonResponse {
     endDate: Date,
     participants: ParticipantPreviewResponse[],
     categories: CategoryPreviewResponse[],
-    ideas: IdeaPreviewResponse[]
+    ideas: IdeaPreviewResponse[],
   ) {
     this.id = id;
     this.title = title;
@@ -57,7 +57,7 @@ class HackathonResponse {
       hackathon.endDate,
       ParticipantPreviewResponse.fromArray(participants, users),
       CategoryPreviewResponse.fromArray(categories),
-      IdeaPreviewResponse.fromArray(ideas)
+      IdeaPreviewResponse.fromArray(ideas),
     );
 }
 

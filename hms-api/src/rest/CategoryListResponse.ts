@@ -8,21 +8,19 @@ class CategoryListResponse {
   categories: CategoryPreviewResponse[];
   hackathonId: Uuid;
 
-  constructor(
-      categories: CategoryPreviewResponse[],
-      hackathonId: Uuid,
-  ) {
+  constructor(categories: CategoryPreviewResponse[], hackathonId: Uuid) {
     this.categories = categories;
     this.hackathonId = hackathonId;
   }
 
   static from = (
-      categories: Category[],
-      hackathonId: Uuid,
-  ): CategoryListResponse => new CategoryListResponse(
+    categories: Category[],
+    hackathonId: Uuid,
+  ): CategoryListResponse =>
+    new CategoryListResponse(
       CategoryPreviewResponse.fromArray(categories),
       hackathonId,
-  );
+    );
 }
 
 export default CategoryListResponse;

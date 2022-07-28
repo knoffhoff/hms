@@ -23,19 +23,19 @@ export const authorizeWithActiveDirectory = (event, context, callback) => {
 
   try {
     verify(
-        tokenValue,
-        AZURE_AD_CLIENT_PUBLIC_KEY,
-        options,
-        (verifyError, decoded) => {
-          if (verifyError) {
-            console.log(`Token invalid. ${verifyError}`);
-            return callback('Unauthorized');
-          }
-          return callback(
-              null,
-              generatePolicy(decoded.sub, 'Allow', event.methodArn),
-          );
-        },
+      tokenValue,
+      AZURE_AD_CLIENT_PUBLIC_KEY,
+      options,
+      (verifyError, decoded) => {
+        if (verifyError) {
+          console.log(`Token invalid. ${verifyError}`);
+          return callback('Unauthorized');
+        }
+        return callback(
+          null,
+          generatePolicy(decoded.sub, 'Allow', event.methodArn),
+        );
+      },
     );
   } catch (err) {
     return callback('Unauthorized');
