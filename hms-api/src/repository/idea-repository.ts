@@ -162,16 +162,22 @@ export async function addParticipantToIdea(
   ideaId: Uuid,
   participantId: Uuid,
 ): Promise<void> {
-  await dynamoDBClient.send(
-    new UpdateItemCommand({
-      TableName: process.env.IDEA_TABLE,
-      Key: {id: {S: ideaId}},
-      UpdateExpression: 'ADD participantIds :participant_id',
-      ExpressionAttributeValues: {
-        ':participant_id': {SS: [participantId]},
-      },
-    }),
-  );
+  const idea = await getIdea(ideaId);
+  if (!idea.participantIds.includes(participantId)) {
+    idea.participantIds.push(participantId);
+    await putIdea(idea);
+  }
+  // TODO so because of how NULL data types work in DynamoDB you can't append to it...
+  // await dynamoDBClient.send(
+  //   new UpdateItemCommand({
+  //     TableName: process.env.IDEA_TABLE,
+  //     Key: {id: {S: ideaId}},
+  //     UpdateExpression: 'ADD participantIds :participant_id',
+  //     ExpressionAttributeValues: {
+  //       ':participant_id': {SS: [participantId]},
+  //     },
+  //   }),
+  // );
 }
 
 export async function deleteParticipantFromIdea(
