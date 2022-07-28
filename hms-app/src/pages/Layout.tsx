@@ -26,7 +26,7 @@ import Login from './Login'
 import { PAGE_BACKGROUND_DARK, PAGE_BACKGROUND_LIGHT } from '../common/colors'
 import { getProfile } from '../common/actionAuth'
 import { ActiveDirectoryUser, User, UserPreview } from '../common/types'
-import { setUserState } from '../common/redux/userSlice'
+import { setUserState, UserSerializable } from '../common/redux/userSlice'
 
 const USE_AUTH = process.env.REACT_APP_USE_AZURE_AUTH === 'true'
 
@@ -49,13 +49,12 @@ const Layout = () => {
   const [menuLinks, setMenuLinks] = useState<{ link: string; label: string }[]>(
     []
   )
-  const isAdmin = (user: User) => {
-    console.log('isAdmin', user.roles)
+  const isAdmin = (user: UserSerializable) => {
     return user && user.roles && user.roles.includes('Admin')
   }
 
   useEffect(() => {
-    if (isAuthenticated && user) {
+    if (isAuthenticated && stateUser) {
       setMenuLinks([
         { link: '', label: 'Home' },
         {
@@ -73,7 +72,7 @@ const Layout = () => {
         ])
       }
     }
-  }, [user])
+  }, [stateUser])
 
   const userExistsInDb = async (user: ActiveDirectoryUser) => {
     try {

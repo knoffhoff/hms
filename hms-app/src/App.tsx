@@ -12,11 +12,11 @@ import AdminPage from './pages/AdminPage'
 import Presentations from './pages/Presentations'
 import { useAppSelector } from './hooks'
 import { User } from './common/types'
+import { UserSerializable } from './common/redux/userSlice'
 
 function App() {
   const stateUser = useAppSelector((state) => state.user.user)
-  const isAdmin = (user: User) => {
-    console.log('isAdmin', user.roles)
+  const isAdmin = (user: UserSerializable) => {
     return user && user.roles && user.roles.includes('Admin')
   }
 

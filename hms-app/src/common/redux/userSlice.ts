@@ -1,8 +1,18 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { User } from '../types'
+import { SkillPreview, User } from '../types'
 
+export interface UserSerializable {
+  id: string
+  lastName?: string
+  firstName: string
+  emailAddress: string
+  roles: string[]
+  skills: SkillPreview[]
+  imageUrl?: string
+  creationDate: string
+}
 interface UserState {
-  user: User
+  user: UserSerializable
 }
 
 const initialState: UserState = {
@@ -14,8 +24,31 @@ const initialState: UserState = {
     roles: [],
     skills: [],
     imageUrl: '',
-    creationDate: new Date(),
+    creationDate: '2020-01-01T00:00:00.000Z',
   },
+}
+
+const mapUserToSerializable = ({
+  id,
+  firstName,
+  lastName,
+  emailAddress,
+  roles,
+  skills,
+  imageUrl,
+  creationDate,
+}: User): UserSerializable => {
+  const date = new Date(creationDate)
+  return {
+    id,
+    lastName,
+    firstName,
+    emailAddress,
+    roles,
+    skills,
+    imageUrl,
+    creationDate: date.toISOString(),
+  }
 }
 
 export const userSlice = createSlice({
@@ -23,7 +56,7 @@ export const userSlice = createSlice({
   initialState,
   reducers: {
     setUserState: (state, action: PayloadAction<User>) => {
-      state.user = action.payload
+      state.user = mapUserToSerializable(action.payload)
     },
   },
 })
