@@ -37,7 +37,7 @@ function IdeaForm(props: IProps) {
   const { hackathon, participantId, context, ideaId, setOpened, idea } = props
   const { classes } = styles()
   const [isLoading, setIsLoading] = useState(true)
-  const [buttonIsDisabled, setButtonIsDisabled] = useState(false)
+  const [buttonIsDisabled, setButtonIsDisabled] = useState(true)
   const [availableSkills, setAvailableSkills] = useState({
     skills: [] as SkillPreview[],
   })
@@ -102,9 +102,6 @@ function IdeaForm(props: IProps) {
       hackathonId: hackathon.id,
       [event.target.name]: event.target.value,
     }))
-    ideaText.title.length > allowedIdeaTitleLength
-      ? setButtonIsDisabled(true)
-      : setButtonIsDisabled(false)
   }
 
   function createThisIdea(event: React.MouseEvent<HTMLButtonElement>) {
@@ -202,6 +199,33 @@ function IdeaForm(props: IProps) {
     setCategories([])
     setSkills([])
   }, [])
+
+  useEffect(() => {
+    setCategories([])
+    setSkills([])
+  }, [availableCategories])
+
+  useEffect(() => {
+    if (categories.length > 0)
+      if (
+        ideaText.title.length > allowedIdeaTitleLength ||
+        ideaText.title.length < 1
+      ) {
+        setButtonIsDisabled(true)
+      } else {
+        setButtonIsDisabled(false)
+      }
+
+    if (
+      ideaText.title.length > allowedIdeaTitleLength &&
+      ideaText.title.length > 0
+    )
+      categories.length > 0
+        ? setButtonIsDisabled(false)
+        : setButtonIsDisabled(true)
+
+    if (categories.length < 1) setButtonIsDisabled(true)
+  }, [ideaText, categories])
 
   useEffect(() => {
     setIdeaText((prevIdeaText) => ({
