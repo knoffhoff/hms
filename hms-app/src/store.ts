@@ -1,9 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit'
 import hackathonReducer from './common/redux/hackathonSlice'
+import userReducer from './common/redux/userSlice'
 
 export const store = configureStore({
   reducer: {
     hackathons: hackathonReducer,
+    user: userReducer,
   },
 })
 
