@@ -4,7 +4,7 @@ import Layout from './pages/Layout'
 import './App.css'
 import Home from './pages/Home'
 import IdeaPortal from './pages/IdeaPortal'
-import YourIdeas from './pages/YourIdeas'
+import MyIdeas from './pages/MyIdeas'
 import Archive from './pages/Archive'
 import NoPage from './pages/NoPage'
 import Voting from './pages/Voting'
@@ -17,7 +17,7 @@ function App() {
       <Route path='/' element={<Layout />}>
         <Route index element={<Home />} />
         <Route path='ideas' element={<IdeaPortal />} />
-        <Route path='your-ideas' element={<YourIdeas />} />
+        <Route path='my-ideas' element={<MyIdeas />} />
         <Route path='archive' element={<Archive />} />
         <Route path='voting' element={<Voting />} />
         <Route path='admin' element={<AdminPage />} />

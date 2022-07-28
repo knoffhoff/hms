@@ -30,19 +30,7 @@ export default function RelevantIdeasLoader({
     categories: undefined,
     ideas: [],
   })
-  const [ideaData, setIdeaData] = useState<Idea>({
-    id: 'string',
-    owner: undefined,
-    hackathon: undefined,
-    participants: [],
-    title: 'string',
-    description: 'string',
-    problem: 'string',
-    goal: 'string',
-    requiredSkills: [],
-    category: undefined,
-    creationDate: new Date(),
-  })
+  const [ideaData, setIdeaData] = useState<Idea>()
 
   const loadSelectedHackathon = () => {
     getHackathonDetails(instance, selectedHackathonId).then((data) => {
@@ -72,17 +60,18 @@ export default function RelevantIdeasLoader({
   }, [hackathonData])
 
   useEffect(() => {
-    if (
-      !relevantIdeaList
-        .map((relevant) => {
-          return relevant.id
+    if (ideaData)
+      if (
+        !relevantIdeaList
+          .map((relevant) => {
+            return relevant.id
+          })
+          .includes(ideaData.id)
+      ) {
+        setRelevantIdeaList((relevantIdeaList) => {
+          return [...relevantIdeaList, ideaData]
         })
-        .includes(ideaData.id)
-    ) {
-      setRelevantIdeaList((relevantIdeaList) => {
-        return [...relevantIdeaList, ideaData]
-      })
-    }
+      }
   }, [ideaData])
 
   useEffect(() => {

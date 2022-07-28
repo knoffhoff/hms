@@ -15,19 +15,19 @@ import HackathonSelectDropdown from '../components/HackathonSelectDropdown'
 import { NULL_DATE } from '../common/constants'
 import HackathonHeader from '../components/HackathonHeader'
 
-export default function YourIdeas() {
+export default function MyIdeas() {
   const { classes } = styles()
   const [participantId, setParticipantId] = useState('')
   const userID = '629f52c9-df29-491b-82a4-bdd80806338d'
   const [selectedHackathonId, setSelectedHackathonId] = useState('')
   const [relevantIdeas, setRelevantIdeas] = useState<Idea[]>([])
   const [isLoading, setIsLoading] = useState(true)
-  const [hackathonData, setHackathonData] = useState({
+  const [hackathonData, setHackathonData] = useState<Hackathon>({
     id: 'string',
     title: 'string',
     description: 'string',
-    startDate: new Date(),
-    endDate: new Date(),
+    startDate: NULL_DATE,
+    endDate: NULL_DATE,
     participants: [],
     categories: undefined,
     ideas: [],
@@ -56,10 +56,10 @@ export default function YourIdeas() {
 
   return (
     <>
-      <Title order={1}>Your ideas</Title>
+      <Title order={1}>My ideas</Title>
       <HackathonSelectDropdown
         setHackathonId={setSelectedHackathonId}
-        context={HackathonDropdownMode.YourIdeas}
+        context={HackathonDropdownMode.MyIdeas}
       />
 
       <RelevantIdeasLoader
@@ -94,7 +94,7 @@ export default function YourIdeas() {
                     </Accordion>
                   )}
                 </div>
-                <h2>Your Ideas ({filteredIdeas.length})</h2>
+                <h2>My Ideas ({filteredIdeas.length})</h2>
                 <IdeaCardList
                   ideas={filteredIdeas}
                   columnSize={6}
