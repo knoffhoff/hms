@@ -57,23 +57,14 @@ class Category {
     return result;
   }
 
-  constructor(
-      title: string,
-      description: string,
-      hackathonId: Uuid,
-  );
-  constructor(
-      title: string,
-      description: string,
-      hackathonId: Uuid,
-      id: Uuid,
-  );
+  constructor(title: string, description: string, hackathonId: Uuid);
+  constructor(title: string, description: string, hackathonId: Uuid, id: Uuid);
 
   constructor(
-      title: string,
-      description: string,
-      hackathonId: Uuid,
-      id: Uuid = uuid(),
+    title: string,
+    description: string,
+    hackathonId: Uuid,
+    id: Uuid = uuid(),
   ) {
     this.id = id;
     this.title = title;

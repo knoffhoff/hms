@@ -8,6 +8,7 @@ import { styles } from '../../common/styles'
 import { RichTextEditor } from '@mantine/rte'
 import { useMsal } from '@azure/msal-react'
 import { dark2, dark3, JOIN_BUTTON_COLOR } from '../../common/colors'
+import { X } from 'tabler-icons-react'
 
 type IProps = { context: string; hackathonId: string | null }
 
@@ -27,44 +28,57 @@ function HackathonForm(props: IProps) {
 
   function createThisHackathon(event: React.MouseEvent<HTMLButtonElement>) {
     event.preventDefault()
-    showNotification({
-      id: 'hackathon-load',
-      loading: true,
-      title: 'Hackathon is uploading',
-      message: undefined,
-      autoClose: false,
-      disallowClose: true,
-    })
-    createHackathon(
-      instance,
-      hackathonTitle,
-      DescriptionValue,
-      startDateValue!,
-      endDateValue!
-    ).then((response) =>
-      setTimeout(() => {
-        console.log(response)
-        if (JSON.stringify(response).toString().includes('errorMessage')) {
-          updateNotification({
-            id: 'participant-load',
-            color: 'red',
-            title: 'Failed to create Hackathon',
-            message: undefined,
-            icon: <Cross2Icon />,
-            autoClose: 2000,
-          })
-        } else {
-          updateNotification({
-            id: 'participant-load',
-            color: 'teal',
-            title: 'Hackathon was created',
-            message: undefined,
-            icon: <CheckIcon />,
-            autoClose: 2000,
-          })
-        }
-      }, 3000)
-    )
+    if (startDateValue !== null && endDateValue !== null) {
+      if (endDateValue <= startDateValue) {
+        showNotification({
+          id: 'hackathon-end-before-start',
+          title: 'End date must be after start date',
+          message: 'Please select a valid end date',
+          autoClose: 5000,
+          icon: <X />,
+          color: 'red',
+        })
+      } else {
+        showNotification({
+          id: 'hackathon-load',
+          loading: true,
+          title: 'Hackathon is uploading',
+          message: undefined,
+          autoClose: false,
+          disallowClose: true,
+        })
+        createHackathon(
+          instance,
+          hackathonTitle,
+          DescriptionValue,
+          startDateValue!,
+          endDateValue!
+        ).then((response) =>
+          setTimeout(() => {
+            console.log(response)
+            if (JSON.stringify(response).toString().includes('errorMessage')) {
+              updateNotification({
+                id: 'participant-load',
+                color: 'red',
+                title: 'Failed to create Hackathon',
+                message: undefined,
+                icon: <Cross2Icon />,
+                autoClose: 2000,
+              })
+            } else {
+              updateNotification({
+                id: 'participant-load',
+                color: 'teal',
+                title: 'Hackathon was created',
+                message: undefined,
+                icon: <CheckIcon />,
+                autoClose: 2000,
+              })
+            }
+          }, 3000)
+        )
+      }
+    }
   }
 
   function editThisHackathon(event: React.MouseEvent<HTMLButtonElement>) {
@@ -143,7 +157,7 @@ function HackathonForm(props: IProps) {
               label={'End Date'}
               value={endDateValue}
               onChange={setEndDateValue}
-              excludeDate={(date) => date < startDateValue!}
+              excludeDate={(date) => date < today}
               required
               className={classes.label}
             />

@@ -12,11 +12,12 @@ export async function edit(event, context, callback) {
     const request = HackathonEditRequest.parse(event.body);
 
     await editHackathon(
-        id,
-        request.title,
-        request.description,
-        request.startDate,
-        request.endDate);
+      id,
+      request.title,
+      request.description,
+      request.startDate,
+      request.endDate,
+    );
 
     callback(null, buildResponse(200, new HackathonEditResponse(id)));
   }, callback);

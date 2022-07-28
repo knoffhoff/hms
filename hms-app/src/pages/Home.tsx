@@ -6,18 +6,25 @@ import {
   Container,
   SimpleGrid,
   Card,
+  Center,
+  useMantineColorScheme,
 } from '@mantine/core'
 import { styles } from '../common/styles'
 import { useAppSelector } from '../hooks'
 import { qAndAList } from '../common/HomeQandAContent'
 import { RichTextEditor } from '@mantine/rte'
+import Countdown from 'react-countdown'
+import HeroHeader from '../components/HeroHeader'
 
 function Home() {
+  const theme = useMantineColorScheme()
   const { classes } = styles()
   const [active, setActive] = useState(0)
   const [timeUntilNextHackathon, setTimeUntilNextHackathon] = useState({
     days: 0,
     hours: 0,
+    minutes: 0,
+    seconds: 0,
   })
   const [registration, setRegistration] = useState({
     openDate: new Date(),
@@ -46,7 +53,9 @@ function Home() {
     const hours = Math.floor(
       (difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
     )
-    return { days, hours }
+    const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60))
+    const seconds = Math.floor((difference % (1000 * 60)) / 1000)
+    return { days, hours, minutes, seconds }
   }
 
   const today = new Date()
@@ -99,40 +108,12 @@ function Home() {
 
   return (
     <>
-      {
-        <div>
-          <Title order={1} align={'center'}>
-            Upcoming Hackathon starts in
-            {' ' +
-              timeUntilNextHackathon.days +
-              ' days ' +
-              timeUntilNextHackathon.hours +
-              ' hours'}
-          </Title>
-          <Text align={'center'} className={classes.title}>
-            {nextHackathon.title}
-          </Text>
-          <Text align={'center'} className={classes.title}>
-            {new Date(nextHackathon.startDate).toLocaleDateString()} -{' '}
-            {new Date(nextHackathon.endDate).toLocaleDateString()}
-          </Text>
-          <Container>
-            {nextHackathon.description && (
-              <RichTextEditor
-                readOnly
-                value={nextHackathon.description}
-                onChange={() => {
-                  return null
-                }}
-              >
-                {nextHackathon.description}
-              </RichTextEditor>
-            )}
-          </Container>
-        </div>
-      }
+      <HeroHeader nextHackathon={nextHackathon} />
 
-      <Container fluid>
+      <Container fluid mb={150} mt={20}>
+        <Title align={'center'} mb={20} order={2}>
+          Frequently Asked Questions
+        </Title>
         <SimpleGrid cols={2} pt={20}>
           {qAndAList.map((qAndA, index) => (
             <Card shadow='sm' p='lg' key={index}>

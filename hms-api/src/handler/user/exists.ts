@@ -6,7 +6,7 @@ import {getUserExistsResponse} from '../../service/user-service';
 export async function exists(event, context, callback) {
   await wrapHandler(async () => {
     const responseBody = await getUserExistsResponse(
-        event.pathParameters.email,
+      event.pathParameters.email,
     );
     callback(null, buildResponse(200, responseBody));
   }, callback);

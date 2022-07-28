@@ -81,34 +81,35 @@ class Hackathon {
     }
 
     if (this.startDate >= this.endDate) {
-      result.addFailure(`startDate (${this.startDate}) ` +
-          `is after endDate (${this.endDate})`);
+      result.addFailure(
+        `startDate (${this.startDate}) is after endDate (${this.endDate})`,
+      );
     }
     return result;
   }
 
   constructor(
-      title: string,
-      description: string,
-      startDate: Date,
-      endDate: Date,
+    title: string,
+    description: string,
+    startDate: Date,
+    endDate: Date,
   );
   constructor(
-      title: string,
-      description: string,
-      startDate: Date,
-      endDate: Date,
-      id: Uuid,
-      creationDate: Date,
+    title: string,
+    description: string,
+    startDate: Date,
+    endDate: Date,
+    id: Uuid,
+    creationDate: Date,
   );
 
   constructor(
-      title: string,
-      description: string,
-      startDate: Date,
-      endDate: Date,
-      id: Uuid = uuid(),
-      creationDate: Date = new Date(),
+    title: string,
+    description: string,
+    startDate: Date,
+    endDate: Date,
+    id: Uuid = uuid(),
+    creationDate: Date = new Date(),
   ) {
     this.title = title;
     this.description = description;

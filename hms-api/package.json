@@ -4,18 +4,21 @@
   "scripts": {
     "test": "jest",
     "build": "sls package",
-    "start": "sls offline start --stage local",
+    "start": "sls offline start --stage local -c serverless.local.yml",
     "stop": "sls remove --stage local"
   },
   "license": "ISC",
   "devDependencies": {
     "@types/jest": "27.5.0",
-    "@types/node": "18.6.1",
+    "@types/node": "18.6.2",
     "@typescript-eslint/eslint-plugin": "5.31.0",
     "@typescript-eslint/parser": "5.31.0",
     "eslint": "8.20.0",
     "eslint-config-google": "0.14.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-prettier": "^4.2.1",
     "jest": "27.5.1",
+    "prettier": "^2.6.0",
     "serverless-dynamodb-local": "0.2.40",
     "serverless-offline": "8.8.1",
     "serverless-plugin-typescript": "2.1.2",

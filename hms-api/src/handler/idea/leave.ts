@@ -6,7 +6,7 @@ import IdeaLeaveResponse from '../../rest/IdeaLeaveResponse';
 // eslint-disable-next-line require-jsdoc
 export async function leave(event, context, callback) {
   await wrapHandler(async () => {
-    const ideaId = event.pathParameters.ideaId;
+    const ideaId = event.pathParameters.id;
     const participantId = event.pathParameters.participantId;
     await removeParticipant(ideaId, participantId);
 

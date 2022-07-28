@@ -22,9 +22,11 @@ import NotFoundError from '../error/NotFoundError';
 const dynamoDBClient = getClient();
 
 export async function listUsers(): Promise<User[]> {
-  const output = await dynamoDBClient.send(new ScanCommand({
-    TableName: process.env.USER_TABLE,
-  }));
+  const output = await dynamoDBClient.send(
+    new ScanCommand({
+      TableName: process.env.USER_TABLE,
+    }),
+  );
 
   const items = output.Items;
   if (items) {
@@ -35,26 +37,30 @@ export async function listUsers(): Promise<User[]> {
 }
 
 export async function putUser(user: User) {
-  await dynamoDBClient.send(new PutItemCommand({
-    TableName: process.env.USER_TABLE,
-    Item: {
-      lastName: {S: user.lastName},
-      firstName: {S: user.firstName},
-      emailAddress: {S: user.emailAddress},
-      roles: safeTransformArray(mapRolesToStrings(user.roles)),
-      skills: safeTransformArray(user.skills),
-      imageUrl: {S: user.imageUrl},
-      id: {S: user.id},
-      creationDate: {S: user.creationDate.toISOString()},
-    },
-  }));
+  await dynamoDBClient.send(
+    new PutItemCommand({
+      TableName: process.env.USER_TABLE,
+      Item: {
+        lastName: {S: user.lastName},
+        firstName: {S: user.firstName},
+        emailAddress: {S: user.emailAddress},
+        roles: safeTransformArray(mapRolesToStrings(user.roles)),
+        skills: safeTransformArray(user.skills),
+        imageUrl: {S: user.imageUrl},
+        id: {S: user.id},
+        creationDate: {S: user.creationDate.toISOString()},
+      },
+    }),
+  );
 }
 
 export async function getUser(id: Uuid): Promise<User> {
-  const output = await dynamoDBClient.send(new GetItemCommand({
-    TableName: process.env.USER_TABLE,
-    Key: {id: {S: id}},
-  }));
+  const output = await dynamoDBClient.send(
+    new GetItemCommand({
+      TableName: process.env.USER_TABLE,
+      Key: {id: {S: id}},
+    }),
+  );
 
   const item = output.Item;
   if (item) {
@@ -73,17 +79,19 @@ export async function getUsers(ids: Uuid[]): Promise<User[]> {
 }
 
 export async function userExists(id: Uuid): Promise<boolean> {
-  const output = await dynamoDBClient.send(new GetItemCommand({
-    TableName: process.env.USER_TABLE,
-    Key: {id: {S: id}},
-  }));
+  const output = await dynamoDBClient.send(
+    new GetItemCommand({
+      TableName: process.env.USER_TABLE,
+      Key: {id: {S: id}},
+    }),
+  );
 
   return !!output.Item;
 }
 
 export async function userExistsByEmail(
     emailAddress: string,
-): Promise<boolean> {
+): Promise<{id: string, exists: boolean}> {
   const output = await dynamoDBClient.send(new QueryCommand({
     TableName: process.env.USER_TABLE,
     IndexName: process.env.USER_BY_EMAIL_ADDRESS_INDEX,
@@ -92,33 +100,38 @@ export async function userExistsByEmail(
   }));
 
   const items = output.Items;
-  return Array.isArray(items) && items.length > 0;
+  const exists = Array.isArray(items) && items.length > 0;
+  const id = items[0]?.id.S;
+  return {id, exists};
 }
 
 export async function deleteUser(id: Uuid) {
-  const output = await dynamoDBClient.send(new DeleteItemCommand({
-    TableName: process.env.USER_TABLE,
-    Key: {id: {S: id}},
-    ReturnValues: 'ALL_OLD',
-  }));
+  const output = await dynamoDBClient.send(
+    new DeleteItemCommand({
+      TableName: process.env.USER_TABLE,
+      Key: {id: {S: id}},
+      ReturnValues: 'ALL_OLD',
+    }),
+  );
 
   if (output.Attributes) {
     return itemToUser(output.Attributes);
   }
 
-  throw new NotFoundError(`Cannot delete User with id: ${id}, ` +
-      `it does not exist`);
+  throw new NotFoundError(
+    `Cannot delete User with id: ${id}, it does not exist`,
+  );
 }
 
-function itemToUser(item: { [key: string]: AttributeValue }): User {
+function itemToUser(item: {[key: string]: AttributeValue}): User {
   return new User(
-      item.lastName.S,
-      item.firstName.S,
-      item.emailAddress.S,
-      mapStringToRoles(safeTransformSSMember(item.roles)),
-      safeTransformSSMember(item.skills),
-      item.imageUrl.S,
-      item.id.S!,
-      new Date(item.creationDate.S!),
+    item.lastName.S,
+    item.firstName.S,
+    item.emailAddress.S,
+    mapStringToRoles(safeTransformSSMember(item.roles)),
+    safeTransformSSMember(item.skills),
+    item.imageUrl.S,
+    item.id.S!,
+    new Date(item.creationDate.S!),
   );
 }

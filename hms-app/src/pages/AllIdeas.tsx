@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import { Input, Group, Title, Button } from '@mantine/core'
-import { Search } from 'tabler-icons-react'
+import { Input, Group, Text, Button } from '@mantine/core'
+import { ArrowBigUpLine, ArrowUp, Search } from 'tabler-icons-react'
 import IdeaCardList from '../components/lists/IdeaCardList'
 import {
   Hackathon,
@@ -22,7 +22,7 @@ import HackathonHeader from '../components/HackathonHeader'
 import { useMsal } from '@azure/msal-react'
 import { JOIN_BUTTON_COLOR, LEAVE_BUTTON_COLOR } from '../common/colors'
 
-function IdeaPortal() {
+function AllIdeas() {
   const { instance } = useMsal()
   const [searchTerm, setSearchTerm] = useState('')
   const [isLoading, setIsLoading] = useState(true)
@@ -163,8 +163,7 @@ function IdeaPortal() {
 
   return (
     <>
-      <Title order={1}>All ideas</Title>
-      <Group position={'apart'} py={20}>
+      <Group position={'apart'} my={20}>
         <HackathonSelectDropdown
           setHackathonId={setSelectedHackathonId}
           context={HackathonDropdownMode.IdeaPortal}
@@ -178,6 +177,13 @@ function IdeaPortal() {
         />
       </Group>
 
+      {selectedHackathonId === '' && (
+        <>
+          <ArrowUp size={'70px'} />
+          <Text size={'lg'}>Select a hackathon here</Text>
+        </>
+      )}
+
       <RelevantIdeasLoader
         setHackathon={setHackathonData}
         setRelevantIdeas={setRelevantIdeas}
@@ -188,7 +194,7 @@ function IdeaPortal() {
       {!isLoading &&
         hackathonData.startDate !== NULL_DATE &&
         hackathonData.startDate.toString() !== 'Invalid Date' && (
-          <div>
+          <>
             <Button
               disabled={buttonIsDisabled}
               onClick={
@@ -207,15 +213,13 @@ function IdeaPortal() {
 
             <HackathonHeader hackathonData={hackathonData} />
 
-            <div>
-              <IdeaCardList
-                ideas={filteredIdeas}
-                columnSize={6}
-                type={IdeaCardType.IdeaPortal}
-                isLoading={isLoading}
-              />
-            </div>
-          </div>
+            <IdeaCardList
+              ideas={filteredIdeas}
+              columnSize={6}
+              type={IdeaCardType.IdeaPortal}
+              isLoading={isLoading}
+            />
+          </>
         )}
 
       {isLoading && selectedHackathonId && <div>Loading...</div>}
@@ -223,4 +227,4 @@ function IdeaPortal() {
   )
 }
 
-export default IdeaPortal
+export default AllIdeas

@@ -51,22 +51,14 @@ export default class {
     return result;
   }
 
-  constructor(
-      userId: Uuid,
-      hackathonId: Uuid,
-  );
-  constructor(
-      userId: Uuid,
-      hackathonId: Uuid,
-      id: Uuid,
-      creationDate: Date,
-  );
+  constructor(userId: Uuid, hackathonId: Uuid);
+  constructor(userId: Uuid, hackathonId: Uuid, id: Uuid, creationDate: Date);
 
   constructor(
-      userId: Uuid,
-      hackathonId: Uuid,
-      id: Uuid = uuid(),
-      creationDate: Date = new Date(),
+    userId: Uuid,
+    hackathonId: Uuid,
+    id: Uuid = uuid(),
+    creationDate: Date = new Date(),
   ) {
     this.id = id;
     this.userId = userId;

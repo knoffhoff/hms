@@ -90,7 +90,7 @@ export default function HackathonSelectDropdown({
       {!isLoading && !isError && (
         <div style={{ width: 385 }}>
           <Select
-            placeholder={'select a Hackathon'}
+            placeholder={'Select a hackathon'}
             maxDropdownHeight={280}
             data={getHackathonsSelectItems()}
             onChange={setHackathonId}

@@ -10,12 +10,11 @@ export async function create(event, context, callback) {
   await wrapHandler(async () => {
     const request = UserCreateRequest.parse(event.body);
     const user = await createUser(
-        request.lastName,
-        request.firstName,
-        request.emailAddress,
-        request.roles,
-        request.skills,
-        request.imageUrl,
+      request.lastName,
+      request.firstName,
+      request.emailAddress,
+      request.skills,
+      request.imageUrl,
     );
 
     callback(null, buildResponse(201, new UserCreateResponse(user.id)));

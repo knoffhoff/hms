@@ -15,7 +15,7 @@ class HackathonPreviewResponse {
     title: string,
     description: string,
     startDate: Date,
-    endDate: Date
+    endDate: Date,
   ) {
     this.id = id;
     this.title = title;
@@ -24,9 +24,8 @@ class HackathonPreviewResponse {
     this.endDate = endDate;
   }
 
-  static from = (
-      hackathon: Hackathon,
-  ): HackathonPreviewResponse => new HackathonPreviewResponse(
+  static from = (hackathon: Hackathon): HackathonPreviewResponse =>
+    new HackathonPreviewResponse(
       hackathon.id,
       hackathon.title,
       hackathon.description,

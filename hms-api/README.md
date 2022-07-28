@@ -120,6 +120,9 @@ found [here](https://www.serverless.com/framework/docs/providers/aws/cli-referen
 
 [//]: # (TODO we will need some information about getting login credentials here eventually)
 **THIS SECTION IS INCOMPLETE AND NEEDS SOME WORK**
+Currently there is one manual step to be done after deploying:
+In the AWS console head to Apigateway and turn off Authorization caching on the hms api.
+Found this fix [here](https://forum.serverless.com/t/user-is-not-authorized-to-access-this-resource/6357)
 
 ### Locally
 

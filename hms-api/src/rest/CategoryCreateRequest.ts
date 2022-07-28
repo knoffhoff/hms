@@ -7,11 +7,7 @@ class CategoryCreateRequest {
   description: string;
   hackathonId: Uuid;
 
-  constructor(
-      title: string,
-      description: string,
-      hackathonId: Uuid,
-  ) {
+  constructor(title: string, description: string, hackathonId: Uuid) {
     this.title = title;
     this.description = description;
     this.hackathonId = hackathonId;
@@ -20,9 +16,9 @@ class CategoryCreateRequest {
   static parse(body: string): CategoryCreateRequest {
     const json = JSON.parse(body);
     return new CategoryCreateRequest(
-        json.title,
-        json.description,
-        json.hackathonId,
+      json.title,
+      json.description,
+      json.hackathonId,
     );
   }
 }
