@@ -261,7 +261,6 @@ export default function IdeaDetails(props: IProps) {
       participantInfo.ideaId,
       participantInfo.participantId
     ).then((response) => {
-      console.log(response)
       setButtonisDisabled(false)
       setTimeout(() => {
         if (JSON.stringify(response).toString().includes('errorMessage')) {
@@ -289,17 +288,21 @@ export default function IdeaDetails(props: IProps) {
     })
   }
 
-  let findParticipant: ParticipantPreview | null
-  if (idea && idea.participants) {
-    findParticipant = idea.participants.find(
-      (participant) => participant.user.id === participantInfo.userId
-    )!
-  } else {
-    findParticipant = null
+  const findParticipant = () => {
+    if (idea && idea.participants && user) {
+      const participant = idea.participants.find(
+        (participant) => participant.user.id === user.id
+      )
+      if (participant) {
+        return participant
+      } else {
+        return null
+      }
+    }
   }
 
   useEffect(() => {
-    if (findParticipant) setParticipantCheck(!!findParticipant)
+    if (findParticipant()) setParticipantCheck(!!findParticipant())
   }, [idea])
 
   useEffect(() => {

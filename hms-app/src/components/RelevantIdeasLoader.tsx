@@ -40,9 +40,10 @@ export default function RelevantIdeasLoader({
 
   const loadIdeaDetails = () => {
     hackathonData.ideas!.map((ideaPreview) => {
-      getIdeaDetails(instance, ideaPreview.id).then((ideaDetails) =>
+      getIdeaDetails(instance, ideaPreview.id).then((ideaDetails) => {
         setIdeaData(ideaDetails)
-      )
+        console.log(ideaDetails)
+      })
     })
     setIsThisLoading(false)
   }
