@@ -11,16 +11,19 @@ import {
   aws_cloudfront_origins as cloudfrontOrigins,
   aws_route53_targets as route53Targets,
   aws_s3_deployment as s3Deploy,
+  aws_dynamodb as dynamodb,
+  RemovalPolicy,
 } from "aws-cdk-lib";
 import { Construct } from "constructs";
 import { DOMAIN_NAME, REPO_NAME } from "../environment";
 
-const ACCOUNT_ID = process.env.CDK_DEFAULT_ACCOUNT || '';
+const ACCOUNT_ID = process.env.CDK_DEFAULT_ACCOUNT || "";
 
 export class HmsInfrastructureStack extends Stack {
   constructor(scope: Construct, id: string, props?: StackProps) {
     super(scope, id, props);
 
+    // Frontend Infrastructure
     const zone = route53.HostedZone.fromLookup(this, "HmsZone", {
       domainName: DOMAIN_NAME,
     });
@@ -117,11 +120,156 @@ export class HmsInfrastructureStack extends Stack {
         }
       ),
       managedPolicies: [
-        iam.ManagedPolicy.fromAwsManagedPolicyName('AmazonS3FullAccess'),
+        iam.ManagedPolicy.fromAwsManagedPolicyName("AmazonS3FullAccess"),
       ],
     });
     new CfnOutput(this, "GithubOidcRoleArn", {
       value: role.roleArn,
+    });
+
+    // Backend Infrastructure
+    new dynamodb.Table(this, "HackathonTable", {
+      removalPolicy: RemovalPolicy.RETAIN,
+      tableName: "hackathon",
+      billingMode: dynamodb.BillingMode.PAY_PER_REQUEST,
+      partitionKey: {
+        name: "id",
+        type: dynamodb.AttributeType.STRING,
+      },
+    });
+
+    const userTable = new dynamodb.Table(this, "UserTable", {
+      removalPolicy: RemovalPolicy.RETAIN,
+      tableName: "user",
+      billingMode: dynamodb.BillingMode.PAY_PER_REQUEST,
+      partitionKey: {
+        name: "id",
+        type: dynamodb.AttributeType.STRING,
+      },
+    });
+    userTable.addGlobalSecondaryIndex({
+      indexName: "user-by-emailAddress",
+      partitionKey: {
+        name: "emailAddress",
+        type: dynamodb.AttributeType.STRING,
+      },
+      sortKey: {
+        name: "id",
+        type: dynamodb.AttributeType.STRING,
+      },
+      projectionType: dynamodb.ProjectionType.ALL,
+    });
+
+    new dynamodb.Table(this, "SkillTable", {
+      removalPolicy: RemovalPolicy.RETAIN,
+      tableName: "skill",
+      billingMode: dynamodb.BillingMode.PAY_PER_REQUEST,
+      partitionKey: {
+        name: "id",
+        type: dynamodb.AttributeType.STRING,
+      },
+    });
+
+    const categoryTable = new dynamodb.Table(this, "CategoryTable", {
+      removalPolicy: RemovalPolicy.RETAIN,
+      tableName: "category",
+      billingMode: dynamodb.BillingMode.PAY_PER_REQUEST,
+      partitionKey: {
+        name: "id",
+        type: dynamodb.AttributeType.STRING,
+      },
+    });
+    categoryTable.addGlobalSecondaryIndex({
+      indexName: "category-by-hackathonId",
+      partitionKey: {
+        name: "hackathonId",
+        type: dynamodb.AttributeType.STRING,
+      },
+      sortKey: {
+        name: "id",
+        type: dynamodb.AttributeType.STRING,
+      },
+      projectionType: dynamodb.ProjectionType.ALL,
+    });
+
+    const ideaTable = new dynamodb.Table(this, "IdeaTable", {
+      removalPolicy: RemovalPolicy.RETAIN,
+      tableName: "idea",
+      billingMode: dynamodb.BillingMode.PAY_PER_REQUEST,
+      partitionKey: {
+        name: "id",
+        type: dynamodb.AttributeType.STRING,
+      },
+    });
+    ideaTable.addGlobalSecondaryIndex({
+      indexName: "idea-by-hackathonId",
+      partitionKey: {
+        name: "hackathonId",
+        type: dynamodb.AttributeType.STRING,
+      },
+      sortKey: {
+        name: "id",
+        type: dynamodb.AttributeType.STRING,
+      },
+      projectionType: dynamodb.ProjectionType.ALL,
+    });
+    ideaTable.addGlobalSecondaryIndex({
+      indexName: "idea-by-categoryId",
+      partitionKey: {
+        name: "categoryId",
+        type: dynamodb.AttributeType.STRING,
+      },
+      sortKey: {
+        name: "id",
+        type: dynamodb.AttributeType.STRING,
+      },
+      projectionType: dynamodb.ProjectionType.ALL,
+    });
+    ideaTable.addGlobalSecondaryIndex({
+      indexName: "idea-by-ownerId",
+      partitionKey: {
+        name: "ownerId",
+        type: dynamodb.AttributeType.STRING,
+      },
+      sortKey: {
+        name: "id",
+        type: dynamodb.AttributeType.STRING,
+      },
+      projectionType: dynamodb.ProjectionType.ALL,
+    });
+
+    const participantTable = new dynamodb.Table(this, "ParticipantTable", {
+      removalPolicy: RemovalPolicy.RETAIN,
+      tableName: "participant",
+      billingMode: dynamodb.BillingMode.PAY_PER_REQUEST,
+      partitionKey: {
+        name: "id",
+        type: dynamodb.AttributeType.STRING,
+      },
+    });
+    participantTable.addGlobalSecondaryIndex({
+      indexName: "participant-by-hackathonId",
+      partitionKey: {
+        name: "hackathonId",
+        type: dynamodb.AttributeType.STRING,
+      },
+      sortKey: {
+        name: "id",
+        type: dynamodb.AttributeType.STRING,
+      },
+      projectionType: dynamodb.ProjectionType.ALL,
+    });
+    participantTable.addGlobalSecondaryIndex({
+      indexName: "participant-by-hackathonId-userId",
+      partitionKey: {
+        name: "hackathonId",
+        type: dynamodb.AttributeType.STRING,
+      },
+      sortKey: {
+        name: "userId",
+        type: dynamodb.AttributeType.STRING,
+      },
+      projectionType: dynamodb.ProjectionType.ALL,
     });
   }
 }
