@@ -103,23 +103,39 @@ describe('Delete Idea', () => {
 
 describe('Add Participant to Idea', () => {
   test('Happy Path', async () => {
-    const ideaId = uuid();
+    const expected = randomIdea();
+    mockGetItem(itemFromIdea(expected));
     const participantId = uuid();
 
-    await addParticipantToIdea(ideaId, participantId);
+    await addParticipantToIdea(expected.id, participantId);
+
+    expected.participantIds.push(participantId);
 
     expect(mockSend).toHaveBeenCalledWith(
         expect.objectContaining({
           input: expect.objectContaining({
-            TableName: process.env.IDEA_TABLE,
-            Key: {id: {S: ideaId}},
-            UpdateExpression: 'ADD participantIds :participant_id',
-            ExpressionAttributeValues: {
-              ':participant_id': {SS: [participantId]},
-            },
+            TableName: ideaTable,
+            Item: itemFromIdea(expected),
           }),
         }));
   });
+
+  test('Ignore already added participant', async () => {
+    const idea = randomIdea();
+    const participantId = uuid();
+    idea.participantIds.push(participantId);
+    mockGetItem(itemFromIdea(idea));
+
+    await addParticipantToIdea(idea.id, participantId);
+
+    expect(mockSend).not.toHaveBeenCalledWith(
+        expect.objectContaining({
+          input: expect.objectContaining({
+            TableName: ideaTable,
+            Item: itemFromIdea(idea),
+          }),
+        }));
+  })
 });
 
 describe('Delete Participant from Idea', () => {
