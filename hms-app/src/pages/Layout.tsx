@@ -164,7 +164,7 @@ const Layout = () => {
                 },
               })}
             >
-              <Container size={'xl'} pt={50}>
+              <Container size={'xl'} pt={50} pb={100}>
                 <Outlet />
               </Container>
             </AppShell>
