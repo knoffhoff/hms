@@ -1,4 +1,4 @@
-import { Accordion, Group, Text, Title, Badge } from '@mantine/core'
+import { Accordion, Group, Text, Title, Alert, Center } from '@mantine/core'
 import {
   Hackathon,
   HackathonDropdownMode,
@@ -14,7 +14,7 @@ import { styles } from '../common/styles'
 import HackathonSelectDropdown from '../components/HackathonSelectDropdown'
 import { NULL_DATE } from '../common/constants'
 import HackathonHeader from '../components/HackathonHeader'
-import { ArrowUp } from 'tabler-icons-react'
+import { ArrowUp, AlertCircle } from 'tabler-icons-react'
 
 export default function MyIdeas() {
   const { classes } = styles()
@@ -113,7 +113,19 @@ export default function MyIdeas() {
               </>
             )}
             {!isParticipant() && (
-              <div>you haven&apos;t participated in this hackathon</div>
+              <Center>
+                <Alert
+                  icon={<AlertCircle size={16} />}
+                  title='Not a participant!'
+                  color='red'
+                  style={{ maxWidth: '500px' }}
+                >
+                  You are not yet participating in this hackathon. Go to
+                  &quot;All ideas&quot; and select the hackathon you want to
+                  participate in. Then click on &quot;Participate&quot; to join
+                  the hackathon.
+                </Alert>
+              </Center>
             )}
           </>
         )}
