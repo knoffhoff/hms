@@ -4,7 +4,7 @@
   "scripts": {
     "test": "jest",
     "build": "sls package",
-    "start": "sls offline start --stage local",
+    "start": "sls offline start --stage local -c serverless.local.yml",
     "stop": "sls remove --stage local"
   },
   "license": "ISC",

@@ -1,0 +1,501 @@
+service: hms-api
+
+plugins:
+  - serverless-plugin-typescript
+  - serverless-dynamodb-local
+  - serverless-offline
+
+custom:
+  dynamodb:
+    stages:
+      - local
+    start:
+      port: 8000
+      inMemory: false
+      heapInitial: 200m
+      heapMax: 1g
+      migrate: true
+      seed: true
+      convertEmptyValues: true
+    seed:
+      local:
+        sources:
+          - table: hackathon
+            rawsources: [./dev/init/hackathon-seed.json]
+          - table: category
+            rawsources: [./dev/init/category-seed.json]
+          - table: idea
+            rawsources: [./dev/init/idea-seed.json]
+          - table: participant
+            rawsources: [./dev/init/participant-seed.json]
+          - table: user
+            rawsources: [./dev/init/user-seed.json]
+          - table: skill
+            rawsources: [./dev/init/skill-seed.json]
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+  region: eu-central-1
+  environment:
+    AUTHORIZER_TYPE: ACTIVE_DIRECTORY
+    AZURE_AD_CLIENT_ID: ${file(./secrets.json):AZURE_AD_CLIENT_ID}
+    AZURE_AD_ISSUER: ${file(./secrets.json):AZURE_AD_ISSUER}
+    AZURE_AD_CLIENT_PUBLIC_KEY: ${file(./public_key)}
+    HACKATHON_TABLE: hackathon
+    USER_TABLE: user
+    USER_BY_EMAIL_ADDRESS_INDEX: user-by-emailAddress
+    SKILL_TABLE: skill
+    CATEGORY_TABLE: category
+    CATEGORY_BY_HACKATHON_ID_INDEX: category-by-hackathonId
+    IDEA_TABLE: idea
+    IDEA_BY_HACKATHON_ID_INDEX: idea-by-hackathonId
+    IDEA_BY_CATEGORY_ID_INDEX: idea-by-categoryId
+    IDEA_BY_OWNER_ID_INDEX: idea-by-ownerId
+    PARTICIPANT_TABLE: participant
+    PARTICIPANT_BY_HACKATHON_ID_INDEX: participant-by-hackathonId
+    PARTICIPANT_BY_HACKATHON_ID_USER_ID_INDEX: participant-by-hackathonId-userId
+    ADMIN_USERS: ${file(./secrets.json):ADMIN_USERS}
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - dynamodb:Query
+            - dynamodb:Scan
+            - dynamodb:GetItem
+            - dynamodb:PutItem
+            - dynamodb:UpdateItem
+            - dynamodb:DeleteItem
+          Resource:
+            - arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.HACKATHON_TABLE}
+            - arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.USER_TABLE}
+            - arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.USER_TABLE}/index/*
+            - arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.SKILL_TABLE}
+            - arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.CATEGORY_TABLE}
+            - arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.CATEGORY_TABLE}/index/*
+            - arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.IDEA_TABLE}
+            - arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.IDEA_TABLE}/index/*
+            - arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.PARTICIPANT_TABLE}
+            - arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.PARTICIPANT_TABLE}/index/*
+
+functions:
+  authorize:
+    handler: src/handler/authorize.authorize
+  createHackathon:
+    handler: src/handler/hackathon/create.create
+    events:
+      - http:
+          path: hackathon
+          method: post
+          cors: true
+          authorizer: authorize
+  editHackathon:
+    handler: src/handler/hackathon/edit.edit
+    events:
+      - http:
+          path: hackathon/{id}
+          method: put
+          cors: true
+          authorizer: authorize
+  listAllHackathons:
+    handler: src/handler/hackathon/list.list
+    events:
+      - http:
+          path: hackathons
+          method: get
+          cors: true
+          authorizer: authorize
+  getHackathon:
+    handler: src/handler/hackathon/get.get
+    events:
+      - http:
+          path: hackathon/{id}
+          method: get
+          cors: true
+          authorizer: authorize
+  deleteHackathon:
+    handler: src/handler/hackathon/remove.remove
+    events:
+      - http:
+          path: hackathon/{id}
+          method: delete
+          cors: true
+          authorizer: authorize
+
+  createIdea:
+    handler: src/handler/idea/create.create
+    events:
+      - http:
+          path: idea
+          method: post
+          cors: true
+          authorizer: authorize
+  editIdea:
+    handler: src/handler/idea/edit.edit
+    events:
+      - http:
+          path: idea/{id}
+          method: put
+          cors: true
+          authorizer: authorize
+  listAllIdea:
+    handler: src/handler/idea/list.list
+    events:
+      - http:
+          path: hackathon/{id}/ideas
+          method: get
+          cors: true
+          authorizer: authorize
+  getIdea:
+    handler: src/handler/idea/get.get
+    events:
+      - http:
+          path: idea/{id}
+          method: get
+          cors: true
+          authorizer: authorize
+  deleteIdea:
+    handler: src/handler/idea/remove.remove
+    events:
+      - http:
+          path: idea/{id}
+          method: delete
+          cors: true
+          authorizer: authorize
+  joinIdea:
+    handler: src/handler/idea/join.join
+    events:
+      - http:
+#           TODO this should be done using a userId from the token
+          path: idea/{id}/join/{participantId}
+          method: put
+          cors: true
+          authorizer: authorize
+  leaveIdea:
+    handler: src/handler/idea/leave.leave
+    events:
+      - http:
+#           TODO this should be done using a userId from the token
+          path: idea/{id}/leave/{participantId}
+          method: put
+          cors: true
+          authorizer: authorize
+
+  createUser:
+    handler: src/handler/user/create.create
+    events:
+      - http:
+          path: user
+          method: post
+          cors: true
+          authorizer: authorize
+  editUser:
+    handler: src/handler/user/edit.edit
+    events:
+      - http:
+          path: user/{id}
+          method: put
+          cors: true
+          authorizer: authorize
+  listAllUser:
+    handler: src/handler/user/list.list
+    events:
+      - http:
+          path: users
+          method: get
+          cors: true
+          authorizer: authorize
+  getUser:
+    handler: src/handler/user/get.get
+    events:
+      - http:
+          path: user/{id}
+          method: get
+          cors: true
+          authorizer: authorize
+  userExists:
+    handler: src/handler/user/exists.exists
+    events:
+      - http:
+          path: user/exists/{email}
+          method: get
+          cors: true
+          authorizer: authorize
+  deleteUser:
+    handler: src/handler/user/remove.remove
+    events:
+      - http:
+          path: user/{id}
+          method: delete
+          cors: true
+          authorizer: authorize
+
+  createParticipant:
+    handler: src/handler/participant/create.create
+    events:
+      - http:
+          path: participant
+          method: post
+          cors: true
+          authorizer: authorize
+  listAllParticipant:
+    handler: src/handler/participant/list.list
+    events:
+      - http:
+          path: hackathon/{id}/participants
+          method: get
+          cors: true
+          authorizer: authorize
+  getParticipant:
+    handler: src/handler/participant/get.get
+    events:
+      - http:
+          path: participant/{id}
+          method: get
+          cors: true
+          authorizer: authorize
+  deleteParticipant:
+    handler: src/handler/participant/remove.remove
+    events:
+      - http:
+          path: participant/{id}
+          method: delete
+          cors: true
+          authorizer: authorize
+
+  createCategory:
+    handler: src/handler/category/create.create
+    events:
+      - http:
+          path: category
+          method: post
+          cors: true
+          authorizer: authorize
+  editCategory:
+    handler: src/handler/category/edit.edit
+    events:
+      - http:
+          path: category/{id}
+          method: put
+          cors: true
+          authorizer: authorize
+  listAllCategory:
+    handler: src/handler/category/list.list
+    events:
+      - http:
+          path: hackathon/{id}/categories
+          method: get
+          cors: true
+          authorizer: authorize
+  getCategory:
+    handler: src/handler/category/get.get
+    events:
+      - http:
+          path: category/{id}
+          method: get
+          cors: true
+          authorizer: authorize
+  deleteCategory:
+    handler: src/handler/category/remove.remove
+    events:
+      - http:
+          path: category/{id}
+          method: delete
+          cors: true
+          authorizer: authorize
+
+  createSkill:
+    handler: src/handler/skill/create.create
+    events:
+      - http:
+          path: skill
+          method: post
+          cors: true
+          authorizer: authorize
+  editSkill:
+    handler: src/handler/skill/edit.edit
+    events:
+      - http:
+          path: skill/{id}
+          method: put
+          cors: true
+          authorizer: authorize
+  listAllSkill:
+    handler: src/handler/skill/list.list
+    events:
+      - http:
+          path: skills
+          method: get
+          cors: true
+          authorizer: authorize
+  getSkill:
+    handler: src/handler/skill/get.get
+    events:
+      - http:
+          path: skill/{id}
+          method: get
+          cors: true
+          authorizer: authorize
+  deleteSkill:
+    handler: src/handler/skill/remove.remove
+    events:
+      - http:
+          path: skill/{id}
+          method: delete
+          cors: true
+          authorizer: authorize
+
+resources:
+  Resources:
+    hackathonTable:
+      Type: AWS::DynamoDB::Table
+      DeletionPolicy: Retain
+      Properties:
+        TableName: ${self:provider.environment.HACKATHON_TABLE}
+        BillingMode: PAY_PER_REQUEST
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+
+    userTable:
+      Type: AWS::DynamoDB::Table
+      DeletionPolicy: Retain
+      Properties:
+        TableName: ${self:provider.environment.USER_TABLE}
+        BillingMode: PAY_PER_REQUEST
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+          - AttributeName: emailAddress
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        GlobalSecondaryIndexes:
+          - IndexName: ${self:provider.environment.USER_BY_EMAIL_ADDRESS_INDEX}
+            KeySchema:
+              - AttributeName: emailAddress
+                KeyType: HASH
+              - AttributeName: id
+                KeyType: RANGE
+            Projection:
+              ProjectionType: ALL
+
+    skillTable:
+      Type: AWS::DynamoDB::Table
+      DeletionPolicy: Retain
+      Properties:
+        TableName: ${self:provider.environment.SKILL_TABLE}
+        BillingMode: PAY_PER_REQUEST
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+
+    categoryTable:
+      Type: AWS::DynamoDB::Table
+      DeletionPolicy: Retain
+      Properties:
+        TableName: ${self:provider.environment.CATEGORY_TABLE}
+        BillingMode: PAY_PER_REQUEST
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+          - AttributeName: hackathonId
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        GlobalSecondaryIndexes:
+          - IndexName: ${self:provider.environment.CATEGORY_BY_HACKATHON_ID_INDEX}
+            KeySchema:
+              - AttributeName: hackathonId
+                KeyType: HASH
+              - AttributeName: id
+                KeyType: RANGE
+            Projection:
+              ProjectionType: ALL
+
+    ideaTable:
+      Type: AWS::DynamoDB::Table
+      DeletionPolicy: Retain
+      Properties:
+        TableName: ${self:provider.environment.IDEA_TABLE}
+        BillingMode: PAY_PER_REQUEST
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+          - AttributeName: hackathonId
+            AttributeType: S
+          - AttributeName: categoryId
+            AttributeType: S
+          - AttributeName: ownerId
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        GlobalSecondaryIndexes:
+          - IndexName: ${self:provider.environment.IDEA_BY_HACKATHON_ID_INDEX}
+            KeySchema:
+              - AttributeName: hackathonId
+                KeyType: HASH
+              - AttributeName: id
+                KeyType: RANGE
+            Projection:
+              ProjectionType: ALL
+          - IndexName: ${self:provider.environment.IDEA_BY_CATEGORY_ID_INDEX}
+            KeySchema:
+              - AttributeName: categoryId
+                KeyType: HASH
+              - AttributeName: id
+                KeyType: RANGE
+            Projection:
+              ProjectionType: ALL
+          - IndexName: ${self:provider.environment.IDEA_BY_OWNER_ID_INDEX}
+            KeySchema:
+              - AttributeName: ownerId
+                KeyType: HASH
+              - AttributeName: id
+                KeyType: RANGE
+            Projection:
+              ProjectionType: ALL
+
+    participantTable:
+      Type: AWS::DynamoDB::Table
+      DeletionPolicy: Retain
+      Properties:
+        TableName: ${self:provider.environment.PARTICIPANT_TABLE}
+        BillingMode: PAY_PER_REQUEST
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+          - AttributeName: hackathonId
+            AttributeType: S
+          - AttributeName: userId
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        GlobalSecondaryIndexes:
+          - IndexName: ${self:provider.environment.PARTICIPANT_BY_HACKATHON_ID_INDEX}
+            KeySchema:
+              - AttributeName: hackathonId
+                KeyType: HASH
+              - AttributeName: id
+                KeyType: RANGE
+            Projection:
+              ProjectionType: ALL
+          - IndexName: ${self:provider.environment.PARTICIPANT_BY_HACKATHON_ID_USER_ID_INDEX}
+            KeySchema:
+              - AttributeName: hackathonId
+                KeyType: HASH
+              - AttributeName: userId
+                KeyType: RANGE
+            Projection:
+              ProjectionType: ALL
