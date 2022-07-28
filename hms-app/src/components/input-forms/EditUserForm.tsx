@@ -8,7 +8,7 @@ import {
 } from '@mantine/core'
 import React, { useEffect, useState } from 'react'
 import { showNotification, updateNotification } from '@mantine/notifications'
-import { CheckIcon } from '@modulz/radix-icons'
+import { CheckIcon, Cross2Icon } from '@modulz/radix-icons'
 import { editUser, getUserDetails } from '../../actions/UserActions'
 import { SkillPreview } from '../../common/types'
 import { getListOfSkills } from '../../actions/SkillActions'
@@ -78,16 +78,28 @@ export default function EditUserForm(props: IProps) {
       autoClose: false,
       disallowClose: true,
     })
-    editUser(instance, user, skills).then(() =>
+    editUser(instance, user, skills).then((response) =>
       setTimeout(() => {
-        updateNotification({
-          id: 'user-load',
-          color: 'teal',
-          title: 'User was added',
-          message: undefined,
-          icon: <CheckIcon />,
-          autoClose: 2000,
-        })
+        console.log(response)
+        if (JSON.stringify(response).toString().includes('errorMessage')) {
+          updateNotification({
+            id: 'participant-load',
+            color: 'red',
+            title: 'Failed to edit User',
+            message: undefined,
+            icon: <Cross2Icon />,
+            autoClose: 2000,
+          })
+        } else {
+          updateNotification({
+            id: 'participant-load',
+            color: 'teal',
+            title: 'User was edited',
+            message: undefined,
+            icon: <CheckIcon />,
+            autoClose: 2000,
+          })
+        }
       }, 3000)
     )
   }

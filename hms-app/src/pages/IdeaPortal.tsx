@@ -14,7 +14,7 @@ import {
   deleteParticipant,
 } from '../actions/ParticipantActions'
 import { showNotification, updateNotification } from '@mantine/notifications'
-import { CheckIcon } from '@modulz/radix-icons'
+import { CheckIcon, Cross2Icon } from '@modulz/radix-icons'
 import HackathonSelectDropdown from '../components/HackathonSelectDropdown'
 import RelevantIdeasLoader from '../components/RelevantIdeasLoader'
 import { NULL_DATE } from '../common/constants'
@@ -84,21 +84,32 @@ function IdeaPortal() {
     ).then((response) => {
       setTimeout(() => {
         console.log(response)
-        console.log(hackathonData)
         setButtonisDisabled(false)
-        setParticipantCheck(true)
         setParticipantInfo((prevState) => ({
           ...prevState,
           participantId: response.id,
         }))
-        updateNotification({
-          id: 'participant-load',
-          color: 'teal',
-          title: 'Joined Hackathon',
-          message: undefined,
-          icon: <CheckIcon />,
-          autoClose: 2000,
-        })
+        if (JSON.stringify(response).toString().includes('errorMessage')) {
+          setParticipantCheck(false)
+          updateNotification({
+            id: 'participant-load',
+            color: 'red',
+            title: 'Failed to join Hackathon',
+            message: undefined,
+            icon: <Cross2Icon />,
+            autoClose: 2000,
+          })
+        } else {
+          setParticipantCheck(true)
+          updateNotification({
+            id: 'participant-load',
+            color: 'teal',
+            title: 'Joined Hackathon',
+            message: undefined,
+            icon: <CheckIcon />,
+            autoClose: 2000,
+          })
+        }
       }, 3000)
     })
   }
@@ -116,16 +127,28 @@ function IdeaPortal() {
     deleteParticipant(instance, findParticipant().id).then((response) => {
       console.log(response)
       setButtonisDisabled(false)
-      setParticipantCheck(false)
       setTimeout(() => {
-        updateNotification({
-          id: 'participant-load',
-          color: 'teal',
-          title: 'Left Hackathon',
-          message: undefined,
-          icon: <CheckIcon />,
-          autoClose: 2000,
-        })
+        if (JSON.stringify(response).toString().includes('errorMessage')) {
+          setParticipantCheck(true)
+          updateNotification({
+            id: 'participant-load',
+            color: 'red',
+            title: 'Failed to leave Hackathon',
+            message: undefined,
+            icon: <Cross2Icon />,
+            autoClose: 2000,
+          })
+        } else {
+          setParticipantCheck(false)
+          updateNotification({
+            id: 'participant-load',
+            color: 'teal',
+            title: 'Left Hackathon',
+            message: undefined,
+            icon: <CheckIcon />,
+            autoClose: 2000,
+          })
+        }
       }, 3000)
     })
   }
