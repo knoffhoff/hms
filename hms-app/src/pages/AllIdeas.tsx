@@ -99,7 +99,6 @@ function AllIdeas() {
       participantInfo.hackathonId
     ).then((response) => {
       setTimeout(() => {
-        console.log(response)
         setButtonisDisabled(false)
         setParticipantInfo((prevState) => ({
           ...prevState,

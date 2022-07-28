@@ -219,9 +219,9 @@ export default function IdeaDetails(props: IProps) {
       participantInfo.participantId
     ).then((response) => {
       setTimeout(() => {
-        console.log(response)
+        console.log('response', response)
         setButtonisDisabled(false)
-        if (JSON.stringify(response).toString().includes('errorMessage')) {
+        if (JSON.stringify(response).toString().includes('error')) {
           setParticipantCheck(false)
           updateNotification({
             id: 'participant-load',
