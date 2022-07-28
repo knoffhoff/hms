@@ -6,7 +6,7 @@ import {
   getCategoryDetails,
 } from '../../actions/CategoryActions'
 import { showNotification, updateNotification } from '@mantine/notifications'
-import { CheckIcon } from '@modulz/radix-icons'
+import { CheckIcon, Cross2Icon } from '@modulz/radix-icons'
 import { styles } from '../../common/styles'
 import { useMsal } from '@azure/msal-react'
 import { dark2, JOIN_BUTTON_COLOR } from '../../common/colors'
@@ -68,16 +68,28 @@ export default function CategoryForm(props: IProps) {
       autoClose: false,
       disallowClose: true,
     })
-    editCategory(instance, category).then(() =>
+    editCategory(instance, category).then((response) =>
       setTimeout(() => {
-        updateNotification({
-          id: 'category-load',
-          color: 'teal',
-          title: 'Category was added',
-          message: undefined,
-          icon: <CheckIcon />,
-          autoClose: 2000,
-        })
+        console.log(response)
+        if (JSON.stringify(response).toString().includes('error')) {
+          updateNotification({
+            id: 'participant-load',
+            color: 'red',
+            title: 'Failed to Edit Category',
+            message: undefined,
+            icon: <Cross2Icon />,
+            autoClose: 2000,
+          })
+        } else {
+          updateNotification({
+            id: 'participant-load',
+            color: 'teal',
+            title: 'Category was Edited',
+            message: undefined,
+            icon: <CheckIcon />,
+            autoClose: 2000,
+          })
+        }
       }, 3000)
     )
   }
@@ -96,16 +108,28 @@ export default function CategoryForm(props: IProps) {
       autoClose: false,
       disallowClose: true,
     })
-    addCategory(instance, category).then(() =>
+    addCategory(instance, category).then((response) =>
       setTimeout(() => {
-        updateNotification({
-          id: 'category-load',
-          color: 'teal',
-          title: 'Category was added',
-          message: undefined,
-          icon: <CheckIcon />,
-          autoClose: 2000,
-        })
+        console.log(response)
+        if (JSON.stringify(response).toString().includes('error')) {
+          updateNotification({
+            id: 'participant-load',
+            color: 'red',
+            title: 'Failed to create Category',
+            message: undefined,
+            icon: <Cross2Icon />,
+            autoClose: 2000,
+          })
+        } else {
+          updateNotification({
+            id: 'participant-load',
+            color: 'teal',
+            title: 'Category was added',
+            message: undefined,
+            icon: <CheckIcon />,
+            autoClose: 2000,
+          })
+        }
       }, 3000)
     )
   }

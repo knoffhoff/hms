@@ -22,7 +22,7 @@ import {
   createIdeaParticipant,
   removeIdeaParticipant,
 } from '../../actions/ParticipantActions'
-import { CheckIcon } from '@modulz/radix-icons'
+import { CheckIcon, Cross2Icon } from '@modulz/radix-icons'
 import { useMsal } from '@azure/msal-react'
 import {
   JOIN_BUTTON_COLOR,
@@ -225,19 +225,31 @@ export default function IdeaDetails(props: IProps) {
       instance,
       participantInfo.ideaId,
       participantInfo.participantId
-    ).then((r) => {
+    ).then((response) => {
       setTimeout(() => {
-        console.log('participant added with id', r)
+        console.log('response', response)
         setButtonisDisabled(false)
-        setParticipantCheck(true)
-        updateNotification({
-          id: 'participant-load',
-          color: 'teal',
-          title: 'Joined Idea',
-          message: undefined,
-          icon: <CheckIcon />,
-          autoClose: 2000,
-        })
+        if (JSON.stringify(response).toString().includes('error')) {
+          setParticipantCheck(false)
+          updateNotification({
+            id: 'participant-load',
+            color: 'red',
+            title: 'Failed to join Idea',
+            message: undefined,
+            icon: <Cross2Icon />,
+            autoClose: 2000,
+          })
+        } else {
+          setParticipantCheck(true)
+          updateNotification({
+            id: 'participant-load',
+            color: 'teal',
+            title: 'Joined Idea',
+            message: undefined,
+            icon: <CheckIcon />,
+            autoClose: 2000,
+          })
+        }
       }, 3000)
     })
   }
@@ -256,34 +268,49 @@ export default function IdeaDetails(props: IProps) {
       instance,
       participantInfo.ideaId,
       participantInfo.participantId
-    ).then((r) => {
-      console.log('participant removed with id ', r)
+    ).then((response) => {
       setButtonisDisabled(false)
-      setParticipantCheck(false)
       setTimeout(() => {
-        updateNotification({
-          id: 'participant-load',
-          color: 'teal',
-          title: 'Left Idea',
-          message: undefined,
-          icon: <CheckIcon />,
-          autoClose: 2000,
-        })
+        if (JSON.stringify(response).toString().includes('error')) {
+          setParticipantCheck(true)
+          updateNotification({
+            id: 'participant-load',
+            color: 'red',
+            title: 'Failed to leave Idea',
+            message: undefined,
+            icon: <Cross2Icon />,
+            autoClose: 2000,
+          })
+        } else {
+          setParticipantCheck(false)
+          updateNotification({
+            id: 'participant-load',
+            color: 'teal',
+            title: 'Left Idea',
+            message: undefined,
+            icon: <CheckIcon />,
+            autoClose: 2000,
+          })
+        }
       }, 3000)
     })
   }
 
-  let findParticipant: ParticipantPreview | null
-  if (idea && idea.participants) {
-    findParticipant = idea.participants.find(
-      (participant) => participant.user.id === participantInfo.userId
-    )!
-  } else {
-    findParticipant = null
+  const findParticipant = () => {
+    if (idea && idea.participants && user) {
+      const participant = idea.participants.find(
+        (participant) => participant.user.id === user.id
+      )
+      if (participant) {
+        return participant
+      } else {
+        return null
+      }
+    }
   }
 
   useEffect(() => {
-    if (findParticipant) setParticipantCheck(!!findParticipant)
+    if (findParticipant()) setParticipantCheck(!!findParticipant())
   }, [idea])
 
   useEffect(() => {
