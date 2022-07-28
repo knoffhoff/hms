@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import {
   Accordion,
   Avatar,
@@ -22,13 +22,15 @@ import {
   createIdeaParticipant,
   removeIdeaParticipant,
 } from '../../actions/ParticipantActions'
-import { CheckIcon } from '@modulz/radix-icons'
+import { CheckIcon, Cross2Icon } from '@modulz/radix-icons'
 import { useMsal } from '@azure/msal-react'
 import {
   JOIN_BUTTON_COLOR,
   DELETE_BUTTON_COLOR,
   LEAVE_BUTTON_COLOR,
 } from '../../common/colors'
+import { HackathonParticipantContext } from '../../pages/AllIdeas'
+import { UserContext } from '../../pages/Layout'
 
 type IProps = {
   idea: Idea
@@ -37,6 +39,8 @@ type IProps = {
 }
 
 export default function IdeaDetails(props: IProps) {
+  const hackathonParticipantId = useContext(HackathonParticipantContext)
+  const user = useContext(UserContext)
   const { instance } = useMsal()
   const { classes } = styles()
   const theme = useMantineTheme()
@@ -54,12 +58,21 @@ export default function IdeaDetails(props: IProps) {
   const [buttonIsDisabled, setButtonisDisabled] = useState(false)
   // ToDo replace user and participant id with real data after a "user" endpoint exist
   const [participantInfo, setParticipantInfo] = useState({
-    userId: 'f6fa2b8e-68ed-4486-b8df-f93b87ff23e5',
-    hackathonId: '',
-    participantId: 'dd4596c0-911a-49a9-826f-0b6ec8a2d0b6',
+    userId: '',
+    participantId: '',
     ideaId: '',
   })
   const [participantCheck, setParticipantCheck] = useState(false)
+
+  useEffect(() => {
+    if (user) {
+      setParticipantInfo({
+        userId: user.id,
+        participantId: hackathonParticipantId,
+        ideaId: participantInfo.ideaId,
+      })
+    }
+  }, [user, hackathonParticipantId])
 
   const { idea, type, isLoading } = props
   const MAX_TITLE_LENGTH = 100
@@ -204,19 +217,31 @@ export default function IdeaDetails(props: IProps) {
       instance,
       participantInfo.ideaId,
       participantInfo.participantId
-    ).then((r) => {
+    ).then((response) => {
       setTimeout(() => {
-        console.log('participant added with id', r)
+        console.log('response', response)
         setButtonisDisabled(false)
-        setParticipantCheck(true)
-        updateNotification({
-          id: 'participant-load',
-          color: 'teal',
-          title: 'Joined Idea',
-          message: undefined,
-          icon: <CheckIcon />,
-          autoClose: 2000,
-        })
+        if (JSON.stringify(response).toString().includes('error')) {
+          setParticipantCheck(false)
+          updateNotification({
+            id: 'participant-load',
+            color: 'red',
+            title: 'Failed to join Idea',
+            message: undefined,
+            icon: <Cross2Icon />,
+            autoClose: 2000,
+          })
+        } else {
+          setParticipantCheck(true)
+          updateNotification({
+            id: 'participant-load',
+            color: 'teal',
+            title: 'Joined Idea',
+            message: undefined,
+            icon: <CheckIcon />,
+            autoClose: 2000,
+          })
+        }
       }, 3000)
     })
   }
@@ -235,34 +260,49 @@ export default function IdeaDetails(props: IProps) {
       instance,
       participantInfo.ideaId,
       participantInfo.participantId
-    ).then((r) => {
-      console.log('participant removed with id ', r)
+    ).then((response) => {
       setButtonisDisabled(false)
-      setParticipantCheck(false)
       setTimeout(() => {
-        updateNotification({
-          id: 'participant-load',
-          color: 'teal',
-          title: 'Left Idea',
-          message: undefined,
-          icon: <CheckIcon />,
-          autoClose: 2000,
-        })
+        if (JSON.stringify(response).toString().includes('error')) {
+          setParticipantCheck(true)
+          updateNotification({
+            id: 'participant-load',
+            color: 'red',
+            title: 'Failed to leave Idea',
+            message: undefined,
+            icon: <Cross2Icon />,
+            autoClose: 2000,
+          })
+        } else {
+          setParticipantCheck(false)
+          updateNotification({
+            id: 'participant-load',
+            color: 'teal',
+            title: 'Left Idea',
+            message: undefined,
+            icon: <CheckIcon />,
+            autoClose: 2000,
+          })
+        }
       }, 3000)
     })
   }
 
-  let findParticipant: ParticipantPreview | null
-  if (idea && idea.participants) {
-    findParticipant = idea.participants.find(
-      (participant) => participant.user.id === participantInfo.userId
-    )!
-  } else {
-    findParticipant = null
+  const findParticipant = () => {
+    if (idea && idea.participants && user) {
+      const participant = idea.participants.find(
+        (participant) => participant.user.id === user.id
+      )
+      if (participant) {
+        return participant
+      } else {
+        return null
+      }
+    }
   }
 
   useEffect(() => {
-    if (findParticipant) setParticipantCheck(!!findParticipant)
+    if (findParticipant()) setParticipantCheck(!!findParticipant())
   }, [idea])
 
   useEffect(() => {

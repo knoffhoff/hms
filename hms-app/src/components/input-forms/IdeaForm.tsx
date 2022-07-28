@@ -17,7 +17,7 @@ import {
 import { getListOfSkills } from '../../actions/SkillActions'
 import { getListOfCategories } from '../../actions/CategoryActions'
 import { showNotification, updateNotification } from '@mantine/notifications'
-import { CheckIcon } from '@modulz/radix-icons'
+import { CheckIcon, Cross2Icon } from '@modulz/radix-icons'
 import { createIdea, editIdea } from '../../actions/IdeaActions'
 import { styles } from '../../common/styles'
 import { useMsal } from '@azure/msal-react'
@@ -37,7 +37,7 @@ function IdeaForm(props: IProps) {
   const { hackathon, participantId, context, ideaId, setOpened, idea } = props
   const { classes } = styles()
   const [isLoading, setIsLoading] = useState(true)
-  const [buttonIsDisabled, setButtonIsDisabled] = useState(false)
+  const [buttonIsDisabled, setButtonIsDisabled] = useState(true)
   const [availableSkills, setAvailableSkills] = useState({
     skills: [] as SkillPreview[],
   })
@@ -102,9 +102,6 @@ function IdeaForm(props: IProps) {
       hackathonId: hackathon.id,
       [event.target.name]: event.target.value,
     }))
-    ideaText.title.length > allowedIdeaTitleLength
-      ? setButtonIsDisabled(true)
-      : setButtonIsDisabled(false)
   }
 
   function createThisIdea(event: React.MouseEvent<HTMLButtonElement>) {
@@ -116,11 +113,11 @@ function IdeaForm(props: IProps) {
       title: 'Create idea',
       message: undefined,
       autoClose: false,
-      disallowClose: true,
+      // disallowClose: true,
     })
-    createIdea(instance, ideaText, skills, categories).then((r) =>
+    createIdea(instance, ideaText, skills, categories).then((response) =>
       setTimeout(() => {
-        console.log('r', r)
+        console.log(response)
         setButtonIsDisabled(false)
         setCategories([])
         setSkills([])
@@ -131,14 +128,25 @@ function IdeaForm(props: IProps) {
           problem: '',
           goal: '',
         }))
-        updateNotification({
-          id: 'idea-load',
-          color: 'teal',
-          title: 'Idea was created',
-          message: undefined,
-          icon: <CheckIcon />,
-          autoClose: 2000,
-        })
+        if (JSON.stringify(response).toString().includes('error')) {
+          updateNotification({
+            id: 'participant-load',
+            color: 'red',
+            title: 'Failed to create Idea',
+            message: undefined,
+            icon: <Cross2Icon />,
+            autoClose: 2000,
+          })
+        } else {
+          updateNotification({
+            id: 'participant-load',
+            color: 'teal',
+            title: 'Idea was created',
+            message: undefined,
+            icon: <CheckIcon />,
+            autoClose: 2000,
+          })
+        }
       }, 3000)
     )
   }
@@ -152,23 +160,34 @@ function IdeaForm(props: IProps) {
       title: 'Edit idea',
       message: undefined,
       autoClose: false,
-      disallowClose: true,
+      // disallowClose: true,
     })
-    editIdea(instance, ideaId!, ideaText, skills, categories).then((r) =>
+    editIdea(instance, ideaId!, ideaText, skills, categories).then((response) =>
       setTimeout(() => {
+        console.log(response)
         setButtonIsDisabled(false)
         if (setOpened) {
           setOpened(false)
         }
-        console.log(r)
-        updateNotification({
-          id: 'idea-load',
-          color: 'teal',
-          title: 'Idea was Edited',
-          message: undefined,
-          icon: <CheckIcon />,
-          autoClose: 2000,
-        })
+        if (JSON.stringify(response).toString().includes('error')) {
+          updateNotification({
+            id: 'participant-load',
+            color: 'red',
+            title: 'Failed to Edit Idea',
+            message: undefined,
+            icon: <Cross2Icon />,
+            autoClose: 2000,
+          })
+        } else {
+          updateNotification({
+            id: 'participant-load',
+            color: 'teal',
+            title: 'Idea was Edited',
+            message: undefined,
+            icon: <CheckIcon />,
+            autoClose: 2000,
+          })
+        }
       }, 3000)
     )
   }
@@ -180,6 +199,33 @@ function IdeaForm(props: IProps) {
     setCategories([])
     setSkills([])
   }, [])
+
+  useEffect(() => {
+    setCategories([])
+    setSkills([])
+  }, [availableCategories])
+
+  useEffect(() => {
+    if (categories.length > 0)
+      if (
+        ideaText.title.length > allowedIdeaTitleLength ||
+        ideaText.title.length < 1
+      ) {
+        setButtonIsDisabled(true)
+      } else {
+        setButtonIsDisabled(false)
+      }
+
+    if (
+      ideaText.title.length > allowedIdeaTitleLength &&
+      ideaText.title.length > 0
+    )
+      categories.length > 0
+        ? setButtonIsDisabled(false)
+        : setButtonIsDisabled(true)
+
+    if (categories.length < 1) setButtonIsDisabled(true)
+  }, [ideaText, categories])
 
   useEffect(() => {
     setIdeaText((prevIdeaText) => ({

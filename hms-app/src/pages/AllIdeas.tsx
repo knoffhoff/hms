@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext, createContext } from 'react'
 import { Input, Group, Text, Button } from '@mantine/core'
 import { ArrowBigUpLine, ArrowUp, Search } from 'tabler-icons-react'
 import IdeaCardList from '../components/lists/IdeaCardList'
@@ -8,22 +8,27 @@ import {
   HackathonDropdownMode,
   IdeaCardType,
   ParticipantPreview,
+  UserPreview,
 } from '../common/types'
 import {
   createHackathonParticipant,
   deleteParticipant,
 } from '../actions/ParticipantActions'
 import { showNotification, updateNotification } from '@mantine/notifications'
-import { CheckIcon } from '@modulz/radix-icons'
+import { CheckIcon, Cross2Icon } from '@modulz/radix-icons'
 import HackathonSelectDropdown from '../components/HackathonSelectDropdown'
 import RelevantIdeasLoader from '../components/RelevantIdeasLoader'
 import { NULL_DATE } from '../common/constants'
 import HackathonHeader from '../components/HackathonHeader'
 import { useMsal } from '@azure/msal-react'
 import { JOIN_BUTTON_COLOR, LEAVE_BUTTON_COLOR } from '../common/colors'
+import { UserContext } from './Layout'
+
+export const HackathonParticipantContext = createContext('')
 
 function AllIdeas() {
   const { instance } = useMsal()
+  const user = useContext(UserContext)
   const [searchTerm, setSearchTerm] = useState('')
   const [isLoading, setIsLoading] = useState(true)
   const [participantCheck, setParticipantCheck] = useState(false)
@@ -31,7 +36,7 @@ function AllIdeas() {
   const [buttonIsDisabled, setButtonisDisabled] = useState(false)
   const [relevantIdeaList, setRelevantIdeas] = useState<Idea[]>([])
   const [participantInfo, setParticipantInfo] = useState({
-    userId: 'f6fa2b8e-68ed-4486-b8df-f93b87ff23e5',
+    userId: '',
     hackathonId: '',
     participantId: '',
   })
@@ -41,6 +46,16 @@ function AllIdeas() {
     startDate: NULL_DATE,
     endDate: NULL_DATE,
   } as Hackathon)
+
+  useEffect(() => {
+    if (user) {
+      setParticipantInfo({
+        userId: user.id,
+        hackathonId: selectedHackathonId,
+        participantId: participantInfo.participantId,
+      })
+    }
+  }, [user, selectedHackathonId])
 
   const handleChangeSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value)
@@ -68,6 +83,7 @@ function AllIdeas() {
   }
 
   const addHackathonParticipant = () => {
+    console.log('participantInfo', participantInfo)
     setButtonisDisabled(true)
     showNotification({
       id: 'participant-load',
@@ -83,22 +99,32 @@ function AllIdeas() {
       participantInfo.hackathonId
     ).then((response) => {
       setTimeout(() => {
-        console.log(response)
-        console.log(hackathonData)
         setButtonisDisabled(false)
-        setParticipantCheck(true)
         setParticipantInfo((prevState) => ({
           ...prevState,
           participantId: response.id,
         }))
-        updateNotification({
-          id: 'participant-load',
-          color: 'teal',
-          title: 'Joined Hackathon',
-          message: undefined,
-          icon: <CheckIcon />,
-          autoClose: 2000,
-        })
+        if (JSON.stringify(response).toString().includes('error')) {
+          setParticipantCheck(false)
+          updateNotification({
+            id: 'participant-load',
+            color: 'red',
+            title: 'Failed to join Hackathon',
+            message: undefined,
+            icon: <Cross2Icon />,
+            autoClose: 2000,
+          })
+        } else {
+          setParticipantCheck(true)
+          updateNotification({
+            id: 'participant-load',
+            color: 'teal',
+            title: 'Joined Hackathon',
+            message: undefined,
+            icon: <CheckIcon />,
+            autoClose: 2000,
+          })
+        }
       }, 3000)
     })
   }
@@ -116,90 +142,105 @@ function AllIdeas() {
     deleteParticipant(instance, findParticipant().id).then((response) => {
       console.log(response)
       setButtonisDisabled(false)
-      setParticipantCheck(false)
       setTimeout(() => {
-        updateNotification({
-          id: 'participant-load',
-          color: 'teal',
-          title: 'Left Hackathon',
-          message: undefined,
-          icon: <CheckIcon />,
-          autoClose: 2000,
-        })
+        if (JSON.stringify(response).toString().includes('error')) {
+          setParticipantCheck(true)
+          updateNotification({
+            id: 'participant-load',
+            color: 'red',
+            title: 'Failed to leave Hackathon',
+            message: undefined,
+            icon: <Cross2Icon />,
+            autoClose: 2000,
+          })
+        } else {
+          setParticipantCheck(false)
+          updateNotification({
+            id: 'participant-load',
+            color: 'teal',
+            title: 'Left Hackathon',
+            message: undefined,
+            icon: <CheckIcon />,
+            autoClose: 2000,
+          })
+        }
       }, 3000)
     })
   }
 
   useEffect(() => {
-    setParticipantInfo({ ...participantInfo, hackathonId: selectedHackathonId })
-  }, [selectedHackathonId])
-
-  useEffect(() => {
-    setParticipantCheck(!!findParticipant())
+    const participant = findParticipant()
+    setParticipantCheck(!!participant)
+    if (participant)
+      setParticipantInfo({ ...participantInfo, participantId: participant.id })
   }, [hackathonData])
 
   return (
     <>
-      <Group position={'apart'} my={20}>
-        <HackathonSelectDropdown
-          setHackathonId={setSelectedHackathonId}
-          context={HackathonDropdownMode.IdeaPortal}
-        />
+      <HackathonParticipantContext.Provider
+        value={participantInfo.participantId}
+      >
+        <Group position={'apart'} my={20}>
+          <HackathonSelectDropdown
+            setHackathonId={setSelectedHackathonId}
+            context={HackathonDropdownMode.IdeaPortal}
+          />
 
-        <Input
-          variant='default'
-          placeholder='Search for idea title...'
-          icon={<Search />}
-          onChange={handleChangeSearch}
-        />
-      </Group>
+          <Input
+            variant='default'
+            placeholder='Search for idea title...'
+            icon={<Search />}
+            onChange={handleChangeSearch}
+          />
+        </Group>
 
-      {selectedHackathonId === '' && (
-        <>
-          <ArrowUp size={'70px'} />
-          <Text size={'lg'}>Select a hackathon here</Text>
-        </>
-      )}
-
-      <RelevantIdeasLoader
-        setHackathon={setHackathonData}
-        setRelevantIdeas={setRelevantIdeas}
-        selectedHackathonId={selectedHackathonId}
-        setLoading={setIsLoading}
-      />
-
-      {!isLoading &&
-        hackathonData.startDate !== NULL_DATE &&
-        hackathonData.startDate.toString() !== 'Invalid Date' && (
+        {selectedHackathonId === '' && (
           <>
-            <Button
-              disabled={buttonIsDisabled}
-              onClick={
-                participantCheck
-                  ? removeHackathonParticipant
-                  : addHackathonParticipant
-              }
-              style={{
-                backgroundColor: participantCheck
-                  ? LEAVE_BUTTON_COLOR
-                  : JOIN_BUTTON_COLOR,
-              }}
-            >
-              {participantCheck ? 'Leave Hackathon' : 'Join Hackathon'}
-            </Button>
-
-            <HackathonHeader hackathonData={hackathonData} />
-
-            <IdeaCardList
-              ideas={filteredIdeas}
-              columnSize={6}
-              type={IdeaCardType.IdeaPortal}
-              isLoading={isLoading}
-            />
+            <ArrowUp size={'70px'} />
+            <Text size={'lg'}>Select a hackathon here</Text>
           </>
         )}
 
-      {isLoading && selectedHackathonId && <div>Loading...</div>}
+        <RelevantIdeasLoader
+          setHackathon={setHackathonData}
+          setRelevantIdeas={setRelevantIdeas}
+          selectedHackathonId={selectedHackathonId}
+          setLoading={setIsLoading}
+        />
+
+        {!isLoading &&
+          hackathonData.startDate !== NULL_DATE &&
+          hackathonData.startDate.toString() !== 'Invalid Date' && (
+            <>
+              <Button
+                disabled={buttonIsDisabled}
+                onClick={
+                  participantCheck
+                    ? removeHackathonParticipant
+                    : addHackathonParticipant
+                }
+                style={{
+                  backgroundColor: participantCheck
+                    ? LEAVE_BUTTON_COLOR
+                    : JOIN_BUTTON_COLOR,
+                }}
+              >
+                {participantCheck ? 'Leave Hackathon' : 'Join Hackathon'}
+              </Button>
+
+              <HackathonHeader hackathonData={hackathonData} />
+
+              <IdeaCardList
+                ideas={filteredIdeas}
+                columnSize={6}
+                type={IdeaCardType.IdeaPortal}
+                isLoading={isLoading}
+              />
+            </>
+          )}
+
+        {isLoading && selectedHackathonId && <div>Loading...</div>}
+      </HackathonParticipantContext.Provider>
     </>
   )
 }

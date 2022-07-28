@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import { DatePicker } from '@mantine/dates'
 import { createHackathon, editHackathon } from '../../actions/HackathonActions'
 import { showNotification, updateNotification } from '@mantine/notifications'
-import { CheckIcon } from '@modulz/radix-icons'
+import { CheckIcon, Cross2Icon } from '@modulz/radix-icons'
 import { styles } from '../../common/styles'
 import { RichTextEditor } from '@mantine/rte'
 import { useMsal } from '@azure/msal-react'
@@ -56,14 +56,25 @@ function HackathonForm(props: IProps) {
         ).then((response) =>
           setTimeout(() => {
             console.log(response)
-            updateNotification({
-              id: 'hackathon-load',
-              color: 'teal',
-              title: 'Hackathon was created',
-              message: undefined,
-              icon: <CheckIcon />,
-              autoClose: 2000,
-            })
+            if (JSON.stringify(response).toString().includes('error')) {
+              updateNotification({
+                id: 'participant-load',
+                color: 'red',
+                title: 'Failed to create Hackathon',
+                message: undefined,
+                icon: <Cross2Icon />,
+                autoClose: 2000,
+              })
+            } else {
+              updateNotification({
+                id: 'participant-load',
+                color: 'teal',
+                title: 'Hackathon was created',
+                message: undefined,
+                icon: <CheckIcon />,
+                autoClose: 2000,
+              })
+            }
           }, 3000)
         )
       }
@@ -90,14 +101,25 @@ function HackathonForm(props: IProps) {
     ).then((response) =>
       setTimeout(() => {
         console.log(response)
-        updateNotification({
-          id: 'hackathon-load',
-          color: 'teal',
-          title: 'Hackathon was edited',
-          message: undefined,
-          icon: <CheckIcon />,
-          autoClose: 2000,
-        })
+        if (JSON.stringify(response).toString().includes('error')) {
+          updateNotification({
+            id: 'participant-load',
+            color: 'red',
+            title: 'Failed to Edit Hackathon',
+            message: undefined,
+            icon: <Cross2Icon />,
+            autoClose: 2000,
+          })
+        } else {
+          updateNotification({
+            id: 'participant-load',
+            color: 'teal',
+            title: 'Hackathon was Edited',
+            message: undefined,
+            icon: <CheckIcon />,
+            autoClose: 2000,
+          })
+        }
       }, 3000)
     )
   }
