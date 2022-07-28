@@ -1,11 +1,23 @@
-import { Paper, Button, Title, Container, Image } from '@mantine/core'
+import {
+  Paper,
+  Button,
+  Title,
+  Container,
+  Image,
+  Loader,
+  Center,
+} from '@mantine/core'
 import { useMsal } from '@azure/msal-react'
 import idealoIcon from '../assets/idealo-icon.png'
 import { SwitchToggle } from '../components/ThemeSwitchToggle'
 import React from 'react'
 import { loginStyles } from '../common/styles'
+import { UserPreview } from '../common/types'
 
-const Login = () => {
+const Login = (props: {
+  isAuthenticated: boolean
+  user: UserPreview | undefined
+}) => {
   const { classes } = loginStyles()
   const { instance } = useMsal()
 
@@ -26,10 +38,17 @@ const Login = () => {
           >
             Welcome to idealo Hackweek!
           </Title>
-          <Button fullWidth mt='xl' onClick={login} size={'md'} mb={30}>
-            <Image src={idealoIcon} width={20} mr={10} radius={2} />
-            Sign in with idealo SSO
-          </Button>
+          {!props.isAuthenticated && (
+            <Button fullWidth mt='xl' onClick={login} size={'md'} mb={30}>
+              <Image src={idealoIcon} width={20} mr={10} radius={2} />
+              Sign in with idealo SSO
+            </Button>
+          )}
+          {props.isAuthenticated && !props.user && (
+            <Center mt={'xl'}>
+              <Loader />
+            </Center>
+          )}
           <SwitchToggle />
         </Paper>
       </Container>

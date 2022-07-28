@@ -185,6 +185,15 @@ export type User = {
   creationDate: Date
 }
 
+export type ActiveDirectoryUser = {
+  id: string
+  displayName: string
+  givenName: string
+  surname: string
+  mail: string
+  userPrincipalName: string
+}
+
 export type SkillPreview = {
   id: string
   name: string
