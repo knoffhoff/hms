@@ -7,7 +7,7 @@ import {
   ParticipantPreview,
 } from '../common/types'
 import IdeaCardList from '../components/lists/IdeaCardList'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import IdeaForm from '../components/input-forms/IdeaForm'
 import RelevantIdeasLoader from '../components/RelevantIdeasLoader'
 import { styles } from '../common/styles'
@@ -15,11 +15,12 @@ import HackathonSelectDropdown from '../components/HackathonSelectDropdown'
 import { NULL_DATE } from '../common/constants'
 import HackathonHeader from '../components/HackathonHeader'
 import { ArrowUp, AlertCircle } from 'tabler-icons-react'
+import { UserContext } from './Layout'
 
 export default function MyIdeas() {
   const { classes } = styles()
+  const user = useContext(UserContext)
   const [participantId, setParticipantId] = useState('')
-  const userID = 'f6fa2b8e-68ed-4486-b8df-f93b87ff23e5'
   const [selectedHackathonId, setSelectedHackathonId] = useState('')
   const [relevantIdeas, setRelevantIdeas] = useState<Idea[]>([])
   const [isLoading, setIsLoading] = useState(true)
@@ -36,19 +37,22 @@ export default function MyIdeas() {
   const today = new Date()
 
   const filteredIdeas = relevantIdeas.filter((item) => {
-    return item.owner?.user.id.includes(userID)
+    const userId = user?.id || ''
+    return item.owner?.user.id.includes(userId)
   })
 
-  let userParticipant: ParticipantPreview | undefined
-
-  if (hackathonData && hackathonData.participants) {
-    userParticipant = hackathonData.participants.find(
-      (participant) => participant.user.id === userID
-    )
+  const userParticipant = () => {
+    const userId = user?.id || ''
+    if (hackathonData && hackathonData.participants) {
+      return hackathonData.participants.find(
+        (participant) => participant.user.id === userId
+      )
+    } else return undefined
   }
 
   useEffect(() => {
-    if (userParticipant) setParticipantId(userParticipant.id)
+    const participant = userParticipant()
+    if (participant) setParticipantId(participant.id)
   }, [hackathonData])
 
   function isParticipant(): boolean {
@@ -101,9 +105,11 @@ export default function MyIdeas() {
                     </Accordion.Item>
                   </Accordion>
                 )}
-                <Title order={2} mt={50} mb={30}>
-                  You have submitted {filteredIdeas.length} ideas:
-                </Title>
+                {filteredIdeas.length > 0 && (
+                  <Title order={2} mt={50} mb={30}>
+                    You have submitted {filteredIdeas.length} ideas:
+                  </Title>
+                )}
                 <IdeaCardList
                   ideas={filteredIdeas}
                   columnSize={6}

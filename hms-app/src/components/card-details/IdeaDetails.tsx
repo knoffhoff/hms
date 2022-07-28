@@ -64,6 +64,17 @@ export default function IdeaDetails(props: IProps) {
   })
   const [participantCheck, setParticipantCheck] = useState(false)
 
+  const getInitials = (
+    firstName: string | undefined,
+    lastName: string | undefined
+  ) => {
+    if (firstName && lastName) {
+      return `${firstName.substring(0, 1)}${lastName.substring(0, 1)}`
+    } else {
+      return ''
+    }
+  }
+
   useEffect(() => {
     if (user) {
       setParticipantInfo({
@@ -82,14 +93,9 @@ export default function IdeaDetails(props: IProps) {
       key={index}
       style={{ display: 'flex', alignItems: 'center', gap: '10px' }}
     >
-      <Avatar
-        color='indigo'
-        radius='xl'
-        size='md'
-        src={
-          'https://avatars.githubusercontent.com/u/10353856?s=460&u=88394dfd67727327c1f7670a1764dc38a8a24831&v=4'
-        }
-      />
+      <Avatar color='indigo' radius='xl' size='md'>
+        {getInitials(participant.user.firstName, participant.user.lastName)}
+      </Avatar>
       <Text className={classes.text}>
         {participant.user.firstName} {participant.user.lastName}
       </Text>
@@ -183,10 +189,12 @@ export default function IdeaDetails(props: IProps) {
                           color='indigo'
                           radius='xl'
                           size='md'
-                          src={
-                            'https://avatars.githubusercontent.com/u/10353856?s=460&u=88394dfd67727327c1f7670a1764dc38a8a24831&v=4'
-                          }
-                        />
+                        >
+                          {getInitials(
+                            participant.user.firstName,
+                            participant.user.lastName
+                          )}
+                        </Avatar>
                       ))}
                     </AvatarsGroup>
                   </Group>
@@ -211,7 +219,7 @@ export default function IdeaDetails(props: IProps) {
       title: 'Join Idea',
       message: undefined,
       autoClose: false,
-      disallowClose: true,
+      disallowClose: false,
     })
     createIdeaParticipant(
       instance,
@@ -254,7 +262,7 @@ export default function IdeaDetails(props: IProps) {
       title: 'Leave Idea',
       message: undefined,
       autoClose: false,
-      disallowClose: true,
+      disallowClose: false,
     })
     removeIdeaParticipant(
       instance,
@@ -316,23 +324,21 @@ export default function IdeaDetails(props: IProps) {
     <>
       {!isLoading && (
         <Card withBorder className={classes.card}>
-          <Spoiler maxHeight={130} showLabel='Show more' hideLabel='Hide'>
+          <Spoiler maxHeight={145} showLabel='Show more' hideLabel='Hide'>
             <Card.Section className={classes.borderSection}>
-              <Group noWrap>
+              <Group noWrap mb={15}>
                 <Group
                   direction={'column'}
                   align={'center'}
                   position={'center'}
                   spacing={'xs'}
                 >
-                  <Avatar
-                    color='indigo'
-                    radius='xl'
-                    size='md'
-                    src={
-                      'https://avatars.githubusercontent.com/u/10353856?s=460&u=88394dfd67727327c1f7670a1764dc38a8a24831&v=4'
-                    }
-                  />
+                  <Avatar color='indigo' radius='xl' size='md'>
+                    {getInitials(
+                      idea.owner?.user.firstName,
+                      idea.owner?.user.lastName
+                    )}
+                  </Avatar>
                   <Badge size='sm'>
                     {idea.owner?.user.firstName} {idea.owner?.user.lastName}
                   </Badge>

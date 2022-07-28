@@ -45,7 +45,7 @@ function HackathonForm(props: IProps) {
           title: 'Hackathon is uploading',
           message: undefined,
           autoClose: false,
-          disallowClose: true,
+          disallowClose: false,
         })
         createHackathon(
           instance,
@@ -89,7 +89,7 @@ function HackathonForm(props: IProps) {
       title: 'Hackathon is uploading',
       message: undefined,
       autoClose: false,
-      disallowClose: true,
+      disallowClose: false,
     })
     editHackathon(
       instance,

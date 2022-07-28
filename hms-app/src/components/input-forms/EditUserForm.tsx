@@ -76,7 +76,7 @@ export default function EditUserForm(props: IProps) {
       title: 'User is uploading',
       message: undefined,
       autoClose: false,
-      disallowClose: true,
+      disallowClose: false,
     })
     editUser(instance, user, skills).then((response) =>
       setTimeout(() => {

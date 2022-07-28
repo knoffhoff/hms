@@ -12,8 +12,6 @@ import {
 import { styles } from '../common/styles'
 import { useAppSelector } from '../hooks'
 import { qAndAList } from '../common/HomeQandAContent'
-import { RichTextEditor } from '@mantine/rte'
-import Countdown from 'react-countdown'
 import HeroHeader from '../components/HeroHeader'
 
 function Home() {

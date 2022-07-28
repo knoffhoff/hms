@@ -65,7 +65,12 @@ const Layout = () => {
       ])
       if (isAdmin(stateUser)) {
         setMenuLinks([
-          ...menuLinks,
+          { link: '', label: 'Home' },
+          {
+            link: 'ideas',
+            label: 'All Ideas',
+          },
+          { link: 'my-ideas', label: 'My Ideas' },
           { link: 'archive', label: 'Archive' },
           { link: 'voting', label: 'Voting' },
           { link: 'admin', label: 'Admin' },
@@ -159,7 +164,7 @@ const Layout = () => {
                 },
               })}
             >
-              <Container size={'xl'} pt={50}>
+              <Container size={'xl'} pt={50} pb={100}>
                 <Outlet />
               </Container>
             </AppShell>
