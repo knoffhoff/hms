@@ -298,14 +298,10 @@ export default function IdeaDetails(props: IProps) {
                   position={'center'}
                   spacing={'xs'}
                 >
-                  <Avatar
-                    color='indigo'
-                    radius='xl'
-                    size='md'
-                    src={
-                      'https://avatars.githubusercontent.com/u/10353856?s=460&u=88394dfd67727327c1f7670a1764dc38a8a24831&v=4'
-                    }
-                  />
+                  <Avatar color='indigo' radius='xl' size='md'>
+                    {idea.owner?.user.firstName?.substring(0, 1)}
+                    {idea.owner?.user.lastName?.substring(0, 1)}
+                  </Avatar>
                   <Badge size='sm'>
                     {idea.owner?.user.firstName} {idea.owner?.user.lastName}
                   </Badge>
