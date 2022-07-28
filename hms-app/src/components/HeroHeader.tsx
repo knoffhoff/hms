@@ -109,6 +109,9 @@ const HeroHeader = (props: { nextHackathon: HackathonSerializable }) => {
   const { classes } = useStyles()
   const today = new Date()
   today.setHours(0, 0, 0, 0)
+  const getHackathonDescription = (hackathon: HackathonSerializable) => {
+    return hackathon.description || ''
+  }
 
   return (
     <Container className={classes.wrapper} size={1400}>
@@ -149,9 +152,15 @@ const HeroHeader = (props: { nextHackathon: HackathonSerializable }) => {
         </Center>
 
         <Container p={0} size={600}>
-          <Text size='lg' color='dimmed' className={classes.description}>
-            {props.nextHackathon.description}
-          </Text>
+          <Text
+            size='lg'
+            color='dimmed'
+            className={classes.description}
+            dangerouslySetInnerHTML={{
+              __html: getHackathonDescription(props.nextHackathon),
+            }}
+          />
+          <Text></Text>
         </Container>
 
         <div className={classes.controls}>

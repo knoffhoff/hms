@@ -22,7 +22,7 @@ import HackathonHeader from '../components/HackathonHeader'
 import { useMsal } from '@azure/msal-react'
 import { JOIN_BUTTON_COLOR, LEAVE_BUTTON_COLOR } from '../common/colors'
 
-function IdeaPortal() {
+function AllIdeas() {
   const { instance } = useMsal()
   const [searchTerm, setSearchTerm] = useState('')
   const [isLoading, setIsLoading] = useState(true)
@@ -204,4 +204,4 @@ function IdeaPortal() {
   )
 }
 
-export default IdeaPortal
+export default AllIdeas
