@@ -19,7 +19,7 @@ import { ArrowUp, AlertCircle } from 'tabler-icons-react'
 export default function MyIdeas() {
   const { classes } = styles()
   const [participantId, setParticipantId] = useState('')
-  const userID = '629f52c9-df29-491b-82a4-bdd80806338d'
+  const userID = 'f6fa2b8e-68ed-4486-b8df-f93b87ff23e5'
   const [selectedHackathonId, setSelectedHackathonId] = useState('')
   const [relevantIdeas, setRelevantIdeas] = useState<Idea[]>([])
   const [isLoading, setIsLoading] = useState(true)
