@@ -10,11 +10,8 @@ class UserListResponse {
     this.users = users;
   }
 
-  static from = (
-      users: User[],
-  ): UserListResponse => new UserListResponse(
-      UserPreviewResponse.fromArray(users),
-  );
+  static from = (users: User[]): UserListResponse =>
+    new UserListResponse(UserPreviewResponse.fromArray(users));
 }
 
 export default UserListResponse;

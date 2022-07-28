@@ -14,10 +14,10 @@ class ParticipantResponse {
   creationDate: Date;
 
   constructor(
-      id: Uuid,
-      user: UserPreviewResponse,
-      hackathon: HackathonPreviewResponse,
-      creationDate: Date,
+    id: Uuid,
+    user: UserPreviewResponse,
+    hackathon: HackathonPreviewResponse,
+    creationDate: Date,
   ) {
     this.id = id;
     this.user = user;
@@ -26,15 +26,16 @@ class ParticipantResponse {
   }
 
   static from = (
-      participant: Participant,
-      user: User,
-      hackathon: Hackathon,
-  ): ParticipantResponse => new ParticipantResponse(
+    participant: Participant,
+    user: User,
+    hackathon: Hackathon,
+  ): ParticipantResponse =>
+    new ParticipantResponse(
       participant.id,
       UserPreviewResponse.from(user),
       HackathonPreviewResponse.from(hackathon),
       participant.creationDate,
-  );
+    );
 }
 
 export default ParticipantResponse;

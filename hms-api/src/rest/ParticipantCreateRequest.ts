@@ -6,10 +6,7 @@ class ParticipantCreateRequest {
   userId: Uuid;
   hackathonId: Uuid;
 
-  constructor(
-      userId: Uuid,
-      hackathonId: Uuid,
-  ) {
+  constructor(userId: Uuid, hackathonId: Uuid) {
     this.userId = userId;
     this.hackathonId = hackathonId;
   }

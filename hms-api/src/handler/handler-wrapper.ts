@@ -11,8 +11,10 @@ import InvalidStateError from '../error/InvalidStateError';
 import ValidationError from '../error/ValidationError';
 
 // eslint-disable-next-line require-jsdoc
-export async function wrapHandler(fun: () => void, callback: Function)
-    : Promise<void> {
+export async function wrapHandler(
+  fun: () => void,
+  callback: Function,
+): Promise<void> {
   try {
     await fun();
   } catch (e) {

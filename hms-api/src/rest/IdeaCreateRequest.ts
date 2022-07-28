@@ -13,14 +13,14 @@ class IdeaCreateRequest {
   categoryId: Uuid;
 
   constructor(
-      ownerId: Uuid,
-      hackathonId: Uuid,
-      title: string,
-      description: string,
-      problem: string,
-      goal: string,
-      requiredSkills: Uuid[],
-      categoryId: Uuid,
+    ownerId: Uuid,
+    hackathonId: Uuid,
+    title: string,
+    description: string,
+    problem: string,
+    goal: string,
+    requiredSkills: Uuid[],
+    categoryId: Uuid,
   ) {
     this.ownerId = ownerId;
     this.hackathonId = hackathonId;
@@ -35,14 +35,14 @@ class IdeaCreateRequest {
   static parse(body: string): IdeaCreateRequest {
     const json = JSON.parse(body);
     return new IdeaCreateRequest(
-        json.ownerId,
-        json.hackathonId,
-        json.title,
-        json.description,
-        json.problem,
-        json.goal,
-        json.requiredSkills,
-        json.categoryId,
+      json.ownerId,
+      json.hackathonId,
+      json.title,
+      json.description,
+      json.problem,
+      json.goal,
+      json.requiredSkills,
+      json.categoryId,
     );
   }
 }

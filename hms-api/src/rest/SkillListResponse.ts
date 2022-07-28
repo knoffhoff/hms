@@ -10,11 +10,8 @@ class SkillListResponse {
     this.skills = skills;
   }
 
-  static from = (
-      skills: Skill[],
-  ): SkillListResponse => new SkillListResponse(
-      SkillPreviewResponse.fromArray(skills),
-  );
+  static from = (skills: Skill[]): SkillListResponse =>
+    new SkillListResponse(SkillPreviewResponse.fromArray(skills));
 }
 
 export default SkillListResponse;

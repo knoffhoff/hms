@@ -7,19 +7,13 @@ class SkillPreviewResponse {
   id: Uuid;
   name: string;
 
-  constructor(
-      id: Uuid,
-      name: string,
-  ) {
+  constructor(id: Uuid, name: string) {
     this.id = id;
     this.name = name;
   }
 
   static from = (skill: Skill): SkillPreviewResponse =>
-    new SkillPreviewResponse(
-        skill.id,
-        skill.name,
-    );
+    new SkillPreviewResponse(skill.id, skill.name);
 
   static fromArray(skills: Skill[]): SkillPreviewResponse[] {
     const previews: SkillPreviewResponse[] = [];

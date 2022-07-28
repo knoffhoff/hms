@@ -1,6 +1,6 @@
-import { buildResponse } from "../../rest/responses";
-import { wrapHandler } from "../handler-wrapper";
-import { getCategoryListResponse } from "../../service/category-service";
+import {buildResponse} from '../../rest/responses';
+import {wrapHandler} from '../handler-wrapper';
+import {getCategoryListResponse} from '../../service/category-service';
 
 // eslint-disable-next-line require-jsdoc
 export async function list(event, context, callback) {

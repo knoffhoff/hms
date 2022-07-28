@@ -12,11 +12,12 @@ export async function edit(event, context, callback) {
     const request = UserEditRequest.parse(event.body);
 
     await editUser(
-        id,
-        request.lastName,
-        request.firstName,
-        request.skills,
-        request.imageUrl);
+      id,
+      request.lastName,
+      request.firstName,
+      request.skills,
+      request.imageUrl,
+    );
 
     callback(null, buildResponse(200, new UserEditResponse(id)));
   }, callback);

@@ -12,13 +12,14 @@ export async function edit(event, context, callback) {
     const request = IdeaEditRequest.parse(event.body);
 
     await editIdea(
-        id,
-        request.title,
-        request.description,
-        request.problem,
-        request.goal,
-        request.requiredSkills,
-        request.categoryId);
+      id,
+      request.title,
+      request.description,
+      request.problem,
+      request.goal,
+      request.requiredSkills,
+      request.categoryId,
+    );
 
     callback(null, buildResponse(200, new IdeaEditResponse(id)));
   }, callback);

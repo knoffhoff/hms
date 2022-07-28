@@ -21,23 +21,32 @@ import NotFoundError from '../error/NotFoundError';
 import ValidationError from '../error/ValidationError';
 import UserExistsResponse from '../rest/UserExistsResponse';
 
+const ADMIN_USERS = (): string[] => {
+  const adminUserString = process.env.ADMIN_USERS || '';
+  return adminUserString.split(',');
+};
+
 export async function createUser(
-    lastName: string,
-    firstName: string,
-    emailAddress: string,
-    roles: Role[],
-    skills: Uuid[],
-    imageUrl: string,
+  lastName: string,
+  firstName: string,
+  emailAddress: string,
+  skills: Uuid[],
+  imageUrl: string,
 ): Promise<User> {
   await verifyAllSkillsExist(skills);
 
+  const roles = [Role.Participant] as Role[];
+  if (ADMIN_USERS().includes(emailAddress)) {
+    roles.push(Role.Admin);
+  }
+
   const user = new User(
-      lastName,
-      firstName,
-      emailAddress,
-      roles,
-      skills,
-      imageUrl,
+    lastName,
+    firstName,
+    emailAddress,
+    roles,
+    skills,
+    imageUrl,
   );
   const result = user.validate();
   if (result.hasFailed()) {
@@ -55,15 +64,17 @@ export async function getUserResponse(id: Uuid): Promise<UserResponse> {
   try {
     skills = await getSkills(user.skills);
   } catch (e) {
-    throw new ReferenceNotFoundError(`Cannot get User with id: ${id}, ` +
-        `unable to get Skills with ids: ${user.skills}`);
+    throw new ReferenceNotFoundError(
+      `Cannot get User with id: ${id}, ` +
+        `unable to get Skills with ids: ${user.skills}`,
+    );
   }
 
   return UserResponse.from(user, skills);
 }
 
 export async function getUserExistsResponse(
-    email: string,
+  email: string,
 ): Promise<UserExistsResponse> {
   const exists = await userExistsByEmail(email);
 
@@ -76,11 +87,11 @@ export async function getUserListResponse(): Promise<UserListResponse> {
 }
 
 export async function editUser(
-    id: Uuid,
-    lastName: string,
-    firstName: string,
-    skills: Uuid[],
-    imageUrl: string,
+  id: Uuid,
+  lastName: string,
+  firstName: string,
+  skills: Uuid[],
+  imageUrl: string,
 ): Promise<void> {
   let existing: User;
   try {
@@ -90,8 +101,9 @@ export async function editUser(
     existing.skills = skills;
     existing.imageUrl = imageUrl;
   } catch (e) {
-    throw new NotFoundError(`Cannot edit User with id: ${id}, ` +
-        `it does not exist`);
+    throw new NotFoundError(
+      `Cannot edit User with id: ${id}, it does not exist`,
+    );
   }
 
   const result = existing.validate();
@@ -117,9 +129,10 @@ export function extractUser(users: User[], participant: Participant): User {
 
 async function verifyAllSkillsExist(skillIds: Uuid[]): Promise<void> {
   for (const skillId of skillIds) {
-    if (!await skillExists(skillId)) {
-      throw new ReferenceNotFoundError(`Cannot create Idea, ` +
-          `Skill with id: ${skillId} does not exist`);
+    if (!(await skillExists(skillId))) {
+      throw new ReferenceNotFoundError(
+        `Cannot create Idea, Skill with id: ${skillId} does not exist`,
+      );
     }
   }
 }

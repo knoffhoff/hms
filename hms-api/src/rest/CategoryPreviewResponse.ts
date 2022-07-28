@@ -7,20 +7,13 @@ class CategoryPreviewResponse {
   id: Uuid;
   title: string;
 
-  constructor(
-      id: Uuid,
-      title: string,
-  ) {
+  constructor(id: Uuid, title: string) {
     this.id = id;
     this.title = title;
   }
 
-  static from = (
-      category: Category,
-  ): CategoryPreviewResponse => new CategoryPreviewResponse(
-      category.id,
-      category.title,
-  );
+  static from = (category: Category): CategoryPreviewResponse =>
+    new CategoryPreviewResponse(category.id, category.title);
 
   static fromArray(categories: Category[]): CategoryPreviewResponse[] {
     const previews: CategoryPreviewResponse[] = [];
@@ -31,8 +24,8 @@ class CategoryPreviewResponse {
   }
 
   static compare(
-      a: CategoryPreviewResponse,
-      b: CategoryPreviewResponse,
+    a: CategoryPreviewResponse,
+    b: CategoryPreviewResponse,
   ): number {
     const diff = a.title.localeCompare(b.title);
     if (diff) {
