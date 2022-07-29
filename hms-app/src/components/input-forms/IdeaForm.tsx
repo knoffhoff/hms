@@ -71,9 +71,13 @@ function IdeaForm(props: IProps) {
 
   const loadAvailableSkills = () => {
     getListOfSkills(instance).then((data) => {
+      let skills = [] as SkillPreview[]
+      if (data && data.skills) {
+        skills = data.skills
+      }
       setAvailableSkills({
         ...availableSkills,
-        skills: data.skills,
+        skills,
       })
     })
   }
@@ -206,7 +210,7 @@ function IdeaForm(props: IProps) {
   }, [availableCategories])
 
   useEffect(() => {
-    if (categories.length > 0)
+    if (categories.length > 0 && skills.length > 0)
       if (
         ideaText.title.length > allowedIdeaTitleLength ||
         ideaText.title.length < 1
