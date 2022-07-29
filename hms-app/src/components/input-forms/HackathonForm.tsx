@@ -42,7 +42,7 @@ function HackathonForm(props: IProps) {
         showNotification({
           id: 'hackathon-load',
           loading: true,
-          title: 'Hackathon is uploading',
+          title: `Creating ${hackathonTitle}`,
           message: undefined,
           autoClose: false,
           disallowClose: false,
@@ -53,30 +53,27 @@ function HackathonForm(props: IProps) {
           DescriptionValue,
           startDateValue!,
           endDateValue!
-        ).then((response) =>
-          setTimeout(() => {
-            console.log(response)
-            if (JSON.stringify(response).toString().includes('error')) {
-              updateNotification({
-                id: 'participant-load',
-                color: 'red',
-                title: 'Failed to create Hackathon',
-                message: undefined,
-                icon: <Cross2Icon />,
-                autoClose: 2000,
-              })
-            } else {
-              updateNotification({
-                id: 'participant-load',
-                color: 'teal',
-                title: 'Hackathon was created',
-                message: undefined,
-                icon: <CheckIcon />,
-                autoClose: 2000,
-              })
-            }
-          }, 3000)
-        )
+        ).then((response) => {
+          if (JSON.stringify(response).toString().includes('error')) {
+            updateNotification({
+              id: 'hackathon-load',
+              color: 'red',
+              title: 'Failed to create hackathon',
+              message: undefined,
+              icon: <Cross2Icon />,
+              autoClose: 2000,
+            })
+          } else {
+            updateNotification({
+              id: 'hackathon-load',
+              color: 'teal',
+              title: `Created ${hackathonTitle}`,
+              message: undefined,
+              icon: <CheckIcon />,
+              autoClose: 2000,
+            })
+          }
+        })
       }
     }
   }
@@ -86,7 +83,7 @@ function HackathonForm(props: IProps) {
     showNotification({
       id: 'hackathon-load',
       loading: true,
-      title: 'Hackathon is uploading',
+      title: `Editing ${hackathonTitle}`,
       message: undefined,
       autoClose: false,
       disallowClose: false,
@@ -98,30 +95,27 @@ function HackathonForm(props: IProps) {
       DescriptionValue,
       startDateValue!,
       endDateValue!
-    ).then((response) =>
-      setTimeout(() => {
-        console.log(response)
-        if (JSON.stringify(response).toString().includes('error')) {
-          updateNotification({
-            id: 'participant-load',
-            color: 'red',
-            title: 'Failed to Edit Hackathon',
-            message: undefined,
-            icon: <Cross2Icon />,
-            autoClose: 2000,
-          })
-        } else {
-          updateNotification({
-            id: 'participant-load',
-            color: 'teal',
-            title: 'Hackathon was Edited',
-            message: undefined,
-            icon: <CheckIcon />,
-            autoClose: 2000,
-          })
-        }
-      }, 3000)
-    )
+    ).then((response) => {
+      if (JSON.stringify(response).toString().includes('error')) {
+        updateNotification({
+          id: 'hackathon-load',
+          color: 'red',
+          title: 'Failed to edit hackathon',
+          message: undefined,
+          icon: <Cross2Icon />,
+          autoClose: 2000,
+        })
+      } else {
+        updateNotification({
+          id: 'hackathon-load',
+          color: 'teal',
+          title: `Edited ${hackathonTitle}`,
+          message: undefined,
+          icon: <CheckIcon />,
+          autoClose: 2000,
+        })
+      }
+    })
   }
 
   function submitIsEnabled(): boolean {

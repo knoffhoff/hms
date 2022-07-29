@@ -114,45 +114,42 @@ function IdeaForm(props: IProps) {
     showNotification({
       id: 'idea-load',
       loading: true,
-      title: 'Create idea',
+      title: `Creating "${ideaText.title}"`,
       message: undefined,
       autoClose: false,
       // disallowClose: true,
     })
-    createIdea(instance, ideaText, skills, categories).then((response) =>
-      setTimeout(() => {
-        console.log(response)
-        setButtonIsDisabled(false)
-        setCategories([])
-        setSkills([])
-        setIdeaText((prevState) => ({
-          ...prevState,
-          title: '',
-          description: '',
-          problem: '',
-          goal: '',
-        }))
-        if (JSON.stringify(response).toString().includes('error')) {
-          updateNotification({
-            id: 'participant-load',
-            color: 'red',
-            title: 'Failed to create Idea',
-            message: undefined,
-            icon: <Cross2Icon />,
-            autoClose: 2000,
-          })
-        } else {
-          updateNotification({
-            id: 'participant-load',
-            color: 'teal',
-            title: 'Idea was created',
-            message: undefined,
-            icon: <CheckIcon />,
-            autoClose: 2000,
-          })
-        }
-      }, 3000)
-    )
+    createIdea(instance, ideaText, skills, categories).then((response) => {
+      setButtonIsDisabled(false)
+      setCategories([])
+      setSkills([])
+      setIdeaText((prevState) => ({
+        ...prevState,
+        title: '',
+        description: '',
+        problem: '',
+        goal: '',
+      }))
+      if (JSON.stringify(response).toString().includes('error')) {
+        updateNotification({
+          id: 'idea-load',
+          color: 'red',
+          title: 'Failed to create idea',
+          message: undefined,
+          icon: <Cross2Icon />,
+          autoClose: 2000,
+        })
+      } else {
+        updateNotification({
+          id: 'idea-load',
+          color: 'teal',
+          title: `Created "${ideaText.title}"`,
+          message: undefined,
+          icon: <CheckIcon />,
+          autoClose: 2000,
+        })
+      }
+    })
   }
 
   function editThisIdea(event: React.MouseEvent<HTMLButtonElement>) {
@@ -161,38 +158,37 @@ function IdeaForm(props: IProps) {
     showNotification({
       id: 'idea-load',
       loading: true,
-      title: 'Edit idea',
+      title: `Editing "${ideaText.title}"`,
       message: undefined,
       autoClose: false,
       // disallowClose: true,
     })
-    editIdea(instance, ideaId!, ideaText, skills, categories).then((response) =>
-      setTimeout(() => {
-        console.log(response)
+    editIdea(instance, ideaId!, ideaText, skills, categories).then(
+      (response) => {
         setButtonIsDisabled(false)
         if (setOpened) {
           setOpened(false)
         }
         if (JSON.stringify(response).toString().includes('error')) {
           updateNotification({
-            id: 'participant-load',
+            id: 'idea-load',
             color: 'red',
-            title: 'Failed to Edit Idea',
+            title: 'Failed to Edit idea',
             message: undefined,
             icon: <Cross2Icon />,
             autoClose: 2000,
           })
         } else {
           updateNotification({
-            id: 'participant-load',
+            id: 'idea-load',
             color: 'teal',
-            title: 'Idea was Edited',
+            title: `Edited "${ideaText.title}"`,
             message: undefined,
             icon: <CheckIcon />,
             autoClose: 2000,
           })
         }
-      }, 3000)
+      }
     )
   }
 

@@ -63,35 +63,32 @@ export default function CategoryForm(props: IProps) {
     showNotification({
       id: 'category-load',
       loading: true,
-      title: 'Category is uploading',
+      title: `Editing ${category.title}`,
       message: undefined,
       autoClose: false,
       disallowClose: false,
     })
-    editCategory(instance, category).then((response) =>
-      setTimeout(() => {
-        console.log(response)
-        if (JSON.stringify(response).toString().includes('error')) {
-          updateNotification({
-            id: 'participant-load',
-            color: 'red',
-            title: 'Failed to Edit Category',
-            message: undefined,
-            icon: <Cross2Icon />,
-            autoClose: 2000,
-          })
-        } else {
-          updateNotification({
-            id: 'participant-load',
-            color: 'teal',
-            title: 'Category was Edited',
-            message: undefined,
-            icon: <CheckIcon />,
-            autoClose: 2000,
-          })
-        }
-      }, 3000)
-    )
+    editCategory(instance, category).then((response) => {
+      if (JSON.stringify(response).toString().includes('error')) {
+        updateNotification({
+          id: 'category-load',
+          color: 'red',
+          title: 'Failed to edit category',
+          message: undefined,
+          icon: <Cross2Icon />,
+          autoClose: 2000,
+        })
+      } else {
+        updateNotification({
+          id: 'category-load',
+          color: 'teal',
+          title: `Edited ${category.title}`,
+          message: undefined,
+          icon: <CheckIcon />,
+          autoClose: 2000,
+        })
+      }
+    })
   }
 
   function createThisCategory(event: React.MouseEvent<HTMLButtonElement>) {
@@ -103,35 +100,32 @@ export default function CategoryForm(props: IProps) {
     showNotification({
       id: 'category-load',
       loading: true,
-      title: 'Category is uploading',
+      title: `Creating ${category.title}`,
       message: undefined,
       autoClose: false,
       disallowClose: false,
     })
-    addCategory(instance, category).then((response) =>
-      setTimeout(() => {
-        console.log(response)
-        if (JSON.stringify(response).toString().includes('error')) {
-          updateNotification({
-            id: 'participant-load',
-            color: 'red',
-            title: 'Failed to create Category',
-            message: undefined,
-            icon: <Cross2Icon />,
-            autoClose: 2000,
-          })
-        } else {
-          updateNotification({
-            id: 'participant-load',
-            color: 'teal',
-            title: 'Category was added',
-            message: undefined,
-            icon: <CheckIcon />,
-            autoClose: 2000,
-          })
-        }
-      }, 3000)
-    )
+    addCategory(instance, category).then((response) => {
+      if (JSON.stringify(response).toString().includes('error')) {
+        updateNotification({
+          id: 'category-load',
+          color: 'red',
+          title: 'Failed to create category',
+          message: undefined,
+          icon: <Cross2Icon />,
+          autoClose: 2000,
+        })
+      } else {
+        updateNotification({
+          id: 'category-load',
+          color: 'teal',
+          title: `Created ${category.title}`,
+          message: undefined,
+          icon: <CheckIcon />,
+          autoClose: 2000,
+        })
+      }
+    })
   }
 
   function submitIsEnabled(): boolean {

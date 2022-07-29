@@ -103,8 +103,37 @@ export default function IdeaDetails(props: IProps) {
   ))
 
   const deleteSelectedIdea = () => {
-    deleteIdea(instance, idea.id).then(() => {
+    showNotification({
+      id: 'delete-idea-load',
+      loading: true,
+      title: `Deleting "${idea.title}"`,
+      message: undefined,
+      autoClose: false,
+      disallowClose: false,
+    })
+    deleteIdea(instance, idea.id).then((response) => {
       setDeleteModalOpened(false)
+      if (JSON.stringify(response).toString().includes('error')) {
+        setParticipantCheck(true)
+        updateNotification({
+          id: 'delete-idea-load',
+          color: 'red',
+          title: 'Failed to delete idea',
+          message: undefined,
+          icon: <Cross2Icon />,
+          autoClose: 2000,
+        })
+      } else {
+        setParticipantCheck(false)
+        updateNotification({
+          id: 'delete-idea-load',
+          color: 'teal',
+          title: `Deleted "${idea.title}"`,
+          message: undefined,
+          icon: <CheckIcon />,
+          autoClose: 2000,
+        })
+      }
     })
   }
 
@@ -216,7 +245,7 @@ export default function IdeaDetails(props: IProps) {
     showNotification({
       id: 'participant-load',
       loading: true,
-      title: 'Join Idea',
+      title: `Joining "${idea.title}"`,
       message: undefined,
       autoClose: false,
       disallowClose: false,
@@ -226,31 +255,29 @@ export default function IdeaDetails(props: IProps) {
       participantInfo.ideaId,
       participantInfo.participantId
     ).then((response) => {
-      setTimeout(() => {
-        console.log('response', response)
-        setButtonisDisabled(false)
-        if (JSON.stringify(response).toString().includes('error')) {
-          setParticipantCheck(false)
-          updateNotification({
-            id: 'participant-load',
-            color: 'red',
-            title: 'Failed to join Idea',
-            message: undefined,
-            icon: <Cross2Icon />,
-            autoClose: 2000,
-          })
-        } else {
-          setParticipantCheck(true)
-          updateNotification({
-            id: 'participant-load',
-            color: 'teal',
-            title: 'Joined Idea',
-            message: undefined,
-            icon: <CheckIcon />,
-            autoClose: 2000,
-          })
-        }
-      }, 3000)
+      console.log('response', response)
+      setButtonisDisabled(false)
+      if (JSON.stringify(response).toString().includes('error')) {
+        setParticipantCheck(false)
+        updateNotification({
+          id: 'participant-load',
+          color: 'red',
+          title: 'Failed to join idea',
+          message: undefined,
+          icon: <Cross2Icon />,
+          autoClose: 2000,
+        })
+      } else {
+        setParticipantCheck(true)
+        updateNotification({
+          id: 'participant-load',
+          color: 'teal',
+          title: `Joined "${idea.title}"`,
+          message: undefined,
+          icon: <CheckIcon />,
+          autoClose: 2000,
+        })
+      }
     })
   }
 
@@ -259,7 +286,7 @@ export default function IdeaDetails(props: IProps) {
     showNotification({
       id: 'participant-load',
       loading: true,
-      title: 'Leave Idea',
+      title: `Leaving "${idea.title}"`,
       message: undefined,
       autoClose: false,
       disallowClose: false,
@@ -270,29 +297,27 @@ export default function IdeaDetails(props: IProps) {
       participantInfo.participantId
     ).then((response) => {
       setButtonisDisabled(false)
-      setTimeout(() => {
-        if (JSON.stringify(response).toString().includes('error')) {
-          setParticipantCheck(true)
-          updateNotification({
-            id: 'participant-load',
-            color: 'red',
-            title: 'Failed to leave Idea',
-            message: undefined,
-            icon: <Cross2Icon />,
-            autoClose: 2000,
-          })
-        } else {
-          setParticipantCheck(false)
-          updateNotification({
-            id: 'participant-load',
-            color: 'teal',
-            title: 'Left Idea',
-            message: undefined,
-            icon: <CheckIcon />,
-            autoClose: 2000,
-          })
-        }
-      }, 3000)
+      if (JSON.stringify(response).toString().includes('error')) {
+        setParticipantCheck(true)
+        updateNotification({
+          id: 'participant-load',
+          color: 'red',
+          title: 'Failed to leave Idea',
+          message: undefined,
+          icon: <Cross2Icon />,
+          autoClose: 2000,
+        })
+      } else {
+        setParticipantCheck(false)
+        updateNotification({
+          id: 'participant-load',
+          color: 'teal',
+          title: `Left "${idea.title}"`,
+          message: undefined,
+          icon: <CheckIcon />,
+          autoClose: 2000,
+        })
+      }
     })
   }
 

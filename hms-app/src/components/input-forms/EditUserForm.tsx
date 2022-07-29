@@ -73,35 +73,34 @@ export default function EditUserForm(props: IProps) {
     showNotification({
       id: 'user-load',
       loading: true,
-      title: 'User is uploading',
+      title: `Editing ${user.firstName} ${user.lastName ? user.lastName : ''}`,
       message: undefined,
       autoClose: false,
       disallowClose: false,
     })
-    editUser(instance, user, skills).then((response) =>
-      setTimeout(() => {
-        console.log(response)
-        if (JSON.stringify(response).toString().includes('error')) {
-          updateNotification({
-            id: 'participant-load',
-            color: 'red',
-            title: 'Failed to edit User',
-            message: undefined,
-            icon: <Cross2Icon />,
-            autoClose: 2000,
-          })
-        } else {
-          updateNotification({
-            id: 'participant-load',
-            color: 'teal',
-            title: 'User was edited',
-            message: undefined,
-            icon: <CheckIcon />,
-            autoClose: 2000,
-          })
-        }
-      }, 3000)
-    )
+    editUser(instance, user, skills).then((response) => {
+      if (JSON.stringify(response).toString().includes('error')) {
+        updateNotification({
+          id: 'user-load',
+          color: 'red',
+          title: 'Failed to edit user',
+          message: undefined,
+          icon: <Cross2Icon />,
+          autoClose: 2000,
+        })
+      } else {
+        updateNotification({
+          id: 'user-load',
+          color: 'teal',
+          title: `Edited ${user.firstName} ${
+            user.lastName ? user.lastName : ''
+          }`,
+          message: undefined,
+          icon: <CheckIcon />,
+          autoClose: 2000,
+        })
+      }
+    })
   }
 
   function submitIsEnabled(): boolean {
