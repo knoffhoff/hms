@@ -142,7 +142,7 @@ const Layout = () => {
     }
 
     getHackathons()
-  }, [])
+  }, [instance, isAuthenticated])
 
   return (
     <ColorSchemeProvider
