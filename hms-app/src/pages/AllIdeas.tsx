@@ -98,34 +98,32 @@ function AllIdeas() {
       participantInfo.userId,
       participantInfo.hackathonId
     ).then((response) => {
-      setTimeout(() => {
-        setButtonisDisabled(false)
-        setParticipantInfo((prevState) => ({
-          ...prevState,
-          participantId: response.id,
-        }))
-        if (JSON.stringify(response).toString().includes('error')) {
-          setParticipantCheck(false)
-          updateNotification({
-            id: 'participant-load',
-            color: 'red',
-            title: 'Failed to join Hackathon',
-            message: undefined,
-            icon: <Cross2Icon />,
-            autoClose: 2000,
-          })
-        } else {
-          setParticipantCheck(true)
-          updateNotification({
-            id: 'participant-load',
-            color: 'teal',
-            title: 'Joined Hackathon',
-            message: undefined,
-            icon: <CheckIcon />,
-            autoClose: 2000,
-          })
-        }
-      }, 3000)
+      setButtonisDisabled(false)
+      setParticipantInfo((prevState) => ({
+        ...prevState,
+        participantId: response.id,
+      }))
+      if (JSON.stringify(response).toString().includes('error')) {
+        setParticipantCheck(false)
+        updateNotification({
+          id: 'participant-load',
+          color: 'red',
+          title: 'Failed to join Hackathon',
+          message: undefined,
+          icon: <Cross2Icon />,
+          autoClose: 2000,
+        })
+      } else {
+        setParticipantCheck(true)
+        updateNotification({
+          id: 'participant-load',
+          color: 'teal',
+          title: 'Joined Hackathon',
+          message: undefined,
+          icon: <CheckIcon />,
+          autoClose: 2000,
+        })
+      }
     })
   }
 
@@ -140,31 +138,28 @@ function AllIdeas() {
       disallowClose: false,
     })
     deleteParticipant(instance, findParticipant().id).then((response) => {
-      console.log(response)
       setButtonisDisabled(false)
-      setTimeout(() => {
-        if (JSON.stringify(response).toString().includes('error')) {
-          setParticipantCheck(true)
-          updateNotification({
-            id: 'participant-load',
-            color: 'red',
-            title: 'Failed to leave Hackathon',
-            message: undefined,
-            icon: <Cross2Icon />,
-            autoClose: 2000,
-          })
-        } else {
-          setParticipantCheck(false)
-          updateNotification({
-            id: 'participant-load',
-            color: 'teal',
-            title: 'Left Hackathon',
-            message: undefined,
-            icon: <CheckIcon />,
-            autoClose: 2000,
-          })
-        }
-      }, 3000)
+      if (JSON.stringify(response).toString().includes('error')) {
+        setParticipantCheck(true)
+        updateNotification({
+          id: 'participant-load',
+          color: 'red',
+          title: 'Failed to leave Hackathon',
+          message: undefined,
+          icon: <Cross2Icon />,
+          autoClose: 2000,
+        })
+      } else {
+        setParticipantCheck(false)
+        updateNotification({
+          id: 'participant-load',
+          color: 'teal',
+          title: 'Left Hackathon',
+          message: undefined,
+          icon: <CheckIcon />,
+          autoClose: 2000,
+        })
+      }
     })
   }
 
