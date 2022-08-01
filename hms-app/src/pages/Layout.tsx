@@ -134,7 +134,7 @@ const Layout = () => {
       dispatch(setHackathonList(hackathons.map(mapHackathonToSerializable)))
 
       const nextHackathon = hackathons.find((hackathon) => {
-        return new Date(hackathon.startDate) > new Date()
+        return new Date(hackathon.endDate) > new Date()
       })
 
       if (nextHackathon)

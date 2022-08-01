@@ -61,9 +61,13 @@ function AllIdeas() {
     setSearchTerm(event.target.value)
   }
 
-  const filteredIdeas = relevantIdeaList.filter((item) => {
-    return item.title?.toLowerCase().includes(searchTerm.toLowerCase())
-  })
+  const filteredIdeas = relevantIdeaList
+    .filter((item) => {
+      return item.title?.toLowerCase().includes(searchTerm.toLowerCase())
+    })
+    .sort((a, b) => {
+      return a.creationDate < b.creationDate ? -1 : 1
+    })
 
   const findParticipant = () => {
     let participant: ParticipantPreview
@@ -83,7 +87,6 @@ function AllIdeas() {
   }
 
   const addHackathonParticipant = () => {
-    console.log('participantInfo', participantInfo)
     setButtonisDisabled(true)
     showNotification({
       id: 'participant-load',

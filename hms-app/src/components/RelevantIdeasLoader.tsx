@@ -42,7 +42,6 @@ export default function RelevantIdeasLoader({
     hackathonData.ideas!.map((ideaPreview) => {
       getIdeaDetails(instance, ideaPreview.id).then((ideaDetails) => {
         setIdeaData(ideaDetails)
-        console.log(ideaDetails)
       })
     })
     setIsThisLoading(false)

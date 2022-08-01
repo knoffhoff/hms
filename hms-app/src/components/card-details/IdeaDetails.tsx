@@ -240,7 +240,18 @@ export default function IdeaDetails(props: IProps) {
     )
   }
 
-  const addIdeaParticipant = () => {
+  const addIdeaParticipant = async () => {
+    if (participantInfo.participantId === '') {
+      showNotification({
+        id: 'participant-load',
+        color: 'red',
+        title: 'Cannot join idea',
+        message: 'You must join the hackathon first to join an idea.',
+        icon: <Cross2Icon />,
+        autoClose: 5000,
+      })
+      return
+    }
     setButtonisDisabled(true)
     showNotification({
       id: 'participant-load',

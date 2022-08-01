@@ -4,6 +4,7 @@ import { Select, SelectItem } from '@mantine/core'
 import { HackathonPreview, HackathonDropdownMode } from '../common/types'
 import { AlertCircle } from 'tabler-icons-react'
 import { useMsal } from '@azure/msal-react'
+import { useAppSelector } from '../hooks'
 
 type Props = {
   setHackathonId: (hackthonID: string) => void
@@ -18,6 +19,10 @@ export default function HackathonSelectDropdown({
   const [isError, setIsError] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
   const [hackathonList, setHackathonList] = useState<HackathonPreview[]>([])
+  const [selectedHackathon, setSelectedHackathon] = useState<HackathonPreview>()
+  const nextHackathon = useAppSelector(
+    (state) => state.hackathons.nextHackathon
+  )
   const today = new Date()
   today.setHours(0, 0, 0, 0)
 
@@ -25,6 +30,11 @@ export default function HackathonSelectDropdown({
     getListOfHackathons(instance).then(
       (data) => {
         setHackathonList(data)
+        const upcomingHackathon = data.find((h) => h.id === nextHackathon.id)
+        if (upcomingHackathon) {
+          setHackathonId(upcomingHackathon.id)
+          setSelectedHackathon(upcomingHackathon)
+        }
         setIsLoading(false)
         setIsError(false)
       },
@@ -91,6 +101,7 @@ export default function HackathonSelectDropdown({
         <div style={{ width: 385 }}>
           <Select
             placeholder={'Select a hackathon'}
+            defaultValue={selectedHackathon?.id}
             maxDropdownHeight={280}
             data={getHackathonsSelectItems()}
             onChange={setHackathonId}
