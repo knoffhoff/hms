@@ -22,6 +22,7 @@ import { createIdea, editIdea } from '../../actions/IdeaActions'
 import { styles } from '../../common/styles'
 import { useMsal } from '@azure/msal-react'
 import { dark2, JOIN_BUTTON_COLOR } from '../../common/colors'
+import { createIdeaParticipant } from '../../actions/ParticipantActions'
 
 type IProps = {
   hackathon: HackathonPreview
@@ -108,7 +109,7 @@ function IdeaForm(props: IProps) {
     }))
   }
 
-  function createThisIdea(event: React.MouseEvent<HTMLButtonElement>) {
+  async function createThisIdea(event: React.MouseEvent<HTMLButtonElement>) {
     event.preventDefault()
     setButtonIsDisabled(true)
     showNotification({
@@ -119,37 +120,44 @@ function IdeaForm(props: IProps) {
       autoClose: false,
       // disallowClose: true,
     })
-    createIdea(instance, ideaText, skills, categories).then((response) => {
-      setButtonIsDisabled(false)
-      setCategories([])
-      setSkills([])
-      setIdeaText((prevState) => ({
-        ...prevState,
-        title: '',
-        description: '',
-        problem: '',
-        goal: '',
-      }))
-      if (JSON.stringify(response).toString().includes('error')) {
-        updateNotification({
-          id: 'idea-load',
-          color: 'red',
-          title: 'Failed to create idea',
-          message: undefined,
-          icon: <Cross2Icon />,
-          autoClose: 2000,
-        })
-      } else {
-        updateNotification({
-          id: 'idea-load',
-          color: 'teal',
-          title: `Created "${ideaText.title}"`,
-          message: undefined,
-          icon: <CheckIcon />,
-          autoClose: 2000,
-        })
+    createIdea(instance, ideaText, skills, categories).then(
+      async (response) => {
+        setButtonIsDisabled(false)
+        setCategories([])
+        setSkills([])
+        setIdeaText((prevState) => ({
+          ...prevState,
+          title: '',
+          description: '',
+          problem: '',
+          goal: '',
+        }))
+        if (JSON.stringify(response).toString().includes('error')) {
+          updateNotification({
+            id: 'idea-load',
+            color: 'red',
+            title: 'Failed to create idea',
+            message: undefined,
+            icon: <Cross2Icon />,
+            autoClose: 2000,
+          })
+        } else {
+          updateNotification({
+            id: 'idea-load',
+            color: 'teal',
+            title: `Created "${ideaText.title}"`,
+            message: undefined,
+            icon: <CheckIcon />,
+            autoClose: 2000,
+          })
+          try {
+            await createIdeaParticipant(instance, response.id, ideaText.ownerId)
+          } catch (error) {
+            console.log(error)
+          }
+        }
       }
-    })
+    )
   }
 
   function editThisIdea(event: React.MouseEvent<HTMLButtonElement>) {
