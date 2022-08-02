@@ -6,6 +6,8 @@ import {
   Checkbox,
   Card,
   Text,
+  RadioGroup,
+  Radio,
 } from '@mantine/core'
 import React, { useEffect, useState } from 'react'
 import {
@@ -42,11 +44,13 @@ function IdeaForm(props: IProps) {
   const [availableSkills, setAvailableSkills] = useState({
     skills: [] as SkillPreview[],
   })
-  const [skills, setSkills] = useState<string[]>([])
+  const [skills, setSkills] = useState<string[]>(
+    idea?.requiredSkills?.map((skill) => skill.id) || []
+  )
   const [availableCategories, setAvailableCategories] = useState({
     categories: [] as CategoryPreview[],
   })
-  const [categories, setCategories] = useState<string[]>([])
+  const [category, setCategory] = useState<string>(idea?.category?.id || '')
   const [ideaText, setIdeaText] = useState({
     ownerId: participantId,
     hackathonId: hackathon.id,
@@ -56,7 +60,7 @@ function IdeaForm(props: IProps) {
     goal: '',
     creationDate: new Date(),
   })
-  const allowedIdeaTitleLength = 100
+  const maxIdeaTitleLength = 100
 
   const setIdea = () => {
     if (idea) {
@@ -98,7 +102,7 @@ function IdeaForm(props: IProps) {
   ])
 
   const categoriesList = availableCategories?.categories?.map((category) => [
-    <Checkbox value={category.id} label={category.title} key={category.id} />,
+    <Radio value={category.id} label={category.title} key={category.id} />,
   ])
 
   function handleChange(event: React.ChangeEvent<HTMLTextAreaElement>) {
@@ -120,10 +124,10 @@ function IdeaForm(props: IProps) {
       autoClose: false,
       // disallowClose: true,
     })
-    createIdea(instance, ideaText, skills, categories).then(
+    createIdea(instance, ideaText, skills, [category]).then(
       async (response) => {
         setButtonIsDisabled(false)
-        setCategories([])
+        setCategory('')
         setSkills([])
         setIdeaText((prevState) => ({
           ...prevState,
@@ -171,7 +175,7 @@ function IdeaForm(props: IProps) {
       autoClose: false,
       // disallowClose: true,
     })
-    editIdea(instance, ideaId!, ideaText, skills, categories).then(
+    editIdea(instance, ideaId!, ideaText, skills, [category]).then(
       (response) => {
         setButtonIsDisabled(false)
         if (setOpened) {
@@ -204,36 +208,27 @@ function IdeaForm(props: IProps) {
     loadAvailableSkills()
     loadAvailableCategories()
     setIdea()
-    setCategories([])
+    setCategory('')
     setSkills([])
   }, [])
 
   useEffect(() => {
-    setCategories([])
+    setCategory('')
     setSkills([])
   }, [availableCategories])
 
   useEffect(() => {
-    if (categories.length > 0 && skills.length > 0)
-      if (
-        ideaText.title.length > allowedIdeaTitleLength ||
-        ideaText.title.length < 1
-      ) {
-        setButtonIsDisabled(true)
-      } else {
-        setButtonIsDisabled(false)
-      }
-
     if (
-      ideaText.title.length > allowedIdeaTitleLength &&
-      ideaText.title.length > 0
-    )
-      categories.length > 0
-        ? setButtonIsDisabled(false)
-        : setButtonIsDisabled(true)
-
-    if (categories.length < 1) setButtonIsDisabled(true)
-  }, [ideaText, categories])
+      category != '' &&
+      skills.length > 0 &&
+      ideaText.title.length < maxIdeaTitleLength &&
+      ideaText.title.length > 1
+    ) {
+      setButtonIsDisabled(false)
+    } else {
+      setButtonIsDisabled(true)
+    }
+  }, [ideaText, category, skills])
 
   useEffect(() => {
     setIdeaText((prevIdeaText) => ({
@@ -262,8 +257,8 @@ function IdeaForm(props: IProps) {
                 label='Title'
                 required
                 error={
-                  ideaText.title.length > allowedIdeaTitleLength
-                    ? 'max ' + allowedIdeaTitleLength + ' chars'
+                  ideaText.title.length > maxIdeaTitleLength
+                    ? 'max ' + maxIdeaTitleLength + ' chars'
                     : false
                 }
                 placeholder='Title'
@@ -323,6 +318,7 @@ function IdeaForm(props: IProps) {
                   description='chose one or more required skills'
                   onChange={setSkills}
                   required
+                  defaultValue={idea?.requiredSkills?.map((skill) => skill.id)}
                   value={skills}
                   className={classes.label}
                 >
@@ -330,16 +326,17 @@ function IdeaForm(props: IProps) {
                 </CheckboxGroup>
               </Card.Section>
               <Card.Section className={classes.borderSection}>
-                <CheckboxGroup
+                <RadioGroup
                   label='Category'
                   description='chose one or more categories'
-                  onChange={setCategories}
+                  onChange={setCategory}
                   required
-                  value={categories}
+                  defaultValue={idea?.category?.id}
+                  value={category}
                   className={classes.label}
                 >
                   {categoriesList}
-                </CheckboxGroup>
+                </RadioGroup>
               </Card.Section>
 
               <Group position='right' mt='xl'>
