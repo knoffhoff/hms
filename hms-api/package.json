@@ -28,7 +28,7 @@
     "uuid": "8.3.2"
   },
   "dependencies": {
-    "@aws-sdk/client-dynamodb": "3.137.0",
+    "@aws-sdk/client-dynamodb": "3.142.0",
     "jsonwebtoken": "8.5.1",
     "serverless-dynamodb-client": "0.0.2"
   }
