@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext, createContext } from 'react'
 import { Input, Group, Text, Button } from '@mantine/core'
-import { ArrowBigUpLine, ArrowUp, Search } from 'tabler-icons-react'
+import { ArrowUp, Search, Check, X } from 'tabler-icons-react'
 import IdeaCardList from '../components/lists/IdeaCardList'
 import {
   Hackathon,
@@ -15,7 +15,6 @@ import {
   deleteParticipant,
 } from '../actions/ParticipantActions'
 import { showNotification, updateNotification } from '@mantine/notifications'
-import { CheckIcon, Cross2Icon } from '@modulz/radix-icons'
 import HackathonSelectDropdown from '../components/HackathonSelectDropdown'
 import RelevantIdeasLoader from '../components/RelevantIdeasLoader'
 import { NULL_DATE } from '../common/constants'
@@ -113,7 +112,7 @@ function AllIdeas() {
           color: 'red',
           title: 'Failed to join Hackathon',
           message: undefined,
-          icon: <Cross2Icon />,
+          icon: <X />,
           autoClose: 2000,
         })
       } else {
@@ -123,7 +122,7 @@ function AllIdeas() {
           color: 'teal',
           title: 'Joined Hackathon',
           message: undefined,
-          icon: <CheckIcon />,
+          icon: <Check />,
           autoClose: 2000,
         })
       }
@@ -149,7 +148,7 @@ function AllIdeas() {
           color: 'red',
           title: 'Failed to leave Hackathon',
           message: undefined,
-          icon: <Cross2Icon />,
+          icon: <X />,
           autoClose: 2000,
         })
       } else {
@@ -159,7 +158,7 @@ function AllIdeas() {
           color: 'teal',
           title: 'Left Hackathon',
           message: undefined,
-          icon: <CheckIcon />,
+          icon: <Check />,
           autoClose: 2000,
         })
       }
