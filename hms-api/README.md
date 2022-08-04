@@ -116,6 +116,13 @@ The HMS API is deployed both locally and into "production" by using the Serverle
 testing the HMS API it should be deployed locally. Documentation for deploying with Serverless can be
 found [here](https://www.serverless.com/framework/docs/providers/aws/cli-reference/deploy).
 
+For scout:
+
+```shell
+scloud account login s24-hackweek AdminAccess --write
+serverless deploy --verbose
+```
+
 ### In Production
 
 [//]: # (TODO we will need some information about getting login credentials here eventually)

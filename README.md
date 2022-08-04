@@ -1,5 +1,9 @@
 # Hackathon Management System
 
+## Scout Environment
+
+For scout developers, please run `./prepare-env.sh` script to load environment variables from SSM.
+
 ## Authentication
 To use authentication with Azure AD you need to do the following:
 

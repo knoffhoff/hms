@@ -15,8 +15,8 @@ import {
   RemovalPolicy,
 } from "aws-cdk-lib";
 import { Construct } from "constructs";
-import { DOMAIN_NAME, REPO_NAME } from "../environment";
 
+const DOMAIN_NAME = 's24-hackweek.s24cloud.net';
 const ACCOUNT_ID = process.env.CDK_DEFAULT_ACCOUNT || "";
 
 export class HmsInfrastructureStack extends Stack {
@@ -106,25 +106,6 @@ export class HmsInfrastructureStack extends Stack {
       destinationBucket: hmsBucket,
       distribution,
       distributionPaths: ["/*"],
-    });
-
-    const role = new iam.Role(this, "HmsGithubOidcRole", {
-      assumedBy: new iam.WebIdentityPrincipal(
-        `arn:aws:iam::${ACCOUNT_ID}:oidc-provider/token.actions.githubusercontent.com`,
-        {
-          StringLike: {
-            "token.actions.githubusercontent.com:sub": [
-              `repo:idealo/${REPO_NAME}:*`,
-            ],
-          },
-        }
-      ),
-      managedPolicies: [
-        iam.ManagedPolicy.fromAwsManagedPolicyName("AmazonS3FullAccess"),
-      ],
-    });
-    new CfnOutput(this, "GithubOidcRoleArn", {
-      value: role.roleArn,
     });
 
     // Backend Infrastructure

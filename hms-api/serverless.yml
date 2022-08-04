@@ -36,7 +36,7 @@ custom:
 provider:
   name: aws
   runtime: nodejs16.x
-  region: eu-central-1
+  region: eu-west-1
   environment:
     AUTHORIZER_TYPE: ACTIVE_DIRECTORY
     AZURE_AD_CLIENT_ID: ${file(./secrets.json):AZURE_AD_CLIENT_ID}

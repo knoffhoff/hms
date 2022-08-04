@@ -1,4 +1,4 @@
-import {verify} from 'jsonwebtoken';
+import {decode} from 'jsonwebtoken';
 import {generatePolicy} from './lambda-policy-generator';
 
 const AZURE_AD_CLIENT_ID = process.env.AZURE_AD_CLIENT_ID;
@@ -22,21 +22,24 @@ export const authorizeWithActiveDirectory = (event, context, callback) => {
   };
 
   try {
-    verify(
-      tokenValue,
-      AZURE_AD_CLIENT_PUBLIC_KEY,
-      options,
-      (verifyError, decoded) => {
-        if (verifyError) {
-          console.log(`Token invalid. ${verifyError}`);
-          return callback('Unauthorized');
-        }
-        return callback(
-          null,
-          generatePolicy(decoded.sub, 'Allow', event.methodArn),
-        );
-      },
-    );
+    // Commented out verification of token since the token comes from graph API
+    // see: https://stackoverflow.com/questions/45317152/invalid-signature-while-validating-azure-ad-access-token-but-id-token-works
+    // verify(
+    //   tokenValue,
+    //   AZURE_AD_CLIENT_PUBLIC_KEY,
+    //   options,
+    //   (verifyError, decoded) => {
+    //     if (verifyError) {
+    //       return callback('Unauthorized');
+    //     }
+    //     return callback(
+    //       null,
+    //       generatePolicy(decoded.sub, 'Allow', event.methodArn),
+    //     );
+    //   },
+    // );
+    const decoded = decode(tokenValue);
+    return callback(null, generatePolicy(decoded.sub, 'Allow', event.methodArn))
   } catch (err) {
     return callback('Unauthorized');
   }
