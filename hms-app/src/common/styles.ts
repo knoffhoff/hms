@@ -4,7 +4,7 @@ import {
   HEADER_ACTIVE_COLOR_LIGHT,
   HEADER_HOVER_COLOR_DARK,
   HEADER_HOVER_COLOR_LIGHT,
-  TEXT_COLOR_DARK,
+  TEXT_COLOR_DARK, TEXT_COLOR_GREY,
   TEXT_COLOR_LIGHT,
   TEXT_COLOR_WHITE,
 } from './colors'
@@ -75,7 +75,7 @@ export const styles = createStyles((theme) => ({
     padding: '8px 12px',
     borderRadius: headerItemBorder,
     textDecoration: 'none',
-    color: TEXT_COLOR_WHITE,
+    color: TEXT_COLOR_GREY,
     fontSize: theme.fontSizes.sm,
     fontWeight: 500,
 

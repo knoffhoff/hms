@@ -8,7 +8,7 @@ import {
   Center,
 } from '@mantine/core'
 import { useMsal } from '@azure/msal-react'
-import idealoIcon from '../assets/idealo-icon.png'
+import scoutIcon from '../assets/immoscout24-icon.png'
 import { SwitchToggle } from '../components/ThemeSwitchToggle'
 import React from 'react'
 import { loginStyles } from '../common/styles'
@@ -36,12 +36,12 @@ const Login = (props: {
               fontWeight: 900,
             })}
           >
-            Welcome to idealo Hackweek!
+            Welcome to Immoscout24 Hackweek!
           </Title>
           {!props.isAuthenticated && (
             <Button fullWidth mt='xl' onClick={login} size={'md'} mb={30}>
-              <Image src={idealoIcon} width={20} mr={10} radius={2} />
-              Sign in with idealo SSO
+              <Image src={scoutIcon} width={20} mr={10} radius={2} />
+              Sign in with Scout24 SSO
             </Button>
           )}
           {props.isAuthenticated && !props.user && (

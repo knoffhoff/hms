@@ -21,7 +21,7 @@ import RelevantIdeasLoader from '../components/RelevantIdeasLoader'
 import { NULL_DATE } from '../common/constants'
 import HackathonHeader from '../components/HackathonHeader'
 import { useMsal } from '@azure/msal-react'
-import { JOIN_BUTTON_COLOR, LEAVE_BUTTON_COLOR } from '../common/colors'
+import {dark1, JOIN_BUTTON_COLOR, LEAVE_BUTTON_COLOR, SCOUT_DARK, TEXT_COLOR_LIGHT} from '../common/colors'
 import { UserContext } from './Layout'
 
 export const HackathonParticipantContext = createContext('')
@@ -221,6 +221,9 @@ function AllIdeas() {
                   backgroundColor: participantCheck
                     ? LEAVE_BUTTON_COLOR
                     : JOIN_BUTTON_COLOR,
+                  color: participantCheck
+                  ? dark1
+                      : SCOUT_DARK
                 }}
               >
                 {participantCheck ? 'Leave Hackathon' : 'Join Hackathon'}

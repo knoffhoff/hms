@@ -12,7 +12,7 @@ import { Dots } from './Dots'
 import Countdown from 'react-countdown'
 import React from 'react'
 import { HackathonSerializable } from '../common/types'
-import { blue3, orange3 } from '../common/colors'
+import {blue3, pink1} from '../common/colors'
 import { Link } from 'react-router-dom'
 
 const useStyles = createStyles((theme) => ({
@@ -65,7 +65,7 @@ const useStyles = createStyles((theme) => ({
   },
 
   highlight: {
-    color: theme.colorScheme === 'dark' ? orange3 : blue3,
+    color: theme.colorScheme === 'dark' ? pink1 : blue3,
   },
 
   description: {
