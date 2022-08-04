@@ -6,5 +6,5 @@ import { HmsInfrastructureStack } from "../lib/hms-infrastructure-stack";
 const app = new cdk.App();
 
 new HmsInfrastructureStack(app, "HmsInfrastructureStack", {
-  env: { account: process.env.CDK_DEFAULT_ACCOUNT, region: process.env.CDK_DEFAULT_REGION },
+  env: { account: process.env.CDK_DEFAULT_ACCOUNT, region: 'eu-west-1' },
 });
