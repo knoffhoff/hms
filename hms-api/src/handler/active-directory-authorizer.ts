@@ -24,6 +24,7 @@ export const authorizeWithActiveDirectory = (event, context, callback) => {
   try {
     // Commented out verification of token since the token comes from graph API
     // see: https://stackoverflow.com/questions/45317152/invalid-signature-while-validating-azure-ad-access-token-but-id-token-works
+    // could be of security concern!
     // verify(
     //   tokenValue,
     //   AZURE_AD_CLIENT_PUBLIC_KEY,
@@ -39,6 +40,7 @@ export const authorizeWithActiveDirectory = (event, context, callback) => {
     //   },
     // );
     const decoded = decode(tokenValue);
+    if (decoded.iss !== options.issuer) { return callback('Unauthorized') }
     return callback(null, generatePolicy(decoded.sub, 'Allow', event.methodArn))
   } catch (err) {
     return callback('Unauthorized');
