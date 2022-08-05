@@ -21,8 +21,22 @@ import Carousel from 'nuka-carousel'
 import { getIdeaDetails, getIdeaList } from '../actions/IdeaActions'
 import { useAppSelector } from '../hooks'
 import { useMsal } from '@azure/msal-react'
-import { ArrowLeft, PlayerPlay } from 'tabler-icons-react'
-import { orange3, PAGE_BACKGROUND_DARK } from '../common/colors'
+import {
+  ArrowBigRight,
+  ArrowLeft,
+  ArrowNarrowRight,
+  PlayerPlay,
+} from 'tabler-icons-react'
+import {
+  blue3,
+  blue4,
+  dark2,
+  dark3,
+  dark4,
+  orange3,
+  PAGE_BACKGROUND_DARK,
+} from '../common/colors'
+import PitchTimer from '../components/PitchTimer'
 
 const useStyles = createStyles((_theme, _params, getRef) => ({
   controls: {
@@ -48,7 +62,7 @@ const useStyles = createStyles((_theme, _params, getRef) => ({
 
   idea: {
     height: '100vh',
-    padding: '150px 50px',
+    padding: '150px 100px',
   },
 
   title: {
@@ -56,7 +70,7 @@ const useStyles = createStyles((_theme, _params, getRef) => ({
     fontFamily: `Greycliff CF, ${_theme.fontFamily}`,
     fontWeight: 900,
     lineHeight: 1.05,
-    maxWidth: 1000,
+    maxWidth: 1200,
     fontSize: 58,
 
     [_theme.fn.smallerThan('md')]: {
@@ -66,15 +80,39 @@ const useStyles = createStyles((_theme, _params, getRef) => ({
     },
   },
 
+  name: {
+    color: orange3,
+    fontSize: 35,
+  },
+
   description: {
+    maxWidth: 1000,
+  },
+
+  text: {
     color: _theme.white,
     opacity: 0.75,
-    maxWidth: 1000,
     fontSize: 24,
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    display: '-webkit-box',
+    WebkitLineClamp: 4,
+    WebkitBoxOrient: 'vertical',
 
     [_theme.fn.smallerThan('md')]: {
       maxWidth: '100%',
     },
+  },
+
+  subTitle: {
+    fontSize: 35,
+    opacity: 1,
+  },
+
+  card: {
+    borderRadius: 20,
+    backgroundColor: blue4,
+    padding: '20px 30px',
   },
 }))
 
@@ -103,199 +141,45 @@ export default function Presentations() {
     fetchIdeas()
   }, [])
 
-  const renderName = (user: UserPreview): string => {
-    return user.firstName + (user.lastName ? ' ' + user.lastName : '')
-  }
-
   const ideaList = ideas?.map((idea) => {
     return (
       <Container key={idea.id} className={classes.idea} fluid>
-        <Title className={classes.title}>{idea.title}</Title>
-        <Text className={classes.description} mt={30}>
-          {idea.description}
-        </Text>
+        <Stack>
+          <Title className={classes.title}>{idea.title}</Title>
+          <Title
+            order={2}
+            className={classes.name}
+          >{`by ${idea.owner?.user.firstName} ${idea.owner?.user.lastName}`}</Title>
+          <Text className={`${classes.text} ${classes.description}`} mt={30}>
+            {idea.description}
+          </Text>
+          <Grid grow justify={'center'} align={'center'} mt={100}>
+            <Grid.Col span={5} pr={30} className={classes.card}>
+              <Title
+                order={3}
+                className={`${classes.text} ${classes.subTitle}`}
+              >
+                🤔 Problem
+              </Title>
+              <Text className={classes.text}>{idea.problem}</Text>
+            </Grid.Col>
+            <Grid.Col span={2} px={50}>
+              <ArrowNarrowRight size={'100%'} color={dark2} />
+            </Grid.Col>
+            <Grid.Col span={5} pl={30} className={classes.card}>
+              <Title
+                order={3}
+                className={`${classes.text} ${classes.subTitle}`}
+              >
+                🚀 Goal
+              </Title>
+              <Text className={classes.text}>{idea.goal}</Text>
+            </Grid.Col>
+          </Grid>
+        </Stack>
       </Container>
     )
   })
-
-  // function getIdeasList() {
-  //   return allIdeas.map((idea: Idea, index: number) => (
-  //     <div style={{ padding: 10 }} key={index}>
-  //       <Card
-  //         withBorder
-  //         style={{ height: '99vh' }}
-  //         className={classes.presentationsCards}
-  //       >
-  //         <Card.Section
-  //           style={{ height: '6%' }}
-  //           className={classes.noBorderSection}
-  //         >
-  //           <Text className={classes.label}>Title</Text>
-  //           <div
-  //             style={{
-  //               backgroundColor: 'white',
-  //             }}
-  //           >
-  //             <Text className={classes.presentationText}>{idea.title}</Text>
-  //           </div>
-  //         </Card.Section>
-  //
-  //         <Card.Section
-  //           style={{ height: '25%' }}
-  //           className={classes.noBorderSection}
-  //         >
-  //           <Grid align='center'>
-  //             <Grid.Col span={8}>
-  //               <Card.Section style={{ height: '100%' }}>
-  //                 <Text className={classes.label}>Description</Text>
-  //                 <div
-  //                   style={{
-  //                     height: '20vh',
-  //                     backgroundColor: 'white',
-  //                   }}
-  //                 >
-  //                   {' '}
-  //                   <Text className={classes.presentationText}>
-  //                     {idea.description}
-  //                   </Text>
-  //                 </div>
-  //               </Card.Section>
-  //             </Grid.Col>
-  //             <Grid.Col span={4}>
-  //               <Card.Section>
-  //                 <Group
-  //                   direction={'column'}
-  //                   align={'center'}
-  //                   position={'center'}
-  //                   spacing={'xs'}
-  //                 >
-  //                   <Avatar
-  //                     color='indigo'
-  //                     radius='xl'
-  //                     size='xl'
-  //                     src={
-  //                       'https://avatars.githubusercontent.com/u/10353856?s=460&u=88394dfd67727327c1f7670a1764dc38a8a24831&v=4'
-  //                     }
-  //                   />
-  //                   <Badge size='md'>
-  //                     {idea.owner?.user.firstName} {idea.owner?.user.lastName}
-  //                   </Badge>
-  //                 </Group>
-  //               </Card.Section>
-  //             </Grid.Col>
-  //           </Grid>
-  //         </Card.Section>
-  //
-  //         <Card.Section
-  //           style={{ height: '20%' }}
-  //           className={classes.noBorderSection}
-  //         >
-  //           <Text className={classes.label}>Problem</Text>
-  //           <div
-  //             style={{
-  //               backgroundColor: 'white',
-  //               height: '15vh',
-  //             }}
-  //           >
-  //             <Text className={classes.presentationText}>{idea.problem}</Text>
-  //           </div>
-  //         </Card.Section>
-  //
-  //         <Card.Section
-  //           style={{ height: '20%' }}
-  //           className={classes.noBorderSection}
-  //         >
-  //           <Text className={classes.label}>Goal</Text>
-  //           <div
-  //             style={{
-  //               backgroundColor: 'white',
-  //               height: '15vh',
-  //             }}
-  //           >
-  //             <Text className={classes.presentationText}>{idea.goal}</Text>
-  //           </div>
-  //         </Card.Section>
-  //
-  //         <Card.Section
-  //           style={{ height: '20%' }}
-  //           className={classes.noBorderSection}
-  //         >
-  //           <Grid align={'center'}>
-  //             <Grid.Col span={6}>
-  //               <Card.Section>
-  //                 <Text className={classes.label}>Skills</Text>
-  //                 <div
-  //                   style={{
-  //                     paddingTop: '1px',
-  //                     backgroundColor: 'white',
-  //                     height: '15vh',
-  //                   }}
-  //                 >
-  //                   <Grid>
-  //                     {idea.requiredSkills?.map((skill, index) => (
-  //                       <Grid.Col span={3} key={index}>
-  //                         <div
-  //                           style={{
-  //                             display: 'flex',
-  //                             alignItems: 'center',
-  //                             gap: '10px',
-  //                           }}
-  //                         >
-  //                           <Text className={classes.presentationText}>
-  //                             {skill.name}
-  //                           </Text>
-  //                         </div>
-  //                       </Grid.Col>
-  //                     ))}
-  //                   </Grid>
-  //                 </div>
-  //               </Card.Section>
-  //             </Grid.Col>
-  //
-  //             <Grid.Col span={6}>
-  //               <Card.Section>
-  //                 <Text className={classes.label}>Participants</Text>
-  //                 <div
-  //                   style={{
-  //                     paddingTop: '1px',
-  //                     backgroundColor: 'white',
-  //                     height: '15vh',
-  //                   }}
-  //                 >
-  //                   <Grid>
-  //                     {idea.participants?.map((participant, index) => (
-  //                       <Grid.Col span={4} key={index}>
-  //                         <div
-  //                           style={{
-  //                             display: 'flex',
-  //                             alignItems: 'center',
-  //                             gap: '10px',
-  //                           }}
-  //                         >
-  //                           <Avatar
-  //                             color='indigo'
-  //                             radius='xl'
-  //                             size='md'
-  //                             src={
-  //                               'https://avatars.githubusercontent.com/u/10353856?s=460&u=88394dfd67727327c1f7670a1764dc38a8a24831&v=4'
-  //                             }
-  //                           />
-  //                           <Text className={classes.presentationText}>
-  //                             {renderName(participant.user)}
-  //                           </Text>
-  //                         </div>
-  //                       </Grid.Col>
-  //                     ))}
-  //                   </Grid>
-  //                 </div>
-  //               </Card.Section>
-  //             </Grid.Col>
-  //           </Grid>
-  //         </Card.Section>
-  //       </Card>
-  //     </div>
-  //   ))
-  // }
 
   return (
     <>
@@ -315,9 +199,9 @@ export default function Presentations() {
       </ActionIcon>
 
       <div ref={ref}>
-        {/* <Carousel enableKeyboardControls={true}>{getIdeasList()}</Carousel> */}
         {fullscreen && (
           <div className={classes.fullscreen}>
+            <PitchTimer minutes={0} seconds={5} />
             <Carousel enableKeyboardControls>{ideaList}</Carousel>
           </div>
         )}
