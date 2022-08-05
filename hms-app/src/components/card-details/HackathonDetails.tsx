@@ -38,6 +38,7 @@ import {
   DELETE_BUTTON_COLOR,
   RELOAD_BUTTON_COLOR,
 } from '../../common/colors'
+import SkillDetails from './SkillDetails';
 
 type IProps = {
   hackathonId: string
@@ -135,6 +136,19 @@ export default function HackathonDetails(props: IProps) {
       </Accordion.Item>
     )
   )
+
+  const allSkills = hackathonData.skills?.map((skill, index) => (
+      <Accordion.Item
+          key={index}
+          label={
+            <div>
+              {index + 1}. {skill.name}
+            </div>
+          }
+      >
+        <SkillDetails skillId={skill.id.toString()} />
+      </Accordion.Item>
+  ));
 
   const allCategories = hackathonData.categories?.map((category, index) => (
     <Accordion.Item
@@ -324,6 +338,30 @@ export default function HackathonDetails(props: IProps) {
                 {hackathonData.description}
               </RichTextEditor>
             </Card.Section>
+
+            <Accordion iconPosition='left' offsetIcon={false}>
+              <Accordion.Item
+                  label={
+                    <Text className={classes.label}>
+                      Skills ( {allSkills?.length} )
+                    </Text>
+                  }
+              >
+                <Accordion iconPosition='right'>
+                  <Accordion.Item
+                      className={classes.borderAccordion}
+                      label={'Add Skill'}
+                  >
+                    <CategoryForm
+                        hackathonId={hackathonData.id}
+                        context={'new'}
+                        categoryId={''}
+                    />
+                  </Accordion.Item>
+                  {allSkills}
+                </Accordion>
+              </Accordion.Item>
+            </Accordion>
 
             <Accordion iconPosition='left' offsetIcon={false}>
               <Accordion.Item

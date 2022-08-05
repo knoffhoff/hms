@@ -199,6 +199,12 @@ export type SkillPreview = {
   name: string
 }
 
+export type Skill = {
+    id: string
+    name: string
+    description: string
+}
+
 export type OwnerPreview = {
   id: string
   user: UserPreview
