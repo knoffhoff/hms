@@ -41,24 +41,26 @@ export async function createIdea(
   title: string,
   description: string,
   problem: string,
-  goal: string,
+  hypothesis: string,
+  successMeasure: string,
+  followUp: string,
   requiredSkills: Uuid[],
   categoryId: Uuid,
 ): Promise<Idea> {
   if (!(await participantExistsForHackathon(ownerId, hackathonId))) {
     throw new ReferenceNotFoundError(
-      `Cannot create Idea, ` +
+      'Cannot create Idea, ' +
         `Owner (Participant) with id: ${ownerId} does not exist ` +
         `in Hackathon with id: ${hackathonId}`,
     );
   } else if (!(await hackathonExists(hackathonId))) {
     throw new ReferenceNotFoundError(
-      `Cannot create Idea, ` +
+      'Cannot create Idea, ' +
         `Hackathon with id: ${hackathonId} does not exist`,
     );
   } else if (!(await categoryExists(categoryId, hackathonId))) {
     throw new ReferenceNotFoundError(
-      `Cannot create Idea, ` +
+      'Cannot create Idea, ' +
         `Category with id: ${categoryId} does not exist ` +
         `in Hackathon with id: ${hackathonId}`,
     );
@@ -78,13 +80,16 @@ export async function createIdea(
     title,
     description,
     problem,
-    goal,
+    hypothesis,
+    successMeasure,
+    followUp,
     requiredSkills,
     categoryId,
   );
+  console.log('idea', idea);
   const result = idea.validate();
   if (result.hasFailed()) {
-    throw new ValidationError(`Cannot create Idea`, result);
+    throw new ValidationError('Cannot create Idea', result);
   }
 
   await putIdea(idea);
@@ -96,7 +101,9 @@ export async function editIdea(
   title: string,
   description: string,
   problem: string,
-  goal: string,
+  hypothesis: string,
+  successMeasure: string,
+  followUp: string,
   requiredSkills: Uuid[],
   categoryId: Uuid,
 ): Promise<void> {
@@ -129,7 +136,9 @@ export async function editIdea(
   existing.title = title;
   existing.description = description;
   existing.problem = problem;
-  existing.goal = goal;
+  existing.hypothesis = hypothesis;
+  existing.successMeasure = successMeasure;
+  existing.followUp = followUp;
   existing.requiredSkills = requiredSkills;
   existing.categoryId = categoryId;
 
@@ -181,7 +190,7 @@ export async function getIdeaResponse(id: Uuid): Promise<IdeaResponse> {
   } catch (e) {
     throw new ReferenceNotFoundError(
       `Cannot get Idea with id: ${id}, ` +
-        `unable to get Users for Participants with ids: ` +
+        'unable to get Users for Participants with ids: ' +
         `${idea.participantIds}`,
     );
   }
@@ -234,7 +243,7 @@ export async function getIdeaListResponse(
   if (!(await hackathonExists(hackathonId))) {
     throw new NotFoundError(
       `Cannot list Ideas for Hackathon with id: ${hackathonId}, ` +
-        `it does not exist`,
+        'it does not exist',
     );
   }
 
@@ -261,7 +270,7 @@ export async function addParticipant(
     throw new NotFoundError(
       `Cannot add Participant with id: ${participantId} ` +
         `to Idea with id ${ideaId}, ` +
-        `Idea does not exist`,
+        'Idea does not exist',
     );
   }
 
@@ -279,7 +288,7 @@ export async function addParticipant(
     throw new InvalidStateError(
       `Cannot add Participant with id: ${participantId} ` +
         `to Idea with id ${ideaId}, ` +
-        `they are in different Hackathons`,
+        'they are in different Hackathons',
     );
   }
 
@@ -299,7 +308,7 @@ export async function removeIdeasForCategory(categoryId: Uuid): Promise<void> {
       await deleteIdea(idea.id);
     } catch (e) {
       throw new DeletionError(
-        `Unable to delete all Ideas for Category with ` +
+        'Unable to delete all Ideas for Category with ' +
           `id: ${categoryId}, Idea with id: ${idea.id} failed to delete`,
       );
     }
@@ -314,7 +323,7 @@ export async function removeIdeasForOwner(ownerId: Uuid): Promise<void> {
       await deleteIdea(idea.id);
     } catch (e) {
       throw new DeletionError(
-        `Unable to delete all Ideas for Owner with ` +
+        'Unable to delete all Ideas for Owner with ' +
           `id: ${ownerId}, Idea with id: ${idea.id} failed to delete`,
       );
     }
@@ -331,7 +340,7 @@ export async function removeIdeasForHackathon(
       await deleteIdea(idea.id);
     } catch (e) {
       throw new DeletionError(
-        `Unable to delete all Ideas for Hackathon with ` +
+        'Unable to delete all Ideas for Hackathon with ' +
           `id: ${hackathonId}, Idea with id: ${idea.id} failed to delete`,
       );
     }
@@ -347,7 +356,7 @@ export async function removeParticipantFromIdeas(
       await deleteParticipantFromIdea(idea.id, participantId);
     } catch (e) {
       throw new DeletionError(
-        `Unable to delete Participant from all Ideas, ` +
+        'Unable to delete Participant from all Ideas, ' +
           `Participant with id: ${participantId} failed to be deleted from ` +
           `Idea with id: ${idea.id}`,
       );

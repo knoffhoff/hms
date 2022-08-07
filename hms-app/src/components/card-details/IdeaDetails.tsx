@@ -196,8 +196,18 @@ export default function IdeaDetails(props: IProps) {
         </Card.Section>
 
         <Card.Section className={classes.borderSection}>
-          <Text className={classes.label}>Goal</Text>
-          <Text className={classes.text}>{idea.goal}</Text>
+          <Text className={classes.label}>Hypothesis</Text>
+          <Text className={classes.text}>{idea.hypothesis}</Text>
+        </Card.Section>
+
+        <Card.Section className={classes.borderSection}>
+          <Text className={classes.label}>Success Measure</Text>
+          <Text className={classes.text}>{idea.successMeasure}</Text>
+        </Card.Section>
+
+        <Card.Section className={classes.borderSection}>
+          <Text className={classes.label}>Follow Up</Text>
+          <Text className={classes.text}>{idea.followUp}</Text>
         </Card.Section>
 
         <Card.Section className={classes.borderSection}>

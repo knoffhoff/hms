@@ -9,6 +9,9 @@ class IdeaEditRequest {
   goal: string;
   requiredSkills: Uuid[];
   categoryId: Uuid;
+  hypothesis: string;
+  successMeasure: string;
+  followUp: string;
 
   constructor(
     title: string,
@@ -17,6 +20,9 @@ class IdeaEditRequest {
     goal: string,
     requiredSkills: Uuid[],
     categoryId: Uuid,
+    hypothesis: string,
+    successMeasure: string,
+    followUp: string,
   ) {
     this.title = title;
     this.description = description;
@@ -24,6 +30,9 @@ class IdeaEditRequest {
     this.goal = goal;
     this.requiredSkills = requiredSkills;
     this.categoryId = categoryId;
+    this.hypothesis = hypothesis;
+    this.successMeasure = successMeasure;
+    this.followUp = followUp;
   }
 
   static parse(body: string): IdeaEditRequest {
@@ -35,6 +44,9 @@ class IdeaEditRequest {
       json.goal,
       json.requiredSkills,
       json.categoryId,
+      json.hypothesis,
+      json.successMeasure,
+      json.followUp
     );
   }
 }

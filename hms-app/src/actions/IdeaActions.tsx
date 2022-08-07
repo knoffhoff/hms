@@ -40,27 +40,26 @@ export const deleteIdea = async (
     .catch((err) => console.log(err))
 }
 
-export const createIdea = async (
-  instance: IPublicClientApplication,
-  idea: {
+type ideaInput = {
     ownerId: string
     hackathonId: string
     title: string
     description: string
     problem: string
-    goal: string
-  },
+    hypothesis: string
+    successMeasure: string
+    followUp: string
+}
+
+export const createIdea = async (
+  instance: IPublicClientApplication,
+  idea: ideaInput,
   skills: string[],
   categories: string[]
 ) => {
   const idToken = await getIdToken(instance)
   const options = buildFetchOptions('POST', idToken, {
-    ownerId: idea.ownerId,
-    hackathonId: idea.hackathonId,
-    title: idea.title,
-    description: idea.description,
-    problem: idea.problem,
-    goal: idea.goal,
+    ...idea,
     requiredSkills: skills,
     categoryId: categories.toString(),
   })
@@ -72,23 +71,13 @@ export const createIdea = async (
 export const editIdea = async (
   instance: IPublicClientApplication,
   ideaID: string,
-  idea: {
-    ownerId: string
-    hackathonId: string
-    title: string
-    description: string
-    problem: string
-    goal: string
-  },
+  idea: ideaInput,
   skills: string[],
   categories: string[]
 ) => {
   const idToken = await getIdToken(instance)
   const options = buildFetchOptions('PUT', idToken, {
-    title: idea.title,
-    description: idea.description,
-    problem: idea.problem,
-    goal: idea.goal,
+    ...idea,
     requiredSkills: skills,
     categoryId: categories.toString(),
   })

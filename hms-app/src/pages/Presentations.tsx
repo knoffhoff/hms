@@ -105,14 +105,44 @@ export default function Presentations() {
             style={{ height: '20%' }}
             className={classes.noBorderSection}
           >
-            <Text className={classes.label}>Goal</Text>
+            <Text className={classes.label}>Hypothesis</Text>
             <div
               style={{
                 backgroundColor: 'white',
                 height: '15vh',
               }}
             >
-              <Text className={classes.presentationText}>{idea.goal}</Text>
+              <Text className={classes.presentationText}>{idea.hypothesis}</Text>
+            </div>
+          </Card.Section>
+
+          <Card.Section
+              style={{ height: '20%' }}
+              className={classes.noBorderSection}
+          >
+            <Text className={classes.label}>Success Measure</Text>
+            <div
+                style={{
+                  backgroundColor: 'white',
+                  height: '15vh',
+                }}
+            >
+              <Text className={classes.presentationText}>{idea.successMeasure}</Text>
+            </div>
+          </Card.Section>
+
+          <Card.Section
+              style={{ height: '20%' }}
+              className={classes.noBorderSection}
+          >
+            <Text className={classes.label}>Follow Up</Text>
+            <div
+                style={{
+                  backgroundColor: 'white',
+                  height: '15vh',
+                }}
+            >
+              <Text className={classes.presentationText}>{idea.followUp}</Text>
             </div>
           </Card.Section>
 

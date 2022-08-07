@@ -16,7 +16,9 @@ export async function edit(event, context, callback) {
       request.title,
       request.description,
       request.problem,
-      request.goal,
+      request.hypothesis,
+      request.successMeasure,
+      request.followUp,
       request.requiredSkills,
       request.categoryId,
     );

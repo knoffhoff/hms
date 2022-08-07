@@ -61,11 +61,20 @@ class Idea {
   problem: string;
 
   /**
-   * A description of the goal of the Idea
-   *
-   * May be empty
+   * What do you want to do
    */
-  goal: string;
+  hypothesis: string;
+
+  /**
+   * How would you identify that your hack made it / has impact
+   */
+  successMeasure: string;
+
+  /**
+   * What to do with that artefact (e.g. use it right away /
+   * elaborate on in the next cycle / make it a foundation for the next HW)
+   */
+  followUp: string;
 
   /**
    * A list Skill IDs which are desired for the completion of the Idea
@@ -116,10 +125,6 @@ class Idea {
       result.addFailure('problem is null');
     }
 
-    if (this.goal === null || this.goal === undefined) {
-      result.addFailure('goal is null');
-    }
-
     if (!this.requiredSkills) {
       result.addFailure('requiredSkills is null or empty');
     }
@@ -136,7 +141,9 @@ class Idea {
     title: string,
     description: string,
     problem: string,
-    goal: string,
+    hypothesis: string,
+    successMeasure: string,
+    followUp: string,
     requiredSkills: Uuid[],
     categoryId: Uuid,
   );
@@ -146,7 +153,9 @@ class Idea {
     title: string,
     description: string,
     problem: string,
-    goal: string,
+    hypothesis: string,
+    successMeasure: string,
+    followUp: string,
     requiredSkills: Uuid[],
     categoryId: Uuid,
     id: Uuid,
@@ -160,7 +169,9 @@ class Idea {
     title: string,
     description: string,
     problem: string,
-    goal: string,
+    hypothesis: string,
+    successMeasure: string,
+    followUp: string,
     requiredSkills: Uuid[],
     categoryId: Uuid,
     id: Uuid = uuid(),
@@ -174,7 +185,9 @@ class Idea {
     this.title = title;
     this.description = description;
     this.problem = problem;
-    this.goal = goal;
+    this.hypothesis = hypothesis;
+    this.successMeasure = successMeasure;
+    this.followUp = followUp;
     this.requiredSkills = requiredSkills;
     this.categoryId = categoryId;
     this.creationDate = creationDate;

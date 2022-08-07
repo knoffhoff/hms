@@ -57,7 +57,9 @@ function IdeaForm(props: IProps) {
     title: '',
     description: '',
     problem: '',
-    goal: '',
+    hypothesis: '',
+    successMeasure: '',
+    followUp: '',
     creationDate: new Date(),
   })
   const maxIdeaTitleLength = 100
@@ -69,7 +71,9 @@ function IdeaForm(props: IProps) {
         title: idea.title,
         description: idea.description,
         problem: idea.problem,
-        goal: idea.goal,
+        hypothesis: idea.hypothesis,
+        successMeasure: idea.successMeasure,
+        followUp: idea.followUp,
       })
     }
   }
@@ -134,7 +138,9 @@ function IdeaForm(props: IProps) {
           title: '',
           description: '',
           problem: '',
-          goal: '',
+          hypothesis: '',
+          successMeasure: '',
+          followUp: '',
         }))
         if (JSON.stringify(response).toString().includes('error')) {
           updateNotification({
@@ -299,15 +305,41 @@ function IdeaForm(props: IProps) {
             </Card.Section>
             <Card.Section className={classes.borderSection}>
               <Textarea
-                label='Goal'
-                placeholder='the goal for the hackweek is... (optional)'
+                  label='Hypothesis'
+                  placeholder='What do you want to do? (optional)'
+                  minRows={2}
+                  maxRows={3}
+                  autosize
+                  onChange={handleChange}
+                  name='hypothesis'
+                  value={ideaText.hypothesis}
+                  className={classes.label}
+              />
+            </Card.Section>
+            <Card.Section className={classes.borderSection}>
+              <Textarea
+                label='Success Measure'
+                placeholder='How would you identify that your hack made it / has impact? (optional)'
                 minRows={2}
                 maxRows={3}
                 autosize
                 onChange={handleChange}
-                name='goal'
-                value={ideaText.goal}
+                name='successMeasure'
+                value={ideaText.successMeasure}
                 className={classes.label}
+              />
+            </Card.Section>
+            <Card.Section className={classes.borderSection}>
+              <Textarea
+                  label='Follow Up'
+                  placeholder='What to do with that artefact (e.g. use it right away / elaborate on in the next cycle / make it a foundation for the next HW)? (optional)'
+                  minRows={2}
+                  maxRows={3}
+                  autosize
+                  onChange={handleChange}
+                  name='followUp'
+                  value={ideaText.followUp}
+                  className={classes.label}
               />
             </Card.Section>
 

@@ -111,7 +111,9 @@ export type Idea = {
   title: string
   description: string
   problem: string
-  goal: string
+  hypothesis: string
+  successMeasure: string
+  followUp: string
   requiredSkills?: SkillPreview[]
   category?: CategoryPreview
   creationDate: Date

@@ -24,6 +24,9 @@ class IdeaResponse {
   requiredSkills: SkillPreviewResponse[];
   category: CategoryPreviewResponse;
   creationDate: Date;
+  hypothesis: string;
+  successMeasure: string;
+  followUp: string;
 
   constructor(
     id: Uuid,
@@ -33,10 +36,12 @@ class IdeaResponse {
     title: string,
     description: string,
     problem: string,
-    goal: string,
     requiredSkills: SkillPreviewResponse[],
     category: CategoryPreviewResponse,
     creationDate: Date,
+    hypothesis: string,
+    successMeasure: string,
+    followUp: string,
   ) {
     this.id = id;
     this.owner = owner;
@@ -45,10 +50,12 @@ class IdeaResponse {
     this.title = title;
     this.description = description;
     this.problem = problem;
-    this.goal = goal;
     this.requiredSkills = requiredSkills;
     this.category = category;
     this.creationDate = creationDate;
+    this.hypothesis = hypothesis;
+    this.successMeasure = successMeasure;
+    this.followUp = followUp;
   }
 
   static from = (
@@ -69,10 +76,12 @@ class IdeaResponse {
       idea.title,
       idea.description,
       idea.problem,
-      idea.goal,
       SkillPreviewResponse.fromArray(skills),
       CategoryPreviewResponse.from(category),
       idea.creationDate,
+      idea.hypothesis,
+      idea.successMeasure,
+      idea.followUp
     );
 }
 

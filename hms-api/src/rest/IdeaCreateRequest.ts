@@ -8,7 +8,9 @@ class IdeaCreateRequest {
   title: string;
   description: string;
   problem: string;
-  goal: string;
+  hypothesis: string;
+  successMeasure: string;
+  followUp: string;
   requiredSkills: Uuid[];
   categoryId: Uuid;
 
@@ -18,7 +20,9 @@ class IdeaCreateRequest {
     title: string,
     description: string,
     problem: string,
-    goal: string,
+    hypothesis: string,
+    successMeasure: string,
+    followUp: string,
     requiredSkills: Uuid[],
     categoryId: Uuid,
   ) {
@@ -27,7 +31,9 @@ class IdeaCreateRequest {
     this.title = title;
     this.description = description;
     this.problem = problem;
-    this.goal = goal;
+    this.hypothesis = hypothesis;
+    this.successMeasure = successMeasure;
+    this.followUp = followUp;
     this.requiredSkills = requiredSkills;
     this.categoryId = categoryId;
   }
@@ -40,7 +46,9 @@ class IdeaCreateRequest {
       json.title,
       json.description,
       json.problem,
-      json.goal,
+      json.hypothesis,
+      json.successMeasure,
+      json.followUp,
       json.requiredSkills,
       json.categoryId,
     );
