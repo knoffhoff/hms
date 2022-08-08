@@ -130,9 +130,9 @@ const SkillForm = (props: IProps): React.ReactElement => {
               <Card withBorder className={classes.card}>
                   <Card.Section className={classes.borderSection}>
                       <Textarea
-                          label='Title'
+                          label='Name'
                           required
-                          placeholder='Title'
+                          placeholder='Name'
                           maxRows={1}
                           autosize
                           onChange={handleChange}

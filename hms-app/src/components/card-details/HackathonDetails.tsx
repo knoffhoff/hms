@@ -40,6 +40,7 @@ import {
   RELOAD_BUTTON_COLOR,
 } from '../../common/colors'
 import SkillDetails from './SkillDetails';
+import SkillForm from '../input-forms/SkillForm';
 
 type IProps = {
   hackathonId: string
@@ -368,10 +369,9 @@ export default function HackathonDetails(props: IProps) {
                       className={classes.borderAccordion}
                       label={'Add Skill'}
                   >
-                    <CategoryForm
-                        hackathonId={hackathonData.id}
+                    <SkillForm
                         context={'new'}
-                        categoryId={''}
+                        skillId={''}
                     />
                   </Accordion.Item>
                   {allSkills}
