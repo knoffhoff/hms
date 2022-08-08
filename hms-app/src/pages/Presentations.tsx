@@ -14,6 +14,7 @@ import {
   Title,
   Stack,
   Container,
+  NumberInput,
 } from '@mantine/core'
 import { useFullscreen } from '@mantine/hooks'
 import { Idea, IdeaPreview, UserPreview } from '../common/types'
@@ -124,6 +125,7 @@ export default function Presentations() {
   )
   const { ref, toggle, fullscreen } = useFullscreen()
   const [ideas, setIdeas] = useState<Idea[]>([])
+  const [timerValue, setTimerValue] = useState({ minutes: 2, seconds: 0 })
 
   useEffect(() => {
     const fetchIdeas = async () => {
@@ -187,8 +189,35 @@ export default function Presentations() {
         Admin
       </Button>
       <Title my={20} order={1}>
-        Pitch presentation slides
+        Pitch presentation
       </Title>
+      <Text size={'lg'} weight={600}>
+        Set time per pitch
+      </Text>
+      <Group mb={40} mt={10}>
+        <NumberInput
+          defaultValue={timerValue.minutes}
+          label={'Minutes'}
+          size={'md'}
+          min={0}
+          max={59}
+          required
+          onChange={(val) => {
+            setTimerValue({ ...timerValue, minutes: val || 0 })
+          }}
+        />
+        <NumberInput
+          defaultValue={timerValue.seconds}
+          label={'Seconds'}
+          size={'md'}
+          min={0}
+          max={59}
+          required
+          onChange={(val) => {
+            setTimerValue({ ...timerValue, seconds: val || 0 })
+          }}
+        />
+      </Group>
       <ActionIcon
         color={'green'}
         size={100}
@@ -201,7 +230,10 @@ export default function Presentations() {
       <div ref={ref}>
         {fullscreen && (
           <div className={classes.fullscreen}>
-            <PitchTimer minutes={0} seconds={5} />
+            <PitchTimer
+              minutes={timerValue.minutes}
+              seconds={timerValue.seconds}
+            />
             <Carousel enableKeyboardControls>{ideaList}</Carousel>
           </div>
         )}
