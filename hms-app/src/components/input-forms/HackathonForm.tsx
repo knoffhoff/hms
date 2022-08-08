@@ -3,12 +3,11 @@ import React, { useState } from 'react'
 import { DatePicker } from '@mantine/dates'
 import { createHackathon, editHackathon } from '../../actions/HackathonActions'
 import { showNotification, updateNotification } from '@mantine/notifications'
-import { CheckIcon, Cross2Icon } from '@modulz/radix-icons'
+import { Check, X } from 'tabler-icons-react'
 import { styles } from '../../common/styles'
 import { RichTextEditor } from '@mantine/rte'
 import { useMsal } from '@azure/msal-react'
 import { dark2, dark3, JOIN_BUTTON_COLOR } from '../../common/colors'
-import { X } from 'tabler-icons-react'
 
 type IProps = { context: string; hackathonId: string | null }
 
@@ -60,7 +59,7 @@ function HackathonForm(props: IProps) {
               color: 'red',
               title: 'Failed to create hackathon',
               message: undefined,
-              icon: <Cross2Icon />,
+              icon: <X />,
               autoClose: 2000,
             })
           } else {
@@ -69,7 +68,7 @@ function HackathonForm(props: IProps) {
               color: 'teal',
               title: `Created ${hackathonTitle}`,
               message: undefined,
-              icon: <CheckIcon />,
+              icon: <Check />,
               autoClose: 2000,
             })
           }
@@ -102,7 +101,7 @@ function HackathonForm(props: IProps) {
           color: 'red',
           title: 'Failed to edit hackathon',
           message: undefined,
-          icon: <Cross2Icon />,
+          icon: <X />,
           autoClose: 2000,
         })
       } else {
@@ -111,7 +110,7 @@ function HackathonForm(props: IProps) {
           color: 'teal',
           title: `Edited ${hackathonTitle}`,
           message: undefined,
-          icon: <CheckIcon />,
+          icon: <Check />,
           autoClose: 2000,
         })
       }

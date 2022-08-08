@@ -30,11 +30,11 @@ function App() {
             <Route path='archive' element={<Archive />} />
             <Route path='voting' element={<Voting />} />
             <Route path='admin' element={<Admin />} />
+            <Route path={'presentations'} element={<Presentations />} />
           </>
         )}
         <Route path='*' element={<NoPage />} />
       </Route>
-      <Route path={'presentations'} element={<Presentations />} />
     </Routes>
   )
 }
