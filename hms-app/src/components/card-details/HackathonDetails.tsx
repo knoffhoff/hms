@@ -58,7 +58,7 @@ export default function HackathonDetails(props: IProps) {
   const [hackathonData, setHackathonData] = useState({} as Hackathon)
   const [ideaData, setIdeaData] = useState<Idea>()
   const [relevantIdeaList, setRelevantIdeaList] = useState([] as Idea[])
-  const [availableSkills, setAvailableSkills] = useState({ skills: [] as SkillPreview[] })
+  const [availableSkills, setAvailableSkills] = useState([] as SkillPreview[])
   const [value, onChange] = useState(hackathonData.description)
 
   const [registrationOpen, setRegistrationOpen] = useState(false)
@@ -95,10 +95,7 @@ export default function HackathonDetails(props: IProps) {
       if (data && data.skills) {
         skills = data.skills;
       }
-      setAvailableSkills({
-        ...availableSkills,
-        skills,
-      });
+      setAvailableSkills(skills);
     });
   };
 
@@ -156,7 +153,7 @@ export default function HackathonDetails(props: IProps) {
     )
   )
 
-  const allSkills = hackathonData.skills?.map((skill, index) => (
+  const allSkills = availableSkills?.map((skill, index) => (
       <Accordion.Item
           key={index}
           label={
