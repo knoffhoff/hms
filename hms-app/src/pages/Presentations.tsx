@@ -15,6 +15,8 @@ import {
   Stack,
   Container,
   NumberInput,
+  List,
+  ThemeIcon,
 } from '@mantine/core'
 import { useFullscreen } from '@mantine/hooks'
 import { Idea, IdeaPreview, UserPreview } from '../common/types'
@@ -27,8 +29,10 @@ import {
   ArrowLeft,
   ArrowNarrowRight,
   PlayerPlay,
+  User,
 } from 'tabler-icons-react'
 import {
+  blue2,
   blue3,
   blue4,
   dark2,
@@ -146,39 +150,76 @@ export default function Presentations() {
   const ideaList = ideas?.map((idea) => {
     return (
       <Container key={idea.id} className={classes.idea} fluid>
-        <Stack>
-          <Title className={classes.title}>{idea.title}</Title>
-          <Title
-            order={2}
-            className={classes.name}
-          >{`by ${idea.owner?.user.firstName} ${idea.owner?.user.lastName}`}</Title>
-          <Text className={`${classes.text} ${classes.description}`} mt={30}>
-            {idea.description}
-          </Text>
-          <Grid grow justify={'center'} align={'center'} mt={100}>
-            <Grid.Col span={5} pr={30} className={classes.card}>
-              <Title
-                order={3}
-                className={`${classes.text} ${classes.subTitle}`}
-              >
-                🤔 Problem
-              </Title>
-              <Text className={classes.text}>{idea.problem}</Text>
-            </Grid.Col>
-            <Grid.Col span={2} px={50}>
-              <ArrowNarrowRight size={'100%'} color={dark2} />
-            </Grid.Col>
-            <Grid.Col span={5} pl={30} className={classes.card}>
-              <Title
-                order={3}
-                className={`${classes.text} ${classes.subTitle}`}
-              >
-                🚀 Goal
-              </Title>
-              <Text className={classes.text}>{idea.goal}</Text>
-            </Grid.Col>
-          </Grid>
-        </Stack>
+        <Grid grow justify={'center'}>
+          <Grid.Col span={8}>
+            <Badge
+              fullWidth={false}
+              color={'gray'}
+              my={20}
+              size={'lg'}
+              variant={'outline'}
+            >
+              {idea.category?.title}
+            </Badge>
+            <Title className={classes.title} mb={10}>
+              {idea.title}
+            </Title>
+            <Title
+              order={2}
+              className={classes.name}
+            >{`by ${idea.owner?.user.firstName} ${idea.owner?.user.lastName}`}</Title>
+            <Text className={`${classes.text} ${classes.description}`} mt={30}>
+              {idea.description}
+            </Text>
+          </Grid.Col>
+          <Grid.Col span={3} offset={1}>
+            <Title order={2} mt={50}>
+              Participants
+            </Title>
+            <List
+              mt={20}
+              size={'lg'}
+              icon={
+                <ThemeIcon
+                  radius={'xl'}
+                  variant={'light'}
+                  color={'gray'}
+                  size={'lg'}
+                >
+                  <User />
+                </ThemeIcon>
+              }
+              spacing={'xs'}
+            >
+              {idea.participants?.map((participant) => {
+                return (
+                  <List.Item key={participant.id} color={'white'}>
+                    <Text color={'white'}>{`${participant.user.firstName} ${
+                      participant.user.lastName ? participant.user.lastName : ''
+                    }`}</Text>
+                  </List.Item>
+                )
+              })}
+            </List>
+          </Grid.Col>
+        </Grid>
+        <Grid grow justify={'center'} align={'center'} mt={100}>
+          <Grid.Col span={5} pr={30} className={classes.card}>
+            <Title order={3} className={`${classes.text} ${classes.subTitle}`}>
+              🤔 Problem
+            </Title>
+            <Text className={classes.text}>{idea.problem}</Text>
+          </Grid.Col>
+          <Grid.Col span={2} px={50}>
+            <ArrowNarrowRight size={'100%'} color={dark2} />
+          </Grid.Col>
+          <Grid.Col span={5} pl={30} className={classes.card}>
+            <Title order={3} className={`${classes.text} ${classes.subTitle}`}>
+              🚀 Goal
+            </Title>
+            <Text className={classes.text}>{idea.goal}</Text>
+          </Grid.Col>
+        </Grid>
       </Container>
     )
   })
