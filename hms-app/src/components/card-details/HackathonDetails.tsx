@@ -8,10 +8,9 @@ import {
   Hackathon,
   HackathonDetailsType,
   Idea,
-  IdeaCardType, SkillPreview,
+  IdeaCardType
 } from '../../common/types'
 import { getIdeaDetails } from '../../actions/IdeaActions'
-import { getListOfSkills } from '../../actions/SkillActions'
 import {
   Accordion,
   Button,
@@ -39,8 +38,6 @@ import {
   DELETE_BUTTON_COLOR,
   RELOAD_BUTTON_COLOR,
 } from '../../common/colors'
-import SkillDetails from './SkillDetails';
-import SkillForm from '../input-forms/SkillForm';
 
 type IProps = {
   hackathonId: string
@@ -59,7 +56,6 @@ export default function HackathonDetails(props: IProps) {
   const [hackathonData, setHackathonData] = useState({} as Hackathon)
   const [ideaData, setIdeaData] = useState<Idea>()
   const [relevantIdeaList, setRelevantIdeaList] = useState([] as Idea[])
-  const [availableSkills, setAvailableSkills] = useState([] as SkillPreview[])
   const [value, onChange] = useState(hackathonData.description)
 
   const [registrationOpen, setRegistrationOpen] = useState(false)
@@ -90,25 +86,11 @@ export default function HackathonDetails(props: IProps) {
     })
   }
 
-  const loadAvailableSkills = () => {
-    getListOfSkills(instance).then((data) => {
-      let skills = [] as SkillPreview[];
-      if (data && data.skills) {
-        skills = data.skills;
-      }
-      setAvailableSkills(skills);
-    });
-  };
-
   const deleteSelectedHackathon = () => {
     deleteHackathon(instance, hackathonId).then(() => {
       setDeleteModalOpened(false)
     })
   }
-
-  useEffect(() => {
-    loadAvailableSkills()
-  }, [])
 
   useEffect(() => {
     loadSelectedHackathon()
@@ -153,19 +135,6 @@ export default function HackathonDetails(props: IProps) {
       </Accordion.Item>
     )
   )
-
-  const allSkills = availableSkills?.map((skill, index) => (
-      <Accordion.Item
-          key={index}
-          label={
-            <div>
-              {index + 1}. {skill.name}
-            </div>
-          }
-      >
-        <SkillDetails skillId={skill.id.toString()} />
-      </Accordion.Item>
-  ));
 
   const allCategories = hackathonData.categories?.map((category, index) => (
     <Accordion.Item
@@ -355,29 +324,6 @@ export default function HackathonDetails(props: IProps) {
                 {hackathonData.description}
               </RichTextEditor>
             </Card.Section>
-
-            <Accordion iconPosition='left' offsetIcon={false}>
-              <Accordion.Item
-                  label={
-                    <Text className={classes.label}>
-                      Skills ( {allSkills?.length} )
-                    </Text>
-                  }
-              >
-                <Accordion iconPosition='right'>
-                  <Accordion.Item
-                      className={classes.borderAccordion}
-                      label={'Add Skill'}
-                  >
-                    <SkillForm
-                        context={'new'}
-                        skillId={''}
-                    />
-                  </Accordion.Item>
-                  {allSkills}
-                </Accordion>
-              </Accordion.Item>
-            </Accordion>
 
             <Accordion iconPosition='left' offsetIcon={false}>
               <Accordion.Item
