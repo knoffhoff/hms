@@ -8,9 +8,10 @@ import {
   Hackathon,
   HackathonDetailsType,
   Idea,
-  IdeaCardType,
+  IdeaCardType, SkillPreview,
 } from '../../common/types'
 import { getIdeaDetails } from '../../actions/IdeaActions'
+import { getListOfSkills } from '../../actions/SkillActions'
 import {
   Accordion,
   Button,
@@ -57,6 +58,7 @@ export default function HackathonDetails(props: IProps) {
   const [hackathonData, setHackathonData] = useState({} as Hackathon)
   const [ideaData, setIdeaData] = useState<Idea>()
   const [relevantIdeaList, setRelevantIdeaList] = useState([] as Idea[])
+  const [availableSkills, setAvailableSkills] = useState({ skills: [] as SkillPreview[] })
   const [value, onChange] = useState(hackathonData.description)
 
   const [registrationOpen, setRegistrationOpen] = useState(false)
@@ -87,11 +89,28 @@ export default function HackathonDetails(props: IProps) {
     })
   }
 
+  const loadAvailableSkills = () => {
+    getListOfSkills(instance).then((data) => {
+      let skills = [] as SkillPreview[];
+      if (data && data.skills) {
+        skills = data.skills;
+      }
+      setAvailableSkills({
+        ...availableSkills,
+        skills,
+      });
+    });
+  };
+
   const deleteSelectedHackathon = () => {
     deleteHackathon(instance, hackathonId).then(() => {
       setDeleteModalOpened(false)
     })
   }
+
+  useEffect(() => {
+    loadAvailableSkills()
+  }, [])
 
   useEffect(() => {
     loadSelectedHackathon()
