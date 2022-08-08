@@ -13,7 +13,7 @@ import {
   useAccordionState,
   useMantineTheme,
 } from '@mantine/core'
-import { Idea, IdeaCardType, ParticipantPreview } from '../../common/types'
+import { Idea, IdeaCardType } from '../../common/types'
 import { deleteIdea } from '../../actions/IdeaActions'
 import IdeaForm from '../input-forms/IdeaForm'
 import { styles } from '../../common/styles'
@@ -198,6 +198,11 @@ export default function IdeaDetails(props: IProps) {
         <Card.Section className={classes.borderSection}>
           <Text className={classes.label}>Goal</Text>
           <Text className={classes.text}>{idea.goal}</Text>
+        </Card.Section>
+
+        <Card.Section className={classes.borderSection}>
+          <Text className={classes.label}>Category</Text>
+          <Text className={classes.text}>{idea.category?.title}</Text>
         </Card.Section>
 
         <Accordion
