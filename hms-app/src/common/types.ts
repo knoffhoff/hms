@@ -47,6 +47,7 @@ export type Hackathon = {
   participants?: ParticipantPreview[]
   categories?: CategoryPreview[]
   ideas?: IdeaPreview[]
+  skills?: SkillPreview[]
 }
 
 export type HackathonSerializable = {

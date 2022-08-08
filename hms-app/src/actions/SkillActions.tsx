@@ -14,7 +14,7 @@ export const addSkill = async (
     const idToken = await getIdToken(instance);
     const options = buildFetchOptions('POST', idToken, props);
 
-    return fetch(`${coreUrl}/skills`, options)
+    return fetch(`${coreUrl}/skill`, options)
         .then((response) => {
             return response.json()
         })
@@ -40,7 +40,7 @@ export const getSkillDetails = async (
     const idToken = await getIdToken(instance);
     const options = buildFetchOptions('GET', idToken);
 
-    return fetch(`${coreUrl}/skills/${skillId}`, options)
+    return fetch(`${coreUrl}/skill/${skillId}`, options)
         .then((data) => {
             return data.json()
         })
@@ -61,7 +61,7 @@ export const editSkill = async (
         description: props.description
     });
 
-    return fetch(`${coreUrl}/skills/${props.id}`, options)
+    return fetch(`${coreUrl}/skill/${props.id}`, options)
         .then((response) => {
             return response.json()
         })
@@ -75,7 +75,7 @@ export const removeSkill = async (
     const idToken = await getIdToken(instance);
     const options = buildFetchOptions('DELETE', idToken);
 
-    return fetch(`${coreUrl}/skills/${skillId}`, options)
+    return fetch(`${coreUrl}/skill/${skillId}`, options)
         .then((response) => {
             return response.json()
         })

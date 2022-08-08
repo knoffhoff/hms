@@ -136,7 +136,7 @@ const SkillForm = (props: IProps): React.ReactElement => {
                           maxRows={1}
                           autosize
                           onChange={handleChange}
-                          name='title'
+                          name='name'
                           value={skill.name}
                           className={classes.label}
                       />

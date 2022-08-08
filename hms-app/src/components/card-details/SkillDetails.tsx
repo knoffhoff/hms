@@ -9,9 +9,15 @@ import { Skill } from '../../common/types';
 import SkillForm from '../input-forms/SkillForm';
 
 
-const SkillDetails = (skillId: string): React.ReactElement => {
+
+type IProps = {
+    skillId: string
+}
+
+const SkillDetails = (props: IProps): React.ReactElement => {
     const { instance } = useMsal();
     const { classes } = styles();
+    const { skillId } = props;
     const [deleteModalOpened, setDeleteModalOpened] = useState(false);
     const [editModalOpened, setEditModalOpened] = useState(false);
     const [isError, setIsError] = useState(false);
