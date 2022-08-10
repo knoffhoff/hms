@@ -100,11 +100,11 @@ function PitchTimer(pitchTime: PitchTimerProps) {
   const [countdownApi, setCountdownApi] = useState<CountdownApi>()
   const [, forceUpdate] = useReducer((x) => x + 1, 0)
   const [progress, setProgress] = useState(0)
-  const [timeLeft, setTimeLeft] = useState(timeInMillis)
+  const [millisLeft, setTimeLeft] = useState(timeInMillis)
 
   const getPercentageFromTimeLeft = (minutes: number, seconds: number) => {
-    const timeLeft = getMillis(minutes, seconds)
-    return Math.floor(100 - (timeLeft / timeInMillis) * 100)
+    const millisLeft = getMillis(minutes, seconds)
+    return Math.floor(100 - (millisLeft / timeInMillis) * 100)
   }
 
   const renderer = ({ minutes, seconds, completed }: RendererProps) => {
@@ -203,15 +203,15 @@ function PitchTimer(pitchTime: PitchTimerProps) {
           renderer={renderer}
         />
       </Group>
-      {timeLeft > 0 && timeLeft < 4000 && (
+      {millisLeft > 0 && millisLeft < 4000 && (
         <div
           className={`${classes.fullscreenOverlay} ${
-            timeLeft > 1000 ? classes.bgOrange : classes.bgRed
+            millisLeft > 1000 ? classes.bgOrange : classes.bgRed
           }`}
         >
           <Center>
             <span className={classes.fullscreenCounter}>
-              {getSeconds(timeLeft)}
+              {getSeconds(millisLeft)}
             </span>
           </Center>
         </div>
