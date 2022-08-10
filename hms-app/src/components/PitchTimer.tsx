@@ -93,8 +93,8 @@ const getSeconds = (millis: number) => {
   return Math.floor(millis / 1000)
 }
 
-function PitchTimer(time: PitchTimerProps) {
-  const timeInMillis = getMillis(time.minutes, time.seconds)
+function PitchTimer(pitchTime: PitchTimerProps) {
+  const timeInMillis = getMillis(pitchTime.minutes, pitchTime.seconds)
   const { classes } = useStyles()
   const [date, setDate] = useState(Date.now() + timeInMillis)
   const [countdownApi, setCountdownApi] = useState<CountdownApi>()
