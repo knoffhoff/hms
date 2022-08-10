@@ -89,27 +89,26 @@ const getMillis = (minutes: number, seconds: number) => {
   return minutes * 60000 + seconds * 1000
 }
 
-const getSeconds = (millis: number) => {
-  return Math.floor(millis / 1000)
-}
-
 function PitchTimer(pitchTime: PitchTimerProps) {
-  const timeInMillis = getMillis(pitchTime.minutes, pitchTime.seconds)
+  const pitchTimeInMillis = getMillis(pitchTime.minutes, pitchTime.seconds)
+  const pitchTimeInSeconds = pitchTime.minutes * 60 + pitchTime.seconds
   const { classes } = useStyles()
-  const [date, setDate] = useState(Date.now() + timeInMillis)
+  const [date, setDate] = useState(Date.now() + pitchTimeInMillis)
   const [countdownApi, setCountdownApi] = useState<CountdownApi>()
   const [, forceUpdate] = useReducer((x) => x + 1, 0)
   const [progress, setProgress] = useState(0)
-  const [millisLeft, setTimeLeft] = useState(timeInMillis)
+  const [secondsLeft, setSecondsLeft] = useState(pitchTimeInSeconds)
 
-  const getPercentageFromTimeLeft = (minutes: number, seconds: number) => {
-    const millisLeft = getMillis(minutes, seconds)
-    return Math.floor(100 - (millisLeft / timeInMillis) * 100)
+  useEffect(() => {
+    setProgress(getPercentageFromTimeLeft())
+  }, [secondsLeft])
+
+  const getPercentageFromTimeLeft = () => {
+    return Math.floor(100 - (secondsLeft / pitchTimeInSeconds) * 100)
   }
 
   const renderer = ({ minutes, seconds, completed }: RendererProps) => {
-    setProgress(getPercentageFromTimeLeft(minutes, seconds))
-    setTimeLeft(getMillis(minutes, seconds))
+    setSecondsLeft(minutes * 60 + seconds)
     return (
       <Text
         className={`${classes.counterTime} ${completed && classes.finished}`}
@@ -129,7 +128,7 @@ function PitchTimer(pitchTime: PitchTimerProps) {
   }
 
   const handleResetClick = (): void => {
-    setDate(Date.now() + timeInMillis)
+    setDate(Date.now() + pitchTimeInMillis)
     setProgress(0)
   }
 
@@ -203,16 +202,14 @@ function PitchTimer(pitchTime: PitchTimerProps) {
           renderer={renderer}
         />
       </Group>
-      {millisLeft > 0 && millisLeft < 4000 && (
+      {secondsLeft > 0 && secondsLeft < 4 && (
         <div
           className={`${classes.fullscreenOverlay} ${
-            millisLeft > 1000 ? classes.bgOrange : classes.bgRed
+            secondsLeft > 1 ? classes.bgOrange : classes.bgRed
           }`}
         >
           <Center>
-            <span className={classes.fullscreenCounter}>
-              {getSeconds(millisLeft)}
-            </span>
+            <span className={classes.fullscreenCounter}>{secondsLeft}</span>
           </Center>
         </div>
       )}
