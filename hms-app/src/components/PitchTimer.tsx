@@ -86,7 +86,7 @@ const useStyles = createStyles((_theme, _params, getRef) => ({
 }))
 
 const getMillis = (minutes: number, seconds: number) => {
-  return minutes * 60 * 1000 + seconds * 1000
+  return minutes * 60000 + seconds * 1000
 }
 
 const getSeconds = (millis: number) => {
