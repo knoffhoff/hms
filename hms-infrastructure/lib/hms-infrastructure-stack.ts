@@ -16,7 +16,7 @@ import {
 } from "aws-cdk-lib";
 import { Construct } from "constructs";
 
-const DOMAIN_NAME = 's24-hackweek.s24cloud.net';
+const DOMAIN_NAME = 'http://hackweek.cloud.scout24.com/';
 const ACCOUNT_ID = process.env.CDK_DEFAULT_ACCOUNT || "";
 
 export class HmsInfrastructureStack extends Stack {
@@ -24,9 +24,11 @@ export class HmsInfrastructureStack extends Stack {
     super(scope, id, props);
 
     // Frontend Infrastructure
-    const zone = route53.HostedZone.fromLookup(this, "HmsZone", {
-      domainName: DOMAIN_NAME,
-    });
+
+    // TODO: aws sdk get information from hosted zone from a different account
+    // const zone = route53.HostedZone.fromLookup(this, "HmsZone", {
+    //   domainName: DOMAIN_NAME,
+    // });
 
     const cloudfrontOAI = new cloudfront.OriginAccessIdentity(
       this,
@@ -56,19 +58,19 @@ export class HmsInfrastructureStack extends Stack {
     );
     new CfnOutput(this, "Bucket", { value: hmsBucket.bucketName });
 
-    const certificate = new acm.DnsValidatedCertificate(
-      this,
-      "HmsCertificate",
-      {
-        domainName: DOMAIN_NAME,
-        hostedZone: zone,
-        region: "us-east-1",
-      }
-    );
-    new CfnOutput(this, "Certificate", { value: certificate.certificateArn });
+    // const certificate = new acm.DnsValidatedCertificate(
+    //   this,
+    //   "HmsCertificate",
+    //   {
+    //     domainName: DOMAIN_NAME,
+    //     hostedZone: zone,
+    //     region: "us-east-1",
+    //   }
+    // );
+    // new CfnOutput(this, "Certificate", { value: certificate.certificateArn });
 
     const distribution = new cloudfront.Distribution(this, "HmsDistribution", {
-      certificate: certificate,
+      // certificate: certificate,
       defaultRootObject: "index.html",
       domainNames: [DOMAIN_NAME],
       minimumProtocolVersion: cloudfront.SecurityPolicyProtocol.TLS_V1_2_2021,
@@ -93,13 +95,13 @@ export class HmsInfrastructureStack extends Stack {
       value: distribution.distributionId,
     });
 
-    new route53.ARecord(this, "SiteAliasRecord", {
-      recordName: DOMAIN_NAME,
-      target: route53.RecordTarget.fromAlias(
-        new route53Targets.CloudFrontTarget(distribution)
-      ),
-      zone,
-    });
+    // new route53.ARecord(this, "SiteAliasRecord", {
+    //   recordName: DOMAIN_NAME,
+    //   target: route53.RecordTarget.fromAlias(
+    //     new route53Targets.CloudFrontTarget(distribution)
+    //   ),
+    //   zone,
+    // });
 
     new s3Deploy.BucketDeployment(this, "DeployWithInvalidation", {
       sources: [s3Deploy.Source.asset("../hms-app/build")],
