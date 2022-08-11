@@ -147,6 +147,21 @@ export default function Presentations() {
           </Card.Section>
 
           <Card.Section
+              style={{ height: '20%' }}
+              className={classes.noBorderSection}
+          >
+              <Text className={classes.label}>Outcome</Text>
+              <div
+                  style={{
+                      backgroundColor: 'white',
+                      height: '15vh',
+                  }}
+              >
+                  <Text className={classes.presentationText}>{idea.outcome}</Text>
+              </div>
+          </Card.Section>
+
+          <Card.Section
             style={{ height: '20%' }}
             className={classes.noBorderSection}
           >

@@ -114,6 +114,7 @@ export type Idea = {
   hypothesis: string
   successMeasure: string
   followUp: string
+  outcome: string
   requiredSkills?: SkillPreview[]
   category?: CategoryPreview
   creationDate: Date

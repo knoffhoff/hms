@@ -27,6 +27,7 @@ class IdeaResponse {
   hypothesis: string;
   successMeasure: string;
   followUp: string;
+  outcome: string;
 
   constructor(
     id: Uuid,
@@ -42,6 +43,7 @@ class IdeaResponse {
     hypothesis: string,
     successMeasure: string,
     followUp: string,
+    outcome: string,
   ) {
     this.id = id;
     this.owner = owner;
@@ -56,6 +58,7 @@ class IdeaResponse {
     this.hypothesis = hypothesis;
     this.successMeasure = successMeasure;
     this.followUp = followUp;
+    this.outcome = outcome;
   }
 
   static from = (
@@ -81,7 +84,8 @@ class IdeaResponse {
       idea.creationDate,
       idea.hypothesis,
       idea.successMeasure,
-      idea.followUp
+      idea.followUp,
+      idea.outcome,
     );
 }
 

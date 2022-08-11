@@ -10,6 +10,7 @@
     "hypothesis": {"S": "People love more bears"},
     "successMeasure": {"S": "placeholder success measure"},
     "followUp": {"S": "placeholder follow ups"},
+    "outcome": {"S": "placeholder outcomes"},
     "requiredSkills": {"SS": ["0c27e6c6-4a33-4b1f-a15e-46a8bed218e8"]},
     "categoryId": {"S": "7f38993d-073a-4932-af79-07440012f268"},
     "creationDate": {"S": "2021-12-01"}
@@ -25,6 +26,7 @@
     "hypothesis": {"S": "People love more bears"},
     "successMeasure": {"S": "placeholder success measure"},
     "followUp": {"S": "placeholder follow ups"},
+    "outcome": {"S": "placeholder outcomes"},
       "requiredSkills": {"SS": ["7242a9e2-8af9-40c1-aa4c-af76faa013ca"]},
       "categoryId": {"S": "7f38993d-073a-4932-af79-07440012f268"},
       "creationDate": {"S": "2021-12-04"}
@@ -40,6 +42,7 @@
     "hypothesis": {"S": "People love more bears"},
     "successMeasure": {"S": "placeholder success measure"},
     "followUp": {"S": "placeholder follow ups"},
+    "outcome": {"S": "placeholder outcomes"},
       "requiredSkills": {"SS": ["c02e0957-610e-43eb-8c37-651afc208c8f", "5e283cba-3ed6-4c2a-ad11-4d269fce3d43"]},
       "categoryId": {"S": "a8ce5468-ec97-4b99-acea-511c54817956"},
       "creationDate": {"S": "2021-12-05"}
@@ -55,6 +58,7 @@
     "hypothesis": {"S": "People love more bears"},
     "successMeasure": {"S": "placeholder success measure"},
     "followUp": {"S": "placeholder follow ups"},
+    "outcome": {"S": "placeholder outcomes"},
       "requiredSkills": {"SS": ["c02e0957-610e-43eb-8c37-651afc208c8f", "dc6a6f0b-06bf-46cb-b8b1-1c3c17db197c"]},
       "categoryId": {"S": "a8ce5468-ec97-4b99-acea-511c54817956"},
       "creationDate": {"S": "2021-12-06"}
@@ -70,6 +74,7 @@
     "hypothesis": {"S": "People love more bears"},
     "successMeasure": {"S": "placeholder success measure"},
     "followUp": {"S": "placeholder follow ups"},
+    "outcome": {"S": "placeholder outcomes"},
         "requiredSkills": {"SS": ["c02e0957-610e-43eb-8c37-651afc208c8f"]},
         "categoryId": {"S": "7f38993d-073a-4932-af79-07440012f268"},
         "creationDate": {"S": "2021-12-09"}
@@ -85,6 +90,7 @@
     "hypothesis": {"S": "People love more bears"},
     "successMeasure": {"S": "placeholder success measure"},
     "followUp": {"S": "placeholder follow ups"},
+    "outcome": {"S": "placeholder outcomes"},
     "requiredSkills": {"SS": ["dc6a6f0b-06bf-46cb-b8b1-1c3c17db197c", "7242a9e2-8af9-40c1-aa4c-af76faa013ca"]},
     "categoryId": {"S": "52c0bbde-6360-451c-bf50-b56694f56053"},
     "creationDate": {"S": "2022-03-28"}
@@ -100,6 +106,7 @@
     "hypothesis": {"S": "People love more bears"},
     "successMeasure": {"S": "placeholder success measure"},
     "followUp": {"S": "placeholder follow ups"},
+    "outcome": {"S": "placeholder outcomes"},
       "requiredSkills": {"SS": ["7242a9e2-8af9-40c1-aa4c-af76faa013ca", "0c27e6c6-4a33-4b1f-a15e-46a8bed218e8"]},
       "categoryId": {"S": "52c0bbde-6360-451c-bf50-b56694f56053"},
       "creationDate": {"S": "2022-03-29"}
@@ -115,6 +122,7 @@
     "hypothesis": {"S": "People love more bears"},
     "successMeasure": {"S": "placeholder success measure"},
     "followUp": {"S": "placeholder follow ups"},
+    "outcome": {"S": "placeholder outcomes"},
         "requiredSkills": {"SS": ["7242a9e2-8af9-40c1-aa4c-af76faa013ca", "0c27e6c6-4a33-4b1f-a15e-46a8bed218e8"]},
         "categoryId": {"S": "52c0bbde-6360-451c-bf50-b56694f56053"},
         "creationDate": {"S": "2022-04-01"}
@@ -130,6 +138,7 @@
     "hypothesis": {"S": "People love more bears"},
     "successMeasure": {"S": "placeholder success measure"},
     "followUp": {"S": "placeholder follow ups"},
+    "outcome": {"S": "placeholder outcomes"},
       "requiredSkills": {"SS": ["5e283cba-3ed6-4c2a-ad11-4d269fce3d43"]},
       "categoryId": {"S": "52c0bbde-6360-451c-bf50-b56694f56053"},
       "creationDate": {"S": "2022-04-01"}
@@ -145,6 +154,7 @@
     "hypothesis": {"S": "People love more bears"},
     "successMeasure": {"S": "placeholder success measure"},
     "followUp": {"S": "placeholder follow ups"},
+    "outcome": {"S": "placeholder outcomes"},
         "requiredSkills": {"SS": ["c02e0957-610e-43eb-8c37-651afc208c8f"]},
         "categoryId": {"S": "52c0bbde-6360-451c-bf50-b56694f56053"},
         "creationDate": {"S": "2022-04-01"}
@@ -160,6 +170,7 @@
     "hypothesis": {"S": "People love more bears"},
     "successMeasure": {"S": "placeholder success measure"},
     "followUp": {"S": "placeholder follow ups"},
+    "outcome": {"S": "placeholder outcomes"},
       "requiredSkills": {"SS": ["dc6a6f0b-06bf-46cb-b8b1-1c3c17db197c", "5e283cba-3ed6-4c2a-ad11-4d269fce3d43", "c02e0957-610e-43eb-8c37-651afc208c8f"]},
       "categoryId": {"S": "52c0bbde-6360-451c-bf50-b56694f56053"},
       "creationDate": {"S": "2022-04-02"}
@@ -175,6 +186,7 @@
     "hypothesis": {"S": "People love more bears"},
     "successMeasure": {"S": "placeholder success measure"},
     "followUp": {"S": "placeholder follow ups"},
+    "outcome": {"S": "placeholder outcomes"},
       "requiredSkills": {"SS": ["0c27e6c6-4a33-4b1f-a15e-46a8bed218e8", "dc6a6f0b-06bf-46cb-b8b1-1c3c17db197c", "c02e0957-610e-43eb-8c37-651afc208c8f"]},
       "categoryId": {"S": "52c0bbde-6360-451c-bf50-b56694f56053"},
       "creationDate": {"S": "2022-04-03"}
@@ -190,6 +202,7 @@
     "hypothesis": {"S": "People love more bears"},
     "successMeasure": {"S": "placeholder success measure"},
     "followUp": {"S": "placeholder follow ups"},
+    "outcome": {"S": "placeholder outcomes"},
       "requiredSkills": {"SS": ["0c27e6c6-4a33-4b1f-a15e-46a8bed218e8", "7242a9e2-8af9-40c1-aa4c-af76faa013ca", "dc6a6f0b-06bf-46cb-b8b1-1c3c17db197c", "5e283cba-3ed6-4c2a-ad11-4d269fce3d43", "c02e0957-610e-43eb-8c37-651afc208c8f"]},
       "categoryId": {"S": "52c0bbde-6360-451c-bf50-b56694f56053"},
       "creationDate": {"S": "2022-04-03"}
@@ -205,6 +218,7 @@
     "hypothesis": {"S": "People love more bears"},
     "successMeasure": {"S": "placeholder success measure"},
     "followUp": {"S": "placeholder follow ups"},
+    "outcome": {"S": "placeholder outcomes"},
       "requiredSkills": {"SS": ["c02e0957-610e-43eb-8c37-651afc208c8f"]},
       "categoryId": {"S": "52c0bbde-6360-451c-bf50-b56694f56053"},
       "creationDate": {"S": "2022-04-04"}

@@ -49,6 +49,7 @@ type ideaInput = {
     hypothesis: string
     successMeasure: string
     followUp: string
+    outcome: string
 }
 
 export const createIdea = async (

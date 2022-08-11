@@ -44,6 +44,7 @@ export async function createIdea(
   hypothesis: string,
   successMeasure: string,
   followUp: string,
+  outcome: string,
   requiredSkills: Uuid[],
   categoryId: Uuid,
 ): Promise<Idea> {
@@ -83,10 +84,10 @@ export async function createIdea(
     hypothesis,
     successMeasure,
     followUp,
+    outcome,
     requiredSkills,
     categoryId,
   );
-  console.log('idea', idea);
   const result = idea.validate();
   if (result.hasFailed()) {
     throw new ValidationError('Cannot create Idea', result);
@@ -104,6 +105,7 @@ export async function editIdea(
   hypothesis: string,
   successMeasure: string,
   followUp: string,
+  outcome: string,
   requiredSkills: Uuid[],
   categoryId: Uuid,
 ): Promise<void> {
@@ -139,6 +141,7 @@ export async function editIdea(
   existing.hypothesis = hypothesis;
   existing.successMeasure = successMeasure;
   existing.followUp = followUp;
+  existing.outcome = outcome;
   existing.requiredSkills = requiredSkills;
   existing.categoryId = categoryId;
 

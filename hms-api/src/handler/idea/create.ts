@@ -17,6 +17,7 @@ export async function create(event, context, callback) {
       request.hypothesis,
       request.successMeasure,
       request.followUp,
+      request.outcome,
       request.requiredSkills,
       request.categoryId,
     );

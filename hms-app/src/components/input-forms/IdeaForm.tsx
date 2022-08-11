@@ -60,6 +60,7 @@ function IdeaForm(props: IProps) {
     hypothesis: '',
     successMeasure: '',
     followUp: '',
+    outcome: '',
     creationDate: new Date(),
   })
   const maxIdeaTitleLength = 100
@@ -74,6 +75,7 @@ function IdeaForm(props: IProps) {
         hypothesis: idea.hypothesis,
         successMeasure: idea.successMeasure,
         followUp: idea.followUp,
+        outcome: idea.outcome,
       })
     }
   }
@@ -141,6 +143,7 @@ function IdeaForm(props: IProps) {
           hypothesis: '',
           successMeasure: '',
           followUp: '',
+          outcome: '',
         }))
         if (JSON.stringify(response).toString().includes('error')) {
           updateNotification({
@@ -339,6 +342,19 @@ function IdeaForm(props: IProps) {
                   onChange={handleChange}
                   name='followUp'
                   value={ideaText.followUp}
+                  className={classes.label}
+              />
+            </Card.Section>
+            <Card.Section className={classes.borderSection}>
+              <Textarea
+                  label='Outcome'
+                  placeholder='Should be filled out before the final presentation. This field includes a short summary and artifacts (link to github repo, app website, video etc) of the achievements.'
+                  minRows={2}
+                  maxRows={3}
+                  autosize
+                  onChange={handleChange}
+                  name='outcome'
+                  value={ideaText.outcome}
                   className={classes.label}
               />
             </Card.Section>

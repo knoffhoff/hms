@@ -12,6 +12,7 @@ class IdeaEditRequest {
   hypothesis: string;
   successMeasure: string;
   followUp: string;
+  outcome: string;
 
   constructor(
     title: string,
@@ -23,6 +24,7 @@ class IdeaEditRequest {
     hypothesis: string,
     successMeasure: string,
     followUp: string,
+    outcome: string,
   ) {
     this.title = title;
     this.description = description;
@@ -33,6 +35,7 @@ class IdeaEditRequest {
     this.hypothesis = hypothesis;
     this.successMeasure = successMeasure;
     this.followUp = followUp;
+    this.outcome = outcome;
   }
 
   static parse(body: string): IdeaEditRequest {
@@ -46,7 +49,8 @@ class IdeaEditRequest {
       json.categoryId,
       json.hypothesis,
       json.successMeasure,
-      json.followUp
+      json.followUp,
+      json.outcome,
     );
   }
 }

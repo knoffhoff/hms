@@ -211,6 +211,11 @@ export default function IdeaDetails(props: IProps) {
         </Card.Section>
 
         <Card.Section className={classes.borderSection}>
+          <Text className={classes.label}>Outcome</Text>
+          <Text className={classes.text}>{idea.outcome}</Text>
+        </Card.Section>
+
+        <Card.Section className={classes.borderSection}>
           <Text className={classes.label}>Category</Text>
           <Text className={classes.text}>{idea.category?.title}</Text>
         </Card.Section>

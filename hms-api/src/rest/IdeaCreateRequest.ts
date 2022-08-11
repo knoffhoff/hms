@@ -11,6 +11,7 @@ class IdeaCreateRequest {
   hypothesis: string;
   successMeasure: string;
   followUp: string;
+  outcome: string;
   requiredSkills: Uuid[];
   categoryId: Uuid;
 
@@ -23,6 +24,7 @@ class IdeaCreateRequest {
     hypothesis: string,
     successMeasure: string,
     followUp: string,
+    outcome: string,
     requiredSkills: Uuid[],
     categoryId: Uuid,
   ) {
@@ -34,6 +36,7 @@ class IdeaCreateRequest {
     this.hypothesis = hypothesis;
     this.successMeasure = successMeasure;
     this.followUp = followUp;
+    this.outcome = outcome;
     this.requiredSkills = requiredSkills;
     this.categoryId = categoryId;
   }
@@ -49,6 +52,7 @@ class IdeaCreateRequest {
       json.hypothesis,
       json.successMeasure,
       json.followUp,
+      json.outcome,
       json.requiredSkills,
       json.categoryId,
     );

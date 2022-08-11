@@ -77,6 +77,12 @@ class Idea {
   followUp: string;
 
   /**
+   * a short summary and artifacts (link to github repo, app website,
+   * video etc) of the achievements
+   */
+  outcome: string;
+
+  /**
    * A list Skill IDs which are desired for the completion of the Idea
    *
    * May be empty
@@ -144,6 +150,7 @@ class Idea {
     hypothesis: string,
     successMeasure: string,
     followUp: string,
+    outcome: string,
     requiredSkills: Uuid[],
     categoryId: Uuid,
   );
@@ -156,6 +163,7 @@ class Idea {
     hypothesis: string,
     successMeasure: string,
     followUp: string,
+    outcome: string,
     requiredSkills: Uuid[],
     categoryId: Uuid,
     id: Uuid,
@@ -172,6 +180,7 @@ class Idea {
     hypothesis: string,
     successMeasure: string,
     followUp: string,
+    outcome: string,
     requiredSkills: Uuid[],
     categoryId: Uuid,
     id: Uuid = uuid(),
@@ -188,6 +197,7 @@ class Idea {
     this.hypothesis = hypothesis;
     this.successMeasure = successMeasure;
     this.followUp = followUp;
+    this.outcome = outcome;
     this.requiredSkills = requiredSkills;
     this.categoryId = categoryId;
     this.creationDate = creationDate;
