@@ -192,9 +192,6 @@ function AllIdeas() {
         >
           Yes, leave hackathon
         </Button>
-        <Text className={classes.text}>
-          (This window will automatically closed as soon as you leave the hackathon)
-        </Text>
       </Modal>
   )
 
