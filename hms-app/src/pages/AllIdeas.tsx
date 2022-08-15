@@ -60,13 +60,9 @@ function AllIdeas() {
     setSearchTerm(event.target.value)
   }
 
-  const filteredIdeas = relevantIdeaList
-    .filter((item) => {
-      return item.title?.toLowerCase().includes(searchTerm.toLowerCase())
-    })
-    .sort((a, b) => {
-      return a.creationDate < b.creationDate ? -1 : 1
-    })
+  const filteredIdeas = relevantIdeaList.filter((item) => {
+    return item.title?.toLowerCase().includes(searchTerm.toLowerCase())
+  })
 
   const findParticipant = () => {
     let participant: ParticipantPreview
