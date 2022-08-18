@@ -1,4 +1,12 @@
-import { ActionIcon, createStyles, Group, Progress, Text } from '@mantine/core'
+import {
+  ActionIcon,
+  Center,
+  createStyles,
+  Group,
+  Progress,
+  Text,
+  Title,
+} from '@mantine/core'
 import Countdown, { CountdownApi } from 'react-countdown'
 import {
   ArrowBackUp,
@@ -42,27 +50,65 @@ const useStyles = createStyles((_theme, _params, getRef) => ({
   finished: {
     color: _theme.colors.red,
   },
+
+  fullscreenOverlay: {
+    position: 'fixed',
+    top: 0,
+    left: 0,
+    width: '100vw',
+    height: '100vh',
+    zIndex: 2,
+  },
+
+  bgRed: {
+    background: 'radial-gradient(rgba(255,52,52,0.3), rgba(255,52,52,1))',
+  },
+
+  bgOrange: {
+    background: 'radial-gradient(rgba(255,125,25,0.3), rgba(255,125,25,1))',
+  },
+
+  fullscreenCounter: {
+    fontSize: 150,
+    fontWeight: 'bold',
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+  },
+
+  progress: {
+    position: 'fixed',
+    top: 0,
+    left: 0,
+    width: '100%',
+  },
 }))
 
 const getMillis = (minutes: number, seconds: number) => {
-  return minutes * 60 * 1000 + seconds * 1000
+  return minutes * 60000 + seconds * 1000
 }
 
-function PitchTimer(time: PitchTimerProps) {
-  const timeInMillis = getMillis(time.minutes, time.seconds)
+function PitchTimer(pitchTime: PitchTimerProps) {
+  const pitchTimeInMillis = getMillis(pitchTime.minutes, pitchTime.seconds)
+  const pitchTimeInSeconds = pitchTime.minutes * 60 + pitchTime.seconds
   const { classes } = useStyles()
-  const [date, setDate] = useState(Date.now() + timeInMillis)
+  const [date, setDate] = useState(Date.now() + pitchTimeInMillis)
   const [countdownApi, setCountdownApi] = useState<CountdownApi>()
   const [, forceUpdate] = useReducer((x) => x + 1, 0)
   const [progress, setProgress] = useState(0)
+  const [secondsLeft, setSecondsLeft] = useState(pitchTimeInSeconds)
 
-  const getPercentageFromTimeLeft = (minutes: number, seconds: number) => {
-    const timeLeft = getMillis(minutes, seconds)
-    return Math.floor(100 - (timeLeft / timeInMillis) * 100)
+  useEffect(() => {
+    setProgress(getPercentageFromTimeLeft())
+  }, [secondsLeft])
+
+  const getPercentageFromTimeLeft = () => {
+    return Math.floor(100 - (secondsLeft / pitchTimeInSeconds) * 100)
   }
 
   const renderer = ({ minutes, seconds, completed }: RendererProps) => {
-    setProgress(getPercentageFromTimeLeft(minutes, seconds))
+    setSecondsLeft(minutes * 60 + seconds)
     return (
       <Text
         className={`${classes.counterTime} ${completed && classes.finished}`}
@@ -82,7 +128,7 @@ function PitchTimer(time: PitchTimerProps) {
   }
 
   const handleResetClick = (): void => {
-    setDate(Date.now() + timeInMillis)
+    setDate(Date.now() + pitchTimeInMillis)
     setProgress(0)
   }
 
@@ -110,6 +156,12 @@ function PitchTimer(time: PitchTimerProps) {
 
   return (
     <div className={classes.outerBox}>
+      <Progress
+        className={classes.progress}
+        value={progress}
+        color={isCompleted() ? 'red' : 'gray'}
+        radius={0}
+      />
       <Group>
         {isPaused() || isStopped() || isCompleted() ? (
           <ActionIcon
@@ -150,11 +202,17 @@ function PitchTimer(time: PitchTimerProps) {
           renderer={renderer}
         />
       </Group>
-      <Progress
-        value={progress}
-        color={isCompleted() ? 'red' : 'gray'}
-        mt={10}
-      />
+      {secondsLeft > 0 && secondsLeft < 4 && (
+        <div
+          className={`${classes.fullscreenOverlay} ${
+            secondsLeft > 1 ? classes.bgOrange : classes.bgRed
+          }`}
+        >
+          <Center>
+            <span className={classes.fullscreenCounter}>{secondsLeft}</span>
+          </Center>
+        </div>
+      )}
     </div>
   )
 }
