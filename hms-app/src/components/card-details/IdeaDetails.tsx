@@ -271,7 +271,6 @@ export default function IdeaDetails(props: IProps) {
       participantInfo.ideaId,
       participantInfo.participantId
     ).then((response) => {
-      console.log('response', response)
       setButtonisDisabled(false)
       if (JSON.stringify(response).toString().includes('error')) {
         setParticipantCheck(false)
