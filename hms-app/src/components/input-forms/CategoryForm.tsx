@@ -6,7 +6,7 @@ import {
   getCategoryDetails,
 } from '../../actions/CategoryActions'
 import { showNotification, updateNotification } from '@mantine/notifications'
-import { CheckIcon, Cross2Icon } from '@modulz/radix-icons'
+import { Check, X } from 'tabler-icons-react'
 import { styles } from '../../common/styles'
 import { useMsal } from '@azure/msal-react'
 import { dark2, JOIN_BUTTON_COLOR } from '../../common/colors'
@@ -75,7 +75,7 @@ export default function CategoryForm(props: IProps) {
           color: 'red',
           title: 'Failed to edit category',
           message: undefined,
-          icon: <Cross2Icon />,
+          icon: <X />,
           autoClose: 2000,
         })
       } else {
@@ -84,7 +84,7 @@ export default function CategoryForm(props: IProps) {
           color: 'teal',
           title: `Edited ${category.title}`,
           message: undefined,
-          icon: <CheckIcon />,
+          icon: <Check />,
           autoClose: 2000,
         })
       }
@@ -112,7 +112,7 @@ export default function CategoryForm(props: IProps) {
           color: 'red',
           title: 'Failed to create category',
           message: undefined,
-          icon: <Cross2Icon />,
+          icon: <X />,
           autoClose: 2000,
         })
       } else {
@@ -121,7 +121,7 @@ export default function CategoryForm(props: IProps) {
           color: 'teal',
           title: `Created ${category.title}`,
           message: undefined,
-          icon: <CheckIcon />,
+          icon: <Check />,
           autoClose: 2000,
         })
       }

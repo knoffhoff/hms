@@ -22,7 +22,7 @@ import {
   createIdeaParticipant,
   removeIdeaParticipant,
 } from '../../actions/ParticipantActions'
-import { CheckIcon, Cross2Icon } from '@modulz/radix-icons'
+import { Check, X } from 'tabler-icons-react'
 import { useMsal } from '@azure/msal-react'
 import {
   JOIN_BUTTON_COLOR,
@@ -120,7 +120,7 @@ export default function IdeaDetails(props: IProps) {
           color: 'red',
           title: 'Failed to delete idea',
           message: undefined,
-          icon: <Cross2Icon />,
+          icon: <X />,
           autoClose: 2000,
         })
       } else {
@@ -130,7 +130,7 @@ export default function IdeaDetails(props: IProps) {
           color: 'teal',
           title: `Deleted "${idea.title}"`,
           message: undefined,
-          icon: <CheckIcon />,
+          icon: <Check />,
           autoClose: 2000,
         })
       }
@@ -267,7 +267,7 @@ export default function IdeaDetails(props: IProps) {
         color: 'red',
         title: 'Cannot join idea',
         message: 'You must join the hackathon first to join an idea.',
-        icon: <Cross2Icon />,
+        icon: <X />,
         autoClose: 5000,
       })
       return
@@ -286,7 +286,6 @@ export default function IdeaDetails(props: IProps) {
       participantInfo.ideaId,
       participantInfo.participantId
     ).then((response) => {
-      console.log('response', response)
       setButtonisDisabled(false)
       if (JSON.stringify(response).toString().includes('error')) {
         setParticipantCheck(false)
@@ -295,7 +294,7 @@ export default function IdeaDetails(props: IProps) {
           color: 'red',
           title: 'Failed to join idea',
           message: undefined,
-          icon: <Cross2Icon />,
+          icon: <X />,
           autoClose: 2000,
         })
       } else {
@@ -305,7 +304,7 @@ export default function IdeaDetails(props: IProps) {
           color: 'teal',
           title: `Joined "${idea.title}"`,
           message: undefined,
-          icon: <CheckIcon />,
+          icon: <Check />,
           autoClose: 2000,
         })
       }
@@ -335,7 +334,7 @@ export default function IdeaDetails(props: IProps) {
           color: 'red',
           title: 'Failed to leave Idea',
           message: undefined,
-          icon: <Cross2Icon />,
+          icon: <X />,
           autoClose: 2000,
         })
       } else {
@@ -345,7 +344,7 @@ export default function IdeaDetails(props: IProps) {
           color: 'teal',
           title: `Left "${idea.title}"`,
           message: undefined,
-          icon: <CheckIcon />,
+          icon: <Check />,
           autoClose: 2000,
         })
       }

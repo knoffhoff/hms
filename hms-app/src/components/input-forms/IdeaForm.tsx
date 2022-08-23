@@ -19,7 +19,7 @@ import {
 import { getListOfSkills } from '../../actions/SkillActions'
 import { getListOfCategories } from '../../actions/CategoryActions'
 import { showNotification, updateNotification } from '@mantine/notifications'
-import { CheckIcon, Cross2Icon } from '@modulz/radix-icons'
+import { Check, X } from 'tabler-icons-react'
 import { createIdea, editIdea } from '../../actions/IdeaActions'
 import { styles } from '../../common/styles'
 import { useMsal } from '@azure/msal-react'
@@ -151,7 +151,7 @@ function IdeaForm(props: IProps) {
             color: 'red',
             title: 'Failed to create idea',
             message: undefined,
-            icon: <Cross2Icon />,
+            icon: <X />,
             autoClose: 2000,
           })
         } else {
@@ -160,7 +160,7 @@ function IdeaForm(props: IProps) {
             color: 'teal',
             title: `Created "${ideaText.title}"`,
             message: undefined,
-            icon: <CheckIcon />,
+            icon: <Check />,
             autoClose: 2000,
           })
           try {
@@ -196,7 +196,7 @@ function IdeaForm(props: IProps) {
             color: 'red',
             title: 'Failed to Edit idea',
             message: undefined,
-            icon: <Cross2Icon />,
+            icon: <X />,
             autoClose: 2000,
           })
         } else {
@@ -205,7 +205,7 @@ function IdeaForm(props: IProps) {
             color: 'teal',
             title: `Edited "${ideaText.title}"`,
             message: undefined,
-            icon: <CheckIcon />,
+            icon: <Check />,
             autoClose: 2000,
           })
         }
