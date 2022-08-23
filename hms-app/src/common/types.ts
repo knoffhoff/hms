@@ -47,6 +47,7 @@ export type Hackathon = {
   participants?: ParticipantPreview[]
   categories?: CategoryPreview[]
   ideas?: IdeaPreview[]
+  skills?: SkillPreview[]
 }
 
 export type HackathonSerializable = {
@@ -197,6 +198,12 @@ export type ActiveDirectoryUser = {
 export type SkillPreview = {
   id: string
   name: string
+}
+
+export type Skill = {
+    id: string
+    name: string
+    description: string
 }
 
 export type OwnerPreview = {
