@@ -102,6 +102,17 @@ const useStyles = createStyles((theme) => ({
       },
     },
   },
+
+  controlWithLeftMargin: {
+    marginLeft: theme.spacing.md,
+
+    '@media (max-width: 520px)': {
+      height: 42,
+      fontSize: theme.fontSizes.md,
+      marginTop: theme.spacing.md,
+      marginLeft: 0,
+    },
+  }
 }))
 
 const HeroHeader = (props: { nextHackathon: HackathonSerializable }) => {
@@ -198,6 +209,15 @@ const HeroHeader = (props: { nextHackathon: HackathonSerializable }) => {
             color={theme.colorScheme === 'dark' ? 'orange' : 'blue'}
           >
             Submit project idea
+          </Button>
+          <Button
+              className={classes.controlWithLeftMargin}
+              size='lg'
+              variant='default'
+              color='gray'
+              onClick={() => {window.open('https://scout24.slack.com/archives/C017C7TEU9X', '_blank')}}
+          >
+            Join our Slack channel
           </Button>
         </div>
       </div>
