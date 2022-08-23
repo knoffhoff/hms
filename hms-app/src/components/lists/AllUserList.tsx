@@ -24,15 +24,13 @@ export default function AllUserList() {
   }
 
   const allUsers = userList.users.map((user, index) => [
-    <Accordion.Item
-      key={user.id}
-      label={
-        <div>
-          {index + 1}. {user.firstName} {user.lastName}
-        </div>
-      }
-    >
-      <UserDetails userId={user.id} />
+    <Accordion.Item key={user.id} value={user.id}>
+      <Accordion.Control>
+        {index + 1}. {user.firstName} {user.lastName}
+      </Accordion.Control>
+      <Accordion.Panel>
+        <UserDetails userId={user.id} />
+      </Accordion.Panel>
     </Accordion.Item>,
   ])
 
@@ -55,7 +53,7 @@ export default function AllUserList() {
           </Group>
         </Card.Section>
         <Card.Section>
-          <Accordion iconPosition='right'>{allUsers}</Accordion>
+          <Accordion chevronPosition={'right'}>{allUsers}</Accordion>
         </Card.Section>
       </Card>{' '}
     </>

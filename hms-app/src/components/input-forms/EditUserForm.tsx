@@ -1,11 +1,4 @@
-import {
-  Textarea,
-  Group,
-  Button,
-  Card,
-  CheckboxGroup,
-  Checkbox,
-} from '@mantine/core'
+import { Textarea, Group, Button, Card, Checkbox } from '@mantine/core'
 import React, { useEffect, useState } from 'react'
 import { showNotification, updateNotification } from '@mantine/notifications'
 import { editUser, getUserDetails } from '../../actions/UserActions'
@@ -164,14 +157,14 @@ export default function EditUserForm(props: IProps) {
             />
           </Card.Section>
           <Card.Section className={classes.borderSection}>
-            <CheckboxGroup
+            <Checkbox.Group
               label='Skills'
               onChange={setSkills}
               required
               className={classes.label}
             >
               {skillsList}
-            </CheckboxGroup>
+            </Checkbox.Group>
           </Card.Section>
           <Group position='right' mt='xl'>
             <Button

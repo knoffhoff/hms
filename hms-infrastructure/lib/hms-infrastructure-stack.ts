@@ -56,6 +56,16 @@ export class HmsInfrastructureStack extends Stack {
     );
     new CfnOutput(this, "Bucket", { value: hmsBucket.bucketName });
 
+    const hmsFinalPresentationsBucket = new s3.Bucket(
+      this,
+      "HmsFinalPresentations",
+      {
+        bucketName: `${ACCOUNT_ID}-hms-final-presentations`,
+        publicReadAccess: false,
+        blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
+      }
+    );
+
     const certificate = new acm.DnsValidatedCertificate(
       this,
       "HmsCertificate",

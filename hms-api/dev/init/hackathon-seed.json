@@ -56,8 +56,8 @@
     "id": {"S": "a1c60aba-f846-4208-b4b8-1caaec031aea"},
     "title": {"S": "Next Hackathon"},
     "description": {"S":  "This is the upcoming hackathon, it's not totally planned yet.  However, it's going the be the biggest, baddest, nerdiest, most sweaty palm acne faced geekathon you have ever seen!!!"},
-    "startDate": {"S": "2022-08-15"},
-    "endDate": {"S": "2022-08-19"},
+    "startDate": {"S": "2022-08-22"},
+    "endDate": {"S": "2022-08-26"},
     "creationDate": {"S": "2022-03-01"},
     "participantIds": {"NULL": true},
     "categoryIds": {"SS": [

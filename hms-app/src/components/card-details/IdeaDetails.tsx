@@ -2,15 +2,14 @@ import React, { useEffect, useState, useContext } from 'react'
 import {
   Accordion,
   Avatar,
-  AvatarsGroup,
   Badge,
   Button,
   Card,
   Group,
   Modal,
   Spoiler,
+  Stack,
   Text,
-  useAccordionState,
   useMantineTheme,
 } from '@mantine/core'
 import { Idea, IdeaCardType } from '../../common/types'
@@ -46,15 +45,18 @@ export default function IdeaDetails(props: IProps) {
   const theme = useMantineTheme()
   const [deleteModalOpened, setDeleteModalOpened] = useState(false)
   const [editModalOpened, setEditModalOpened] = useState(false)
-  const [accordionState, setAccordionState] = useAccordionState({
-    total: 1,
-    initialItem: -1,
-  })
-  const [participantAccordionState, setParticipantAccordionState] =
-    useAccordionState({
-      total: 1,
-      initialItem: -1,
-    })
+  const [accordionOpen, setAccordionOpen] = useState(false)
+  const [participantAccordionOpen, setParticipantAccordionOpen] =
+    useState(false)
+  // const [accordionState, setAccordionState] = useAccordionState({
+  //   total: 1,
+  //   initialItem: -1,
+  // })
+  // const [participantAccordionState, setParticipantAccordionState] =
+  //   useAccordionState({
+  //     total: 1,
+  //     initialItem: -1,
+  //   })
   const [buttonIsDisabled, setButtonisDisabled] = useState(false)
   // ToDo replace user and participant id with real data after a "user" endpoint exist
   const [participantInfo, setParticipantInfo] = useState({
@@ -206,17 +208,18 @@ export default function IdeaDetails(props: IProps) {
         </Card.Section>
 
         <Accordion
-          iconPosition='right'
-          state={participantAccordionState}
-          onChange={setParticipantAccordionState.setState}
+          chevronPosition={'right'}
+          onChange={(value) =>
+            setParticipantAccordionOpen(value === 'participants')
+          }
         >
-          <Accordion.Item
-            label={
-              !participantAccordionState['0'] ? (
+          <Accordion.Item value={'participants'}>
+            <Accordion.Control>
+              {!participantAccordionOpen ? (
                 <div>
                   <Text className={classes.label}>Current participants</Text>
                   <Group spacing={7} mt={5}>
-                    <AvatarsGroup limit={5}>
+                    <Avatar.Group>
                       {idea.participants?.map((participant, index) => (
                         <Avatar
                           key={index}
@@ -230,15 +233,14 @@ export default function IdeaDetails(props: IProps) {
                           )}
                         </Avatar>
                       ))}
-                    </AvatarsGroup>
+                    </Avatar.Group>
                   </Group>
                 </div>
               ) : (
                 <Text className={classes.label}>Current participants</Text>
-              )
-            }
-          >
-            {participantData}
+              )}
+            </Accordion.Control>
+            <Accordion.Panel>{participantData}</Accordion.Panel>
           </Accordion.Item>
         </Accordion>
       </div>
@@ -367,12 +369,7 @@ export default function IdeaDetails(props: IProps) {
           <Spoiler maxHeight={145} showLabel='Show more' hideLabel='Hide'>
             <Card.Section className={classes.borderSection}>
               <Group noWrap mb={15}>
-                <Group
-                  direction={'column'}
-                  align={'center'}
-                  position={'center'}
-                  spacing={'xs'}
-                >
+                <Stack align={'center'} spacing={'xs'}>
                   <Avatar color='indigo' radius='xl' size='md'>
                     {getInitials(
                       idea.owner?.user.firstName,
@@ -382,7 +379,7 @@ export default function IdeaDetails(props: IProps) {
                   <Badge size='sm'>
                     {idea.owner?.user.firstName} {idea.owner?.user.lastName}
                   </Badge>
-                </Group>
+                </Stack>
 
                 <Text className={classes.title}>
                   {idea.title?.slice(0, MAX_TITLE_LENGTH)}
@@ -411,62 +408,67 @@ export default function IdeaDetails(props: IProps) {
               </Card.Section>
 
               <Accordion
-                state={accordionState}
-                onChange={setAccordionState.setState}
+                onChange={(value) => setAccordionOpen(value === 'idea-details')}
               >
                 <Accordion.Item
                   className={classes.noBorderAccordion}
-                  label={!accordionState['0'] ? 'Show details' : 'Hide details'}
+                  value={'idea-details'}
                 >
-                  <div>{ideaDetails()}</div>
+                  <Accordion.Control>
+                    {!accordionOpen && 'Show details'}
+                    {accordionOpen && 'Hide details'}
+                  </Accordion.Control>
+                  <Accordion.Panel>
+                    <div>{ideaDetails()}</div>
 
-                  {type === IdeaCardType.IdeaPortal && (
-                    <Group mt='xs' position={'right'} style={{ paddingTop: 5 }}>
-                      {/* <Button variant={'outline'} color={'yellow'}>
-                        Add to Favorites
-                      </Button>*/}
+                    {type === IdeaCardType.IdeaPortal && (
+                      <Group
+                        mt='xs'
+                        position={'right'}
+                        style={{ paddingTop: 5 }}
+                      >
+                        <Button
+                          disabled={buttonIsDisabled}
+                          onClick={
+                            participantCheck
+                              ? removeThisIdeaParticipant
+                              : addIdeaParticipant
+                          }
+                          style={{
+                            backgroundColor: participantCheck
+                              ? LEAVE_BUTTON_COLOR
+                              : JOIN_BUTTON_COLOR,
+                          }}
+                        >
+                          {participantCheck ? 'Leave Idea' : 'Join Idea'}
+                        </Button>
+                      </Group>
+                    )}
 
-                      <Button
-                        disabled={buttonIsDisabled}
-                        onClick={
-                          participantCheck
-                            ? removeThisIdeaParticipant
-                            : addIdeaParticipant
-                        }
-                        style={{
-                          backgroundColor: participantCheck
-                            ? LEAVE_BUTTON_COLOR
-                            : JOIN_BUTTON_COLOR,
-                        }}
-                      >
-                        {participantCheck ? 'Leave Idea' : 'Join Idea'}
-                      </Button>
-                    </Group>
-                  )}
-
-                  {(type === IdeaCardType.Admin ||
-                    type === IdeaCardType.Owner) && (
-                    <Group position='left' mt='xl'>
-                      {deleteModal}
-                      <Button
-                        style={{
-                          backgroundColor: DELETE_BUTTON_COLOR,
-                        }}
-                        onClick={() => setDeleteModalOpened(true)}
-                      >
-                        Delete
-                      </Button>
-                      {editModal}
-                      <Button
-                        style={{
-                          backgroundColor: JOIN_BUTTON_COLOR,
-                        }}
-                        onClick={() => setEditModalOpened(true)}
-                      >
-                        Edit
-                      </Button>
-                    </Group>
-                  )}
+                    {(type === IdeaCardType.Admin ||
+                      type === IdeaCardType.Owner) && (
+                      <Group position='left' mt='xl'>
+                        {deleteModal}
+                        <Button
+                          style={{
+                            backgroundColor: DELETE_BUTTON_COLOR,
+                          }}
+                          onClick={() => setDeleteModalOpened(true)}
+                        >
+                          Delete
+                        </Button>
+                        {editModal}
+                        <Button
+                          style={{
+                            backgroundColor: JOIN_BUTTON_COLOR,
+                          }}
+                          onClick={() => setEditModalOpened(true)}
+                        >
+                          Edit
+                        </Button>
+                      </Group>
+                    )}
+                  </Accordion.Panel>
                 </Accordion.Item>
               </Accordion>
             </>

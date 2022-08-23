@@ -119,50 +119,46 @@ export default function HackathonDetails(props: IProps) {
 
   const allParticipants = hackathonData.participants?.map(
     (participant, index) => (
-      <Accordion.Item
-        key={index}
-        label={
-          <div>
+      <Accordion.Item value={participant.id} key={participant.id}>
+        <Accordion.Control>
+          <>
             {index + 1}. {participant.user.firstName}{' '}
             {participant.user.lastName}
-          </div>
-        }
-      >
-        <ParticipantDetails
-          participantId={participant.id}
-          user={participant.user}
-        />
+          </>
+        </Accordion.Control>
+        <Accordion.Panel>
+          <ParticipantDetails
+            participantId={participant.id}
+            user={participant.user}
+          />
+        </Accordion.Panel>
       </Accordion.Item>
     )
   )
 
   const allCategories = hackathonData.categories?.map((category, index) => (
-    <Accordion.Item
-      key={index}
-      label={
-        <div>
-          {index + 1}. {category.title}
-        </div>
-      }
-    >
-      <CategoryDetails categoryId={category.id.toString()} />
+    <Accordion.Item key={category.id} value={category.id}>
+      <Accordion.Control>
+        {index + 1}. {category.title}
+      </Accordion.Control>
+      <Accordion.Panel>
+        <CategoryDetails categoryId={category.id.toString()} />
+      </Accordion.Panel>
     </Accordion.Item>
   ))
 
   const allIdeas = relevantIdeaList.map((idea, index) => (
-    <Accordion.Item
-      key={index}
-      label={
-        <div>
-          {index + 1}. {idea.title}
-        </div>
-      }
-    >
-      <IdeaDetails
-        idea={idea}
-        type={IdeaCardType.Admin}
-        isLoading={isIdeaLoading}
-      />
+    <Accordion.Item key={idea.id} value={idea.id}>
+      <Accordion.Control>
+        {index + 1}. {idea.title}
+      </Accordion.Control>
+      <Accordion.Panel>
+        <IdeaDetails
+          idea={idea}
+          type={IdeaCardType.Admin}
+          isLoading={isIdeaLoading}
+        />
+      </Accordion.Panel>
     </Accordion.Item>
   ))
 
@@ -325,65 +321,73 @@ export default function HackathonDetails(props: IProps) {
               </RichTextEditor>
             </Card.Section>
 
-            <Accordion iconPosition='left' offsetIcon={false}>
-              <Accordion.Item
-                label={
+            <Accordion chevronPosition={'left'}>
+              <Accordion.Item value={'categories'}>
+                <Accordion.Control>
                   <Text className={classes.label}>
                     Categories ( {allCategories?.length} )
                   </Text>
-                }
-              >
-                <Accordion iconPosition='right'>
-                  <Accordion.Item
-                    className={classes.borderAccordion}
-                    label={'Add Category'}
-                  >
-                    <CategoryForm
-                      hackathonId={hackathonData.id}
-                      context={'new'}
-                      categoryId={''}
-                    />
-                  </Accordion.Item>
-                  {allCategories}
-                </Accordion>
+                </Accordion.Control>
+                <Accordion.Panel>
+                  <Accordion chevronPosition={'right'}>
+                    <Accordion.Item
+                      className={classes.borderAccordion}
+                      value={'add-category'}
+                    >
+                      <Accordion.Control>Add Category</Accordion.Control>
+                      <Accordion.Panel>
+                        <CategoryForm
+                          hackathonId={hackathonData.id}
+                          context={'new'}
+                          categoryId={''}
+                        />
+                      </Accordion.Panel>
+                    </Accordion.Item>
+                    {allCategories}
+                  </Accordion>
+                </Accordion.Panel>
               </Accordion.Item>
             </Accordion>
 
-            <Accordion iconPosition='left' offsetIcon={false}>
-              <Accordion.Item
-                label={
+            <Accordion chevronPosition={'left'}>
+              <Accordion.Item value={'participants'}>
+                <Accordion.Control>
                   <Text className={classes.label}>
                     Participants ( {allParticipants?.length} )
                   </Text>
-                }
-              >
-                <Accordion iconPosition='right'>{allParticipants}</Accordion>
+                </Accordion.Control>
+                <Accordion.Panel>
+                  <Accordion chevronPosition={'right'}>
+                    {allParticipants}
+                  </Accordion>
+                </Accordion.Panel>
               </Accordion.Item>
             </Accordion>
 
-            <Accordion iconPosition='left' offsetIcon={false}>
-              <Accordion.Item
-                label={
+            <Accordion chevronPosition={'left'}>
+              <Accordion.Item value={'ideas'}>
+                <Accordion.Control>
                   <Text className={classes.label}>
                     Ideas ( {allIdeas?.length} )
                   </Text>
-                }
-              >
-                <Button
-                  style={{ backgroundColor: JOIN_BUTTON_COLOR }}
-                  mb={20}
-                  onClick={() =>
-                    localStorage.setItem(
-                      'ideas',
-                      JSON.stringify(relevantIdeaList)
-                    )
-                  }
-                  component={Link}
-                  to='/presentations'
-                >
-                  Presentations
-                </Button>
-                <Accordion iconPosition='right'>{allIdeas}</Accordion>
+                </Accordion.Control>
+                <Accordion.Panel>
+                  <Button
+                    style={{ backgroundColor: JOIN_BUTTON_COLOR }}
+                    mb={20}
+                    onClick={() =>
+                      localStorage.setItem(
+                        'ideas',
+                        JSON.stringify(relevantIdeaList)
+                      )
+                    }
+                    component={Link}
+                    to='/presentations'
+                  >
+                    Presentations
+                  </Button>
+                  <Accordion chevronPosition={'right'}>{allIdeas}</Accordion>
+                </Accordion.Panel>
               </Accordion.Item>
             </Accordion>
 

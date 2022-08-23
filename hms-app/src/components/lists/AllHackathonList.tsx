@@ -24,18 +24,16 @@ function AllHackathonList() {
   }
 
   const allHackathons = hackathonList.hackathons.map((hackathon, index) => [
-    <Accordion.Item
-      key={hackathon.id}
-      label={
-        <div>
-          {index + 1}. {hackathon.title}
-        </div>
-      }
-    >
-      <HackathonDetails
-        hackathonId={hackathon.id}
-        type={HackathonDetailsType.FullInfo}
-      />
+    <Accordion.Item key={hackathon.id} value={hackathon.id}>
+      <Accordion.Control>
+        {index + 1}. {hackathon.title}
+      </Accordion.Control>
+      <Accordion.Panel>
+        <HackathonDetails
+          hackathonId={hackathon.id}
+          type={HackathonDetailsType.FullInfo}
+        />
+      </Accordion.Panel>
     </Accordion.Item>,
   ])
 
@@ -58,7 +56,7 @@ function AllHackathonList() {
           </Group>
         </Card.Section>
         <Card.Section>
-          <Accordion iconPosition='right'>{allHackathons}</Accordion>
+          <Accordion chevronPosition={'right'}>{allHackathons}</Accordion>
         </Card.Section>
       </Card>{' '}
     </>

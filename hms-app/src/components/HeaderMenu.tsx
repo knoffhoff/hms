@@ -11,7 +11,7 @@ import {
   Button,
   useMantineColorScheme,
 } from '@mantine/core'
-import { useBooleanToggle } from '@mantine/hooks'
+import { useDisclosure } from '@mantine/hooks'
 import { SwitchToggle } from './ThemeSwitchToggle'
 import { styles } from '../common/styles'
 import {
@@ -40,7 +40,7 @@ const AZURE_REDIRECT_URL = process.env.REACT_APP_AZURE_REDIRECT_URL || ''
 export default function HeaderMenu({ links }: HeaderSearchProps) {
   const theme = useMantineColorScheme()
   const [profilePhoto, setProfilePhoto] = useState('')
-  const [opened, toggleOpened] = useBooleanToggle(false)
+  const [opened, handlers] = useDisclosure(false)
   const { classes } = styles()
   const today = new Date()
   today.setHours(0, 0, 0, 0)
@@ -91,20 +91,21 @@ export default function HeaderMenu({ links }: HeaderSearchProps) {
   })
 
   const smallScreenMenu = (
-    <Menu
-      opened={opened}
-      className={classes.headerBurger}
-      control={
-        <Burger opened={opened} onClick={() => toggleOpened()} size='sm' />
-      }
-    >
-      {links.map((link) => (
-        <Menu.Item key={link.label} component={Link} to={link.link}>
-          {link.label}
-        </Menu.Item>
-      ))}
-      <SwitchToggle />
-    </Menu>
+    <div className={classes.headerBurger}>
+      <Menu opened={opened}>
+        <Menu.Target>
+          <Burger opened={opened} onClick={() => handlers.toggle()} size='sm' />
+        </Menu.Target>
+        <Menu.Dropdown>
+          {links.map((link) => (
+            <Menu.Item key={link.label} component={Link} to={link.link}>
+              {link.label}
+            </Menu.Item>
+          ))}
+          <SwitchToggle />
+        </Menu.Dropdown>
+      </Menu>
+    </div>
   )
 
   return (
