@@ -26,20 +26,25 @@ const SkillForm = (props: IProps): React.ReactElement => {
     });
 
     const loadSelectedSkill = (): void => {
-        getSkillDetails(instance, skillId).then(
-            (data) => {
-                setIsLoading(false);
-                setSkill(data);
-            },
-            () => {
-                setIsLoading(false);
-            }
-        );
+        if (skillId) {
+            getSkillDetails(instance, skillId).then(
+                (data) => {
+                    setSkill(data);
+                    setIsLoading(false);
+                },
+                () => {
+                    setIsLoading(false);
+                }
+            );
+        }
+        else {
+            // new skill
+            setIsLoading(false);
+        }
     };
 
     useEffect(() => {
         loadSelectedSkill();
-        setIsLoading(true);
     }, []);
 
     const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>): void => {
