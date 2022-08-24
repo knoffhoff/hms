@@ -11,7 +11,6 @@ class IdeaCreateRequest {
   goal: string;
   requiredSkills: Uuid[];
   categoryId: Uuid;
-  finalVideoUrl: string;
 
   constructor(
     ownerId: Uuid,
@@ -22,7 +21,6 @@ class IdeaCreateRequest {
     goal: string,
     requiredSkills: Uuid[],
     categoryId: Uuid,
-    finalVideoUrl: string,
   ) {
     this.ownerId = ownerId;
     this.hackathonId = hackathonId;
@@ -32,7 +30,6 @@ class IdeaCreateRequest {
     this.goal = goal;
     this.requiredSkills = requiredSkills;
     this.categoryId = categoryId;
-    this.finalVideoUrl = finalVideoUrl;
   }
 
   static parse(body: string): IdeaCreateRequest {
@@ -46,7 +43,6 @@ class IdeaCreateRequest {
       json.goal,
       json.requiredSkills,
       json.categoryId,
-      json.finalVideoUrl,
     );
   }
 }

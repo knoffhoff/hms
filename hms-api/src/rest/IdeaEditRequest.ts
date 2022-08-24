@@ -9,7 +9,6 @@ class IdeaEditRequest {
   goal: string;
   requiredSkills: Uuid[];
   categoryId: Uuid;
-  finalVideoUrl: string;
 
   constructor(
     title: string,
@@ -18,7 +17,6 @@ class IdeaEditRequest {
     goal: string,
     requiredSkills: Uuid[],
     categoryId: Uuid,
-    finalVideoUrl: string,
   ) {
     this.title = title;
     this.description = description;
@@ -26,7 +24,6 @@ class IdeaEditRequest {
     this.goal = goal;
     this.requiredSkills = requiredSkills;
     this.categoryId = categoryId;
-    this.finalVideoUrl = finalVideoUrl;
   }
 
   static parse(body: string): IdeaEditRequest {
@@ -38,7 +35,6 @@ class IdeaEditRequest {
       json.goal,
       json.requiredSkills,
       json.categoryId,
-      json.finalVideoUrl,
     );
   }
 }

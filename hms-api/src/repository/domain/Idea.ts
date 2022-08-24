@@ -86,11 +86,6 @@ class Idea {
    */
   creationDate: Date;
 
-  /**
-   * The URL to the final video file
-   */
-  finalVideoUrl: string;
-
   validate(): ValidationResult {
     const result = new ValidationResult();
     if (!this.id) {
@@ -133,9 +128,6 @@ class Idea {
       result.addFailure('categoryId is null or empty');
     }
 
-    if (!this.finalVideoUrl === null || this.finalVideoUrl === undefined) {
-      result.addFailure('finalVideoUrl is null');
-    }
     return result;
   }
 
@@ -148,7 +140,6 @@ class Idea {
     goal: string,
     requiredSkills: Uuid[],
     categoryId: Uuid,
-    finalVideoUrl: string,
   );
   constructor(
     ownerId: Uuid,
@@ -159,7 +150,6 @@ class Idea {
     goal: string,
     requiredSkills: Uuid[],
     categoryId: Uuid,
-    finalVideoUrl: string,
     id: Uuid,
     creationDate: Date,
     participantIds: Uuid[],
@@ -174,7 +164,6 @@ class Idea {
     goal: string,
     requiredSkills: Uuid[],
     categoryId: Uuid,
-    finalVideoUrl: string = '',
     id: Uuid = uuid(),
     creationDate: Date = new Date(),
     participantIds: Uuid[] = [],
@@ -189,7 +178,6 @@ class Idea {
     this.goal = goal;
     this.requiredSkills = requiredSkills;
     this.categoryId = categoryId;
-    this.finalVideoUrl = finalVideoUrl;
     this.creationDate = creationDate;
   }
 }

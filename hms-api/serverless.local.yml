@@ -83,23 +83,12 @@ provider:
           Action:
             - s3:GetObject
             - s3:PutObject
-            - s3:DeleteObject
-            - s3:ListBucket
           Resource:
             - arn:aws:s3:::${self:provider.environment.HMS_BUCKET_NAME}/*
 
 functions:
   authorize:
     handler: src/handler/authorize.authorize
-  createFinalVideo:
-    handler: src/handler/idea/create-final-video.createFinalVideo
-    events:
-      - http:
-          path: /idea/{ideaId}/final-video
-          method: POST
-          cors: true
-          # TODO: add authentication
-          #authorizer: authorize
   createHackathon:
     handler: src/handler/hackathon/create.create
     events:
@@ -197,6 +186,22 @@ functions:
 #           TODO this should be done using a userId from the token
           path: idea/{id}/leave/{participantId}
           method: put
+          cors: true
+          authorizer: authorize
+  getUploadUrl:
+    handler: src/handler/idea/get-presigned-url.getUploadUrl
+    events:
+      - http:
+          path: /idea/{id}/upload-url
+          method: GET
+          cors: true
+          authorizer: authorize
+  getDownloadUrl:
+    handler: src/handler/idea/get-presigned-url.getDownloadUrl
+    events:
+      - http:
+          path: /idea/{id}/download-url
+          method: GET
           cors: true
           authorizer: authorize
 
