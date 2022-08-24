@@ -1,14 +1,22 @@
 import { Dropzone, MIME_TYPES } from '@mantine/dropzone'
 import { Group, Text, useMantineTheme } from '@mantine/core'
 import { Photo, Upload, X } from 'tabler-icons-react'
-import React from 'react'
+import React, { useContext } from 'react'
 import { showNotification } from '@mantine/notifications'
 import { FileRejection } from 'react-dropzone'
+import { UploadLoadingContext } from './FinalVideoUploadModal'
 
-export default function VideoDropzone() {
+const MAX_FILE_SIZE = 1000 * 1024 ** 2 // 1GB
+
+type IProps = {
+  uploadVideo: (file: File) => void
+}
+
+export default function VideoDropzone({ uploadVideo }: IProps) {
   const theme = useMantineTheme()
+  const isLoading = useContext(UploadLoadingContext)
   const onAcceptFiles = (files: File[]) => {
-    console.log(files)
+    uploadVideo(files[0])
   }
 
   const onRejectFiles = (files: FileRejection[]) => {
@@ -23,15 +31,16 @@ export default function VideoDropzone() {
     <Dropzone
       onDrop={onAcceptFiles}
       onReject={(files) => onRejectFiles(files)}
-      maxSize={500 * 1024 ** 2}
+      maxSize={MAX_FILE_SIZE}
       multiple={false}
       accept={[MIME_TYPES.mp4]}
       radius={theme.radius.lg}
+      loading={isLoading}
     >
       <Group
         position='center'
         spacing='xl'
-        style={{ minHeight: 220, pointerEvents: 'none' }}
+        style={{ minHeight: 420, pointerEvents: 'none' }}
       >
         <Dropzone.Accept>
           <Upload
@@ -56,11 +65,11 @@ export default function VideoDropzone() {
         </Dropzone.Idle>
 
         <div>
-          <Text size='xl' inline>
+          <Text size='xl' inline align={'center'}>
             Drag video here or click to select file
           </Text>
-          <Text size='sm' color='dimmed' inline mt={7}>
-            Attach only one file, the file should not exceed 500mb
+          <Text size='sm' color='dimmed' inline mt={7} align={'center'}>
+            Attach only one mp4 file, the file should not exceed 1GB
           </Text>
         </div>
       </Group>

@@ -176,8 +176,6 @@ export default function Presentations() {
         <PlayerPlay size={40} />
       </ActionIcon>
 
-      <VideoDropzone />
-
       <div ref={ref}>
         {fullscreen && (
           <div className={classes.fullscreen}>

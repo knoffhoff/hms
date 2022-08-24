@@ -96,3 +96,35 @@ export const editIdea = async (
     .then((data) => data.json())
     .catch((err) => console.log(err))
 }
+
+export const getPresignedUrl = async (
+  instance: IPublicClientApplication,
+  ideaID: string,
+  type: 'upload' | 'download'
+) => {
+  const idToken = await getIdToken(instance)
+  const options = buildFetchOptions('GET', idToken)
+  const path = type === 'upload' ? 'upload-url' : 'download-url'
+  return fetch(`${coreUrl}/idea/${ideaID}/${path}`, options)
+    .then((data) => data.json())
+    .catch((err) => console.log(err))
+}
+
+export const uploadVideoToS3 = async (
+  presignedUrl: string,
+  ideaID: string,
+  file: string | ArrayBuffer | null
+) => {
+  const options: RequestInit = {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'video/mp4',
+    },
+    body: file,
+  }
+  try {
+    return await fetch(presignedUrl, options)
+  } catch (err) {
+    console.log(err)
+  }
+}

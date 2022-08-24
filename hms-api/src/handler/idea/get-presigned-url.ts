@@ -12,6 +12,7 @@ const s3: S3Client = getClient();
 const HMS_BUCKET_NAME = process.env.HMS_BUCKET_NAME || '';
 const MP4_MIME_TYPE = 'video/mp4';
 
+// TODO: make one function out of these two
 export async function getUploadUrl(event, context, callback) {
   await wrapHandler(async () => {
     const id: Uuid = event.pathParameters.id;

@@ -43,6 +43,24 @@ export class HmsInfrastructureStack extends Stack {
       blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
     });
 
+    // TODO add CORS policy to bucket
+    // [
+    //   {
+    //     "AllowedHeaders": [
+    //       "*"
+    //     ],
+    //     "AllowedMethods": [
+    //       "GET",
+    //       "PUT",
+    //       "POST"
+    //     ],
+    //     "AllowedOrigins": [
+    //       "*"
+    //     ],
+    //     "ExposeHeaders": []
+    //   }
+    // ]
+
     hmsBucket.addToResourcePolicy(
       new iam.PolicyStatement({
         actions: ["s3:GetObject"],

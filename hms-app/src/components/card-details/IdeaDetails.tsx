@@ -30,6 +30,7 @@ import {
 } from '../../common/colors'
 import { HackathonParticipantContext } from '../../pages/AllIdeas'
 import { UserContext } from '../../pages/Layout'
+import FinalVideoUploadModal from '../FinalVideoUploadModal'
 
 type IProps = {
   idea: Idea
@@ -466,6 +467,7 @@ export default function IdeaDetails(props: IProps) {
                         >
                           Edit
                         </Button>
+                        <FinalVideoUploadModal idea={idea} />
                       </Group>
                     )}
                   </Accordion.Panel>

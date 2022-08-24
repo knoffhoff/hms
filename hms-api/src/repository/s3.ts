@@ -3,7 +3,9 @@
 import {S3Client, PutObjectCommand} from '@aws-sdk/client-s3';
 
 export function getClient(): S3Client {
-  return new S3Client({});
+  return new S3Client({
+    region: 'eu-central-1',
+  });
 }
 
 export const upload = async (bucketName, file, fileKey) => {

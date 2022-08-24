@@ -127,7 +127,6 @@ class Idea {
     if (!this.categoryId) {
       result.addFailure('categoryId is null or empty');
     }
-
     return result;
   }
 
