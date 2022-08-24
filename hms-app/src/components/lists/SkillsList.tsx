@@ -53,7 +53,7 @@ const SkillsList = (): React.ReactElement => {
 
     return (
         <>
-            <Card withBorder className={classes.card}>
+            {!isLoading && <Card withBorder className={classes.card}>
                 <Card.Section className={classes.borderSection}>
                     <Group position='left' mt='xl'>
                         {!isLoading && <Button onClick={refreshList}>Refresh list</Button>}
@@ -74,7 +74,7 @@ const SkillsList = (): React.ReactElement => {
                         {allSkills}
                     </Accordion>
                 </Card.Section>
-            </Card>{' '}
+            </Card>}{' '}
         </>
     );
 }
