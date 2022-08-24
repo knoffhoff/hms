@@ -19,6 +19,8 @@ import {
 import Uuid from '../util/Uuid';
 import Idea from './domain/Idea';
 import NotFoundError from '../error/NotFoundError';
+//import Busboy from 'busboy';
+const Busboy = require('busboy');
 
 const dynamoDBClient: DynamoDBClient = getClient();
 
@@ -117,6 +119,7 @@ export async function putIdea(idea: Idea): Promise<void> {
         goal: {S: idea.goal},
         requiredSkills: safeTransformArray(idea.requiredSkills),
         categoryId: {S: idea.categoryId},
+        finalVideoUrl: {S: idea.finalVideoUrl},
         id: {S: idea.id},
         creationDate: {S: idea.creationDate.toISOString()},
       },
@@ -206,8 +209,52 @@ function itemToIdea(item: {[key: string]: AttributeValue}): Idea {
     item.goal.S,
     safeTransformSSMember(item.requiredSkills),
     item.categoryId.S,
+    item.finalVideoUrl.S,
     item.id.S!,
     new Date(item.creationDate.S!),
     safeTransformSSMember(item.participantIds),
   );
 }
+
+export const fileParser = (event, fileSize): any =>
+  new Promise((resolve, reject) => {
+    const busboy = Busboy({
+      headers: {
+        'content-type':
+          event.headers['content-type'] || event.headers['Content-Type'],
+      },
+      limits: {
+        fileSize,
+      },
+    });
+    const result = {
+      files: [],
+    };
+    //busboy.on('file', (fieldname, file, filename, encoding, mimetype) => {
+    busboy.on('file', (name, file, info) => {
+      const {filename, encoding, mimeType} = info;
+      const uploadFile = {} as any;
+      file.on('data', (data) => {
+        uploadFile.content = data;
+      });
+      file.on('end', () => {
+        if (uploadFile.content) {
+          uploadFile.fileName = filename;
+          uploadFile.contentType = mimeType;
+          uploadFile.encoding = encoding;
+          result.files.push(uploadFile);
+        }
+      });
+    });
+    busboy.on('field', (fieldname, value) => {
+      result[fieldname] = value;
+    });
+    busboy.on('error', (err) => {
+      reject(err);
+    });
+    busboy.on('finish', () => {
+      resolve(result);
+    });
+    busboy.write(event.body, event.isBase64Encoded ? 'base64' : 'binary');
+    busboy.end();
+  });

@@ -23,6 +23,7 @@ class IdeaResponse {
   goal: string;
   requiredSkills: SkillPreviewResponse[];
   category: CategoryPreviewResponse;
+  finalVideoUrl: string;
   creationDate: Date;
 
   constructor(
@@ -36,6 +37,7 @@ class IdeaResponse {
     goal: string,
     requiredSkills: SkillPreviewResponse[],
     category: CategoryPreviewResponse,
+    finalVideoUrl: string,
     creationDate: Date,
   ) {
     this.id = id;
@@ -48,6 +50,7 @@ class IdeaResponse {
     this.goal = goal;
     this.requiredSkills = requiredSkills;
     this.category = category;
+    this.finalVideoUrl = finalVideoUrl;
     this.creationDate = creationDate;
   }
 
@@ -72,6 +75,7 @@ class IdeaResponse {
       idea.goal,
       SkillPreviewResponse.fromArray(skills),
       CategoryPreviewResponse.from(category),
+      idea.finalVideoUrl,
       idea.creationDate,
     );
 }

@@ -44,6 +44,7 @@ export async function createIdea(
   goal: string,
   requiredSkills: Uuid[],
   categoryId: Uuid,
+  finalVideoUrl: string,
 ): Promise<Idea> {
   if (!(await participantExistsForHackathon(ownerId, hackathonId))) {
     throw new ReferenceNotFoundError(
@@ -81,6 +82,7 @@ export async function createIdea(
     goal,
     requiredSkills,
     categoryId,
+    finalVideoUrl,
   );
   const result = idea.validate();
   if (result.hasFailed()) {
@@ -99,6 +101,7 @@ export async function editIdea(
   goal: string,
   requiredSkills: Uuid[],
   categoryId: Uuid,
+  finalVideoUrl: string,
 ): Promise<void> {
   let existing: Idea;
   try {
@@ -132,6 +135,7 @@ export async function editIdea(
   existing.goal = goal;
   existing.requiredSkills = requiredSkills;
   existing.categoryId = categoryId;
+  existing.finalVideoUrl = finalVideoUrl;
 
   const result = existing.validate();
   if (result.hasFailed()) {
@@ -353,4 +357,8 @@ export async function removeParticipantFromIdeas(
       );
     }
   }
+}
+
+export async function createFinalVideo(): Promise<void> {
+  // TODO
 }
