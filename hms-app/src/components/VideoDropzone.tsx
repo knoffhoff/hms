@@ -1,6 +1,6 @@
 import { Dropzone, MIME_TYPES } from '@mantine/dropzone'
-import { Group, Text, useMantineTheme } from '@mantine/core'
-import { Photo, Upload, X } from 'tabler-icons-react'
+import { Group, Text, useMantineTheme, Center } from '@mantine/core'
+import { Movie, Upload, X } from 'tabler-icons-react'
 import React, { useContext } from 'react'
 import { showNotification } from '@mantine/notifications'
 import { FileRejection } from 'react-dropzone'
@@ -36,16 +36,16 @@ export default function VideoDropzone({ uploadVideo }: IProps) {
       accept={[MIME_TYPES.mp4]}
       radius={theme.radius.lg}
       loading={isLoading}
+      style={{ margin: '0 auto', maxWidth: '600px' }}
     >
       <Group
         position='center'
         spacing='xl'
-        style={{ minHeight: 420, pointerEvents: 'none' }}
+        style={{ minHeight: 170, pointerEvents: 'none' }}
       >
         <Dropzone.Accept>
           <Upload
             size={50}
-            stroke={'1.5'}
             color={
               theme.colors[theme.primaryColor][
                 theme.colorScheme === 'dark' ? 4 : 6
@@ -56,16 +56,15 @@ export default function VideoDropzone({ uploadVideo }: IProps) {
         <Dropzone.Reject>
           <X
             size={50}
-            stroke={'1.5'}
             color={theme.colors.red[theme.colorScheme === 'dark' ? 4 : 6]}
           />
         </Dropzone.Reject>
         <Dropzone.Idle>
-          <Photo size={50} stroke={'1.5'} />
+          <Movie size={50} />
         </Dropzone.Idle>
 
         <div>
-          <Text size='xl' inline align={'center'}>
+          <Text size='xl' inline>
             Drag video here or click to select file
           </Text>
           <Text size='sm' color='dimmed' inline mt={7} align={'center'}>

@@ -128,3 +128,14 @@ export const uploadVideoToS3 = async (
     console.log(err)
   }
 }
+
+export const checkIfVideoExists = async (videoUrl: string) => {
+  const options: RequestInit = {
+    method: 'HEAD',
+  }
+  try {
+    return await fetch(videoUrl, options)
+  } catch (err) {
+    console.log(err)
+  }
+}
