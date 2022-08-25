@@ -2,11 +2,9 @@ import {
   Textarea,
   Group,
   Button,
-  CheckboxGroup,
   Checkbox,
   Card,
   Text,
-  RadioGroup,
   Radio,
 } from '@mantine/core'
 import React, { useEffect, useState } from 'react'
@@ -313,7 +311,7 @@ function IdeaForm(props: IProps) {
 
             <>
               <Card.Section className={classes.borderSection}>
-                <CheckboxGroup
+                <Checkbox.Group
                   label='Required skills'
                   description='chose one or more required skills'
                   onChange={setSkills}
@@ -323,10 +321,10 @@ function IdeaForm(props: IProps) {
                   className={classes.label}
                 >
                   {skillsList}
-                </CheckboxGroup>
+                </Checkbox.Group>
               </Card.Section>
               <Card.Section className={classes.borderSection}>
-                <RadioGroup
+                <Radio.Group
                   label='Category'
                   description='chose one or more categories'
                   onChange={setCategory}
@@ -336,7 +334,7 @@ function IdeaForm(props: IProps) {
                   className={classes.label}
                 >
                   {categoriesList}
-                </RadioGroup>
+                </Radio.Group>
               </Card.Section>
 
               <Group position='right' mt='xl'>

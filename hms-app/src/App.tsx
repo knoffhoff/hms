@@ -10,6 +10,7 @@ import NoPage from './pages/NoPage'
 import Voting from './pages/Voting'
 import Admin from './pages/Admin'
 import Presentations from './pages/Presentations'
+import FinalPresentations from './pages/FinalPresentations'
 import { useAppSelector } from './hooks'
 import { UserSerializable } from './common/redux/userSlice'
 
@@ -31,6 +32,7 @@ function App() {
             <Route path='voting' element={<Voting />} />
             <Route path='admin' element={<Admin />} />
             <Route path={'presentations'} element={<Presentations />} />
+            <Route path={'finals'} element={<FinalPresentations />} />
           </>
         )}
         <Route path='*' element={<NoPage />} />

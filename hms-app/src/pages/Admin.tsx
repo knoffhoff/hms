@@ -18,30 +18,42 @@ function Admin() {
       <Accordion className={classes.accordionList}>
         <Accordion.Item
           className={classes.borderAccordion}
-          label={'Create new hackathon'}
+          value={'create-hackathon'}
         >
-          <HackathonForm hackathonId={null} context={'new'} />
+          <Accordion.Control>Create new hackathon</Accordion.Control>
+          <Accordion.Panel>
+            <HackathonForm hackathonId={null} context={'new'} />
+          </Accordion.Panel>
         </Accordion.Item>
       </Accordion>
 
       <Accordion className={classes.accordionList}>
         <Accordion.Item
           className={classes.borderAccordion}
-          label={'Hackathon list'}
+          value={'all-hackathons'}
         >
-          <AllHackathonList />
+          <Accordion.Control>Hackathon list</Accordion.Control>
+          <Accordion.Panel>
+            <AllHackathonList />
+          </Accordion.Panel>
         </Accordion.Item>
       </Accordion>
 
       <Accordion className={classes.accordionList}>
-        <Accordion.Item className={classes.borderAccordion} label={'Skills list'}>
+        <Accordion.Item className={classes.borderAccordion} value={'skills'}>
+          <Accordion.Control>Skills list</Accordion.Control>
+          <Accordion.Panel>
             {<SkillsList />}
+          </Accordion.Panel>
         </Accordion.Item>
       </Accordion>
 
       <Accordion className={classes.accordionList}>
-        <Accordion.Item className={classes.borderAccordion} label={'User list'}>
-          <AllUserList />
+        <Accordion.Item className={classes.borderAccordion} value={'users'}>
+          <Accordion.Control>User list</Accordion.Control>
+          <Accordion.Panel>
+            <AllUserList />
+          </Accordion.Panel>
         </Accordion.Item>
       </Accordion>
     </>

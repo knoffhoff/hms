@@ -4,7 +4,6 @@ import {
   HackathonDropdownMode,
   Idea,
   IdeaCardType,
-  ParticipantPreview,
 } from '../common/types'
 import IdeaCardList from '../components/lists/IdeaCardList'
 import React, { useEffect, useState, useContext } from 'react'
@@ -93,15 +92,18 @@ export default function MyIdeas() {
                 {!(hackathonData.endDate < today) && (
                   <Accordion>
                     <Accordion.Item
-                      label={'Create new idea'}
+                      value={'createNewIdea'}
                       className={classes.borderAccordion}
                     >
-                      <IdeaForm
-                        ideaId={'null'}
-                        hackathon={hackathonData}
-                        participantId={participantId}
-                        context={'new'}
-                      />
+                      <Accordion.Control>Create new idea</Accordion.Control>
+                      <Accordion.Panel>
+                        <IdeaForm
+                          ideaId={'null'}
+                          hackathon={hackathonData}
+                          participantId={participantId}
+                          context={'new'}
+                        />
+                      </Accordion.Panel>
                     </Accordion.Item>
                   </Accordion>
                 )}
