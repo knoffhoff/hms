@@ -32,14 +32,13 @@ export default function FinalVideoUploadModal({ idea }: IProps) {
   const [videoUrl, setVideoUrl] = useState('')
   const [previousOpen, toggle] = useToggle([false, true])
 
-  useEffect(() => {
-    async function checkAsyncForVideo() {
-      // TODO change URL
-      const videoUrl = `${VIDEO_URL}/${idea.id}.mp4`
-      const res = await checkIfVideoExists(videoUrl)
-      if (res?.ok) setVideoUrl(videoUrl)
-    }
+  const checkAsyncForVideo = async () => {
+    const videoUrl = `${VIDEO_URL}/${idea.id}.mp4`
+    const res = await checkIfVideoExists(videoUrl)
+    if (res?.ok) setVideoUrl(videoUrl)
+  }
 
+  useEffect(() => {
     checkAsyncForVideo()
   }, [])
 
@@ -65,6 +64,9 @@ export default function FinalVideoUploadModal({ idea }: IProps) {
           message: 'Your video has been uploaded',
           color: 'green',
         })
+        setTimeout(() => {
+          checkAsyncForVideo()
+        }, 1000)
       } else {
         showNotification({
           title: 'Video upload failed',

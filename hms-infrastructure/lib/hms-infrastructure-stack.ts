@@ -52,7 +52,8 @@ export class HmsInfrastructureStack extends Stack {
     //     "AllowedMethods": [
     //       "GET",
     //       "PUT",
-    //       "POST"
+    //       "POST",
+    //       "HEAD",
     //     ],
     //     "AllowedOrigins": [
     //       "*"
