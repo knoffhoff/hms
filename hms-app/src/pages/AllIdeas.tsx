@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext, createContext } from 'react'
-import { Input, Group, Text, Button } from '@mantine/core'
+import { Input, Group, Text, Button, Modal } from '@mantine/core'
 import { ArrowUp, Search, Check, X } from 'tabler-icons-react'
 import IdeaCardList from '../components/lists/IdeaCardList'
 import {
@@ -8,7 +8,6 @@ import {
   HackathonDropdownMode,
   IdeaCardType,
   ParticipantPreview,
-  UserPreview,
 } from '../common/types'
 import {
   createHackathonParticipant,
@@ -22,11 +21,13 @@ import HackathonHeader from '../components/HackathonHeader'
 import { useMsal } from '@azure/msal-react'
 import { JOIN_BUTTON_COLOR, LEAVE_BUTTON_COLOR } from '../common/colors'
 import { UserContext } from './Layout'
+import { styles } from '../common/styles';
 
 export const HackathonParticipantContext = createContext('')
 
 function AllIdeas() {
   const { instance } = useMsal()
+  const { classes } = styles()
   const user = useContext(UserContext)
   const [searchTerm, setSearchTerm] = useState('')
   const [isLoading, setIsLoading] = useState(true)
@@ -45,6 +46,7 @@ function AllIdeas() {
     startDate: NULL_DATE,
     endDate: NULL_DATE,
   } as Hackathon)
+  const [removeParticipantModalOpened, setRemoveParticipantModalOpened] = useState(false)
 
   useEffect(() => {
     if (user) {
@@ -161,6 +163,34 @@ function AllIdeas() {
     })
   }
 
+  const removeParticipantModal = (
+      <Modal
+          centered
+          opened={removeParticipantModalOpened}
+          onClose={() => setRemoveParticipantModalOpened(false)}
+          withCloseButton={false}
+      >
+        <Text className={classes.text}>
+          Are you sure you want to leave this hackathon? All your progress and ideas will be lost!
+        </Text>
+        <Text className={classes.title}>Title: {hackathonData.title}</Text>
+        <Text className={classes.title}>
+          Start Date:
+          {new Date(hackathonData.startDate).toDateString()}
+        </Text>
+        <Text className={classes.title}>
+          End Date:
+          {new Date(hackathonData.endDate).toDateString()}
+        </Text>
+        <Button
+            style={{ backgroundColor: LEAVE_BUTTON_COLOR }}
+            onClick={() => removeHackathonParticipant()}
+        >
+          Yes, leave hackathon
+        </Button>
+      </Modal>
+  )
+
   useEffect(() => {
     const participant = findParticipant()
     setParticipantCheck(!!participant)
@@ -173,6 +203,8 @@ function AllIdeas() {
       <HackathonParticipantContext.Provider
         value={participantInfo.participantId}
       >
+        {removeParticipantModal}
+
         <Group position={'apart'} my={20}>
           <HackathonSelectDropdown
             setHackathonId={setSelectedHackathonId}
@@ -209,7 +241,7 @@ function AllIdeas() {
                 disabled={buttonIsDisabled}
                 onClick={
                   participantCheck
-                    ? removeHackathonParticipant
+                    ? () => setRemoveParticipantModalOpened(true)
                     : addHackathonParticipant
                 }
                 style={{

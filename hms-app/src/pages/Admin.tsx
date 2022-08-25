@@ -4,6 +4,7 @@ import HackathonForm from '../components/input-forms/HackathonForm'
 import AllHackathonList from '../components/lists/AllHackathonList'
 import AllUserList from '../components/lists/AllUserList'
 import { styles } from '../common/styles'
+import SkillsList from '../components/lists/SkillsList';
 
 function Admin() {
   const { classes } = styles()
@@ -34,6 +35,15 @@ function Admin() {
           <Accordion.Control>Hackathon list</Accordion.Control>
           <Accordion.Panel>
             <AllHackathonList />
+          </Accordion.Panel>
+        </Accordion.Item>
+      </Accordion>
+
+      <Accordion className={classes.accordionList}>
+        <Accordion.Item className={classes.borderAccordion} value={'skills'}>
+          <Accordion.Control>Skills list</Accordion.Control>
+          <Accordion.Panel>
+            {<SkillsList />}
           </Accordion.Panel>
         </Accordion.Item>
       </Accordion>

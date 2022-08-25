@@ -8,7 +8,7 @@ import {
   Hackathon,
   HackathonDetailsType,
   Idea,
-  IdeaCardType,
+  IdeaCardType
 } from '../../common/types'
 import { getIdeaDetails } from '../../actions/IdeaActions'
 import {
