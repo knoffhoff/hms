@@ -20,7 +20,7 @@
     "jest": "27.5.1",
     "prettier": "^2.6.0",
     "serverless-dynamodb-local": "0.2.40",
-    "serverless-offline": "8.8.1",
+    "serverless-offline": "10.1.0",
     "serverless-plugin-typescript": "2.1.2",
     "ts-jest": "27.1.4",
     "ts-node": "10.9.1",
