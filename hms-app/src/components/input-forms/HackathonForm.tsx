@@ -1,4 +1,4 @@
-import { Textarea, Group, Button, Card, SimpleGrid } from '@mantine/core'
+import { Textarea, Group, Button, Card, SimpleGrid, Title } from '@mantine/core'
 import React, { useState } from 'react'
 import { DatePicker } from '@mantine/dates'
 import { createHackathon, editHackathon } from '../../actions/HackathonActions'
@@ -158,7 +158,14 @@ function HackathonForm(props: IProps) {
         </Card.Section>
 
         <Card.Section className={classes.borderSection}>
-          <RichTextEditor value={DescriptionValue} onChange={onChange} />
+          <Title className={classes.label} mb={5}>
+            Description
+          </Title>
+          <RichTextEditor
+            value={DescriptionValue}
+            onChange={onChange}
+            style={{ minHeight: 225 }}
+          />
         </Card.Section>
 
         <Group position='right' mt='xl'>
