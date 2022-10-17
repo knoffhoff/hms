@@ -8,7 +8,7 @@ import {
   Hackathon,
   HackathonDetailsType,
   Idea,
-  IdeaCardType
+  IdeaCardType,
 } from '../../common/types'
 import { getIdeaDetails } from '../../actions/IdeaActions'
 import {
@@ -239,8 +239,8 @@ export default function HackathonDetails(props: IProps) {
           <div>
             <HackathonHeader hackathonData={hackathonData} />
 
-            {type === HackathonDetailsType.Archive && (
-              <Container>
+            {type === HackathonDetailsType.Archive && hackathonId !== '' && (
+              <Container mb={25}>
                 <RichTextEditor readOnly value={value!} onChange={onChange}>
                   {hackathonData.description}
                 </RichTextEditor>

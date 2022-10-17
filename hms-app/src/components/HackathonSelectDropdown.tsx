@@ -31,7 +31,7 @@ export default function HackathonSelectDropdown({
       (data) => {
         setHackathonList(data)
         const upcomingHackathon = data.find((h) => h.id === nextHackathon.id)
-        if (upcomingHackathon) {
+        if (upcomingHackathon && context !== HackathonDropdownMode.Archive) {
           setHackathonId(upcomingHackathon.id)
           setSelectedHackathon(upcomingHackathon)
         }
