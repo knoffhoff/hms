@@ -24,7 +24,7 @@ export default function Archive() {
         </>
       )}
 
-      {selectedHackathonId !== '' && (
+      {selectedHackathonId && (
         <HackathonDetails
           hackathonId={selectedHackathonId}
           type={HackathonDetailsType.Archive}
