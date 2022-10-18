@@ -1,7 +1,11 @@
-import { Textarea, Group, Button, Card, SimpleGrid } from '@mantine/core'
-import React, { useState } from 'react'
+import { Textarea, Group, Button, Card, SimpleGrid, Title } from '@mantine/core'
+import React, { useEffect, useState } from 'react'
 import { DatePicker } from '@mantine/dates'
-import { createHackathon, editHackathon } from '../../actions/HackathonActions'
+import {
+  createHackathon,
+  editHackathon,
+  getHackathonDetails,
+} from '../../actions/HackathonActions'
 import { showNotification, updateNotification } from '@mantine/notifications'
 import { Check, X } from 'tabler-icons-react'
 import { styles } from '../../common/styles'
@@ -20,6 +24,21 @@ function HackathonForm(props: IProps) {
   const [endDateValue, setEndDateValue] = useState<Date | null>(new Date())
   const [hackathonTitle, setHackathonTitle] = useState('')
   const [DescriptionValue, onChange] = useState('')
+
+  const loadSelectedHackathon = () => {
+    if (hackathonId) {
+      getHackathonDetails(instance, hackathonId).then((data) => {
+        setHackathonTitle(data.title)
+        onChange(data.description || '')
+        setStartDateValue(data.startDate)
+        setEndDateValue(data.endDate)
+      })
+    }
+  }
+
+  useEffect(() => {
+    loadSelectedHackathon()
+  }, [])
 
   function handleChange(event: React.ChangeEvent<HTMLTextAreaElement>) {
     setHackathonTitle(event.target.value)
@@ -133,6 +152,7 @@ function HackathonForm(props: IProps) {
             autosize
             onChange={handleChange}
             name='title'
+            value={hackathonTitle}
             className={classes.label}
           />
         </Card.Section>
@@ -158,7 +178,14 @@ function HackathonForm(props: IProps) {
         </Card.Section>
 
         <Card.Section className={classes.borderSection}>
-          <RichTextEditor value={DescriptionValue} onChange={onChange} />
+          <Title className={classes.label} mb={5}>
+            Description
+          </Title>
+          <RichTextEditor
+            value={DescriptionValue}
+            onChange={onChange}
+            style={{ minHeight: 225 }}
+          />
         </Card.Section>
 
         <Group position='right' mt='xl'>
@@ -185,7 +212,7 @@ function HackathonForm(props: IProps) {
             </Button>
           )}
         </Group>
-      </Card>{' '}
+      </Card>
     </>
   )
 }

@@ -8,7 +8,7 @@ import {
   Hackathon,
   HackathonDetailsType,
   Idea,
-  IdeaCardType
+  IdeaCardType,
 } from '../../common/types'
 import { getIdeaDetails } from '../../actions/IdeaActions'
 import {
@@ -202,6 +202,7 @@ export default function HackathonDetails(props: IProps) {
   const editModal = (
     <Modal
       centered
+      size='55%'
       opened={editModalOpened}
       onClose={() => setEditModalOpened(false)}
       withCloseButton={false}
