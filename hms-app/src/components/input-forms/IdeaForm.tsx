@@ -158,6 +158,7 @@ function IdeaForm(props: IProps) {
             console.log(error)
           }
         }
+        window.location.reload()
       }
     )
   }
