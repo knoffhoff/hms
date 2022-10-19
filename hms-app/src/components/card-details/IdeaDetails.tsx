@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import {
   Accordion,
   Avatar,
@@ -10,9 +10,10 @@ import {
   Spoiler,
   Stack,
   Text,
+  Tooltip,
   useMantineTheme,
 } from '@mantine/core'
-import { Idea, IdeaCardType } from '../../common/types'
+import { Category, Idea, IdeaCardType, Skill } from '../../common/types'
 import { deleteIdea } from '../../actions/IdeaActions'
 import IdeaForm from '../input-forms/IdeaForm'
 import { styles } from '../../common/styles'
@@ -24,13 +25,15 @@ import {
 import { Check, X } from 'tabler-icons-react'
 import { useMsal } from '@azure/msal-react'
 import {
-  JOIN_BUTTON_COLOR,
   DELETE_BUTTON_COLOR,
+  JOIN_BUTTON_COLOR,
   LEAVE_BUTTON_COLOR,
 } from '../../common/colors'
 import { HackathonParticipantContext } from '../../pages/AllIdeas'
 import { UserContext } from '../../pages/Layout'
 import FinalVideoUploadModal from '../FinalVideoUploadModal'
+import { getCategoryDetails } from '../../actions/CategoryActions'
+import { getSkillDetails } from '../../actions/SkillActions'
 
 type IProps = {
   idea: Idea
@@ -66,6 +69,36 @@ export default function IdeaDetails(props: IProps) {
     ideaId: '',
   })
   const [participantCheck, setParticipantCheck] = useState(false)
+  const [categoryData, setCategoryData] = useState({} as Category)
+  const [skillData, setSkillData] = useState([] as Skill[])
+
+  const loadCategoryDetails = () => {
+    if (idea.category)
+      getCategoryDetails(instance, idea.category.id).then((data) => {
+        setCategoryData(data)
+      })
+  }
+
+  const loadSkillDetails = () => {
+    idea.requiredSkills?.map((skills) => {
+      getSkillDetails(instance, skills.id).then((data) => {
+        setSkillData((skillData) => [...skillData, data])
+      })
+    })
+  }
+
+  const getSkillDescription = (id: string) => {
+    const skill = skillData.find((skill) => skill.id === id)
+    if (skill) {
+      return skill.description
+    }
+    return null
+  }
+
+  useEffect(() => {
+    loadCategoryDetails()
+    loadSkillDetails()
+  }, [])
 
   const getInitials = (
     firstName: string | undefined,
@@ -205,7 +238,21 @@ export default function IdeaDetails(props: IProps) {
 
         <Card.Section className={classes.borderSection}>
           <Text className={classes.label}>Category</Text>
-          <Text className={classes.text}>{idea.category?.title}</Text>
+          <Tooltip
+            multiline
+            width={220}
+            transition='fade'
+            transitionDuration={200}
+            color='gray'
+            label={categoryData.description}
+          >
+            <Badge
+              color={theme.colorScheme === 'dark' ? 'dark' : 'gray'}
+              key={idea.category?.id}
+            >
+              {idea.category?.title}
+            </Badge>
+          </Tooltip>
         </Card.Section>
 
         <Accordion
@@ -397,13 +444,23 @@ export default function IdeaDetails(props: IProps) {
               <Card.Section className={classes.borderSection}>
                 <Text className={classes.label}>Skills required</Text>
                 <Group spacing={7} mt={5}>
-                  {idea.requiredSkills?.map((skill) => (
-                    <Badge
-                      color={theme.colorScheme === 'dark' ? 'dark' : 'gray'}
+                  {idea.requiredSkills?.map((skill, index) => (
+                    <Tooltip
+                      multiline
+                      width={220}
+                      transition='fade'
+                      transitionDuration={200}
+                      color='gray'
+                      label={getSkillDescription(skill.id)}
                       key={skill.id}
                     >
-                      {skill.name}
-                    </Badge>
+                      <Badge
+                        color={theme.colorScheme === 'dark' ? 'dark' : 'gray'}
+                        key={skill.id}
+                      >
+                        {skill.name}
+                      </Badge>
+                    </Tooltip>
                   ))}
                 </Group>
               </Card.Section>
