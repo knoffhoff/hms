@@ -26,9 +26,9 @@ function App() {
         <Route index element={<Home />} />
         <Route path='ideas' element={<AllIdeas />} />
         <Route path='my-ideas' element={<MyIdeas />} />
+        <Route path='archive' element={<Archive />} />
         {isAdmin(stateUser) && (
           <>
-            <Route path='archive' element={<Archive />} />
             <Route path='voting' element={<Voting />} />
             <Route path='admin' element={<Admin />} />
             <Route path={'presentations'} element={<Presentations />} />

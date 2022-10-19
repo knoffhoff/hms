@@ -24,10 +24,12 @@ export default function Archive() {
         </>
       )}
 
-      <HackathonDetails
-        hackathonId={selectedHackathonId}
-        type={HackathonDetailsType.Archive}
-      />
+      {selectedHackathonId && (
+        <HackathonDetails
+          hackathonId={selectedHackathonId}
+          type={HackathonDetailsType.Archive}
+        />
+      )}
     </>
   )
 }

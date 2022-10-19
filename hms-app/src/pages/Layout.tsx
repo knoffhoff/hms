@@ -62,6 +62,7 @@ const Layout = () => {
           label: 'All Ideas',
         },
         { link: 'my-ideas', label: 'My Ideas' },
+        { link: 'archive', label: 'Archive' },
       ])
       if (isAdmin(stateUser)) {
         setMenuLinks([
