@@ -14,7 +14,7 @@ import {
   useMantineTheme,
 } from '@mantine/core'
 import { Category, Idea, IdeaCardType, Skill } from '../../common/types'
-import { deleteIdea } from '../../actions/IdeaActions'
+import { deleteIdea, getIdeaDetails } from '../../actions/IdeaActions'
 import IdeaForm from '../input-forms/IdeaForm'
 import { styles } from '../../common/styles'
 import { showNotification, updateNotification } from '@mantine/notifications'
@@ -46,41 +46,42 @@ export default function IdeaDetails(props: IProps) {
   const user = useContext(UserContext)
   const { instance } = useMsal()
   const { classes } = styles()
+  const { idea, type, isLoading } = props
+  const MAX_TITLE_LENGTH = 100
   const theme = useMantineTheme()
   const [deleteModalOpened, setDeleteModalOpened] = useState(false)
   const [editModalOpened, setEditModalOpened] = useState(false)
   const [accordionOpen, setAccordionOpen] = useState(false)
   const [participantAccordionOpen, setParticipantAccordionOpen] =
     useState(false)
-  // const [accordionState, setAccordionState] = useAccordionState({
-  //   total: 1,
-  //   initialItem: -1,
-  // })
-  // const [participantAccordionState, setParticipantAccordionState] =
-  //   useAccordionState({
-  //     total: 1,
-  //     initialItem: -1,
-  //   })
   const [buttonIsDisabled, setButtonisDisabled] = useState(false)
   // ToDo replace user and participant id with real data after a "user" endpoint exist
   const [participantInfo, setParticipantInfo] = useState({
     userId: '',
     participantId: '',
-    ideaId: '',
   })
   const [participantCheck, setParticipantCheck] = useState(false)
   const [categoryData, setCategoryData] = useState({} as Category)
   const [skillData, setSkillData] = useState([] as Skill[])
+  const [loader, setLoader] = useState(false)
+  const [ideaData, setIdeaData] = useState(idea)
+
+  const loadIdeaData = () => {
+    getIdeaDetails(instance, ideaData.id).then((data) => {
+      setIdeaData(data)
+      setLoader(false)
+    })
+  }
 
   const loadCategoryDetails = () => {
-    if (idea.category)
-      getCategoryDetails(instance, idea.category.id).then((data) => {
+    if (ideaData.category)
+      getCategoryDetails(instance, ideaData.category.id).then((data) => {
         setCategoryData(data)
       })
   }
 
   const loadSkillDetails = () => {
-    idea.requiredSkills?.map((skills) => {
+    ideaData.requiredSkills?.map((skills) => {
       getSkillDetails(instance, skills.id).then((data) => {
         setSkillData((skillData) => [...skillData, data])
       })
@@ -95,11 +96,6 @@ export default function IdeaDetails(props: IProps) {
     return null
   }
 
-  useEffect(() => {
-    loadCategoryDetails()
-    loadSkillDetails()
-  }, [])
-
   const getInitials = (
     firstName: string | undefined,
     lastName: string | undefined
@@ -111,20 +107,7 @@ export default function IdeaDetails(props: IProps) {
     }
   }
 
-  useEffect(() => {
-    if (user) {
-      setParticipantInfo({
-        userId: user.id,
-        participantId: hackathonParticipantId,
-        ideaId: participantInfo.ideaId,
-      })
-    }
-  }, [user, hackathonParticipantId])
-
-  const { idea, type, isLoading } = props
-  const MAX_TITLE_LENGTH = 100
-
-  const participantData = idea.participants?.map((participant, index) => (
+  const participantData = ideaData.participants?.map((participant, index) => (
     <div
       key={index}
       style={{ display: 'flex', alignItems: 'center', gap: '10px' }}
@@ -142,12 +125,12 @@ export default function IdeaDetails(props: IProps) {
     showNotification({
       id: 'delete-idea-load',
       loading: true,
-      title: `Deleting "${idea.title}"`,
+      title: `Deleting "${ideaData.title}"`,
       message: undefined,
       autoClose: false,
       disallowClose: false,
     })
-    deleteIdea(instance, idea.id).then((response) => {
+    deleteIdea(instance, ideaData.id).then((response) => {
       setDeleteModalOpened(false)
       if (JSON.stringify(response).toString().includes('error')) {
         setParticipantCheck(true)
@@ -164,7 +147,7 @@ export default function IdeaDetails(props: IProps) {
         updateNotification({
           id: 'delete-idea-load',
           color: 'teal',
-          title: `Deleted "${idea.title}"`,
+          title: `Deleted "${ideaData.title}"`,
           message: undefined,
           icon: <Check />,
           autoClose: 2000,
@@ -187,7 +170,7 @@ export default function IdeaDetails(props: IProps) {
       <Text className={classes.text}>
         Are you sure you want to delete this idea?
       </Text>
-      <Text className={classes.title}>Title: {idea.title}</Text>
+      <Text className={classes.title}>Title: {ideaData.title}</Text>
       <Button
         style={{ backgroundColor: DELETE_BUTTON_COLOR }}
         onClick={() => deleteSelectedIdea()}
@@ -210,11 +193,11 @@ export default function IdeaDetails(props: IProps) {
     >
       <Text className={classes.title}>Edit Idea</Text>
       <IdeaForm
-        ideaId={idea.id}
-        idea={idea}
+        ideaId={ideaData.id}
+        idea={ideaData}
         context={'edit'}
-        participantId={idea.owner ? idea.owner.id : ''}
-        hackathon={idea.hackathon!}
+        participantId={ideaData.owner ? ideaData.owner.id : ''}
+        hackathon={ideaData.hackathon!}
         setOpened={closeEditModal}
       />
       <Text className={classes.text}>
@@ -228,12 +211,12 @@ export default function IdeaDetails(props: IProps) {
       <div>
         <Card.Section className={classes.borderSection}>
           <Text className={classes.label}>Problem</Text>
-          <Text className={classes.text}>{idea.problem}</Text>
+          <Text className={classes.text}>{ideaData.problem}</Text>
         </Card.Section>
 
         <Card.Section className={classes.borderSection}>
           <Text className={classes.label}>Goal</Text>
-          <Text className={classes.text}>{idea.goal}</Text>
+          <Text className={classes.text}>{ideaData.goal}</Text>
         </Card.Section>
 
         <Card.Section className={classes.borderSection}>
@@ -248,9 +231,9 @@ export default function IdeaDetails(props: IProps) {
           >
             <Badge
               color={theme.colorScheme === 'dark' ? 'dark' : 'gray'}
-              key={idea.category?.id}
+              key={ideaData.category?.id}
             >
-              {idea.category?.title}
+              {ideaData.category?.title}
             </Badge>
           </Tooltip>
         </Card.Section>
@@ -268,7 +251,7 @@ export default function IdeaDetails(props: IProps) {
                   <Text className={classes.label}>Current participants</Text>
                   <Group spacing={7} mt={5}>
                     <Avatar.Group>
-                      {idea.participants?.map((participant, index) => (
+                      {ideaData.participants?.map((participant, index) => (
                         <Avatar
                           key={index}
                           color='indigo'
@@ -311,17 +294,18 @@ export default function IdeaDetails(props: IProps) {
     showNotification({
       id: 'participant-load',
       loading: true,
-      title: `Joining "${idea.title}"`,
+      title: `Joining "${ideaData.title}"`,
       message: undefined,
       autoClose: false,
       disallowClose: false,
     })
     createIdeaParticipant(
       instance,
-      participantInfo.ideaId,
+      ideaData.id,
       participantInfo.participantId
     ).then((response) => {
       setButtonisDisabled(false)
+      setLoader(true)
       if (JSON.stringify(response).toString().includes('error')) {
         setParticipantCheck(false)
         updateNotification({
@@ -337,7 +321,7 @@ export default function IdeaDetails(props: IProps) {
         updateNotification({
           id: 'participant-load',
           color: 'teal',
-          title: `Joined "${idea.title}"`,
+          title: `Joined "${ideaData.title}"`,
           message: undefined,
           icon: <Check />,
           autoClose: 2000,
@@ -351,17 +335,18 @@ export default function IdeaDetails(props: IProps) {
     showNotification({
       id: 'participant-load',
       loading: true,
-      title: `Leaving "${idea.title}"`,
+      title: `Leaving "${ideaData.title}"`,
       message: undefined,
       autoClose: false,
       disallowClose: false,
     })
     removeIdeaParticipant(
       instance,
-      participantInfo.ideaId,
+      ideaData.id,
       participantInfo.participantId
     ).then((response) => {
       setButtonisDisabled(false)
+      setLoader(true)
       if (JSON.stringify(response).toString().includes('error')) {
         setParticipantCheck(true)
         updateNotification({
@@ -377,7 +362,7 @@ export default function IdeaDetails(props: IProps) {
         updateNotification({
           id: 'participant-load',
           color: 'teal',
-          title: `Left "${idea.title}"`,
+          title: `Left "${ideaData.title}"`,
           message: undefined,
           icon: <Check />,
           autoClose: 2000,
@@ -387,8 +372,8 @@ export default function IdeaDetails(props: IProps) {
   }
 
   const findParticipant = () => {
-    if (idea && idea.participants && user) {
-      const participant = idea.participants.find(
+    if (ideaData && ideaData.participants && user) {
+      const participant = ideaData.participants.find(
         (participant) => participant.user.id === user.id
       )
       if (participant) {
@@ -401,14 +386,29 @@ export default function IdeaDetails(props: IProps) {
 
   useEffect(() => {
     if (findParticipant()) setParticipantCheck(!!findParticipant())
-  }, [idea])
+  }, [ideaData])
 
   useEffect(() => {
     setParticipantInfo((prevState) => ({
       ...prevState,
-      ideaId: idea.id,
+      ideaId: ideaData.id,
     }))
+    loadCategoryDetails()
+    loadSkillDetails()
   }, [])
+
+  useEffect(() => {
+    loadIdeaData()
+  }, [loader])
+
+  useEffect(() => {
+    if (user) {
+      setParticipantInfo({
+        userId: user.id,
+        participantId: hackathonParticipantId,
+      })
+    }
+  }, [user, hackathonParticipantId])
 
   return (
     <>
@@ -420,22 +420,23 @@ export default function IdeaDetails(props: IProps) {
                 <Stack align={'center'} spacing={'xs'}>
                   <Avatar color='indigo' radius='xl' size='md'>
                     {getInitials(
-                      idea.owner?.user.firstName,
-                      idea.owner?.user.lastName
+                      ideaData.owner?.user.firstName,
+                      ideaData.owner?.user.lastName
                     )}
                   </Avatar>
                   <Badge size='sm'>
-                    {idea.owner?.user.firstName} {idea.owner?.user.lastName}
+                    {ideaData.owner?.user.firstName}{' '}
+                    {ideaData.owner?.user.lastName}
                   </Badge>
                 </Stack>
 
                 <Text className={classes.title}>
-                  {idea.title?.slice(0, MAX_TITLE_LENGTH)}
-                  {idea.title?.length > MAX_TITLE_LENGTH ? '...' : ''}
+                  {ideaData.title?.slice(0, MAX_TITLE_LENGTH)}
+                  {ideaData.title?.length > MAX_TITLE_LENGTH ? '...' : ''}
                 </Text>
               </Group>
 
-              <Text className={classes.text}>{idea.description}</Text>
+              <Text className={classes.text}>{ideaData.description}</Text>
             </Card.Section>
           </Spoiler>
 
@@ -444,7 +445,7 @@ export default function IdeaDetails(props: IProps) {
               <Card.Section className={classes.borderSection}>
                 <Text className={classes.label}>Skills required</Text>
                 <Group spacing={7} mt={5}>
-                  {idea.requiredSkills?.map((skill, index) => (
+                  {ideaData.requiredSkills?.map((skill, index) => (
                     <Tooltip
                       multiline
                       width={220}
@@ -524,7 +525,7 @@ export default function IdeaDetails(props: IProps) {
                         >
                           Edit
                         </Button>
-                        <FinalVideoUploadModal idea={idea} />
+                        <FinalVideoUploadModal idea={ideaData} />
                       </Group>
                     )}
                   </Accordion.Panel>
