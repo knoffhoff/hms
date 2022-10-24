@@ -15,14 +15,19 @@ import { NULL_DATE } from '../common/constants'
 import HackathonHeader from '../components/HackathonHeader'
 import { ArrowUp, AlertCircle } from 'tabler-icons-react'
 import { UserContext } from './Layout'
+import { getIdeaDetails } from '../actions/IdeaActions'
+import { useMsal } from '@azure/msal-react'
+import { getHackathonDetails } from '../actions/HackathonActions'
 
 export default function MyIdeas() {
+  const { instance } = useMsal()
   const { classes } = styles()
   const user = useContext(UserContext)
   const [participantId, setParticipantId] = useState('')
   const [selectedHackathonId, setSelectedHackathonId] = useState('')
   const [relevantIdeas, setRelevantIdeas] = useState<Idea[]>([])
   const [isLoading, setIsLoading] = useState(true)
+  const [loaderState, setLoaderState] = useState(false)
   const [hackathonData, setHackathonData] = useState<Hackathon>({
     id: 'string',
     title: 'string',
@@ -34,6 +39,23 @@ export default function MyIdeas() {
     ideas: [],
   } as Hackathon)
   const today = new Date()
+  const [ideaData, setIdeaData] = useState<Idea>()
+
+  const loadSelectedHackathon = () => {
+    getHackathonDetails(instance, selectedHackathonId).then((data) => {
+      setHackathonData(data)
+    })
+    setIsLoading(false)
+  }
+
+  const loadIdeaDetails = () => {
+    hackathonData.ideas!.map((ideaPreview) => {
+      getIdeaDetails(instance, ideaPreview.id).then((ideaDetails) => {
+        setIdeaData(ideaDetails)
+      })
+    })
+    setLoaderState(false)
+  }
 
   const filteredIdeas = relevantIdeas.filter((item) => {
     const userId = user?.id || ''
@@ -49,14 +71,38 @@ export default function MyIdeas() {
     } else return undefined
   }
 
-  useEffect(() => {
-    const participant = userParticipant()
-    if (participant) setParticipantId(participant.id)
-  }, [hackathonData])
-
   function isParticipant(): boolean {
     return participantId !== undefined && participantId !== ''
   }
+
+  useEffect(() => {
+    loadSelectedHackathon()
+  }, [selectedHackathonId])
+
+  useEffect(() => {
+    if (ideaData)
+      if (
+        !relevantIdeas
+          .map((relevant) => {
+            return relevant.id
+          })
+          .includes(ideaData.id)
+      ) {
+        setRelevantIdeas((relevantIdeas) => {
+          return [...relevantIdeas, ideaData]
+        })
+      }
+  }, [ideaData])
+
+  useEffect(() => {
+    const participant = userParticipant()
+    if (participant) setParticipantId(participant.id)
+    loadIdeaDetails()
+  }, [hackathonData])
+
+  useEffect(() => {
+    loadSelectedHackathon()
+  }, [loaderState])
 
   return (
     <>
@@ -73,13 +119,6 @@ export default function MyIdeas() {
           <Text size={'lg'}>Select a hackathon here</Text>
         </>
       )}
-
-      <RelevantIdeasLoader
-        setHackathon={setHackathonData}
-        setRelevantIdeas={setRelevantIdeas}
-        selectedHackathonId={selectedHackathonId}
-        setLoading={setIsLoading}
-      />
 
       {!isLoading &&
         hackathonData.startDate !== NULL_DATE &&
@@ -102,6 +141,7 @@ export default function MyIdeas() {
                           hackathon={hackathonData}
                           participantId={participantId}
                           context={'new'}
+                          loaderState={setLoaderState}
                         />
                       </Accordion.Panel>
                     </Accordion.Item>

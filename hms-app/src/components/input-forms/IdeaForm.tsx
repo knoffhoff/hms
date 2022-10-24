@@ -31,6 +31,7 @@ type IProps = {
   ideaId: string | null
   setOpened?: (boolean: boolean) => void
   idea?: Idea
+  loaderState?: (boolean: boolean) => void
 }
 
 function IdeaForm(props: IProps) {
@@ -59,6 +60,7 @@ function IdeaForm(props: IProps) {
     creationDate: new Date(),
   })
   const maxIdeaTitleLength = 100
+  const [loader, setLoader] = useState(false)
 
   const setIdea = () => {
     if (idea) {
@@ -127,6 +129,7 @@ function IdeaForm(props: IProps) {
         setButtonIsDisabled(false)
         setCategory('')
         setSkills([])
+        setLoader(true)
         setIdeaText((prevState) => ({
           ...prevState,
           title: '',
@@ -158,7 +161,6 @@ function IdeaForm(props: IProps) {
             console.log(error)
           }
         }
-        window.location.reload()
       }
     )
   }
@@ -180,6 +182,7 @@ function IdeaForm(props: IProps) {
         if (setOpened) {
           setOpened(false)
         }
+        setLoader(true)
         if (JSON.stringify(response).toString().includes('error')) {
           updateNotification({
             id: 'idea-load',
@@ -209,6 +212,7 @@ function IdeaForm(props: IProps) {
     setIdea()
     setCategory('')
     setSkills([])
+    setLoader(false)
   }, [])
 
   useEffect(() => {
@@ -239,6 +243,12 @@ function IdeaForm(props: IProps) {
   useEffect(() => {
     loadAvailableCategories()
   }, [hackathon])
+
+  useEffect(() => {
+    if (props.loaderState) {
+      props.loaderState(loader)
+    }
+  }, [loader])
 
   return (
     <>
