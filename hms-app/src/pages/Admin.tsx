@@ -4,10 +4,21 @@ import HackathonForm from '../components/input-forms/HackathonForm'
 import AllHackathonList from '../components/lists/AllHackathonList'
 import AllUserList from '../components/lists/AllUserList'
 import { styles } from '../common/styles'
-import SkillsList from '../components/lists/SkillsList';
+import SkillsList from '../components/lists/SkillsList'
 
 function Admin() {
   const { classes } = styles()
+
+  const accordion = (value: string, title: string, element: JSX.Element) => {
+    return (
+      <Accordion className={classes.accordionList}>
+        <Accordion.Item className={classes.borderAccordion} value={value}>
+          <Accordion.Control>{title}</Accordion.Control>
+          <Accordion.Panel>{element}</Accordion.Panel>
+        </Accordion.Item>
+      </Accordion>
+    )
+  }
 
   return (
     <>
@@ -15,47 +26,14 @@ function Admin() {
         Administration
       </Title>
 
-      <Accordion className={classes.accordionList}>
-        <Accordion.Item
-          className={classes.borderAccordion}
-          value={'create-hackathon'}
-        >
-          <Accordion.Control>Create new hackathon</Accordion.Control>
-          <Accordion.Panel>
-            <HackathonForm hackathonId={null} context={'new'} />
-          </Accordion.Panel>
-        </Accordion.Item>
-      </Accordion>
-
-      <Accordion className={classes.accordionList}>
-        <Accordion.Item
-          className={classes.borderAccordion}
-          value={'all-hackathons'}
-        >
-          <Accordion.Control>Hackathon list</Accordion.Control>
-          <Accordion.Panel>
-            <AllHackathonList />
-          </Accordion.Panel>
-        </Accordion.Item>
-      </Accordion>
-
-      <Accordion className={classes.accordionList}>
-        <Accordion.Item className={classes.borderAccordion} value={'skills'}>
-          <Accordion.Control>Skills list</Accordion.Control>
-          <Accordion.Panel>
-            {<SkillsList />}
-          </Accordion.Panel>
-        </Accordion.Item>
-      </Accordion>
-
-      <Accordion className={classes.accordionList}>
-        <Accordion.Item className={classes.borderAccordion} value={'users'}>
-          <Accordion.Control>User list</Accordion.Control>
-          <Accordion.Panel>
-            <AllUserList />
-          </Accordion.Panel>
-        </Accordion.Item>
-      </Accordion>
+      {accordion(
+        'create-hackathon',
+        'Create new hackathon',
+        <HackathonForm hackathonId={null} context={'new'} />
+      )}
+      {accordion('all-hackathons', 'Hackathon list', <AllHackathonList />)}
+      {accordion('users', 'User list', <AllUserList />)}
+      {accordion('skills', 'Skill list', <SkillsList />)}
     </>
   )
 }
