@@ -15,21 +15,27 @@ const useStyles = createStyles((theme) => ({
     },
   },
 
+  switch: {
+    position: 'absolute',
+    bottom: -12,
+    left: -60,
+  },
+
   icon: {
     pointerEvents: 'none',
     position: 'absolute',
     zIndex: 1,
-    top: 3,
+    top: -10,
   },
 
   iconLight: {
-    left: 4,
+    left: -45,
     color: theme.white,
   },
 
   iconDark: {
-    right: 4,
-    color: theme.colors.gray[6],
+    right: 2,
+    color: theme.colorScheme === 'light' ? theme.colors.gray[6] : theme.white,
   },
 }))
 
@@ -43,6 +49,7 @@ export function SwitchToggle() {
         <Sun className={cx(classes.icon, classes.iconLight)} size={18} />
         <MoonStars className={cx(classes.icon, classes.iconDark)} size={18} />
         <Switch
+          className={classes.switch}
           checked={colorScheme === 'dark'}
           onChange={() => toggleColorScheme()}
           size='md'
