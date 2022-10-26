@@ -11,7 +11,7 @@
     "@mantine/form": "^5.6.2",
     "@mantine/hooks": "^5.2.3",
     "@mantine/notifications": "^5.6.2",
-    "@mantine/rte": "^5.6.1",
+    "@mantine/rte": "^5.6.2",
     "@microsoft/microsoft-graph-types": "^2.25.0",
     "@reduxjs/toolkit": "^1.8.6",
     "@testing-library/jest-dom": "^5.16.5",
