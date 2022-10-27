@@ -12,4 +12,6 @@ jobs:
         with:
           node-version: '16.x'
       - run: npm ci
+        working-directory: hms-api
       - run: npm test
+        working-directory: hms-api
