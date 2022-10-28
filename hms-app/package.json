@@ -7,7 +7,7 @@
     "@azure/msal-react": "^1.4.9",
     "@mantine/core": "^5.6.2",
     "@mantine/dates": "^5.6.2",
-    "@mantine/dropzone": "^5.6.2",
+    "@mantine/dropzone": "^5.6.3",
     "@mantine/form": "^5.6.2",
     "@mantine/hooks": "^5.2.3",
     "@mantine/notifications": "^5.6.2",
