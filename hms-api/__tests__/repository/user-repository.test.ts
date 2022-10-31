@@ -200,7 +200,7 @@ describe('User Exists By Email', () => {
     const user = randomUser();
     mockQuery([itemFromUser(user)]);
 
-    expect(await userExistsByEmail(user.emailAddress)).toBe(true);
+    expect(await userExistsByEmail(user.emailAddress)).toStrictEqual({id: user.id, exists: true});
 
     queryEmailAddressIndexExpected(user.emailAddress);
   });
@@ -210,7 +210,7 @@ describe('User Exists By Email', () => {
     const user = randomUser();
     mockQuery([itemFromUser(user), itemFromUser(randomUser())]);
 
-    expect(await userExistsByEmail(user.emailAddress)).toBe(true);
+    expect(await userExistsByEmail(user.emailAddress)).toStrictEqual({id: user.id, exists: true});
 
     queryEmailAddressIndexExpected(user.emailAddress);
   });
@@ -219,7 +219,7 @@ describe('User Exists By Email', () => {
     mockQuery([]);
 
     const email = 'e.m@i.l';
-    expect(await userExistsByEmail(email)).toBe(false);
+    expect(await userExistsByEmail(email)).toStrictEqual({id: undefined, exists: false});
 
     queryEmailAddressIndexExpected(email);
   });
@@ -228,7 +228,7 @@ describe('User Exists By Email', () => {
     mockQuery(null);
 
     const email = 'e.m@i.l';
-    expect(await userExistsByEmail(email)).toBe(false);
+    expect(await userExistsByEmail(email)).toStrictEqual({id: undefined, exists: false});
 
     queryEmailAddressIndexExpected(email);
   });

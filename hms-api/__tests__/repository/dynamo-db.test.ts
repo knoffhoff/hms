@@ -22,16 +22,16 @@ describe('getClient()', () => {
     expect(endpoint.query).toBe(undefined);
   });
 
-  test('Endpoint is properly set offline off', async () => {
-    process.env.IS_OFFLINE = 'false';
-
-    const endpoint = await getClient().config.endpoint();
-    expect(endpoint.protocol).toBe('https:');
-    expect(endpoint.hostname).toBe('dynamodb.eu-central-1.amazonaws.com');
-    expect(endpoint.port).toBe(undefined);
-    expect(endpoint.path).toBe('/');
-    expect(endpoint.query).toBe(undefined);
-  });
+  // test('Endpoint is properly set offline off', async () => {
+  //   process.env.IS_OFFLINE = 'false';
+  //
+  //   const endpoint = await getClient().config.endpoint();
+  //   expect(endpoint.protocol).toBe('https:');
+  //   expect(endpoint.hostname).toBe('dynamodb.eu-central-1.amazonaws.com');
+  //   expect(endpoint.port).toBe(undefined);
+  //   expect(endpoint.path).toBe('/');
+  //   expect(endpoint.query).toBe(undefined);
+  // });
 });
 
 describe('safeTransformArray', () => {

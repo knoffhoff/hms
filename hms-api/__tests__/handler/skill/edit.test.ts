@@ -94,7 +94,7 @@ const toEvent = (
     title: string,
     description: string,
     id: Uuid,
-): any => ({
+): object => ({
   body: JSON.stringify(new SkillEditRequest(title, description)),
   pathParameters: {
     id: id,

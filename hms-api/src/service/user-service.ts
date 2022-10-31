@@ -1,13 +1,6 @@
 /* eslint-disable require-jsdoc */
 
-import {
-  deleteUser,
-  getUser,
-  getUsers,
-  listUsers,
-  putUser,
-  userExistsByEmail,
-} from '../repository/user-repository';
+import {deleteUser, getUser, getUsers, listUsers, putUser, userExistsByEmail,} from '../repository/user-repository';
 import {getSkills, skillExists} from '../repository/skill-repository';
 import Participant from '../repository/domain/Participant';
 import User from '../repository/domain/User';
@@ -35,6 +28,7 @@ export async function createUser(
 ): Promise<User> {
   await verifyAllSkillsExist(skills);
 
+  // TODO test this
   const roles = [Role.Participant] as Role[];
   if (ADMIN_USERS().includes(emailAddress)) {
     roles.push(Role.Admin);

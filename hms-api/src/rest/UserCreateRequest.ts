@@ -1,7 +1,6 @@
 /* eslint-disable require-jsdoc */
 
 import Uuid from '../util/Uuid';
-import Role, {mapStringToRoles} from '../repository/domain/Role';
 
 class UserCreateRequest {
   lastName?: string;

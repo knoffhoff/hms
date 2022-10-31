@@ -23,7 +23,6 @@ describe('Create User', () => {
         expected.lastName,
         expected.firstName,
         expected.emailAddress,
-        expected.roles,
         expected.skills,
         expected.imageUrl,
     );
@@ -77,12 +76,11 @@ describe('Create User', () => {
   });
 });
 
-const toEvent = (user: User): any => ({
+const toEvent = (user: User): object => ({
   body: JSON.stringify(new UserCreateRequest(
       user.lastName,
       user.firstName,
       user.emailAddress,
-      user.roles,
       user.skills,
       user.imageUrl,
   )),

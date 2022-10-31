@@ -144,7 +144,7 @@ const toEvent = (
     startDate: Date,
     endDate: Date,
     id: Uuid,
-): any => ({
+): object => ({
   body: JSON.stringify(new HackathonEditRequest(
       title,
       description,

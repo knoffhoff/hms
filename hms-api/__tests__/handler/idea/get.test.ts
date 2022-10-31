@@ -6,10 +6,7 @@ import {randomIdea} from '../../repository/domain/idea-maker';
 import IdeaResponse from '../../../src/rest/IdeaResponse';
 import ReferenceNotFoundError from '../../../src/error/ReferenceNotFoundError';
 import {randomUser} from '../../repository/domain/user-maker';
-import {
-  makeParticipant,
-  ParticipantData,
-} from '../../repository/domain/participant-maker';
+import {makeParticipant, ParticipantData,} from '../../repository/domain/participant-maker';
 import {randomHackathon} from '../../repository/domain/hackathon-maker';
 import {randomCategory} from '../../repository/domain/category-maker';
 import {randomSkill} from '../../repository/domain/skill-maker';
@@ -113,7 +110,7 @@ describe('Get Idea', () => {
   });
 });
 
-const toEvent = (id: Uuid): any => ({
+const toEvent = (id: Uuid): object => ({
   pathParameters: {
     id: id,
   },

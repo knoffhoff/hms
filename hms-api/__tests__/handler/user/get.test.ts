@@ -95,7 +95,7 @@ describe('Get User', () => {
   });
 });
 
-const toEvent = (id: Uuid): any => ({
+const toEvent = (id: Uuid): object => ({
   pathParameters: {
     id: id,
   },

@@ -5,10 +5,7 @@ import Uuid, {uuid} from '../../../src/util/Uuid';
 import {randomHackathon} from '../../repository/domain/hackathon-maker';
 import HackathonResponse from '../../../src/rest/HackathonResponse';
 import ReferenceNotFoundError from '../../../src/error/ReferenceNotFoundError';
-import {
-  makeParticipant,
-  ParticipantData,
-} from '../../repository/domain/participant-maker';
+import {makeParticipant, ParticipantData,} from '../../repository/domain/participant-maker';
 import {randomUser} from '../../repository/domain/user-maker';
 import {randomCategory} from '../../repository/domain/category-maker';
 import {randomIdea} from '../../repository/domain/idea-maker';
@@ -108,7 +105,7 @@ describe('Get Hackathon', () => {
   });
 });
 
-const toEvent = (id: Uuid): any => ({
+const toEvent = (id: Uuid): object => ({
   pathParameters: {
     id: id,
   },

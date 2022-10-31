@@ -1,6 +1,7 @@
 import {exists} from '../../../src/handler/user/exists';
 import * as userService from '../../../src/service/user-service';
 import UserExistsResponse from '../../../src/rest/UserExistsResponse';
+import {uuid} from '../../../src/util/Uuid';
 
 const mockGetUserExistsResponse = jest.fn();
 jest.spyOn(userService, 'getUserExistsResponse')
@@ -8,8 +9,9 @@ jest.spyOn(userService, 'getUserExistsResponse')
 
 describe('User Exists', () => {
   test('Happy Path', async () => {
+    const id = uuid()
     const email = 'lame@ema.il';
-    const expected = UserExistsResponse.from(email, true);
+    const expected = UserExistsResponse.from(id, email, true);
 
     mockGetUserExistsResponse.mockResolvedValue(expected);
     const event = toEvent(email);
@@ -49,7 +51,7 @@ describe('User Exists', () => {
   });
 });
 
-const toEvent = (email: string): any => ({
+const toEvent = (email: string): object => ({
   pathParameters: {
     email: email,
   },
