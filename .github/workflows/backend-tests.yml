@@ -5,7 +5,7 @@ on: pull_request
 defaults:
   run:
     shell: bash
-    working-directory: 'hms-api'
+    working-directory: hms-api
 
 jobs:
   test:
@@ -16,6 +16,5 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '16.x'
-          cache: 'npm'
       - run: npm ci
       - run: npm test
