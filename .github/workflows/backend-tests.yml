@@ -5,7 +5,7 @@ on: pull_request
 defaults:
   run:
     shell: bash
-    working-directory: hms-api
+    working-directory: 'hms-api'
 
 jobs:
   test:
