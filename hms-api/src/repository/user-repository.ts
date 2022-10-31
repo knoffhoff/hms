@@ -11,11 +11,7 @@ import {
   ScanCommand,
 } from '@aws-sdk/client-dynamodb';
 import Uuid from '../util/Uuid';
-import {
-  getClient,
-  safeTransformArray,
-  safeTransformSSMember,
-} from './dynamo-db';
+import {getClient, safeTransformArray, safeTransformSSMember,} from './dynamo-db';
 import {mapRolesToStrings, mapStringToRoles} from './domain/Role';
 import NotFoundError from '../error/NotFoundError';
 
@@ -33,7 +29,7 @@ export async function listUsers(): Promise<User[]> {
     return items.map((item) => itemToUser(item));
   }
 
-  throw new NotFoundError(`Failed to list any users`);
+  throw new NotFoundError('Failed to list any users');
 }
 
 export async function putUser(user: User) {
@@ -101,7 +97,7 @@ export async function userExistsByEmail(
 
   const items = output.Items;
   const exists = Array.isArray(items) && items.length > 0;
-  const id = items[0]?.id.S;
+  const id = Array.isArray(items) && items[0]?.id.S || undefined;
   return {id, exists};
 }
 

@@ -1,7 +1,6 @@
 import * as participantService from '../../../src/service/participant-service';
 import {remove} from '../../../src/handler/participant/remove';
-import ParticipantDeleteResponse
-  from '../../../src/rest/ParticipantDeleteResponse';
+import ParticipantDeleteResponse from '../../../src/rest/ParticipantDeleteResponse';
 import Uuid, {uuid} from '../../../src/util/Uuid';
 import UserDeleteResponse from '../../../src/rest/UserDeleteResponse';
 
@@ -50,7 +49,7 @@ describe('Delete Participant', () => {
   });
 });
 
-const toEvent = (id: Uuid): any => ({
+const toEvent = (id: Uuid): object => ({
   pathParameters: {
     id: id,
   },

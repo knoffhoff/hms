@@ -74,7 +74,7 @@ describe('Create Category', () => {
   });
 });
 
-const toEvent = (category: Category): any => ({
+const toEvent = (category: Category): object => ({
   body: JSON.stringify(
       new CategoryCreateRequest(
           category.title,

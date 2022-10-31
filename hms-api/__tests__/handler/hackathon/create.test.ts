@@ -74,7 +74,7 @@ describe('Create Hackathon', () => {
   });
 });
 
-const toEvent = (hackathon: Hackathon): any => ({
+const toEvent = (hackathon: Hackathon): object => ({
   body: JSON.stringify(new HackathonCreateRequest(
       hackathon.title,
       hackathon.description,

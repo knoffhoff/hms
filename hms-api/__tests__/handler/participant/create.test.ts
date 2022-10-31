@@ -1,12 +1,10 @@
 import * as participantService from '../../../src/service/participant-service';
 import {create} from '../../../src/handler/participant/create';
 import {randomParticipant} from '../../repository/domain/participant-maker';
-import ParticipantCreateResponse
-  from '../../../src/rest/ParticipantCreateResponse';
+import ParticipantCreateResponse from '../../../src/rest/ParticipantCreateResponse';
 import ReferenceNotFoundError from '../../../src/error/ReferenceNotFoundError';
 import Participant from '../../../src/repository/domain/Participant';
-import ParticipantCreateRequest
-  from '../../../src/rest/ParticipantCreateRequest';
+import ParticipantCreateRequest from '../../../src/rest/ParticipantCreateRequest';
 
 const mockCreateParticipant = jest.fn();
 jest.spyOn(participantService, 'createParticipant')
@@ -74,7 +72,7 @@ describe('Create Participant', () => {
   });
 });
 
-const toEvent = (participant: Participant): any => ({
+const toEvent = (participant: Participant): object => ({
   body: JSON.stringify(new ParticipantCreateRequest(
       participant.userId,
       participant.hackathonId,

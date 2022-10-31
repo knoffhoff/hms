@@ -41,7 +41,7 @@ export async function listParticipants(
 export async function putParticipant(participant: Participant): Promise<void> {
   if (await participantAlreadyExists(participant)) {
     throw new InvalidStateError(
-      `Cannot create Participant for ` +
+      'Cannot create Participant for ' +
         `User with id: ${participant.userId} and ` +
         `Hackathon with id: ${participant.hackathonId}, it already exists`,
     );

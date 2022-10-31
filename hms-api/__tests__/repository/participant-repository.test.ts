@@ -20,11 +20,7 @@ import {
 } from '../../src/repository/participant-repository';
 import Uuid, {uuid} from '../../src/util/Uuid';
 import NotFoundError from '../../src/error/NotFoundError';
-import {
-  makeParticipant,
-  ParticipantData,
-  randomParticipant,
-} from './domain/participant-maker';
+import {makeParticipant, ParticipantData, randomParticipant,} from './domain/participant-maker';
 import Participant from '../../src/repository/domain/Participant';
 import {AttributeValue} from '@aws-sdk/client-dynamodb';
 import InvalidStateError from '../../src/error/InvalidStateError';
@@ -91,13 +87,13 @@ describe('Put Participant', () => {
   });
 
   test('Participant already exists', async () => {
-    mockQueryOnce([]);
+    const expected = randomParticipant();
+    mockQueryOnce([itemFromParticipant(expected)]);
     mockPutItemOnce();
 
-    const expected = randomParticipant();
     await expect(putParticipant(expected))
-        .rejects
-        .toThrow(InvalidStateError);
+    .rejects
+    .toThrow(InvalidStateError);
 
     expect(mockSend).not.toHaveBeenCalledWith(
         expect.objectContaining({

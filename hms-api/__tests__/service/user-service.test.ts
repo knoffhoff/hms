@@ -10,13 +10,8 @@ import {
 } from '../../src/service/user-service';
 import {uuid} from '../../src/util/Uuid';
 import {makeUser, randomUser, UserData} from '../repository/domain/user-maker';
-import {
-  makeParticipant,
-  ParticipantData,
-  randomParticipant,
-} from '../repository/domain/participant-maker';
+import {makeParticipant, ParticipantData, randomParticipant,} from '../repository/domain/participant-maker';
 import ReferenceNotFoundError from '../../src/error/ReferenceNotFoundError';
-import Role from '../../src/repository/domain/Role';
 
 import * as skillRepository from '../../src/repository/skill-repository';
 import * as userRepository from '../../src/repository/user-repository';
@@ -67,7 +62,6 @@ describe('Create User', () => {
             '',
             'e.m@i.l',
             [uuid()],
-            [uuid()],
             'image.url'))
         .rejects
         .toThrow(ValidationError);
@@ -80,7 +74,6 @@ describe('Create User', () => {
         'lastName',
         'firstName',
         'em@il.com',
-        [Role.Admin],
         [uuid()],
         'https://image.jpg/img.png'))
         .rejects
@@ -98,14 +91,12 @@ describe('Create User', () => {
         expected.lastName,
         expected.firstName,
         expected.emailAddress,
-        expected.roles,
         expected.skills,
         expected.imageUrl))
         .toEqual(expect.objectContaining({
           lastName: expected.lastName,
           firstName: expected.firstName,
           emailAddress: expected.emailAddress,
-          roles: expected.roles,
           skills: expected.skills,
           imageUrl: expected.imageUrl,
         }));
@@ -114,7 +105,6 @@ describe('Create User', () => {
       lastName: expected.lastName,
       firstName: expected.firstName,
       emailAddress: expected.emailAddress,
-      roles: expected.roles,
       skills: expected.skills,
       imageUrl: expected.imageUrl,
     }));
@@ -235,10 +225,11 @@ describe('Get User Response', () => {
 
 describe('Get User Exists Response', () => {
   test('User Exists', async () => {
+    const id = uuid()
     const email = 'eee.mmm@iii.ll';
-    const expected = UserExistsResponse.from(email, true);
+    const expected = UserExistsResponse.from(id, email, true);
 
-    mockUserExistsByEmail.mockResolvedValue(true);
+    mockUserExistsByEmail.mockResolvedValue({id: id, exists: true});
 
     expect(await getUserExistsResponse(email))
         .toStrictEqual(expected);
@@ -246,10 +237,11 @@ describe('Get User Exists Response', () => {
   });
 
   test('User Does Not Exist', async () => {
+    const id = uuid()
     const email = 'eee.mmm@iii.ll';
-    const expected = UserExistsResponse.from(email, false);
+    const expected = UserExistsResponse.from(id, email, false);
 
-    mockUserExistsByEmail.mockResolvedValue(false);
+    mockUserExistsByEmail.mockResolvedValue({id: id, exists: false});
 
     expect(await getUserExistsResponse(email))
         .toStrictEqual(expected);

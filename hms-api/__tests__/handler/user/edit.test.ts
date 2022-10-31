@@ -180,7 +180,7 @@ const toEvent = (
     skills: Uuid[],
     imageUrl: string,
     id: Uuid,
-): any => ({
+): object => ({
   body: JSON.stringify(new UserEditRequest(
       lastName,
       firstName,

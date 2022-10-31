@@ -78,7 +78,7 @@ describe('Create Idea', () => {
   });
 });
 
-const toEvent = (idea: Idea): any => ({
+const toEvent = (idea: Idea): object => ({
   body: JSON.stringify(new IdeaCreateRequest(
       idea.ownerId,
       idea.hackathonId,

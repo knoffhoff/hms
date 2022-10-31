@@ -206,7 +206,7 @@ const toEvent = (
     requiredSkills: Uuid[],
     categoryId: Uuid,
     id: Uuid,
-): any => ({
+): object => ({
   body: JSON.stringify(new IdeaEditRequest(
       title,
       description,

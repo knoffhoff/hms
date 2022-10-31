@@ -72,7 +72,7 @@ describe('Create Skill', () => {
   });
 });
 
-const toEvent = (skill: Skill): any => ({
+const toEvent = (skill: Skill): object => ({
   body: JSON.stringify(new SkillCreateRequest(
       skill.name,
       skill.description,

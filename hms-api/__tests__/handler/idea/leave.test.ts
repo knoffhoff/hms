@@ -29,9 +29,9 @@ describe('Leave Idea', () => {
   });
 });
 
-const toEvent = (ideaId: Uuid, participantId: Uuid): any => ({
+const toEvent = (id: Uuid, participantId: Uuid): object => ({
   pathParameters: {
-    ideaId: ideaId,
+    id: id,
     participantId: participantId,
   },
 });
