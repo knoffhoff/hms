@@ -31,11 +31,13 @@ type IProps = {
   ideaId: string | null
   setOpened?: (boolean: boolean) => void
   idea?: Idea
+  reload?: () => void
 }
 
 function IdeaForm(props: IProps) {
   const { instance } = useMsal()
-  const { hackathon, participantId, context, ideaId, setOpened, idea } = props
+  const { hackathon, participantId, context, ideaId, setOpened, idea, reload } =
+    props
   const { classes } = styles()
   const [isLoading, setIsLoading] = useState(true)
   const [buttonIsDisabled, setButtonIsDisabled] = useState(true)
@@ -127,6 +129,9 @@ function IdeaForm(props: IProps) {
         setButtonIsDisabled(false)
         setCategory('')
         setSkills([])
+        if (reload) {
+          reload()
+        }
         setIdeaText((prevState) => ({
           ...prevState,
           title: '',
@@ -178,6 +183,9 @@ function IdeaForm(props: IProps) {
         setButtonIsDisabled(false)
         if (setOpened) {
           setOpened(false)
+        }
+        if (reload) {
+          reload()
         }
         if (JSON.stringify(response).toString().includes('error')) {
           updateNotification({
