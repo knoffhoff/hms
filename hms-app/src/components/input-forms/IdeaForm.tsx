@@ -31,20 +31,13 @@ type IProps = {
   ideaId: string | null
   setOpened?: (boolean: boolean) => void
   idea?: Idea
-  stateChangedListener?: (boolean: boolean) => void
+  reload?: () => void
 }
 
 function IdeaForm(props: IProps) {
   const { instance } = useMsal()
-  const {
-    hackathon,
-    participantId,
-    context,
-    ideaId,
-    setOpened,
-    idea,
-    stateChangedListener,
-  } = props
+  const { hackathon, participantId, context, ideaId, setOpened, idea, reload } =
+    props
   const { classes } = styles()
   const [isLoading, setIsLoading] = useState(true)
   const [buttonIsDisabled, setButtonIsDisabled] = useState(true)
@@ -68,7 +61,6 @@ function IdeaForm(props: IProps) {
     creationDate: new Date(),
   })
   const maxIdeaTitleLength = 100
-  const [loader, setLoader] = useState(false)
 
   const setIdea = () => {
     if (idea) {
@@ -137,7 +129,9 @@ function IdeaForm(props: IProps) {
         setButtonIsDisabled(false)
         setCategory('')
         setSkills([])
-        setLoader(true)
+        if (reload) {
+          reload()
+        }
         setIdeaText((prevState) => ({
           ...prevState,
           title: '',
@@ -171,7 +165,6 @@ function IdeaForm(props: IProps) {
         }
       }
     )
-    setLoader(false)
   }
 
   function editThisIdea(event: React.MouseEvent<HTMLButtonElement>) {
@@ -191,7 +184,9 @@ function IdeaForm(props: IProps) {
         if (setOpened) {
           setOpened(false)
         }
-        setLoader(true)
+        if (reload) {
+          reload()
+        }
         if (JSON.stringify(response).toString().includes('error')) {
           updateNotification({
             id: 'idea-load',
@@ -213,7 +208,6 @@ function IdeaForm(props: IProps) {
         }
       }
     )
-    setLoader(false)
   }
 
   useEffect(() => {
@@ -222,7 +216,6 @@ function IdeaForm(props: IProps) {
     setIdea()
     setCategory('')
     setSkills([])
-    setLoader(false)
   }, [])
 
   useEffect(() => {
@@ -253,12 +246,6 @@ function IdeaForm(props: IProps) {
   useEffect(() => {
     loadAvailableCategories()
   }, [hackathon])
-
-  useEffect(() => {
-    if (stateChangedListener) {
-      stateChangedListener(loader)
-    }
-  }, [loader])
 
   return (
     <>

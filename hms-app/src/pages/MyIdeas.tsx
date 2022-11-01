@@ -8,7 +8,6 @@ import {
 import IdeaCardList from '../components/lists/IdeaCardList'
 import React, { useEffect, useState, useContext } from 'react'
 import IdeaForm from '../components/input-forms/IdeaForm'
-import RelevantIdeasLoader from '../components/RelevantIdeasLoader'
 import { styles } from '../common/styles'
 import HackathonSelectDropdown from '../components/HackathonSelectDropdown'
 import { NULL_DATE } from '../common/constants'
@@ -27,7 +26,6 @@ export default function MyIdeas() {
   const [selectedHackathonId, setSelectedHackathonId] = useState('')
   const [relevantIdeas, setRelevantIdeas] = useState<Idea[]>([])
   const [isLoading, setIsLoading] = useState(true)
-  const [stateChangedListener, setStateChangedListener] = useState(false)
   const [hackathonData, setHackathonData] = useState<Hackathon>({
     id: 'string',
     title: 'string',
@@ -54,7 +52,6 @@ export default function MyIdeas() {
         setIdeaData(ideaDetails)
       })
     })
-    setStateChangedListener(false)
   }
 
   const filteredIdeas = relevantIdeas.filter((item) => {
@@ -100,10 +97,6 @@ export default function MyIdeas() {
     loadIdeaDetails()
   }, [hackathonData])
 
-  useEffect(() => {
-    loadSelectedHackathon()
-  }, [stateChangedListener])
-
   return (
     <>
       <Group position={'apart'} my={20}>
@@ -141,7 +134,7 @@ export default function MyIdeas() {
                           hackathon={hackathonData}
                           participantId={participantId}
                           context={'new'}
-                          stateChangedListener={setStateChangedListener}
+                          reload={loadSelectedHackathon}
                         />
                       </Accordion.Panel>
                     </Accordion.Item>
