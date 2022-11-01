@@ -36,7 +36,15 @@ type IProps = {
 
 function IdeaForm(props: IProps) {
   const { instance } = useMsal()
-  const { hackathon, participantId, context, ideaId, setOpened, idea } = props
+  const {
+    hackathon,
+    participantId,
+    context,
+    ideaId,
+    setOpened,
+    idea,
+    loaderState,
+  } = props
   const { classes } = styles()
   const [isLoading, setIsLoading] = useState(true)
   const [buttonIsDisabled, setButtonIsDisabled] = useState(true)
@@ -163,6 +171,7 @@ function IdeaForm(props: IProps) {
         }
       }
     )
+    setLoader(false)
   }
 
   function editThisIdea(event: React.MouseEvent<HTMLButtonElement>) {
@@ -204,6 +213,7 @@ function IdeaForm(props: IProps) {
         }
       }
     )
+    setLoader(false)
   }
 
   useEffect(() => {
@@ -245,8 +255,8 @@ function IdeaForm(props: IProps) {
   }, [hackathon])
 
   useEffect(() => {
-    if (props.loaderState) {
-      props.loaderState(loader)
+    if (loaderState) {
+      loaderState(loader)
     }
   }, [loader])
 
