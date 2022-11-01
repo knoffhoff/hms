@@ -27,7 +27,7 @@ export default function MyIdeas() {
   const [selectedHackathonId, setSelectedHackathonId] = useState('')
   const [relevantIdeas, setRelevantIdeas] = useState<Idea[]>([])
   const [isLoading, setIsLoading] = useState(true)
-  const [loaderState, setLoaderState] = useState(false)
+  const [stateChangedListener, setStateChangedListener] = useState(false)
   const [hackathonData, setHackathonData] = useState<Hackathon>({
     id: 'string',
     title: 'string',
@@ -54,7 +54,7 @@ export default function MyIdeas() {
         setIdeaData(ideaDetails)
       })
     })
-    setLoaderState(false)
+    setStateChangedListener(false)
   }
 
   const filteredIdeas = relevantIdeas.filter((item) => {
@@ -102,7 +102,7 @@ export default function MyIdeas() {
 
   useEffect(() => {
     loadSelectedHackathon()
-  }, [loaderState])
+  }, [stateChangedListener])
 
   return (
     <>
@@ -141,7 +141,7 @@ export default function MyIdeas() {
                           hackathon={hackathonData}
                           participantId={participantId}
                           context={'new'}
-                          loaderState={setLoaderState}
+                          stateChangedListener={setStateChangedListener}
                         />
                       </Accordion.Panel>
                     </Accordion.Item>

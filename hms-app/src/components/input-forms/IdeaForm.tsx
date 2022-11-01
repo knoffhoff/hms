@@ -31,7 +31,7 @@ type IProps = {
   ideaId: string | null
   setOpened?: (boolean: boolean) => void
   idea?: Idea
-  loaderState?: (boolean: boolean) => void
+  stateChangedListener?: (boolean: boolean) => void
 }
 
 function IdeaForm(props: IProps) {
@@ -43,7 +43,7 @@ function IdeaForm(props: IProps) {
     ideaId,
     setOpened,
     idea,
-    loaderState,
+    stateChangedListener,
   } = props
   const { classes } = styles()
   const [isLoading, setIsLoading] = useState(true)
@@ -255,8 +255,8 @@ function IdeaForm(props: IProps) {
   }, [hackathon])
 
   useEffect(() => {
-    if (loaderState) {
-      loaderState(loader)
+    if (stateChangedListener) {
+      stateChangedListener(loader)
     }
   }, [loader])
 
