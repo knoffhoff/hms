@@ -5,7 +5,7 @@
   "dependencies": {
     "@azure/msal-browser": "^2.30.0",
     "@azure/msal-react": "^1.4.10",
-    "@mantine/core": "^5.7.1",
+    "@mantine/core": "^5.7.2",
     "@mantine/dates": "^5.7.1",
     "@mantine/dropzone": "^5.7.1",
     "@mantine/form": "^5.7.1",
