@@ -6,32 +6,38 @@ import {randomIdea} from '../../repository/domain/idea-maker';
 import IdeaResponse from '../../../src/rest/IdeaResponse';
 import ReferenceNotFoundError from '../../../src/error/ReferenceNotFoundError';
 import {randomUser} from '../../repository/domain/user-maker';
-import {makeParticipant, ParticipantData,} from '../../repository/domain/participant-maker';
+import {
+  makeParticipant,
+  ParticipantData,
+} from '../../repository/domain/participant-maker';
 import {randomHackathon} from '../../repository/domain/hackathon-maker';
 import {randomCategory} from '../../repository/domain/category-maker';
 import {randomSkill} from '../../repository/domain/skill-maker';
 
 const mockGetIdea = jest.fn();
-jest.spyOn(ideaService, 'getIdeaResponse')
-    .mockImplementation((mockGetIdea));
+jest.spyOn(ideaService, 'getIdeaResponse').mockImplementation(mockGetIdea);
 
 describe('Get Idea', () => {
   test('Happy Path', async () => {
     const idea = randomIdea();
     const ownerUser = randomUser();
-    const ownerParticipant = makeParticipant(
-        {userId: ownerUser.id} as ParticipantData);
+    const ownerParticipant = makeParticipant({
+      userId: ownerUser.id,
+    } as ParticipantData);
     const user2 = randomUser();
+    const user3 = randomUser();
     const participant2 = makeParticipant({userId: user2.id} as ParticipantData);
+    const voter = makeParticipant({userId: user3.id} as ParticipantData);
     const expected = IdeaResponse.from(
-        idea,
-        ownerParticipant,
-        ownerUser,
-        randomHackathon(),
-        [ownerParticipant, participant2],
-        [ownerUser, user2],
-        [randomSkill(), randomSkill()],
-        randomCategory(),
+      idea,
+      ownerParticipant,
+      ownerUser,
+      randomHackathon(),
+      [ownerParticipant, participant2],
+      [ownerParticipant, voter],
+      [ownerUser, user2],
+      [randomSkill(), randomSkill()],
+      randomCategory(),
     );
 
     mockGetIdea.mockResolvedValue(expected);

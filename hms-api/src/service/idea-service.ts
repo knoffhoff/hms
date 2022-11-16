@@ -13,8 +13,10 @@ import {categoryExists, getCategory} from '../repository/category-repository';
 import {getSkills, skillExists} from '../repository/skill-repository';
 import {
   addParticipantToIdea,
+  addVoterToIdea,
   deleteIdea,
   deleteParticipantFromIdea,
+  deleteVoterFromIdea,
   getIdea,
   listIdeasForCategory,
   listIdeasForHackathon,
@@ -175,6 +177,16 @@ export async function getIdeaResponse(id: Uuid): Promise<IdeaResponse> {
     );
   }
 
+  let voters;
+  try {
+    voters = await getParticipants(idea.voterIds);
+  } catch (e) {
+    throw new ReferenceNotFoundError(
+      `Cannot get Idea with id: ${id}, ` +
+        `unable to get Voters with ids: ${idea.voterIds}`,
+    );
+  }
+
   let users;
   try {
     users = await usersFor(participants);
@@ -185,6 +197,18 @@ export async function getIdeaResponse(id: Uuid): Promise<IdeaResponse> {
         `${idea.participantIds}`,
     );
   }
+
+  // brauchen wir hier ein zweites mal die users? verwirrt siehe tinos branch
+  // let users;
+  // try {
+  //   users = await usersFor(voters);
+  // } catch (e) {
+  //   throw new ReferenceNotFoundError(
+  //     `Cannot get Idea with id: ${id}, ` +
+  //       `unable to get Users for Participants with ids: ` +
+  //       `${idea.voterIds}`,
+  //   );
+  // }
 
   let hackathon;
   try {
@@ -222,6 +246,7 @@ export async function getIdeaResponse(id: Uuid): Promise<IdeaResponse> {
     ownerUser,
     hackathon,
     participants,
+    voters,
     users,
     skills,
     category,
@@ -284,6 +309,49 @@ export async function addParticipant(
   }
 
   await addParticipantToIdea(ideaId, participantId);
+}
+
+export async function removeVoter(
+  ideaId: Uuid,
+  participantId: Uuid,
+): Promise<void> {
+  await deleteVoterFromIdea(ideaId, participantId);
+}
+
+export async function addVoter(
+  ideaId: Uuid,
+  participantId: Uuid,
+): Promise<void> {
+  let idea;
+  try {
+    idea = await getIdea(ideaId);
+  } catch (e) {
+    throw new NotFoundError(
+      `Cannot add Voter with id: ${participantId} ` +
+        `to Idea with id ${ideaId}, ` +
+        `Idea does not exist`,
+    );
+  }
+
+  let participant;
+  try {
+    participant = await getParticipant(participantId);
+  } catch (e) {
+    throw new NotFoundError(
+      `Cannot add Voter with id: ${participantId} ` +
+        `to Idea with id ${ideaId}, Participant does not exist`,
+    );
+  }
+
+  if (idea.hackathonId !== participant.hackathonId) {
+    throw new InvalidStateError(
+      `Cannot add Voter with id: ${participantId} ` +
+        `to Idea with id ${ideaId}, ` +
+        `they are in different Hackathons`,
+    );
+  }
+
+  await addVoterToIdea(ideaId, participantId);
 }
 
 export async function removeIdea(id: Uuid): Promise<IdeaDeleteResponse> {

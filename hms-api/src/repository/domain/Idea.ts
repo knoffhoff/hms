@@ -40,6 +40,14 @@ class Idea {
   participantIds: Uuid[];
 
   /**
+   * The IDs of the Voters that voted for the Idea
+   *
+   * Can be empty
+   *
+   */
+  voterIds: Uuid[];
+
+  /**
    * The title of the Idea
    *
    * Must have text (cannot be empty)
@@ -104,6 +112,10 @@ class Idea {
       result.addFailure('participantIds is null');
     }
 
+    if (!this.voterIds) {
+      result.addFailure('voterIds is null');
+    }
+
     if (!this.title) {
       result.addFailure('title is null or empty');
     }
@@ -152,6 +164,7 @@ class Idea {
     id: Uuid,
     creationDate: Date,
     participantIds: Uuid[],
+    voterIds: Uuid[],
   );
 
   constructor(
@@ -166,11 +179,13 @@ class Idea {
     id: Uuid = uuid(),
     creationDate: Date = new Date(),
     participantIds: Uuid[] = [],
+    voterIds: Uuid[] = [],
   ) {
     this.id = id;
     this.ownerId = ownerId;
     this.hackathonId = hackathonId;
     this.participantIds = participantIds;
+    this.voterIds = voterIds;
     this.title = title;
     this.description = description;
     this.problem = problem;

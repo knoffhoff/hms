@@ -109,6 +109,7 @@ export type Idea = {
   owner?: OwnerPreview
   hackathon?: HackathonPreview
   participants?: ParticipantPreview[]
+  voters?: ParticipantPreview[]
   title: string
   description: string
   problem: string
@@ -201,9 +202,9 @@ export type SkillPreview = {
 }
 
 export type Skill = {
-    id: string
-    name: string
-    description: string
+  id: string
+  name: string
+  description: string
 }
 
 export type OwnerPreview = {

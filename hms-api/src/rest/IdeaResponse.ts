@@ -17,6 +17,7 @@ class IdeaResponse {
   owner: ParticipantPreviewResponse;
   hackathon: HackathonPreviewResponse;
   participants: ParticipantPreviewResponse[];
+  voters: ParticipantPreviewResponse[];
   title: string;
   description: string;
   problem: string;
@@ -30,6 +31,7 @@ class IdeaResponse {
     owner: ParticipantPreviewResponse,
     hackathon: HackathonPreviewResponse,
     participants: ParticipantPreviewResponse[],
+    voters: ParticipantPreviewResponse[],
     title: string,
     description: string,
     problem: string,
@@ -42,6 +44,7 @@ class IdeaResponse {
     this.owner = owner;
     this.hackathon = hackathon;
     this.participants = participants;
+    this.voters = voters;
     this.title = title;
     this.description = description;
     this.problem = problem;
@@ -57,6 +60,7 @@ class IdeaResponse {
     ownerUser: User,
     hackathon: Hackathon,
     participants: Participant[],
+    voters: Participant[],
     users: User[],
     skills: Skill[],
     category: Category,
@@ -66,6 +70,7 @@ class IdeaResponse {
       ParticipantPreviewResponse.from(ownerParticipant, ownerUser),
       HackathonPreviewResponse.from(hackathon),
       ParticipantPreviewResponse.fromArray(participants, users),
+      ParticipantPreviewResponse.fromArray(voters, users),
       idea.title,
       idea.description,
       idea.problem,
