@@ -55,7 +55,7 @@ export const createIdeaVoteParticipant = async (
 ) => {
   const idToken = await getIdToken(instance)
   const options = buildFetchOptions('PUT', idToken)
-  return fetch(`${coreUrl}/idea/${ideaId}/votes/${participantId}`, options)
+  return fetch(`${coreUrl}/idea/${ideaId}/addVote/${participantId}`, options)
     .then((response) => {
       return response.json()
     })
@@ -83,7 +83,7 @@ export const removeIdeaVoteParticipant = async (
 ) => {
   const idToken = await getIdToken(instance)
   const options = buildFetchOptions('PUT', idToken)
-  return fetch(`${coreUrl}/idea/${ideaId}/votes/${participantId}`, options)
+  return fetch(`${coreUrl}/idea/${ideaId}/removeVote/${participantId}`, options)
     .then((response) => {
       return response.json()
     })

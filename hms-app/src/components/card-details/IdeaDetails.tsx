@@ -422,10 +422,6 @@ export default function IdeaDetails(props: IProps) {
   }, [ideaData])
 
   useEffect(() => {
-    setParticipantInfo((prevState) => ({
-      ...prevState,
-      ideaId: ideaData.id,
-    }))
     loadCategoryDetails()
     loadSkillDetails()
   }, [])
@@ -450,27 +446,31 @@ export default function IdeaDetails(props: IProps) {
         <Card withBorder className={classes.card}>
           <Spoiler maxHeight={145} showLabel='Show more' hideLabel='Hide'>
             <Card.Section className={classes.borderSection}>
-              <Group noWrap mb={15}>
-                <Stack align={'center'} spacing={'xs'}>
-                  <Avatar color='indigo' radius='xl' size='md'>
-                    {getInitials(
-                      ideaData.owner?.user.firstName,
-                      ideaData.owner?.user.lastName
-                    )}
-                  </Avatar>
-                  <Badge size='sm'>
-                    {ideaData.owner?.user.firstName}{' '}
-                    {ideaData.owner?.user.lastName}
-                  </Badge>
-                </Stack>
-                <Text className={classes.title}>
-                  {ideaData.title?.slice(0, MAX_TITLE_LENGTH)}
-                  {ideaData.title?.length > MAX_TITLE_LENGTH ? '...' : ''}
-                </Text>
+              <Group noWrap mb={5} position='apart'>
+                <Group position='left'>
+                  <Stack align={'center'} spacing={'xs'}>
+                    <Avatar color='indigo' radius='xl' size='md'>
+                      {getInitials(
+                        ideaData.owner?.user.firstName,
+                        ideaData.owner?.user.lastName
+                      )}
+                    </Avatar>
+                    <Badge size='sm'>
+                      {ideaData.owner?.user.firstName}{' '}
+                      {ideaData.owner?.user.lastName}
+                    </Badge>
+                  </Stack>
+                  <Text className={classes.title}>
+                    {ideaData.title?.slice(0, MAX_TITLE_LENGTH)}
+                    {ideaData.title?.length > MAX_TITLE_LENGTH ? '...' : ''}
+                  </Text>
+                </Group>
 
-                <Card.Section className={classes.borderSection}>
-                  <Text className={classes.label}>Votes: </Text>
-                  <Text className={classes.text}>{idea.voters?.length}</Text>
+                <Card.Section className={classes.noBorderSection}>
+                  <Stack align={'center'} spacing={'xs'}>
+                    <Text className={classes.label}>Votes: </Text>
+                    <Text className={classes.text}>{idea.voters?.length}</Text>
+                  </Stack>
                 </Card.Section>
               </Group>
 

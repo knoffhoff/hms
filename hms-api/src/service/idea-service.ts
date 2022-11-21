@@ -187,9 +187,9 @@ export async function getIdeaResponse(id: Uuid): Promise<IdeaResponse> {
     );
   }
 
-  let users;
+  let ParticipantUsers;
   try {
-    users = await usersFor(participants);
+    ParticipantUsers = await usersFor(participants);
   } catch (e) {
     throw new ReferenceNotFoundError(
       `Cannot get Idea with id: ${id}, ` +
@@ -199,16 +199,16 @@ export async function getIdeaResponse(id: Uuid): Promise<IdeaResponse> {
   }
 
   // brauchen wir hier ein zweites mal die users? verwirrt siehe tinos branch
-  // let users;
-  // try {
-  //   users = await usersFor(voters);
-  // } catch (e) {
-  //   throw new ReferenceNotFoundError(
-  //     `Cannot get Idea with id: ${id}, ` +
-  //       `unable to get Users for Participants with ids: ` +
-  //       `${idea.voterIds}`,
-  //   );
-  // }
+  let VoterUsers;
+  try {
+    VoterUsers = await usersFor(voters);
+  } catch (e) {
+    throw new ReferenceNotFoundError(
+      `Cannot get Idea with id: ${id}, ` +
+        `unable to get Users for Voters with ids: ` +
+        `${idea.voterIds}`,
+    );
+  }
 
   let hackathon;
   try {
@@ -247,7 +247,8 @@ export async function getIdeaResponse(id: Uuid): Promise<IdeaResponse> {
     hackathon,
     participants,
     voters,
-    users,
+    ParticipantUsers,
+    VoterUsers,
     skills,
     category,
   );

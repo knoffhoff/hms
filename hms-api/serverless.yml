@@ -181,6 +181,24 @@ functions:
           method: put
           cors: true
           authorizer: authorize
+  voteForIdea:
+    handler: src/handler/idea/vote.vote
+    events:
+      - http:
+#           TODO this should be done using a userId from the token
+          path: idea/{id}/addVote/{participantId}
+          method: put
+          cors: true
+          authorizer: authorize
+    revokeVoteForIdea:
+      handler: src/handler/idea/revokeVote.revokeVote
+      events:
+        - http:
+#           TODO this should be done using a userId from the token
+            path: idea/{id}/removeVote/{participantId}
+            method: delete
+            cors: true
+            authorizer: authorize
 
   createUser:
     handler: src/handler/user/create.create
