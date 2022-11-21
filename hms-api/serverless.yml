@@ -196,7 +196,7 @@ functions:
         - http:
 #           TODO this should be done using a userId from the token
             path: idea/{id}/removeVote/{participantId}
-            method: delete
+            method: put
             cors: true
             authorizer: authorize
 
