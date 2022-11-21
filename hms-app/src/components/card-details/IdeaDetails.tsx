@@ -469,7 +469,9 @@ export default function IdeaDetails(props: IProps) {
                 <Card.Section className={classes.noBorderSection}>
                   <Stack align={'center'} spacing={'xs'}>
                     <Text className={classes.label}>Votes: </Text>
-                    <Text className={classes.text}>{idea.voters?.length}</Text>
+                    <Text className={classes.text}>
+                      {ideaData.voters?.length}
+                    </Text>
                   </Stack>
                 </Card.Section>
               </Group>
