@@ -20,7 +20,7 @@ import Hackathon from '../../src/repository/domain/Hackathon';
 import {AttributeValue} from '@aws-sdk/client-dynamodb';
 
 describe('Get Hackathon', () => {
-  test('Hackathon doesn\'t exist', async () => {
+  test("Hackathon doesn't exist", async () => {
     const id = uuid();
     mockGetItem(null);
 
@@ -47,12 +47,13 @@ describe('Put Hackathon', () => {
     await putHackathon(expected);
 
     expect(mockSend).toHaveBeenCalledWith(
-        expect.objectContaining({
-          input: expect.objectContaining({
-            TableName: hackathonTable,
-            Item: itemFromHackathon(expected),
-          }),
-        }));
+      expect.objectContaining({
+        input: expect.objectContaining({
+          TableName: hackathonTable,
+          Item: itemFromHackathon(expected),
+        }),
+      }),
+    );
   });
 });
 
@@ -63,13 +64,13 @@ describe('Delete Hackathon', () => {
 
     expect(await deleteHackathon(expected.id)).toStrictEqual(expected);
     expect(mockSend).toHaveBeenCalledWith(
-        expect.objectContaining({
-          input: expect.objectContaining({
-            TableName: hackathonTable,
-            Key: {id: {S: expected.id}},
-            ReturnValues: 'ALL_OLD',
-          }),
+      expect.objectContaining({
+        input: expect.objectContaining({
+          TableName: hackathonTable,
+          Key: {id: {S: expected.id}},
+          ReturnValues: 'ALL_OLD',
         }),
+      }),
     );
   });
 
@@ -77,17 +78,15 @@ describe('Delete Hackathon', () => {
     const id = uuid();
     mockDeleteItem(null);
 
-    await expect(deleteHackathon(id))
-        .rejects
-        .toThrow(NotFoundError);
+    await expect(deleteHackathon(id)).rejects.toThrow(NotFoundError);
     expect(mockSend).toHaveBeenCalledWith(
-        expect.objectContaining({
-          input: expect.objectContaining({
-            TableName: hackathonTable,
-            Key: {id: {S: id}},
-            ReturnValues: 'ALL_OLD',
-          }),
+      expect.objectContaining({
+        input: expect.objectContaining({
+          TableName: hackathonTable,
+          Key: {id: {S: id}},
+          ReturnValues: 'ALL_OLD',
         }),
+      }),
     );
   });
 });
@@ -121,10 +120,7 @@ describe('List Hackathons', () => {
   test('2 Hackathons exist', async () => {
     const hackathon1 = randomHackathon();
     const hackathon2 = randomHackathon();
-    mockQuery([
-      itemFromHackathon(hackathon1),
-      itemFromHackathon(hackathon2),
-    ]);
+    mockQuery([itemFromHackathon(hackathon1), itemFromHackathon(hackathon2)]);
 
     expect(await listHackathons()).toStrictEqual([hackathon1, hackathon2]);
 
@@ -153,27 +149,32 @@ describe('Hackathon Exists', () => {
 });
 
 const itemFromHackathon = (
-    hackathon: Hackathon,
-): { [key: string]: AttributeValue } => ({
+  hackathon: Hackathon,
+): {[key: string]: AttributeValue} => ({
   id: {S: hackathon.id},
   title: {S: hackathon.title},
   description: {S: hackathon.description},
   startDate: {S: hackathon.startDate.toISOString()},
   endDate: {S: hackathon.endDate.toISOString()},
   creationDate: {S: hackathon.creationDate.toISOString()},
+  votingOpened: {BOOL: hackathon.votingOpened},
 });
 
-const getExpected = (id: Uuid) => expect(mockSend).toHaveBeenCalledWith(
+const getExpected = (id: Uuid) =>
+  expect(mockSend).toHaveBeenCalledWith(
     expect.objectContaining({
       input: expect.objectContaining({
         TableName: hackathonTable,
         Key: {id: {S: id}},
       }),
-    }));
+    }),
+  );
 
-const listExpected = () => expect(mockSend).toHaveBeenCalledWith(
+const listExpected = () =>
+  expect(mockSend).toHaveBeenCalledWith(
     expect.objectContaining({
       input: expect.objectContaining({
         TableName: hackathonTable,
       }),
-    }));
+    }),
+  );

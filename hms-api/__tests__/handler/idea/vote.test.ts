@@ -12,6 +12,7 @@ describe('Vote for Idea', () => {
   test('Happy Path', async () => {
     const ideaId = uuid();
     const participantId = uuid();
+
     const event = toEvent(ideaId, participantId);
     const callback = jest.fn();
 

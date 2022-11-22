@@ -36,6 +36,7 @@ describe('Get Idea', () => {
       [ownerParticipant, participant2],
       [ownerParticipant, voter],
       [ownerUser, user2],
+      [ownerUser, user3],
       [randomSkill(), randomSkill()],
       randomCategory(),
     );

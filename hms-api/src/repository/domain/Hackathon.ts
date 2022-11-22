@@ -93,9 +93,6 @@ class Hackathon {
       );
     }
 
-    if (!this.votingOpened === null || this.votingOpened === undefined) {
-      result.addFailure(`votingOpened is ${this.votingOpened}`);
-    }
     return result;
   }
 

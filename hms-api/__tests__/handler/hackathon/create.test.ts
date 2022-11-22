@@ -7,8 +7,9 @@ import Hackathon from '../../../src/repository/domain/Hackathon';
 import HackathonCreateRequest from '../../../src/rest/HackathonCreateRequest';
 
 const mockCreateHackathon = jest.fn();
-jest.spyOn(hackathonService, 'createHackathon')
-    .mockImplementation(mockCreateHackathon);
+jest
+  .spyOn(hackathonService, 'createHackathon')
+  .mockImplementation(mockCreateHackathon);
 
 describe('Create Hackathon', () => {
   test('Happy Path', async () => {
@@ -19,10 +20,10 @@ describe('Create Hackathon', () => {
     await create(toEvent(expected), null, callback);
 
     expect(mockCreateHackathon).toHaveBeenCalledWith(
-        expected.title,
-        expected.description,
-        expected.startDate,
-        expected.endDate,
+      expected.title,
+      expected.description,
+      expected.startDate,
+      expected.endDate,
     );
     expect(callback).toHaveBeenCalledWith(null, {
       statusCode: 201,
@@ -75,9 +76,12 @@ describe('Create Hackathon', () => {
 });
 
 const toEvent = (hackathon: Hackathon): object => ({
-  body: JSON.stringify(new HackathonCreateRequest(
+  body: JSON.stringify(
+    new HackathonCreateRequest(
       hackathon.title,
       hackathon.description,
       hackathon.startDate,
-      hackathon.endDate)),
+      hackathon.endDate,
+    ),
+  ),
 });
