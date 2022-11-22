@@ -12,6 +12,7 @@ import { styles } from '../../common/styles'
 import { RichTextEditor } from '@mantine/rte'
 import { useMsal } from '@azure/msal-react'
 import { dark2, dark3, JOIN_BUTTON_COLOR } from '../../common/colors'
+import { Hackathon } from '../../common/types'
 
 type IProps = { context: string; hackathonId: string | null }
 
@@ -24,10 +25,12 @@ function HackathonForm(props: IProps) {
   const [endDateValue, setEndDateValue] = useState<Date | null>(new Date())
   const [hackathonTitle, setHackathonTitle] = useState('')
   const [DescriptionValue, onChange] = useState('')
+  const [hackathon, setHackathon] = useState<Hackathon>({} as Hackathon)
 
   const loadSelectedHackathon = () => {
     if (hackathonId) {
       getHackathonDetails(instance, hackathonId).then((data) => {
+        setHackathon(data)
         setHackathonTitle(data.title)
         onChange(data.description || '')
         setStartDateValue(data.startDate)
@@ -112,7 +115,8 @@ function HackathonForm(props: IProps) {
       hackathonTitle,
       DescriptionValue,
       startDateValue!,
-      endDateValue!
+      endDateValue!,
+      hackathon.votingOpened
     ).then((response) => {
       if (JSON.stringify(response).toString().includes('error')) {
         updateNotification({

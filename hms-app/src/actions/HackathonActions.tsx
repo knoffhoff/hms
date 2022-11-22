@@ -66,7 +66,8 @@ export const editHackathon = async (
   title: string,
   DescriptionValue: string,
   startDate: Date,
-  endDate: Date
+  endDate: Date,
+  votingOpened: boolean
 ) => {
   const idToken = await getIdToken(instance)
   const options = buildFetchOptions('PUT', idToken, {
@@ -74,6 +75,7 @@ export const editHackathon = async (
     description: DescriptionValue,
     startDate: startDate.toString(),
     endDate: endDate.toString(),
+    votingOpened: votingOpened.toString(), // votingOpened.toString() also doesnt work,
   })
   return fetch(`${coreUrl}/hackathon/${hackathonID}`, options)
     .then((response) => {

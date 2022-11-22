@@ -15,6 +15,7 @@ const initialState: HackathonState = {
       startDate: '2020-01-01T00:00:00.000Z',
       endDate: '2020-01-02T00:00:00.000Z',
       participants: [],
+      votingOpened: false,
     },
   ],
   nextHackathon: {
@@ -23,6 +24,7 @@ const initialState: HackathonState = {
     startDate: '2020-01-01T00:00:00.000Z',
     endDate: '2020-01-02T00:00:00.000Z',
     participants: [],
+    votingOpened: false,
   },
   lastSelectedHackathon: {
     id: '33a892ba-8a9e-4edf-947a-f421c86a14b5',
@@ -30,6 +32,7 @@ const initialState: HackathonState = {
     startDate: '2020-01-01T00:00:00.000Z',
     endDate: '2020-01-02T00:00:00.000Z',
     participants: [],
+    votingOpened: false,
   },
 }
 
@@ -45,6 +48,7 @@ export const mapHackathonToSerializable = (
     participants: hackathon.participants,
     categories: hackathon.categories,
     ideas: hackathon.ideas,
+    votingOpened: hackathon.votingOpened,
   } as HackathonSerializable)
 
 export const hackathonSlice = createSlice({

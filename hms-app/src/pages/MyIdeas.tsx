@@ -35,6 +35,7 @@ export default function MyIdeas() {
     participants: [],
     categories: undefined,
     ideas: [],
+    votingOpened: false,
   } as Hackathon)
   const today = new Date()
   const [ideaData, setIdeaData] = useState<Idea>()

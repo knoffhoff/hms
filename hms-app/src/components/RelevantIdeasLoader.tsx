@@ -29,7 +29,8 @@ export default function RelevantIdeasLoader({
     participants: [],
     categories: undefined,
     ideas: [],
-  })
+    votingOpened: false,
+  } as Hackathon)
   const [ideaData, setIdeaData] = useState<Idea>()
 
   const loadSelectedHackathon = () => {

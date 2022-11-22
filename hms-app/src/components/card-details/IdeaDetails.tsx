@@ -31,7 +31,10 @@ import {
   JOIN_BUTTON_COLOR,
   LEAVE_BUTTON_COLOR,
 } from '../../common/colors'
-import { HackathonParticipantContext } from '../../pages/AllIdeas'
+import {
+  HackathonParticipantContext,
+  HackathonVotingContext,
+} from '../../pages/AllIdeas'
 import { UserContext } from '../../pages/Layout'
 import FinalVideoUploadModal from '../FinalVideoUploadModal'
 import { getCategoryDetails } from '../../actions/CategoryActions'
@@ -45,6 +48,7 @@ type IProps = {
 
 export default function IdeaDetails(props: IProps) {
   const hackathonParticipantId = useContext(HackathonParticipantContext)
+  const hackathonVotingOpened = useContext(HackathonVotingContext)
   const user = useContext(UserContext)
   const { instance } = useMsal()
   const { classes } = styles()
@@ -439,7 +443,6 @@ export default function IdeaDetails(props: IProps) {
     }
   }, [user, hackathonParticipantId])
 
-  // TODO: only show votes when voting is active
   return (
     <>
       {!isLoading && (
@@ -466,14 +469,16 @@ export default function IdeaDetails(props: IProps) {
                   </Text>
                 </Group>
 
-                <Card.Section className={classes.noBorderSection}>
-                  <Stack align={'center'} spacing={'xs'}>
-                    <Text className={classes.label}>Votes: </Text>
-                    <Text className={classes.text}>
-                      {ideaData.voters?.length}
-                    </Text>
-                  </Stack>
-                </Card.Section>
+                {hackathonVotingOpened && (
+                  <Card.Section className={classes.noBorderSection}>
+                    <Stack align={'center'} spacing={'xs'}>
+                      <Text className={classes.label}>Votes: </Text>
+                      <Text className={classes.text}>
+                        {ideaData.voters?.length}
+                      </Text>
+                    </Stack>
+                  </Card.Section>
+                )}
               </Group>
 
               <Text className={classes.text}>{ideaData.description}</Text>
@@ -541,17 +546,21 @@ export default function IdeaDetails(props: IProps) {
                         >
                           {participantCheck ? 'Leave Idea' : 'Join Idea'}
                         </Button>
-                        <Button
-                          disabled={buttonIsDisabled}
-                          onClick={voteCheck ? removeThisVote : addVoterToIdea}
-                          style={{
-                            backgroundColor: voteCheck
-                              ? LEAVE_BUTTON_COLOR
-                              : JOIN_BUTTON_COLOR,
-                          }}
-                        >
-                          {voteCheck ? 'Remove Vote' : 'Vote for Idea'}
-                        </Button>
+                        {hackathonVotingOpened && (
+                          <Button
+                            disabled={buttonIsDisabled}
+                            onClick={
+                              voteCheck ? removeThisVote : addVoterToIdea
+                            }
+                            style={{
+                              backgroundColor: voteCheck
+                                ? LEAVE_BUTTON_COLOR
+                                : JOIN_BUTTON_COLOR,
+                            }}
+                          >
+                            {voteCheck ? 'Remove Vote' : 'Vote for Idea'}
+                          </Button>
+                        )}
                       </Group>
                     )}
 

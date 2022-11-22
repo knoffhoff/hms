@@ -19,23 +19,13 @@ export enum IdeaCardType {
   Archive = 'ARCHIVE',
 }
 
-export enum HackathonStatus {
-  RegistrationOpen = 'REGISTRATION_OPEN',
-  RegistrationClosed = 'REGISTRATION_CLOSED',
-
-  HackathonOpen = 'HACKATHON_OPEN',
-  HackathonClosed = 'HACKATHON_CLOSED',
-
-  VotingOpen = 'VOTING_OPEN',
-  VotingClosed = 'VOTING_CLOSED',
-}
-
 export type HackathonPreview = {
   id: string
   title: string
   description?: string
   startDate: Date
   endDate: Date
+  votingOpened: boolean
 }
 
 export type Hackathon = {
@@ -48,6 +38,7 @@ export type Hackathon = {
   categories?: CategoryPreview[]
   ideas?: IdeaPreview[]
   skills?: SkillPreview[]
+  votingOpened: boolean
 }
 
 export type HackathonSerializable = {
@@ -59,6 +50,7 @@ export type HackathonSerializable = {
   participants?: ParticipantPreview[]
   categories?: CategoryPreview[]
   ideas?: IdeaPreview[]
+  votingOpened: boolean
 }
 
 export const parseHackathon = (json: any): Hackathon =>
@@ -73,6 +65,7 @@ export const parseHackathon = (json: any): Hackathon =>
     participants: json.participants
       ? parseParticipantPreviews(json.participants)
       : [],
+    votingOpened: json.votingOpened,
   } as Hackathon)
 
 export const parseHackathonPreview = (json: any): HackathonPreview =>
@@ -82,10 +75,8 @@ export const parseHackathonPreview = (json: any): HackathonPreview =>
     description: json.description,
     startDate: new Date(json.startDate),
     endDate: new Date(json.endDate),
+    votingOpened: json.votingOpened,
   } as HackathonPreview)
-
-export const parseHackathons = (jsonArray: any[]): Hackathon[] =>
-  jsonArray.map((json) => parseHackathon(json))
 
 export const parseHackathonPreviews = (jsonArray: any[]): HackathonPreview[] =>
   jsonArray.map((json) => parseHackathonPreview(json))

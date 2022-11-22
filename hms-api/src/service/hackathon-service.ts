@@ -102,6 +102,7 @@ export async function editHackathon(
   description: string,
   startDate: Date,
   endDate: Date,
+  votingOpened: boolean,
 ): Promise<void> {
   let existing: Hackathon;
   try {
@@ -110,6 +111,7 @@ export async function editHackathon(
     existing.description = description;
     existing.startDate = startDate;
     existing.endDate = endDate;
+    existing.votingOpened = votingOpened;
   } catch (e) {
     throw new NotFoundError(
       `Cannot edit Hackathon with id: ${id}, it does not exist`,
@@ -118,7 +120,10 @@ export async function editHackathon(
 
   const result = existing.validate();
   if (result.hasFailed()) {
-    throw new ValidationError(`Cannot edit Hackathon with id: ${id}`, result);
+    throw new ValidationError(
+      `Cannot edit Hackathon with id: ${id} because `,
+      result,
+    );
   }
 
   await putHackathon(existing);
