@@ -3,22 +3,19 @@ import Uuid, {uuid} from '../../../src/util/Uuid';
 import {vote} from '../../../src/handler/idea/vote';
 import IdeaJoinResponse from '../../../src/rest/IdeaJoinResponse';
 
-const mockAddParticipant = jest.fn();
-jest
-  .spyOn(ideaService, 'addParticipant')
-  .mockImplementation(mockAddParticipant);
+const mockAddVoter = jest.fn();
+jest.spyOn(ideaService, 'addVoter').mockImplementation(mockAddVoter);
 
 describe('Vote for Idea', () => {
   test('Happy Path', async () => {
     const ideaId = uuid();
     const participantId = uuid();
-
     const event = toEvent(ideaId, participantId);
     const callback = jest.fn();
 
     await vote(event, null, callback);
 
-    expect(mockAddParticipant).toHaveBeenCalledWith(ideaId, participantId);
+    expect(mockAddVoter).toHaveBeenCalledWith(ideaId, participantId);
     expect(callback).toHaveBeenCalledWith(null, {
       statusCode: 200,
       headers: {
