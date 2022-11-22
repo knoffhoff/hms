@@ -12,8 +12,10 @@ import {
 } from './dynamo-db-mock';
 import {
   addParticipantToIdea,
+  addVoterToIdea,
   deleteIdea,
   deleteParticipantFromIdea,
+  deleteVoterFromIdea,
   getIdea,
   listIdeasForCategory,
   listIdeasForHackathon,
@@ -120,6 +122,27 @@ describe('Add Participant to Idea', () => {
     );
   });
 
+  describe('Add Voter to Idea', () => {
+    test('Happy Path', async () => {
+      const expected = randomIdea();
+      mockGetItem(itemFromIdea(expected));
+      const voterId = uuid();
+
+      await addVoterToIdea(expected.id, voterId);
+
+      expected.voterIds.push(voterId);
+
+      expect(mockSend).toHaveBeenCalledWith(
+        expect.objectContaining({
+          input: expect.objectContaining({
+            TableName: ideaTable,
+            Item: itemFromIdea(expected),
+          }),
+        }),
+      );
+    });
+  });
+
   test('Ignore already added participant', async () => {
     const idea = randomIdea();
     const participantId = uuid();
@@ -154,6 +177,28 @@ describe('Deleting Participant from Idea', () => {
           UpdateExpression: 'DELETE participantIds :participant_id',
           ExpressionAttributeValues: {
             ':participant_id': {SS: [participantId]},
+          },
+        }),
+      }),
+    );
+  });
+});
+
+describe('Deleting Voter from Idea', () => {
+  test('Happy Path', async () => {
+    const ideaId = uuid();
+    const voterId = uuid();
+
+    await deleteVoterFromIdea(ideaId, voterId);
+
+    expect(mockSend).toHaveBeenCalledWith(
+      expect.objectContaining({
+        input: expect.objectContaining({
+          TableName: process.env.IDEA_TABLE,
+          Key: {id: {S: ideaId}},
+          UpdateExpression: 'DELETE voterIds :voter_id',
+          ExpressionAttributeValues: {
+            ':voter_id': {SS: [voterId]},
           },
         }),
       }),

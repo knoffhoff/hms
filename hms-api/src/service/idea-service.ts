@@ -198,7 +198,6 @@ export async function getIdeaResponse(id: Uuid): Promise<IdeaResponse> {
     );
   }
 
-  // brauchen wir hier ein zweites mal die users? verwirrt siehe tinos branch
   let VoterUsers;
   try {
     VoterUsers = await usersFor(voters);
