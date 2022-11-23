@@ -6,7 +6,7 @@ import IdeaJoinResponse from '../../rest/IdeaJoinResponse';
 // eslint-disable-next-line require-jsdoc
 export async function vote(event, context, callback) {
   await wrapHandler(async () => {
-    const ideaId = event.pathParameters.ideaId;
+    const ideaId = event.pathParameters.id;
     const participantId = event.pathParameters.participantId;
     await addVoter(ideaId, participantId);
 

@@ -30,7 +30,7 @@ describe('Remove vote from Idea', () => {
 
 const toEvent = (ideaId: Uuid, participantId: Uuid): any => ({
   pathParameters: {
-    ideaId: ideaId,
+    id: ideaId,
     participantId: participantId,
   },
 });

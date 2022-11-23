@@ -52,7 +52,7 @@
       "5c0b9191-ac63-44be-8c68-b5c9888643af",
       "e64163a6-d20e-40d7-a69a-aba4ee82410d"
     ]},
-    "votingOpened": {"BOOL": false}
+    "votingOpened": {"BOOL": true}
   },
   {
     "id": {"S": "a1c60aba-f846-4208-b4b8-1caaec031aea"},
