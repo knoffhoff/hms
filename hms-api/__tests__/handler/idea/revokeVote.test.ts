@@ -2,6 +2,7 @@ import * as ideaService from '../../../src/service/idea-service';
 import Uuid, {uuid} from '../../../src/util/Uuid';
 import {revokeVote} from '../../../src/handler/idea/revokeVote';
 import IdeaJoinResponse from '../../../src/rest/IdeaJoinResponse';
+import IdeaVoteResponse from '../../../src/rest/IdeaVoteResponse';
 
 const mockRemoveVoter = jest.fn();
 jest.spyOn(ideaService, 'removeVoter').mockImplementation(mockRemoveVoter);
@@ -23,7 +24,7 @@ describe('Remove vote from Idea', () => {
         'Access-Control-Allow-Credentials': true,
         'content-type': 'application/json',
       },
-      body: JSON.stringify(new IdeaJoinResponse(ideaId, participantId)),
+      body: JSON.stringify(new IdeaVoteResponse(ideaId, participantId)),
     });
   });
 });

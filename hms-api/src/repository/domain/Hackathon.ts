@@ -119,7 +119,7 @@ class Hackathon {
     endDate: Date,
     id: Uuid = uuid(),
     creationDate: Date = new Date(),
-    votingOpened: boolean = undefined,
+    votingOpened: boolean = false,
   ) {
     this.title = title;
     this.description = description;

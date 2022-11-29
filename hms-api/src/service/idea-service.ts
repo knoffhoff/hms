@@ -187,9 +187,9 @@ export async function getIdeaResponse(id: Uuid): Promise<IdeaResponse> {
     );
   }
 
-  let ParticipantUsers;
+  let participantUsers;
   try {
-    ParticipantUsers = await usersFor(participants);
+    participantUsers = await usersFor(participants);
   } catch (e) {
     throw new ReferenceNotFoundError(
       `Cannot get Idea with id: ${id}, ` +
@@ -198,9 +198,9 @@ export async function getIdeaResponse(id: Uuid): Promise<IdeaResponse> {
     );
   }
 
-  let VoterUsers;
+  let voterUsers;
   try {
-    VoterUsers = await usersFor(voters);
+    voterUsers = await usersFor(voters);
   } catch (e) {
     throw new ReferenceNotFoundError(
       `Cannot get Idea with id: ${id}, ` +
@@ -246,8 +246,8 @@ export async function getIdeaResponse(id: Uuid): Promise<IdeaResponse> {
     hackathon,
     participants,
     voters,
-    ParticipantUsers,
-    VoterUsers,
+    participantUsers,
+    voterUsers,
     skills,
     category,
   );

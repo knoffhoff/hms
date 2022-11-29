@@ -160,9 +160,27 @@ describe('Add Participant to Idea', () => {
       }),
     );
   });
+
+  test('Ignore already added voter', async () => {
+    const idea = randomIdea();
+    const voterId = uuid();
+    idea.voterIds.push(voterId);
+    mockGetItem(itemFromIdea(idea));
+
+    await addVoterToIdea(idea.id, voterId);
+
+    expect(mockSend).not.toHaveBeenCalledWith(
+      expect.objectContaining({
+        input: expect.objectContaining({
+          TableName: ideaTable,
+          Item: itemFromIdea(idea),
+        }),
+      }),
+    );
+  });
 });
 
-describe('Deleting Participant from Idea', () => {
+describe('Delete Participant from Idea', () => {
   test('Happy Path', async () => {
     const ideaId = uuid();
     const participantId = uuid();
@@ -184,7 +202,7 @@ describe('Deleting Participant from Idea', () => {
   });
 });
 
-describe('Deleting Voter from Idea', () => {
+describe('Delete Voter from Idea', () => {
   test('Happy Path', async () => {
     const ideaId = uuid();
     const voterId = uuid();
