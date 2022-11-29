@@ -5,13 +5,13 @@
   "dependencies": {
     "@azure/msal-browser": "^2.32.0",
     "@azure/msal-react": "^1.5.0",
-    "@mantine/core": "^5.8.2",
-    "@mantine/dates": "^5.8.2",
-    "@mantine/dropzone": "^5.8.2",
-    "@mantine/form": "^5.8.2",
+    "@mantine/core": "^5.8.4",
+    "@mantine/dates": "^5.8.4",
+    "@mantine/dropzone": "^5.8.4",
+    "@mantine/form": "^5.8.4",
     "@mantine/hooks": "^5.8.0",
-    "@mantine/notifications": "^5.8.2",
-    "@mantine/rte": "^5.8.2",
+    "@mantine/notifications": "^5.8.4",
+    "@mantine/rte": "^5.8.4",
     "@microsoft/microsoft-graph-types": "^2.25.0",
     "@reduxjs/toolkit": "^1.9.0",
     "@testing-library/jest-dom": "^5.16.5",
@@ -26,7 +26,7 @@
     "nuka-carousel": "^5.4.1",
     "react": "^17.0.2",
     "react-beautiful-dnd": "^13.1.1",
-    "react-countdown": "^2.3.4",
+    "react-countdown": "^2.3.5",
     "react-dom": "^17.0.2",
     "react-player": "^2.11.0",
     "react-redux": "^8.0.5",
@@ -65,14 +65,14 @@
   },
   "devDependencies": {
     "@types/react-beautiful-dnd": "^13.1.2",
-    "@typescript-eslint/eslint-plugin": "^5.44.0",
-    "@typescript-eslint/parser": "^5.44.0",
+    "@typescript-eslint/eslint-plugin": "^5.45.0",
+    "@typescript-eslint/parser": "^5.45.0",
     "eslint": "^8.28.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-import-resolver-typescript": "^3.5.2",
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-react": "^7.31.11",
-    "prettier": "^2.6.0"
+    "prettier": "^2.8.0"
   }
 }

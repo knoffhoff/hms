@@ -11,16 +11,16 @@
   "devDependencies": {
     "@types/jest": "27.5.0",
     "@types/node": "18.11.9",
-    "@typescript-eslint/eslint-plugin": "5.44.0",
-    "@typescript-eslint/parser": "5.44.0",
+    "@typescript-eslint/eslint-plugin": "5.45.0",
+    "@typescript-eslint/parser": "5.45.0",
     "eslint": "8.28.0",
     "eslint-config-google": "0.14.0",
     "eslint-config-prettier": "8.5.0",
     "eslint-plugin-prettier": "4.2.1",
     "jest": "27.5.1",
-    "prettier": "2.7.1",
+    "prettier": "2.8.0",
     "serverless-dynamodb-local": "0.2.40",
-    "serverless-offline": "11.5.0",
+    "serverless-offline": "11.6.0",
     "serverless-plugin-typescript": "2.1.4",
     "ts-jest": "27.1.4",
     "ts-node": "10.9.1",
@@ -28,9 +28,9 @@
     "uuid": "9.0.0"
   },
   "dependencies": {
-    "@aws-sdk/client-dynamodb": "3.215.0",
-    "@aws-sdk/client-s3": "3.215.0",
-    "@aws-sdk/s3-request-presigner": "3.215.0",
+    "@aws-sdk/client-dynamodb": "3.218.0",
+    "@aws-sdk/client-s3": "3.218.0",
+    "@aws-sdk/s3-request-presigner": "3.218.0",
     "jsonwebtoken": "8.5.1",
     "serverless-dynamodb-client": "0.0.2"
   }
