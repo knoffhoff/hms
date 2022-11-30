@@ -1,6 +1,10 @@
 ###
 # @name List all Ideas
-GET {{host}}/hackathon/{{hackathon_id}}/ideas
+GET {{host}}/ideas/hackathon/{{hackathon_id}}
+
+###
+# @name List all Ideas
+GET {{host}}/ideas
 
 ###
 # @name Create Idea

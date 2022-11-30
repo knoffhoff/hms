@@ -18,6 +18,7 @@ import {
   deleteParticipantFromIdea,
   deleteVoterFromIdea,
   getIdea,
+  listIdeasAll,
   listIdeasForCategory,
   listIdeasForHackathon,
   listIdeasForOwner,
@@ -36,6 +37,7 @@ import DeletionError from '../error/DeletionError';
 import NotFoundError from '../error/NotFoundError';
 import InvalidStateError from '../error/InvalidStateError';
 import ValidationError from '../error/ValidationError';
+import IdeaListAllResponse from '../rest/IdeaListAllResponse';
 
 export async function createIdea(
   ownerId: Uuid,
@@ -253,7 +255,13 @@ export async function getIdeaResponse(id: Uuid): Promise<IdeaResponse> {
   );
 }
 
-export async function getIdeaListResponse(
+export async function getAllIdeasResponse(): Promise<IdeaListAllResponse> {
+  const ideas = await listIdeasAll();
+
+  return IdeaListAllResponse.fromArray(ideas);
+}
+
+export async function getIdeasForHackathonListResponse(
   hackathonId: Uuid,
 ): Promise<IdeaListResponse> {
   if (!(await hackathonExists(hackathonId))) {
@@ -265,7 +273,7 @@ export async function getIdeaListResponse(
 
   const ideas = await listIdeasForHackathon(hackathonId);
 
-  return IdeaListResponse.from(ideas, hackathonId);
+  return IdeaListResponse.fromArray(ideas, hackathonId);
 }
 
 export async function removeParticipant(

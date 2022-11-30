@@ -13,7 +13,7 @@ class IdeaListResponse {
     this.hackathonId = hackathonId;
   }
 
-  static from = (ideas: Idea[], hackathonId: Uuid): IdeaListResponse =>
+  static fromArray = (ideas: Idea[], hackathonId: Uuid): IdeaListResponse =>
     new IdeaListResponse(IdeaPreviewResponse.fromArray(ideas), hackathonId);
 }
 
