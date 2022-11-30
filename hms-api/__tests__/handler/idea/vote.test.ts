@@ -1,7 +1,6 @@
 import * as ideaService from '../../../src/service/idea-service';
 import Uuid, {uuid} from '../../../src/util/Uuid';
 import {vote} from '../../../src/handler/idea/vote';
-import IdeaJoinResponse from '../../../src/rest/IdeaJoinResponse';
 import IdeaVoteResponse from '../../../src/rest/IdeaVoteResponse';
 
 const mockAddVoter = jest.fn();

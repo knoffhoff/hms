@@ -258,7 +258,7 @@ export async function getIdeaResponse(id: Uuid): Promise<IdeaResponse> {
 export async function getAllIdeasResponse(): Promise<IdeaListAllResponse> {
   const ideas = await listIdeasAll();
 
-  return IdeaListAllResponse.fromArray(ideas);
+  return IdeaListAllResponse.from(ideas);
 }
 
 export async function getIdeasForHackathonListResponse(
@@ -273,7 +273,7 @@ export async function getIdeasForHackathonListResponse(
 
   const ideas = await listIdeasForHackathon(hackathonId);
 
-  return IdeaListResponse.fromArray(ideas, hackathonId);
+  return IdeaListResponse.from(ideas, hackathonId);
 }
 
 export async function removeParticipant(

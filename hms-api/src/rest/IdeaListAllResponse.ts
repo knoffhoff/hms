@@ -10,7 +10,7 @@ class IdeaListAllResponse {
     this.ideas = ideas;
   }
 
-  static fromArray = (ideas: Idea[]): IdeaListAllResponse =>
+  static from = (ideas: Idea[]): IdeaListAllResponse =>
     new IdeaListAllResponse(IdeaPreviewResponse.fromArray(ideas));
 }
 

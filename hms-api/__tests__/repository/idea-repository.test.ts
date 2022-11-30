@@ -17,6 +17,7 @@ import {
   deleteParticipantFromIdea,
   deleteVoterFromIdea,
   getIdea,
+  listIdeasAll,
   listIdeasForCategory,
   listIdeasForHackathon,
   listIdeasForOwner,
@@ -403,6 +404,45 @@ describe('List Ideas for Category', () => {
   });
 });
 
+describe('List all Ideas', () => {
+  test('Query returns null', async () => {
+    mockScan(null);
+
+    await expect(listIdeasAll()).rejects.toThrow(NotFoundError);
+
+    listAllIdeasExpected();
+  });
+
+  test('0 Ideas exist', async () => {
+    mockScan([]);
+
+    expect(await listIdeasAll()).toStrictEqual([]);
+
+    listAllIdeasExpected();
+  });
+
+  test('1 Idea exists', async () => {
+    const hackathonId = uuid();
+    const idea = makeIdea({hackathonId: hackathonId} as IdeaData);
+    mockScan([itemFromIdea(idea)]);
+
+    expect(await listIdeasAll()).toStrictEqual([idea]);
+
+    listAllIdeasExpected();
+  });
+
+  test('2 Ideas exist', async () => {
+    const hackathonId = uuid();
+    const idea1 = makeIdea({hackathonId: hackathonId} as IdeaData);
+    const idea2 = makeIdea({hackathonId: hackathonId} as IdeaData);
+    mockScan([itemFromIdea(idea1), itemFromIdea(idea2)]);
+
+    expect(await listIdeasAll()).toStrictEqual([idea1, idea2]);
+
+    listAllIdeasExpected();
+  });
+});
+
 const itemFromIdea = (idea: Idea): {[key: string]: AttributeValue} => ({
   id: {S: idea.id},
   ownerId: {S: idea.ownerId},
@@ -436,6 +476,15 @@ const listHackathonExpected = (hackathonId: Uuid) =>
         IndexName: ideaByHackathonIdIndex,
         KeyConditionExpression: 'hackathonId = :hId',
         ExpressionAttributeValues: {':hId': {S: hackathonId}},
+      }),
+    }),
+  );
+
+const listAllIdeasExpected = () =>
+  expect(mockSend).toHaveBeenCalledWith(
+    expect.objectContaining({
+      input: expect.objectContaining({
+        TableName: ideaTable,
       }),
     }),
   );
