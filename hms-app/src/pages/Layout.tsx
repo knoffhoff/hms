@@ -67,6 +67,7 @@ const Layout = () => {
       if (isAdmin(stateUser)) {
         setMenuLinks([
           { link: '', label: 'Home' },
+          { link: 'ideation', label: 'Ideation Portal' },
           {
             link: 'ideas',
             label: 'All Ideas',
