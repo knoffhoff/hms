@@ -9,7 +9,7 @@
     "@mantine/dates": "^5.9.1",
     "@mantine/dropzone": "^5.9.1",
     "@mantine/form": "^5.9.1",
-    "@mantine/hooks": "^5.8.0",
+    "@mantine/hooks": "^5.9.2",
     "@mantine/notifications": "^5.9.1",
     "@mantine/rte": "^5.9.1",
     "@microsoft/microsoft-graph-types": "^2.25.0",
