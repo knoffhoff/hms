@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@azure/msal-browser": "^2.32.0",
+    "@azure/msal-browser": "^2.32.1",
     "@azure/msal-react": "^1.5.0",
     "@mantine/core": "^5.9.2",
     "@mantine/dates": "^5.9.2",
