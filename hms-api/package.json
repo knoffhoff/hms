@@ -30,7 +30,7 @@
   "dependencies": {
     "@aws-sdk/client-dynamodb": "3.225.0",
     "@aws-sdk/client-s3": "3.224.0",
-    "@aws-sdk/s3-request-presigner": "3.224.0",
+    "@aws-sdk/s3-request-presigner": "3.226.0",
     "jsonwebtoken": "8.5.1",
     "serverless-dynamodb-client": "0.0.2"
   }
