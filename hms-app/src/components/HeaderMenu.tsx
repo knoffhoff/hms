@@ -15,7 +15,13 @@ import {
 import { useDisclosure } from '@mantine/hooks'
 import { SwitchToggle } from './ThemeSwitchToggle'
 import { styles } from '../common/styles'
-import { PRIMARY_COLOR_1, TEXT_COLOR_WHITE } from '../common/colors'
+import {
+  HEADER_ACTIVE_COLOR_LIGHT,
+  HEADER_ACTIVE_COLOR_DARK,
+  PRIMARY_COLOR_1,
+  TEXT_COLOR_WHITE,
+  PRIMARY_COLOR_2,
+} from '../common/colors'
 import { useMsal } from '@azure/msal-react'
 import { Logout } from 'tabler-icons-react'
 import { getProfilePhoto } from '../common/actionAuth'
@@ -80,7 +86,19 @@ export default function HeaderMenu({
     <Group spacing={1}>
       {links.map((link) => (
         <div key={link.link}>
-          <Link key={link.label} to={link.link} className={classes.link}>
+          <Link
+            key={link.label}
+            to={link.link}
+            className={classes.link}
+            style={{
+              backgroundColor:
+                location.pathname.slice(1) === link.link
+                  ? theme.colorScheme === 'light'
+                    ? HEADER_ACTIVE_COLOR_LIGHT
+                    : HEADER_ACTIVE_COLOR_DARK
+                  : undefined,
+            }}
+          >
             {link.label}
           </Link>
         </div>
@@ -92,7 +110,19 @@ export default function HeaderMenu({
 
         <Menu.Dropdown>
           {hackLinks.map((link) => (
-            <Menu.Item key={link.label} component={Link} to={link.link}>
+            <Menu.Item
+              key={link.label}
+              component={Link}
+              to={link.link}
+              style={{
+                backgroundColor:
+                  location.pathname.slice(1) === link.link
+                    ? theme.colorScheme === 'light'
+                      ? HEADER_ACTIVE_COLOR_LIGHT
+                      : HEADER_ACTIVE_COLOR_DARK
+                    : undefined,
+              }}
+            >
               {link.label}
             </Menu.Item>
           ))}
@@ -100,7 +130,19 @@ export default function HeaderMenu({
       </Menu>
       {adminLinks.map((link) => (
         <div key={link.link}>
-          <Link key={link.label} to={link.link} className={classes.link}>
+          <Link
+            key={link.label}
+            to={link.link}
+            className={classes.link}
+            style={{
+              backgroundColor:
+                location.pathname.slice(1) === link.link
+                  ? theme.colorScheme === 'light'
+                    ? HEADER_ACTIVE_COLOR_LIGHT
+                    : HEADER_ACTIVE_COLOR_DARK
+                  : undefined,
+            }}
+          >
             {link.label}
           </Link>
         </div>
