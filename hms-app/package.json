@@ -10,7 +10,7 @@
     "@mantine/dropzone": "^5.9.3",
     "@mantine/form": "^5.9.3",
     "@mantine/hooks": "^5.8.0",
-    "@mantine/notifications": "^5.9.2",
+    "@mantine/notifications": "^5.9.3",
     "@mantine/rte": "^5.9.3",
     "@microsoft/microsoft-graph-types": "^2.25.0",
     "@reduxjs/toolkit": "^1.9.1",
