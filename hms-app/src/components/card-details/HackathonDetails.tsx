@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import {
   deleteHackathon,
+  editHackathon,
   getHackathonDetails,
 } from '../../actions/HackathonActions'
 import IdeaCardList from '../lists/IdeaCardList'
@@ -38,6 +39,8 @@ import {
   DELETE_BUTTON_COLOR,
   RELOAD_BUTTON_COLOR,
 } from '../../common/colors'
+import { showNotification, updateNotification } from '@mantine/notifications'
+import { Check, X } from 'tabler-icons-react'
 
 type IProps = {
   hackathonId: string
@@ -57,15 +60,14 @@ export default function HackathonDetails(props: IProps) {
   const [ideaData, setIdeaData] = useState<Idea>()
   const [relevantIdeaList, setRelevantIdeaList] = useState([] as Idea[])
   const [value, onChange] = useState(hackathonData.description)
-
-  const [registrationOpen, setRegistrationOpen] = useState(false)
-  const [votingOpen, setVotingOpen] = useState(false)
-  const [ideaCreationOpen, setIdeaCreationOpen] = useState(false)
+  const [votingOpened, setVotingOpened] = useState<boolean>(false)
 
   const loadSelectedHackathon = () => {
     getHackathonDetails(instance, hackathonId).then(
       (data) => {
+        console.log(data)
         setHackathonData(data)
+        setVotingOpened(data.votingOpened)
         onChange(data.description)
         setIsHackathonLoading(false)
         setIsHackathonError(false)
@@ -217,6 +219,59 @@ export default function HackathonDetails(props: IProps) {
     </Modal>
   )
 
+  const statusToggles = (
+    <>
+      <Group>
+        <Text className={classes.text}>Voting opened: </Text>
+        <Switch
+          checked={votingOpened}
+          onChange={(event) => editThisHackathon(event.currentTarget.checked)}
+        />
+      </Group>
+    </>
+  )
+
+  function editThisHackathon(event: boolean) {
+    showNotification({
+      id: 'hackathon-load',
+      loading: true,
+      title: `Editing ${hackathonData.title}`,
+      message: undefined,
+      autoClose: false,
+      disallowClose: false,
+    })
+    editHackathon(
+      instance,
+      hackathonId!,
+      hackathonData.title,
+      hackathonData.description!,
+      hackathonData.startDate!,
+      hackathonData.endDate!,
+      event
+    ).then((response) => {
+      if (JSON.stringify(response).toString().includes('error')) {
+        updateNotification({
+          id: 'hackathon-load',
+          color: 'red',
+          title: 'Failed to edit hackathon',
+          message: undefined,
+          icon: <X />,
+          autoClose: 2000,
+        })
+      } else {
+        setVotingOpened(event)
+        updateNotification({
+          id: 'hackathon-load',
+          color: 'teal',
+          title: `Edited ${hackathonData.title}`,
+          message: undefined,
+          icon: <Check />,
+          autoClose: 2000,
+        })
+      }
+    })
+  }
+
   return (
     <>
       {isHackathonError && (
@@ -270,33 +325,7 @@ export default function HackathonDetails(props: IProps) {
 
             <Card.Section className={classes.borderSection}>
               <Text className={classes.title}>Set Hackathon Status</Text>
-              <Group>
-                <Text className={classes.text}>Registration opened: </Text>
-                <Switch
-                  checked={registrationOpen}
-                  onChange={(event) =>
-                    setRegistrationOpen(event.currentTarget.checked)
-                  }
-                />
-              </Group>
-              <Group>
-                <Text className={classes.text}>Idea Creation opened: </Text>
-                <Switch
-                  checked={ideaCreationOpen}
-                  onChange={(event) =>
-                    setIdeaCreationOpen(event.currentTarget.checked)
-                  }
-                />
-              </Group>
-              <Group>
-                <Text className={classes.text}>Voting opened: </Text>
-                <Switch
-                  checked={votingOpen}
-                  onChange={(event) =>
-                    setVotingOpen(event.currentTarget.checked)
-                  }
-                />
-              </Group>
+              {statusToggles}
             </Card.Section>
 
             <Card.Section className={classes.borderSection}>

@@ -42,6 +42,7 @@ export async function putHackathon(hackathon: Hackathon) {
         endDate: {S: hackathon.endDate.toISOString()},
         id: {S: hackathon.id},
         creationDate: {S: hackathon.creationDate.toISOString()},
+        votingOpened: {BOOL: hackathon.votingOpened},
       },
     }),
   );
@@ -100,5 +101,6 @@ function itemToHackathon(item: {[key: string]: AttributeValue}): Hackathon {
     new Date(item.endDate.S),
     item.id.S!,
     new Date(item.creationDate.S!),
+    item.votingOpened.BOOL,
   );
 }

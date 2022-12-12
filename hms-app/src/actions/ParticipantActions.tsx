@@ -48,6 +48,20 @@ export const createIdeaParticipant = async (
     .catch((err) => console.log(err))
 }
 
+export const createIdeaVoteParticipant = async (
+  instance: IPublicClientApplication,
+  ideaId: string,
+  participantId: string
+) => {
+  const idToken = await getIdToken(instance)
+  const options = buildFetchOptions('PUT', idToken)
+  return fetch(`${coreUrl}/idea/${ideaId}/addVote/${participantId}`, options)
+    .then((response) => {
+      return response.json()
+    })
+    .catch((err) => console.log(err))
+}
+
 export const removeIdeaParticipant = async (
   instance: IPublicClientApplication,
   ideaId: string,
@@ -56,6 +70,20 @@ export const removeIdeaParticipant = async (
   const idToken = await getIdToken(instance)
   const options = buildFetchOptions('PUT', idToken)
   return fetch(`${coreUrl}/idea/${ideaId}/leave/${participantId}`, options)
+    .then((response) => {
+      return response.json()
+    })
+    .catch((err) => console.log(err))
+}
+
+export const removeIdeaVoteParticipant = async (
+  instance: IPublicClientApplication,
+  ideaId: string,
+  participantId: string
+) => {
+  const idToken = await getIdToken(instance)
+  const options = buildFetchOptions('PUT', idToken)
+  return fetch(`${coreUrl}/idea/${ideaId}/removeVote/${participantId}`, options)
     .then((response) => {
       return response.json()
     })

@@ -9,6 +9,7 @@ class HackathonPreviewResponse {
   description: string;
   startDate: Date;
   endDate: Date;
+  votingOpened: boolean;
 
   constructor(
     id: Uuid,
@@ -16,12 +17,14 @@ class HackathonPreviewResponse {
     description: string,
     startDate: Date,
     endDate: Date,
+    votingOpened: boolean,
   ) {
     this.id = id;
     this.title = title;
     this.description = description;
     this.startDate = startDate;
     this.endDate = endDate;
+    this.votingOpened = votingOpened;
   }
 
   static from = (hackathon: Hackathon): HackathonPreviewResponse =>
@@ -31,6 +34,7 @@ class HackathonPreviewResponse {
       hackathon.description,
       hackathon.startDate,
       hackathon.endDate,
+      hackathon.votingOpened,
     );
 
   static fromArray(hackathons: Hackathon[]): HackathonPreviewResponse[] {

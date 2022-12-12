@@ -58,6 +58,13 @@ class Hackathon {
    */
   creationDate: Date;
 
+  /**
+   * Boolean that indicates if Voting is allowed or not
+   *
+   * Manually set on Admin Page
+   */
+  votingOpened: boolean;
+
   validate(): ValidationResult {
     const result = new ValidationResult();
     if (!this.id) {
@@ -85,6 +92,7 @@ class Hackathon {
         `startDate (${this.startDate}) is after endDate (${this.endDate})`,
       );
     }
+
     return result;
   }
 
@@ -101,6 +109,7 @@ class Hackathon {
     endDate: Date,
     id: Uuid,
     creationDate: Date,
+    votingOpened: boolean,
   );
 
   constructor(
@@ -110,6 +119,7 @@ class Hackathon {
     endDate: Date,
     id: Uuid = uuid(),
     creationDate: Date = new Date(),
+    votingOpened: boolean = false,
   ) {
     this.title = title;
     this.description = description;
@@ -117,6 +127,7 @@ class Hackathon {
     this.endDate = endDate;
     this.id = id;
     this.creationDate = creationDate;
+    this.votingOpened = votingOpened;
   }
 }
 

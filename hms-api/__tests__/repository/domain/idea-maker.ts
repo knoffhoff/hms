@@ -6,6 +6,7 @@ export interface IdeaData {
   ownerId: Uuid;
   hackathonId: Uuid;
   participantIds: Uuid[];
+  voterIds: Uuid[];
   title: string;
   description: string;
   problem: string;
@@ -15,20 +16,21 @@ export interface IdeaData {
   creationDate: Date;
 }
 
-export const makeIdea = (
-    {
-      id = uuid(),
-      ownerId = uuid(),
-      hackathonId = uuid(),
-      participantIds = [],
-      title = '#1 Best Idea :D',
-      description = 'A super cool idea that is better than anything else',
-      problem = 'We keep losing at hackathons',
-      goal = 'Nothing really just win the hackathon',
-      requiredSkills = [uuid(), uuid()],
-      categoryId = uuid(),
-      creationDate = new Date(),
-    }: IdeaData): Idea => new Idea(
+export const makeIdea = ({
+  id = uuid(),
+  ownerId = uuid(),
+  hackathonId = uuid(),
+  participantIds = [],
+  voterIds = [],
+  title = '#1 Best Idea :D',
+  description = 'A super cool idea that is better than anything else',
+  problem = 'We keep losing at hackathons',
+  goal = 'Nothing really just win the hackathon',
+  requiredSkills = [uuid(), uuid()],
+  categoryId = uuid(),
+  creationDate = new Date(),
+}: IdeaData): Idea =>
+  new Idea(
     ownerId,
     hackathonId,
     title,
@@ -40,7 +42,7 @@ export const makeIdea = (
     id,
     creationDate,
     participantIds,
-);
+    voterIds,
+  );
 
-export const randomIdea = ()
-    : Idea => makeIdea({} as IdeaData);
+export const randomIdea = (): Idea => makeIdea({} as IdeaData);

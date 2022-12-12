@@ -20,7 +20,9 @@ import { styles } from '../../common/styles'
 import { showNotification, updateNotification } from '@mantine/notifications'
 import {
   createIdeaParticipant,
+  createIdeaVoteParticipant,
   removeIdeaParticipant,
+  removeIdeaVoteParticipant,
 } from '../../actions/ParticipantActions'
 import { Check, X } from 'tabler-icons-react'
 import { useMsal } from '@azure/msal-react'
@@ -29,7 +31,10 @@ import {
   JOIN_BUTTON_COLOR,
   LEAVE_BUTTON_COLOR,
 } from '../../common/colors'
-import { HackathonParticipantContext } from '../../pages/AllIdeas'
+import {
+  HackathonParticipantContext,
+  HackathonVotingContext,
+} from '../../pages/AllIdeas'
 import { UserContext } from '../../pages/Layout'
 import FinalVideoUploadModal from '../FinalVideoUploadModal'
 import { getCategoryDetails } from '../../actions/CategoryActions'
@@ -43,6 +48,7 @@ type IProps = {
 
 export default function IdeaDetails(props: IProps) {
   const hackathonParticipantId = useContext(HackathonParticipantContext)
+  const hackathonVotingOpened = useContext(HackathonVotingContext)
   const user = useContext(UserContext)
   const { instance } = useMsal()
   const { classes } = styles()
@@ -61,6 +67,7 @@ export default function IdeaDetails(props: IProps) {
     participantId: '',
   })
   const [participantCheck, setParticipantCheck] = useState(false)
+  const [voteCheck, setVoteCheck] = useState(false)
   const [categoryData, setCategoryData] = useState({} as Category)
   const [skillData, setSkillData] = useState([] as Skill[])
   const [loader, setLoader] = useState(false)
@@ -278,12 +285,15 @@ export default function IdeaDetails(props: IProps) {
     )
   }
 
-  const addIdeaParticipant = async () => {
+  const addParticipant = async (
+    action = createIdeaParticipant,
+    check = setParticipantCheck
+  ) => {
     if (participantInfo.participantId === '') {
       showNotification({
         id: 'participant-load',
         color: 'red',
-        title: 'Cannot join idea',
+        title: 'Not participating in hackathon',
         message: 'You must join the hackathon first to join an idea.',
         icon: <X />,
         autoClose: 5000,
@@ -294,81 +304,96 @@ export default function IdeaDetails(props: IProps) {
     showNotification({
       id: 'participant-load',
       loading: true,
-      title: `Joining "${ideaData.title}"`,
+      title: `Updating "${ideaData.title}"`,
       message: undefined,
       autoClose: false,
       disallowClose: false,
     })
-    createIdeaParticipant(
-      instance,
-      ideaData.id,
-      participantInfo.participantId
-    ).then((response) => {
-      setButtonisDisabled(false)
-      setLoader(true)
-      if (JSON.stringify(response).toString().includes('error')) {
-        setParticipantCheck(false)
-        updateNotification({
-          id: 'participant-load',
-          color: 'red',
-          title: 'Failed to join idea',
-          message: undefined,
-          icon: <X />,
-          autoClose: 2000,
-        })
-      } else {
-        setParticipantCheck(true)
-        updateNotification({
-          id: 'participant-load',
-          color: 'teal',
-          title: `Joined "${ideaData.title}"`,
-          message: undefined,
-          icon: <Check />,
-          autoClose: 2000,
-        })
+    action(instance, ideaData.id, participantInfo.participantId).then(
+      (response) => {
+        setButtonisDisabled(false)
+        setLoader(true)
+        if (JSON.stringify(response).toString().includes('error')) {
+          check(false)
+          updateNotification({
+            id: 'participant-load',
+            color: 'red',
+            title: 'Failed to save idea',
+            message: undefined,
+            icon: <X />,
+            autoClose: 2000,
+          })
+        } else {
+          check(true)
+          updateNotification({
+            id: 'participant-load',
+            color: 'teal',
+            title: `Updated idea: "${ideaData.title}"`,
+            message: undefined,
+            icon: <Check />,
+            autoClose: 2000,
+          })
+        }
       }
-    })
+    )
   }
 
-  const removeThisIdeaParticipant = () => {
+  const addIdeaParticipant = async () => {
+    await addParticipant(createIdeaParticipant, setParticipantCheck)
+  }
+
+  const addVoterToIdea = async () => {
+    await addParticipant(createIdeaVoteParticipant, setVoteCheck)
+  }
+
+  const removeParticipant = async (
+    action = removeIdeaParticipant,
+    check = setParticipantCheck
+  ) => {
     setButtonisDisabled(true)
     showNotification({
       id: 'participant-load',
       loading: true,
-      title: `Leaving "${ideaData.title}"`,
+      title: `Updating idea: "${ideaData.title}"`,
       message: undefined,
       autoClose: false,
       disallowClose: false,
     })
-    removeIdeaParticipant(
-      instance,
-      ideaData.id,
-      participantInfo.participantId
-    ).then((response) => {
-      setButtonisDisabled(false)
-      setLoader(true)
-      if (JSON.stringify(response).toString().includes('error')) {
-        setParticipantCheck(true)
-        updateNotification({
-          id: 'participant-load',
-          color: 'red',
-          title: 'Failed to leave Idea',
-          message: undefined,
-          icon: <X />,
-          autoClose: 2000,
-        })
-      } else {
-        setParticipantCheck(false)
-        updateNotification({
-          id: 'participant-load',
-          color: 'teal',
-          title: `Left "${ideaData.title}"`,
-          message: undefined,
-          icon: <Check />,
-          autoClose: 2000,
-        })
+    action(instance, ideaData.id, participantInfo.participantId).then(
+      (response) => {
+        setButtonisDisabled(false)
+        setLoader(true)
+        if (JSON.stringify(response).toString().includes('error')) {
+          check(true)
+          updateNotification({
+            id: 'participant-load',
+            color: 'red',
+            title: 'Failed to save Idea',
+            message: undefined,
+            icon: <X />,
+            autoClose: 2000,
+          })
+        } else {
+          check(false)
+          updateNotification({
+            id: 'participant-load',
+            color: 'teal',
+            title: `Updated "${ideaData.title}"`,
+            message: undefined,
+            icon: <Check />,
+            autoClose: 2000,
+          })
+        }
       }
-    })
+    )
+  }
+
+  const removeThisIdeaParticipant = () => {
+    removeParticipant(removeIdeaParticipant, setParticipantCheck)
+  }
+
+  const removeThisVote = () => {
+    removeParticipant(removeIdeaVoteParticipant, setVoteCheck)
   }
 
   const findParticipant = () => {
@@ -384,15 +409,23 @@ export default function IdeaDetails(props: IProps) {
     }
   }
 
+  const findVoter = () => {
+    if (ideaData && ideaData.voters && user) {
+      const voter = ideaData.voters.find((voter) => voter.user.id === user.id)
+      if (voter) {
+        return voter
+      } else {
+        return null
+      }
+    }
+  }
+
   useEffect(() => {
     if (findParticipant()) setParticipantCheck(!!findParticipant())
+    if (findVoter()) setVoteCheck(!!findVoter())
   }, [ideaData])
 
   useEffect(() => {
-    setParticipantInfo((prevState) => ({
-      ...prevState,
-      ideaId: ideaData.id,
-    }))
     loadCategoryDetails()
     loadSkillDetails()
   }, [])
@@ -416,24 +449,36 @@ export default function IdeaDetails(props: IProps) {
         <Card withBorder className={classes.card}>
           <Spoiler maxHeight={145} showLabel='Show more' hideLabel='Hide'>
             <Card.Section className={classes.borderSection}>
-              <Group noWrap mb={15}>
-                <Stack align={'center'} spacing={'xs'}>
-                  <Avatar color='indigo' radius='xl' size='md'>
-                    {getInitials(
-                      ideaData.owner?.user.firstName,
-                      ideaData.owner?.user.lastName
-                    )}
-                  </Avatar>
-                  <Badge size='sm'>
-                    {ideaData.owner?.user.firstName}{' '}
-                    {ideaData.owner?.user.lastName}
-                  </Badge>
-                </Stack>
+              <Group noWrap mb={5} position='apart'>
+                <Group position='left'>
+                  <Stack align={'center'} spacing={'xs'}>
+                    <Avatar color='indigo' radius='xl' size='md'>
+                      {getInitials(
+                        ideaData.owner?.user.firstName,
+                        ideaData.owner?.user.lastName
+                      )}
+                    </Avatar>
+                    <Badge size='sm'>
+                      {ideaData.owner?.user.firstName}{' '}
+                      {ideaData.owner?.user.lastName}
+                    </Badge>
+                  </Stack>
+                  <Text className={classes.title}>
+                    {ideaData.title?.slice(0, MAX_TITLE_LENGTH)}
+                    {ideaData.title?.length > MAX_TITLE_LENGTH ? '...' : ''}
+                  </Text>
+                </Group>
 
-                <Text className={classes.title}>
-                  {ideaData.title?.slice(0, MAX_TITLE_LENGTH)}
-                  {ideaData.title?.length > MAX_TITLE_LENGTH ? '...' : ''}
-                </Text>
+                {hackathonVotingOpened && (
+                  <Card.Section className={classes.noBorderSection}>
+                    <Stack align={'center'} spacing={'xs'}>
+                      <Text className={classes.label}>Votes: </Text>
+                      <Text className={classes.text}>
+                        {ideaData.voters?.length}
+                      </Text>
+                    </Stack>
+                  </Card.Section>
+                )}
               </Group>
 
               <Text className={classes.text}>{ideaData.description}</Text>
@@ -501,6 +546,21 @@ export default function IdeaDetails(props: IProps) {
                         >
                           {participantCheck ? 'Leave Idea' : 'Join Idea'}
                         </Button>
+                        {hackathonVotingOpened && (
+                          <Button
+                            disabled={buttonIsDisabled}
+                            onClick={
+                              voteCheck ? removeThisVote : addVoterToIdea
+                            }
+                            style={{
+                              backgroundColor: voteCheck
+                                ? LEAVE_BUTTON_COLOR
+                                : JOIN_BUTTON_COLOR,
+                            }}
+                          >
+                            {voteCheck ? 'Remove Vote' : 'Vote for Idea'}
+                          </Button>
+                        )}
                       </Group>
                     )}
 

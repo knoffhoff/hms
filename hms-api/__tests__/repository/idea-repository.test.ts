@@ -12,8 +12,10 @@ import {
 } from './dynamo-db-mock';
 import {
   addParticipantToIdea,
+  addVoterToIdea,
   deleteIdea,
   deleteParticipantFromIdea,
+  deleteVoterFromIdea,
   getIdea,
   listIdeasForCategory,
   listIdeasForHackathon,
@@ -29,7 +31,7 @@ import {AttributeValue} from '@aws-sdk/client-dynamodb';
 import {safeTransformArray} from '../../src/repository/dynamo-db';
 
 describe('Get Idea', () => {
-  test('Idea doesn\'t exist', async () => {
+  test("Idea doesn't exist", async () => {
     const id = uuid();
     mockGetItem(null);
 
@@ -56,12 +58,13 @@ describe('Put Idea', () => {
     await putIdea(expected);
 
     expect(mockSend).toHaveBeenCalledWith(
-        expect.objectContaining({
-          input: expect.objectContaining({
-            TableName: ideaTable,
-            Item: itemFromIdea(expected),
-          }),
-        }));
+      expect.objectContaining({
+        input: expect.objectContaining({
+          TableName: ideaTable,
+          Item: itemFromIdea(expected),
+        }),
+      }),
+    );
   });
 });
 
@@ -72,13 +75,13 @@ describe('Delete Idea', () => {
 
     expect(await deleteIdea(expected.id)).toStrictEqual(expected);
     expect(mockSend).toHaveBeenCalledWith(
-        expect.objectContaining({
-          input: expect.objectContaining({
-            TableName: ideaTable,
-            Key: {id: {S: expected.id}},
-            ReturnValues: 'ALL_OLD',
-          }),
+      expect.objectContaining({
+        input: expect.objectContaining({
+          TableName: ideaTable,
+          Key: {id: {S: expected.id}},
+          ReturnValues: 'ALL_OLD',
         }),
+      }),
     );
   });
 
@@ -86,17 +89,15 @@ describe('Delete Idea', () => {
     const id = uuid();
     mockDeleteItem(null);
 
-    await expect(deleteIdea(id))
-        .rejects
-        .toThrow(NotFoundError);
+    await expect(deleteIdea(id)).rejects.toThrow(NotFoundError);
     expect(mockSend).toHaveBeenCalledWith(
-        expect.objectContaining({
-          input: expect.objectContaining({
-            TableName: ideaTable,
-            Key: {id: {S: id}},
-            ReturnValues: 'ALL_OLD',
-          }),
+      expect.objectContaining({
+        input: expect.objectContaining({
+          TableName: ideaTable,
+          Key: {id: {S: id}},
+          ReturnValues: 'ALL_OLD',
         }),
+      }),
     );
   });
 });
@@ -112,12 +113,34 @@ describe('Add Participant to Idea', () => {
     expected.participantIds.push(participantId);
 
     expect(mockSend).toHaveBeenCalledWith(
+      expect.objectContaining({
+        input: expect.objectContaining({
+          TableName: ideaTable,
+          Item: itemFromIdea(expected),
+        }),
+      }),
+    );
+  });
+
+  describe('Add Voter to Idea', () => {
+    test('Happy Path', async () => {
+      const expected = randomIdea();
+      mockGetItem(itemFromIdea(expected));
+      const voterId = uuid();
+
+      await addVoterToIdea(expected.id, voterId);
+
+      expected.voterIds.push(voterId);
+
+      expect(mockSend).toHaveBeenCalledWith(
         expect.objectContaining({
           input: expect.objectContaining({
             TableName: ideaTable,
             Item: itemFromIdea(expected),
           }),
-        }));
+        }),
+      );
+    });
   });
 
   test('Ignore already added participant', async () => {
@@ -129,13 +152,32 @@ describe('Add Participant to Idea', () => {
     await addParticipantToIdea(idea.id, participantId);
 
     expect(mockSend).not.toHaveBeenCalledWith(
-        expect.objectContaining({
-          input: expect.objectContaining({
-            TableName: ideaTable,
-            Item: itemFromIdea(idea),
-          }),
-        }));
-  })
+      expect.objectContaining({
+        input: expect.objectContaining({
+          TableName: ideaTable,
+          Item: itemFromIdea(idea),
+        }),
+      }),
+    );
+  });
+
+  test('Ignore already added voter', async () => {
+    const idea = randomIdea();
+    const voterId = uuid();
+    idea.voterIds.push(voterId);
+    mockGetItem(itemFromIdea(idea));
+
+    await addVoterToIdea(idea.id, voterId);
+
+    expect(mockSend).not.toHaveBeenCalledWith(
+      expect.objectContaining({
+        input: expect.objectContaining({
+          TableName: ideaTable,
+          Item: itemFromIdea(idea),
+        }),
+      }),
+    );
+  });
 });
 
 describe('Delete Participant from Idea', () => {
@@ -146,16 +188,39 @@ describe('Delete Participant from Idea', () => {
     await deleteParticipantFromIdea(ideaId, participantId);
 
     expect(mockSend).toHaveBeenCalledWith(
-        expect.objectContaining({
-          input: expect.objectContaining({
-            TableName: process.env.IDEA_TABLE,
-            Key: {id: {S: ideaId}},
-            UpdateExpression: 'DELETE participantIds :participant_id',
-            ExpressionAttributeValues: {
-              ':participant_id': {SS: [participantId]},
-            },
-          }),
-        }));
+      expect.objectContaining({
+        input: expect.objectContaining({
+          TableName: process.env.IDEA_TABLE,
+          Key: {id: {S: ideaId}},
+          UpdateExpression: 'DELETE participantIds :participant_id',
+          ExpressionAttributeValues: {
+            ':participant_id': {SS: [participantId]},
+          },
+        }),
+      }),
+    );
+  });
+});
+
+describe('Delete Voter from Idea', () => {
+  test('Happy Path', async () => {
+    const ideaId = uuid();
+    const voterId = uuid();
+
+    await deleteVoterFromIdea(ideaId, voterId);
+
+    expect(mockSend).toHaveBeenCalledWith(
+      expect.objectContaining({
+        input: expect.objectContaining({
+          TableName: process.env.IDEA_TABLE,
+          Key: {id: {S: ideaId}},
+          UpdateExpression: 'DELETE voterIds :voter_id',
+          ExpressionAttributeValues: {
+            ':voter_id': {SS: [voterId]},
+          },
+        }),
+      }),
+    );
   });
 });
 
@@ -164,9 +229,9 @@ describe('List Ideas for Hackathon', () => {
     const hackathonId = uuid();
     mockQuery(null);
 
-    await expect(listIdeasForHackathon(hackathonId))
-        .rejects
-        .toThrow(NotFoundError);
+    await expect(listIdeasForHackathon(hackathonId)).rejects.toThrow(
+      NotFoundError,
+    );
 
     listHackathonExpected(hackathonId);
   });
@@ -196,8 +261,10 @@ describe('List Ideas for Hackathon', () => {
     const idea2 = makeIdea({hackathonId: hackathonId} as IdeaData);
     mockQuery([itemFromIdea(idea1), itemFromIdea(idea2)]);
 
-    expect(await listIdeasForHackathon(hackathonId))
-        .toStrictEqual([idea1, idea2]);
+    expect(await listIdeasForHackathon(hackathonId)).toStrictEqual([
+      idea1,
+      idea2,
+    ]);
 
     listHackathonExpected(hackathonId);
   });
@@ -208,9 +275,7 @@ describe('List Ideas for Owner', () => {
     const ownerId = uuid();
     mockQuery(null);
 
-    await expect(listIdeasForOwner(ownerId))
-        .rejects
-        .toThrow(NotFoundError);
+    await expect(listIdeasForOwner(ownerId)).rejects.toThrow(NotFoundError);
 
     listOwnerExpected(ownerId);
   });
@@ -240,8 +305,7 @@ describe('List Ideas for Owner', () => {
     const idea2 = makeIdea({ownerId: ownerId} as IdeaData);
     mockQuery([itemFromIdea(idea1), itemFromIdea(idea2)]);
 
-    expect(await listIdeasForOwner(ownerId))
-        .toStrictEqual([idea1, idea2]);
+    expect(await listIdeasForOwner(ownerId)).toStrictEqual([idea1, idea2]);
 
     listOwnerExpected(ownerId);
   });
@@ -252,9 +316,9 @@ describe('List Ideas for Participant', () => {
     const participantId = uuid();
     mockScan(null);
 
-    await expect(listIdeasForParticipant(participantId))
-        .rejects
-        .toThrow(NotFoundError);
+    await expect(listIdeasForParticipant(participantId)).rejects.toThrow(
+      NotFoundError,
+    );
 
     scanParticipantExpected(participantId);
   });
@@ -284,8 +348,10 @@ describe('List Ideas for Participant', () => {
     const idea2 = makeIdea({participantIds: [participantId]} as IdeaData);
     mockScan([itemFromIdea(idea1), itemFromIdea(idea2)]);
 
-    expect(await listIdeasForParticipant(participantId))
-        .toStrictEqual([idea1, idea2]);
+    expect(await listIdeasForParticipant(participantId)).toStrictEqual([
+      idea1,
+      idea2,
+    ]);
 
     scanParticipantExpected(participantId);
   });
@@ -296,9 +362,9 @@ describe('List Ideas for Category', () => {
     const categoryId = uuid();
     mockScan(null);
 
-    await expect(listIdeasForCategory(categoryId))
-        .rejects
-        .toThrow(NotFoundError);
+    await expect(listIdeasForCategory(categoryId)).rejects.toThrow(
+      NotFoundError,
+    );
 
     listCategoryExpected(categoryId);
   });
@@ -328,18 +394,21 @@ describe('List Ideas for Category', () => {
     const idea2 = makeIdea({categoryId: categoryId} as IdeaData);
     mockScan([itemFromIdea(idea1), itemFromIdea(idea2)]);
 
-    expect(await listIdeasForCategory(categoryId))
-        .toStrictEqual([idea1, idea2]);
+    expect(await listIdeasForCategory(categoryId)).toStrictEqual([
+      idea1,
+      idea2,
+    ]);
 
     listCategoryExpected(categoryId);
   });
 });
 
-const itemFromIdea = (idea: Idea): { [key: string]: AttributeValue } => ({
+const itemFromIdea = (idea: Idea): {[key: string]: AttributeValue} => ({
   id: {S: idea.id},
   ownerId: {S: idea.ownerId},
   hackathonId: {S: idea.hackathonId},
   participantIds: safeTransformArray(idea.participantIds),
+  voterIds: safeTransformArray(idea.voterIds),
   title: {S: idea.title},
   description: {S: idea.description},
   problem: {S: idea.problem},
@@ -349,57 +418,59 @@ const itemFromIdea = (idea: Idea): { [key: string]: AttributeValue } => ({
   creationDate: {S: idea.creationDate.toISOString()},
 });
 
-const getExpected = (id: Uuid) => expect(mockSend).toHaveBeenCalledWith(
+const getExpected = (id: Uuid) =>
+  expect(mockSend).toHaveBeenCalledWith(
     expect.objectContaining({
       input: expect.objectContaining({
         TableName: ideaTable,
         Key: {id: {S: id}},
       }),
-    }));
+    }),
+  );
 
-const listHackathonExpected = (
-    hackathonId: Uuid,
-) => expect(mockSend).toHaveBeenCalledWith(
+const listHackathonExpected = (hackathonId: Uuid) =>
+  expect(mockSend).toHaveBeenCalledWith(
     expect.objectContaining({
       input: expect.objectContaining({
         TableName: ideaTable,
         IndexName: ideaByHackathonIdIndex,
         KeyConditionExpression: 'hackathonId = :hId',
-        ExpressionAttributeValues: {':hId': {'S': hackathonId}},
+        ExpressionAttributeValues: {':hId': {S: hackathonId}},
       }),
-    }));
+    }),
+  );
 
-const listOwnerExpected = (
-    ownerId: Uuid,
-) => expect(mockSend).toHaveBeenCalledWith(
+const listOwnerExpected = (ownerId: Uuid) =>
+  expect(mockSend).toHaveBeenCalledWith(
     expect.objectContaining({
       input: expect.objectContaining({
         TableName: ideaTable,
         IndexName: ideaByOwnerIdIndex,
         KeyConditionExpression: 'ownerId = :oId',
-        ExpressionAttributeValues: {':oId': {'S': ownerId}},
+        ExpressionAttributeValues: {':oId': {S: ownerId}},
       }),
-    }));
+    }),
+  );
 
-const listCategoryExpected = (
-    categoryId: Uuid,
-) => expect(mockSend).toHaveBeenCalledWith(
+const listCategoryExpected = (categoryId: Uuid) =>
+  expect(mockSend).toHaveBeenCalledWith(
     expect.objectContaining({
       input: expect.objectContaining({
         TableName: ideaTable,
         IndexName: ideaByCategoryIdIndex,
         KeyConditionExpression: 'categoryId = :cId',
-        ExpressionAttributeValues: {':cId': {'S': categoryId}},
+        ExpressionAttributeValues: {':cId': {S: categoryId}},
       }),
-    }));
+    }),
+  );
 
-const scanParticipantExpected = (
-    participantId: Uuid,
-) => expect(mockSend).toHaveBeenCalledWith(
+const scanParticipantExpected = (participantId: Uuid) =>
+  expect(mockSend).toHaveBeenCalledWith(
     expect.objectContaining({
       input: expect.objectContaining({
         TableName: ideaTable,
         FilterExpression: 'contains(participantIds, :pId)',
-        ExpressionAttributeValues: {':pId': {'S': participantId}},
+        ExpressionAttributeValues: {':pId': {S: participantId}},
       }),
-    }));
+    }),
+  );

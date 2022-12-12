@@ -11,24 +11,27 @@ export interface HackathonData {
   startDate: Date;
   endDate: Date;
   creationDate: Date;
+  votingOpened: boolean;
 }
 
-export const makeHackathon = (
-    {
-      id = uuid(),
-      title = 'Best Hackathon Ever',
-      description = 'The worst possible description you could imagine...',
-      startDate = new Date(new Date().getTime() + fiveDaysInMillis),
-      endDate = new Date(new Date().getTime() + tenDaysInMillis),
-      creationDate = new Date(),
-    }: HackathonData): Hackathon => new Hackathon(
+export const makeHackathon = ({
+  id = uuid(),
+  title = 'Best Hackathon Ever',
+  description = 'The worst possible description you could imagine...',
+  startDate = new Date(new Date().getTime() + fiveDaysInMillis),
+  endDate = new Date(new Date().getTime() + tenDaysInMillis),
+  creationDate = new Date(),
+  votingOpened = false,
+}: HackathonData): Hackathon =>
+  new Hackathon(
     title,
     description,
     startDate,
     endDate,
     id,
     creationDate,
-);
+    votingOpened,
+  );
 
-export const randomHackathon = ()
-    : Hackathon => makeHackathon({} as HackathonData);
+export const randomHackathon = (): Hackathon =>
+  makeHackathon({} as HackathonData);

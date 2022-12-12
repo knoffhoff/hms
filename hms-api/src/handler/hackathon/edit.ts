@@ -17,6 +17,7 @@ export async function edit(event, context, callback) {
       request.description,
       request.startDate,
       request.endDate,
+      request.votingOpened,
     );
 
     callback(null, buildResponse(200, new HackathonEditResponse(id)));

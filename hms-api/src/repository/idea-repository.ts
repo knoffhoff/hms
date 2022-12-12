@@ -111,6 +111,7 @@ export async function putIdea(idea: Idea): Promise<void> {
         ownerId: {S: idea.ownerId},
         hackathonId: {S: idea.hackathonId},
         participantIds: safeTransformArray(idea.participantIds),
+        voterIds: safeTransformArray(idea.voterIds),
         title: {S: idea.title},
         description: {S: idea.description},
         problem: {S: idea.problem},
@@ -167,17 +168,17 @@ export async function addParticipantToIdea(
     idea.participantIds.push(participantId);
     await putIdea(idea);
   }
-  // TODO so because of how NULL data types work in DynamoDB you can't append to it...
-  // await dynamoDBClient.send(
-  //   new UpdateItemCommand({
-  //     TableName: process.env.IDEA_TABLE,
-  //     Key: {id: {S: ideaId}},
-  //     UpdateExpression: 'ADD participantIds :participant_id',
-  //     ExpressionAttributeValues: {
-  //       ':participant_id': {SS: [participantId]},
-  //     },
-  //   }),
-  // );
+}
+
+export async function addVoterToIdea(
+  ideaId: Uuid,
+  voterId: Uuid,
+): Promise<void> {
+  const idea = await getIdea(ideaId);
+  if (!idea.voterIds.includes(voterId)) {
+    idea.voterIds.push(voterId);
+    await putIdea(idea);
+  }
 }
 
 export async function deleteParticipantFromIdea(
@@ -196,6 +197,22 @@ export async function deleteParticipantFromIdea(
   );
 }
 
+export async function deleteVoterFromIdea(
+  ideaId: Uuid,
+  voterId: Uuid,
+): Promise<void> {
+  await dynamoDBClient.send(
+    new UpdateItemCommand({
+      TableName: process.env.IDEA_TABLE,
+      Key: {id: {S: ideaId}},
+      UpdateExpression: 'DELETE voterIds :voter_id',
+      ExpressionAttributeValues: {
+        ':voter_id': {SS: [voterId]},
+      },
+    }),
+  );
+}
+
 function itemToIdea(item: {[key: string]: AttributeValue}): Idea {
   return new Idea(
     item.ownerId.S,
@@ -209,5 +226,6 @@ function itemToIdea(item: {[key: string]: AttributeValue}): Idea {
     item.id.S!,
     new Date(item.creationDate.S!),
     safeTransformSSMember(item.participantIds),
+    safeTransformSSMember(item.voterIds),
   );
 }

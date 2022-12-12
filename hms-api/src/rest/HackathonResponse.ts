@@ -21,6 +21,7 @@ class HackathonResponse {
   participants: ParticipantPreviewResponse[];
   categories: CategoryPreviewResponse[];
   ideas: IdeaPreviewResponse[];
+  votingOpened: boolean;
 
   constructor(
     id: Uuid,
@@ -31,6 +32,7 @@ class HackathonResponse {
     participants: ParticipantPreviewResponse[],
     categories: CategoryPreviewResponse[],
     ideas: IdeaPreviewResponse[],
+    votingOpened: boolean,
   ) {
     this.id = id;
     this.title = title;
@@ -40,6 +42,7 @@ class HackathonResponse {
     this.participants = participants;
     this.categories = categories;
     this.ideas = ideas;
+    this.votingOpened = votingOpened;
   }
 
   static from = (
@@ -58,6 +61,7 @@ class HackathonResponse {
       ParticipantPreviewResponse.fromArray(participants, users),
       CategoryPreviewResponse.fromArray(categories),
       IdeaPreviewResponse.fromArray(ideas),
+      hackathon.votingOpened,
     );
 }
 
