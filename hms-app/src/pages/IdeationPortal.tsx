@@ -11,6 +11,7 @@ import { getIdeaDetails, getIdeaList } from '../actions/IdeaActions'
 import { useMsal } from '@azure/msal-react'
 import { UserContext } from './Layout'
 import { getListOfHackathons } from '../actions/HackathonActions'
+import IdeaForm from '../components/input-forms/IdeaForm'
 
 function IdeationPortal() {
   const { instance } = useMsal()
@@ -19,7 +20,9 @@ function IdeationPortal() {
   const [ideaData, setIdeaData] = useState<Idea>()
   const [relevantIdeaList, setRelevantIdeaList] = useState<Idea[]>([])
   const [opened, setOpened] = useState(false)
-  const [hackathon, setHackathon] = useState<HackathonPreview>()
+  const [hackathon, setHackathon] = useState<HackathonPreview>(
+    {} as HackathonPreview
+  )
 
   const loadHackathons = () => {
     getListOfHackathons(instance).then((data) => {
@@ -41,7 +44,7 @@ function IdeationPortal() {
   }
 
   const loadIdeaDetails = () => {
-    if (allIdeaPreviews.length > 0) {
+    if (allIdeaPreviews?.length > 0) {
       allIdeaPreviews.map((ideaPreview) => {
         getIdeaDetails(instance, ideaPreview.id).then((ideaDetails) => {
           setIdeaData(ideaDetails)
@@ -84,9 +87,16 @@ function IdeationPortal() {
       <Modal
         opened={opened}
         onClose={() => setOpened(false)}
+        size={'70%'}
         title='Whoop whoop!'
       >
-        hihi
+        <IdeaForm
+          ideaId={'null'}
+          hackathon={hackathon}
+          participantId={'1'}
+          context={'new'}
+          reload={loadHackathonIdeas}
+        />
       </Modal>
 
       <Group position='center'>
