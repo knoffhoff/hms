@@ -1,20 +1,43 @@
-import { Idea, IdeaCardType, IdeaPreview } from '../common/types'
+import {
+  HackathonPreview,
+  Idea,
+  IdeaCardType,
+  IdeaPreview,
+} from '../common/types'
 import IdeaCardList from '../components/lists/IdeaCardList'
-import React, { useEffect, useState } from 'react'
-import { Title } from '@mantine/core'
-import { getAllIdeas, getIdeaDetails } from '../actions/IdeaActions'
+import React, { useContext, useEffect, useState } from 'react'
+import { Modal, Button, Group, Title } from '@mantine/core'
+import { getIdeaDetails, getIdeaList } from '../actions/IdeaActions'
 import { useMsal } from '@azure/msal-react'
+import { UserContext } from './Layout'
+import { getListOfHackathons } from '../actions/HackathonActions'
 
 function IdeationPortal() {
   const { instance } = useMsal()
+  const user = useContext(UserContext)
   const [allIdeaPreviews, setAllIdeaPreviews] = useState<IdeaPreview[]>([])
   const [ideaData, setIdeaData] = useState<Idea>()
   const [relevantIdeaList, setRelevantIdeaList] = useState<Idea[]>([])
+  const [opened, setOpened] = useState(false)
+  const [hackathon, setHackathon] = useState<HackathonPreview>()
 
-  const loadAllIdeas = () => {
-    getAllIdeas(instance).then((data) => {
-      setAllIdeaPreviews(data.ideas)
+  const loadHackathons = () => {
+    getListOfHackathons(instance).then((data) => {
+      const upcomingHackathon = data.find(
+        (hackathon) => hackathon.startDate === null
+      )
+      if (upcomingHackathon) {
+        setHackathon(upcomingHackathon)
+      }
     })
+  }
+
+  const loadHackathonIdeas = () => {
+    if (hackathon) {
+      getIdeaList(instance, hackathon.id).then((data) => {
+        setAllIdeaPreviews(data.ideas)
+      })
+    }
   }
 
   const loadIdeaDetails = () => {
@@ -28,8 +51,12 @@ function IdeationPortal() {
   }
 
   useEffect(() => {
-    loadAllIdeas()
+    loadHackathons()
   }, [])
+
+  useEffect(() => {
+    loadHackathonIdeas()
+  }, [hackathon])
 
   useEffect(() => {
     loadIdeaDetails()
@@ -52,7 +79,21 @@ function IdeationPortal() {
 
   return (
     <>
-      {relevantIdeaList.length > 0 && (
+      <Title order={1}>Ideation Portal</Title>
+
+      <Modal
+        opened={opened}
+        onClose={() => setOpened(false)}
+        title='Whoop whoop!'
+      >
+        hihi
+      </Modal>
+
+      <Group position='center'>
+        <Button onClick={() => setOpened(true)}>Open Modal</Button>
+      </Group>
+
+      {relevantIdeaList.length != null && (
         <div>
           <Title order={2} mt={50} mb={30}>
             submitted ideas: {relevantIdeaList.length}
