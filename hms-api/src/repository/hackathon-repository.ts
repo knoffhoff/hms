@@ -97,8 +97,8 @@ function itemToHackathon(item: {[key: string]: AttributeValue}): Hackathon {
   return new Hackathon(
     item.title.S,
     item.description.S,
-    new Date(item.startDate.S),
-    new Date(item.endDate.S),
+    item.startDate ? new Date(item.startDate.S) : null,
+    item.endDate ? new Date(item.endDate.S) : null,
     item.id.S!,
     new Date(item.creationDate.S!),
     item.votingOpened.BOOL,

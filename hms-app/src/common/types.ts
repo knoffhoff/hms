@@ -73,8 +73,8 @@ export const parseHackathonPreview = (json: any): HackathonPreview =>
     id: json.id,
     title: json.title,
     description: json.description,
-    startDate: new Date(json.startDate),
-    endDate: new Date(json.endDate),
+    startDate: json.startDate ? new Date(json.startDate) : null,
+    endDate: json.endDate ? new Date(json.endDate) : null,
     votingOpened: json.votingOpened,
   } as HackathonPreview)
 

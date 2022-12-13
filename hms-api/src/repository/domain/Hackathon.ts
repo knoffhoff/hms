@@ -41,6 +41,8 @@ class Hackathon {
    * The start Date of the Hackathon
    *
    * Must be before than the endDate
+   *
+   * Can be null
    */
   startDate: Date;
 
@@ -48,6 +50,8 @@ class Hackathon {
    * The end Date of the Hackathon
    *
    * Must be after the startDate
+   *
+   * Can be null
    */
   endDate: Date;
 
@@ -79,15 +83,11 @@ class Hackathon {
       result.addFailure('description is null');
     }
 
-    if (!this.startDate) {
-      result.addFailure('startDate is null');
-    }
-
-    if (!this.endDate) {
-      result.addFailure('endDate is null');
-    }
-
-    if (this.startDate >= this.endDate) {
+    if (
+      this.startDate != null &&
+      this.endDate != null &&
+      this.startDate > this.endDate
+    ) {
       result.addFailure(
         `startDate (${this.startDate}) is after endDate (${this.endDate})`,
       );
