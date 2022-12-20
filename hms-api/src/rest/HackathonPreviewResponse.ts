@@ -49,19 +49,19 @@ class HackathonPreviewResponse {
     a: HackathonPreviewResponse,
     b: HackathonPreviewResponse,
   ): number {
-      let diff = a.startDate.getTime() - b.startDate.getTime();
+    let diff = a.startDate.getTime() - b.startDate.getTime();
 
-      if (diff) {
-        return diff;
-      }
+    if (diff) {
+      return diff;
+    }
 
-      diff = a.endDate.getTime() - b.endDate.getTime();
+    diff = a.endDate.getTime() - b.endDate.getTime();
 
-      if (diff) {
-        return diff;
-      }
+    if (diff) {
+      return diff;
+    }
 
-      return a.id.localeCompare(b.id);
+    return a.id.localeCompare(b.id);
   }
 }
 
