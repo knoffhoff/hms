@@ -83,7 +83,7 @@ export default function HeaderMenu({
   }
 
   const fullscreenMenu = (
-    <Group spacing={1}>
+    <Group spacing={5}>
       {links.map((link) => (
         <div key={link.link}>
           <Link
@@ -108,12 +108,16 @@ export default function HeaderMenu({
           <Text className={classes.link}>Hackathons</Text>
         </Menu.Target>
 
-        <Menu.Dropdown>
+        <Menu.Dropdown style={{
+              backgroundColor:
+                  theme.colorScheme === 'light' ? PRIMARY_COLOR_1 : PRIMARY_COLOR_1,
+            }} >
           {hackLinks.map((link) => (
             <Menu.Item
               key={link.label}
               component={Link}
               to={link.link}
+              className={classes.link}
               style={{
                 backgroundColor:
                   location.pathname.slice(1) === link.link
