@@ -28,6 +28,12 @@ describe('Hackathon Validation', () => {
       makeHackathon({description: ''} as HackathonData),
       false,
     ],
+    ['Null Start Date',
+      makeHackathon({startDate: null} as HackathonData),
+      false],
+    ['Null End Date',
+      makeHackathon({endDate: null} as HackathonData),
+      false],
   ])('%s', (testName, hackathon, failed) => {
     expect(hackathon.validate().hasFailed()).toBe(failed);
   });
