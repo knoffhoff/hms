@@ -166,7 +166,7 @@ const Layout = () => {
               header={
                 <HeaderMenu
                   links={menuLinks}
-                  hackLinks={hackLinks}
+                  hackathonLinks={hackLinks}
                   adminLinks={adminLinks}
                 />
               }

@@ -32,7 +32,7 @@ interface HeaderSearchProps {
     link: string
     label: string
   }[]
-  hackLinks: {
+  hackathonLinks: {
     link: string
     label: string
   }[]
@@ -47,7 +47,7 @@ const AZURE_REDIRECT_URL = process.env.REACT_APP_AZURE_REDIRECT_URL || ''
 
 export default function HeaderMenu({
   links,
-  hackLinks,
+  hackathonLinks,
   adminLinks,
 }: HeaderSearchProps) {
   const theme = useMantineColorScheme()
@@ -112,7 +112,7 @@ export default function HeaderMenu({
               backgroundColor:
                   theme.colorScheme === 'light' ? PRIMARY_COLOR_1 : PRIMARY_COLOR_1,
             }} >
-          {hackLinks.map((link) => (
+          {hackathonLinks.map((link) => (
             <Menu.Item
               key={link.label}
               component={Link}
@@ -167,7 +167,7 @@ export default function HeaderMenu({
             </Menu.Item>
           ))}
           <Menu.Divider />
-          {hackLinks.map((link) => (
+          {hackathonLinks.map((link) => (
             <Menu.Item key={link.label} component={Link} to={link.link}>
               {link.label}
             </Menu.Item>
