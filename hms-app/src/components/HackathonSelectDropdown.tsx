@@ -5,7 +5,7 @@ import { HackathonPreview, HackathonDropdownMode } from '../common/types'
 import { AlertCircle } from 'tabler-icons-react'
 import { useMsal } from '@azure/msal-react'
 import { useAppSelector } from '../hooks'
-import { NULL_DATE } from '../common/constants'
+import { VALID_DATE } from '../common/constants'
 
 type Props = {
   setHackathonId: (hackthonID: string) => void
@@ -52,7 +52,7 @@ export default function HackathonSelectDropdown({
         return hackathonList
           .filter(
             (hackathon) =>
-              hackathon.endDate < today && hackathon.endDate > NULL_DATE
+              hackathon.endDate < today && hackathon.endDate > VALID_DATE
           )
           .map((hackathon) => mapHackathonToSelectItem(hackathon))
       case HackathonDropdownMode.IdeaPortal:
@@ -61,7 +61,7 @@ export default function HackathonSelectDropdown({
           .map((hackathon) => mapHackathonToSelectItem(hackathon))
     }
     return hackathonList
-      .filter((hackathon) => hackathon.endDate > NULL_DATE)
+      .filter((hackathon) => hackathon.endDate > VALID_DATE)
       .map((hackathon) => mapHackathonToSelectItem(hackathon))
   }
 

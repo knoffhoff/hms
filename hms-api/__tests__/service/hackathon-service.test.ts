@@ -135,19 +135,19 @@ describe('Create Hackathon', () => {
     expect(mockPutHackathon).not.toHaveBeenCalled();
   });
 
-  // test('StartDate === EndDate', async () => {
-  //   const expected = randomHackathon();
-  //
-  //   await expect(
-  //     createHackathon(
-  //       expected.title,
-  //       expected.description,
-  //       expected.startDate,
-  //       expected.startDate,
-  //     ),
-  //   ).rejects.toThrow(ValidationError);
-  //   expect(mockPutHackathon).not.toHaveBeenCalled();
-  // });
+  test('StartDate === EndDate', async () => {
+    const expected = randomHackathon();
+
+    await expect(
+      createHackathon(
+        expected.title,
+        expected.description,
+        expected.startDate,
+        expected.startDate,
+      ),
+    ).rejects.toThrow(ValidationError);
+    expect(mockPutHackathon).not.toHaveBeenCalled();
+  });
 });
 
 describe('Edit Hackathon', () => {

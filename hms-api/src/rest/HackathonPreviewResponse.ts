@@ -49,7 +49,6 @@ class HackathonPreviewResponse {
     a: HackathonPreviewResponse,
     b: HackathonPreviewResponse,
   ): number {
-    if (a.startDate && b.startDate && a.endDate && b.endDate) {
       let diff = a.startDate.getTime() - b.startDate.getTime();
 
       if (diff) {
@@ -63,7 +62,6 @@ class HackathonPreviewResponse {
       }
 
       return a.id.localeCompare(b.id);
-    }
   }
 }
 

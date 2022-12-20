@@ -3,6 +3,8 @@
     "id": {"S": "e955fe4b-7ce7-4904-ae6f-22a8985f74a9"},
     "title": {"S": "No Date Hackathon"},
     "description": {"S": "This Hackathon has no Date and should represent the Ideation Portal"},
+    "startDate": {"S": "1970-02-02"},
+    "endDate": {"S": "1970-02-02"},
     "creationDate": {"S": "2022-12-13"},
     "participantIds": {"SS": [
       "16a43590-c7ba-4bb1-81d0-b726dea47b6e",
