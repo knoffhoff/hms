@@ -6,7 +6,7 @@ import {
 } from '../common/types'
 import IdeaCardList from '../components/lists/IdeaCardList'
 import React, { useContext, useEffect, useState } from 'react'
-import { Modal, Button, Group, Title } from '@mantine/core'
+import {Modal, Button, Group, Title, Checkbox} from '@mantine/core'
 import { getIdeaDetails, getIdeaList } from '../actions/IdeaActions'
 import { useMsal } from '@azure/msal-react'
 import { UserContext } from './Layout'
@@ -109,9 +109,7 @@ function IdeationPortal() {
       <Group position='center'>
         <Button onClick={() => setOpened(true)}>New Idea</Button>
 
-        <Button onClick={() => setShowUserIdeas(!showUserIdeas)}>
-          {showUserIdeas ? 'Show all ideas' : 'Show my ideas'}
-        </Button>
+        <Checkbox label={'Show my ideas'} checked={showUserIdeas} onChange={(event) => setShowUserIdeas(event.currentTarget.checked)} />
       </Group>
 
       {relevantIdeaList.length != null && (
