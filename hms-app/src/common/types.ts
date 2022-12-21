@@ -20,6 +20,10 @@ export enum IdeaCardType {
   Archive = 'ARCHIVE',
 }
 
+export enum IdeaFormType {
+    IdeaPortal_New = 'IDEA_PORTAL_NEW',
+}
+
 export type HackathonPreview = {
   id: string
   title: string

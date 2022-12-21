@@ -9,10 +9,10 @@ import {
 } from '@mantine/core'
 import React, { useEffect, useState } from 'react'
 import {
-  CategoryPreview,
-  HackathonPreview,
-  Idea,
-  SkillPreview,
+    CategoryPreview,
+    HackathonPreview,
+    Idea, IdeaFormType,
+    SkillPreview,
 } from '../../common/types'
 import { getListOfSkills } from '../../actions/SkillActions'
 import { getListOfCategories } from '../../actions/CategoryActions'
@@ -251,7 +251,7 @@ function IdeaForm(props: IProps) {
           <div>
             <Card.Section className={classes.borderSection}>
               <Text className={classes.title}>
-                Hackathon: {hackathon.title}
+                Create New Idea
               </Text>
             </Card.Section>
             <Card.Section className={classes.borderSection}>
@@ -313,7 +313,8 @@ function IdeaForm(props: IProps) {
               />
             </Card.Section>
 
-            <>
+              {context !== IdeaFormType.IdeaPortal_New && (
+                  <>
               <Card.Section className={classes.borderSection}>
                 <Checkbox.Group
                   label='Required skills'
@@ -340,6 +341,8 @@ function IdeaForm(props: IProps) {
                   {categoriesList}
                 </Radio.Group>
               </Card.Section>
+                  </>
+                )}
 
               <Group position='right' mt='xl'>
                 {context === 'edit' && (
@@ -369,7 +372,6 @@ function IdeaForm(props: IProps) {
                   </Button>
                 )}
               </Group>
-            </>
           </div>
         )}
       </Card>

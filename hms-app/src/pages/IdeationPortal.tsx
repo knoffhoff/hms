@@ -1,7 +1,7 @@
 import {
   HackathonPreview,
   Idea,
-  IdeaCardType,
+  IdeaCardType, IdeaFormType,
   IdeaPreview,
 } from '../common/types'
 import IdeaCardList from '../components/lists/IdeaCardList'
@@ -95,13 +95,12 @@ function IdeationPortal() {
         opened={opened}
         onClose={() => setOpened(false)}
         size={'70%'}
-        title='Create New Idea!'
       >
         <IdeaForm
           ideaId={'null'}
           hackathon={hackathon}
           ownerId={user?.id}
-          context={'new'}
+          context={IdeaFormType.IdeaPortal_New}
           reload={loadHackathonIdeas}
         />
       </Modal>
