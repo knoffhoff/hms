@@ -49,6 +49,12 @@ const Layout = () => {
   const [menuLinks, setMenuLinks] = useState<{ link: string; label: string }[]>(
     []
   )
+  const [hackLinks, setHackLinks] = useState<{ link: string; label: string }[]>(
+    []
+  )
+  const [adminLinks, setAdminLinks] = useState<
+    { link: string; label: string }[]
+  >([])
   const isAdmin = (user: UserSerializable) => {
     return user && user.roles && user.roles.includes('Admin')
   }
@@ -57,6 +63,9 @@ const Layout = () => {
     if (isAuthenticated && stateUser) {
       setMenuLinks([
         { link: '', label: 'Home' },
+        { link: 'ideation', label: 'Ideation Portal' },
+      ])
+      setHackLinks([
         {
           link: 'ideas',
           label: 'All Ideas',
@@ -64,9 +73,9 @@ const Layout = () => {
         { link: 'my-ideas', label: 'My Ideas' },
         { link: 'archive', label: 'Archive' },
       ])
+
       if (isAdmin(stateUser)) {
-        setMenuLinks([
-          { link: '', label: 'Home' },
+        setHackLinks([
           {
             link: 'ideas',
             label: 'All Ideas',
@@ -74,8 +83,8 @@ const Layout = () => {
           { link: 'my-ideas', label: 'My Ideas' },
           { link: 'archive', label: 'Archive' },
           { link: 'voting', label: 'Voting' },
-          { link: 'admin', label: 'Admin' },
         ])
+        setAdminLinks([{ link: 'admin', label: 'Admin' }])
       }
     }
   }, [stateUser])
@@ -154,7 +163,13 @@ const Layout = () => {
         {((isAuthenticated && user !== undefined) || !USE_AUTH) && (
           <UserContext.Provider value={user}>
             <AppShell
-              header={<HeaderMenu links={menuLinks} />}
+              header={
+                <HeaderMenu
+                  links={menuLinks}
+                  hackathonLinks={hackLinks}
+                  adminLinks={adminLinks}
+                />
+              }
               styles={(theme) => ({
                 main: {
                   backgroundColor:

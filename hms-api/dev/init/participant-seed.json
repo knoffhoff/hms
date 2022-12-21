@@ -45,5 +45,11 @@
   "userId": {"S": "9b184ff3-8b63-4807-a3c6-89973c126d75"},
   "hackathonId": {"S": "4eb2d486-c786-431e-a4fd-4c093ed30642"},
   "creationDate": {"S": "2022-03-07"}
+  },
+  {
+    "id": {"S": "e27fb873-fd63-4c43-a00b-4593a3662954"},
+    "userId": {"S": "629f52c9-df29-491b-82a4-bdd80806338d"},
+    "hackathonId": {"S": "e955fe4b-7ce7-4904-ae6f-22a8985f74a9"},
+    "creationDate": {"S": "2022-02-01"}
   }
 ]

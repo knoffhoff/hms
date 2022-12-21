@@ -180,5 +180,18 @@
       "requiredSkills": {"SS": ["c02e0957-610e-43eb-8c37-651afc208c8f"]},
       "categoryId": {"S": "52c0bbde-6360-451c-bf50-b56694f56053"},
       "creationDate": {"S": "2022-04-04"}
+    },
+    {
+    "id": {"S": "e64163a6-d20e-40d7-a69a-aba4ee82410e"},
+    "ownerId": {"S": "e27fb873-fd63-4c43-a00b-4593a3662954"},
+    "hackathonId": {"S": "e955fe4b-7ce7-4904-ae6f-22a8985f74a9"},
+    "participantIds": {"SS": ["e27fb873-fd63-4c43-a00b-4593a3662954"]},
+    "title": {"S": "Just a task no one wants to do"},
+    "description": {"S": "There's a voice that keeps on calling me. Down the road, that's where I'll always be. Every stop I make, I make a new friend. Can't stay for long, just turn around and I'm gone again. Maybe tomorrow, I'll want to settle down, Until tomorrow, I'll just keep moving on."},
+      "problem": {"S": "Just like whatever"},
+      "goal": {"S": "Just stuff"},
+      "requiredSkills": {"SS": ["c02e0957-610e-43eb-8c37-651afc208c8f"]},
+      "categoryId": {"S": "a1c60aba-f846-4208-b4b8-1caaec031aea"},
+      "creationDate": {"S": "2022-04-04"}
     }
 ]

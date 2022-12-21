@@ -11,7 +11,15 @@ export const getIdeaList = async (
 ) => {
   const idToken = await getIdToken(instance)
   const options = buildFetchOptions('GET', idToken)
-  return fetch(`${coreUrl}/hackathon/${hackathonID}/ideas`, options)
+  return fetch(`${coreUrl}/ideas/hackathon/${hackathonID}`, options)
+    .then((data) => data.json())
+    .catch((err) => console.log(err))
+}
+
+export const getAllIdeas = async (instance: IPublicClientApplication) => {
+  const idToken = await getIdToken(instance)
+  const options = buildFetchOptions('GET', idToken)
+  return fetch(`${coreUrl}/ideas`, options)
     .then((data) => data.json())
     .catch((err) => console.log(err))
 }

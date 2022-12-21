@@ -34,5 +34,11 @@
     "title": {"S": "A pretty bland category"},
     "description": {"S": "Oh good, the last category to write a description for"},
     "hackathonId": {"S": "a1c60aba-f846-4208-b4b8-1caaec031aea"}
+  },
+  {
+    "id": {"S": "a1c60aba-f846-4208-b4b8-1caaec031aea"},
+    "title": {"S": "hihihihihi"},
+    "description": {"S": "hihihihihi"},
+    "hackathonId": {"S": "e955fe4b-7ce7-4904-ae6f-22a8985f74a9"}
   }
 ]

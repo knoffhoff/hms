@@ -8,9 +8,10 @@ POST {{host}}/hackathon
 Content-Type: application/json
 
 {
-  "title": "Hackweek2022",
-  "startDate": "2022-09-01",
-  "endDate": "2022-09-05"
+  "title": "Test Null Hackathon",
+  "description": "",
+  "startDate": "1970-02-02",
+  "endDate": "1970-12-31"
 }
 
 ###

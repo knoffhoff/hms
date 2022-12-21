@@ -44,6 +44,21 @@ export async function listIdeasForHackathon(
   );
 }
 
+export async function listIdeasAll(): Promise<Idea[]> {
+  const output = await dynamoDBClient.send(
+    new ScanCommand({
+      TableName: process.env.IDEA_TABLE,
+    }),
+  );
+
+  const items = output.Items;
+  if (items) {
+    return items.map((item) => itemToIdea(item));
+  }
+
+  throw new NotFoundError('No ideas found');
+}
+
 export async function listIdeasForCategory(categoryId: Uuid): Promise<Idea[]> {
   const output = await dynamoDBClient.send(
     new QueryCommand({

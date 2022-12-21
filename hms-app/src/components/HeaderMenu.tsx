@@ -10,6 +10,7 @@ import {
   Avatar,
   Button,
   useMantineColorScheme,
+  Text,
 } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 import { SwitchToggle } from './ThemeSwitchToggle'
@@ -30,14 +31,25 @@ interface HeaderSearchProps {
   links: {
     link: string
     label: string
-    links?: { link: string; label: string }[]
+  }[]
+  hackathonLinks: {
+    link: string
+    label: string
+  }[]
+  adminLinks: {
+    link: string
+    label: string
   }[]
 }
 
 const AZURE_ACCOUNT_ID = process.env.REACT_APP_AZURE_ACCOUNT_ID || ''
 const AZURE_REDIRECT_URL = process.env.REACT_APP_AZURE_REDIRECT_URL || ''
 
-export default function HeaderMenu({ links }: HeaderSearchProps) {
+export default function HeaderMenu({
+  links,
+  hackathonLinks,
+  adminLinks,
+}: HeaderSearchProps) {
   const theme = useMantineColorScheme()
   const [profilePhoto, setProfilePhoto] = useState('')
   const [opened, handlers] = useDisclosure(false)
@@ -70,25 +82,77 @@ export default function HeaderMenu({ links }: HeaderSearchProps) {
     return initials
   }
 
-  const fullscreenMenu = links.map((link) => {
-    return (
-      <Link
-        key={link.label}
-        to={link.link}
-        className={classes.link}
-        style={{
-          backgroundColor:
-            location.pathname.slice(1) === link.link
-              ? theme.colorScheme === 'light'
-                ? HEADER_ACTIVE_COLOR_LIGHT
-                : HEADER_ACTIVE_COLOR_DARK
-              : undefined,
-        }}
-      >
-        {link.label}
-      </Link>
-    )
-  })
+  const fullscreenMenu = (
+    <Group spacing={5}>
+      {links.map((link) => (
+        <div key={link.link}>
+          <Link
+            key={link.label}
+            to={link.link}
+            className={classes.link}
+            style={{
+              backgroundColor:
+                location.pathname.slice(1) === link.link
+                  ? theme.colorScheme === 'light'
+                    ? HEADER_ACTIVE_COLOR_LIGHT
+                    : HEADER_ACTIVE_COLOR_DARK
+                  : undefined,
+            }}
+          >
+            {link.label}
+          </Link>
+        </div>
+      ))}
+      <Menu>
+        <Menu.Target>
+          <Text className={classes.link}>Hackathons</Text>
+        </Menu.Target>
+
+        <Menu.Dropdown style={{
+              backgroundColor:
+                  theme.colorScheme === 'light' ? PRIMARY_COLOR_1 : PRIMARY_COLOR_1,
+            }} >
+          {hackathonLinks.map((link) => (
+            <Menu.Item
+              key={link.label}
+              component={Link}
+              to={link.link}
+              className={classes.link}
+              style={{
+                backgroundColor:
+                  location.pathname.slice(1) === link.link
+                    ? theme.colorScheme === 'light'
+                      ? HEADER_ACTIVE_COLOR_LIGHT
+                      : HEADER_ACTIVE_COLOR_DARK
+                    : undefined,
+              }}
+            >
+              {link.label}
+            </Menu.Item>
+          ))}
+        </Menu.Dropdown>
+      </Menu>
+      {adminLinks.map((link) => (
+        <div key={link.link}>
+          <Link
+            key={link.label}
+            to={link.link}
+            className={classes.link}
+            style={{
+              backgroundColor:
+                location.pathname.slice(1) === link.link
+                  ? theme.colorScheme === 'light'
+                    ? HEADER_ACTIVE_COLOR_LIGHT
+                    : HEADER_ACTIVE_COLOR_DARK
+                  : undefined,
+            }}
+          >
+            {link.label}
+          </Link>
+        </div>
+      ))}
+    </Group>
+  )
 
   const smallScreenMenu = (
     <div className={classes.headerBurger}>
@@ -101,6 +165,20 @@ export default function HeaderMenu({ links }: HeaderSearchProps) {
             <Menu.Item key={link.label} component={Link} to={link.link}>
               {link.label}
             </Menu.Item>
+          ))}
+          <Menu.Divider />
+          {hackathonLinks.map((link) => (
+            <Menu.Item key={link.label} component={Link} to={link.link}>
+              {link.label}
+            </Menu.Item>
+          ))}
+          <Menu.Divider />
+          {adminLinks.map((link) => (
+            <div key={link.link}>
+              <Link key={link.label} to={link.link} className={classes.link}>
+                {link.label}
+              </Link>
+            </div>
           ))}
           <SwitchToggle />
         </Menu.Dropdown>
@@ -120,7 +198,7 @@ export default function HeaderMenu({ links }: HeaderSearchProps) {
         <div className={classes.header}>
           <Group spacing={1}>
             <Image height={40} width={120} src={LOGO} />{' '}
-            <h1 style={{ color: TEXT_COLOR_WHITE }}>Hackweek</h1>
+            <h1 style={{ color: TEXT_COLOR_WHITE }}>Ideation Portal</h1>
           </Group>
           <Group spacing={5} className={classes.headerLinks}>
             <SwitchToggle />

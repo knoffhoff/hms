@@ -13,6 +13,7 @@ import Presentations from './pages/Presentations'
 import FinalPresentations from './pages/FinalPresentations'
 import { useAppSelector } from './hooks'
 import { UserSerializable } from './common/redux/userSlice'
+import IdeationPortal from './pages/IdeationPortal'
 
 function App() {
   const stateUser = useAppSelector((state) => state.user.user)
@@ -29,6 +30,7 @@ function App() {
         <Route path='archive' element={<Archive />} />
         {isAdmin(stateUser) && (
           <>
+            <Route path='ideation' element={<IdeationPortal />} />
             <Route path='voting' element={<Voting />} />
             <Route path='admin' element={<Admin />} />
             <Route path={'presentations'} element={<Presentations />} />

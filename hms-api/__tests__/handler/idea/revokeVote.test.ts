@@ -1,7 +1,6 @@
 import * as ideaService from '../../../src/service/idea-service';
 import Uuid, {uuid} from '../../../src/util/Uuid';
 import {revokeVote} from '../../../src/handler/idea/revokeVote';
-import IdeaJoinResponse from '../../../src/rest/IdeaJoinResponse';
 import IdeaVoteResponse from '../../../src/rest/IdeaVoteResponse';
 
 const mockRemoveVoter = jest.fn();
