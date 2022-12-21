@@ -57,7 +57,7 @@ export default function MyIdeas() {
 
   const filteredIdeas = relevantIdeas.filter((item) => {
     const userId = user?.id || ''
-    return item.owner?.user.id.includes(userId)
+    return item.owner?.id.includes(userId)
   })
 
   const userParticipant = () => {
@@ -133,7 +133,7 @@ export default function MyIdeas() {
                         <IdeaForm
                           ideaId={'null'}
                           hackathon={hackathonData}
-                          participantId={participantId}
+                          ownerId={user?.id}
                           context={'new'}
                           reload={loadSelectedHackathon}
                         />

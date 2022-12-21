@@ -141,29 +141,6 @@ describe('Create Idea', () => {
     ).rejects.toThrow(ValidationError);
   });
 
-  test('Missing Participant', async () => {
-    mockParticipantExists.mockResolvedValue(false);
-    mockHackathonExists.mockResolvedValue(true);
-    mockCategoryExists.mockResolvedValue(true);
-    mockSkillExists.mockResolvedValue(true);
-
-    await expect(
-      createIdea(
-        uuid(),
-        uuid(),
-        'title',
-        'description',
-        'problem',
-        'goal',
-        [uuid()],
-        uuid(),
-      ),
-    ).rejects.toThrow(ReferenceNotFoundError);
-
-    expect(mockPutIdea).not.toHaveBeenCalled();
-    expect(mockDeleteIdea).not.toHaveBeenCalled();
-  });
-
   test('Missing Hackathon', async () => {
     mockParticipantExists.mockResolvedValue(true);
     mockHackathonExists.mockResolvedValue(false);
@@ -456,7 +433,6 @@ describe('Get Idea Response', () => {
 
     const expected = IdeaResponse.from(
       idea,
-      ownerParticipant,
       ownerUser,
       hackathon,
       [ownerParticipant, participant],
@@ -468,7 +444,6 @@ describe('Get Idea Response', () => {
     );
 
     mockGetIdea.mockResolvedValue(idea);
-    mockGetParticipant.mockResolvedValue(ownerParticipant);
     mockGetUser.mockResolvedValue(ownerUser);
     mockGetParticipants.mockResolvedValue([ownerParticipant, participant]);
     mockGetUsers.mockResolvedValue([ownerUser, user]);
@@ -478,8 +453,7 @@ describe('Get Idea Response', () => {
 
     expect(await getIdeaResponse(idea.id)).toStrictEqual(expected);
     expect(mockGetIdea).toHaveBeenCalledWith(idea.id);
-    expect(mockGetParticipant).toHaveBeenCalledWith(idea.ownerId);
-    expect(mockGetUser).toHaveBeenCalledWith(ownerParticipant.userId);
+    expect(mockGetUser).toHaveBeenCalledWith(idea.ownerId);
     expect(mockGetParticipants).toHaveBeenCalledWith(idea.participantIds);
     expect(mockGetUsers).toHaveBeenCalledWith([ownerUser.id, user.id]);
     expect(mockGetHackathon).toHaveBeenCalledWith(idea.hackathonId);
@@ -490,9 +464,6 @@ describe('Get Idea Response', () => {
   test('Missing Category', async () => {
     const idea = randomIdea();
     const ownerUser = randomUser();
-    const ownerParticipant = makeParticipant({
-      userId: ownerUser.id,
-    } as ParticipantData);
     const user = randomUser();
     const participant = makeParticipant({userId: user.id} as ParticipantData);
     const hackathon = randomHackathon();
@@ -501,9 +472,8 @@ describe('Get Idea Response', () => {
     const skill3 = randomSkill();
 
     mockGetIdea.mockResolvedValue(idea);
-    mockGetParticipant.mockResolvedValue(ownerParticipant);
     mockGetUser.mockResolvedValue(ownerUser);
-    mockGetParticipants.mockResolvedValue([ownerParticipant, participant]);
+    mockGetParticipants.mockResolvedValue([ownerUser, participant]);
     mockGetUsers.mockResolvedValue([ownerUser, user]);
     mockGetHackathon.mockResolvedValue(hackathon);
     mockGetSkills.mockResolvedValue([skill1, skill2, skill3]);
@@ -515,10 +485,9 @@ describe('Get Idea Response', () => {
       ReferenceNotFoundError,
     );
     expect(mockGetIdea).toHaveBeenCalledWith(idea.id);
-    expect(mockGetParticipant).toHaveBeenCalledWith(idea.ownerId);
-    expect(mockGetUser).toHaveBeenCalledWith(ownerParticipant.userId);
+    expect(mockGetUser).toHaveBeenCalledWith(idea.ownerId);
     expect(mockGetParticipants).toHaveBeenCalledWith(idea.participantIds);
-    expect(mockGetUsers).toHaveBeenCalledWith([ownerUser.id, user.id]);
+    expect(mockGetUsers).toHaveBeenCalledWith([undefined, user.id]);
     expect(mockGetHackathon).toHaveBeenCalledWith(idea.hackathonId);
     expect(mockGetSkills).toHaveBeenCalledWith(idea.requiredSkills);
     expect(mockGetCategory).toHaveBeenCalledWith(idea.categoryId);
@@ -527,17 +496,14 @@ describe('Get Idea Response', () => {
   test('Missing Skills', async () => {
     const idea = randomIdea();
     const ownerUser = randomUser();
-    const ownerParticipant = makeParticipant({
-      userId: ownerUser.id,
-    } as ParticipantData);
     const user = randomUser();
     const participant = makeParticipant({userId: user.id} as ParticipantData);
     const hackathon = randomHackathon();
 
     mockGetIdea.mockResolvedValue(idea);
-    mockGetParticipant.mockResolvedValue(ownerParticipant);
+    mockGetParticipant.mockResolvedValue(ownerUser);
     mockGetUser.mockResolvedValue(ownerUser);
-    mockGetParticipants.mockResolvedValue([ownerParticipant, participant]);
+    mockGetParticipants.mockResolvedValue([ownerUser, participant]);
     mockGetUsers.mockResolvedValue([ownerUser, user]);
     mockGetHackathon.mockResolvedValue(hackathon);
     mockGetSkills.mockImplementation(() => {
@@ -548,10 +514,9 @@ describe('Get Idea Response', () => {
       ReferenceNotFoundError,
     );
     expect(mockGetIdea).toHaveBeenCalledWith(idea.id);
-    expect(mockGetParticipant).toHaveBeenCalledWith(idea.ownerId);
-    expect(mockGetUser).toHaveBeenCalledWith(ownerParticipant.userId);
+    expect(mockGetUser).toHaveBeenCalledWith(idea.ownerId);
     expect(mockGetParticipants).toHaveBeenCalledWith(idea.participantIds);
-    expect(mockGetUsers).toHaveBeenCalledWith([ownerUser.id, user.id]);
+    expect(mockGetUsers).toHaveBeenCalledWith([undefined, user.id]);
     expect(mockGetHackathon).toHaveBeenCalledWith(idea.hackathonId);
     expect(mockGetSkills).toHaveBeenCalledWith(idea.requiredSkills);
     expect(mockGetCategory).not.toHaveBeenCalled();
@@ -560,16 +525,12 @@ describe('Get Idea Response', () => {
   test('Missing Hackathon', async () => {
     const idea = randomIdea();
     const ownerUser = randomUser();
-    const ownerParticipant = makeParticipant({
-      userId: ownerUser.id,
-    } as ParticipantData);
     const user = randomUser();
     const participant = makeParticipant({userId: user.id} as ParticipantData);
 
     mockGetIdea.mockResolvedValue(idea);
-    mockGetParticipant.mockResolvedValue(ownerParticipant);
     mockGetUser.mockResolvedValue(ownerUser);
-    mockGetParticipants.mockResolvedValue([ownerParticipant, participant]);
+    mockGetParticipants.mockResolvedValue([ownerUser, participant]);
     mockGetUsers.mockResolvedValue([ownerUser, user]);
     mockGetHackathon.mockImplementation(() => {
       throw new NotFoundError('That thing is missing');
@@ -579,10 +540,9 @@ describe('Get Idea Response', () => {
       ReferenceNotFoundError,
     );
     expect(mockGetIdea).toHaveBeenCalledWith(idea.id);
-    expect(mockGetParticipant).toHaveBeenCalledWith(idea.ownerId);
-    expect(mockGetUser).toHaveBeenCalledWith(ownerParticipant.userId);
+    expect(mockGetUser).toHaveBeenCalledWith(idea.ownerId);
     expect(mockGetParticipants).toHaveBeenCalledWith(idea.participantIds);
-    expect(mockGetUsers).toHaveBeenCalledWith([ownerUser.id, user.id]);
+    expect(mockGetUsers).toHaveBeenCalledWith([undefined, user.id]);
     expect(mockGetHackathon).toHaveBeenCalledWith(idea.hackathonId);
     expect(mockGetSkills).not.toHaveBeenCalled();
     expect(mockGetCategory).not.toHaveBeenCalled();
@@ -591,16 +551,12 @@ describe('Get Idea Response', () => {
   test('Missing Users', async () => {
     const idea = randomIdea();
     const ownerUser = randomUser();
-    const ownerParticipant = makeParticipant({
-      userId: ownerUser.id,
-    } as ParticipantData);
     const user = randomUser();
     const participant = makeParticipant({userId: user.id} as ParticipantData);
 
     mockGetIdea.mockResolvedValue(idea);
-    mockGetParticipant.mockResolvedValue(ownerParticipant);
     mockGetUser.mockResolvedValue(ownerUser);
-    mockGetParticipants.mockResolvedValue([ownerParticipant, participant]);
+    mockGetParticipants.mockResolvedValue([ownerUser, participant]);
     mockGetUsers.mockImplementation(() => {
       throw new NotFoundError('That thing is missing');
     });
@@ -609,10 +565,9 @@ describe('Get Idea Response', () => {
       ReferenceNotFoundError,
     );
     expect(mockGetIdea).toHaveBeenCalledWith(idea.id);
-    expect(mockGetParticipant).toHaveBeenCalledWith(idea.ownerId);
-    expect(mockGetUser).toHaveBeenCalledWith(ownerParticipant.userId);
+    expect(mockGetUser).toHaveBeenCalledWith(idea.ownerId);
     expect(mockGetParticipants).toHaveBeenCalledWith(idea.participantIds);
-    expect(mockGetUsers).toHaveBeenCalledWith([ownerUser.id, user.id]);
+    expect(mockGetUsers).toHaveBeenCalledWith([undefined, user.id]);
     expect(mockGetHackathon).not.toHaveBeenCalled();
     expect(mockGetSkills).not.toHaveBeenCalled();
     expect(mockGetCategory).not.toHaveBeenCalled();
@@ -621,12 +576,8 @@ describe('Get Idea Response', () => {
   test('Missing Participants', async () => {
     const idea = randomIdea();
     const ownerUser = randomUser();
-    const ownerParticipant = makeParticipant({
-      userId: ownerUser.id,
-    } as ParticipantData);
 
     mockGetIdea.mockResolvedValue(idea);
-    mockGetParticipant.mockResolvedValue(ownerParticipant);
     mockGetUser.mockResolvedValue(ownerUser);
     mockGetParticipants.mockImplementation(() => {
       throw new NotFoundError('That thing is missing');
@@ -636,8 +587,7 @@ describe('Get Idea Response', () => {
       ReferenceNotFoundError,
     );
     expect(mockGetIdea).toHaveBeenCalledWith(idea.id);
-    expect(mockGetParticipant).toHaveBeenCalledWith(idea.ownerId);
-    expect(mockGetUser).toHaveBeenCalledWith(ownerParticipant.userId);
+    expect(mockGetUser).toHaveBeenCalledWith(idea.ownerId);
     expect(mockGetParticipants).toHaveBeenCalledWith(idea.participantIds);
     expect(mockGetUsers).not.toHaveBeenCalled();
     expect(mockGetHackathon).not.toHaveBeenCalled();
@@ -659,8 +609,7 @@ describe('Get Idea Response', () => {
       ReferenceNotFoundError,
     );
     expect(mockGetIdea).toHaveBeenCalledWith(idea.id);
-    expect(mockGetParticipant).toHaveBeenCalledWith(idea.ownerId);
-    expect(mockGetUser).toHaveBeenCalledWith(ownerParticipant.userId);
+    expect(mockGetUser).toHaveBeenCalledWith(idea.ownerId);
     expect(mockGetParticipants).not.toHaveBeenCalled();
     expect(mockGetUsers).not.toHaveBeenCalled();
     expect(mockGetHackathon).not.toHaveBeenCalled();
@@ -672,7 +621,7 @@ describe('Get Idea Response', () => {
     const idea = randomIdea();
 
     mockGetIdea.mockResolvedValue(idea);
-    mockGetParticipant.mockImplementation(() => {
+    mockGetUser.mockImplementation(() => {
       throw new NotFoundError('That thing is missing');
     });
 
@@ -680,8 +629,7 @@ describe('Get Idea Response', () => {
       ReferenceNotFoundError,
     );
     expect(mockGetIdea).toHaveBeenCalledWith(idea.id);
-    expect(mockGetParticipant).toHaveBeenCalledWith(idea.ownerId);
-    expect(mockGetUser).not.toHaveBeenCalled();
+    expect(mockGetUser).toHaveBeenCalledWith(idea.ownerId);
     expect(mockGetParticipants).not.toHaveBeenCalled();
     expect(mockGetUsers).not.toHaveBeenCalled();
     expect(mockGetHackathon).not.toHaveBeenCalled();

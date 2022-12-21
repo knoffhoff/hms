@@ -165,7 +165,7 @@ export default function Presentations() {
         <Title
           order={2}
           className={classes.name}
-        >{`by ${idea.owner?.user.firstName} ${idea.owner?.user.lastName}`}</Title>
+        >{`by ${idea.owner?.firstName} ${idea.owner?.lastName}`}</Title>
         <Text className={`${classes.text} ${classes.description}`} mt={30}>
           {idea.description}
         </Text>

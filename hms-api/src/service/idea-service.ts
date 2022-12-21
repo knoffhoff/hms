@@ -38,6 +38,7 @@ import NotFoundError from '../error/NotFoundError';
 import InvalidStateError from '../error/InvalidStateError';
 import ValidationError from '../error/ValidationError';
 import IdeaListAllResponse from '../rest/IdeaListAllResponse';
+import user from "../repository/domain/User";
 
 export async function createIdea(
   ownerId: Uuid,
@@ -49,13 +50,7 @@ export async function createIdea(
   requiredSkills: Uuid[],
   categoryId: Uuid,
 ): Promise<Idea> {
-  if (!(await participantExistsForHackathon(ownerId, hackathonId))) {
-    throw new ReferenceNotFoundError(
-      `Cannot create Idea, ` +
-        `Owner (Participant) with id: ${ownerId} does not exist ` +
-        `in Hackathon with id: ${hackathonId}`,
-    );
-  } else if (!(await hackathonExists(hackathonId))) {
+  if (!(await hackathonExists(hackathonId))) {
     throw new ReferenceNotFoundError(
       `Cannot create Idea, ` +
         `Hackathon with id: ${hackathonId} does not exist`,
@@ -147,25 +142,17 @@ export async function editIdea(
 
 export async function getIdeaResponse(id: Uuid): Promise<IdeaResponse> {
   const idea = await getIdea(id);
-
-  let ownerParticipant;
-  try {
-    ownerParticipant = await getParticipant(idea.ownerId);
-  } catch (e) {
-    throw new ReferenceNotFoundError(
-      `Cannot get Idea with id ${id}, ` +
-        `unable to get owner Participant with id: ${idea.ownerId}`,
-    );
-  }
+  console.log('owner id', idea.ownerId)
+  console.log('idea', idea)
 
   let ownerUser;
   try {
-    ownerUser = await getUser(ownerParticipant.userId);
+    ownerUser = await getUser(idea.ownerId);
   } catch (e) {
     throw new ReferenceNotFoundError(
       `Cannot get Idea with id: ${id}, ` +
-        `unable to get owner User with id: ${ownerParticipant.userId} ` +
-        `for Participant with id: ${ownerParticipant.id}`,
+        `unable to get owner User with id: ${idea.ownerId} ` +
+        `for Participant with id: ${idea.ownerId}`,
     );
   }
 
@@ -243,7 +230,6 @@ export async function getIdeaResponse(id: Uuid): Promise<IdeaResponse> {
 
   return IdeaResponse.from(
     idea,
-    ownerParticipant,
     ownerUser,
     hackathon,
     participants,

@@ -262,7 +262,7 @@ function AllIdeas() {
                 <IdeaCardList
                   ideas={filteredIdeas}
                   columnSize={6}
-                  type={IdeaCardType.IdeaPortal}
+                  type={IdeaCardType.AllIdeas}
                   isLoading={isLoading}
                 />
               </>

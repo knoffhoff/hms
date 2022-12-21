@@ -42,7 +42,7 @@ export default function FinalPresentations({ idea, classes }: IProps) {
       <Title
         order={2}
         className={classes.name}
-      >{`by ${idea.owner?.user.firstName} ${idea.owner?.user.lastName}`}</Title>
+      >{`by ${idea.owner?.firstName} ${idea.owner?.lastName}`}</Title>
       {(videoUrl && (
         <ReactPlayer url={videoUrl} width={'100%'} height={'70%'} />
       )) || <Title>No video provided</Title>}

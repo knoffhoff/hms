@@ -12,6 +12,7 @@ import { useMsal } from '@azure/msal-react'
 import { UserContext } from './Layout'
 import { getListOfHackathons } from '../actions/HackathonActions'
 import IdeaForm from '../components/input-forms/IdeaForm'
+import {VALID_DATE} from '../common/constants';
 
 function IdeationPortal() {
   const { instance } = useMsal()
@@ -23,11 +24,12 @@ function IdeationPortal() {
   const [hackathon, setHackathon] = useState<HackathonPreview>(
     {} as HackathonPreview
   )
+  const [ showUserIdeas, setShowUserIdeas ] = useState(false)
 
   const loadHackathons = () => {
     getListOfHackathons(instance).then((data) => {
       const upcomingHackathon = data.find(
-        (hackathon) => hackathon.startDate === null
+        (hackathon) => hackathon.startDate < VALID_DATE
       )
       if (upcomingHackathon) {
         setHackathon(upcomingHackathon)
@@ -52,6 +54,11 @@ function IdeationPortal() {
       })
     }
   }
+
+  const filteredIdeas = relevantIdeaList.filter((item) => {
+    const userId = user?.id || ''
+    return item.owner?.id.includes(userId)
+  })
 
   useEffect(() => {
     loadHackathons()
@@ -88,32 +95,43 @@ function IdeationPortal() {
         opened={opened}
         onClose={() => setOpened(false)}
         size={'70%'}
-        title='Whoop whoop!'
+        title='Create New Idea!'
       >
         <IdeaForm
           ideaId={'null'}
           hackathon={hackathon}
-          participantId={'1'}
+          ownerId={user?.id}
           context={'new'}
           reload={loadHackathonIdeas}
         />
       </Modal>
 
       <Group position='center'>
-        <Button onClick={() => setOpened(true)}>Open Modal</Button>
+        <Button onClick={() => setOpened(true)}>New Idea</Button>
+
+        <Button onClick={() => setShowUserIdeas(!showUserIdeas)}>
+          {showUserIdeas ? 'Show all ideas' : 'Show my ideas'}
+        </Button>
       </Group>
 
       {relevantIdeaList.length != null && (
         <div>
+          {showUserIdeas ? (
           <Title order={2} mt={50} mb={30}>
-            submitted ideas: {relevantIdeaList.length}
-          </Title>
+            your submitted ideas: {filteredIdeas.length}
+          </Title>) : (
+          <Title order={2} mt={50} mb={30}>
+            all submitted ideas: {relevantIdeaList.length}
+            </Title>)
+          }
+
           <IdeaCardList
-            ideas={relevantIdeaList}
+            ideas={showUserIdeas ? filteredIdeas : relevantIdeaList}
             columnSize={6}
             type={IdeaCardType.IdeaPortal}
             isLoading={false}
           />
+
         </div>
       )}
     </>

@@ -15,6 +15,7 @@ export enum IdeaCardType {
   Owner = 'OWNER',
   Admin = 'ADMIN',
   Voting = 'VOTING',
+  AllIdeas = 'ALL_IDEAS',
   IdeaPortal = 'IDEA_PORTAL',
   Archive = 'ARCHIVE',
 }
@@ -97,7 +98,7 @@ const parseIdeaPreviews = (jsonArray: any[]): IdeaPreview[] =>
 
 export type Idea = {
   id: string
-  owner?: OwnerPreview
+  owner?: UserPreview
   hackathon?: HackathonPreview
   participants?: ParticipantPreview[]
   voters?: ParticipantPreview[]
@@ -196,9 +197,4 @@ export type Skill = {
   id: string
   name: string
   description: string
-}
-
-export type OwnerPreview = {
-  id: string
-  user: UserPreview
 }

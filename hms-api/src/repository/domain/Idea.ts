@@ -23,7 +23,7 @@ class Idea {
   id: Uuid;
 
   /**
-   * The ID of the Participant which owns (created) the Idea
+   * The ID of the User which owns (created) the Idea
    */
   ownerId: Uuid;
 
@@ -33,7 +33,7 @@ class Idea {
   hackathonId: Uuid;
 
   /**
-   *The IDs of the Participants that will work on the Idea
+   *The User IDs of the Participants that will work on the Idea
    *
    * Can be empty
    */
