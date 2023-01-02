@@ -59,6 +59,10 @@ export default function HackathonSelectDropdown({
         return hackathonList
           .filter((hackathon) => hackathon.endDate >= today)
           .map((hackathon) => mapHackathonToSelectItem(hackathon))
+      case HackathonDropdownMode.MoveModal:
+        return hackathonList.map((hackathon) =>
+          mapHackathonToSelectItem(hackathon)
+        )
     }
     return hackathonList
       .filter((hackathon) => hackathon.endDate > VALID_DATE)
@@ -66,22 +70,29 @@ export default function HackathonSelectDropdown({
   }
 
   function mapHackathonToSelectItem(hackathon: HackathonPreview): SelectItem {
-    return {
-      value: hackathon.id,
-      label:
-        hackathon.title +
-        ' ' +
-        hackathon.startDate.toLocaleString(undefined, {
-          year: 'numeric',
-          month: '2-digit',
-          day: '2-digit',
-        }) +
-        '-' +
-        hackathon.endDate.toLocaleString(undefined, {
-          year: 'numeric',
-          month: '2-digit',
-          day: '2-digit',
-        }),
+    if (hackathon.endDate < VALID_DATE) {
+      return {
+        value: hackathon.id,
+        label: hackathon.title,
+      }
+    } else {
+      return {
+        value: hackathon.id,
+        label:
+          hackathon.title +
+          ' ' +
+          hackathon.startDate.toLocaleString(undefined, {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+          }) +
+          '-' +
+          hackathon.endDate.toLocaleString(undefined, {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+          }),
+      }
     }
   }
 

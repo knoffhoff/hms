@@ -33,12 +33,6 @@ export default function MoveIdeaModal({ idea }: IProps) {
   const [opened, setOpened] = useState(false)
   const [buttonIsDisabled, setButtonIsDisabled] = useState(true)
   const [selectedHackathonId, setSelectedHackathonId] = useState('')
-  const [availableSkills, setAvailableSkills] = useState({
-    skills: [] as SkillPreview[],
-  })
-  const [selectedSkills, setSelectedSkills] = useState<string[]>(
-    idea?.requiredSkills?.map((skill) => skill.id) || []
-  )
   const [availableCategories, setAvailableCategories] = useState({
     categories: [] as CategoryPreview[],
   })
@@ -55,19 +49,6 @@ export default function MoveIdeaModal({ idea }: IProps) {
     creationDate: idea.creationDate || new Date(),
   })
 
-  const loadAvailableSkills = () => {
-    getListOfSkills(instance).then((data) => {
-      let skills = [] as SkillPreview[]
-      if (data && data.skills) {
-        skills = data.skills
-      }
-      setAvailableSkills({
-        ...availableSkills,
-        skills,
-      })
-    })
-  }
-
   const loadAvailableCategories = () => {
     if (selectedHackathonId !== '') {
       getListOfCategories(instance, selectedHackathonId).then((data) => {
@@ -79,13 +60,13 @@ export default function MoveIdeaModal({ idea }: IProps) {
     }
   }
 
-  const skillsList = availableSkills.skills.map((skill) => [
-    <Checkbox value={skill.id} label={skill.name} key={skill.id} />,
-  ])
-
   const categoriesList = availableCategories?.categories?.map((category) => [
     <Radio value={category.id} label={category.title} key={category.id} />,
   ])
+
+  const mapSkills = idea.requiredSkills
+    ? idea.requiredSkills.map((skill) => skill.name)
+    : []
 
   function editThisIdea(event: React.MouseEvent<HTMLButtonElement>) {
     event.preventDefault()
@@ -97,44 +78,41 @@ export default function MoveIdeaModal({ idea }: IProps) {
       message: undefined,
       autoClose: false,
     })
-    editIdea(instance, idea.id, ideaText, selectedSkills, [
-      selectedCategory,
-    ]).then((response) => {
-      setButtonIsDisabled(false)
-      if (setOpened) {
-        setOpened(false)
+    editIdea(instance, idea.id, ideaText, mapSkills, [selectedCategory]).then(
+      (response) => {
+        setButtonIsDisabled(false)
+        if (setOpened) {
+          setOpened(false)
+        }
+        if (JSON.stringify(response).toString().includes('error')) {
+          updateNotification({
+            id: 'idea-load',
+            color: 'red',
+            title: 'Failed to Move idea',
+            message: undefined,
+            icon: <X />,
+            autoClose: 2000,
+          })
+        } else {
+          updateNotification({
+            id: 'idea-load',
+            color: 'teal',
+            title: `Moved "${ideaText.title}"`,
+            message: undefined,
+            icon: <Check />,
+            autoClose: 2000,
+          })
+        }
       }
-      if (JSON.stringify(response).toString().includes('error')) {
-        updateNotification({
-          id: 'idea-load',
-          color: 'red',
-          title: 'Failed to Move idea',
-          message: undefined,
-          icon: <X />,
-          autoClose: 2000,
-        })
-      } else {
-        updateNotification({
-          id: 'idea-load',
-          color: 'teal',
-          title: `Moved "${ideaText.title}"`,
-          message: undefined,
-          icon: <Check />,
-          autoClose: 2000,
-        })
-      }
-    })
+    )
   }
 
   useEffect(() => {
-    loadAvailableSkills()
     loadAvailableCategories()
     setSelectedCategory('')
-    setSelectedSkills([])
   }, [])
 
   useEffect(() => {
-    loadAvailableSkills()
     loadAvailableCategories()
     setIdeaText({
       ...ideaText,
@@ -143,10 +121,10 @@ export default function MoveIdeaModal({ idea }: IProps) {
   }, [selectedHackathonId])
 
   useEffect(() => {
-    if (selectedCategory && selectedSkills.length > 0) {
+    if (selectedCategory) {
       setButtonIsDisabled(false)
     }
-  }, [selectedSkills, selectedCategory])
+  }, [selectedCategory])
 
   return (
     <>
@@ -157,43 +135,32 @@ export default function MoveIdeaModal({ idea }: IProps) {
 
         <Text size={'lg'}>Select the target hackathon here</Text>
         <ArrowDown size={'50px'} />
+
         <HackathonSelectDropdown
           setHackathonId={setSelectedHackathonId}
-          context={HackathonDropdownMode.IdeaPortal}
+          context={HackathonDropdownMode.MoveModal}
         />
 
-        <Text size={'lg'}>Select Required Skills and a Category here</Text>
+        <Text size={'lg'}>Select a Category here</Text>
         <ArrowDown size={'50px'} />
-        <>
-          <Card.Section className={classes.borderSection}>
-            <Checkbox.Group
-              label='Required skills'
-              description='chose one or more required skills'
-              onChange={setSelectedSkills}
-              required
-              defaultValue={idea?.requiredSkills?.map((skill) => skill.id)}
-              value={selectedSkills}
-              className={classes.label}
-            >
-              {skillsList}
-            </Checkbox.Group>
-          </Card.Section>
-          <Card.Section className={classes.borderSection}>
-            <Radio.Group
-              label='Category'
-              description='chose one category'
-              onChange={setSelectedCategory}
-              required
-              defaultValue={idea?.category?.id}
-              value={selectedCategory}
-              className={classes.label}
-            >
-              {categoriesList}
-            </Radio.Group>
-          </Card.Section>
-        </>
+
+        <Card.Section className={classes.borderSection}>
+          <Radio.Group
+            label='Category'
+            description='chose one category'
+            onChange={setSelectedCategory}
+            required
+            defaultValue={idea?.category?.id}
+            value={selectedCategory}
+            className={classes.label}
+          >
+            {categoriesList}
+          </Radio.Group>
+        </Card.Section>
+
         <Text size={'lg'}>Submit your changes here</Text>
         <ArrowDown size={'50px'} />
+        <div></div>
         <Button
           disabled={buttonIsDisabled}
           onClick={editThisIdea}
