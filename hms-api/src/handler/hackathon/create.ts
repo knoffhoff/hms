@@ -3,6 +3,7 @@ import {createHackathon} from '../../service/hackathon-service';
 import {wrapHandler} from '../handler-wrapper';
 import HackathonCreateRequest from '../../rest/HackathonCreateRequest';
 import HackathonCreateResponse from '../../rest/HackathonCreateResponse';
+import {createCategory} from '../../service/category-service';
 
 // eslint-disable-next-line require-jsdoc
 export async function create(event, context, callback) {
@@ -14,6 +15,10 @@ export async function create(event, context, callback) {
       request.startDate,
       request.endDate,
     );
+
+    if (hackathon) {
+      await createCategory('General', 'General', hackathon.id);
+    }
 
     callback(
       null,
