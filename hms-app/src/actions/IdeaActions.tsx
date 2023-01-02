@@ -81,7 +81,6 @@ export const editIdea = async (
   instance: IPublicClientApplication,
   ideaID: string,
   idea: {
-    ownerId: string
     hackathonId: string
     title: string
     description: string
@@ -93,6 +92,7 @@ export const editIdea = async (
 ) => {
   const idToken = await getIdToken(instance)
   const options = buildFetchOptions('PUT', idToken, {
+    hackathonId: idea.hackathonId,
     title: idea.title,
     description: idea.description,
     problem: idea.problem,

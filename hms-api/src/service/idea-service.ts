@@ -38,7 +38,7 @@ import NotFoundError from '../error/NotFoundError';
 import InvalidStateError from '../error/InvalidStateError';
 import ValidationError from '../error/ValidationError';
 import IdeaListAllResponse from '../rest/IdeaListAllResponse';
-import user from "../repository/domain/User";
+import user from '../repository/domain/User';
 
 export async function createIdea(
   ownerId: Uuid,
@@ -92,6 +92,7 @@ export async function createIdea(
 
 export async function editIdea(
   id: Uuid,
+  hackathonId: Uuid,
   title: string,
   description: string,
   problem: string,
@@ -108,11 +109,11 @@ export async function editIdea(
     );
   }
 
-  if (!(await categoryExists(categoryId, existing.hackathonId))) {
+  if (!(await categoryExists(categoryId, hackathonId))) {
     throw new ReferenceNotFoundError(
       `Cannot edit Idea with id: ${id}, ` +
         `Category with id: ${categoryId} does not exist ` +
-        `in Hackathon with id: ${existing.hackathonId}`,
+        `in Hackathon with id: ${hackathonId}`,
     );
   }
 
@@ -125,6 +126,7 @@ export async function editIdea(
     }
   }
 
+  existing.hackathonId = hackathonId;
   existing.title = title;
   existing.description = description;
   existing.problem = problem;
@@ -142,8 +144,6 @@ export async function editIdea(
 
 export async function getIdeaResponse(id: Uuid): Promise<IdeaResponse> {
   const idea = await getIdea(id);
-  console.log('owner id', idea.ownerId)
-  console.log('idea', idea)
 
   let ownerUser;
   try {

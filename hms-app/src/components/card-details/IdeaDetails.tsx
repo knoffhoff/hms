@@ -39,6 +39,7 @@ import { UserContext } from '../../pages/Layout'
 import FinalVideoUploadModal from '../FinalVideoUploadModal'
 import { getCategoryDetails } from '../../actions/CategoryActions'
 import { getSkillDetails } from '../../actions/SkillActions'
+import MoveIdeaModal from '../MoveIdeaModal'
 
 type IProps = {
   idea: Idea
@@ -494,6 +495,7 @@ export default function IdeaDetails(props: IProps) {
                       Edit
                     </Button>
                     <FinalVideoUploadModal idea={ideaData} />
+                    <MoveIdeaModal idea={ideaData} />
                   </Group>
                 ))}
             </Accordion.Panel>
@@ -671,6 +673,7 @@ export default function IdeaDetails(props: IProps) {
                             Edit
                           </Button>
                           <FinalVideoUploadModal idea={ideaData} />
+                          <MoveIdeaModal idea={ideaData} />
                         </Group>
                       ))}
                   </Accordion.Panel>
