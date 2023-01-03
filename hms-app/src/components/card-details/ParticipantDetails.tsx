@@ -20,7 +20,7 @@ export default function ParticipantDetails(props: IProps) {
   const [userDetails, setUserDetails] = useState({} as User)
 
   const loadUserDetails = () => {
-    if (user.id !== '') {
+    if (user.id) {
       getUserDetails(instance, user.id).then((data) => {
         setUserDetails(data)
       })
