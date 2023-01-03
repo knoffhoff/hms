@@ -22,6 +22,7 @@ import { getListOfCategories } from '../actions/CategoryActions'
 import { styles } from '../common/styles'
 import { showNotification, updateNotification } from '@mantine/notifications'
 import { editIdea } from '../actions/IdeaActions'
+import { removeIdeaParticipant } from '../actions/ParticipantActions'
 
 type IProps = {
   idea: Idea
@@ -94,6 +95,18 @@ export default function MoveIdeaModal({ idea }: IProps) {
             autoClose: 2000,
           })
         } else {
+          removeIdeaParticipants(idea).then((r) => {
+            if (JSON.stringify(r).toString().includes('error')) {
+              updateNotification({
+                id: 'idea-load',
+                color: 'red',
+                title: 'Failed to delete idea participants',
+                message: undefined,
+                icon: <X />,
+                autoClose: 2000,
+              })
+            }
+          })
           updateNotification({
             id: 'idea-load',
             color: 'teal',
@@ -105,6 +118,15 @@ export default function MoveIdeaModal({ idea }: IProps) {
         }
       }
     )
+  }
+
+  async function removeIdeaParticipants(idea: Idea) {
+    const participants = idea.participants
+    if (participants) {
+      participants.forEach((participant) => {
+        removeIdeaParticipant(instance, idea.id, participant.id)
+      })
+    }
   }
 
   useEffect(() => {
