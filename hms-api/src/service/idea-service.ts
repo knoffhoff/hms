@@ -38,7 +38,7 @@ import NotFoundError from '../error/NotFoundError';
 import InvalidStateError from '../error/InvalidStateError';
 import ValidationError from '../error/ValidationError';
 import IdeaListAllResponse from '../rest/IdeaListAllResponse';
-import user from "../repository/domain/User";
+import user from '../repository/domain/User';
 
 export async function createIdea(
   ownerId: Uuid,
@@ -142,8 +142,6 @@ export async function editIdea(
 
 export async function getIdeaResponse(id: Uuid): Promise<IdeaResponse> {
   const idea = await getIdea(id);
-  console.log('owner id', idea.ownerId)
-  console.log('idea', idea)
 
   let ownerUser;
   try {
@@ -151,8 +149,7 @@ export async function getIdeaResponse(id: Uuid): Promise<IdeaResponse> {
   } catch (e) {
     throw new ReferenceNotFoundError(
       `Cannot get Idea with id: ${id}, ` +
-        `unable to get owner User with id: ${idea.ownerId} ` +
-        `for Participant with id: ${idea.ownerId}`,
+        `unable to get owner User with id: ${idea.ownerId} `,
     );
   }
 
