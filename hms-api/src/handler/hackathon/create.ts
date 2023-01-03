@@ -16,10 +16,6 @@ export async function create(event, context, callback) {
       request.endDate,
     );
 
-    if (hackathon) {
-      await createCategory('General', 'General', hackathon.id);
-    }
-
     callback(
       null,
       buildResponse(201, new HackathonCreateResponse(hackathon.id)),
