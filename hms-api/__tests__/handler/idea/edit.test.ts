@@ -7,11 +7,11 @@ import IdeaEditRequest from '../../../src/rest/IdeaEditRequest';
 import ReferenceNotFoundError from '../../../src/error/ReferenceNotFoundError';
 
 const mockEditIdea = jest.fn();
-jest.spyOn(ideaService, 'editIdea')
-    .mockImplementation(mockEditIdea);
+jest.spyOn(ideaService, 'editIdea').mockImplementation(mockEditIdea);
 
 describe('Edit Idea', () => {
   test('Happy Path', async () => {
+    const hackathonId = uuid();
     const title = 'New fancy title';
     const description = 'Well this is awkward';
     const problem = '1 + 1 = X';
@@ -21,42 +21,46 @@ describe('Edit Idea', () => {
     const id = uuid();
     const callback = jest.fn();
 
-    mockEditIdea.mockImplementation(() => {
-    });
+    mockEditIdea.mockImplementation(() => {});
 
     await edit(
-        toEvent(
-            title,
-            description,
-            problem,
-            goal,
-            requiredSkills,
-            categoryId,
-            id),
-        null,
-        callback);
-
-    expect(mockEditIdea).toHaveBeenCalledWith(
-        id,
+      toEvent(
+        hackathonId,
         title,
         description,
         problem,
         goal,
         requiredSkills,
-        categoryId);
-    expect(callback)
-        .toHaveBeenCalledWith(null, {
-          statusCode: 200,
-          headers: {
-            'Access-Control-Allow-Origin': '*',
-            'Access-Control-Allow-Credentials': true,
-            'content-type': 'application/json',
-          },
-          body: JSON.stringify(new IdeaEditResponse(id)),
-        });
+        categoryId,
+        id,
+      ),
+      null,
+      callback,
+    );
+
+    expect(mockEditIdea).toHaveBeenCalledWith(
+      id,
+      hackathonId,
+      title,
+      description,
+      problem,
+      goal,
+      requiredSkills,
+      categoryId,
+    );
+    expect(callback).toHaveBeenCalledWith(null, {
+      statusCode: 200,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Credentials': true,
+        'content-type': 'application/json',
+      },
+      body: JSON.stringify(new IdeaEditResponse(id)),
+    });
   });
 
   test('Throws NotFoundError', async () => {
+    const hackathonId = uuid();
     const title = 'New fancy title';
     const description = 'Well this is awkward';
     const problem = '1 + 1 = X';
@@ -72,38 +76,43 @@ describe('Edit Idea', () => {
     });
 
     await edit(
-        toEvent(
-            title,
-            description,
-            problem,
-            goal,
-            requiredSkills,
-            categoryId,
-            id),
-        null,
-        callback);
-
-    expect(mockEditIdea).toHaveBeenCalledWith(
-        id,
+      toEvent(
+        hackathonId,
         title,
         description,
         problem,
         goal,
         requiredSkills,
-        categoryId);
-    expect(callback)
-        .toHaveBeenCalledWith(null, {
-          statusCode: 404,
-          headers: {
-            'Access-Control-Allow-Origin': '*',
-            'Access-Control-Allow-Credentials': true,
-            'content-type': 'application/json',
-          },
-          body: JSON.stringify({errorMessage: errorMessage}),
-        });
+        categoryId,
+        id,
+      ),
+      null,
+      callback,
+    );
+
+    expect(mockEditIdea).toHaveBeenCalledWith(
+      id,
+      hackathonId,
+      title,
+      description,
+      problem,
+      goal,
+      requiredSkills,
+      categoryId,
+    );
+    expect(callback).toHaveBeenCalledWith(null, {
+      statusCode: 404,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Credentials': true,
+        'content-type': 'application/json',
+      },
+      body: JSON.stringify({errorMessage: errorMessage}),
+    });
   });
 
   test('Throws ReferenceNotFoundError', async () => {
+    const hackathonId = uuid();
     const title = 'New fancy title';
     const description = 'Well this is awkward';
     const problem = '1 + 1 = X';
@@ -119,38 +128,43 @@ describe('Edit Idea', () => {
     });
 
     await edit(
-        toEvent(
-            title,
-            description,
-            problem,
-            goal,
-            requiredSkills,
-            categoryId,
-            id),
-        null,
-        callback);
-
-    expect(mockEditIdea).toHaveBeenCalledWith(
-        id,
+      toEvent(
+        hackathonId,
         title,
         description,
         problem,
         goal,
         requiredSkills,
-        categoryId);
-    expect(callback)
-        .toHaveBeenCalledWith(null, {
-          statusCode: 400,
-          headers: {
-            'Access-Control-Allow-Origin': '*',
-            'Access-Control-Allow-Credentials': true,
-            'content-type': 'application/json',
-          },
-          body: JSON.stringify({errorMessage: errorMessage}),
-        });
+        categoryId,
+        id,
+      ),
+      null,
+      callback,
+    );
+
+    expect(mockEditIdea).toHaveBeenCalledWith(
+      id,
+      hackathonId,
+      title,
+      description,
+      problem,
+      goal,
+      requiredSkills,
+      categoryId,
+    );
+    expect(callback).toHaveBeenCalledWith(null, {
+      statusCode: 400,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Credentials': true,
+        'content-type': 'application/json',
+      },
+      body: JSON.stringify({errorMessage: errorMessage}),
+    });
   });
 
   test('Throws Error', async () => {
+    const hackathonId = uuid();
     const title = 'New fancy title';
     const description = 'Well this is awkward';
     const problem = '1 + 1 = X';
@@ -166,54 +180,63 @@ describe('Edit Idea', () => {
     });
 
     await edit(
-        toEvent(
-            title,
-            description,
-            problem,
-            goal,
-            requiredSkills,
-            categoryId,
-            id),
-        null,
-        callback);
-
-    expect(mockEditIdea).toHaveBeenCalledWith(
-        id,
+      toEvent(
+        hackathonId,
         title,
         description,
         problem,
         goal,
         requiredSkills,
-        categoryId);
-    expect(callback)
-        .toHaveBeenCalledWith(null, {
-          statusCode: 500,
-          headers: {
-            'Access-Control-Allow-Origin': '*',
-            'Access-Control-Allow-Credentials': true,
-            'content-type': 'application/json',
-          },
-          body: JSON.stringify({errorMessage: errorMessage}),
-        });
-  });
-});
+        categoryId,
+        id,
+      ),
+      null,
+      callback,
+    );
 
-const toEvent = (
-    title: string,
-    description: string,
-    problem: string,
-    goal: string,
-    requiredSkills: Uuid[],
-    categoryId: Uuid,
-    id: Uuid,
-): object => ({
-  body: JSON.stringify(new IdeaEditRequest(
+    expect(mockEditIdea).toHaveBeenCalledWith(
+      id,
+      hackathonId,
       title,
       description,
       problem,
       goal,
       requiredSkills,
-      categoryId)),
+      categoryId,
+    );
+    expect(callback).toHaveBeenCalledWith(null, {
+      statusCode: 500,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Credentials': true,
+        'content-type': 'application/json',
+      },
+      body: JSON.stringify({errorMessage: errorMessage}),
+    });
+  });
+});
+
+const toEvent = (
+  hackathonId: Uuid,
+  title: string,
+  description: string,
+  problem: string,
+  goal: string,
+  requiredSkills: Uuid[],
+  categoryId: Uuid,
+  id: Uuid,
+): object => ({
+  body: JSON.stringify(
+    new IdeaEditRequest(
+      hackathonId,
+      title,
+      description,
+      problem,
+      goal,
+      requiredSkills,
+      categoryId,
+    ),
+  ),
   pathParameters: {
     id: id,
   },
