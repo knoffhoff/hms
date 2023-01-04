@@ -433,73 +433,73 @@ describe('Get Idea Response', () => {
     category: Category | null,
   ): void {
     if (idea) {
-      mockGetIdea.mockResolvedValue(idea);
+      mockGetIdea.mockResolvedValueOnce(idea);
     } else {
-      mockGetIdea.mockImplementation(() => {
+      mockGetIdea.mockImplementationOnce(() => {
         throw new NotFoundError('Fail')
       });
     }
 
     if (ownerUser) {
-      mockGetUser.mockResolvedValue(ownerUser);
+      mockGetUser.mockResolvedValueOnce(ownerUser);
     } else {
-      mockGetUser.mockImplementation(() => {
+      mockGetUser.mockImplementationOnce(() => {
         throw new NotFoundError('Fail')
       });
     }
 
     if (participants) {
-      mockGetParticipants.mockResolvedValue(participants);
+      mockGetParticipants.mockResolvedValueOnce(participants);
     } else {
-      mockGetParticipants.mockImplementation(() => {
+      mockGetParticipants.mockImplementationOnce(() => {
         throw new NotFoundError('Fail')
       });
     }
 
     if (voters) {
-      mockGetParticipants.mockResolvedValue(voters);
+      mockGetParticipants.mockResolvedValueOnce(voters);
     } else {
-      mockGetParticipants.mockImplementation(() => {
+      mockGetParticipants.mockImplementationOnce(() => {
         throw new NotFoundError('Fail')
       });
     }
 
     if (participantUsers) {
-      mockUsersFor.mockResolvedValue(participantUsers);
+      mockUsersFor.mockResolvedValueOnce(participantUsers);
     } else {
-      mockUsersFor.mockImplementation(() => {
+      mockUsersFor.mockImplementationOnce(() => {
         throw new NotFoundError('Fail')
       });
     }
 
     if (voterUsers) {
-      mockUsersFor.mockResolvedValue(voterUsers);
+      mockUsersFor.mockResolvedValueOnce(voterUsers);
     } else {
-      mockUsersFor.mockImplementation(() => {
+      mockUsersFor.mockImplementationOnce(() => {
         throw new NotFoundError('Fail')
       });
     }
 
     if (hackathon) {
-      mockGetHackathon.mockResolvedValue(hackathon);
+      mockGetHackathon.mockResolvedValueOnce(hackathon);
     } else {
-      mockGetHackathon.mockImplementation(() => {
+      mockGetHackathon.mockImplementationOnce(() => {
         throw new NotFoundError('Fail')
       });
     }
 
     if (skills) {
-      mockGetSkills.mockResolvedValue(skills);
+      mockGetSkills.mockResolvedValueOnce(skills);
     } else {
-      mockGetSkills.mockImplementation(() => {
+      mockGetSkills.mockImplementationOnce(() => {
         throw new NotFoundError('Fail')
       });
     }
 
     if (category) {
-      mockGetCategory.mockResolvedValue(category);
+      mockGetCategory.mockResolvedValueOnce(category);
     } else {
-      mockGetCategory.mockImplementation(() => {
+      mockGetCategory.mockImplementationOnce(() => {
         throw new NotFoundError('Fail')
       });
     }
@@ -534,7 +534,7 @@ describe('Get Idea Response', () => {
     );
     mockResolvedValues(idea, ownerUser, participantUsers, participants, voterUsers, voters, hackathon, skills, category);
 
-    await getIdeaResponse(idea.id);
+    expect(await getIdeaResponse(idea.id)).toStrictEqual(expected);
     expect(mockGetIdea).toHaveBeenCalledWith(idea.id);
     expect(mockGetUser).toHaveBeenCalledWith(idea.ownerId);
     expect(mockGetParticipants).toHaveBeenCalledWith(idea.participantIds);
