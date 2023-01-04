@@ -537,9 +537,9 @@ describe('Get Idea Response', () => {
     expect(mockGetIdea).toHaveBeenCalledWith(idea.id);
     expect(mockGetUser).toHaveBeenCalledWith(idea.ownerId);
     expect(mockGetParticipants).toHaveBeenCalledWith(idea.participantIds);
-    expect(mockUsersFor).toHaveBeenCalledWith(idea.participantIds);
+    expect(mockUsersFor).toHaveBeenCalledWith(participants);
     expect(mockGetParticipants).toHaveBeenCalledWith(idea.voterIds);
-    expect(mockUsersFor).toHaveBeenCalledWith(idea.voterIds);
+    expect(mockUsersFor).toHaveBeenCalledWith(voters);
     expect(mockGetHackathon).toHaveBeenCalledWith(idea.hackathonId);
     expect(mockGetSkills).toHaveBeenCalledWith(idea.requiredSkills);
     expect(mockGetCategory).toHaveBeenCalledWith(idea.categoryId);
