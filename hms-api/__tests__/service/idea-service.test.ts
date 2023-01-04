@@ -15,7 +15,7 @@ import {
 } from '../../src/service/idea-service';
 import {uuid} from '../../src/util/Uuid';
 import {IdeaData, makeIdea, randomIdea} from '../repository/domain/idea-maker';
-import {randomHackathon} from '../repository/domain/hackathon-maker';
+import {HackathonData, makeHackathon, randomHackathon} from '../repository/domain/hackathon-maker';
 
 import {randomUser} from '../repository/domain/user-maker';
 import {makeParticipant, ParticipantData, randomParticipant} from '../repository/domain/participant-maker';
@@ -510,13 +510,14 @@ describe('Get Idea Response', () => {
     const ownerUser = randomUser();
     const participantUser = randomUser();
     const voterUser = randomUser();
-    const participants = [
-      makeParticipant({userId: ownerUser.id} as ParticipantData),
-      makeParticipant({userId: participantUser.id} as ParticipantData)];
+    const owner = makeParticipant({userId: ownerUser.id, hackathonId: idea.hackathonId} as ParticipantData);
+    const participant = makeParticipant({userId: participantUser.id, hackathonId: idea.hackathonId} as ParticipantData);
+    const participants = [owner, participant];
     const participantUsers = [ownerUser, participantUser];
-    const voters = [makeParticipant({userId: voterUser.id} as ParticipantData)];
+    const voter = makeParticipant({userId: voterUser.id, hackathonId: idea.hackathonId} as ParticipantData);
+    const voters = [voter];
     const voterUsers = [voterUser];
-    const hackathon = randomHackathon();
+    const hackathon = makeHackathon({id: idea.id} as HackathonData);
     const skills = [randomSkill(), randomSkill(), randomSkill()];
     const category = randomCategory();
 
@@ -550,13 +551,14 @@ describe('Get Idea Response', () => {
     const ownerUser = randomUser();
     const participantUser = randomUser();
     const voterUser = randomUser();
-    const participants = [
-      makeParticipant({userId: ownerUser.id} as ParticipantData),
-      makeParticipant({userId: participantUser.id} as ParticipantData)];
+    const owner = makeParticipant({userId: ownerUser.id, hackathonId: idea.hackathonId} as ParticipantData);
+    const participant = makeParticipant({userId: participantUser.id, hackathonId: idea.hackathonId} as ParticipantData);
+    const participants = [owner, participant];
     const participantUsers = [ownerUser, participantUser];
-    const voters = [makeParticipant({userId: voterUser.id} as ParticipantData)];
+    const voter = makeParticipant({userId: voterUser.id, hackathonId: idea.hackathonId} as ParticipantData);
+    const voters = [voter];
     const voterUsers = [voterUser];
-    const hackathon = randomHackathon();
+    const hackathon = makeHackathon({id: idea.id} as HackathonData);
     const skills = [randomSkill(), randomSkill(), randomSkill()];
 
     mockResolvedValues(idea, ownerUser, participantUsers, participants, voterUsers, voters, hackathon, skills, null);
@@ -569,13 +571,14 @@ describe('Get Idea Response', () => {
     const ownerUser = randomUser();
     const participantUser = randomUser();
     const voterUser = randomUser();
-    const participants = [
-      makeParticipant({userId: ownerUser.id} as ParticipantData),
-      makeParticipant({userId: participantUser.id} as ParticipantData)];
+    const owner = makeParticipant({userId: ownerUser.id, hackathonId: idea.hackathonId} as ParticipantData);
+    const participant = makeParticipant({userId: participantUser.id, hackathonId: idea.hackathonId} as ParticipantData);
+    const participants = [owner, participant];
     const participantUsers = [ownerUser, participantUser];
-    const voters = [makeParticipant({userId: voterUser.id} as ParticipantData)];
+    const voter = makeParticipant({userId: voterUser.id, hackathonId: idea.hackathonId} as ParticipantData);
+    const voters = [voter];
     const voterUsers = [voterUser];
-    const hackathon = randomHackathon();
+    const hackathon = makeHackathon({id: idea.id} as HackathonData);
     const category = randomCategory()
 
     mockResolvedValues(idea, ownerUser, participantUsers, participants, voterUsers, voters, hackathon, null, category);
@@ -588,11 +591,12 @@ describe('Get Idea Response', () => {
     const ownerUser = randomUser();
     const participantUser = randomUser();
     const voterUser = randomUser();
-    const participants = [
-      makeParticipant({userId: ownerUser.id} as ParticipantData),
-      makeParticipant({userId: participantUser.id} as ParticipantData)];
+    const owner = makeParticipant({userId: ownerUser.id, hackathonId: idea.hackathonId} as ParticipantData);
+    const participant = makeParticipant({userId: participantUser.id, hackathonId: idea.hackathonId} as ParticipantData);
+    const participants = [owner, participant];
     const participantUsers = [ownerUser, participantUser];
-    const voters = [makeParticipant({userId: voterUser.id} as ParticipantData)];
+    const voter = makeParticipant({userId: voterUser.id, hackathonId: idea.hackathonId} as ParticipantData);
+    const voters = [voter];
     const voterUsers = [voterUser];
     const skills = [randomSkill(), randomSkill(), randomSkill()];
     const category = randomCategory()
@@ -607,11 +611,12 @@ describe('Get Idea Response', () => {
     const ownerUser = randomUser();
     const participantUser = randomUser();
     const voterUser = randomUser();
-    const participants = [
-      makeParticipant({userId: ownerUser.id} as ParticipantData),
-      makeParticipant({userId: participantUser.id} as ParticipantData)];
-    const voters = [makeParticipant({userId: voterUser.id} as ParticipantData)];
-    const hackathon = randomHackathon();
+    const owner = makeParticipant({userId: ownerUser.id, hackathonId: idea.hackathonId} as ParticipantData);
+    const participant = makeParticipant({userId: participantUser.id, hackathonId: idea.hackathonId} as ParticipantData);
+    const participants = [owner, participant];
+    const voter = makeParticipant({userId: voterUser.id, hackathonId: idea.hackathonId} as ParticipantData);
+    const voters = [voter];
+    const hackathon = makeHackathon({id: idea.id} as HackathonData);
     const skills = [randomSkill(), randomSkill(), randomSkill()];
     const category = randomCategory()
 
@@ -627,7 +632,7 @@ describe('Get Idea Response', () => {
     const voterUser = randomUser();
     const participantUsers = [ownerUser, participantUser];
     const voterUsers = [voterUser];
-    const hackathon = randomHackathon();
+    const hackathon = makeHackathon({id: idea.id} as HackathonData);
     const skills = [randomSkill(), randomSkill(), randomSkill()];
     const category = randomCategory()
 
@@ -639,12 +644,13 @@ describe('Get Idea Response', () => {
     const idea = randomIdea();
     const participantUser = randomUser();
     const voterUser = randomUser();
-    const participants = [
-      makeParticipant({userId: participantUser.id} as ParticipantData)];
+    const participant = makeParticipant({userId: participantUser.id, hackathonId: idea.hackathonId} as ParticipantData);
+    const participants = [participant];
     const participantUsers = [participantUser];
-    const voters = [makeParticipant({userId: voterUser.id} as ParticipantData)];
+    const voter = makeParticipant({userId: voterUser.id, hackathonId: idea.hackathonId} as ParticipantData);
+    const voters = [voter];
     const voterUsers = [voterUser];
-    const hackathon = randomHackathon();
+    const hackathon = makeHackathon({id: idea.id} as HackathonData);
     const skills = [randomSkill(), randomSkill(), randomSkill()];
     const category = randomCategory()
 
