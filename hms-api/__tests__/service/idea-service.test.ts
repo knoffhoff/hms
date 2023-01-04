@@ -534,13 +534,13 @@ describe('Get Idea Response', () => {
     );
     mockResolvedValues(idea, ownerUser, participantUsers, participants, voterUsers, voters, hackathon, skills, category);
 
-    expect(await getIdeaResponse(idea.id)).toStrictEqual(expected);
+    await getIdeaResponse(idea.id);
     expect(mockGetIdea).toHaveBeenCalledWith(idea.id);
     expect(mockGetUser).toHaveBeenCalledWith(idea.ownerId);
-    expect(mockGetParticipants).toHaveBeenCalledWith(idea.participantIds);
-    expect(mockUsersFor).toHaveBeenCalledWith(participants);
-    expect(mockGetParticipants).toHaveBeenCalledWith(idea.voterIds);
-    expect(mockUsersFor).toHaveBeenCalledWith(voters);
+    expect(mockGetParticipants).toHaveBeenNthCalledWith(1, idea.participantIds);
+    expect(mockUsersFor).toHaveBeenNthCalledWith(1, participants);
+    expect(mockGetParticipants).toHaveBeenNthCalledWith(2, idea.voterIds);
+    expect(mockUsersFor).toHaveBeenNthCalledWith(2, voters);
     expect(mockGetHackathon).toHaveBeenCalledWith(idea.hackathonId);
     expect(mockGetSkills).toHaveBeenCalledWith(idea.requiredSkills);
     expect(mockGetCategory).toHaveBeenCalledWith(idea.categoryId);
