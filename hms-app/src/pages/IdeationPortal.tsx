@@ -92,7 +92,12 @@ function IdeationPortal() {
     <>
       <Title order={1}>Ideation Portal</Title>
 
-      <Modal opened={opened} onClose={() => setOpened(false)} size={'70%'}>
+      <Modal
+        opened={opened}
+        onClose={() => setOpened(false)}
+        size={'70%'}
+        title='Create New Idea!'
+      >
         <IdeaForm
           ideaId={'null'}
           hackathon={hackathon}
@@ -130,6 +135,7 @@ function IdeationPortal() {
             type={IdeaCardType.IdeaPortal}
             isLoading={false}
           />
+
         </div>
       )}
     </>
