@@ -23,7 +23,7 @@ class Idea {
   id: Uuid;
 
   /**
-   * The ID of the Participant which owns (created) the Idea
+   * The ID of the User which owns (created) the Idea
    */
   ownerId: Uuid;
 

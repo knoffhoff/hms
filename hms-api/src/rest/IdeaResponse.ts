@@ -11,10 +11,11 @@ import User from '../repository/domain/User';
 import Hackathon from '../repository/domain/Hackathon';
 import Skill from '../repository/domain/Skill';
 import Category from '../repository/domain/Category';
+import UserPreviewResponse from "./UserPreviewResponse";
 
 class IdeaResponse {
   id: Uuid;
-  owner: ParticipantPreviewResponse;
+  owner: UserPreviewResponse;
   hackathon: HackathonPreviewResponse;
   participants: ParticipantPreviewResponse[];
   voters: ParticipantPreviewResponse[];
@@ -28,7 +29,7 @@ class IdeaResponse {
 
   constructor(
     id: Uuid,
-    owner: ParticipantPreviewResponse,
+    owner: UserPreviewResponse,
     hackathon: HackathonPreviewResponse,
     participants: ParticipantPreviewResponse[],
     voters: ParticipantPreviewResponse[],
@@ -56,7 +57,6 @@ class IdeaResponse {
 
   static from = (
     idea: Idea,
-    ownerParticipant: Participant,
     ownerUser: User,
     hackathon: Hackathon,
     participants: Participant[],
@@ -68,7 +68,7 @@ class IdeaResponse {
   ): IdeaResponse =>
     new IdeaResponse(
       idea.id,
-      ParticipantPreviewResponse.from(ownerParticipant, ownerUser),
+      UserPreviewResponse.from(ownerUser),
       HackathonPreviewResponse.from(hackathon),
       ParticipantPreviewResponse.fromArray(participants, participantUsers),
       ParticipantPreviewResponse.fromArray(voters, voterUsers),

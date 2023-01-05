@@ -203,7 +203,7 @@ export default function IdeaDetails(props: IProps) {
         ideaId={ideaData.id}
         idea={ideaData}
         context={'edit'}
-        participantId={ideaData.owner ? ideaData.owner.id : ''}
+        ownerId={ideaData.owner ? ideaData.owner.id : ''}
         hackathon={ideaData.hackathon!}
         setOpened={closeEditModal}
       />
@@ -454,13 +454,13 @@ export default function IdeaDetails(props: IProps) {
                   <Stack align={'center'} spacing={'xs'}>
                     <Avatar color='indigo' radius='xl' size='md'>
                       {getInitials(
-                        ideaData.owner?.user.firstName,
-                        ideaData.owner?.user.lastName
+                        ideaData.owner?.firstName,
+                        ideaData.owner?.lastName
                       )}
                     </Avatar>
                     <Badge size='sm'>
-                      {ideaData.owner?.user.firstName}{' '}
-                      {ideaData.owner?.user.lastName}
+                      {ideaData.owner?.firstName}{' '}
+                      {ideaData.owner?.lastName}
                     </Badge>
                   </Stack>
                   <Text className={classes.title}>
@@ -490,7 +490,7 @@ export default function IdeaDetails(props: IProps) {
               <Card.Section className={classes.borderSection}>
                 <Text className={classes.label}>Skills required</Text>
                 <Group spacing={7} mt={5}>
-                  {ideaData.requiredSkills?.map((skill, index) => (
+                  {ideaData.requiredSkills?.map((skill) => (
                     <Tooltip
                       multiline
                       width={220}
@@ -525,7 +525,7 @@ export default function IdeaDetails(props: IProps) {
                   <Accordion.Panel>
                     <div>{ideaDetails()}</div>
 
-                    {type === IdeaCardType.IdeaPortal && (
+                    {type === IdeaCardType.AllIdeas && (
                       <Group
                         mt='xs'
                         position={'right'}
@@ -565,7 +565,7 @@ export default function IdeaDetails(props: IProps) {
                     )}
 
                     {(type === IdeaCardType.Admin ||
-                      type === IdeaCardType.Owner) && (
+                      type === IdeaCardType.Owner) || ideaData.owner?.id === user?.id && (
                       <Group position='left' mt='xl'>
                         {deleteModal}
                         <Button

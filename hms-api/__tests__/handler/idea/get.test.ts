@@ -30,7 +30,6 @@ describe('Get Idea', () => {
     const voter = makeParticipant({userId: user3.id} as ParticipantData);
     const expected = IdeaResponse.from(
       idea,
-      ownerParticipant,
       ownerUser,
       randomHackathon(),
       [ownerParticipant, participant2],

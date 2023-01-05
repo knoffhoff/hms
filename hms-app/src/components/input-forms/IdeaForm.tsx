@@ -26,7 +26,7 @@ import { createIdeaParticipant } from '../../actions/ParticipantActions'
 
 type IProps = {
   hackathon: HackathonPreview
-  participantId: string
+  ownerId?: string
   context: string
   ideaId: string | null
   setOpened?: (boolean: boolean) => void
@@ -36,7 +36,7 @@ type IProps = {
 
 function IdeaForm(props: IProps) {
   const { instance } = useMsal()
-  const { hackathon, participantId, context, ideaId, setOpened, idea, reload } =
+  const { hackathon, ownerId, context, ideaId, setOpened, idea, reload } =
     props
   const { classes } = styles()
   const [isLoading, setIsLoading] = useState(true)
@@ -52,7 +52,7 @@ function IdeaForm(props: IProps) {
   })
   const [category, setCategory] = useState<string>(idea?.category?.id || '')
   const [ideaText, setIdeaText] = useState({
-    ownerId: participantId,
+    ownerId: ownerId || '',
     hackathonId: hackathon.id,
     title: '',
     description: '',
@@ -157,11 +157,6 @@ function IdeaForm(props: IProps) {
             icon: <Check />,
             autoClose: 2000,
           })
-          try {
-            await createIdeaParticipant(instance, response.id, ideaText.ownerId)
-          } catch (error) {
-            console.log(error)
-          }
         }
       }
     )
@@ -237,11 +232,12 @@ function IdeaForm(props: IProps) {
   }, [ideaText, category, skills])
 
   useEffect(() => {
+    if (ownerId) {
     setIdeaText((prevIdeaText) => ({
       ...prevIdeaText,
-      ownerId: participantId.toString(),
-    }))
-  }, [participantId])
+      ownerId: ownerId.toString(),
+    }))}
+  }, [ownerId])
 
   useEffect(() => {
     loadAvailableCategories()
