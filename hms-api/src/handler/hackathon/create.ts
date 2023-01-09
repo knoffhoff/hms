@@ -3,7 +3,6 @@ import {createHackathon} from '../../service/hackathon-service';
 import {wrapHandler} from '../handler-wrapper';
 import HackathonCreateRequest from '../../rest/HackathonCreateRequest';
 import HackathonCreateResponse from '../../rest/HackathonCreateResponse';
-import {createCategory} from '../../service/category-service';
 
 // eslint-disable-next-line require-jsdoc
 export async function create(event, context, callback) {

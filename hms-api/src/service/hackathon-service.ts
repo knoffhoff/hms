@@ -19,7 +19,7 @@ import HackathonDeleteResponse from '../rest/HackathonDeleteResponse';
 import NotFoundError from '../error/NotFoundError';
 import {removeIdeasForHackathon} from './idea-service';
 import DeletionError from '../error/DeletionError';
-import {removeCategoriesForHackathon} from './category-service';
+import {createCategory, removeCategoriesForHackathon} from './category-service';
 import {removeParticipantsForHackathon} from './participant-service';
 import ValidationError from '../error/ValidationError';
 import Category from '../repository/domain/Category';
@@ -36,16 +36,10 @@ export async function createHackathon(
     throw new ValidationError(`Cannot create Hackathon`, result);
   }
 
-  const category = new Category('General', 'General', hackathon.id);
-  const categoryResult = category.validate();
-  if (categoryResult.hasFailed()) {
-    throw new ValidationError(`Cannot create general Category`, categoryResult);
-  }
-
   await putHackathon(hackathon);
 
   // Auto create a category for the hackathon to make sure that there is at least one category to submit ideas to
-  await putCategory(category);
+  await createCategory('General', 'General', hackathon.id);
 
   return hackathon;
 }
