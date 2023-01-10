@@ -1,10 +1,10 @@
 import {edit} from '../../../src/handler/hackathon/edit';
 import Uuid, {uuid} from '../../../src/util/Uuid';
 import * as hackathonService from '../../../src/service/hackathon-service';
-import HackathonEditResponse from '../../../src/rest/HackathonEditResponse';
+import HackathonEditResponse from '../../../src/rest/Hackathon/HackathonEditResponse';
 import InvalidStateError from '../../../src/error/InvalidStateError';
 import NotFoundError from '../../../src/error/NotFoundError';
-import HackathonEditRequest from '../../../src/rest/HackathonEditRequest';
+import HackathonEditRequest from '../../../src/rest/Hackathon/HackathonEditRequest';
 
 const mockEditHackathon = jest.fn();
 jest

@@ -1,12 +1,13 @@
 import {randomHackathon} from '../../repository/domain/hackathon-maker';
 import {list} from '../../../src/handler/hackathon/list';
 import NotFoundError from '../../../src/error/NotFoundError';
-import HackathonListResponse from '../../../src/rest/HackathonListResponse';
+import HackathonListResponse from '../../../src/rest/Hackathon/HackathonListResponse';
 import * as hackathonService from '../../../src/service/hackathon-service';
 
 const mockGetHackathonListResponse = jest.fn();
-jest.spyOn(hackathonService, 'getHackathonListResponse')
-    .mockImplementation(mockGetHackathonListResponse);
+jest
+  .spyOn(hackathonService, 'getHackathonListResponse')
+  .mockImplementation(mockGetHackathonListResponse);
 
 describe('List Hackathons', () => {
   test('Happy Path', async () => {
@@ -14,9 +15,12 @@ describe('List Hackathons', () => {
     const hackathon2 = randomHackathon();
     const hackathon3 = randomHackathon();
     const hackathon4 = randomHackathon();
-    const expected = HackathonListResponse.from(
-        [hackathon1, hackathon2, hackathon3, hackathon4],
-    );
+    const expected = HackathonListResponse.from([
+      hackathon1,
+      hackathon2,
+      hackathon3,
+      hackathon4,
+    ]);
 
     mockGetHackathonListResponse.mockResolvedValue(expected);
     const callback = jest.fn();

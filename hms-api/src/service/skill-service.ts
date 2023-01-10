@@ -8,9 +8,9 @@ import {
 } from '../repository/skill-repository';
 import Skill from '../repository/domain/Skill';
 import Uuid from '../util/Uuid';
-import SkillResponse from '../rest/SkillResponse';
-import SkillListResponse from '../rest/SkillListResponse';
-import SkillDeleteResponse from '../rest/SkillDeleteResponse';
+import SkillResponse from '../rest/Skill/SkillResponse';
+import SkillListResponse from '../rest/Skill/SkillListResponse';
+import SkillDeleteResponse from '../rest/Skill/SkillDeleteResponse';
 import NotFoundError from '../error/NotFoundError';
 import ValidationError from '../error/ValidationError';
 

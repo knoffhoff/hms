@@ -1,7 +1,7 @@
 import {wrapHandler} from '../handler-wrapper';
 import {buildResponse} from '../../rest/responses';
 import {removeVoter} from '../../service/idea-service';
-import IdeaVoteResponse from '../../rest/IdeaVoteResponse';
+import IdeaVoteResponse from '../../rest/Idea/IdeaVoteResponse';
 
 // eslint-disable-next-line require-jsdoc
 export async function revokeVote(event, context, callback) {

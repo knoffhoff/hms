@@ -1,11 +1,10 @@
 import * as userService from '../../../src/service/user-service';
 import {remove} from '../../../src/handler/user/remove';
-import UserDeleteResponse from '../../../src/rest/UserDeleteResponse';
+import UserDeleteResponse from '../../../src/rest/User/UserDeleteResponse';
 import Uuid, {uuid} from '../../../src/util/Uuid';
 
 const mockRemoveUser = jest.fn();
-jest.spyOn(userService, 'removeUser')
-    .mockImplementation(mockRemoveUser);
+jest.spyOn(userService, 'removeUser').mockImplementation(mockRemoveUser);
 
 describe('Delete User', () => {
   test('Happy Path', async () => {

@@ -1,14 +1,13 @@
 import * as ideaService from '../../../src/service/idea-service';
 import {create} from '../../../src/handler/idea/create';
 import {randomIdea} from '../../repository/domain/idea-maker';
-import IdeaCreateResponse from '../../../src/rest/IdeaCreateResponse';
+import IdeaCreateResponse from '../../../src/rest/Idea/IdeaCreateResponse';
 import ReferenceNotFoundError from '../../../src/error/ReferenceNotFoundError';
 import Idea from '../../../src/repository/domain/Idea';
-import IdeaCreateRequest from '../../../src/rest/IdeaCreateRequest';
+import IdeaCreateRequest from '../../../src/rest/Idea/IdeaCreateRequest';
 
 const mockCreateIdea = jest.fn();
-jest.spyOn(ideaService, 'createIdea')
-    .mockImplementation(mockCreateIdea);
+jest.spyOn(ideaService, 'createIdea').mockImplementation(mockCreateIdea);
 
 describe('Create Idea', () => {
   test('Happy Path', async () => {
@@ -19,14 +18,14 @@ describe('Create Idea', () => {
     await create(toEvent(expected), null, callback);
 
     expect(mockCreateIdea).toHaveBeenCalledWith(
-        expected.ownerId,
-        expected.hackathonId,
-        expected.title,
-        expected.description,
-        expected.problem,
-        expected.goal,
-        expected.requiredSkills,
-        expected.categoryId,
+      expected.ownerId,
+      expected.hackathonId,
+      expected.title,
+      expected.description,
+      expected.problem,
+      expected.goal,
+      expected.requiredSkills,
+      expected.categoryId,
     );
     expect(callback).toHaveBeenCalledWith(null, {
       statusCode: 201,
@@ -79,7 +78,8 @@ describe('Create Idea', () => {
 });
 
 const toEvent = (idea: Idea): object => ({
-  body: JSON.stringify(new IdeaCreateRequest(
+  body: JSON.stringify(
+    new IdeaCreateRequest(
       idea.ownerId,
       idea.hackathonId,
       idea.title,
@@ -88,5 +88,6 @@ const toEvent = (idea: Idea): object => ({
       idea.goal,
       idea.requiredSkills,
       idea.categoryId,
-  )),
+    ),
+  ),
 });

@@ -1,14 +1,15 @@
 import * as participantService from '../../../src/service/participant-service';
 import {create} from '../../../src/handler/participant/create';
 import {randomParticipant} from '../../repository/domain/participant-maker';
-import ParticipantCreateResponse from '../../../src/rest/ParticipantCreateResponse';
+import ParticipantCreateResponse from '../../../src/rest/Participant/ParticipantCreateResponse';
 import ReferenceNotFoundError from '../../../src/error/ReferenceNotFoundError';
 import Participant from '../../../src/repository/domain/Participant';
-import ParticipantCreateRequest from '../../../src/rest/ParticipantCreateRequest';
+import ParticipantCreateRequest from '../../../src/rest/Participant/ParticipantCreateRequest';
 
 const mockCreateParticipant = jest.fn();
-jest.spyOn(participantService, 'createParticipant')
-    .mockImplementation(mockCreateParticipant);
+jest
+  .spyOn(participantService, 'createParticipant')
+  .mockImplementation(mockCreateParticipant);
 
 describe('Create Participant', () => {
   test('Happy Path', async () => {
@@ -19,8 +20,8 @@ describe('Create Participant', () => {
     await create(toEvent(expected), null, callback);
 
     expect(mockCreateParticipant).toHaveBeenCalledWith(
-        expected.userId,
-        expected.hackathonId,
+      expected.userId,
+      expected.hackathonId,
     );
     expect(callback).toHaveBeenCalledWith(null, {
       statusCode: 201,
@@ -73,8 +74,7 @@ describe('Create Participant', () => {
 });
 
 const toEvent = (participant: Participant): object => ({
-  body: JSON.stringify(new ParticipantCreateRequest(
-      participant.userId,
-      participant.hackathonId,
-  )),
+  body: JSON.stringify(
+    new ParticipantCreateRequest(participant.userId, participant.hackathonId),
+  ),
 });

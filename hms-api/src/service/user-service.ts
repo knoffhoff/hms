@@ -1,18 +1,25 @@
 /* eslint-disable require-jsdoc */
 
-import {deleteUser, getUser, getUsers, listUsers, putUser, userExistsByEmail,} from '../repository/user-repository';
+import {
+  deleteUser,
+  getUser,
+  getUsers,
+  listUsers,
+  putUser,
+  userExistsByEmail,
+} from '../repository/user-repository';
 import {getSkills, skillExists} from '../repository/skill-repository';
 import Participant from '../repository/domain/Participant';
 import User from '../repository/domain/User';
 import Uuid from '../util/Uuid';
 import Role from '../repository/domain/Role';
 import ReferenceNotFoundError from '../error/ReferenceNotFoundError';
-import UserResponse from '../rest/UserResponse';
-import UserListResponse from '../rest/UserListResponse';
-import UserDeleteResponse from '../rest/UserDeleteResponse';
+import UserResponse from '../rest/User/UserResponse';
+import UserListResponse from '../rest/User/UserListResponse';
+import UserDeleteResponse from '../rest/User/UserDeleteResponse';
 import NotFoundError from '../error/NotFoundError';
 import ValidationError from '../error/ValidationError';
-import UserExistsResponse from '../rest/UserExistsResponse';
+import UserExistsResponse from '../rest/User/UserExistsResponse';
 
 const ADMIN_USERS = (): string[] => {
   const adminUserString = process.env.ADMIN_USERS || '';

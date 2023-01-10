@@ -15,16 +15,24 @@ import {
 } from '../../src/service/idea-service';
 import {uuid} from '../../src/util/Uuid';
 import {IdeaData, makeIdea, randomIdea} from '../repository/domain/idea-maker';
-import {HackathonData, makeHackathon, randomHackathon} from '../repository/domain/hackathon-maker';
+import {
+  HackathonData,
+  makeHackathon,
+  randomHackathon,
+} from '../repository/domain/hackathon-maker';
 
 import {randomUser} from '../repository/domain/user-maker';
-import {makeParticipant, ParticipantData, randomParticipant} from '../repository/domain/participant-maker';
+import {
+  makeParticipant,
+  ParticipantData,
+  randomParticipant,
+} from '../repository/domain/participant-maker';
 import {randomCategory} from '../repository/domain/category-maker';
 import {randomSkill} from '../repository/domain/skill-maker';
-import IdeaResponse from '../../src/rest/IdeaResponse';
+import IdeaResponse from '../../src/rest/Idea/IdeaResponse';
 import NotFoundError from '../../src/error/NotFoundError';
 import ReferenceNotFoundError from '../../src/error/ReferenceNotFoundError';
-import IdeaListResponse from '../../src/rest/IdeaListResponse';
+import IdeaListResponse from '../../src/rest/Idea/IdeaListResponse';
 import DeletionError from '../../src/error/DeletionError';
 import Idea from '../../src/repository/domain/Idea';
 import * as participantRepository from '../../src/repository/participant-repository';
@@ -37,7 +45,7 @@ import * as userService from '../../src/service/user-service';
 import InvalidStateError from '../../src/error/InvalidStateError';
 import ValidationResult from '../../src/error/ValidationResult';
 import ValidationError from '../../src/error/ValidationError';
-import IdeaListAllResponse from '../../src/rest/IdeaListAllResponse';
+import IdeaListAllResponse from '../../src/rest/Idea/IdeaListAllResponse';
 import User from '../../src/repository/domain/User';
 import Participant from '../../src/repository/domain/Participant';
 import Hackathon from '../../src/repository/domain/Hackathon';
@@ -98,8 +106,7 @@ const mockGetUser = jest.fn();
 jest.spyOn(userRepository, 'getUser').mockImplementation(mockGetUser);
 
 const mockUsersFor = jest.fn();
-jest.spyOn(userService, 'usersFor')
-  .mockImplementation(mockUsersFor);
+jest.spyOn(userService, 'usersFor').mockImplementation(mockUsersFor);
 
 const mockGetHackathon = jest.fn();
 jest
@@ -436,7 +443,7 @@ describe('Get Idea Response', () => {
       mockGetIdea.mockResolvedValueOnce(idea);
     } else {
       mockGetIdea.mockImplementationOnce(() => {
-        throw new NotFoundError('Fail')
+        throw new NotFoundError('Fail');
       });
     }
 
@@ -444,7 +451,7 @@ describe('Get Idea Response', () => {
       mockGetUser.mockResolvedValueOnce(ownerUser);
     } else {
       mockGetUser.mockImplementationOnce(() => {
-        throw new NotFoundError('Fail')
+        throw new NotFoundError('Fail');
       });
     }
 
@@ -452,7 +459,7 @@ describe('Get Idea Response', () => {
       mockGetParticipants.mockResolvedValueOnce(participants);
     } else {
       mockGetParticipants.mockImplementationOnce(() => {
-        throw new NotFoundError('Fail')
+        throw new NotFoundError('Fail');
       });
     }
 
@@ -460,7 +467,7 @@ describe('Get Idea Response', () => {
       mockGetParticipants.mockResolvedValueOnce(voters);
     } else {
       mockGetParticipants.mockImplementationOnce(() => {
-        throw new NotFoundError('Fail')
+        throw new NotFoundError('Fail');
       });
     }
 
@@ -468,7 +475,7 @@ describe('Get Idea Response', () => {
       mockUsersFor.mockResolvedValueOnce(participantUsers);
     } else {
       mockUsersFor.mockImplementationOnce(() => {
-        throw new NotFoundError('Fail')
+        throw new NotFoundError('Fail');
       });
     }
 
@@ -476,7 +483,7 @@ describe('Get Idea Response', () => {
       mockUsersFor.mockResolvedValueOnce(voterUsers);
     } else {
       mockUsersFor.mockImplementationOnce(() => {
-        throw new NotFoundError('Fail')
+        throw new NotFoundError('Fail');
       });
     }
 
@@ -484,7 +491,7 @@ describe('Get Idea Response', () => {
       mockGetHackathon.mockResolvedValueOnce(hackathon);
     } else {
       mockGetHackathon.mockImplementationOnce(() => {
-        throw new NotFoundError('Fail')
+        throw new NotFoundError('Fail');
       });
     }
 
@@ -492,7 +499,7 @@ describe('Get Idea Response', () => {
       mockGetSkills.mockResolvedValueOnce(skills);
     } else {
       mockGetSkills.mockImplementationOnce(() => {
-        throw new NotFoundError('Fail')
+        throw new NotFoundError('Fail');
       });
     }
 
@@ -500,7 +507,7 @@ describe('Get Idea Response', () => {
       mockGetCategory.mockResolvedValueOnce(category);
     } else {
       mockGetCategory.mockImplementationOnce(() => {
-        throw new NotFoundError('Fail')
+        throw new NotFoundError('Fail');
       });
     }
   }
@@ -510,11 +517,20 @@ describe('Get Idea Response', () => {
     const ownerUser = randomUser();
     const participantUser = randomUser();
     const voterUser = randomUser();
-    const owner = makeParticipant({userId: ownerUser.id, hackathonId: idea.hackathonId} as ParticipantData);
-    const participant = makeParticipant({userId: participantUser.id, hackathonId: idea.hackathonId} as ParticipantData);
+    const owner = makeParticipant({
+      userId: ownerUser.id,
+      hackathonId: idea.hackathonId,
+    } as ParticipantData);
+    const participant = makeParticipant({
+      userId: participantUser.id,
+      hackathonId: idea.hackathonId,
+    } as ParticipantData);
     const participants = [owner, participant];
     const participantUsers = [ownerUser, participantUser];
-    const voter = makeParticipant({userId: voterUser.id, hackathonId: idea.hackathonId} as ParticipantData);
+    const voter = makeParticipant({
+      userId: voterUser.id,
+      hackathonId: idea.hackathonId,
+    } as ParticipantData);
     const voters = [voter];
     const voterUsers = [voterUser];
     const hackathon = makeHackathon({id: idea.id} as HackathonData);
@@ -532,7 +548,17 @@ describe('Get Idea Response', () => {
       skills,
       category,
     );
-    mockResolvedValues(idea, ownerUser, participantUsers, participants, voterUsers, voters, hackathon, skills, category);
+    mockResolvedValues(
+      idea,
+      ownerUser,
+      participantUsers,
+      participants,
+      voterUsers,
+      voters,
+      hackathon,
+      skills,
+      category,
+    );
 
     expect(await getIdeaResponse(idea.id)).toStrictEqual(expected);
     expect(mockGetIdea).toHaveBeenCalledWith(idea.id);
@@ -551,19 +577,40 @@ describe('Get Idea Response', () => {
     const ownerUser = randomUser();
     const participantUser = randomUser();
     const voterUser = randomUser();
-    const owner = makeParticipant({userId: ownerUser.id, hackathonId: idea.hackathonId} as ParticipantData);
-    const participant = makeParticipant({userId: participantUser.id, hackathonId: idea.hackathonId} as ParticipantData);
+    const owner = makeParticipant({
+      userId: ownerUser.id,
+      hackathonId: idea.hackathonId,
+    } as ParticipantData);
+    const participant = makeParticipant({
+      userId: participantUser.id,
+      hackathonId: idea.hackathonId,
+    } as ParticipantData);
     const participants = [owner, participant];
     const participantUsers = [ownerUser, participantUser];
-    const voter = makeParticipant({userId: voterUser.id, hackathonId: idea.hackathonId} as ParticipantData);
+    const voter = makeParticipant({
+      userId: voterUser.id,
+      hackathonId: idea.hackathonId,
+    } as ParticipantData);
     const voters = [voter];
     const voterUsers = [voterUser];
     const hackathon = makeHackathon({id: idea.id} as HackathonData);
     const skills = [randomSkill(), randomSkill(), randomSkill()];
 
-    mockResolvedValues(idea, ownerUser, participantUsers, participants, voterUsers, voters, hackathon, skills, null);
+    mockResolvedValues(
+      idea,
+      ownerUser,
+      participantUsers,
+      participants,
+      voterUsers,
+      voters,
+      hackathon,
+      skills,
+      null,
+    );
 
-    await expect(getIdeaResponse(idea.id)).rejects.toThrow(ReferenceNotFoundError);
+    await expect(getIdeaResponse(idea.id)).rejects.toThrow(
+      ReferenceNotFoundError,
+    );
   });
 
   test('Missing Skills', async () => {
@@ -571,19 +618,40 @@ describe('Get Idea Response', () => {
     const ownerUser = randomUser();
     const participantUser = randomUser();
     const voterUser = randomUser();
-    const owner = makeParticipant({userId: ownerUser.id, hackathonId: idea.hackathonId} as ParticipantData);
-    const participant = makeParticipant({userId: participantUser.id, hackathonId: idea.hackathonId} as ParticipantData);
+    const owner = makeParticipant({
+      userId: ownerUser.id,
+      hackathonId: idea.hackathonId,
+    } as ParticipantData);
+    const participant = makeParticipant({
+      userId: participantUser.id,
+      hackathonId: idea.hackathonId,
+    } as ParticipantData);
     const participants = [owner, participant];
     const participantUsers = [ownerUser, participantUser];
-    const voter = makeParticipant({userId: voterUser.id, hackathonId: idea.hackathonId} as ParticipantData);
+    const voter = makeParticipant({
+      userId: voterUser.id,
+      hackathonId: idea.hackathonId,
+    } as ParticipantData);
     const voters = [voter];
     const voterUsers = [voterUser];
     const hackathon = makeHackathon({id: idea.id} as HackathonData);
-    const category = randomCategory()
+    const category = randomCategory();
 
-    mockResolvedValues(idea, ownerUser, participantUsers, participants, voterUsers, voters, hackathon, null, category);
+    mockResolvedValues(
+      idea,
+      ownerUser,
+      participantUsers,
+      participants,
+      voterUsers,
+      voters,
+      hackathon,
+      null,
+      category,
+    );
 
-    await expect(getIdeaResponse(idea.id)).rejects.toThrow(ReferenceNotFoundError);
+    await expect(getIdeaResponse(idea.id)).rejects.toThrow(
+      ReferenceNotFoundError,
+    );
   });
 
   test('Missing Hackathon', async () => {
@@ -591,19 +659,40 @@ describe('Get Idea Response', () => {
     const ownerUser = randomUser();
     const participantUser = randomUser();
     const voterUser = randomUser();
-    const owner = makeParticipant({userId: ownerUser.id, hackathonId: idea.hackathonId} as ParticipantData);
-    const participant = makeParticipant({userId: participantUser.id, hackathonId: idea.hackathonId} as ParticipantData);
+    const owner = makeParticipant({
+      userId: ownerUser.id,
+      hackathonId: idea.hackathonId,
+    } as ParticipantData);
+    const participant = makeParticipant({
+      userId: participantUser.id,
+      hackathonId: idea.hackathonId,
+    } as ParticipantData);
     const participants = [owner, participant];
     const participantUsers = [ownerUser, participantUser];
-    const voter = makeParticipant({userId: voterUser.id, hackathonId: idea.hackathonId} as ParticipantData);
+    const voter = makeParticipant({
+      userId: voterUser.id,
+      hackathonId: idea.hackathonId,
+    } as ParticipantData);
     const voters = [voter];
     const voterUsers = [voterUser];
     const skills = [randomSkill(), randomSkill(), randomSkill()];
-    const category = randomCategory()
+    const category = randomCategory();
 
-    mockResolvedValues(idea, ownerUser, participantUsers, participants, voterUsers, voters, null, skills, category);
+    mockResolvedValues(
+      idea,
+      ownerUser,
+      participantUsers,
+      participants,
+      voterUsers,
+      voters,
+      null,
+      skills,
+      category,
+    );
 
-    await expect(getIdeaResponse(idea.id)).rejects.toThrow(ReferenceNotFoundError);
+    await expect(getIdeaResponse(idea.id)).rejects.toThrow(
+      ReferenceNotFoundError,
+    );
   });
 
   test('Missing Users', async () => {
@@ -611,18 +700,39 @@ describe('Get Idea Response', () => {
     const ownerUser = randomUser();
     const participantUser = randomUser();
     const voterUser = randomUser();
-    const owner = makeParticipant({userId: ownerUser.id, hackathonId: idea.hackathonId} as ParticipantData);
-    const participant = makeParticipant({userId: participantUser.id, hackathonId: idea.hackathonId} as ParticipantData);
+    const owner = makeParticipant({
+      userId: ownerUser.id,
+      hackathonId: idea.hackathonId,
+    } as ParticipantData);
+    const participant = makeParticipant({
+      userId: participantUser.id,
+      hackathonId: idea.hackathonId,
+    } as ParticipantData);
     const participants = [owner, participant];
-    const voter = makeParticipant({userId: voterUser.id, hackathonId: idea.hackathonId} as ParticipantData);
+    const voter = makeParticipant({
+      userId: voterUser.id,
+      hackathonId: idea.hackathonId,
+    } as ParticipantData);
     const voters = [voter];
     const hackathon = makeHackathon({id: idea.id} as HackathonData);
     const skills = [randomSkill(), randomSkill(), randomSkill()];
-    const category = randomCategory()
+    const category = randomCategory();
 
-    mockResolvedValues(idea, ownerUser, null, participants, null, voters, hackathon, skills, category);
+    mockResolvedValues(
+      idea,
+      ownerUser,
+      null,
+      participants,
+      null,
+      voters,
+      hackathon,
+      skills,
+      category,
+    );
 
-    await expect(getIdeaResponse(idea.id)).rejects.toThrow(ReferenceNotFoundError);
+    await expect(getIdeaResponse(idea.id)).rejects.toThrow(
+      ReferenceNotFoundError,
+    );
   });
 
   test('Missing Participants', async () => {
@@ -634,28 +744,58 @@ describe('Get Idea Response', () => {
     const voterUsers = [voterUser];
     const hackathon = makeHackathon({id: idea.id} as HackathonData);
     const skills = [randomSkill(), randomSkill(), randomSkill()];
-    const category = randomCategory()
+    const category = randomCategory();
 
-    mockResolvedValues(idea, ownerUser, participantUsers, null, voterUsers, null, hackathon, skills, category);
-    await expect(getIdeaResponse(idea.id)).rejects.toThrow(ReferenceNotFoundError);
+    mockResolvedValues(
+      idea,
+      ownerUser,
+      participantUsers,
+      null,
+      voterUsers,
+      null,
+      hackathon,
+      skills,
+      category,
+    );
+    await expect(getIdeaResponse(idea.id)).rejects.toThrow(
+      ReferenceNotFoundError,
+    );
   });
 
   test('Missing Owner User', async () => {
     const idea = randomIdea();
     const participantUser = randomUser();
     const voterUser = randomUser();
-    const participant = makeParticipant({userId: participantUser.id, hackathonId: idea.hackathonId} as ParticipantData);
+    const participant = makeParticipant({
+      userId: participantUser.id,
+      hackathonId: idea.hackathonId,
+    } as ParticipantData);
     const participants = [participant];
     const participantUsers = [participantUser];
-    const voter = makeParticipant({userId: voterUser.id, hackathonId: idea.hackathonId} as ParticipantData);
+    const voter = makeParticipant({
+      userId: voterUser.id,
+      hackathonId: idea.hackathonId,
+    } as ParticipantData);
     const voters = [voter];
     const voterUsers = [voterUser];
     const hackathon = makeHackathon({id: idea.id} as HackathonData);
     const skills = [randomSkill(), randomSkill(), randomSkill()];
-    const category = randomCategory()
+    const category = randomCategory();
 
-    mockResolvedValues(idea, null, participantUsers, participants, voterUsers, voters, hackathon, skills, category);
-    await expect(getIdeaResponse(idea.id)).rejects.toThrow(ReferenceNotFoundError);
+    mockResolvedValues(
+      idea,
+      null,
+      participantUsers,
+      participants,
+      voterUsers,
+      voters,
+      hackathon,
+      skills,
+      category,
+    );
+    await expect(getIdeaResponse(idea.id)).rejects.toThrow(
+      ReferenceNotFoundError,
+    );
   });
 
   test('Missing Owner Participant', async () => {
@@ -883,11 +1023,11 @@ describe('Add Voter', () => {
 });
 
 describe('Remove Participant', () => {
-  const ignored = null
+  const ignored = null;
 });
 
 describe('Remove Voter', () => {
-  const ignored = null
+  const ignored = null;
 });
 
 describe('Delete Idea', () => {
@@ -905,7 +1045,7 @@ describe('Remove Ideas for Category', () => {
     const idea2 = randomIdea();
     mockListIdeasForCategory.mockResolvedValue([idea1, idea2]);
     mockDeleteIdea.mockImplementation(() => {
-      const ignored = null
+      const ignored = null;
     });
 
     await removeIdeasForCategory(categoryId);
@@ -936,7 +1076,7 @@ describe('Remove Ideas for Hackathon', () => {
     const idea2 = randomIdea();
     mockListIdeasForHackathon.mockResolvedValue([idea1, idea2]);
     mockDeleteIdea.mockImplementation(() => {
-      const ignored = null
+      const ignored = null;
     });
 
     await removeIdeasForHackathon(hackathonId);
@@ -967,7 +1107,7 @@ describe('Remove Ideas for Owner', () => {
     const idea2 = randomIdea();
     mockListIdeasForOwner.mockResolvedValue([idea1, idea2]);
     mockDeleteIdea.mockImplementation(() => {
-      const ignored = null
+      const ignored = null;
     });
 
     await removeIdeasForOwner(ownerId);
@@ -996,7 +1136,7 @@ describe('Remove Participant from Ideas', () => {
     const idea2 = randomIdea();
     mockListIdeasForParticipant.mockResolvedValue([idea1, idea2]);
     mockDeleteParticipantFromIdea.mockImplementation(() => {
-      const ignored = null
+      const ignored = null;
     });
 
     await removeParticipantFromIdeas(participantId);

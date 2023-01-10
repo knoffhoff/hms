@@ -1,12 +1,13 @@
 import * as participantService from '../../../src/service/participant-service';
 import {remove} from '../../../src/handler/participant/remove';
-import ParticipantDeleteResponse from '../../../src/rest/ParticipantDeleteResponse';
+import ParticipantDeleteResponse from '../../../src/rest/Participant/ParticipantDeleteResponse';
 import Uuid, {uuid} from '../../../src/util/Uuid';
-import UserDeleteResponse from '../../../src/rest/UserDeleteResponse';
+import UserDeleteResponse from '../../../src/rest/User/UserDeleteResponse';
 
 const mockRemoveParticipant = jest.fn();
-jest.spyOn(participantService, 'removeParticipant')
-    .mockImplementation(mockRemoveParticipant);
+jest
+  .spyOn(participantService, 'removeParticipant')
+  .mockImplementation(mockRemoveParticipant);
 
 describe('Delete Participant', () => {
   test('Happy Path', async () => {

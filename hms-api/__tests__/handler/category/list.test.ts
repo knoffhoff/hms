@@ -2,13 +2,13 @@ import {randomCategory} from '../../repository/domain/category-maker';
 import {list} from '../../../src/handler/category/list';
 import Uuid, {uuid} from '../../../src/util/Uuid';
 import NotFoundError from '../../../src/error/NotFoundError';
-import CategoryListResponse from '../../../src/rest/CategoryListResponse';
+import CategoryListResponse from '../../../src/rest/Category/CategoryListResponse';
 import * as categoryService from '../../../src/service/category-service';
 
 const mockGetCategoryListResponse = jest.fn();
 jest
-.spyOn(categoryService, 'getCategoryListResponse')
-.mockImplementation(mockGetCategoryListResponse);
+  .spyOn(categoryService, 'getCategoryListResponse')
+  .mockImplementation(mockGetCategoryListResponse);
 
 describe('List Categories', () => {
   test('Happy Path', async () => {
@@ -18,8 +18,8 @@ describe('List Categories', () => {
     const category3 = randomCategory();
     const category4 = randomCategory();
     const expected = CategoryListResponse.from(
-        [category1, category2, category3, category4],
-        hackathonId
+      [category1, category2, category3, category4],
+      hackathonId,
     );
 
     mockGetCategoryListResponse.mockResolvedValue(expected);
@@ -73,7 +73,7 @@ describe('List Categories', () => {
         'Access-Control-Allow-Credentials': true,
         'content-type': 'application/json',
       },
-      body: JSON.stringify({ errorMessage: errorMessage }),
+      body: JSON.stringify({errorMessage: errorMessage}),
     });
   });
 });

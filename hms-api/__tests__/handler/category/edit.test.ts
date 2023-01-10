@@ -1,13 +1,14 @@
 import {edit} from '../../../src/handler/category/edit';
 import Uuid, {uuid} from '../../../src/util/Uuid';
 import * as categoryService from '../../../src/service/category-service';
-import CategoryEditResponse from '../../../src/rest/CategoryEditResponse';
+import CategoryEditResponse from '../../../src/rest/Category/CategoryEditResponse';
 import NotFoundError from '../../../src/error/NotFoundError';
-import CategoryEditRequest from '../../../src/rest/CategoryEditRequest';
+import CategoryEditRequest from '../../../src/rest/Category/CategoryEditRequest';
 
 const mockEditCategory = jest.fn();
-jest.spyOn(categoryService, 'editCategory')
-    .mockImplementation(mockEditCategory);
+jest
+  .spyOn(categoryService, 'editCategory')
+  .mockImplementation(mockEditCategory);
 
 describe('Edit Category', () => {
   test('Happy Path', async () => {
@@ -16,23 +17,20 @@ describe('Edit Category', () => {
     const id = uuid();
     const callback = jest.fn();
 
-    mockEditCategory.mockImplementation(() => {
-    });
+    mockEditCategory.mockImplementation(() => {});
 
     await edit(toEvent(title, description, id), null, callback);
 
-    expect(mockEditCategory)
-        .toHaveBeenCalledWith(id, title, description);
-    expect(callback)
-        .toHaveBeenCalledWith(null, {
-          statusCode: 200,
-          headers: {
-            'Access-Control-Allow-Origin': '*',
-            'Access-Control-Allow-Credentials': true,
-            'content-type': 'application/json',
-          },
-          body: JSON.stringify(new CategoryEditResponse(id)),
-        });
+    expect(mockEditCategory).toHaveBeenCalledWith(id, title, description);
+    expect(callback).toHaveBeenCalledWith(null, {
+      statusCode: 200,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Credentials': true,
+        'content-type': 'application/json',
+      },
+      body: JSON.stringify(new CategoryEditResponse(id)),
+    });
   });
 
   test('Throws NotFoundError', async () => {
@@ -48,18 +46,16 @@ describe('Edit Category', () => {
 
     await edit(toEvent(title, description, id), null, callback);
 
-    expect(mockEditCategory)
-        .toHaveBeenCalledWith(id, title, description);
-    expect(callback)
-        .toHaveBeenCalledWith(null, {
-          statusCode: 404,
-          headers: {
-            'Access-Control-Allow-Origin': '*',
-            'Access-Control-Allow-Credentials': true,
-            'content-type': 'application/json',
-          },
-          body: JSON.stringify({errorMessage: errorMessage}),
-        });
+    expect(mockEditCategory).toHaveBeenCalledWith(id, title, description);
+    expect(callback).toHaveBeenCalledWith(null, {
+      statusCode: 404,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Credentials': true,
+        'content-type': 'application/json',
+      },
+      body: JSON.stringify({errorMessage: errorMessage}),
+    });
   });
 
   test('Throws Error', async () => {
@@ -75,26 +71,20 @@ describe('Edit Category', () => {
 
     await edit(toEvent(title, description, id), null, callback);
 
-    expect(mockEditCategory)
-        .toHaveBeenCalledWith(id, title, description);
-    expect(callback)
-        .toHaveBeenCalledWith(null, {
-          statusCode: 500,
-          headers: {
-            'Access-Control-Allow-Origin': '*',
-            'Access-Control-Allow-Credentials': true,
-            'content-type': 'application/json',
-          },
-          body: JSON.stringify({errorMessage: errorMessage}),
-        });
+    expect(mockEditCategory).toHaveBeenCalledWith(id, title, description);
+    expect(callback).toHaveBeenCalledWith(null, {
+      statusCode: 500,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Credentials': true,
+        'content-type': 'application/json',
+      },
+      body: JSON.stringify({errorMessage: errorMessage}),
+    });
   });
 });
 
-const toEvent = (
-    title: string,
-    description: string,
-    id: Uuid,
-): object => ({
+const toEvent = (title: string, description: string, id: Uuid): object => ({
   body: JSON.stringify(new CategoryEditRequest(title, description)),
   pathParameters: {
     id: id,

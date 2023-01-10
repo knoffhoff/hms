@@ -156,6 +156,15 @@ export async function getIdea(id: Uuid): Promise<Idea> {
   throw new NotFoundError(`Idea with id: ${id} not found`);
 }
 
+export async function ideaExists(id: Uuid): Promise<boolean> {
+  try {
+    await getIdea(id);
+    return true;
+  } catch (error) {
+    return false;
+  }
+}
+
 export async function deleteIdea(id: Uuid): Promise<Idea> {
   const output = await dynamoDBClient.send(
     new DeleteItemCommand({

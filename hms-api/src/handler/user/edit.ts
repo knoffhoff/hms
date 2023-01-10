@@ -1,8 +1,8 @@
 import {wrapHandler} from '../handler-wrapper';
 import {buildResponse} from '../../rest/responses';
 import {editUser} from '../../service/user-service';
-import UserEditRequest from '../../rest/UserEditRequest';
-import UserEditResponse from '../../rest/UserEditResponse';
+import UserEditRequest from '../../rest/User/UserEditRequest';
+import UserEditResponse from '../../rest/User/UserEditResponse';
 import Uuid from '../../util/Uuid';
 
 // eslint-disable-next-line require-jsdoc

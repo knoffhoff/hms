@@ -2,7 +2,7 @@ import {
   makeParticipant,
   ParticipantData,
 } from '../repository/domain/participant-maker';
-import ParticipantPreviewResponse from '../../src/rest/ParticipantPreviewResponse';
+import ParticipantPreviewResponse from '../../src/rest/Participant/ParticipantPreviewResponse';
 import {makeUser, randomUser, UserData} from '../repository/domain/user-maker';
 
 describe('Compare', () => {

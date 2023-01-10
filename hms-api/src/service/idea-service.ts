@@ -1,7 +1,13 @@
 /* eslint-disable require-jsdoc */
 
-import {getParticipant, getParticipants} from '../repository/participant-repository';
-import {getHackathon, hackathonExists} from '../repository/hackathon-repository';
+import {
+  getParticipant,
+  getParticipants,
+} from '../repository/participant-repository';
+import {
+  getHackathon,
+  hackathonExists,
+} from '../repository/hackathon-repository';
 import {categoryExists, getCategory} from '../repository/category-repository';
 import {getSkills, skillExists} from '../repository/skill-repository';
 import {
@@ -23,14 +29,14 @@ import {getUser} from '../repository/user-repository';
 import Uuid from '../util/Uuid';
 import Idea from '../repository/domain/Idea';
 import ReferenceNotFoundError from '../error/ReferenceNotFoundError';
-import IdeaResponse from '../rest/IdeaResponse';
-import IdeaListResponse from '../rest/IdeaListResponse';
-import IdeaDeleteResponse from '../rest/IdeaDeleteResponse';
+import IdeaResponse from '../rest/Idea/IdeaResponse';
+import IdeaListResponse from '../rest/Idea/IdeaListResponse';
+import IdeaDeleteResponse from '../rest/Idea/IdeaDeleteResponse';
 import DeletionError from '../error/DeletionError';
 import NotFoundError from '../error/NotFoundError';
 import InvalidStateError from '../error/InvalidStateError';
 import ValidationError from '../error/ValidationError';
-import IdeaListAllResponse from '../rest/IdeaListAllResponse';
+import IdeaListAllResponse from '../rest/Idea/IdeaListAllResponse';
 
 export async function createIdea(
   ownerId: Uuid,

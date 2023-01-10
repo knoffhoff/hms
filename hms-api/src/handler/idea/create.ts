@@ -1,8 +1,8 @@
 import {buildResponse} from '../../rest/responses';
 import {createIdea} from '../../service/idea-service';
 import {wrapHandler} from '../handler-wrapper';
-import IdeaCreateRequest from '../../rest/IdeaCreateRequest';
-import IdeaCreateResponse from '../../rest/IdeaCreateResponse';
+import IdeaCreateRequest from '../../rest/Idea/IdeaCreateRequest';
+import IdeaCreateResponse from '../../rest/Idea/IdeaCreateResponse';
 
 // eslint-disable-next-line require-jsdoc
 export async function create(event, context, callback) {

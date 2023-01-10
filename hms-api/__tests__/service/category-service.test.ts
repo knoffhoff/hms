@@ -14,42 +14,48 @@ import {
 } from '../../src/service/category-service';
 import {uuid} from '../../src/util/Uuid';
 import ReferenceNotFoundError from '../../src/error/ReferenceNotFoundError';
-import CategoryResponse from '../../src/rest/CategoryResponse';
+import CategoryResponse from '../../src/rest/Category/CategoryResponse';
 import NotFoundError from '../../src/error/NotFoundError';
-import CategoryListResponse from '../../src/rest/CategoryListResponse';
+import CategoryListResponse from '../../src/rest/Category/CategoryListResponse';
 import Category from '../../src/repository/domain/Category';
 import DeletionError from '../../src/error/DeletionError';
-import CategoryDeleteResponse from '../../src/rest/CategoryDeleteResponse';
+import CategoryDeleteResponse from '../../src/rest/Category/CategoryDeleteResponse';
 import * as categoryRepository from '../../src/repository/category-repository';
-import * as hackathonRepository
-  from '../../src/repository/hackathon-repository';
+import * as hackathonRepository from '../../src/repository/hackathon-repository';
 import * as ideaService from '../../src/service/idea-service';
 import ValidationError from '../../src/error/ValidationError';
 import ValidationResult from '../../src/error/ValidationResult';
 
 const mockHackathonExists = jest.fn();
-jest.spyOn(hackathonRepository, 'hackathonExists')
-    .mockImplementation(mockHackathonExists);
+jest
+  .spyOn(hackathonRepository, 'hackathonExists')
+  .mockImplementation(mockHackathonExists);
 const mockGetHackathon = jest.fn();
-jest.spyOn(hackathonRepository, 'getHackathon')
-    .mockImplementation(mockGetHackathon);
+jest
+  .spyOn(hackathonRepository, 'getHackathon')
+  .mockImplementation(mockGetHackathon);
 
 const mockPutCategory = jest.fn();
-jest.spyOn(categoryRepository, 'putCategory')
-    .mockImplementation(mockPutCategory);
+jest
+  .spyOn(categoryRepository, 'putCategory')
+  .mockImplementation(mockPutCategory);
 const mockGetCategory = jest.fn();
-jest.spyOn(categoryRepository, 'getCategory')
-    .mockImplementation(mockGetCategory);
+jest
+  .spyOn(categoryRepository, 'getCategory')
+  .mockImplementation(mockGetCategory);
 const mockListCategories = jest.fn();
-jest.spyOn(categoryRepository, 'listCategories')
-    .mockImplementation(mockListCategories);
+jest
+  .spyOn(categoryRepository, 'listCategories')
+  .mockImplementation(mockListCategories);
 const mockDeleteCategory = jest.fn();
-jest.spyOn(categoryRepository, 'deleteCategory')
-    .mockImplementation(mockDeleteCategory);
+jest
+  .spyOn(categoryRepository, 'deleteCategory')
+  .mockImplementation(mockDeleteCategory);
 
 const mockRemoveIdeasForCategory = jest.fn();
-jest.spyOn(ideaService, 'removeIdeasForCategory')
-    .mockImplementation(mockRemoveIdeasForCategory);
+jest
+  .spyOn(ideaService, 'removeIdeasForCategory')
+  .mockImplementation(mockRemoveIdeasForCategory);
 
 describe('Create Category', () => {
   test('Happy Path', async () => {
@@ -57,36 +63,42 @@ describe('Create Category', () => {
 
     const expected = randomCategory();
 
-    expect(await createCategory(
+    expect(
+      await createCategory(
         expected.title,
         expected.description,
         expected.hackathonId,
-    )).toEqual(expect.objectContaining({
-      title: expected.title,
-      description: expected.description,
-      hackathonId: expected.hackathonId,
-    }));
+      ),
+    ).toEqual(
+      expect.objectContaining({
+        title: expected.title,
+        description: expected.description,
+        hackathonId: expected.hackathonId,
+      }),
+    );
 
-    expect(mockPutCategory).toHaveBeenCalledWith(expect.objectContaining({
-      title: expected.title,
-      description: expected.description,
-      hackathonId: expected.hackathonId,
-    }));
+    expect(mockPutCategory).toHaveBeenCalledWith(
+      expect.objectContaining({
+        title: expected.title,
+        description: expected.description,
+        hackathonId: expected.hackathonId,
+      }),
+    );
     expect(mockDeleteCategory).not.toHaveBeenCalled();
   });
 
   test('Validation Error', async () => {
-    await expect(createCategory('', 'descriiiiption', uuid()))
-        .rejects
-        .toThrow(ValidationError);
+    await expect(createCategory('', 'descriiiiption', uuid())).rejects.toThrow(
+      ValidationError,
+    );
   });
 
   test('Missing hackathon', async () => {
     mockHackathonExists.mockResolvedValue(false);
 
-    await expect(createCategory('title', 'description', uuid()))
-        .rejects
-        .toThrow(ReferenceNotFoundError);
+    await expect(
+      createCategory('title', 'description', uuid()),
+    ).rejects.toThrow(ReferenceNotFoundError);
 
     expect(mockPutCategory).not.toHaveBeenCalled();
     expect(mockDeleteCategory).not.toHaveBeenCalled();
@@ -99,10 +111,11 @@ describe('Edit Category', () => {
     const title = 'Worst Category Ever';
     const description = 'Best description ever!';
     const expected = new Category(
-        title,
-        description,
-        oldCategory.hackathonId,
-        oldCategory.id);
+      title,
+      description,
+      oldCategory.hackathonId,
+      oldCategory.id,
+    );
 
     mockGetCategory.mockResolvedValue(oldCategory);
 
@@ -117,13 +130,12 @@ describe('Edit Category', () => {
     failedValidation.addFailure('FAILURE');
 
     const mockCategory = randomCategory();
-    jest.spyOn(mockCategory, 'validate')
-        .mockReturnValue(failedValidation);
+    jest.spyOn(mockCategory, 'validate').mockReturnValue(failedValidation);
     mockGetCategory.mockResolvedValue(mockCategory);
 
-    await expect(editCategory(uuid(), 'tiiitle', 'descriiiiption'))
-        .rejects
-        .toThrow(ValidationError);
+    await expect(
+      editCategory(uuid(), 'tiiitle', 'descriiiiption'),
+    ).rejects.toThrow(ValidationError);
   });
 
   test('Category is missing', async () => {
@@ -133,12 +145,9 @@ describe('Edit Category', () => {
       throw new Error('Uh oh');
     });
 
-    await expect(editCategory(
-        id,
-        'Anything',
-        'There once was a man from Nantucket...'))
-        .rejects
-        .toThrow(NotFoundError);
+    await expect(
+      editCategory(id, 'Anything', 'There once was a man from Nantucket...'),
+    ).rejects.toThrow(NotFoundError);
     expect(mockGetCategory).toHaveBeenCalledWith(id);
     expect(mockPutCategory).not.toHaveBeenCalled();
   });
@@ -164,9 +173,9 @@ describe('Get Category Response', () => {
       throw new NotFoundError('Thing is missing');
     });
 
-    await expect(getCategoryResponse(category.id))
-        .rejects
-        .toThrow(NotFoundError);
+    await expect(getCategoryResponse(category.id)).rejects.toThrow(
+      NotFoundError,
+    );
     expect(mockGetCategory).toHaveBeenCalledWith(category.id);
     expect(mockGetHackathon).not.toHaveBeenCalled();
   });
@@ -178,9 +187,9 @@ describe('Get Category Response', () => {
       throw new NotFoundError('Thing is missing');
     });
 
-    await expect(getCategoryResponse(category.id))
-        .rejects
-        .toThrow(ReferenceNotFoundError);
+    await expect(getCategoryResponse(category.id)).rejects.toThrow(
+      ReferenceNotFoundError,
+    );
     expect(mockGetCategory).toHaveBeenCalledWith(category.id);
     expect(mockGetHackathon).toHaveBeenCalledWith(category.hackathonId);
   });
@@ -193,8 +202,9 @@ describe('Get Category List Response', () => {
     const category2 = randomCategory();
     const category3 = randomCategory();
     const expected = CategoryListResponse.from(
-        [category1, category2, category3],
-        hackathonId);
+      [category1, category2, category3],
+      hackathonId,
+    );
 
     mockHackathonExists.mockResolvedValue(true);
     mockListCategories.mockResolvedValue([category1, category2, category3]);
@@ -213,9 +223,9 @@ describe('Get Category List Response', () => {
       randomCategory(),
     ]);
 
-    await expect(getCategoryListResponse(hackathonId))
-        .rejects
-        .toThrow(NotFoundError);
+    await expect(getCategoryListResponse(hackathonId)).rejects.toThrow(
+      NotFoundError,
+    );
     expect(mockHackathonExists).toHaveBeenCalledWith(hackathonId);
     expect(mockListCategories).not.toHaveBeenCalled();
   });
@@ -224,11 +234,11 @@ describe('Get Category List Response', () => {
 describe('Delete Category', () => {
   test('Happy Path', async () => {
     const id = uuid();
-    mockRemoveIdeasForCategory.mockImplementation(() => {
-    });
+    mockRemoveIdeasForCategory.mockImplementation(() => {});
 
-    expect(await removeCategory(id))
-        .toStrictEqual(new CategoryDeleteResponse(id));
+    expect(await removeCategory(id)).toStrictEqual(
+      new CategoryDeleteResponse(id),
+    );
     expect(mockRemoveIdeasForCategory).toHaveBeenCalledWith(id);
     expect(mockDeleteCategory).toHaveBeenCalledWith(id);
   });
@@ -236,12 +246,10 @@ describe('Delete Category', () => {
   test('Fails to remove Ideas', async () => {
     const id = uuid();
     mockRemoveIdeasForCategory.mockImplementation(() => {
-      throw new DeletionError('It just won\'t delete bud!');
+      throw new DeletionError("It just won't delete bud!");
     });
 
-    await expect(removeCategory(id))
-        .rejects
-        .toThrow(DeletionError);
+    await expect(removeCategory(id)).rejects.toThrow(DeletionError);
     expect(mockRemoveIdeasForCategory).toHaveBeenCalledWith(id);
     expect(mockDeleteCategory).not.toHaveBeenCalled();
   });
@@ -250,15 +258,12 @@ describe('Delete Category', () => {
 describe('Remove Categories for Hackathon', () => {
   test('Happy Path', async () => {
     const hackathonId = uuid();
-    const category1 =
-        makeCategory({hackathonId: hackathonId} as CategoryData);
-    const category2 =
-        makeCategory({hackathonId: hackathonId} as CategoryData);
+    const category1 = makeCategory({hackathonId: hackathonId} as CategoryData);
+    const category2 = makeCategory({hackathonId: hackathonId} as CategoryData);
 
     mockListCategories.mockResolvedValue([category1, category2]);
 
-    mockRemoveIdeasForCategory.mockImplementation(() => {
-    });
+    mockRemoveIdeasForCategory.mockImplementation(() => {});
 
     await removeCategoriesForHackathon(hackathonId);
 

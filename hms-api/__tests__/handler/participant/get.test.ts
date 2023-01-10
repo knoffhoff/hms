@@ -4,21 +4,22 @@ import NotFoundError from '../../../src/error/NotFoundError';
 import * as participantService from '../../../src/service/participant-service';
 import Uuid, {uuid} from '../../../src/util/Uuid';
 import {randomHackathon} from '../../repository/domain/hackathon-maker';
-import ParticipantResponse from '../../../src/rest/ParticipantResponse';
+import ParticipantResponse from '../../../src/rest/Participant/ParticipantResponse';
 import ReferenceNotFoundError from '../../../src/error/ReferenceNotFoundError';
 import {randomUser} from '../../repository/domain/user-maker';
 
 const mockGetParticipant = jest.fn();
-jest.spyOn(participantService, 'getParticipantResponse')
-    .mockImplementation((mockGetParticipant));
+jest
+  .spyOn(participantService, 'getParticipantResponse')
+  .mockImplementation(mockGetParticipant);
 
 describe('Get Participant', () => {
   test('Happy Path', async () => {
     const participant = randomParticipant();
     const expected = ParticipantResponse.from(
-        participant,
-        randomUser(),
-        randomHackathon(),
+      participant,
+      randomUser(),
+      randomHackathon(),
     );
 
     mockGetParticipant.mockResolvedValue(expected);

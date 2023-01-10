@@ -1,7 +1,7 @@
 import {wrapHandler} from '../handler-wrapper';
 import {addVoter} from '../../service/idea-service';
 import {buildResponse} from '../../rest/responses';
-import IdeaVoteResponse from '../../rest/IdeaVoteResponse';
+import IdeaVoteResponse from '../../rest/Idea/IdeaVoteResponse';
 
 // eslint-disable-next-line require-jsdoc
 export async function vote(event, context, callback) {

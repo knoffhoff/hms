@@ -2,9 +2,9 @@ import {randomIdea} from '../../repository/domain/idea-maker';
 import {listAllIdeas, listHackathonIdeas} from '../../../src/handler/idea/list';
 import Uuid, {uuid} from '../../../src/util/Uuid';
 import NotFoundError from '../../../src/error/NotFoundError';
-import IdeaListResponse from '../../../src/rest/IdeaListResponse';
+import IdeaListResponse from '../../../src/rest/Idea/IdeaListResponse';
 import * as ideaService from '../../../src/service/idea-service';
-import IdeaListAllResponse from '../../../src/rest/IdeaListAllResponse';
+import IdeaListAllResponse from '../../../src/rest/Idea/IdeaListAllResponse';
 
 const mockGetIdeaListResponse = jest.fn();
 jest
