@@ -6,7 +6,7 @@
     "@azure/msal-browser": "^2.32.0",
     "@azure/msal-react": "^1.5.2",
     "@mantine/core": "^5.10.0",
-    "@mantine/dates": "^5.10.0",
+    "@mantine/dates": "^5.10.1",
     "@mantine/dropzone": "^5.10.0",
     "@mantine/form": "^5.10.0",
     "@mantine/hooks": "^5.9.5",
