@@ -3,6 +3,7 @@ export enum HackathonDropdownMode {
   IdeaPortal = 'IDEA_PORTAL',
   Home = 'HOME',
   MyIdeas = 'MY_IDEAS',
+  MoveModal = 'MOVE_MODAL',
 }
 
 export enum HackathonDetailsType {
@@ -18,6 +19,10 @@ export enum IdeaCardType {
   AllIdeas = 'ALL_IDEAS',
   IdeaPortal = 'IDEA_PORTAL',
   Archive = 'ARCHIVE',
+}
+
+export enum IdeaFormType {
+  IdeaPortal_New = 'IDEA_PORTAL_NEW',
 }
 
 export type HackathonPreview = {

@@ -11,11 +11,7 @@ import {uuid} from '../../src/util/Uuid';
 import {randomCategory} from '../repository/domain/category-maker';
 import HackathonResponse from '../../src/rest/HackathonResponse';
 import {randomUser} from '../repository/domain/user-maker';
-import {
-  makeParticipant,
-  ParticipantData,
-  randomParticipant,
-} from '../repository/domain/participant-maker';
+import {makeParticipant, ParticipantData, randomParticipant,} from '../repository/domain/participant-maker';
 import {randomIdea} from '../repository/domain/idea-maker';
 import ReferenceNotFoundError from '../../src/error/ReferenceNotFoundError';
 import NotFoundError from '../../src/error/NotFoundError';
@@ -64,6 +60,11 @@ jest
 const mockGetUsers = jest.fn();
 jest.spyOn(userRepository, 'getUsers').mockImplementation(mockGetUsers);
 
+const mockCreateCategory = jest.fn();
+jest
+  .spyOn(categoryService, 'createCategory')
+  .mockImplementation(mockCreateCategory);
+
 const mockListCategories = jest.fn();
 jest
   .spyOn(categoryRepository, 'listCategories')
@@ -92,14 +93,16 @@ describe('Create Hackathon', () => {
 
     const expected = randomHackathon();
 
-    expect(
-      await createHackathon(
+    mockCreateCategory.mockResolvedValue(randomCategory());
+
+    const actual = await createHackathon(
         expected.title,
         expected.description,
         expected.startDate,
         expected.endDate,
-      ),
-    ).toEqual(
+    );
+
+    expect(actual).toEqual(
       expect.objectContaining({
         title: expected.title,
         startDate: expected.startDate,
@@ -113,6 +116,7 @@ describe('Create Hackathon', () => {
         endDate: expected.endDate,
       }),
     );
+    expect(mockCreateCategory).toHaveBeenCalledWith('General', 'General', actual.id)
   });
 
   test('Validation Error', async () => {

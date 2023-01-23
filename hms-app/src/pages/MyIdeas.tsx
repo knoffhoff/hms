@@ -41,10 +41,12 @@ export default function MyIdeas() {
   const [ideaData, setIdeaData] = useState<Idea>()
 
   const loadSelectedHackathon = () => {
-    getHackathonDetails(instance, selectedHackathonId).then((data) => {
-      setHackathonData(data)
-    })
-    setIsLoading(false)
+    if (selectedHackathonId !== '') {
+      getHackathonDetails(instance, selectedHackathonId).then((data) => {
+        setHackathonData(data)
+      })
+      setIsLoading(false)
+    }
   }
 
   const loadIdeaDetails = () => {

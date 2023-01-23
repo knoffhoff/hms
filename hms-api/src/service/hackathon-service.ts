@@ -8,7 +8,7 @@ import {
 } from '../repository/hackathon-repository';
 import {listParticipants} from '../repository/participant-repository';
 import {usersFor} from './user-service';
-import {listCategories} from '../repository/category-repository';
+import {listCategories, putCategory} from '../repository/category-repository';
 import {listIdeasForHackathon} from '../repository/idea-repository';
 import Uuid from '../util/Uuid';
 import Hackathon from '../repository/domain/Hackathon';
@@ -19,9 +19,10 @@ import HackathonDeleteResponse from '../rest/HackathonDeleteResponse';
 import NotFoundError from '../error/NotFoundError';
 import {removeIdeasForHackathon} from './idea-service';
 import DeletionError from '../error/DeletionError';
-import {removeCategoriesForHackathon} from './category-service';
+import {createCategory, removeCategoriesForHackathon} from './category-service';
 import {removeParticipantsForHackathon} from './participant-service';
 import ValidationError from '../error/ValidationError';
+import Category from '../repository/domain/Category';
 
 export async function createHackathon(
   title: string,
@@ -36,6 +37,9 @@ export async function createHackathon(
   }
 
   await putHackathon(hackathon);
+
+  // Auto create a category for the hackathon to make sure that there is at least one category to submit ideas to
+  await createCategory('General', 'General', hackathon.id);
 
   return hackathon;
 }
