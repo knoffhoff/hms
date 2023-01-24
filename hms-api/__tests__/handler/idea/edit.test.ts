@@ -11,6 +11,7 @@ jest.spyOn(ideaService, 'editIdea').mockImplementation(mockEditIdea);
 
 describe('Edit Idea', () => {
   test('Happy Path', async () => {
+    const hackathonId = uuid();
     const title = 'New fancy title';
     const description = 'Well this is awkward';
     const problem = '1 + 1 = X';
@@ -24,6 +25,7 @@ describe('Edit Idea', () => {
 
     await edit(
       toEvent(
+        hackathonId,
         title,
         description,
         problem,
@@ -38,6 +40,7 @@ describe('Edit Idea', () => {
 
     expect(mockEditIdea).toHaveBeenCalledWith(
       id,
+      hackathonId,
       title,
       description,
       problem,
@@ -57,6 +60,7 @@ describe('Edit Idea', () => {
   });
 
   test('Throws NotFoundError', async () => {
+    const hackathonId = uuid();
     const title = 'New fancy title';
     const description = 'Well this is awkward';
     const problem = '1 + 1 = X';
@@ -73,6 +77,7 @@ describe('Edit Idea', () => {
 
     await edit(
       toEvent(
+        hackathonId,
         title,
         description,
         problem,
@@ -87,6 +92,7 @@ describe('Edit Idea', () => {
 
     expect(mockEditIdea).toHaveBeenCalledWith(
       id,
+      hackathonId,
       title,
       description,
       problem,
@@ -106,6 +112,7 @@ describe('Edit Idea', () => {
   });
 
   test('Throws ReferenceNotFoundError', async () => {
+    const hackathonId = uuid();
     const title = 'New fancy title';
     const description = 'Well this is awkward';
     const problem = '1 + 1 = X';
@@ -122,6 +129,7 @@ describe('Edit Idea', () => {
 
     await edit(
       toEvent(
+        hackathonId,
         title,
         description,
         problem,
@@ -136,6 +144,7 @@ describe('Edit Idea', () => {
 
     expect(mockEditIdea).toHaveBeenCalledWith(
       id,
+      hackathonId,
       title,
       description,
       problem,
@@ -155,6 +164,7 @@ describe('Edit Idea', () => {
   });
 
   test('Throws Error', async () => {
+    const hackathonId = uuid();
     const title = 'New fancy title';
     const description = 'Well this is awkward';
     const problem = '1 + 1 = X';
@@ -171,6 +181,7 @@ describe('Edit Idea', () => {
 
     await edit(
       toEvent(
+        hackathonId,
         title,
         description,
         problem,
@@ -185,6 +196,7 @@ describe('Edit Idea', () => {
 
     expect(mockEditIdea).toHaveBeenCalledWith(
       id,
+      hackathonId,
       title,
       description,
       problem,
@@ -205,6 +217,7 @@ describe('Edit Idea', () => {
 });
 
 const toEvent = (
+  hackathonId: Uuid,
   title: string,
   description: string,
   problem: string,
@@ -215,6 +228,7 @@ const toEvent = (
 ): object => ({
   body: JSON.stringify(
     new IdeaEditRequest(
+      hackathonId,
       title,
       description,
       problem,

@@ -34,9 +34,11 @@ export default function RelevantIdeasLoader({
   const [ideaData, setIdeaData] = useState<Idea>()
 
   const loadSelectedHackathon = () => {
-    getHackathonDetails(instance, selectedHackathonId).then((data) => {
-      setHackathonData(data)
-    })
+    if (selectedHackathonId !== '') {
+      getHackathonDetails(instance, selectedHackathonId).then((data) => {
+        setHackathonData(data)
+      })
+    }
   }
 
   const loadIdeaDetails = () => {

@@ -12,6 +12,7 @@ import {
   CategoryPreview,
   HackathonPreview,
   Idea,
+  IdeaFormType,
   SkillPreview,
 } from '../../common/types'
 import { getListOfSkills } from '../../actions/SkillActions'
@@ -36,8 +37,7 @@ type IProps = {
 
 function IdeaForm(props: IProps) {
   const { instance } = useMsal()
-  const { hackathon, ownerId, context, ideaId, setOpened, idea, reload } =
-    props
+  const { hackathon, ownerId, context, ideaId, setOpened, idea, reload } = props
   const { classes } = styles()
   const [isLoading, setIsLoading] = useState(true)
   const [buttonIsDisabled, setButtonIsDisabled] = useState(true)
@@ -214,14 +214,13 @@ function IdeaForm(props: IProps) {
   }, [])
 
   useEffect(() => {
-    setCategory('')
+    setCategory(availableCategories.categories[0]?.id || '')
     setSkills([])
   }, [availableCategories])
 
   useEffect(() => {
     if (
-      category != '' &&
-      skills.length > 0 &&
+      ideaText.description.length > 1 &&
       ideaText.title.length < maxIdeaTitleLength &&
       ideaText.title.length > 1
     ) {
@@ -233,10 +232,11 @@ function IdeaForm(props: IProps) {
 
   useEffect(() => {
     if (ownerId) {
-    setIdeaText((prevIdeaText) => ({
-      ...prevIdeaText,
-      ownerId: ownerId.toString(),
-    }))}
+      setIdeaText((prevIdeaText) => ({
+        ...prevIdeaText,
+        ownerId: ownerId.toString(),
+      }))
+    }
   }, [ownerId])
 
   useEffect(() => {
@@ -250,9 +250,7 @@ function IdeaForm(props: IProps) {
         {!isLoading && (
           <div>
             <Card.Section className={classes.borderSection}>
-              <Text className={classes.title}>
-                Hackathon: {hackathon.title}
-              </Text>
+              <Text className={classes.title}>Create New Idea</Text>
             </Card.Section>
             <Card.Section className={classes.borderSection}>
               <Textarea
@@ -313,49 +311,55 @@ function IdeaForm(props: IProps) {
               />
             </Card.Section>
 
-            <>
-              <Card.Section className={classes.borderSection}>
-                <Checkbox.Group
-                  label='Required skills'
-                  description='chose one or more required skills'
-                  onChange={setSkills}
-                  required
-                  defaultValue={idea?.requiredSkills?.map((skill) => skill.id)}
-                  value={skills}
-                  className={classes.label}
-                >
-                  {skillsList}
-                </Checkbox.Group>
-              </Card.Section>
-              <Card.Section className={classes.borderSection}>
-                <Radio.Group
-                  label='Category'
-                  description='chose one or more categories'
-                  onChange={setCategory}
-                  required
-                  defaultValue={idea?.category?.id}
-                  value={category}
-                  className={classes.label}
-                >
-                  {categoriesList}
-                </Radio.Group>
-              </Card.Section>
-
-              <Group position='right' mt='xl'>
-                {context === 'edit' && (
-                  <Button
-                    style={{
-                      backgroundColor: !buttonIsDisabled
-                        ? JOIN_BUTTON_COLOR
-                        : dark2,
-                    }}
-                    disabled={buttonIsDisabled}
-                    onClick={editThisIdea}
+            {context !== IdeaFormType.IdeaPortal_New && (
+              <>
+                <Card.Section className={classes.borderSection}>
+                  <Checkbox.Group
+                    label='Required skills'
+                    description='chose one or more required skills'
+                    onChange={setSkills}
+                    required
+                    defaultValue={idea?.requiredSkills?.map(
+                      (skill) => skill.id
+                    )}
+                    value={skills}
+                    className={classes.label}
                   >
-                    Edit
-                  </Button>
-                )}
-                {context === 'new' && (
+                    {skillsList}
+                  </Checkbox.Group>
+                </Card.Section>
+                <Card.Section className={classes.borderSection}>
+                  <Radio.Group
+                    label='Category'
+                    description='chose one or more categories'
+                    onChange={setCategory}
+                    required
+                    defaultValue={idea?.category?.id}
+                    value={category}
+                    className={classes.label}
+                  >
+                    {categoriesList}
+                  </Radio.Group>
+                </Card.Section>
+              </>
+            )}
+
+            <Group position='right' mt='xl'>
+              {context === 'edit' && (
+                <Button
+                  style={{
+                    backgroundColor: !buttonIsDisabled
+                      ? JOIN_BUTTON_COLOR
+                      : dark2,
+                  }}
+                  disabled={buttonIsDisabled}
+                  onClick={editThisIdea}
+                >
+                  Edit
+                </Button>
+              )}
+              {context === 'new' ||
+                (context === IdeaFormType.IdeaPortal_New && (
                   <Button
                     style={{
                       backgroundColor: !buttonIsDisabled
@@ -367,9 +371,8 @@ function IdeaForm(props: IProps) {
                   >
                     Create
                   </Button>
-                )}
-              </Group>
-            </>
+                ))}
+            </Group>
           </div>
         )}
       </Card>

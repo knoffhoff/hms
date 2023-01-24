@@ -13,6 +13,7 @@ export async function edit(event, context, callback) {
 
     await editIdea(
       id,
+      request.hackathonId,
       request.title,
       request.description,
       request.problem,

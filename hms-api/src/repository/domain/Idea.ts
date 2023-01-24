@@ -33,7 +33,7 @@ class Idea {
   hackathonId: Uuid;
 
   /**
-   *The IDs of the Participants that will work on the Idea
+   *The User IDs of the Participants that will work on the Idea
    *
    * Can be empty
    */

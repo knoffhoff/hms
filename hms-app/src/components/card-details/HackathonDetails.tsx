@@ -65,7 +65,6 @@ export default function HackathonDetails(props: IProps) {
   const loadSelectedHackathon = () => {
     getHackathonDetails(instance, hackathonId).then(
       (data) => {
-        console.log(data)
         setHackathonData(data)
         setVotingOpened(data.votingOpened)
         onChange(data.description)

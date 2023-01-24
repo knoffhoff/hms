@@ -90,6 +90,7 @@ export async function createIdea(
 
 export async function editIdea(
   id: Uuid,
+  hackathonId: Uuid,
   title: string,
   description: string,
   problem: string,
@@ -106,11 +107,11 @@ export async function editIdea(
     );
   }
 
-  if (!(await categoryExists(categoryId, existing.hackathonId))) {
+  if (!(await categoryExists(categoryId, hackathonId))) {
     throw new ReferenceNotFoundError(
       `Cannot edit Idea with id: ${id}, ` +
         `Category with id: ${categoryId} does not exist ` +
-        `in Hackathon with id: ${existing.hackathonId}`,
+        `in Hackathon with id: ${hackathonId}`,
     );
   }
 
@@ -123,6 +124,7 @@ export async function editIdea(
     }
   }
 
+  existing.hackathonId = hackathonId;
   existing.title = title;
   existing.description = description;
   existing.problem = problem;

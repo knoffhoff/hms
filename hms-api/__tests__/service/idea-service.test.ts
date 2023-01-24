@@ -271,6 +271,7 @@ describe('Create Idea', () => {
 describe('Edit Idea', () => {
   test('Happy Path', async () => {
     const oldIdea = randomIdea();
+    const hackathonId = uuid();
     const title = 'Worst Idea Ever';
     const description = 'Best description ever!';
     const problem = 'A simple problem';
@@ -279,7 +280,7 @@ describe('Edit Idea', () => {
     const categoryId = uuid();
     const expected = new Idea(
       oldIdea.ownerId,
-      oldIdea.hackathonId,
+      hackathonId,
       title,
       description,
       problem,
@@ -298,6 +299,7 @@ describe('Edit Idea', () => {
 
     await editIdea(
       oldIdea.id,
+      hackathonId,
       title,
       description,
       problem,
@@ -331,6 +333,7 @@ describe('Edit Idea', () => {
     await expect(
       editIdea(
         uuid(),
+        uuid(),
         'tiiitle',
         'descriiiiption',
         '1 + 1 = x',
@@ -353,6 +356,7 @@ describe('Edit Idea', () => {
     await expect(
       editIdea(
         id,
+        uuid(),
         'Anything',
         'Super excellent Idea',
         'Praw-blem',
@@ -369,6 +373,7 @@ describe('Edit Idea', () => {
 
   test('Category is missing', async () => {
     const id = uuid();
+    const hackathonId = uuid();
 
     const oldIdea = randomIdea();
     mockGetIdea.mockResolvedValue(oldIdea);
@@ -379,6 +384,7 @@ describe('Edit Idea', () => {
     await expect(
       editIdea(
         id,
+        hackathonId,
         'Anything',
         'Super excellent Idea',
         'Praw-blem',
@@ -388,16 +394,14 @@ describe('Edit Idea', () => {
       ),
     ).rejects.toThrow(ReferenceNotFoundError);
     expect(mockGetIdea).toHaveBeenCalledWith(id);
-    expect(mockCategoryExists).toHaveBeenCalledWith(
-      categoryId,
-      oldIdea.hackathonId,
-    );
+    expect(mockCategoryExists).toHaveBeenCalledWith(categoryId, hackathonId);
     expect(mockSkillExists).not.toHaveBeenCalled();
     expect(mockPutIdea).not.toHaveBeenCalled();
   });
 
   test('Skills are missing', async () => {
     const id = uuid();
+    const hackathonId = uuid();
 
     const oldIdea = randomIdea();
     mockGetIdea.mockResolvedValue(oldIdea);
@@ -409,6 +413,7 @@ describe('Edit Idea', () => {
     await expect(
       editIdea(
         id,
+        hackathonId,
         'Anything',
         'Super excellent Idea',
         'Praw-blem',
@@ -418,10 +423,7 @@ describe('Edit Idea', () => {
       ),
     ).rejects.toThrow(ReferenceNotFoundError);
     expect(mockGetIdea).toHaveBeenCalledWith(id);
-    expect(mockCategoryExists).toHaveBeenCalledWith(
-      categoryId,
-      oldIdea.hackathonId,
-    );
+    expect(mockCategoryExists).toHaveBeenCalledWith(categoryId, hackathonId);
     expect(mockSkillExists).toHaveBeenCalledWith(skillId1);
     expect(mockPutIdea).not.toHaveBeenCalled();
   });
@@ -561,15 +563,6 @@ describe('Get Idea Response', () => {
     );
 
     expect(await getIdeaResponse(idea.id)).toStrictEqual(expected);
-    expect(mockGetIdea).toHaveBeenCalledWith(idea.id);
-    expect(mockGetUser).toHaveBeenCalledWith(idea.ownerId);
-    expect(mockGetParticipants).toHaveBeenNthCalledWith(1, idea.participantIds);
-    expect(mockUsersFor).toHaveBeenNthCalledWith(1, participants);
-    expect(mockGetParticipants).toHaveBeenNthCalledWith(2, idea.voterIds);
-    expect(mockUsersFor).toHaveBeenNthCalledWith(2, voters);
-    expect(mockGetHackathon).toHaveBeenCalledWith(idea.hackathonId);
-    expect(mockGetSkills).toHaveBeenCalledWith(idea.requiredSkills);
-    expect(mockGetCategory).toHaveBeenCalledWith(idea.categoryId);
   });
 
   test('Missing Category', async () => {

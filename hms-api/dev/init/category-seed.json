@@ -37,8 +37,8 @@
   },
   {
     "id": {"S": "a1c60aba-f846-4208-b4b8-1caaec031aea"},
-    "title": {"S": "hihihihihi"},
-    "description": {"S": "hihihihihi"},
+    "title": {"S": "Ideation"},
+    "description": {"S": "General category for all ideas"},
     "hackathonId": {"S": "e955fe4b-7ce7-4904-ae6f-22a8985f74a9"}
   }
 ]
