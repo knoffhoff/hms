@@ -18,8 +18,8 @@ import CommentListResponse from '../rest/Comment/CommentListResponse';
 import ideaComment from '../repository/domain/IdeaComment';
 
 export async function createComment(
-  userId: Uuid,
   ideaId: Uuid,
+  userId: Uuid,
   text: string,
   replyTo: Uuid,
 ): Promise<Comment> {

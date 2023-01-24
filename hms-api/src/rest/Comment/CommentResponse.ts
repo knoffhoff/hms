@@ -51,7 +51,7 @@ class CommentResponse {
   }
 
   static compare(a: CommentResponse, b: CommentResponse): number {
-    const diff = UserPreviewResponse.compare(a.user, b.user);
+    const diff = a.creationDate.getTime() - b.creationDate.getTime();
     if (diff) {
       return diff;
     }

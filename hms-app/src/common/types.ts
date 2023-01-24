@@ -153,6 +153,15 @@ export type Participant = {
   creationDate: Date
 }
 
+export type IdeaComment = {
+  id: string
+  user: User
+  ideaId: string
+  text: string
+  replyTo?: string
+  creationDate: Date
+}
+
 export type UserPreview = {
   id: string
   lastName?: string

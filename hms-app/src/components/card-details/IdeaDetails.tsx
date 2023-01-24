@@ -13,7 +13,13 @@ import {
   Tooltip,
   useMantineTheme,
 } from '@mantine/core'
-import { Category, Idea, IdeaCardType, Skill } from '../../common/types'
+import {
+  Category,
+  Idea,
+  IdeaCardType,
+  IdeaComment,
+  Skill,
+} from '../../common/types'
 import { deleteIdea, getIdeaDetails } from '../../actions/IdeaActions'
 import IdeaForm from '../input-forms/IdeaForm'
 import { styles } from '../../common/styles'
@@ -39,6 +45,7 @@ import { UserContext } from '../../pages/Layout'
 import FinalVideoUploadModal from '../FinalVideoUploadModal'
 import { getCategoryDetails } from '../../actions/CategoryActions'
 import { getSkillDetails } from '../../actions/SkillActions'
+import IdeaCommentDetails from './IdeaCommentDetails'
 
 type IProps = {
   idea: Idea
@@ -459,8 +466,7 @@ export default function IdeaDetails(props: IProps) {
                       )}
                     </Avatar>
                     <Badge size='sm'>
-                      {ideaData.owner?.firstName}{' '}
-                      {ideaData.owner?.lastName}
+                      {ideaData.owner?.firstName} {ideaData.owner?.lastName}
                     </Badge>
                   </Stack>
                   <Text className={classes.title}>
@@ -564,33 +570,37 @@ export default function IdeaDetails(props: IProps) {
                       </Group>
                     )}
 
-                    {(type === IdeaCardType.Admin ||
-                      type === IdeaCardType.Owner) || ideaData.owner?.id === user?.id && (
-                      <Group position='left' mt='xl'>
-                        {deleteModal}
-                        <Button
-                          style={{
-                            backgroundColor: DELETE_BUTTON_COLOR,
-                          }}
-                          onClick={() => setDeleteModalOpened(true)}
-                        >
-                          Delete
-                        </Button>
-                        {editModal}
-                        <Button
-                          style={{
-                            backgroundColor: JOIN_BUTTON_COLOR,
-                          }}
-                          onClick={() => setEditModalOpened(true)}
-                        >
-                          Edit
-                        </Button>
-                        <FinalVideoUploadModal idea={ideaData} />
-                      </Group>
-                    )}
+                    {type === IdeaCardType.Admin ||
+                      type === IdeaCardType.Owner ||
+                      (ideaData.owner?.id === user?.id && (
+                        <Group position='left' mt='xl'>
+                          {deleteModal}
+                          <Button
+                            style={{
+                              backgroundColor: DELETE_BUTTON_COLOR,
+                            }}
+                            onClick={() => setDeleteModalOpened(true)}
+                          >
+                            Delete
+                          </Button>
+                          {editModal}
+                          <Button
+                            style={{
+                              backgroundColor: JOIN_BUTTON_COLOR,
+                            }}
+                            onClick={() => setEditModalOpened(true)}
+                          >
+                            Edit
+                          </Button>
+                          <FinalVideoUploadModal idea={ideaData} />
+                        </Group>
+                      ))}
                   </Accordion.Panel>
                 </Accordion.Item>
               </Accordion>
+              <Card.Section className={classes.borderSection}>
+                <IdeaCommentDetails ideaId={ideaData.id} />
+              </Card.Section>
             </>
           )}
         </Card>

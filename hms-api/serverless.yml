@@ -32,6 +32,8 @@ custom:
             rawsources: [./dev/init/user-seed.json]
           - table: skill
             rawsources: [./dev/init/skill-seed.json]
+          - table: idea_comment
+            rawsources: [./dev/init/ideaComment-seed.json]
 
 provider:
   name: aws
@@ -55,6 +57,8 @@ provider:
     PARTICIPANT_TABLE: participant
     PARTICIPANT_BY_HACKATHON_ID_INDEX: participant-by-hackathonId
     PARTICIPANT_BY_HACKATHON_ID_USER_ID_INDEX: participant-by-hackathonId-userId
+    COMMENT_TABLE: idea_comment
+    COMMENT_BY_IDEA_ID_INDEX: idea_comment-by-ideaId
     ADMIN_USERS: ${file(./secrets.json):ADMIN_USERS}
   iam:
     role:
@@ -78,6 +82,8 @@ provider:
             - arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.IDEA_TABLE}/index/*
             - arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.PARTICIPANT_TABLE}
             - arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.PARTICIPANT_TABLE}/index/*
+            - arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.COMMENT_TABLE}
+            - arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.COMMENT_TABLE}/index/*
 
 functions:
   authorize:
@@ -287,6 +293,23 @@ functions:
       - http:
           path: participant/{id}
           method: delete
+          cors: true
+          authorizer: authorize
+
+  listIdeaCommentsForIdea:
+    handler: src/handler/comment/list.list
+    events:
+      - http:
+          path: idea/{id}/comments
+          method: get
+          cors: true
+          authorizer: authorize
+  createIdeaComment:
+    handler: src/handler/comment/create.create
+    events:
+      - http:
+          path: idea/{id}/comment
+          method: post
           cors: true
           authorizer: authorize
 

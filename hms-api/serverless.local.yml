@@ -32,6 +32,8 @@ custom:
             rawsources: [./dev/init/user-seed.json]
           - table: skill
             rawsources: [./dev/init/skill-seed.json]
+          - table: ideaComment
+            rawsources: [./dev/init/ideaComment-seed.json]
 
 provider:
   name: aws
@@ -55,6 +57,8 @@ provider:
     PARTICIPANT_TABLE: participant
     PARTICIPANT_BY_HACKATHON_ID_INDEX: participant-by-hackathonId
     PARTICIPANT_BY_HACKATHON_ID_USER_ID_INDEX: participant-by-hackathonId-userId
+    COMMENT_TABLE: ideaComment
+    COMMENT_BY_IDEA_ID_INDEX: ideaComment-by-ideaId
     ADMIN_USERS: ${file(./secrets.json):ADMIN_USERS}
     HMS_BUCKET_NAME: ${file(./secrets.json):HMS_BUCKET_NAME}
   iam:
@@ -79,6 +83,8 @@ provider:
             - arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.IDEA_TABLE}/index/*
             - arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.PARTICIPANT_TABLE}
             - arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.PARTICIPANT_TABLE}/index/*
+            - arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.COMMENT_TABLE}
+            - arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.COMMENT_TABLE}/index/*
         - Effect: Allow
           Action:
             - s3:GetObject
@@ -310,6 +316,23 @@ functions:
       - http:
           path: participant/{id}
           method: delete
+          cors: true
+          authorizer: authorize
+
+  listIdeaCommentsForIdea:
+    handler: src/handler/comment/list.list
+    events:
+      - http:
+          path: idea/{id}/comments
+          method: get
+          cors: true
+          authorizer: authorize
+  createIdeaComment:
+    handler: src/handler/comment/create.create
+    events:
+      - http:
+          path: idea/{id}/comment
+          method: post
           cors: true
           authorizer: authorize
 
@@ -545,6 +568,32 @@ resources:
               - AttributeName: hackathonId
                 KeyType: HASH
               - AttributeName: userId
+                KeyType: RANGE
+            Projection:
+              ProjectionType: ALL
+
+    commentTable:
+      Type: AWS::DynamoDB::Table
+      DeletionPolicy: Retain
+      Properties:
+        TableName: ${self:provider.environment.COMMENT_TABLE}
+        BillingMode: PAY_PER_REQUEST
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+          - AttributeName: ideaId
+            AttributeType: S
+          - AttributeName: ownerId
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        GlobalSecondaryIndexes:
+          - IndexName: ${self:provider.environment.COMMENT_BY_IDEA_ID_INDEX}
+            KeySchema:
+              - AttributeName: ideaId
+                KeyType: HASH
+              - AttributeName: id
                 KeyType: RANGE
             Projection:
               ProjectionType: ALL
