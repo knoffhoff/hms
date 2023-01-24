@@ -35,3 +35,32 @@ export const createIdeaComment = async (
     })
     .catch((err) => console.log(err))
 }
+
+export const editIdeaComment = async (
+  instance: IPublicClientApplication,
+  id: string,
+  commentText: string
+) => {
+  const idToken = await getIdToken(instance)
+  const options = buildFetchOptions('PUT', idToken, {
+    text: commentText,
+  })
+  return fetch(`${coreUrl}/idea/comment/${id}`, options)
+    .then((response) => {
+      return response.json()
+    })
+    .catch((err) => console.log(err))
+}
+
+export const deleteIdeaComment = async (
+  instance: IPublicClientApplication,
+  id: string
+) => {
+  const idToken = await getIdToken(instance)
+  const options = buildFetchOptions('DELETE', idToken)
+  return fetch(`${coreUrl}/idea/comment/${id}`, options)
+    .then((response) => {
+      return response.json()
+    })
+    .catch((err) => console.log(err))
+}

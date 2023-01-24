@@ -312,6 +312,22 @@ functions:
           method: post
           cors: true
           authorizer: authorize
+  deleteIdeaComment:
+    handler: src/handler/comment/remove.remove
+    events:
+      - http:
+          path: idea/comment/{id}
+          method: delete
+          cors: true
+          authorizer: authorize
+  editIdeaComment:
+    handler: src/handler/comment/edit.edit
+    events:
+      - http:
+          path: idea/comment/{id}
+          method: put
+          cors: true
+          authorizer: authorize
 
   createCategory:
     handler: src/handler/category/create.create

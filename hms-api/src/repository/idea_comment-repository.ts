@@ -36,14 +36,6 @@ export async function listComments(ideaId: Uuid): Promise<Comment[]> {
 }
 
 export async function putComment(comment: Comment): Promise<void> {
-  if (await commentAlreadyExists(comment.id)) {
-    throw new InvalidStateError(
-      'Cannot create Comment for ' +
-        `User with id: ${comment.userId} and ` +
-        `Idea with id: ${comment.ideaId}, it already exists`,
-    );
-  }
-
   await dynamoDbClient.send(
     new PutItemCommand({
       TableName: process.env.COMMENT_TABLE,
