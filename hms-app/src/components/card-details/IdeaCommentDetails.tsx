@@ -77,9 +77,9 @@ export default function IdeaCommentDetails(props: IProps) {
             autoClose: 2000,
           })
         } else {
-          showNotification({
+          updateNotification({
             id: 'comment-create',
-            loading: false,
+            color: 'teal',
             title: 'Comment created',
             message: undefined,
             autoClose: 5000,

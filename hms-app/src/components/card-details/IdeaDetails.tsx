@@ -508,6 +508,9 @@ export default function IdeaDetails(props: IProps) {
             </Accordion.Panel>
           </Accordion.Item>
         </Accordion>
+        <Card.Section className={classes.borderSection}>
+          <IdeaCommentDetails ideaId={ideaData.id} />
+        </Card.Section>
       </Card>
     )
   }
