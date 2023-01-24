@@ -112,5 +112,12 @@ export async function commentAlreadyExists(commentId: Uuid): Promise<boolean> {
 }
 
 function itemToComment(item: {[key: string]: AttributeValue}): Comment {
-  return new Comment(item.userId.S, item.ideaId.S, item.text.S, item.replyTo.S);
+  return new Comment(
+    item.userId.S,
+    item.ideaId.S,
+    item.text.S,
+    item.replyTo.S,
+    item.id.S,
+    new Date(item.creationDate.S!),
+  );
 }

@@ -4,13 +4,27 @@ import {
   getIdeaCommentList,
 } from '../../actions/IdeaCommentActions'
 import React, { useContext, useEffect, useState } from 'react'
-import { IdeaComment } from '../../common/types'
-import { Avatar, Button, Card, Group, Text, Textarea } from '@mantine/core'
+import { IdeaCardType, IdeaComment } from '../../common/types'
+import {
+  Accordion,
+  Avatar,
+  Button,
+  Card,
+  Group,
+  Text,
+  Textarea,
+} from '@mantine/core'
 import { styles } from '../../common/styles'
-import { dark2, JOIN_BUTTON_COLOR } from '../../common/colors'
+import {
+  dark2,
+  DELETE_BUTTON_COLOR,
+  JOIN_BUTTON_COLOR,
+} from '../../common/colors'
 import { showNotification, updateNotification } from '@mantine/notifications'
-import { X } from 'tabler-icons-react'
+import { Check, X } from 'tabler-icons-react'
 import { UserContext } from '../../pages/Layout'
+import FinalVideoUploadModal from '../FinalVideoUploadModal'
+import MoveIdeaModal from '../MoveIdeaModal'
 
 type IProps = {
   ideaId: string
@@ -23,6 +37,7 @@ export default function IdeaCommentDetails(props: IProps) {
   const user = useContext(UserContext)
   const [comments, setComments] = useState([] as IdeaComment[])
   const [commentText, setCommentText] = useState('')
+  const [accordionOpen, setAccordionOpen] = useState(false)
 
   const loadComments = () => {
     try {
@@ -82,6 +97,7 @@ export default function IdeaCommentDetails(props: IProps) {
             color: 'teal',
             title: 'Comment created',
             message: undefined,
+            icon: <Check />,
             autoClose: 5000,
             disallowClose: false,
           })
@@ -98,48 +114,70 @@ export default function IdeaCommentDetails(props: IProps) {
 
   return (
     <div>
-      <Text className={classes.title}>Comments from Component</Text>
-      {getNullComments.map((comment) => (
-        <div key={comment.id} className={classes.borderSection}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-            <Avatar color='indigo' radius='md' size='sm'>
-              {getInitials(comment.user.firstName, comment.user.lastName)}
-            </Avatar>
-            <Text className={classes.text}>
-              {comment.user.firstName + ' ' + comment.user.lastName + ': '}
-            </Text>
-          </div>
-
-          <Text className={classes.text}>{comment.text}</Text>
-          <Text className={classes.smallText}>
-            {new Date(comment.creationDate).toUTCString()}
-          </Text>
-          <Text className={classes.smallText}>
-            {comment.creationDate.toString()}
-          </Text>
-        </div>
-      ))}
-      <Card.Section className={classes.borderSection}>
-        <Textarea
-          placeholder='write a comment'
-          maxRows={2}
-          autosize
-          onChange={handleChange}
-          name='commentText'
-          value={commentText}
-        />
-      </Card.Section>
-      <Group position='right' mt='xl'>
-        <Button
-          style={{
-            backgroundColor: submitIsEnabled() ? JOIN_BUTTON_COLOR : dark2,
-          }}
-          disabled={!submitIsEnabled()}
-          onClick={createThisComment}
+      <Accordion>
+        <Accordion.Item
+          className={classes.noBorderAccordion}
+          value={'ideaComment-details'}
         >
-          add comment
-        </Button>
-      </Group>
+          <Accordion.Control>
+            <Text className={classes.title}>
+              {getNullComments.length} Comments:
+            </Text>
+          </Accordion.Control>
+          <Accordion.Panel>
+            {getNullComments.map((comment) => (
+              <div key={comment.id} className={classes.borderSection}>
+                <div
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '10px',
+                    marginTop: '5px',
+                  }}
+                >
+                  <Avatar color='indigo' radius='md' size='sm'>
+                    {getInitials(comment.user.firstName, comment.user.lastName)}
+                  </Avatar>
+                  <Text className={classes.text}>
+                    {comment.user.firstName +
+                      ' ' +
+                      comment.user.lastName +
+                      ': '}
+                  </Text>
+                </div>
+
+                <Text className={classes.text}>{comment.text}</Text>
+                <Text className={classes.smallText}>
+                  {new Date(comment.creationDate).toDateString()}
+                </Text>
+              </div>
+            ))}
+            <Card.Section className={classes.borderSection}>
+              <Textarea
+                placeholder='write a comment'
+                maxRows={2}
+                autosize
+                onChange={handleChange}
+                name='commentText'
+                value={commentText}
+              />
+              <Group position='right' mt='sm'>
+                <Button
+                  style={{
+                    backgroundColor: submitIsEnabled()
+                      ? JOIN_BUTTON_COLOR
+                      : dark2,
+                  }}
+                  disabled={!submitIsEnabled()}
+                  onClick={createThisComment}
+                >
+                  add comment
+                </Button>
+              </Group>
+            </Card.Section>
+          </Accordion.Panel>
+        </Accordion.Item>
+      </Accordion>
     </div>
   )
 }
