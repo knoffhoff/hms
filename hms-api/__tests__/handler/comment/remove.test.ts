@@ -1,5 +1,5 @@
 import * as commentService from '../../../src/service/idea_comment-service';
-import {remove} from '../../../src/handler/Comment/remove';
+import {remove} from '../../../src/handler/comment/remove';
 import CommentDeleteResponse from '../../../src/rest/Comment/CommentDeleteResponse';
 import Uuid, {uuid} from '../../../src/util/Uuid';
 import UserDeleteResponse from '../../../src/rest/User/UserDeleteResponse';

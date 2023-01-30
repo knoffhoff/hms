@@ -2,7 +2,7 @@ import {
   makeIdeaComment,
   IdeaCommentData,
 } from '../../repository/domain/ideaComment-maker';
-import {list} from '../../../src/handler/Comment/list';
+import {list} from '../../../src/handler/comment/list';
 import {randomUser} from '../../repository/domain/user-maker';
 import Uuid, {uuid} from '../../../src/util/Uuid';
 import NotFoundError from '../../../src/error/NotFoundError';
