@@ -30,7 +30,6 @@ describe('List Comments', () => {
     const comment3 = makeIdeaComment({
       userId: user3.id,
     } as IdeaCommentData);
-    console.log('comment1', user1);
     const expected = CommentListResponse.from(
       [comment1, comment2, comment3],
       [user1, user2, user3],
