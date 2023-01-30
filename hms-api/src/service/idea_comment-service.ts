@@ -24,11 +24,14 @@ export async function createComment(
   replyTo: Uuid,
 ): Promise<Comment> {
   if (!(await ideaExists(ideaId))) {
-    throw new NotFoundError(`Idea with id: ${ideaId} not found`);
-  } else if (replyTo && !(await commentAlreadyExists(replyTo))) {
-    throw new NotFoundError(`Comment with id: ${replyTo} not found`);
+    throw new ReferenceNotFoundError(`Idea with id: ${ideaId} not found`);
+  } else if (
+    replyTo &&
+    !(await commentAlreadyExists(new Comment(userId, ideaId, text, replyTo)))
+  ) {
+    throw new ReferenceNotFoundError(`Comment with id: ${replyTo} not found`);
   } else if (!(await userExists(userId))) {
-    throw new NotFoundError(`User with id: ${userId} not found`);
+    throw new ReferenceNotFoundError(`User with id: ${userId} not found`);
   }
 
   const comment = new Comment(userId, ideaId, text, replyTo);

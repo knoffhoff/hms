@@ -14,6 +14,7 @@ import {
 import NotFoundError from '../error/NotFoundError';
 import Comment from './domain/IdeaComment';
 import InvalidStateError from '../error/InvalidStateError';
+import ideaComment from './domain/IdeaComment';
 
 const dynamoDbClient = getClient();
 
@@ -91,16 +92,20 @@ export async function deleteComment(id: Uuid): Promise<Comment> {
   throw new NotFoundError(`Comment with id: ${id} not found`);
 }
 
-export async function commentAlreadyExists(commentId: Uuid): Promise<boolean> {
-  try {
-    await getComment(commentId);
-    return true;
-  } catch (error) {
-    if (error instanceof NotFoundError) {
-      return false;
-    }
-    throw error;
-  }
+export async function commentAlreadyExists(
+  ideaComment: ideaComment,
+): Promise<boolean> {
+  const output = await dynamoDbClient.send(
+    new QueryCommand({
+      TableName: process.env.COMMENT_TABLE,
+      IndexName: process.env.COMMENT_BY_IDEA_ID_INDEX,
+      KeyConditionExpression: 'ideaId = :iId',
+      ExpressionAttributeValues: {':iId': {S: ideaComment.ideaId}},
+    }),
+  );
+
+  const items = output.Items;
+  return Array.isArray(items) && items.length > 0;
 }
 
 function itemToComment(item: {[key: string]: AttributeValue}): Comment {

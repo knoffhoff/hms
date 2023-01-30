@@ -30,7 +30,7 @@ class CommentResponse {
   static from = (ideaComment: IdeaComment, user: User): CommentResponse =>
     new CommentResponse(
       ideaComment.id,
-      UserPreviewResponse.from(user),
+      user ? UserPreviewResponse.from(user) : null,
       ideaComment.ideaId,
       ideaComment.text,
       ideaComment.replyTo,
