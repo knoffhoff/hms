@@ -3,7 +3,7 @@ import {get} from '../../../src/handler/comment/get';
 import NotFoundError from '../../../src/error/NotFoundError';
 import * as commentService from '../../../src/service/idea_comment-service';
 import Uuid, {uuid} from '../../../src/util/Uuid';
-import CommentResponse from '../../../src/rest/Comment/CommentResponse';
+import CommentResponse from '../../../src/rest/comment/CommentResponse';
 import ReferenceNotFoundError from '../../../src/error/ReferenceNotFoundError';
 import {randomUser} from '../../repository/domain/user-maker';
 

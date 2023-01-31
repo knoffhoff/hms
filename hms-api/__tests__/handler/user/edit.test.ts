@@ -1,9 +1,9 @@
 import {edit} from '../../../src/handler/user/edit';
 import Uuid, {uuid} from '../../../src/util/Uuid';
 import * as userService from '../../../src/service/user-service';
-import UserEditResponse from '../../../src/rest/User/UserEditResponse';
+import UserEditResponse from '../../../src/rest/user/UserEditResponse';
 import NotFoundError from '../../../src/error/NotFoundError';
-import UserEditRequest from '../../../src/rest/User/UserEditRequest';
+import UserEditRequest from '../../../src/rest/user/UserEditRequest';
 import ReferenceNotFoundError from '../../../src/error/ReferenceNotFoundError';
 
 const mockEditUser = jest.fn();

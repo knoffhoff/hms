@@ -1,7 +1,7 @@
 /* eslint-disable require-jsdoc */
 
 import Uuid from '../../util/Uuid';
-import HackathonPreviewResponse from '../Hackathon/HackathonPreviewResponse';
+import HackathonPreviewResponse from '../hackathon/HackathonPreviewResponse';
 import Hackathon from '../../repository/domain/Hackathon';
 import Category from '../../repository/domain/Category';
 

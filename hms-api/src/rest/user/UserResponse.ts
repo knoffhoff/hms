@@ -1,7 +1,7 @@
 /* eslint-disable require-jsdoc */
 
 import Uuid from '../../util/Uuid';
-import SkillPreviewResponse from '../Skill/SkillPreviewResponse';
+import SkillPreviewResponse from '../skill/SkillPreviewResponse';
 import User from '../../repository/domain/User';
 import {mapRolesToStrings} from '../../repository/domain/Role';
 import Skill from '../../repository/domain/Skill';

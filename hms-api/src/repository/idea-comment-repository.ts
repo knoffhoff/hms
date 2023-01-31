@@ -1,8 +1,4 @@
-import {
-  getClient,
-  safeTransformArray,
-  safeTransformSSMember,
-} from './dynamo-db';
+import {getClient} from './dynamo-db';
 import Uuid from '../util/Uuid';
 import {
   AttributeValue,
@@ -13,7 +9,6 @@ import {
 } from '@aws-sdk/client-dynamodb';
 import NotFoundError from '../error/NotFoundError';
 import Comment from './domain/IdeaComment';
-import InvalidStateError from '../error/InvalidStateError';
 import ideaComment from './domain/IdeaComment';
 
 const dynamoDbClient = getClient();

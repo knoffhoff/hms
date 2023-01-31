@@ -1,6 +1,6 @@
-import SkillListResponse from '../../src/rest/Skill/SkillListResponse';
+import SkillListResponse from '../../src/rest/skill/SkillListResponse';
 import {makeSkill, SkillData} from '../repository/domain/skill-maker';
-import SkillPreviewResponse from '../../src/rest/Skill/SkillPreviewResponse';
+import SkillPreviewResponse from '../../src/rest/skill/SkillPreviewResponse';
 
 describe('Convert From', () => {
   test('Categories are sorted', () => {

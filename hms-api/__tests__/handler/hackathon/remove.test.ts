@@ -1,6 +1,6 @@
 import * as hackathonService from '../../../src/service/hackathon-service';
 import {remove} from '../../../src/handler/hackathon/remove';
-import HackathonDeleteResponse from '../../../src/rest/Hackathon/HackathonDeleteResponse';
+import HackathonDeleteResponse from '../../../src/rest/hackathon/HackathonDeleteResponse';
 import Uuid, {uuid} from '../../../src/util/Uuid';
 
 const mockRemoveHackathon = jest.fn();

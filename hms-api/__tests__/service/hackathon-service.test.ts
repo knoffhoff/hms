@@ -9,14 +9,18 @@ import {
 } from '../../src/service/hackathon-service';
 import {uuid} from '../../src/util/Uuid';
 import {randomCategory} from '../repository/domain/category-maker';
-import HackathonResponse from '../../src/rest/Hackathon/HackathonResponse';
+import HackathonResponse from '../../src/rest/hackathon/HackathonResponse';
 import {randomUser} from '../repository/domain/user-maker';
-import {makeParticipant, ParticipantData, randomParticipant,} from '../repository/domain/participant-maker';
+import {
+  makeParticipant,
+  ParticipantData,
+  randomParticipant,
+} from '../repository/domain/participant-maker';
 import {randomIdea} from '../repository/domain/idea-maker';
 import ReferenceNotFoundError from '../../src/error/ReferenceNotFoundError';
 import NotFoundError from '../../src/error/NotFoundError';
-import HackathonListResponse from '../../src/rest/Hackathon/HackathonListResponse';
-import HackathonDeleteResponse from '../../src/rest/Hackathon/HackathonDeleteResponse';
+import HackathonListResponse from '../../src/rest/hackathon/HackathonListResponse';
+import HackathonDeleteResponse from '../../src/rest/hackathon/HackathonDeleteResponse';
 import Hackathon from '../../src/repository/domain/Hackathon';
 import * as hackathonRepository from '../../src/repository/hackathon-repository';
 import * as participantRepository from '../../src/repository/participant-repository';
@@ -96,10 +100,10 @@ describe('Create Hackathon', () => {
     mockCreateCategory.mockResolvedValue(randomCategory());
 
     const actual = await createHackathon(
-        expected.title,
-        expected.description,
-        expected.startDate,
-        expected.endDate,
+      expected.title,
+      expected.description,
+      expected.startDate,
+      expected.endDate,
     );
 
     expect(actual).toEqual(
@@ -116,7 +120,11 @@ describe('Create Hackathon', () => {
         endDate: expected.endDate,
       }),
     );
-    expect(mockCreateCategory).toHaveBeenCalledWith('General', 'General', actual.id)
+    expect(mockCreateCategory).toHaveBeenCalledWith(
+      'General',
+      'General',
+      actual.id,
+    );
   });
 
   test('Validation Error', async () => {

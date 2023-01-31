@@ -8,13 +8,13 @@ import {
   putComment,
   deleteComment,
   listComments,
-} from '../repository/idea_comment-repository';
+} from '../repository/idea-comment-repository';
 import ValidationError from '../error/ValidationError';
-import Comment from '../repository/domain/IdeaComment';
+import IdeaComment from '../repository/domain/IdeaComment';
 import ReferenceNotFoundError from '../error/ReferenceNotFoundError';
-import CommentResponse from '../rest/Comment/CommentResponse';
-import CommentDeleteResponse from '../rest/Comment/CommentDeleteResponse';
-import CommentListResponse from '../rest/Comment/CommentListResponse';
+import CommentResponse from '../rest/comment/CommentResponse';
+import CommentDeleteResponse from '../rest/comment/CommentDeleteResponse';
+import CommentListResponse from '../rest/comment/CommentListResponse';
 import ideaComment from '../repository/domain/IdeaComment';
 
 export async function createComment(
@@ -22,53 +22,45 @@ export async function createComment(
   userId: Uuid,
   text: string,
   replyTo: Uuid,
-): Promise<Comment> {
+): Promise<IdeaComment> {
+  const ideaComment = new IdeaComment(userId, ideaId, text, replyTo);
+
   if (!(await ideaExists(ideaId))) {
     throw new ReferenceNotFoundError(`Idea with id: ${ideaId} not found`);
-  } else if (
-    replyTo &&
-    !(await commentAlreadyExists(new Comment(userId, ideaId, text, replyTo)))
-  ) {
+  }
+
+  if (replyTo && !(await commentAlreadyExists(ideaComment))) {
     throw new ReferenceNotFoundError(`Comment with id: ${replyTo} not found`);
-  } else if (!(await userExists(userId))) {
+  }
+
+  if (!(await userExists(userId))) {
     throw new ReferenceNotFoundError(`User with id: ${userId} not found`);
   }
 
-  const comment = new Comment(userId, ideaId, text, replyTo);
-  const result = comment.validate();
+  const result = ideaComment.validate();
   if (result.hasFailed()) {
     throw new ValidationError('Cannot create Comment', result);
   }
 
-  await putComment(comment);
+  await putComment(ideaComment);
 
-  return comment;
+  return ideaComment;
 }
 
 export async function getCommentResponse(id: Uuid): Promise<CommentResponse> {
-  const comment = await getComment(id);
+  const ideaComment = await getComment(id);
 
   let user;
   try {
-    user = await getUser(comment.userId);
+    user = await getUser(ideaComment.userId);
   } catch (e) {
     throw new ReferenceNotFoundError(
       `Cannot get Comment with id ${id}, ` +
-        `unable to get User with id ${comment.userId}`,
+        `unable to get User with id ${ideaComment.userId}`,
     );
   }
 
-  let idea;
-  try {
-    idea = await getIdea(comment.ideaId);
-  } catch (e) {
-    throw new ReferenceNotFoundError(
-      `Cannot get Comment with id ${id}, ` +
-        `unable to get Idea with id ${comment.ideaId}`,
-    );
-  }
-
-  return CommentResponse.from(comment, user);
+  return CommentResponse.from(ideaComment, user);
 }
 
 export async function getCommentListResponse(
@@ -78,22 +70,22 @@ export async function getCommentListResponse(
     throw new NotFoundError(`Idea with id: ${ideaId} not found`);
   }
 
-  const comments = await listComments(ideaId);
+  const ideaComments = await listComments(ideaId);
 
-  //Todo: evaluate how we handle comments with deleted users
+  //Todo: evaluate how we handle ideaComments with deleted users
   let users;
   try {
     users = await Promise.all(
-      comments.map((comment) => getUser(comment.userId)),
+      ideaComments.map((comment) => getUser(comment.userId)),
     );
   } catch (e) {
     throw new ReferenceNotFoundError(
       `Cannot get Comment list, ` +
-        `unable to get User with id ${users.userId}`,
+        `unable to get User with id ${ideaComments.map((c) => c.userId)}`,
     );
   }
 
-  return CommentListResponse.from(comments, users, ideaId);
+  return CommentListResponse.from(ideaComments, users, ideaId);
 }
 
 export async function editComment(id: Uuid, text: string): Promise<void> {
@@ -123,8 +115,8 @@ export async function removeComment(id: Uuid): Promise<CommentDeleteResponse> {
 }
 
 export async function removeCommentsForIdea(ideaId: Uuid): Promise<void> {
-  const comments = await listComments(ideaId);
-  for (const comment of comments) {
+  const ideaComments = await listComments(ideaId);
+  for (const comment of ideaComments) {
     await deleteComment(comment.id);
   }
 }

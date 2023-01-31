@@ -2,7 +2,7 @@ import {randomCategory} from '../../repository/domain/category-maker';
 import {list} from '../../../src/handler/category/list';
 import Uuid, {uuid} from '../../../src/util/Uuid';
 import NotFoundError from '../../../src/error/NotFoundError';
-import CategoryListResponse from '../../../src/rest/Category/CategoryListResponse';
+import CategoryListResponse from '../../../src/rest/category/CategoryListResponse';
 import * as categoryService from '../../../src/service/category-service';
 
 const mockGetCategoryListResponse = jest.fn();

@@ -1,8 +1,7 @@
 import * as commentService from '../../../src/service/idea_comment-service';
 import {remove} from '../../../src/handler/comment/remove';
-import CommentDeleteResponse from '../../../src/rest/Comment/CommentDeleteResponse';
+import CommentDeleteResponse from '../../../src/rest/comment/CommentDeleteResponse';
 import Uuid, {uuid} from '../../../src/util/Uuid';
-import UserDeleteResponse from '../../../src/rest/User/UserDeleteResponse';
 
 const mockRemoveComment = jest.fn();
 jest
@@ -12,7 +11,7 @@ jest
 describe('Delete Comment', () => {
   test('Happy Path', async () => {
     const id = uuid();
-    mockRemoveComment.mockResolvedValue(new UserDeleteResponse(id));
+    mockRemoveComment.mockResolvedValue(new CommentDeleteResponse(id));
     const event = toEvent(id);
     const callback = jest.fn();
 

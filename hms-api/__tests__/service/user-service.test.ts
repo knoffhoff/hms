@@ -21,14 +21,14 @@ import * as skillRepository from '../../src/repository/skill-repository';
 import * as userRepository from '../../src/repository/user-repository';
 import {randomSkill} from '../repository/domain/skill-maker';
 import NotFoundError from '../../src/error/NotFoundError';
-import UserResponse from '../../src/rest/User/UserResponse';
-import UserListResponse from '../../src/rest/User/UserListResponse';
-import UserDeleteResponse from '../../src/rest/User/UserDeleteResponse';
+import UserResponse from '../../src/rest/user/UserResponse';
+import UserListResponse from '../../src/rest/user/UserListResponse';
+import UserDeleteResponse from '../../src/rest/user/UserDeleteResponse';
 import User from '../../src/repository/domain/User';
 import ValidationResult from '../../src/error/ValidationResult';
 import {randomCategory} from '../repository/domain/category-maker';
 import ValidationError from '../../src/error/ValidationError';
-import UserExistsResponse from '../../src/rest/User/UserExistsResponse';
+import UserExistsResponse from '../../src/rest/user/UserExistsResponse';
 
 const mockGetSkills = jest.fn();
 jest.spyOn(skillRepository, 'getSkills').mockImplementation(mockGetSkills);

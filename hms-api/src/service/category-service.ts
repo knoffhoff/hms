@@ -13,9 +13,9 @@ import {
 import Uuid from '../util/Uuid';
 import Category from '../repository/domain/Category';
 import ReferenceNotFoundError from '../error/ReferenceNotFoundError';
-import CategoryResponse from '../rest/Category/CategoryResponse';
-import CategoryListResponse from '../rest/Category/CategoryListResponse';
-import CategoryDeleteResponse from '../rest/Category/CategoryDeleteResponse';
+import CategoryResponse from '../rest/category/CategoryResponse';
+import CategoryListResponse from '../rest/category/CategoryListResponse';
+import CategoryDeleteResponse from '../rest/category/CategoryDeleteResponse';
 import {removeIdeasForCategory} from './idea-service';
 import NotFoundError from '../error/NotFoundError';
 import DeletionError from '../error/DeletionError';

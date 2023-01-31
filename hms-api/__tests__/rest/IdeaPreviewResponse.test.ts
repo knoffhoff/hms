@@ -1,5 +1,5 @@
 import {IdeaData, makeIdea} from '../repository/domain/idea-maker';
-import IdeaPreviewResponse from '../../src/rest/Idea/IdeaPreviewResponse';
+import IdeaPreviewResponse from '../../src/rest/idea/IdeaPreviewResponse';
 
 describe('Compare', () => {
   test('All values different', () => {

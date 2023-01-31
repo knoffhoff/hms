@@ -29,14 +29,14 @@ import {getUser} from '../repository/user-repository';
 import Uuid from '../util/Uuid';
 import Idea from '../repository/domain/Idea';
 import ReferenceNotFoundError from '../error/ReferenceNotFoundError';
-import IdeaResponse from '../rest/Idea/IdeaResponse';
-import IdeaListResponse from '../rest/Idea/IdeaListResponse';
-import IdeaDeleteResponse from '../rest/Idea/IdeaDeleteResponse';
+import IdeaResponse from '../rest/idea/IdeaResponse';
+import IdeaListResponse from '../rest/idea/IdeaListResponse';
+import IdeaDeleteResponse from '../rest/idea/IdeaDeleteResponse';
 import DeletionError from '../error/DeletionError';
 import NotFoundError from '../error/NotFoundError';
 import InvalidStateError from '../error/InvalidStateError';
 import ValidationError from '../error/ValidationError';
-import IdeaListAllResponse from '../rest/Idea/IdeaListAllResponse';
+import IdeaListAllResponse from '../rest/idea/IdeaListAllResponse';
 
 export async function createIdea(
   ownerId: Uuid,

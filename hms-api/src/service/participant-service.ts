@@ -15,10 +15,10 @@ import {usersFor} from './user-service';
 import Uuid from '../util/Uuid';
 import Participant from '../repository/domain/Participant';
 import ReferenceNotFoundError from '../error/ReferenceNotFoundError';
-import ParticipantResponse from '../rest/Participant/ParticipantResponse';
-import ParticipantListResponse from '../rest/Participant/ParticipantListResponse';
-import ParticipantPreviewResponse from '../rest/Participant/ParticipantPreviewResponse';
-import ParticipantDeleteResponse from '../rest/Participant/ParticipantDeleteResponse';
+import ParticipantResponse from '../rest/participant/ParticipantResponse';
+import ParticipantListResponse from '../rest/participant/ParticipantListResponse';
+import ParticipantPreviewResponse from '../rest/participant/ParticipantPreviewResponse';
+import ParticipantDeleteResponse from '../rest/participant/ParticipantDeleteResponse';
 import {removeIdeasForOwner, removeParticipantFromIdeas} from './idea-service';
 import DeletionError from '../error/DeletionError';
 import NotFoundError from '../error/NotFoundError';
@@ -110,6 +110,7 @@ export async function removeParticipant(
   id: Uuid,
 ): Promise<ParticipantDeleteResponse> {
   try {
+    await removeIdeasForOwner(id);
     await removeParticipantFromIdeas(id);
   } catch (e) {
     throw new DeletionError(

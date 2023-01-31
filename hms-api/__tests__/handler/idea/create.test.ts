@@ -1,10 +1,10 @@
 import * as ideaService from '../../../src/service/idea-service';
 import {create} from '../../../src/handler/idea/create';
 import {randomIdea} from '../../repository/domain/idea-maker';
-import IdeaCreateResponse from '../../../src/rest/Idea/IdeaCreateResponse';
+import IdeaCreateResponse from '../../../src/rest/idea/IdeaCreateResponse';
 import ReferenceNotFoundError from '../../../src/error/ReferenceNotFoundError';
 import Idea from '../../../src/repository/domain/Idea';
-import IdeaCreateRequest from '../../../src/rest/Idea/IdeaCreateRequest';
+import IdeaCreateRequest from '../../../src/rest/idea/IdeaCreateRequest';
 
 const mockCreateIdea = jest.fn();
 jest.spyOn(ideaService, 'createIdea').mockImplementation(mockCreateIdea);

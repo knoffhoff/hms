@@ -1,10 +1,10 @@
 import * as hackathonService from '../../../src/service/hackathon-service';
 import {create} from '../../../src/handler/hackathon/create';
 import {randomHackathon} from '../../repository/domain/hackathon-maker';
-import HackathonCreateResponse from '../../../src/rest/Hackathon/HackathonCreateResponse';
+import HackathonCreateResponse from '../../../src/rest/hackathon/HackathonCreateResponse';
 import ReferenceNotFoundError from '../../../src/error/ReferenceNotFoundError';
 import Hackathon from '../../../src/repository/domain/Hackathon';
-import HackathonCreateRequest from '../../../src/rest/Hackathon/HackathonCreateRequest';
+import HackathonCreateRequest from '../../../src/rest/hackathon/HackathonCreateRequest';
 
 const mockCreateHackathon = jest.fn();
 jest

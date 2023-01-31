@@ -17,7 +17,7 @@ import {
   getComments,
   listComments,
   putComment,
-} from '../../src/repository/idea_comment-repository';
+} from '../../src/repository/idea-comment-repository';
 import NotFoundError from '../../src/error/NotFoundError';
 import {randomIdeaComment} from './domain/ideaComment-maker';
 import {AttributeValue} from '@aws-sdk/client-dynamodb';

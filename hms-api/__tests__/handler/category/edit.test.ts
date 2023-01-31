@@ -1,9 +1,9 @@
 import {edit} from '../../../src/handler/category/edit';
 import Uuid, {uuid} from '../../../src/util/Uuid';
 import * as categoryService from '../../../src/service/category-service';
-import CategoryEditResponse from '../../../src/rest/Category/CategoryEditResponse';
+import CategoryEditResponse from '../../../src/rest/category/CategoryEditResponse';
 import NotFoundError from '../../../src/error/NotFoundError';
-import CategoryEditRequest from '../../../src/rest/Category/CategoryEditRequest';
+import CategoryEditRequest from '../../../src/rest/category/CategoryEditRequest';
 
 const mockEditCategory = jest.fn();
 jest

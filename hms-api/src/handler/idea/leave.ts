@@ -1,7 +1,7 @@
 import {wrapHandler} from '../handler-wrapper';
 import {buildResponse} from '../../rest/responses';
 import {removeParticipant} from '../../service/idea-service';
-import IdeaLeaveResponse from '../../rest/Idea/IdeaLeaveResponse';
+import IdeaLeaveResponse from '../../rest/idea/IdeaLeaveResponse';
 
 // eslint-disable-next-line require-jsdoc
 export async function leave(event, context, callback) {

@@ -1,6 +1,6 @@
 import * as userService from '../../../src/service/user-service';
 import {remove} from '../../../src/handler/user/remove';
-import UserDeleteResponse from '../../../src/rest/User/UserDeleteResponse';
+import UserDeleteResponse from '../../../src/rest/user/UserDeleteResponse';
 import Uuid, {uuid} from '../../../src/util/Uuid';
 
 const mockRemoveUser = jest.fn();

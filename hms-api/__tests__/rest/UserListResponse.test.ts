@@ -1,6 +1,6 @@
-import UserListResponse from '../../src/rest/User/UserListResponse';
+import UserListResponse from '../../src/rest/user/UserListResponse';
 import {makeUser, UserData} from '../repository/domain/user-maker';
-import UserPreviewResponse from '../../src/rest/User/UserPreviewResponse';
+import UserPreviewResponse from '../../src/rest/user/UserPreviewResponse';
 
 describe('Convert From', () => {
   test('Categories are sorted', () => {

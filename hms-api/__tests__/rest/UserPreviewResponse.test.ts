@@ -1,5 +1,5 @@
 import {makeUser, UserData} from '../repository/domain/user-maker';
-import UserPreviewResponse from '../../src/rest/User/UserPreviewResponse';
+import UserPreviewResponse from '../../src/rest/user/UserPreviewResponse';
 
 describe('Compare', () => {
   test('All values different', () => {

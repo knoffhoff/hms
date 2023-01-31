@@ -1,6 +1,6 @@
 import * as ideaService from '../../../src/service/idea-service';
 import Uuid, {uuid} from '../../../src/util/Uuid';
-import IdeaJoinResponse from '../../../src/rest/Idea/IdeaJoinResponse';
+import IdeaJoinResponse from '../../../src/rest/idea/IdeaJoinResponse';
 import {join} from '../../../src/handler/idea/join';
 
 const mockAddParticipant = jest.fn();

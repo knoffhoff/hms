@@ -1,8 +1,8 @@
 import {edit} from '../../../src/handler/skill/edit';
 import Uuid, {uuid} from '../../../src/util/Uuid';
-import SkillEditResponse from '../../../src/rest/Skill/SkillEditResponse';
+import SkillEditResponse from '../../../src/rest/skill/SkillEditResponse';
 import NotFoundError from '../../../src/error/NotFoundError';
-import SkillEditRequest from '../../../src/rest/Skill/SkillEditRequest';
+import SkillEditRequest from '../../../src/rest/skill/SkillEditRequest';
 import * as skillService from '../../../src/service/skill-service';
 
 const mockEditSkill = jest.fn();

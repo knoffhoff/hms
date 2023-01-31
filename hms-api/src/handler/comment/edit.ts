@@ -1,9 +1,9 @@
 import {buildResponse} from '../../rest/responses';
 import {wrapHandler} from '../handler-wrapper';
 import Uuid from '../../util/Uuid';
-import CommentEditRequest from '../../rest/Comment/CommentEditRequest';
+import CommentEditRequest from '../../rest/comment/CommentEditRequest';
 import {editComment} from '../../service/idea_comment-service';
-import CommentEditResponse from '../../rest/Comment/CommentEditResponse';
+import CommentEditResponse from '../../rest/comment/CommentEditResponse';
 
 export async function edit(event, context, callback) {
   await wrapHandler(async () => {

@@ -1,8 +1,8 @@
 import {buildResponse} from '../../rest/responses';
 import {createSkill} from '../../service/skill-service';
 import {wrapHandler} from '../handler-wrapper';
-import SkillCreateRequest from '../../rest/Skill/SkillCreateRequest';
-import SkillCreateResponse from '../../rest/Skill/SkillCreateResponse';
+import SkillCreateRequest from '../../rest/skill/SkillCreateRequest';
+import SkillCreateResponse from '../../rest/skill/SkillCreateResponse';
 
 // eslint-disable-next-line require-jsdoc
 export async function create(event, context, callback) {

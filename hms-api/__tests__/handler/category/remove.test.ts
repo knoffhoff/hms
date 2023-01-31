@@ -1,6 +1,6 @@
 import * as categoryService from '../../../src/service/category-service';
 import {remove} from '../../../src/handler/category/remove';
-import CategoryDeleteResponse from '../../../src/rest/Category/CategoryDeleteResponse';
+import CategoryDeleteResponse from '../../../src/rest/category/CategoryDeleteResponse';
 import Uuid, {uuid} from '../../../src/util/Uuid';
 
 const mockRemoveCategory = jest.fn();

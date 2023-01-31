@@ -4,7 +4,7 @@ import NotFoundError from '../../../src/error/NotFoundError';
 import * as participantService from '../../../src/service/participant-service';
 import Uuid, {uuid} from '../../../src/util/Uuid';
 import {randomHackathon} from '../../repository/domain/hackathon-maker';
-import ParticipantResponse from '../../../src/rest/Participant/ParticipantResponse';
+import ParticipantResponse from '../../../src/rest/participant/ParticipantResponse';
 import ReferenceNotFoundError from '../../../src/error/ReferenceNotFoundError';
 import {randomUser} from '../../repository/domain/user-maker';
 

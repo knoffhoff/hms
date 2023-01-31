@@ -1,6 +1,6 @@
 import * as skillService from '../../../src/service/skill-service';
 import {remove} from '../../../src/handler/skill/remove';
-import SkillDeleteResponse from '../../../src/rest/Skill/SkillDeleteResponse';
+import SkillDeleteResponse from '../../../src/rest/skill/SkillDeleteResponse';
 import Uuid, {uuid} from '../../../src/util/Uuid';
 
 const mockRemoveSkill = jest.fn();

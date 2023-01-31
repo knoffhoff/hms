@@ -1,8 +1,8 @@
 import {buildResponse} from '../../rest/responses';
 import {createComment} from '../../service/idea_comment-service';
 import {wrapHandler} from '../handler-wrapper';
-import CommentCreateRequest from '../../rest/Comment/CommentCreateRequest';
-import CommentCreateResponse from '../../rest/Comment/CommentCreateResponse';
+import CommentCreateRequest from '../../rest/comment/CommentCreateRequest';
+import CommentCreateResponse from '../../rest/comment/CommentCreateResponse';
 
 export async function create(event, context, callback) {
   await wrapHandler(async () => {

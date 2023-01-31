@@ -1,7 +1,7 @@
 import {randomUser} from '../../repository/domain/user-maker';
 import {list} from '../../../src/handler/user/list';
 import NotFoundError from '../../../src/error/NotFoundError';
-import UserListResponse from '../../../src/rest/User/UserListResponse';
+import UserListResponse from '../../../src/rest/user/UserListResponse';
 import * as userService from '../../../src/service/user-service';
 
 const mockGetUserListResponse = jest.fn();

@@ -1,8 +1,8 @@
 import {wrapHandler} from '../handler-wrapper';
 import {buildResponse} from '../../rest/responses';
 import {editHackathon} from '../../service/hackathon-service';
-import HackathonEditRequest from '../../rest/Hackathon/HackathonEditRequest';
-import HackathonEditResponse from '../../rest/Hackathon/HackathonEditResponse';
+import HackathonEditRequest from '../../rest/hackathon/HackathonEditRequest';
+import HackathonEditResponse from '../../rest/hackathon/HackathonEditResponse';
 import Uuid from '../../util/Uuid';
 
 // eslint-disable-next-line require-jsdoc

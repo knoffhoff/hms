@@ -1,10 +1,10 @@
 import * as userService from '../../../src/service/user-service';
 import {create} from '../../../src/handler/user/create';
 import {randomUser} from '../../repository/domain/user-maker';
-import UserCreateResponse from '../../../src/rest/User/UserCreateResponse';
+import UserCreateResponse from '../../../src/rest/user/UserCreateResponse';
 import ReferenceNotFoundError from '../../../src/error/ReferenceNotFoundError';
 import User from '../../../src/repository/domain/User';
-import UserCreateRequest from '../../../src/rest/User/UserCreateRequest';
+import UserCreateRequest from '../../../src/rest/user/UserCreateRequest';
 
 const mockCreateUser = jest.fn();
 jest.spyOn(userService, 'createUser').mockImplementation(mockCreateUser);

@@ -1,8 +1,8 @@
 import * as ideaCommentServive from '../../../src/service/idea_comment-service';
 import {edit} from '../../../src/handler/comment/edit';
 import Uuid, {uuid} from '../../../src/util/Uuid';
-import commentEditRequest from '../../../src/rest/Comment/CommentEditRequest';
-import CommentEditResponse from '../../../src/rest/Comment/CommentEditResponse';
+import commentEditRequest from '../../../src/rest/comment/CommentEditRequest';
+import CommentEditResponse from '../../../src/rest/comment/CommentEditResponse';
 import NotFoundError from '../../../src/error/NotFoundError';
 
 const mockEditIdeaComment = jest.fn();

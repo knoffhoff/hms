@@ -4,7 +4,7 @@ import NotFoundError from '../../../src/error/NotFoundError';
 import * as categoryService from '../../../src/service/category-service';
 import Uuid, {uuid} from '../../../src/util/Uuid';
 import {randomHackathon} from '../../repository/domain/hackathon-maker';
-import CategoryResponse from '../../../src/rest/Category/CategoryResponse';
+import CategoryResponse from '../../../src/rest/category/CategoryResponse';
 import ReferenceNotFoundError from '../../../src/error/ReferenceNotFoundError';
 
 const mockGetCategory = jest.fn();

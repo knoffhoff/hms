@@ -13,12 +13,12 @@ import {
 import {randomUser} from '../repository/domain/user-maker';
 import {randomHackathon} from '../repository/domain/hackathon-maker';
 import {uuid} from '../../src/util/Uuid';
-import ParticipantResponse from '../../src/rest/Participant/ParticipantResponse';
-import ParticipantListResponse from '../../src/rest/Participant/ParticipantListResponse';
+import ParticipantResponse from '../../src/rest/participant/ParticipantResponse';
+import ParticipantListResponse from '../../src/rest/participant/ParticipantListResponse';
 import NotFoundError from '../../src/error/NotFoundError';
 import ReferenceNotFoundError from '../../src/error/ReferenceNotFoundError';
 import DeletionError from '../../src/error/DeletionError';
-import ParticipantDeleteResponse from '../../src/rest/Participant/ParticipantDeleteResponse';
+import ParticipantDeleteResponse from '../../src/rest/participant/ParticipantDeleteResponse';
 import * as participantRepository from '../../src/repository/participant-repository';
 import * as hackathonRepository from '../../src/repository/hackathon-repository';
 import * as userRepository from '../../src/repository/user-repository';
@@ -268,13 +268,13 @@ describe('Delete Participant', () => {
   test('Happy Path', async () => {
     const id = uuid();
 
-    // mockRemoveIdeasForOwner.mockImplementation(() => {});
+    mockRemoveIdeasForOwner.mockImplementation(() => {});
     mockRemoveParticipantFromIdeas.mockImplementation(() => {});
 
     expect(await removeParticipant(id)).toStrictEqual(
       new ParticipantDeleteResponse(id),
     );
-    // expect(mockRemoveIdeasForOwner).toHaveBeenCalledWith(id);
+    expect(mockRemoveIdeasForOwner).toHaveBeenCalledWith(id);
     expect(mockRemoveParticipantFromIdeas).toHaveBeenCalledWith(id);
     expect(mockDeleteParticipant).toHaveBeenCalledWith(id);
   });
@@ -282,30 +282,30 @@ describe('Delete Participant', () => {
   test('Remove Participant from Ideas Fails', async () => {
     const id = uuid();
 
-    // mockRemoveIdeasForOwner.mockImplementation(() => {});
+    mockRemoveIdeasForOwner.mockImplementation(() => {});
     mockRemoveParticipantFromIdeas.mockImplementation(() => {
       throw new DeletionError('OOPS!');
     });
 
     await expect(removeParticipant(id)).rejects.toThrow(DeletionError);
-    // expect(mockRemoveIdeasForOwner).toHaveBeenCalledWith(id);
+    expect(mockRemoveIdeasForOwner).toHaveBeenCalledWith(id);
     expect(mockRemoveParticipantFromIdeas).toHaveBeenCalledWith(id);
     expect(mockDeleteParticipant).not.toHaveBeenCalled();
   });
 
-  // test('Remove Ideas for Owner Fails', async () => {
-  //   const id = uuid();
-  //
-  //   mockRemoveIdeasForOwner.mockImplementation(() => {
-  //     throw new DeletionError('OOPS!');
-  //   });
-  //   mockRemoveParticipantFromIdeas.mockImplementation(() => {});
-  //
-  //   await expect(removeParticipant(id)).rejects.toThrow(DeletionError);
-  //   expect(mockRemoveIdeasForOwner).toHaveBeenCalledWith(id);
-  //   expect(mockRemoveParticipantFromIdeas).not.toHaveBeenCalled();
-  //   expect(mockDeleteParticipant).not.toHaveBeenCalled();
-  // });
+  test('Remove Ideas for Owner Fails', async () => {
+    const id = uuid();
+
+    mockRemoveIdeasForOwner.mockImplementation(() => {
+      throw new DeletionError('OOPS!');
+    });
+    mockRemoveParticipantFromIdeas.mockImplementation(() => {});
+
+    await expect(removeParticipant(id)).rejects.toThrow(DeletionError);
+    expect(mockRemoveIdeasForOwner).toHaveBeenCalledWith(id);
+    expect(mockRemoveParticipantFromIdeas).not.toHaveBeenCalled();
+    expect(mockDeleteParticipant).not.toHaveBeenCalled();
+  });
 });
 
 describe('Remove Participants for Hackathon', () => {
@@ -325,8 +325,8 @@ describe('Remove Participants for Hackathon', () => {
 
     await removeParticipantsForHackathon(hackathonId);
 
-    // expect(mockRemoveIdeasForOwner).toHaveBeenCalledWith(participant1.id);
-    // expect(mockRemoveIdeasForOwner).toHaveBeenCalledWith(participant2.id);
+    expect(mockRemoveIdeasForOwner).toHaveBeenCalledWith(participant1.id);
+    expect(mockRemoveIdeasForOwner).toHaveBeenCalledWith(participant2.id);
     expect(mockRemoveParticipantFromIdeas).toHaveBeenCalledWith(
       participant1.id,
     );

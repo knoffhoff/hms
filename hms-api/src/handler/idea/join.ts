@@ -1,7 +1,7 @@
 import {wrapHandler} from '../handler-wrapper';
 import {addParticipant} from '../../service/idea-service';
 import {buildResponse} from '../../rest/responses';
-import IdeaJoinResponse from '../../rest/Idea/IdeaJoinResponse';
+import IdeaJoinResponse from '../../rest/idea/IdeaJoinResponse';
 
 // eslint-disable-next-line require-jsdoc
 export async function join(event, context, callback) {

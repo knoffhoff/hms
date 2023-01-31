@@ -1,5 +1,5 @@
 import {CategoryData, makeCategory} from '../repository/domain/category-maker';
-import CategoryPreviewResponse from '../../src/rest/Category/CategoryPreviewResponse';
+import CategoryPreviewResponse from '../../src/rest/category/CategoryPreviewResponse';
 
 describe('Compare', () => {
   test('All values different', () => {

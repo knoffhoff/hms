@@ -3,7 +3,7 @@ import {get} from '../../../src/handler/user/get';
 import NotFoundError from '../../../src/error/NotFoundError';
 import * as userService from '../../../src/service/user-service';
 import Uuid, {uuid} from '../../../src/util/Uuid';
-import UserResponse from '../../../src/rest/User/UserResponse';
+import UserResponse from '../../../src/rest/user/UserResponse';
 import {randomSkill} from '../../repository/domain/skill-maker';
 import ReferenceNotFoundError from '../../../src/error/ReferenceNotFoundError';
 

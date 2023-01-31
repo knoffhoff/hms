@@ -1,9 +1,9 @@
-import HackathonListResponse from '../../src/rest/Hackathon/HackathonListResponse';
+import HackathonListResponse from '../../src/rest/hackathon/HackathonListResponse';
 import {
   HackathonData,
   makeHackathon,
 } from '../repository/domain/hackathon-maker';
-import HackathonPreviewResponse from '../../src/rest/Hackathon/HackathonPreviewResponse';
+import HackathonPreviewResponse from '../../src/rest/hackathon/HackathonPreviewResponse';
 
 describe('Convert From', () => {
   test('Categories are sorted', () => {

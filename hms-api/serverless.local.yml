@@ -57,8 +57,8 @@ provider:
     PARTICIPANT_TABLE: participant
     PARTICIPANT_BY_HACKATHON_ID_INDEX: participant-by-hackathonId
     PARTICIPANT_BY_HACKATHON_ID_USER_ID_INDEX: participant-by-hackathonId-userId
-    COMMENT_TABLE: ideaComment
-    COMMENT_BY_IDEA_ID_INDEX: ideaComment-by-ideaId
+    IDEA_COMMENT_TABLE: ideaComment
+    IDEA_COMMENT_BY_IDEA_ID_INDEX: ideaComment-by-ideaId
     ADMIN_USERS: ${file(./secrets.json):ADMIN_USERS}
     HMS_BUCKET_NAME: ${file(./secrets.json):HMS_BUCKET_NAME}
   iam:
@@ -83,8 +83,8 @@ provider:
             - arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.IDEA_TABLE}/index/*
             - arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.PARTICIPANT_TABLE}
             - arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.PARTICIPANT_TABLE}/index/*
-            - arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.COMMENT_TABLE}
-            - arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.COMMENT_TABLE}/index/*
+            - arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.IDEA_COMMENT_TABLE}
+            - arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.IDEA_COMMENT_TABLE}/index/*
         - Effect: Allow
           Action:
             - s3:GetObject
@@ -592,7 +592,7 @@ resources:
       Type: AWS::DynamoDB::Table
       DeletionPolicy: Retain
       Properties:
-        TableName: ${self:provider.environment.COMMENT_TABLE}
+        TableName: ${self:provider.environment.IDEA_COMMENT_TABLE}
         BillingMode: PAY_PER_REQUEST
         AttributeDefinitions:
           - AttributeName: id
@@ -605,7 +605,7 @@ resources:
           - AttributeName: id
             KeyType: HASH
         GlobalSecondaryIndexes:
-          - IndexName: ${self:provider.environment.COMMENT_BY_IDEA_ID_INDEX}
+          - IndexName: ${self:provider.environment.IDEA_COMMENT_BY_IDEA_ID_INDEX}
             KeySchema:
               - AttributeName: ideaId
                 KeyType: HASH

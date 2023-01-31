@@ -14,12 +14,12 @@ import User from '../repository/domain/User';
 import Uuid from '../util/Uuid';
 import Role from '../repository/domain/Role';
 import ReferenceNotFoundError from '../error/ReferenceNotFoundError';
-import UserResponse from '../rest/User/UserResponse';
-import UserListResponse from '../rest/User/UserListResponse';
-import UserDeleteResponse from '../rest/User/UserDeleteResponse';
+import UserResponse from '../rest/user/UserResponse';
+import UserListResponse from '../rest/user/UserListResponse';
+import UserDeleteResponse from '../rest/user/UserDeleteResponse';
 import NotFoundError from '../error/NotFoundError';
 import ValidationError from '../error/ValidationError';
-import UserExistsResponse from '../rest/User/UserExistsResponse';
+import UserExistsResponse from '../rest/user/UserExistsResponse';
 
 const ADMIN_USERS = (): string[] => {
   const adminUserString = process.env.ADMIN_USERS || '';

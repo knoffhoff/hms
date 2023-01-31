@@ -1,7 +1,7 @@
 import {randomHackathon} from '../../repository/domain/hackathon-maker';
 import {list} from '../../../src/handler/hackathon/list';
 import NotFoundError from '../../../src/error/NotFoundError';
-import HackathonListResponse from '../../../src/rest/Hackathon/HackathonListResponse';
+import HackathonListResponse from '../../../src/rest/hackathon/HackathonListResponse';
 import * as hackathonService from '../../../src/service/hackathon-service';
 
 const mockGetHackathonListResponse = jest.fn();

@@ -1,7 +1,7 @@
-import CategoryListResponse from '../../src/rest/Category/CategoryListResponse';
+import CategoryListResponse from '../../src/rest/category/CategoryListResponse';
 import {CategoryData, makeCategory} from '../repository/domain/category-maker';
 import {uuid} from '../../src/util/Uuid';
-import CategoryPreviewResponse from '../../src/rest/Category/CategoryPreviewResponse';
+import CategoryPreviewResponse from '../../src/rest/category/CategoryPreviewResponse';
 
 describe('Convert From', () => {
   test('Categories are sorted', () => {

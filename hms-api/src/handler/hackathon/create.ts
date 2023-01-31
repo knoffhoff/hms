@@ -1,8 +1,8 @@
 import {buildResponse} from '../../rest/responses';
 import {createHackathon} from '../../service/hackathon-service';
 import {wrapHandler} from '../handler-wrapper';
-import HackathonCreateRequest from '../../rest/Hackathon/HackathonCreateRequest';
-import HackathonCreateResponse from '../../rest/Hackathon/HackathonCreateResponse';
+import HackathonCreateRequest from '../../rest/hackathon/HackathonCreateRequest';
+import HackathonCreateResponse from '../../rest/hackathon/HackathonCreateResponse';
 
 // eslint-disable-next-line require-jsdoc
 export async function create(event, context, callback) {

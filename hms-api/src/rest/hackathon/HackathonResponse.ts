@@ -1,9 +1,9 @@
 /* eslint-disable require-jsdoc */
 
 import Uuid from '../../util/Uuid';
-import ParticipantPreviewResponse from '../Participant/ParticipantPreviewResponse';
-import CategoryPreviewResponse from '../Category/CategoryPreviewResponse';
-import IdeaPreviewResponse from '../Idea/IdeaPreviewResponse';
+import ParticipantPreviewResponse from '../participant/ParticipantPreviewResponse';
+import CategoryPreviewResponse from '../category/CategoryPreviewResponse';
+import IdeaPreviewResponse from '../idea/IdeaPreviewResponse';
 import Hackathon from '../../repository/domain/Hackathon';
 import Category from '../../repository/domain/Category';
 import Participant from '../../repository/domain/Participant';

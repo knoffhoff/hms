@@ -1,10 +1,10 @@
 import * as participantService from '../../../src/service/participant-service';
 import {create} from '../../../src/handler/participant/create';
 import {randomParticipant} from '../../repository/domain/participant-maker';
-import ParticipantCreateResponse from '../../../src/rest/Participant/ParticipantCreateResponse';
+import ParticipantCreateResponse from '../../../src/rest/participant/ParticipantCreateResponse';
 import ReferenceNotFoundError from '../../../src/error/ReferenceNotFoundError';
 import Participant from '../../../src/repository/domain/Participant';
-import ParticipantCreateRequest from '../../../src/rest/Participant/ParticipantCreateRequest';
+import ParticipantCreateRequest from '../../../src/rest/participant/ParticipantCreateRequest';
 
 const mockCreateParticipant = jest.fn();
 jest

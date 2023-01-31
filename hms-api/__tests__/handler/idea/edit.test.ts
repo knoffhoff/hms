@@ -1,9 +1,9 @@
 import {edit} from '../../../src/handler/idea/edit';
 import Uuid, {uuid} from '../../../src/util/Uuid';
 import * as ideaService from '../../../src/service/idea-service';
-import IdeaEditResponse from '../../../src/rest/Idea/IdeaEditResponse';
+import IdeaEditResponse from '../../../src/rest/idea/IdeaEditResponse';
 import NotFoundError from '../../../src/error/NotFoundError';
-import IdeaEditRequest from '../../../src/rest/Idea/IdeaEditRequest';
+import IdeaEditRequest from '../../../src/rest/idea/IdeaEditRequest';
 import ReferenceNotFoundError from '../../../src/error/ReferenceNotFoundError';
 
 const mockEditIdea = jest.fn();

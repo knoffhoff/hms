@@ -1,6 +1,6 @@
-import IdeaListResponse from '../../src/rest/Idea/IdeaListResponse';
+import IdeaListResponse from '../../src/rest/idea/IdeaListResponse';
 import {IdeaData, makeIdea} from '../repository/domain/idea-maker';
-import IdeaPreviewResponse from '../../src/rest/Idea/IdeaPreviewResponse';
+import IdeaPreviewResponse from '../../src/rest/idea/IdeaPreviewResponse';
 import {uuid} from '../../src/util/Uuid';
 
 describe('Convert From', () => {

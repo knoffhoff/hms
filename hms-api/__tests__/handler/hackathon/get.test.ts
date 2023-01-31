@@ -3,7 +3,7 @@ import NotFoundError from '../../../src/error/NotFoundError';
 import * as hackathonService from '../../../src/service/hackathon-service';
 import Uuid, {uuid} from '../../../src/util/Uuid';
 import {randomHackathon} from '../../repository/domain/hackathon-maker';
-import HackathonResponse from '../../../src/rest/Hackathon/HackathonResponse';
+import HackathonResponse from '../../../src/rest/hackathon/HackathonResponse';
 import ReferenceNotFoundError from '../../../src/error/ReferenceNotFoundError';
 import {
   makeParticipant,

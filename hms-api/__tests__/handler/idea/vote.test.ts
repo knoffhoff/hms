@@ -1,7 +1,7 @@
 import * as ideaService from '../../../src/service/idea-service';
 import Uuid, {uuid} from '../../../src/util/Uuid';
 import {vote} from '../../../src/handler/idea/vote';
-import IdeaVoteResponse from '../../../src/rest/Idea/IdeaVoteResponse';
+import IdeaVoteResponse from '../../../src/rest/idea/IdeaVoteResponse';
 
 const mockAddVoter = jest.fn();
 jest.spyOn(ideaService, 'addVoter').mockImplementation(mockAddVoter);

@@ -1,5 +1,5 @@
 import * as userRepository from '../../src/repository/user-repository';
-import * as ideaCommentRepository from '../../src/repository/idea_comment-repository';
+import * as ideaCommentRepository from '../../src/repository/idea-comment-repository';
 import * as ideaRepository from '../../src/repository/idea-repository';
 import {
   createComment,
@@ -12,7 +12,7 @@ import {
   IdeaCommentData,
   makeIdeaComment,
 } from '../repository/domain/ideaComment-maker';
-import CommentResponse from '../../src/rest/Comment/CommentResponse';
+import CommentResponse from '../../src/rest/comment/CommentResponse';
 import {randomUser} from '../repository/domain/user-maker';
 
 const mockPutComment = jest.fn();

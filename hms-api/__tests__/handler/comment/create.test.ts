@@ -1,9 +1,9 @@
 import * as commentService from '../../../src/service/idea_comment-service';
-import CommentCreateResponse from '../../../src/rest/Comment/CommentCreateResponse';
+import CommentCreateResponse from '../../../src/rest/comment/CommentCreateResponse';
 import {create} from '../../../src/handler/comment/create';
 import {randomIdeaComment} from '../../repository/domain/ideaComment-maker';
 import ideaComment from '../../../src/repository/domain/IdeaComment';
-import CommentCreateRequest from '../../../src/rest/Comment/CommentCreateRequest';
+import CommentCreateRequest from '../../../src/rest/comment/CommentCreateRequest';
 import ReferenceNotFoundError from '../../../src/error/ReferenceNotFoundError';
 
 const mockCreateIdeaComment = jest.fn();

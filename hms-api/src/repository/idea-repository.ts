@@ -157,12 +157,13 @@ export async function getIdea(id: Uuid): Promise<Idea> {
 }
 
 export async function ideaExists(id: Uuid): Promise<boolean> {
-  try {
-    await getIdea(id);
-    return true;
-  } catch (error) {
-    return false;
-  }
+  const output = await dynamoDBClient.send(
+    new GetItemCommand({
+      TableName: process.env.IDEA_TABLE,
+      Key: {id: {S: id}},
+    }),
+  );
+  return !!output.Item;
 }
 
 export async function deleteIdea(id: Uuid): Promise<Idea> {

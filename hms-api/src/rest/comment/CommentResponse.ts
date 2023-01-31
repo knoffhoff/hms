@@ -1,6 +1,6 @@
 import Uuid from '../../util/Uuid';
 import IdeaComment from '../../repository/domain/IdeaComment';
-import UserPreviewResponse from '../User/UserPreviewResponse';
+import UserPreviewResponse from '../user/UserPreviewResponse';
 import User from '../../repository/domain/User';
 
 class CommentResponse {

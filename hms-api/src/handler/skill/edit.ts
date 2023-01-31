@@ -1,8 +1,8 @@
 import {wrapHandler} from '../handler-wrapper';
 import {buildResponse} from '../../rest/responses';
 import {editSkill} from '../../service/skill-service';
-import SkillEditRequest from '../../rest/Skill/SkillEditRequest';
-import SkillEditResponse from '../../rest/Skill/SkillEditResponse';
+import SkillEditRequest from '../../rest/skill/SkillEditRequest';
+import SkillEditResponse from '../../rest/skill/SkillEditResponse';
 import Uuid from '../../util/Uuid';
 
 // eslint-disable-next-line require-jsdoc

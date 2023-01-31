@@ -1,8 +1,8 @@
 import * as participantService from '../../../src/service/participant-service';
 import {remove} from '../../../src/handler/participant/remove';
-import ParticipantDeleteResponse from '../../../src/rest/Participant/ParticipantDeleteResponse';
+import ParticipantDeleteResponse from '../../../src/rest/participant/ParticipantDeleteResponse';
 import Uuid, {uuid} from '../../../src/util/Uuid';
-import UserDeleteResponse from '../../../src/rest/User/UserDeleteResponse';
+import UserDeleteResponse from '../../../src/rest/user/UserDeleteResponse';
 
 const mockRemoveParticipant = jest.fn();
 jest

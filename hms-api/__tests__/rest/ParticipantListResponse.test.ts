@@ -1,10 +1,10 @@
-import ParticipantListResponse from '../../src/rest/Participant/ParticipantListResponse';
+import ParticipantListResponse from '../../src/rest/participant/ParticipantListResponse';
 import {
   makeParticipant,
   ParticipantData,
 } from '../repository/domain/participant-maker';
 import {makeUser, UserData} from '../repository/domain/user-maker';
-import ParticipantPreviewResponse from '../../src/rest/Participant/ParticipantPreviewResponse';
+import ParticipantPreviewResponse from '../../src/rest/participant/ParticipantPreviewResponse';
 import {uuid} from '../../src/util/Uuid';
 
 describe('Convert From', () => {

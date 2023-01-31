@@ -1,10 +1,10 @@
 import * as categoryService from '../../../src/service/category-service';
 import {create} from '../../../src/handler/category/create';
 import {randomCategory} from '../../repository/domain/category-maker';
-import CategoryCreateResponse from '../../../src/rest/Category/CategoryCreateResponse';
+import CategoryCreateResponse from '../../../src/rest/category/CategoryCreateResponse';
 import ReferenceNotFoundError from '../../../src/error/ReferenceNotFoundError';
 import Category from '../../../src/repository/domain/Category';
-import CategoryCreateRequest from '../../../src/rest/Category/CategoryCreateRequest';
+import CategoryCreateRequest from '../../../src/rest/category/CategoryCreateRequest';
 
 const mockCreateCategory = jest.fn();
 jest

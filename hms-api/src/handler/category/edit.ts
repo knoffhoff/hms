@@ -1,8 +1,8 @@
 import {wrapHandler} from '../handler-wrapper';
 import {buildResponse} from '../../rest/responses';
 import {editCategory} from '../../service/category-service';
-import CategoryEditRequest from '../../rest/Category/CategoryEditRequest';
-import CategoryEditResponse from '../../rest/Category/CategoryEditResponse';
+import CategoryEditRequest from '../../rest/category/CategoryEditRequest';
+import CategoryEditResponse from '../../rest/category/CategoryEditResponse';
 import Uuid from '../../util/Uuid';
 
 // eslint-disable-next-line require-jsdoc

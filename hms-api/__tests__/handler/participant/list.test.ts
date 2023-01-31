@@ -6,7 +6,7 @@ import {list} from '../../../src/handler/participant/list';
 import {randomUser} from '../../repository/domain/user-maker';
 import Uuid, {uuid} from '../../../src/util/Uuid';
 import NotFoundError from '../../../src/error/NotFoundError';
-import ParticipantListResponse from '../../../src/rest/Participant/ParticipantListResponse';
+import ParticipantListResponse from '../../../src/rest/participant/ParticipantListResponse';
 import ReferenceNotFoundError from '../../../src/error/ReferenceNotFoundError';
 import * as participantService from '../../../src/service/participant-service';
 

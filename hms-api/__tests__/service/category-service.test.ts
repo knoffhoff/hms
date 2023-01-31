@@ -14,12 +14,12 @@ import {
 } from '../../src/service/category-service';
 import {uuid} from '../../src/util/Uuid';
 import ReferenceNotFoundError from '../../src/error/ReferenceNotFoundError';
-import CategoryResponse from '../../src/rest/Category/CategoryResponse';
+import CategoryResponse from '../../src/rest/category/CategoryResponse';
 import NotFoundError from '../../src/error/NotFoundError';
-import CategoryListResponse from '../../src/rest/Category/CategoryListResponse';
+import CategoryListResponse from '../../src/rest/category/CategoryListResponse';
 import Category from '../../src/repository/domain/Category';
 import DeletionError from '../../src/error/DeletionError';
-import CategoryDeleteResponse from '../../src/rest/Category/CategoryDeleteResponse';
+import CategoryDeleteResponse from '../../src/rest/category/CategoryDeleteResponse';
 import * as categoryRepository from '../../src/repository/category-repository';
 import * as hackathonRepository from '../../src/repository/hackathon-repository';
 import * as ideaService from '../../src/service/idea-service';

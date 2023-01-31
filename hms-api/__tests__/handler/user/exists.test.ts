@@ -1,6 +1,6 @@
 import {exists} from '../../../src/handler/user/exists';
 import * as userService from '../../../src/service/user-service';
-import UserExistsResponse from '../../../src/rest/User/UserExistsResponse';
+import UserExistsResponse from '../../../src/rest/user/UserExistsResponse';
 import {uuid} from '../../../src/util/Uuid';
 
 const mockGetUserExistsResponse = jest.fn();

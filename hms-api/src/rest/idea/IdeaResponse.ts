@@ -1,17 +1,17 @@
 /* eslint-disable require-jsdoc */
 
 import Uuid from '../../util/Uuid';
-import SkillPreviewResponse from '../Skill/SkillPreviewResponse';
-import HackathonPreviewResponse from '../Hackathon/HackathonPreviewResponse';
-import CategoryPreviewResponse from '../Category/CategoryPreviewResponse';
-import ParticipantPreviewResponse from '../Participant/ParticipantPreviewResponse';
+import SkillPreviewResponse from '../skill/SkillPreviewResponse';
+import HackathonPreviewResponse from '../hackathon/HackathonPreviewResponse';
+import CategoryPreviewResponse from '../category/CategoryPreviewResponse';
+import ParticipantPreviewResponse from '../participant/ParticipantPreviewResponse';
 import Participant from '../../repository/domain/Participant';
 import Idea from '../../repository/domain/Idea';
 import User from '../../repository/domain/User';
 import Hackathon from '../../repository/domain/Hackathon';
 import Skill from '../../repository/domain/Skill';
 import Category from '../../repository/domain/Category';
-import UserPreviewResponse from '../User/UserPreviewResponse';
+import UserPreviewResponse from '../user/UserPreviewResponse';
 
 class IdeaResponse {
   id: Uuid;

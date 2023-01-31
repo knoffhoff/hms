@@ -6,7 +6,7 @@ import {list} from '../../../src/handler/comment/list';
 import {randomUser} from '../../repository/domain/user-maker';
 import Uuid, {uuid} from '../../../src/util/Uuid';
 import NotFoundError from '../../../src/error/NotFoundError';
-import CommentListResponse from '../../../src/rest/Comment/CommentListResponse';
+import CommentListResponse from '../../../src/rest/comment/CommentListResponse';
 import ReferenceNotFoundError from '../../../src/error/ReferenceNotFoundError';
 import * as commentService from '../../../src/service/idea_comment-service';
 

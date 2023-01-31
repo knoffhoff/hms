@@ -1,7 +1,7 @@
 import {randomSkill} from '../../repository/domain/skill-maker';
 import {list} from '../../../src/handler/skill/list';
 import NotFoundError from '../../../src/error/NotFoundError';
-import SkillListResponse from '../../../src/rest/Skill/SkillListResponse';
+import SkillListResponse from '../../../src/rest/skill/SkillListResponse';
 import * as skillService from '../../../src/service/skill-service';
 
 const mockGetSkillListResponse = jest.fn();

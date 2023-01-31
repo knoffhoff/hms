@@ -8,10 +8,10 @@ import {
 } from '../../src/service/skill-service';
 import {uuid} from '../../src/util/Uuid';
 import Skill from '../../src/repository/domain/Skill';
-import SkillResponse from '../../src/rest/Skill/SkillResponse';
+import SkillResponse from '../../src/rest/skill/SkillResponse';
 import NotFoundError from '../../src/error/NotFoundError';
-import SkillListResponse from '../../src/rest/Skill/SkillListResponse';
-import SkillDeleteResponse from '../../src/rest/Skill/SkillDeleteResponse';
+import SkillListResponse from '../../src/rest/skill/SkillListResponse';
+import SkillDeleteResponse from '../../src/rest/skill/SkillDeleteResponse';
 import * as skillRepository from '../../src/repository/skill-repository';
 import ValidationResult from '../../src/error/ValidationResult';
 import {randomCategory} from '../repository/domain/category-maker';

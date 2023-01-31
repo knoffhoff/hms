@@ -1,5 +1,5 @@
 import {makeSkill, SkillData} from '../repository/domain/skill-maker';
-import SkillPreviewResponse from '../../src/rest/Skill/SkillPreviewResponse';
+import SkillPreviewResponse from '../../src/rest/skill/SkillPreviewResponse';
 
 describe('Compare', () => {
   test('All values different', () => {
