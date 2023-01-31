@@ -5,6 +5,7 @@ import {
   getHackathon,
   listHackathons,
   putHackathon,
+  updateHackathon,
 } from '../repository/hackathon-repository';
 import {listParticipants} from '../repository/participant-repository';
 import {usersFor} from './user-service';
@@ -27,10 +28,11 @@ import Category from '../repository/domain/Category';
 export async function createHackathon(
   title: string,
   description: string,
+  slug: string,
   startDate: Date,
   endDate: Date,
 ): Promise<Hackathon> {
-  const hackathon = new Hackathon(title, description, startDate, endDate);
+  const hackathon = new Hackathon(title, description, slug, startDate, endDate);
   const result = hackathon.validate();
   if (result.hasFailed()) {
     throw new ValidationError(`Cannot create Hackathon`, result);
@@ -104,6 +106,7 @@ export async function editHackathon(
   id: Uuid,
   title: string,
   description: string,
+  slug: string,
   startDate: Date,
   endDate: Date,
   votingOpened: boolean,
@@ -113,6 +116,7 @@ export async function editHackathon(
     existing = await getHackathon(id);
     existing.title = title;
     existing.description = description;
+    existing.slug = slug;
     existing.startDate = startDate;
     existing.endDate = endDate;
     existing.votingOpened = votingOpened;
@@ -130,7 +134,7 @@ export async function editHackathon(
     );
   }
 
-  await putHackathon(existing);
+  await updateHackathon(existing);
 }
 
 export async function removeHackathon(

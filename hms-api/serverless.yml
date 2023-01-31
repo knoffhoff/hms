@@ -43,6 +43,8 @@ provider:
     AZURE_AD_ISSUER: ${file(./secrets.json):AZURE_AD_ISSUER}
     AZURE_AD_CLIENT_PUBLIC_KEY: ${file(./public_key)}
     HACKATHON_TABLE: hackathon
+    HACKATHON_BY_TITLE_INDEX: hackathonById
+    HACKATHON_BY_SLUG_INDEX: hackathonBySlug
     USER_TABLE: user
     USER_BY_EMAIL_ADDRESS_INDEX: user-by-emailAddress
     SKILL_TABLE: skill
@@ -69,6 +71,7 @@ provider:
             - dynamodb:DeleteItem
           Resource:
             - arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.HACKATHON_TABLE}
+            - arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.HACKATHON_TABLE}/index/*
             - arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.USER_TABLE}
             - arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.USER_TABLE}/index/*
             - arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.SKILL_TABLE}

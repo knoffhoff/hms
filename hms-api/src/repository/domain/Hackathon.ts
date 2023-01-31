@@ -38,6 +38,13 @@ class Hackathon {
   description: string;
 
   /**
+   * The slug of the Hackathon
+   *
+   * must have text and be unique
+   */
+  slug: string;
+
+  /**
    * The start Date of the Hackathon
    *
    * Must be before than the endDate
@@ -79,6 +86,10 @@ class Hackathon {
       result.addFailure('description is null');
     }
 
+    if (!this.slug) {
+      result.addFailure('slug is null or empty');
+    }
+
     if (!this.startDate) {
       result.addFailure('startDate is null');
     }
@@ -99,12 +110,14 @@ class Hackathon {
   constructor(
     title: string,
     description: string,
+    slug: string,
     startDate: Date,
     endDate: Date,
   );
   constructor(
     title: string,
     description: string,
+    slug: string,
     startDate: Date,
     endDate: Date,
     id: Uuid,
@@ -115,6 +128,7 @@ class Hackathon {
   constructor(
     title: string,
     description: string,
+    slug: string,
     startDate: Date,
     endDate: Date,
     id: Uuid = uuid(),
@@ -123,6 +137,7 @@ class Hackathon {
   ) {
     this.title = title;
     this.description = description;
+    this.slug = slug;
     this.startDate = startDate;
     this.endDate = endDate;
     this.id = id;
