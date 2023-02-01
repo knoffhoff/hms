@@ -15,6 +15,7 @@ describe('Edit Hackathon', () => {
   test('Happy Path', async () => {
     const title = 'New fancy title';
     const description = "Lorem ipsum dollar dollar bills y'all";
+    const slug = 'new_fancy_title';
     const startDate = new Date();
     const endDate = new Date(new Date().getTime() + 10000);
     const id = uuid();
@@ -24,7 +25,7 @@ describe('Edit Hackathon', () => {
     mockEditHackathon.mockImplementation(() => {});
 
     await edit(
-      toEvent(title, description, startDate, endDate, id, votingOpened),
+      toEvent(title, description, slug, startDate, endDate, id, votingOpened),
       null,
       callback,
     );
@@ -33,6 +34,7 @@ describe('Edit Hackathon', () => {
       id,
       title,
       description,
+      slug,
       startDate,
       endDate,
       votingOpened,
@@ -51,6 +53,7 @@ describe('Edit Hackathon', () => {
   test('Throws InvalidStateError', async () => {
     const title = 'New fancy title';
     const description = "Lorem ipsum dollar dollar bills y'all";
+    const slug = 'new_fancy_title';
     const startDate = new Date();
     const endDate = new Date(new Date().getTime() + 10000);
     const id = uuid();
@@ -63,7 +66,7 @@ describe('Edit Hackathon', () => {
     });
 
     await edit(
-      toEvent(title, description, startDate, endDate, id, votingOpened),
+      toEvent(title, description, slug, startDate, endDate, id, votingOpened),
       null,
       callback,
     );
@@ -72,6 +75,7 @@ describe('Edit Hackathon', () => {
       id,
       title,
       description,
+      slug,
       startDate,
       endDate,
       votingOpened,
@@ -90,6 +94,7 @@ describe('Edit Hackathon', () => {
   test('Throws NotFoundError', async () => {
     const title = 'New fancy title';
     const description = "Lorem ipsum dollar dollar bills y'all";
+    const slug = 'new_fancy_title';
     const startDate = new Date();
     const endDate = new Date(new Date().getTime() + 10000);
     const id = uuid();
@@ -102,7 +107,7 @@ describe('Edit Hackathon', () => {
     });
 
     await edit(
-      toEvent(title, description, startDate, endDate, id, votingOpened),
+      toEvent(title, description, slug, startDate, endDate, id, votingOpened),
       null,
       callback,
     );
@@ -111,6 +116,7 @@ describe('Edit Hackathon', () => {
       id,
       title,
       description,
+      slug,
       startDate,
       endDate,
       votingOpened,
@@ -129,6 +135,7 @@ describe('Edit Hackathon', () => {
   test('Throws Error', async () => {
     const title = 'New fancy title';
     const description = "Lorem ipsum dollar dollar bills y'all";
+    const slug = 'new_fancy_title';
     const startDate = new Date();
     const endDate = new Date(new Date().getTime() + 10000);
     const id = uuid();
@@ -141,7 +148,7 @@ describe('Edit Hackathon', () => {
     });
 
     await edit(
-      toEvent(title, description, startDate, endDate, id, votingOpened),
+      toEvent(title, description, slug, startDate, endDate, id, votingOpened),
       null,
       callback,
     );
@@ -150,6 +157,7 @@ describe('Edit Hackathon', () => {
       id,
       title,
       description,
+      slug,
       startDate,
       endDate,
       votingOpened,
@@ -169,6 +177,7 @@ describe('Edit Hackathon', () => {
 const toEvent = (
   title: string,
   description: string,
+  slug: string,
   startDate: Date,
   endDate: Date,
   id: Uuid,
@@ -178,6 +187,7 @@ const toEvent = (
     new HackathonEditRequest(
       title,
       description,
+      slug,
       startDate,
       endDate,
       votingOpened,

@@ -3,9 +3,9 @@
 import {
   deleteHackathon,
   getHackathon,
+  hackathonSlugExists,
   listHackathons,
   putHackathon,
-  updateHackathon,
 } from '../repository/hackathon-repository';
 import {listParticipants} from '../repository/participant-repository';
 import {usersFor} from './user-service';
@@ -24,6 +24,7 @@ import {createCategory, removeCategoriesForHackathon} from './category-service';
 import {removeParticipantsForHackathon} from './participant-service';
 import ValidationError from '../error/ValidationError';
 import Category from '../repository/domain/Category';
+import InvalidStateError from '../error/InvalidStateError';
 
 export async function createHackathon(
   title: string,
@@ -36,6 +37,10 @@ export async function createHackathon(
   const result = hackathon.validate();
   if (result.hasFailed()) {
     throw new ValidationError(`Cannot create Hackathon`, result);
+  }
+
+  if (await hackathonSlugExists(hackathon.slug)) {
+    throw new InvalidStateError('Cannot create Hackathon, slug already exists');
   }
 
   await putHackathon(hackathon);
@@ -134,7 +139,7 @@ export async function editHackathon(
     );
   }
 
-  await updateHackathon(existing);
+  await putHackathon(existing);
 }
 
 export async function removeHackathon(

@@ -34,32 +34,6 @@ export async function listHackathons(): Promise<Hackathon[]> {
 }
 
 export async function putHackathon(hackathon: Hackathon) {
-  if (await hackathonExists(hackathon.id)) {
-    throw new InvalidStateError('Cannot create Hackathon, it already exists');
-  }
-
-  if (await hackathonSlugExists(hackathon.slug)) {
-    throw new InvalidStateError('Cannot create Hackathon, slug already exists');
-  }
-
-  await dynamoDBClient.send(
-    new PutItemCommand({
-      TableName: table,
-      Item: {
-        title: {S: hackathon.title},
-        description: {S: hackathon.description},
-        slug: {S: hackathon.slug},
-        startDate: {S: hackathon.startDate.toISOString()},
-        endDate: {S: hackathon.endDate.toISOString()},
-        id: {S: hackathon.id},
-        creationDate: {S: hackathon.creationDate.toISOString()},
-        votingOpened: {BOOL: hackathon.votingOpened},
-      },
-    }),
-  );
-}
-
-export async function updateHackathon(hackathon: Hackathon) {
   await dynamoDBClient.send(
     new PutItemCommand({
       TableName: table,

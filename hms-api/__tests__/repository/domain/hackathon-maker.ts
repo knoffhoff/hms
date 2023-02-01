@@ -8,6 +8,7 @@ export interface HackathonData {
   id: Uuid;
   title: string;
   description: string;
+  slug: string;
   startDate: Date;
   endDate: Date;
   creationDate: Date;
@@ -18,6 +19,7 @@ export const makeHackathon = ({
   id = uuid(),
   title = 'Best Hackathon Ever',
   description = 'The worst possible description you could imagine...',
+  slug = 'best_hackathon_ever',
   startDate = new Date(new Date().getTime() + fiveDaysInMillis),
   endDate = new Date(new Date().getTime() + tenDaysInMillis),
   creationDate = new Date(),
@@ -26,6 +28,7 @@ export const makeHackathon = ({
   new Hackathon(
     title,
     description,
+    slug,
     startDate,
     endDate,
     id,

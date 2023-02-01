@@ -43,7 +43,6 @@ provider:
     AZURE_AD_ISSUER: ${file(./secrets.json):AZURE_AD_ISSUER}
     AZURE_AD_CLIENT_PUBLIC_KEY: ${file(./public_key)}
     HACKATHON_TABLE: hackathon
-    HACKATHON_BY_TITLE_INDEX: hackathonById
     HACKATHON_BY_SLUG_INDEX: hackathonBySlug
     USER_TABLE: user
     USER_BY_EMAIL_ADDRESS_INDEX: user-by-emailAddress
@@ -409,22 +408,12 @@ resources:
         AttributeDefinitions:
           - AttributeName: id
             AttributeType: S
-          - AttributeName: title
-            AttributeType: S
           - AttributeName: slug
             AttributeType: S
         KeySchema:
           - AttributeName: id
             KeyType: HASH
         GlobalSecondaryIndexes:
-          - IndexName: ${self:provider.environment.HACKATHON_BY_TITLE_INDEX}
-            KeySchema:
-              - AttributeName: title
-                KeyType: HASH
-              - AttributeName: id
-                KeyType: RANGE
-            Projection:
-              ProjectionType: ALL
           - IndexName: ${self:provider.environment.HACKATHON_BY_SLUG_INDEX}
             KeySchema:
               - AttributeName: slug
