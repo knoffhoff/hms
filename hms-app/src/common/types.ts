@@ -163,8 +163,8 @@ export type IdeaComment = {
   user: User
   ideaId: string
   text: string
-  replyTo?: string
   creationDate: Date
+  parentIdeaCommentId?: string
 }
 
 export type UserPreview = {

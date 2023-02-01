@@ -10,7 +10,7 @@ export const getIdeaCommentList = async (
 ) => {
   const idToken = await getIdToken(instance)
   const options = buildFetchOptions('GET', idToken)
-  return fetch(`${coreUrl}/idea/${ideaID}/comments`, options)
+  return fetch(`${coreUrl}/idea/${ideaID}/ideaComments`, options)
     .then((data) => data.json())
     .catch((err) => console.log(err))
 }
@@ -18,18 +18,18 @@ export const getIdeaCommentList = async (
 export const createIdeaComment = async (
   instance: IPublicClientApplication,
   ideaID: string,
-  commentText: string,
+  ideaCommentText: string,
   userId: string,
-  replyTo?: string
+  parentIdeaCommentId?: string
 ) => {
   const idToken = await getIdToken(instance)
   const options = buildFetchOptions('POST', idToken, {
     ideaId: ideaID,
     userId: userId,
-    text: commentText,
-    replyTo: replyTo ? replyTo : '',
+    text: ideaCommentText,
+    parentIdeaCommentId: parentIdeaCommentId ? parentIdeaCommentId : '',
   })
-  return fetch(`${coreUrl}/idea/${ideaID}/comment`, options)
+  return fetch(`${coreUrl}/idea/${ideaID}/ideaComment`, options)
     .then((response) => {
       return response.json()
     })
@@ -39,13 +39,13 @@ export const createIdeaComment = async (
 export const editIdeaComment = async (
   instance: IPublicClientApplication,
   id: string,
-  commentText: string
+  ideaCommentText: string
 ) => {
   const idToken = await getIdToken(instance)
   const options = buildFetchOptions('PUT', idToken, {
-    text: commentText,
+    text: ideaCommentText,
   })
-  return fetch(`${coreUrl}/idea/comment/${id}`, options)
+  return fetch(`${coreUrl}/idea/ideaComment/${id}`, options)
     .then((response) => {
       return response.json()
     })
@@ -58,7 +58,7 @@ export const deleteIdeaComment = async (
 ) => {
   const idToken = await getIdToken(instance)
   const options = buildFetchOptions('DELETE', idToken)
-  return fetch(`${coreUrl}/idea/comment/${id}`, options)
+  return fetch(`${coreUrl}/idea/ideaComment/${id}`, options)
     .then((response) => {
       return response.json()
     })

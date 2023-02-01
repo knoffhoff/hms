@@ -13,13 +13,7 @@ import {
   Tooltip,
   useMantineTheme,
 } from '@mantine/core'
-import {
-  Category,
-  Idea,
-  IdeaCardType,
-  IdeaComment,
-  Skill,
-} from '../../common/types'
+import { Category, Idea, IdeaCardType, Skill } from '../../common/types'
 import { deleteIdea, getIdeaDetails } from '../../actions/IdeaActions'
 import IdeaForm from '../input-forms/IdeaForm'
 import { styles } from '../../common/styles'

@@ -6,7 +6,7 @@ import {
   getIdeaCommentList,
 } from '../../actions/IdeaCommentActions'
 import React, { useContext, useEffect, useState } from 'react'
-import { IdeaCardType, IdeaComment } from '../../common/types'
+import { IdeaComment } from '../../common/types'
 import {
   Accordion,
   Avatar,
@@ -27,9 +27,6 @@ import {
 import { showNotification, updateNotification } from '@mantine/notifications'
 import { Check, X } from 'tabler-icons-react'
 import { UserContext } from '../../pages/Layout'
-import FinalVideoUploadModal from '../FinalVideoUploadModal'
-import MoveIdeaModal from '../MoveIdeaModal'
-import { deleteIdea } from '../../actions/IdeaActions'
 
 type IProps = {
   ideaId: string
@@ -40,24 +37,26 @@ export default function IdeaCommentDetails(props: IProps) {
   const { classes } = styles()
   const { ideaId } = props
   const user = useContext(UserContext)
-  const [comments, setComments] = useState([] as IdeaComment[])
-  const [commentText, setCommentText] = useState('')
-  const [editCommentText, setEditCommentText] = useState('')
+  const [ideaComments, setIdeaComments] = useState([] as IdeaComment[])
+  const [ideaCommentText, setIdeaCommentText] = useState('')
+  const [editIdeaCommentText, setEditIdeaCommentText] = useState('')
   const [deleteModalOpened, setDeleteModalOpened] = useState(false)
-  const [thisCommentId, setThisCommentId] = useState('')
-  const [editingComment, setEditingComment] = useState(false)
+  const [thisIdeaCommentId, setThisIdeaCommentId] = useState('')
+  const [editingIdeaComment, setEditingIdeaComment] = useState(false)
 
-  const loadComments = () => {
+  const loadIdeaComments = () => {
     try {
       getIdeaCommentList(instance, ideaId).then((data) => {
-        setComments(data.comments)
+        setIdeaComments(data.ideaComments)
       })
     } catch (error) {
       console.log(error)
     }
   }
 
-  const getNullComments = comments.filter((comment) => !comment.replyTo)
+  const getNullIdeaComments = ideaComments.filter(
+    (ideaComment) => !ideaComment.parentIdeaCommentId
+  )
 
   const getInitials = (
     firstName: string | undefined,
@@ -71,15 +70,15 @@ export default function IdeaCommentDetails(props: IProps) {
   }
 
   function handleChange(event: React.ChangeEvent<HTMLTextAreaElement>) {
-    setCommentText(event.target.value)
+    setIdeaCommentText(event.target.value)
   }
 
   function handleEditChange(event: React.ChangeEvent<HTMLTextAreaElement>) {
-    setEditCommentText(event.target.value)
+    setEditIdeaCommentText(event.target.value)
   }
 
   function submitIsEnabled(): boolean {
-    return !!commentText
+    return !!ideaCommentText
   }
 
   const deleteModal = (
@@ -94,14 +93,14 @@ export default function IdeaCommentDetails(props: IProps) {
       </Text>
       <Button
         style={{ backgroundColor: DELETE_BUTTON_COLOR }}
-        onClick={() => deleteThisComment()}
+        onClick={() => deleteThisIdeaComment()}
       >
         delete
       </Button>
     </Modal>
   )
 
-  function createThisComment(event: React.MouseEvent<HTMLButtonElement>) {
+  function createThisIdeaComment(event: React.MouseEvent<HTMLButtonElement>) {
     event.preventDefault()
     showNotification({
       id: 'comment-create',
@@ -111,7 +110,7 @@ export default function IdeaCommentDetails(props: IProps) {
       autoClose: false,
       disallowClose: false,
     })
-    createIdeaComment(instance, ideaId, commentText, user?.id || '').then(
+    createIdeaComment(instance, ideaId, ideaCommentText, user?.id || '').then(
       (response) => {
         if (JSON.stringify(response).toString().includes('error')) {
           updateNotification({
@@ -132,14 +131,14 @@ export default function IdeaCommentDetails(props: IProps) {
             autoClose: 5000,
             disallowClose: false,
           })
-          setCommentText('')
-          loadComments()
+          setIdeaCommentText('')
+          loadIdeaComments()
         }
       }
     )
   }
 
-  function deleteThisComment() {
+  function deleteThisIdeaComment() {
     showNotification({
       id: 'delete-comment-load',
       loading: true,
@@ -148,7 +147,7 @@ export default function IdeaCommentDetails(props: IProps) {
       autoClose: false,
       disallowClose: false,
     })
-    deleteIdeaComment(instance, thisCommentId).then((response) => {
+    deleteIdeaComment(instance, thisIdeaCommentId).then((response) => {
       setDeleteModalOpened(false)
       if (JSON.stringify(response).toString().includes('error')) {
         updateNotification({
@@ -169,13 +168,13 @@ export default function IdeaCommentDetails(props: IProps) {
           autoClose: 2000,
           disallowClose: false,
         })
-        setThisCommentId('')
-        loadComments()
+        setThisIdeaCommentId('')
+        loadIdeaComments()
       }
     })
   }
 
-  function editThisComment() {
+  function editThisIdeaComment() {
     showNotification({
       id: 'comment-edit',
       loading: true,
@@ -184,7 +183,7 @@ export default function IdeaCommentDetails(props: IProps) {
       autoClose: false,
       disallowClose: false,
     })
-    editIdeaComment(instance, thisCommentId, editCommentText).then(
+    editIdeaComment(instance, thisIdeaCommentId, editIdeaCommentText).then(
       (response) => {
         if (JSON.stringify(response).toString().includes('error')) {
           updateNotification({
@@ -205,32 +204,32 @@ export default function IdeaCommentDetails(props: IProps) {
             autoClose: 2000,
             disallowClose: false,
           })
-          setEditCommentText('')
-          loadComments()
-          setEditingComment(false)
+          setEditIdeaCommentText('')
+          loadIdeaComments()
+          setEditingIdeaComment(false)
         }
       }
     )
   }
 
-  function deleteSteps(commentId: string) {
-    setThisCommentId(commentId)
+  function deleteSteps(ideaCommentId: string) {
+    setThisIdeaCommentId(ideaCommentId)
     setDeleteModalOpened(true)
   }
 
-  function editSteps(comment: IdeaComment) {
-    setThisCommentId(comment.id)
-    setEditCommentText(comment.text)
-    setEditingComment(true)
+  function editSteps(ideaComment: IdeaComment) {
+    setThisIdeaCommentId(ideaComment.id)
+    setEditIdeaCommentText(ideaComment.text)
+    setEditingIdeaComment(true)
   }
 
   function cancelEdit() {
-    setEditingComment(false)
-    setEditCommentText('')
+    setEditingIdeaComment(false)
+    setEditIdeaCommentText('')
   }
 
   useEffect(() => {
-    loadComments()
+    loadIdeaComments()
   }, [])
 
   return (
@@ -242,12 +241,12 @@ export default function IdeaCommentDetails(props: IProps) {
         >
           <Accordion.Control>
             <Text className={classes.title}>
-              {getNullComments.length} Comments:
+              {getNullIdeaComments.length} Comments:
             </Text>
           </Accordion.Control>
           <Accordion.Panel>
-            {getNullComments.map((comment) => (
-              <div key={comment.id} className={classes.borderSection}>
+            {getNullIdeaComments.map((ideaComment) => (
+              <div key={ideaComment.id} className={classes.borderSection}>
                 <div
                   style={{
                     display: 'flex',
@@ -257,54 +256,57 @@ export default function IdeaCommentDetails(props: IProps) {
                   }}
                 >
                   <Avatar color='indigo' radius='md' size='sm'>
-                    {getInitials(comment.user.firstName, comment.user.lastName)}
+                    {getInitials(
+                      ideaComment.user.firstName,
+                      ideaComment.user.lastName
+                    )}
                   </Avatar>
                   <Text className={classes.text}>
-                    {comment.user.firstName +
+                    {ideaComment.user.firstName +
                       ' ' +
-                      comment.user.lastName +
+                      ideaComment.user.lastName +
                       ': '}
                   </Text>
                 </div>
 
-                {editingComment && user?.id === comment.user.id ? (
+                {editingIdeaComment && user?.id === ideaComment.user.id ? (
                   <Textarea
                     maxRows={2}
                     autosize
                     onChange={handleEditChange}
                     name='commentText'
-                    value={editCommentText}
+                    value={editIdeaCommentText}
                   />
                 ) : (
-                  <Text className={classes.text}>{comment.text}</Text>
+                  <Text className={classes.text}>{ideaComment.text}</Text>
                 )}
 
                 <Group position={'left'}>
                   <Text className={classes.smallText}>
-                    {new Date(comment.creationDate).toDateString()}
+                    {new Date(ideaComment.creationDate).toDateString()}
                   </Text>
-                  {user?.id === comment.user.id && (
+                  {user?.id === ideaComment.user.id && (
                     <Group>
                       <UnstyledButton
                         className={classes.smallText}
                         onClick={() =>
-                          editingComment
-                            ? editThisComment()
-                            : editSteps(comment)
+                          editingIdeaComment
+                            ? editThisIdeaComment()
+                            : editSteps(ideaComment)
                         }
                       >
-                        {editingComment ? 'save' : 'edit'}
+                        {editingIdeaComment ? 'save' : 'edit'}
                       </UnstyledButton>
                       {deleteModal}
                       <UnstyledButton
                         className={classes.smallText}
                         onClick={() =>
-                          editingComment
+                          editingIdeaComment
                             ? cancelEdit()
-                            : deleteSteps(comment.id)
+                            : deleteSteps(ideaComment.id)
                         }
                       >
-                        {editingComment ? 'cancel' : 'delete'}
+                        {editingIdeaComment ? 'cancel' : 'delete'}
                       </UnstyledButton>
                     </Group>
                   )}
@@ -323,7 +325,7 @@ export default function IdeaCommentDetails(props: IProps) {
                   autosize
                   onChange={handleChange}
                   name='commentText'
-                  value={commentText}
+                  value={ideaCommentText}
                 />
                 <Group position='right' mt='sm'>
                   <Button
@@ -333,7 +335,7 @@ export default function IdeaCommentDetails(props: IProps) {
                         : dark2,
                     }}
                     disabled={!submitIsEnabled()}
-                    onClick={createThisComment}
+                    onClick={createThisIdeaComment}
                   >
                     add comment
                   </Button>
