@@ -2,48 +2,48 @@ import Uuid, {uuid} from '../../util/Uuid';
 import ValidationResult from '../../error/ValidationResult';
 
 /**
- * A Comment represents a single String of text posted by a User on an Idea
+ * A IdeaComment represents a single String of text posted by a User on an Idea
  *
- * A Comment belongs to 1 and only 1 Idea
+ * A IdeaComment belongs to 1 and only 1 Idea
  *
- * A Comment maps to 1 and only 1 User
+ * A IdeaComment maps to 1 and only 1 User
  */
 export default class {
   /**
-   * The ID of the Comment
+   * The ID of the IdeaComment
    *
    * Generated upon creation
    */
   id: Uuid;
 
   /**
-   * The ID of the User which the Comment represents
+   * The ID of the User which the IdeaComment represents
    */
   userId: Uuid;
 
   /**
-   * The ID of the Idea to which the Comment belongs
+   * The ID of the Idea to which the IdeaComment belongs
    */
   ideaId: Uuid;
 
   /**
-   * the String that contains the text of the Comment
+   * the String that contains the text of the IdeaComment
    */
   text: string;
+
+  /**
+   * The Date on which the IdeaComment was created
+   *
+   * Generated upon creation
+   */
+  creationDate: Date;
 
   /**
    * the comment object that this comment is a reply to
    *
    * if this is a top level comment, this will be null
    */
-  replyTo: Uuid;
-
-  /**
-   * The Date on which the Comment was created
-   *
-   * Generated upon creation
-   */
-  creationDate: Date;
+  parentIdeaCommentId?: Uuid;
 
   validate(): ValidationResult {
     const result = new ValidationResult();
@@ -66,29 +66,34 @@ export default class {
     return result;
   }
 
-  constructor(userId: Uuid, ideaId: Uuid, text: string, replyTo: Uuid);
   constructor(
     userId: Uuid,
     ideaId: Uuid,
     text: string,
-    replyTo: Uuid,
+    parentIdeaCommentId?: Uuid,
+  );
+  constructor(
+    userId: Uuid,
+    ideaId: Uuid,
+    text: string,
     id: Uuid,
     creationDate: Date,
+    parentIdeaCommentId?: Uuid,
   );
 
   constructor(
     userId: Uuid,
     ideaId: Uuid,
     text: string,
-    replyTo: Uuid,
     id: Uuid = uuid(),
     creationDate: Date = new Date(),
+    parentIdeaCommentId?: Uuid,
   ) {
     this.id = id;
     this.userId = userId;
     this.ideaId = ideaId;
     this.text = text;
-    this.replyTo = replyTo;
     this.creationDate = creationDate;
+    this.parentIdeaCommentId = parentIdeaCommentId;
   }
 }

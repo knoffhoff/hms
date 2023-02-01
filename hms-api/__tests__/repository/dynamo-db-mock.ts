@@ -47,11 +47,11 @@ process.env.USER_TABLE = userTable;
 export const userByEmailAddress = 'user-by-email-address-index';
 process.env.USER_BY_EMAIL_ADDRESS_INDEX = userByEmailAddress;
 
-export const commentTable = 'comment-table';
-process.env.COMMENT_TABLE = commentTable;
+export const ideaCommentTable = 'idea-comment-table';
+process.env.IDEA_COMMENT_TABLE = ideaCommentTable;
 
-export const commentByIdeaIdIndex = 'comment-by-idea-id-index';
-process.env.COMMENT_BY_IDEA_ID_INDEX = commentByIdeaIdIndex;
+export const ideaCommentByIdeaIdIndex = 'ideaComment-by-idea-id-index';
+process.env.IDEA_COMMENT_BY_IDEA_ID_INDEX = ideaCommentByIdeaIdIndex;
 
 export const mockSend = jest.fn();
 beforeEach(mockSend.mockReset);

@@ -1,6 +1,6 @@
 import Uuid from '../../util/Uuid';
 
-class CommentEditRequest {
+class IdeaCommentEditRequest {
   id: Uuid;
   text: string;
 
@@ -9,10 +9,10 @@ class CommentEditRequest {
     this.text = text;
   }
 
-  static parse(body: string): CommentEditRequest {
+  static parse(body: string): IdeaCommentEditRequest {
     const json = JSON.parse(body);
-    return new CommentEditRequest(json.id, json.text);
+    return new IdeaCommentEditRequest(json.id, json.text);
   }
 }
 
-export default CommentEditRequest;
+export default IdeaCommentEditRequest;

@@ -1,14 +1,14 @@
-import * as commentService from '../../../src/service/idea_comment-service';
-import CommentCreateResponse from '../../../src/rest/comment/CommentCreateResponse';
-import {create} from '../../../src/handler/comment/create';
+import * as ideaCommentService from '../../../src/service/idea-comment-service';
+import ideaCommentCreateResponse from '../../../src/rest/ideaComment/IdeaCommentCreateResponse';
+import {create} from '../../../src/handler/ideaComment/create';
 import {randomIdeaComment} from '../../repository/domain/ideaComment-maker';
 import ideaComment from '../../../src/repository/domain/IdeaComment';
-import CommentCreateRequest from '../../../src/rest/comment/CommentCreateRequest';
+import IdeaCommentCreateRequest from '../../../src/rest/ideaComment/IdeaCommentCreateRequest';
 import ReferenceNotFoundError from '../../../src/error/ReferenceNotFoundError';
 
 const mockCreateIdeaComment = jest.fn();
 jest
-  .spyOn(commentService, 'createComment')
+  .spyOn(ideaCommentService, 'createIdeaComment')
   .mockImplementation(mockCreateIdeaComment);
 
 describe('Create Comment', () => {
@@ -23,7 +23,7 @@ describe('Create Comment', () => {
       expected.ideaId,
       expected.userId,
       expected.text,
-      expected.replyTo,
+      expected.parentIdeaCommentId,
     );
     expect(callback).toHaveBeenCalledWith(null, {
       statusCode: 201,
@@ -32,7 +32,7 @@ describe('Create Comment', () => {
         'Access-Control-Allow-Credentials': true,
         'content-type': 'application/json',
       },
-      body: JSON.stringify(new CommentCreateResponse(expected.id)),
+      body: JSON.stringify(new ideaCommentCreateResponse(expected.id)),
     });
   });
 
@@ -77,7 +77,7 @@ describe('Create Comment', () => {
 
 const toEvent = (ideaComment: ideaComment): object => ({
   body: JSON.stringify(
-    new CommentCreateRequest(
+    new IdeaCommentCreateRequest(
       ideaComment.userId,
       ideaComment.ideaId,
       ideaComment.text,

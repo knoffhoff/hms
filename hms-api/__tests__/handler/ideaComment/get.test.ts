@@ -1,29 +1,29 @@
 import {randomIdeaComment} from '../../repository/domain/ideaComment-maker';
-import {get} from '../../../src/handler/comment/get';
+import {get} from '../../../src/handler/ideaComment/get';
 import NotFoundError from '../../../src/error/NotFoundError';
-import * as commentService from '../../../src/service/idea_comment-service';
+import * as ideaCommentService from '../../../src/service/idea-comment-service';
 import Uuid, {uuid} from '../../../src/util/Uuid';
-import CommentResponse from '../../../src/rest/comment/CommentResponse';
+import IdeaCommentResponse from '../../../src/rest/ideaComment/IdeaCommentResponse';
 import ReferenceNotFoundError from '../../../src/error/ReferenceNotFoundError';
 import {randomUser} from '../../repository/domain/user-maker';
 
-const mockGetComment = jest.fn();
+const mockGetIdeaComment = jest.fn();
 jest
-  .spyOn(commentService, 'getCommentResponse')
-  .mockImplementation(mockGetComment);
+  .spyOn(ideaCommentService, 'getIdeaCommentResponse')
+  .mockImplementation(mockGetIdeaComment);
 
 describe('Get Comment', () => {
   test('Happy Path', async () => {
-    const comment = randomIdeaComment();
-    const expected = CommentResponse.from(comment, randomUser());
+    const ideaComment = randomIdeaComment();
+    const expected = IdeaCommentResponse.from(ideaComment, randomUser());
 
-    mockGetComment.mockResolvedValue(expected);
-    const event = toEvent(comment.id);
+    mockGetIdeaComment.mockResolvedValue(expected);
+    const event = toEvent(ideaComment.id);
     const callback = jest.fn();
 
     await get(event, null, callback);
 
-    expect(mockGetComment).toHaveBeenCalledWith(comment.id);
+    expect(mockGetIdeaComment).toHaveBeenCalledWith(ideaComment.id);
     expect(callback).toHaveBeenCalledWith(null, {
       statusCode: 200,
       headers: {
@@ -37,7 +37,7 @@ describe('Get Comment', () => {
 
   test('Throws NotFoundError', async () => {
     const errorMessage = 'reference error message';
-    mockGetComment.mockImplementation(() => {
+    mockGetIdeaComment.mockImplementation(() => {
       throw new NotFoundError(errorMessage);
     });
     const callback = jest.fn();
@@ -56,7 +56,7 @@ describe('Get Comment', () => {
 
   test('Throws ReferenceNotFoundError', async () => {
     const errorMessage = 'reference error message';
-    mockGetComment.mockImplementation(() => {
+    mockGetIdeaComment.mockImplementation(() => {
       throw new ReferenceNotFoundError(errorMessage);
     });
     const callback = jest.fn();
@@ -75,7 +75,7 @@ describe('Get Comment', () => {
 
   test('Throws Error', async () => {
     const errorMessage = 'error message';
-    mockGetComment.mockImplementation(() => {
+    mockGetIdeaComment.mockImplementation(() => {
       throw new Error(errorMessage);
     });
     const callback = jest.fn();

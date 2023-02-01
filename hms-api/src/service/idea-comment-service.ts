@@ -1,36 +1,38 @@
 import Uuid from '../util/Uuid';
 import NotFoundError from '../error/NotFoundError';
-import {getIdea, ideaExists} from '../repository/idea-repository';
+import {ideaExists} from '../repository/idea-repository';
 import {getUser, userExists} from '../repository/user-repository';
 import {
-  commentAlreadyExists,
-  getComment,
-  putComment,
-  deleteComment,
-  listComments,
+  ideaCommentAlreadyExists,
+  getIdeaComment,
+  putIdeaComment,
+  deleteIdeaComment,
+  listIdeaComments,
 } from '../repository/idea-comment-repository';
 import ValidationError from '../error/ValidationError';
 import IdeaComment from '../repository/domain/IdeaComment';
 import ReferenceNotFoundError from '../error/ReferenceNotFoundError';
-import CommentResponse from '../rest/comment/CommentResponse';
-import CommentDeleteResponse from '../rest/comment/CommentDeleteResponse';
-import CommentListResponse from '../rest/comment/CommentListResponse';
+import IdeaCommentResponse from '../rest/ideaComment/IdeaCommentResponse';
+import IdeaCommentDeleteResponse from '../rest/ideaComment/IdeaCommentDeleteResponse';
+import IdeaCommentListResponse from '../rest/ideaComment/IdeaCommentListResponse';
 import ideaComment from '../repository/domain/IdeaComment';
 
-export async function createComment(
+export async function createIdeaComment(
   ideaId: Uuid,
   userId: Uuid,
   text: string,
-  replyTo: Uuid,
+  parentCommentId?: Uuid,
 ): Promise<IdeaComment> {
-  const ideaComment = new IdeaComment(userId, ideaId, text, replyTo);
+  const ideaComment = new IdeaComment(userId, ideaId, text, parentCommentId);
 
   if (!(await ideaExists(ideaId))) {
     throw new ReferenceNotFoundError(`Idea with id: ${ideaId} not found`);
   }
 
-  if (replyTo && !(await commentAlreadyExists(ideaComment))) {
-    throw new ReferenceNotFoundError(`Comment with id: ${replyTo} not found`);
+  if (parentCommentId && !(await ideaCommentAlreadyExists(ideaComment))) {
+    throw new ReferenceNotFoundError(
+      `Comment with id: ${parentCommentId} not found`,
+    );
   }
 
   if (!(await userExists(userId))) {
@@ -42,13 +44,15 @@ export async function createComment(
     throw new ValidationError('Cannot create Comment', result);
   }
 
-  await putComment(ideaComment);
+  await putIdeaComment(ideaComment);
 
   return ideaComment;
 }
 
-export async function getCommentResponse(id: Uuid): Promise<CommentResponse> {
-  const ideaComment = await getComment(id);
+export async function getIdeaCommentResponse(
+  id: Uuid,
+): Promise<IdeaCommentResponse> {
+  const ideaComment = await getIdeaComment(id);
 
   let user;
   try {
@@ -60,23 +64,23 @@ export async function getCommentResponse(id: Uuid): Promise<CommentResponse> {
     );
   }
 
-  return CommentResponse.from(ideaComment, user);
+  return IdeaCommentResponse.from(ideaComment, user);
 }
 
-export async function getCommentListResponse(
+export async function getIdeaCommentListResponse(
   ideaId: Uuid,
-): Promise<CommentListResponse> {
+): Promise<IdeaCommentListResponse> {
   if (!(await ideaExists(ideaId))) {
     throw new NotFoundError(`Idea with id: ${ideaId} not found`);
   }
 
-  const ideaComments = await listComments(ideaId);
+  const ideaComments = await listIdeaComments(ideaId);
 
   //Todo: evaluate how we handle ideaComments with deleted users
   let users;
   try {
     users = await Promise.all(
-      ideaComments.map((comment) => getUser(comment.userId)),
+      ideaComments.map((ideaComment) => getUser(ideaComment.userId)),
     );
   } catch (e) {
     throw new ReferenceNotFoundError(
@@ -85,13 +89,13 @@ export async function getCommentListResponse(
     );
   }
 
-  return CommentListResponse.from(ideaComments, users, ideaId);
+  return IdeaCommentListResponse.from(ideaComments, users, ideaId);
 }
 
-export async function editComment(id: Uuid, text: string): Promise<void> {
+export async function editIdeaComment(id: Uuid, text: string): Promise<void> {
   let existing: ideaComment;
   try {
-    existing = await getComment(id);
+    existing = await getIdeaComment(id);
     existing.text = text;
   } catch (e) {
     throw new NotFoundError(`Comment with id: ${id} not found`);
@@ -105,18 +109,20 @@ export async function editComment(id: Uuid, text: string): Promise<void> {
     );
   }
 
-  await putComment(existing);
+  await putIdeaComment(existing);
 }
 
-export async function removeComment(id: Uuid): Promise<CommentDeleteResponse> {
-  await deleteComment(id);
+export async function removeIdeaComment(
+  id: Uuid,
+): Promise<IdeaCommentDeleteResponse> {
+  await deleteIdeaComment(id);
 
-  return new CommentDeleteResponse(id);
+  return new IdeaCommentDeleteResponse(id);
 }
 
-export async function removeCommentsForIdea(ideaId: Uuid): Promise<void> {
-  const ideaComments = await listComments(ideaId);
-  for (const comment of ideaComments) {
-    await deleteComment(comment.id);
+export async function removeIdeaCommentsForIdea(ideaId: Uuid): Promise<void> {
+  const ideaComments = await listIdeaComments(ideaId);
+  for (const ideaComment of ideaComments) {
+    await deleteIdeaComment(ideaComment.id);
   }
 }

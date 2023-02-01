@@ -1,23 +1,23 @@
-import * as commentService from '../../../src/service/idea_comment-service';
-import {remove} from '../../../src/handler/comment/remove';
-import CommentDeleteResponse from '../../../src/rest/comment/CommentDeleteResponse';
+import * as ideaCommentService from '../../../src/service/idea-comment-service';
+import {remove} from '../../../src/handler/ideaComment/remove';
+import IdeaCommentDeleteResponse from '../../../src/rest/ideaComment/IdeaCommentDeleteResponse';
 import Uuid, {uuid} from '../../../src/util/Uuid';
 
-const mockRemoveComment = jest.fn();
+const mockRemoveIdeaComment = jest.fn();
 jest
-  .spyOn(commentService, 'removeComment')
-  .mockImplementation(mockRemoveComment);
+  .spyOn(ideaCommentService, 'removeIdeaComment')
+  .mockImplementation(mockRemoveIdeaComment);
 
 describe('Delete Comment', () => {
   test('Happy Path', async () => {
     const id = uuid();
-    mockRemoveComment.mockResolvedValue(new CommentDeleteResponse(id));
+    mockRemoveIdeaComment.mockResolvedValue(new IdeaCommentDeleteResponse(id));
     const event = toEvent(id);
     const callback = jest.fn();
 
     await remove(event, null, callback);
 
-    expect(mockRemoveComment).toHaveBeenCalledWith(id);
+    expect(mockRemoveIdeaComment).toHaveBeenCalledWith(id);
     expect(callback).toHaveBeenCalledWith(null, {
       statusCode: 200,
       headers: {
@@ -25,13 +25,13 @@ describe('Delete Comment', () => {
         'Access-Control-Allow-Credentials': true,
         'content-type': 'application/json',
       },
-      body: JSON.stringify(new CommentDeleteResponse(id)),
+      body: JSON.stringify(new IdeaCommentDeleteResponse(id)),
     });
   });
 
   test('Throws Error', async () => {
     const errorMessage = 'generic error message';
-    mockRemoveComment.mockImplementation(() => {
+    mockRemoveIdeaComment.mockImplementation(() => {
       throw new Error(errorMessage);
     });
     const callback = jest.fn();

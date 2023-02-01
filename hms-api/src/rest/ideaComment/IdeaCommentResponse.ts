@@ -3,54 +3,57 @@ import IdeaComment from '../../repository/domain/IdeaComment';
 import UserPreviewResponse from '../user/UserPreviewResponse';
 import User from '../../repository/domain/User';
 
-class CommentResponse {
+class IdeaCommentResponse {
   id: Uuid;
   user: UserPreviewResponse;
   ideaId: Uuid;
   text: string;
-  replyTo: Uuid;
   creationDate: Date;
+  parentIdeaCommentId?: Uuid;
 
   constructor(
     id: Uuid,
     user: UserPreviewResponse,
     ideaId: Uuid,
     text: string,
-    replyTo: Uuid,
     creationDate: Date,
+    parentIdeaCommentId?: Uuid,
   ) {
     this.id = id;
     this.user = user;
     this.ideaId = ideaId;
     this.text = text;
-    this.replyTo = replyTo;
     this.creationDate = creationDate;
+    this.parentIdeaCommentId = parentIdeaCommentId;
   }
 
-  static from = (ideaComment: IdeaComment, user: User): CommentResponse =>
-    new CommentResponse(
+  static from = (ideaComment: IdeaComment, user: User): IdeaCommentResponse =>
+    new IdeaCommentResponse(
       ideaComment.id,
       user ? UserPreviewResponse.from(user) : null,
       ideaComment.ideaId,
       ideaComment.text,
-      ideaComment.replyTo,
       ideaComment.creationDate,
+      ideaComment.parentIdeaCommentId,
     );
 
-  static fromArray(comments: IdeaComment[], users: User[]): CommentResponse[] {
-    const previews: CommentResponse[] = [];
-    for (const comment of comments) {
+  static fromArray(
+    ideaComments: IdeaComment[],
+    users: User[],
+  ): IdeaCommentResponse[] {
+    const previews: IdeaCommentResponse[] = [];
+    for (const ideaComment of ideaComments) {
       previews.push(
-        CommentResponse.from(
-          comment,
-          users.find((user) => user.id === comment.userId),
+        IdeaCommentResponse.from(
+          ideaComment,
+          users.find((user) => user.id === ideaComment.userId),
         ),
       );
     }
     return previews.sort(this.compare);
   }
 
-  static compare(a: CommentResponse, b: CommentResponse): number {
+  static compare(a: IdeaCommentResponse, b: IdeaCommentResponse): number {
     const diff = a.creationDate.getTime() - b.creationDate.getTime();
     if (diff) {
       return diff;
@@ -60,4 +63,4 @@ class CommentResponse {
   }
 }
 
-export default CommentResponse;
+export default IdeaCommentResponse;

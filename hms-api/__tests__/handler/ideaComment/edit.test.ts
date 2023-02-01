@@ -1,13 +1,13 @@
-import * as ideaCommentServive from '../../../src/service/idea_comment-service';
-import {edit} from '../../../src/handler/comment/edit';
+import * as ideaCommentServive from '../../../src/service/idea-comment-service';
+import {edit} from '../../../src/handler/ideaComment/edit';
 import Uuid, {uuid} from '../../../src/util/Uuid';
-import commentEditRequest from '../../../src/rest/comment/CommentEditRequest';
-import CommentEditResponse from '../../../src/rest/comment/CommentEditResponse';
+import ideaCommentEditRequest from '../../../src/rest/ideaComment/IdeaCommentEditRequest';
+import ideaCommentEditResponse from '../../../src/rest/ideaComment/IdeaCommentEditResponse';
 import NotFoundError from '../../../src/error/NotFoundError';
 
 const mockEditIdeaComment = jest.fn();
 jest
-  .spyOn(ideaCommentServive, 'editComment')
+  .spyOn(ideaCommentServive, 'editIdeaComment')
   .mockImplementation(mockEditIdeaComment);
 
 describe('Edit Idea Comment', () => {
@@ -28,7 +28,7 @@ describe('Edit Idea Comment', () => {
         'Access-Control-Allow-Credentials': true,
         'content-type': 'application/json',
       },
-      body: JSON.stringify(new CommentEditResponse(id)),
+      body: JSON.stringify(new ideaCommentEditResponse(id)),
     });
   });
 
@@ -82,7 +82,7 @@ describe('Edit Idea Comment', () => {
 });
 
 const toEvent = (id: Uuid, text: string): object => ({
-  body: JSON.stringify(new commentEditRequest(id, text)),
+  body: JSON.stringify(new ideaCommentEditRequest(id, text)),
   pathParameters: {
     id: id,
   },
