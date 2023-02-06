@@ -23,7 +23,6 @@ import { createIdea, editIdea } from '../../actions/IdeaActions'
 import { styles } from '../../common/styles'
 import { useMsal } from '@azure/msal-react'
 import { dark2, JOIN_BUTTON_COLOR } from '../../common/colors'
-import { createIdeaParticipant } from '../../actions/ParticipantActions'
 
 type IProps = {
   hackathon: HackathonPreview
@@ -311,7 +310,7 @@ function IdeaForm(props: IProps) {
               />
             </Card.Section>
 
-            {context !== IdeaFormType.IdeaPortal_New && (
+            {context !== IdeaFormType.New && (
               <>
                 <Card.Section className={classes.borderSection}>
                   <Checkbox.Group
@@ -345,7 +344,7 @@ function IdeaForm(props: IProps) {
             )}
 
             <Group position='right' mt='xl'>
-              {context === 'edit' && (
+              {context === IdeaFormType.Edit && (
                 <Button
                   style={{
                     backgroundColor: !buttonIsDisabled
@@ -358,8 +357,7 @@ function IdeaForm(props: IProps) {
                   Edit
                 </Button>
               )}
-              {(context === 'new' ||
-                context === IdeaFormType.IdeaPortal_New) && (
+              {context === IdeaFormType.New && (
                 <Button
                   style={{
                     backgroundColor: !buttonIsDisabled

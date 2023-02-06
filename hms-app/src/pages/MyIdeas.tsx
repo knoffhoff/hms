@@ -4,6 +4,7 @@ import {
   HackathonDropdownMode,
   Idea,
   IdeaCardType,
+  IdeaFormType,
 } from '../common/types'
 import IdeaCardList from '../components/lists/IdeaCardList'
 import React, { useEffect, useState, useContext } from 'react'
@@ -137,7 +138,7 @@ export default function MyIdeas() {
                           ideaId={'null'}
                           hackathon={hackathonData}
                           ownerId={user?.id}
-                          context={'new'}
+                          context={IdeaFormType.New}
                           reload={loadSelectedHackathon}
                         />
                       </Accordion.Panel>

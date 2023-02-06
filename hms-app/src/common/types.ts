@@ -22,7 +22,8 @@ export enum IdeaCardType {
 }
 
 export enum IdeaFormType {
-  IdeaPortal_New = 'IDEA_PORTAL_NEW',
+  New = 'NEW',
+  Edit = 'EDIT',
 }
 
 export type HackathonPreview = {

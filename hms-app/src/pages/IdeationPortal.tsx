@@ -102,7 +102,7 @@ function IdeationPortal() {
           ideaId={'null'}
           hackathon={hackathon}
           ownerId={user?.id}
-          context={IdeaFormType.IdeaPortal_New}
+          context={IdeaFormType.New}
           reload={loadHackathonIdeas}
         />
       </Modal>
