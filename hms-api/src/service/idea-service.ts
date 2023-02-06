@@ -1,7 +1,13 @@
 /* eslint-disable require-jsdoc */
 
-import {getParticipant, getParticipants} from '../repository/participant-repository';
-import {getHackathon, hackathonExists} from '../repository/hackathon-repository';
+import {
+  getParticipant,
+  getParticipants,
+} from '../repository/participant-repository';
+import {
+  getHackathon,
+  hackathonExists,
+} from '../repository/hackathon-repository';
 import {categoryExists, getCategory} from '../repository/category-repository';
 import {getSkills, skillExists} from '../repository/skill-repository';
 import {

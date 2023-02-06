@@ -3,6 +3,7 @@
 import {
   deleteHackathon,
   getHackathon,
+  hackathonSlugExists,
   listHackathons,
   putHackathon,
 } from '../repository/hackathon-repository';
@@ -23,17 +24,23 @@ import {createCategory, removeCategoriesForHackathon} from './category-service';
 import {removeParticipantsForHackathon} from './participant-service';
 import ValidationError from '../error/ValidationError';
 import Category from '../repository/domain/Category';
+import InvalidStateError from '../error/InvalidStateError';
 
 export async function createHackathon(
   title: string,
   description: string,
+  slug: string,
   startDate: Date,
   endDate: Date,
 ): Promise<Hackathon> {
-  const hackathon = new Hackathon(title, description, startDate, endDate);
+  const hackathon = new Hackathon(title, description, slug, startDate, endDate);
   const result = hackathon.validate();
   if (result.hasFailed()) {
     throw new ValidationError(`Cannot create Hackathon`, result);
+  }
+
+  if (await hackathonSlugExists(hackathon.slug)) {
+    throw new InvalidStateError('Cannot create Hackathon, slug already exists');
   }
 
   await putHackathon(hackathon);
@@ -104,6 +111,7 @@ export async function editHackathon(
   id: Uuid,
   title: string,
   description: string,
+  slug: string,
   startDate: Date,
   endDate: Date,
   votingOpened: boolean,
@@ -113,6 +121,7 @@ export async function editHackathon(
     existing = await getHackathon(id);
     existing.title = title;
     existing.description = description;
+    existing.slug = slug;
     existing.startDate = startDate;
     existing.endDate = endDate;
     existing.votingOpened = votingOpened;

@@ -14,6 +14,7 @@ class HackathonResponse {
   id: Uuid;
   title: string;
   description: string;
+  slug: string;
   startDate: Date;
   endDate: Date;
   creationDate: Date;
@@ -27,6 +28,7 @@ class HackathonResponse {
     id: Uuid,
     title: string,
     description: string,
+    slug: string,
     startDate: Date,
     endDate: Date,
     participants: ParticipantPreviewResponse[],
@@ -37,6 +39,7 @@ class HackathonResponse {
     this.id = id;
     this.title = title;
     this.description = description;
+    this.slug = slug;
     this.startDate = startDate;
     this.endDate = endDate;
     this.participants = participants;
@@ -56,6 +59,7 @@ class HackathonResponse {
       hackathon.id,
       hackathon.title,
       hackathon.description,
+      hackathon.slug,
       hackathon.startDate,
       hackathon.endDate,
       ParticipantPreviewResponse.fromArray(participants, users),
