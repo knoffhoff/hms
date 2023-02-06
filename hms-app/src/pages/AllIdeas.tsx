@@ -34,7 +34,7 @@ function AllIdeas() {
   const [isLoading, setIsLoading] = useState(true)
   const [participantCheck, setParticipantCheck] = useState(false)
   const [selectedHackathonId, setSelectedHackathonId] = useState('')
-  const [buttonIsDisabled, setButtonisDisabled] = useState(false)
+  const [buttonIsDisabled, setButtonIsDisabled] = useState(false)
   const [relevantIdeaList, setRelevantIdeas] = useState<Idea[]>([])
   const [participantInfo, setParticipantInfo] = useState({
     userId: '',
@@ -86,7 +86,7 @@ function AllIdeas() {
   }
 
   const addHackathonParticipant = () => {
-    setButtonisDisabled(true)
+    setButtonIsDisabled(true)
     showNotification({
       id: 'participant-load',
       loading: true,
@@ -100,7 +100,7 @@ function AllIdeas() {
       participantInfo.userId,
       participantInfo.hackathonId
     ).then((response) => {
-      setButtonisDisabled(false)
+      setButtonIsDisabled(false)
       setParticipantInfo((prevState) => ({
         ...prevState,
         participantId: response.id,
@@ -130,7 +130,7 @@ function AllIdeas() {
   }
 
   const removeHackathonParticipant = () => {
-    setButtonisDisabled(true)
+    setButtonIsDisabled(true)
     showNotification({
       id: 'participant-load',
       loading: true,
@@ -140,7 +140,7 @@ function AllIdeas() {
       disallowClose: false,
     })
     deleteParticipant(instance, findParticipant().id).then((response) => {
-      setButtonisDisabled(false)
+      setButtonIsDisabled(false)
       if (JSON.stringify(response).toString().includes('error')) {
         setParticipantCheck(true)
         updateNotification({

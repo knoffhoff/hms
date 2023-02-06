@@ -30,6 +30,7 @@ export default function MyIdeas() {
     id: 'string',
     title: 'string',
     description: 'string',
+    slug: 'string',
     startDate: NULL_DATE,
     endDate: NULL_DATE,
     participants: [],

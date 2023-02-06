@@ -6,6 +6,7 @@ import { AlertCircle } from 'tabler-icons-react'
 import { useMsal } from '@azure/msal-react'
 import { useAppSelector } from '../hooks'
 import { VALID_DATE } from '../common/constants'
+import { useParams } from 'react-router-dom'
 
 type Props = {
   setHackathonId: (hackthonID: string) => void
@@ -16,6 +17,7 @@ export default function HackathonSelectDropdown({
   setHackathonId,
   context,
 }: Props) {
+  const { slug } = useParams()
   const { instance } = useMsal()
   const [isError, setIsError] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
@@ -32,7 +34,16 @@ export default function HackathonSelectDropdown({
       (data) => {
         setHackathonList(data)
         const upcomingHackathon = data.find((h) => h.id === nextHackathon.id)
-        if (upcomingHackathon && context !== HackathonDropdownMode.Archive) {
+        if (slug) {
+          const hackathon = data.find((h) => h.slug === slug)
+          if (hackathon) {
+            setSelectedHackathon(hackathon)
+            setHackathonId(hackathon.id)
+          }
+        } else if (
+          upcomingHackathon &&
+          context !== HackathonDropdownMode.Archive
+        ) {
           setHackathonId(upcomingHackathon.id)
           setSelectedHackathon(upcomingHackathon)
         }

@@ -358,20 +358,20 @@ function IdeaForm(props: IProps) {
                   Edit
                 </Button>
               )}
-              {context === 'new' ||
-                (context === IdeaFormType.IdeaPortal_New && (
-                  <Button
-                    style={{
-                      backgroundColor: !buttonIsDisabled
-                        ? JOIN_BUTTON_COLOR
-                        : dark2,
-                    }}
-                    disabled={buttonIsDisabled}
-                    onClick={createThisIdea}
-                  >
-                    Create
-                  </Button>
-                ))}
+              {(context === 'new' ||
+                context === IdeaFormType.IdeaPortal_New) && (
+                <Button
+                  style={{
+                    backgroundColor: !buttonIsDisabled
+                      ? JOIN_BUTTON_COLOR
+                      : dark2,
+                  }}
+                  disabled={buttonIsDisabled}
+                  onClick={createThisIdea}
+                >
+                  Create
+                </Button>
+              )}
             </Group>
           </div>
         )}

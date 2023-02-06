@@ -244,6 +244,7 @@ export default function HackathonDetails(props: IProps) {
       hackathonId!,
       hackathonData.title,
       hackathonData.description!,
+      hackathonData.slug,
       hackathonData.startDate!,
       hackathonData.endDate!,
       event
@@ -320,6 +321,7 @@ export default function HackathonDetails(props: IProps) {
             <Card.Section className={classes.borderSection}>
               <Text className={classes.title}>{hackathonData.title}</Text>
               <Text className={classes.text}>ID: {hackathonData.id}</Text>
+              <Text className={classes.text}>Slug: {hackathonData.slug}</Text>
             </Card.Section>
 
             <Card.Section className={classes.borderSection}>

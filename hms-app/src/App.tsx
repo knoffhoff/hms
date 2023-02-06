@@ -26,6 +26,7 @@ function App() {
       <Route path='/' element={<Layout />}>
         <Route index element={<Home />} />
         <Route path='ideas' element={<AllIdeas />} />
+        <Route path='ideas/:slug' element={<AllIdeas />} />
         <Route path='my-ideas' element={<MyIdeas />} />
         <Route path='archive' element={<Archive />} />
         {isAdmin(stateUser) && (

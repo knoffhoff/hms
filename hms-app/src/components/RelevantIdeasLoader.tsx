@@ -24,6 +24,7 @@ export default function RelevantIdeasLoader({
     id: '',
     title: '',
     description: '',
+    slug: '',
     startDate: new Date(),
     endDate: new Date(),
     participants: [],
