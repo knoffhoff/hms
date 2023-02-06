@@ -5,7 +5,7 @@ import { HackathonPreview, HackathonDropdownMode } from '../common/types'
 import { AlertCircle } from 'tabler-icons-react'
 import { useMsal } from '@azure/msal-react'
 import { useAppSelector } from '../hooks'
-import { VALID_DATE } from '../common/constants'
+import { MAX_DATE, MIN_DATE } from '../common/constants'
 import { useParams } from 'react-router-dom'
 
 type Props = {
@@ -63,7 +63,7 @@ export default function HackathonSelectDropdown({
         return hackathonList
           .filter(
             (hackathon) =>
-              hackathon.endDate < today && hackathon.endDate > VALID_DATE
+              hackathon.endDate < today && hackathon.endDate > MIN_DATE
           )
           .map((hackathon) => mapHackathonToSelectItem(hackathon))
       case HackathonDropdownMode.IdeaPortal:
@@ -76,12 +76,12 @@ export default function HackathonSelectDropdown({
         )
     }
     return hackathonList
-      .filter((hackathon) => hackathon.endDate > VALID_DATE)
+      .filter((hackathon) => hackathon.endDate > MIN_DATE)
       .map((hackathon) => mapHackathonToSelectItem(hackathon))
   }
 
   function mapHackathonToSelectItem(hackathon: HackathonPreview): SelectItem {
-    if (hackathon.endDate < VALID_DATE) {
+    if (hackathon.endDate > MAX_DATE) {
       return {
         value: hackathon.id,
         label: hackathon.title,
