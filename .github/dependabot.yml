@@ -6,8 +6,10 @@ updates:
   - package-ecosystem: "npm"
     directory: "/hms-api/"
     schedule:
-      interval: "daily"
+      interval: "monthly"
+    open-pull-requests-limit: 20
   - package-ecosystem: "npm"
     directory: "/hms-app/"
     schedule:
-      interval: "daily"
+      interval: "monthly"
+    open-pull-requests-limit: 30
