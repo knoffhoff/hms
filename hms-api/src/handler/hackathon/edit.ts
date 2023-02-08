@@ -15,6 +15,7 @@ export async function edit(event, context, callback) {
       id,
       request.title,
       request.description,
+      request.slug,
       request.startDate,
       request.endDate,
       request.votingOpened,

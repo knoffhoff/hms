@@ -102,6 +102,7 @@ describe('Create Hackathon', () => {
     const actual = await createHackathon(
       expected.title,
       expected.description,
+      expected.slug,
       expected.startDate,
       expected.endDate,
     );
@@ -109,6 +110,7 @@ describe('Create Hackathon', () => {
     expect(actual).toEqual(
       expect.objectContaining({
         title: expected.title,
+        slug: expected.slug,
         startDate: expected.startDate,
         endDate: expected.endDate,
       }),
@@ -116,6 +118,7 @@ describe('Create Hackathon', () => {
     expect(mockPutHackathon).toHaveBeenCalledWith(
       expect.objectContaining({
         title: expected.title,
+        slug: expected.slug,
         startDate: expected.startDate,
         endDate: expected.endDate,
       }),
@@ -129,7 +132,7 @@ describe('Create Hackathon', () => {
 
   test('Validation Error', async () => {
     await expect(
-      createHackathon('', 'descriiiiption', new Date(), new Date()),
+      createHackathon('', 'descriiiiption', 'slug', new Date(), new Date()),
     ).rejects.toThrow(ValidationError);
   });
 
@@ -140,6 +143,7 @@ describe('Create Hackathon', () => {
       createHackathon(
         expected.title,
         expected.description,
+        expected.slug,
         expected.endDate,
         expected.startDate,
       ),
@@ -154,6 +158,7 @@ describe('Create Hackathon', () => {
       createHackathon(
         expected.title,
         expected.description,
+        expected.slug,
         expected.startDate,
         expected.startDate,
       ),
@@ -169,12 +174,14 @@ describe('Edit Hackathon', () => {
     const description =
       'Lots of very, very, VERY important information ' +
       'about the hackathon and stuff';
+    const slug = 'worst_hackathon_ever';
     const startDate = new Date('2000-01-01');
     const endDate = new Date('2000-04-04');
     const votingOpened = true;
     const expected = new Hackathon(
       title,
       description,
+      slug,
       startDate,
       endDate,
       oldHackathon.id,
@@ -188,6 +195,7 @@ describe('Edit Hackathon', () => {
       oldHackathon.id,
       title,
       description,
+      slug,
       startDate,
       endDate,
       votingOpened,
@@ -209,6 +217,7 @@ describe('Edit Hackathon', () => {
         uuid(),
         'tiiitle',
         'descriiiiption',
+        'slug',
         new Date(),
         new Date(),
         true,
@@ -224,6 +233,7 @@ describe('Edit Hackathon', () => {
         expected.id,
         expected.description,
         expected.title,
+        expected.slug,
         expected.endDate,
         expected.startDate,
         expected.votingOpened,
@@ -241,6 +251,7 @@ describe('Edit Hackathon', () => {
         expected.id,
         expected.description,
         expected.title,
+        expected.slug,
         expected.startDate,
         expected.startDate,
         expected.votingOpened,
@@ -262,6 +273,7 @@ describe('Edit Hackathon', () => {
         id,
         'Anything',
         'A crappy description...',
+        'slug',
         new Date(),
         new Date(new Date().getTime() + 10000),
         true,

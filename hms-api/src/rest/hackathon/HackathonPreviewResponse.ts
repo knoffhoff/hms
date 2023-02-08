@@ -7,6 +7,7 @@ class HackathonPreviewResponse {
   id: Uuid;
   title: string;
   description: string;
+  slug: string;
   startDate: Date;
   endDate: Date;
   votingOpened: boolean;
@@ -15,6 +16,7 @@ class HackathonPreviewResponse {
     id: Uuid,
     title: string,
     description: string,
+    slug: string,
     startDate: Date,
     endDate: Date,
     votingOpened: boolean,
@@ -22,6 +24,7 @@ class HackathonPreviewResponse {
     this.id = id;
     this.title = title;
     this.description = description;
+    this.slug = slug;
     this.startDate = startDate;
     this.endDate = endDate;
     this.votingOpened = votingOpened;
@@ -32,6 +35,7 @@ class HackathonPreviewResponse {
       hackathon.id,
       hackathon.title,
       hackathon.description,
+      hackathon.slug,
       hackathon.startDate,
       hackathon.endDate,
       hackathon.votingOpened,

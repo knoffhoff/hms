@@ -9,6 +9,7 @@ describe('Compare', () => {
     const a = HackathonPreviewResponse.from(
       makeHackathon({
         title: 'a',
+        slug: 'a',
         startDate: new Date(0),
         endDate: new Date(Math.random()),
       } as HackathonData),
@@ -16,6 +17,7 @@ describe('Compare', () => {
     const b = HackathonPreviewResponse.from(
       makeHackathon({
         title: 'b',
+        slug: 'b',
         startDate: new Date(1),
         endDate: new Date(Math.random()),
       } as HackathonData),
@@ -29,6 +31,7 @@ describe('Compare', () => {
     const a = HackathonPreviewResponse.from(
       makeHackathon({
         title: 'a',
+        slug: 'a',
         startDate: new Date(0),
         endDate: new Date(Math.random()),
       } as HackathonData),
@@ -36,6 +39,7 @@ describe('Compare', () => {
     const b = HackathonPreviewResponse.from(
       makeHackathon({
         title: 'a',
+        slug: 'b',
         startDate: new Date(1),
         endDate: new Date(Math.random()),
       } as HackathonData),
@@ -49,6 +53,7 @@ describe('Compare', () => {
     const a = HackathonPreviewResponse.from(
       makeHackathon({
         title: 'a',
+        slug: 'a',
         startDate: new Date(0),
         endDate: new Date(2),
       } as HackathonData),
@@ -56,6 +61,7 @@ describe('Compare', () => {
     const b = HackathonPreviewResponse.from(
       makeHackathon({
         title: 'a',
+        slug: 'b',
         startDate: new Date(0),
         endDate: new Date(3),
       } as HackathonData),
@@ -70,6 +76,7 @@ describe('Compare', () => {
       makeHackathon({
         id: 'a',
         title: 'a',
+        slug: 'a',
         startDate: new Date(0),
         endDate: new Date(2),
       } as HackathonData),
@@ -78,6 +85,7 @@ describe('Compare', () => {
       makeHackathon({
         id: 'b',
         title: 'a',
+        slug: 'b',
         startDate: new Date(0),
         endDate: new Date(2),
       } as HackathonData),
@@ -92,6 +100,7 @@ describe('Compare', () => {
       makeHackathon({
         id: 'a',
         title: 'a',
+        slug: 'a',
         startDate: new Date(0),
         endDate: new Date(2),
       } as HackathonData),
@@ -100,6 +109,7 @@ describe('Compare', () => {
       makeHackathon({
         id: 'a',
         title: 'a',
+        slug: 'a',
         startDate: new Date(0),
         endDate: new Date(2),
       } as HackathonData),

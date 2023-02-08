@@ -11,6 +11,7 @@ export async function create(event, context, callback) {
     const hackathon = await createHackathon(
       request.title,
       request.description,
+      request.slug,
       request.startDate,
       request.endDate,
     );

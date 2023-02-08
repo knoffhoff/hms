@@ -11,7 +11,8 @@ const initialState: HackathonState = {
   hackathons: [
     {
       id: '33a892ba-8a9e-4edf-947a-f421c86a14b5',
-      title: '',
+      title: 'title',
+      slug: 'slug1',
       startDate: '2020-01-01T00:00:00.000Z',
       endDate: '2020-01-02T00:00:00.000Z',
       participants: [],
@@ -20,7 +21,8 @@ const initialState: HackathonState = {
   ],
   nextHackathon: {
     id: '33a892ba-8a9e-4edf-947a-f421c86a14b5',
-    title: '',
+    title: 'title',
+    slug: 'slug2',
     startDate: '2020-01-01T00:00:00.000Z',
     endDate: '2020-01-02T00:00:00.000Z',
     participants: [],
@@ -28,7 +30,8 @@ const initialState: HackathonState = {
   },
   lastSelectedHackathon: {
     id: '33a892ba-8a9e-4edf-947a-f421c86a14b5',
-    title: '',
+    title: 'title',
+    slug: 'slug3',
     startDate: '2020-01-01T00:00:00.000Z',
     endDate: '2020-01-02T00:00:00.000Z',
     participants: [],
@@ -43,6 +46,7 @@ export const mapHackathonToSerializable = (
     id: hackathon.id,
     title: hackathon.title,
     description: hackathon.description,
+    slug: hackathon.slug,
     startDate: hackathon.startDate.toISOString(),
     endDate: hackathon.endDate.toISOString(),
     participants: hackathon.participants,
