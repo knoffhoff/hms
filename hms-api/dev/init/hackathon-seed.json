@@ -96,5 +96,22 @@
     ]},
     "ideaIds": {"NULL": true},
     "votingOpened": {"BOOL": false}
+  },
+  {
+    "id": {"S": "a1c60aba-f846-4208-b4b8-1caaec031eae"},
+    "title": {"S": "Super Future Hackathon"},
+    "description": {"S":  "This is the up up upcoming hackathon, it's not totally planned yet.  However, it's going the be the biggest, baddest, nerdiest, most sweaty palm acne faced geekathon you have ever seen!!!"},
+    "slug": {"S": "futureHack"},
+    "startDate": {"S": "2040-01-01"},
+    "endDate": {"S": "2040-12-31"},
+    "creationDate": {"S": "2023-02-06"},
+    "participantIds": {"NULL": true},
+    "categoryIds": {"SS": [
+      "e499b34e-fda9-4f66-949a-46e0300b9d08",
+      "c9897c51-2e0b-47d7-b9a7-5572e990d02b",
+      "4be5c953-b871-40e3-b0cc-d2a7c929b519"
+    ]},
+    "ideaIds": {"NULL": true},
+    "votingOpened": {"BOOL": false}
   }
 ]

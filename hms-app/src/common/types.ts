@@ -22,13 +22,15 @@ export enum IdeaCardType {
 }
 
 export enum IdeaFormType {
-  IdeaPortal_New = 'IDEA_PORTAL_NEW',
+  New = 'NEW',
+  Edit = 'EDIT',
 }
 
 export type HackathonPreview = {
   id: string
   title: string
   description?: string
+  slug: string
   startDate: Date
   endDate: Date
   votingOpened: boolean
@@ -38,6 +40,7 @@ export type Hackathon = {
   id: string
   title: string
   description?: string
+  slug: string
   startDate: Date
   endDate: Date
   participants?: ParticipantPreview[]
@@ -51,6 +54,7 @@ export type HackathonSerializable = {
   id: string
   title: string
   description?: string
+  slug: string
   startDate: string
   endDate: string
   participants?: ParticipantPreview[]
@@ -64,6 +68,7 @@ export const parseHackathon = (json: any): Hackathon =>
     id: json.id,
     title: json.title,
     description: json.description,
+    slug: json.slug,
     startDate: new Date(json.startDate),
     endDate: new Date(json.endDate),
     ideas: json.ideas ? parseIdeaPreviews(json.ideas) : [],
@@ -79,6 +84,7 @@ export const parseHackathonPreview = (json: any): HackathonPreview =>
     id: json.id,
     title: json.title,
     description: json.description,
+    slug: json.slug,
     startDate: new Date(json.startDate),
     endDate: new Date(json.endDate),
     votingOpened: json.votingOpened,

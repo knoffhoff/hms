@@ -42,14 +42,16 @@ export const getHackathonDetails = async (
 export const createHackathon = async (
   instance: IPublicClientApplication,
   title: string,
-  DescriptionValue: string,
+  descriptionValue: string,
+  slug: string,
   startDate: Date,
   endDate: Date
 ) => {
   const idToken = await getIdToken(instance)
   const options = buildFetchOptions('POST', idToken, {
-    title,
-    description: DescriptionValue,
+    title: title,
+    description: descriptionValue,
+    slug: slug,
     startDate: startDate.toString(),
     endDate: endDate.toString(),
   })
@@ -64,15 +66,17 @@ export const editHackathon = async (
   instance: IPublicClientApplication,
   hackathonID: string,
   title: string,
-  DescriptionValue: string,
+  descriptionValue: string,
+  slug: string,
   startDate: Date,
   endDate: Date,
   votingOpened: boolean
 ) => {
   const idToken = await getIdToken(instance)
   const options = buildFetchOptions('PUT', idToken, {
-    title,
-    description: DescriptionValue,
+    title: title,
+    description: descriptionValue,
+    slug: slug,
     startDate: startDate.toString(),
     endDate: endDate.toString(),
     votingOpened: votingOpened.toString(), // votingOpened.toString() also doesnt work,

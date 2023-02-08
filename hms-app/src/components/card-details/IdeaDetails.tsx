@@ -13,7 +13,13 @@ import {
   Tooltip,
   useMantineTheme,
 } from '@mantine/core'
-import { Category, Idea, IdeaCardType, Skill } from '../../common/types'
+import {
+  Category,
+  Idea,
+  IdeaCardType,
+  IdeaFormType,
+  Skill,
+} from '../../common/types'
 import { deleteIdea, getIdeaDetails } from '../../actions/IdeaActions'
 import IdeaForm from '../input-forms/IdeaForm'
 import { styles } from '../../common/styles'
@@ -203,7 +209,7 @@ export default function IdeaDetails(props: IProps) {
       <IdeaForm
         ideaId={ideaData.id}
         idea={ideaData}
-        context={'edit'}
+        context={IdeaFormType.Edit}
         ownerId={ideaData.owner ? ideaData.owner.id : ''}
         hackathon={ideaData.hackathon!}
         setOpened={closeEditModal}

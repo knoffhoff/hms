@@ -24,6 +24,7 @@ function HackathonForm(props: IProps) {
   const [startDateValue, setStartDateValue] = useState<Date | null>(new Date())
   const [endDateValue, setEndDateValue] = useState<Date | null>(new Date())
   const [hackathonTitle, setHackathonTitle] = useState('')
+  const [hackathonSlug, setHackathonSlug] = useState('')
   const [DescriptionValue, onChange] = useState('')
   const [hackathon, setHackathon] = useState<Hackathon>({} as Hackathon)
 
@@ -32,6 +33,7 @@ function HackathonForm(props: IProps) {
       getHackathonDetails(instance, hackathonId).then((data) => {
         setHackathon(data)
         setHackathonTitle(data.title)
+        setHackathonSlug(data.slug)
         onChange(data.description || '')
         setStartDateValue(data.startDate)
         setEndDateValue(data.endDate)
@@ -45,6 +47,10 @@ function HackathonForm(props: IProps) {
 
   function handleChange(event: React.ChangeEvent<HTMLTextAreaElement>) {
     setHackathonTitle(event.target.value)
+  }
+
+  function handleChangeSlug(event: React.ChangeEvent<HTMLTextAreaElement>) {
+    setHackathonSlug(event.target.value)
   }
 
   function createThisHackathon(event: React.MouseEvent<HTMLButtonElement>) {
@@ -72,6 +78,7 @@ function HackathonForm(props: IProps) {
           instance,
           hackathonTitle,
           DescriptionValue,
+          hackathonSlug,
           startDateValue!,
           endDateValue!
         ).then((response) => {
@@ -80,9 +87,9 @@ function HackathonForm(props: IProps) {
               id: 'hackathon-load',
               color: 'red',
               title: 'Failed to create hackathon',
-              message: undefined,
+              message: JSON.stringify(response).toString(),
               icon: <X />,
-              autoClose: 2000,
+              autoClose: 5000,
             })
           } else {
             updateNotification({
@@ -114,6 +121,7 @@ function HackathonForm(props: IProps) {
       hackathonId!,
       hackathonTitle,
       DescriptionValue,
+      hackathonSlug,
       startDateValue!,
       endDateValue!,
       hackathon.votingOpened
@@ -123,9 +131,9 @@ function HackathonForm(props: IProps) {
           id: 'hackathon-load',
           color: 'red',
           title: 'Failed to edit hackathon',
-          message: undefined,
+          message: JSON.stringify(response).toString(),
           icon: <X />,
-          autoClose: 2000,
+          autoClose: 5000,
         })
       } else {
         updateNotification({
@@ -157,6 +165,19 @@ function HackathonForm(props: IProps) {
             onChange={handleChange}
             name='title'
             value={hackathonTitle}
+            className={classes.label}
+          />
+        </Card.Section>
+        <Card.Section className={classes.borderSection}>
+          <Textarea
+            label='Slug for URL'
+            required
+            placeholder='please define the URL slug for this hackathon'
+            maxRows={1}
+            autosize
+            onChange={handleChangeSlug}
+            name='title'
+            value={hackathonSlug}
             className={classes.label}
           />
         </Card.Section>

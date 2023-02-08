@@ -13,7 +13,7 @@ import { useMsal } from '@azure/msal-react'
 import { UserContext } from './Layout'
 import { getListOfHackathons } from '../actions/HackathonActions'
 import IdeaForm from '../components/input-forms/IdeaForm'
-import { VALID_DATE } from '../common/constants'
+import { MIN_DATE } from '../common/constants'
 
 function IdeationPortal() {
   const { instance } = useMsal()
@@ -30,7 +30,7 @@ function IdeationPortal() {
   const loadHackathons = () => {
     getListOfHackathons(instance).then((data) => {
       const upcomingHackathon = data.find(
-        (hackathon) => hackathon.startDate < VALID_DATE
+        (hackathon) => hackathon.startDate < MIN_DATE
       )
       if (upcomingHackathon) {
         setHackathon(upcomingHackathon)
@@ -102,7 +102,7 @@ function IdeationPortal() {
           ideaId={'null'}
           hackathon={hackathon}
           ownerId={user?.id}
-          context={IdeaFormType.IdeaPortal_New}
+          context={IdeaFormType.New}
           reload={loadHackathonIdeas}
         />
       </Modal>
@@ -135,7 +135,6 @@ function IdeationPortal() {
             type={IdeaCardType.IdeaPortal}
             isLoading={false}
           />
-
         </div>
       )}
     </>
