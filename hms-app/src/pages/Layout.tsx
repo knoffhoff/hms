@@ -67,7 +67,7 @@ const Layout = () => {
       ])
       setHackLinks([
         {
-          link: 'ideas',
+          link: 'hackathons',
           label: 'All Ideas',
         },
         { link: 'my-ideas', label: 'My Ideas' },
@@ -77,7 +77,7 @@ const Layout = () => {
       if (isAdmin(stateUser)) {
         setHackLinks([
           {
-            link: 'ideas',
+            link: 'hackathons',
             label: 'All Ideas',
           },
           { link: 'my-ideas', label: 'My Ideas' },
