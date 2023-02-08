@@ -86,7 +86,7 @@ export async function getIdeaCommentListResponse(
   } catch (e) {
     throw new ReferenceNotFoundError(
       `Cannot get Comment list, ` +
-        `unable to get User with id ${ideaComments.map((c) => c.userId)}`,
+        `unable to get Users with ids ${ideaComments.map((c) => c.userId)}`,
     );
   }
 

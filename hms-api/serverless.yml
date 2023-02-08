@@ -330,6 +330,14 @@ functions:
           method: put
           cors: true
           authorizer: authorize
+  getIdeaComment:
+    handler: src/handler/ideaComment/get.get
+    events:
+      - http:
+          path: idea/ideaComment/{id}
+          method: get
+          cors: true
+          authorizer: authorize
 
   createCategory:
     handler: src/handler/category/create.create

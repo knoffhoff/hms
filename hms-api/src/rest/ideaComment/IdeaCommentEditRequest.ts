@@ -1,17 +1,13 @@
-import Uuid from '../../util/Uuid';
-
 class IdeaCommentEditRequest {
-  id: Uuid;
   text: string;
 
-  constructor(id: Uuid, text: string) {
-    this.id = id;
+  constructor(text: string) {
     this.text = text;
   }
 
   static parse(body: string): IdeaCommentEditRequest {
     const json = JSON.parse(body);
-    return new IdeaCommentEditRequest(json.id, json.text);
+    return new IdeaCommentEditRequest(json.text);
   }
 }
 
