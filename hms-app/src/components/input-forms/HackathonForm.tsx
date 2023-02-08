@@ -9,10 +9,10 @@ import {
 import { showNotification, updateNotification } from '@mantine/notifications'
 import { Check, X } from 'tabler-icons-react'
 import { styles } from '../../common/styles'
-import { RichTextEditor } from '@mantine/rte'
 import { useMsal } from '@azure/msal-react'
 import { dark2, dark3, JOIN_BUTTON_COLOR } from '../../common/colors'
 import { Hackathon } from '../../common/types'
+import { RichTextEditor } from '@mantine/rte'
 
 type IProps = { context: string; hackathonId: string | null }
 
@@ -25,8 +25,11 @@ function HackathonForm(props: IProps) {
   const [endDateValue, setEndDateValue] = useState<Date | null>(new Date())
   const [hackathonTitle, setHackathonTitle] = useState('')
   const [hackathonSlug, setHackathonSlug] = useState('')
-  const [DescriptionValue, onChange] = useState('')
   const [hackathon, setHackathon] = useState<Hackathon>({} as Hackathon)
+
+  const initialValue =
+    '<p>Please add your <b>hackathon description</b> here</p>'
+  const [descriptionValue, onChange] = useState(initialValue)
 
   const loadSelectedHackathon = () => {
     if (hackathonId) {
@@ -77,7 +80,7 @@ function HackathonForm(props: IProps) {
         createHackathon(
           instance,
           hackathonTitle,
-          DescriptionValue,
+          descriptionValue,
           hackathonSlug,
           startDateValue!,
           endDateValue!
@@ -120,7 +123,7 @@ function HackathonForm(props: IProps) {
       instance,
       hackathonId!,
       hackathonTitle,
-      DescriptionValue,
+      descriptionValue,
       hackathonSlug,
       startDateValue!,
       endDateValue!,
@@ -207,9 +210,9 @@ function HackathonForm(props: IProps) {
             Description
           </Title>
           <RichTextEditor
-            value={DescriptionValue}
+            value={descriptionValue}
             onChange={onChange}
-            style={{ minHeight: 225 }}
+            id='rte'
           />
         </Card.Section>
 
