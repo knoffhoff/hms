@@ -61,16 +61,11 @@ export default function HackathonDetails(props: IProps) {
   const [relevantIdeaList, setRelevantIdeaList] = useState([] as Idea[])
   const [votingOpened, setVotingOpened] = useState<boolean>(false)
 
-  const initialValue =
-    '<p>Please add your <b>hackathon description</b> here</p>'
-  const [descriptionValue, onChange] = useState(initialValue)
-
   const loadSelectedHackathon = () => {
     getHackathonDetails(instance, hackathonId).then(
       (data) => {
         setHackathonData(data)
         setVotingOpened(data.votingOpened)
-        onChange(data.description || '')
         setIsHackathonLoading(false)
         setIsHackathonError(false)
       },
@@ -303,8 +298,7 @@ export default function HackathonDetails(props: IProps) {
                 <RichTextEditor
                   readOnly
                   value={hackathonData.description || ''}
-                  onChange={onChange}
-                  id='rte'
+                  id='hackathonDescriptionEditor'
                 />
               </Container>
             )}
@@ -356,8 +350,7 @@ export default function HackathonDetails(props: IProps) {
               <RichTextEditor
                 readOnly
                 value={hackathonData.description || ''}
-                onChange={onChange}
-                id='rte'
+                id='hackathonDescriptionEditor'
               />
             </Card.Section>
 

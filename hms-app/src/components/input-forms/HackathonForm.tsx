@@ -27,9 +27,11 @@ function HackathonForm(props: IProps) {
   const [hackathonSlug, setHackathonSlug] = useState('')
   const [hackathon, setHackathon] = useState<Hackathon>({} as Hackathon)
 
-  const initialValue =
+  const hackathonDescriptionHint =
     '<p>Please add your <b>hackathon description</b> here</p>'
-  const [descriptionValue, onChange] = useState(initialValue)
+  const [descriptionValue, setDescriptionValue] = useState(
+    hackathonDescriptionHint
+  )
 
   const loadSelectedHackathon = () => {
     if (hackathonId) {
@@ -37,7 +39,7 @@ function HackathonForm(props: IProps) {
         setHackathon(data)
         setHackathonTitle(data.title)
         setHackathonSlug(data.slug)
-        onChange(data.description || '')
+        setDescriptionValue(data.description || '')
         setStartDateValue(data.startDate)
         setEndDateValue(data.endDate)
       })
@@ -211,8 +213,8 @@ function HackathonForm(props: IProps) {
           </Title>
           <RichTextEditor
             value={descriptionValue}
-            onChange={onChange}
-            id='rte'
+            onChange={setDescriptionValue}
+            id='hackathonDescriptionEditor'
           />
         </Card.Section>
 
