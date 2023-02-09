@@ -11,6 +11,7 @@ import {randomIdea} from '../repository/domain/idea-maker';
 import {
   IdeaCommentData,
   makeIdeaComment,
+  randomIdeaComment,
 } from '../repository/domain/ideaComment-maker';
 import IdeaCommentResponse from '../../src/rest/ideaComment/IdeaCommentResponse';
 import {randomUser} from '../repository/domain/user-maker';
@@ -33,6 +34,31 @@ jest
   .mockImplementation(mockGetIdeaComment);
 
 describe('Create Idea Comment', () => {
+  test('Happy Path', async () => {
+    mockUserExists.mockResolvedValue(true);
+    mockIdeaExists.mockResolvedValue(true);
+
+    const expected = randomIdeaComment();
+
+    expect(
+      await createIdeaComment(expected.ideaId, expected.userId, expected.text),
+    ).toEqual(
+      expect.objectContaining({
+        ideaId: expected.ideaId,
+        userId: expected.userId,
+        text: expected.text,
+      }),
+    );
+
+    expect(mockPutIdeaComment).toHaveBeenCalledWith(
+      expect.objectContaining({
+        ideaId: expected.ideaId,
+        userId: expected.userId,
+        text: expected.text,
+      }),
+    );
+  });
+
   test('Missing User', async () => {
     mockUserExists.mockResolvedValue(false);
 
