@@ -26,12 +26,7 @@ function HackathonForm(props: IProps) {
   const [hackathonTitle, setHackathonTitle] = useState('')
   const [hackathonSlug, setHackathonSlug] = useState('')
   const [hackathon, setHackathon] = useState<Hackathon>({} as Hackathon)
-
-  const hackathonDescriptionHint =
-    '<p>Please add your <b>hackathon description</b> here</p>'
-  const [descriptionValue, setDescriptionValue] = useState(
-    hackathonDescriptionHint
-  )
+  const [descriptionValue, setDescriptionValue] = useState('')
 
   const loadSelectedHackathon = () => {
     if (hackathonId) {
@@ -215,6 +210,7 @@ function HackathonForm(props: IProps) {
             value={descriptionValue}
             onChange={setDescriptionValue}
             id='hackathonDescriptionEditor'
+            placeholder={'Enter a description for this hackathon'}
           />
         </Card.Section>
 
