@@ -1,6 +1,6 @@
 import Uuid from '../util/Uuid';
 import NotFoundError from '../error/NotFoundError';
-import {ideaExists} from '../repository/idea-repository';
+import {getIdea, ideaExists} from '../repository/idea-repository';
 import {getUser, userExists} from '../repository/user-repository';
 import {
   ideaCommentAlreadyExists,
@@ -62,6 +62,16 @@ export async function getIdeaCommentResponse(
     throw new ReferenceNotFoundError(
       `Cannot get Comment with id ${id}, ` +
         `unable to get User with id ${ideaComment.userId}`,
+    );
+  }
+
+  let Idea;
+  try {
+    Idea = await getIdea(ideaComment.ideaId);
+  } catch (e) {
+    throw new ReferenceNotFoundError(
+      `Cannot get Comment with id ${id}, ` +
+        `unable to get Idea with id ${ideaComment.ideaId}`,
     );
   }
 

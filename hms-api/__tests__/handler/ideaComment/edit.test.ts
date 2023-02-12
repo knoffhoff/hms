@@ -82,7 +82,7 @@ describe('Edit Idea Comment', () => {
 });
 
 const toEvent = (id: Uuid, text: string): object => ({
-  body: JSON.stringify(new ideaCommentEditRequest(id, text)),
+  body: JSON.stringify(new ideaCommentEditRequest(text)),
   pathParameters: {
     id: id,
   },
