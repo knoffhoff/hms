@@ -14,6 +14,7 @@ import React from 'react'
 import { HackathonSerializable } from '../common/types'
 import { blue3, orange3 } from '../common/colors'
 import { Link } from 'react-router-dom'
+import { MAX_DATE } from '../common/constants'
 
 const useStyles = createStyles((theme) => ({
   wrapper: {
@@ -158,9 +159,13 @@ const HeroHeader = (props: { nextHackathon: HackathonSerializable }) => {
             }
             radius={'xs'}
           >
-            {new Date(props.nextHackathon.startDate).toLocaleDateString()}
-            {' - '}
-            {new Date(props.nextHackathon.endDate).toLocaleDateString()}
+            {new Date(props.nextHackathon.startDate) > MAX_DATE
+              ? 'To be announced'
+              : `${new Date(
+                  props.nextHackathon.startDate
+                ).toLocaleDateString()} - ${new Date(
+                  props.nextHackathon.endDate
+                ).toLocaleDateString()}`}
           </Badge>
         </Center>
 
