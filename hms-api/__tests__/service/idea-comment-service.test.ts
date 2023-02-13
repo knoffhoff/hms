@@ -43,7 +43,7 @@ jest
   .spyOn(ideaCommentRepository, 'listIdeaComments')
   .mockImplementation(mockListIdeaComments);
 
-describe('Create Idea Comment', () => {
+describe('Create Idea Comment without parentComment', () => {
   test('Happy Path', async () => {
     mockUserExists.mockResolvedValue(true);
     mockIdeaExists.mockResolvedValue(true);
@@ -94,7 +94,7 @@ describe('Create Idea Comment', () => {
     mockUserExists.mockResolvedValue(true);
     mockIdeaExists.mockResolvedValue(true);
 
-    await expect(createIdeaComment(null, uuid(), '', uuid())).rejects.toThrow(
+    await expect(createIdeaComment(null, uuid(), '')).rejects.toThrow(
       ValidationError,
     );
   });
