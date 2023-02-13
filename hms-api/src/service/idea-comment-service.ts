@@ -24,22 +24,21 @@ export async function createIdeaComment(
   text: string,
   parentCommentId?: Uuid,
 ): Promise<IdeaComment> {
-  const ideaComment = new IdeaComment(userId, ideaId, text, parentCommentId);
-
   if (!(await ideaExists(ideaId))) {
     throw new ReferenceNotFoundError(`Idea with id: ${ideaId} not found`);
-  }
-
-  if (parentCommentId && !(await parentCommentIdIdeaExists(parentCommentId))) {
-    throw new ReferenceNotFoundError(
-      `Comment with id: ${parentCommentId} not found`,
-    );
   }
 
   if (!(await userExists(userId))) {
     throw new ReferenceNotFoundError(`User with id: ${userId} not found`);
   }
 
+  if (parentCommentId && !(await parentCommentIdIdeaExists(parentCommentId))) {
+    throw new ReferenceNotFoundError(
+      `Parent comment with id: ${parentCommentId} not found`,
+    );
+  }
+
+  const ideaComment = new IdeaComment(userId, ideaId, text, parentCommentId);
   const result = ideaComment.validate();
   if (result.hasFailed()) {
     throw new ValidationError('Cannot create Comment', result);
