@@ -42,6 +42,7 @@ function IdeationPortal() {
     if (hackathon.id !== undefined) {
       getIdeaList(instance, hackathon.id).then((data) => {
         setAllIdeaPreviews(data.ideas)
+        setOpened(false)
       })
     }
   }
@@ -107,7 +108,7 @@ function IdeationPortal() {
         />
       </Modal>
 
-      <Group position='center'>
+      <Group position='left'>
         <Button onClick={() => setOpened(true)}>New Idea</Button>
 
         <Checkbox

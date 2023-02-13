@@ -7,7 +7,7 @@ export interface IdeaCommentData {
   ideaId: Uuid;
   text: string;
   creationDate: Date;
-  parentIdeaCommentId?: Uuid;
+  parentIdeaCommentId: Uuid;
 }
 
 export const makeIdeaComment = ({
@@ -15,10 +15,10 @@ export const makeIdeaComment = ({
   userId = uuid(),
   ideaId = uuid(),
   text = undefined,
-  creationDate = new Date(),
   parentIdeaCommentId = uuid(),
+  creationDate = new Date(),
 }: IdeaCommentData): IdeaComment =>
-  new IdeaComment(id, userId, ideaId, text, creationDate, parentIdeaCommentId);
+  new IdeaComment(id, userId, ideaId, text, parentIdeaCommentId, creationDate);
 
 export const randomIdeaComment = (): IdeaComment =>
   makeIdeaComment({} as IdeaCommentData);

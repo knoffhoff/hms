@@ -124,8 +124,8 @@ function itemToIdeaComment(item: {[key: string]: AttributeValue}): IdeaComment {
     item.userId.S,
     item.ideaId.S,
     item.text.S,
+    item.parentIdeaCommentId.S,
     item.id.S,
     new Date(item.creationDate.S!),
-    item.parentIdeaCommentId.S,
   );
 }

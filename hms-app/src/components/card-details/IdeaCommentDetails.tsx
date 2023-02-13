@@ -269,7 +269,9 @@ export default function IdeaCommentDetails(props: IProps) {
                   </Text>
                 </div>
 
-                {editingIdeaComment && user?.id === ideaComment.user.id ? (
+                {editingIdeaComment &&
+                user?.id === ideaComment.user.id &&
+                ideaComment.id === thisIdeaCommentId ? (
                   <Textarea
                     maxRows={2}
                     autosize

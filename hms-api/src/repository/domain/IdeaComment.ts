@@ -43,7 +43,7 @@ export default class {
    *
    * if this is a top level comment, this will be null
    */
-  parentIdeaCommentId?: Uuid;
+  parentIdeaCommentId: Uuid;
 
   validate(): ValidationResult {
     const result = new ValidationResult();
@@ -70,24 +70,24 @@ export default class {
     userId: Uuid,
     ideaId: Uuid,
     text: string,
-    parentIdeaCommentId?: Uuid,
+    parentIdeaCommentId: Uuid,
   );
   constructor(
     userId: Uuid,
     ideaId: Uuid,
     text: string,
+    parentIdeaCommentId: Uuid,
     id: Uuid,
     creationDate: Date,
-    parentIdeaCommentId?: Uuid,
   );
 
   constructor(
     userId: Uuid,
     ideaId: Uuid,
     text: string,
+    parentIdeaCommentId: Uuid,
     id: Uuid = uuid(),
     creationDate: Date = new Date(),
-    parentIdeaCommentId?: Uuid,
   ) {
     this.id = id;
     this.userId = userId;
