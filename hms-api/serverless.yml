@@ -61,6 +61,7 @@ provider:
     IDEA_COMMENT_TABLE: ideaComment
     IDEA_COMMENT_BY_IDEA_ID_INDEX: ideaComment-by-ideaId
     ADMIN_USERS: ${file(./secrets.json):ADMIN_USERS}
+    HMS_BUCKET_NAME: ${file(./secrets.json):HMS_BUCKET_NAME}
   iam:
     role:
       statements:
@@ -86,6 +87,12 @@ provider:
             - arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.PARTICIPANT_TABLE}/index/*
             - arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.IDEA_COMMENT_TABLE}
             - arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.IDEA_COMMENT_TABLE}/index/*
+        - Effect: Allow
+          Action:
+            - s3:GetObject
+            - s3:PutObject
+          Resource:
+            - arn:aws:s3:::${self:provider.environment.HMS_BUCKET_NAME}/*
 
 functions:
   authorize:
@@ -206,15 +213,32 @@ functions:
           method: put
           cors: true
           authorizer: authorize
-    revokeVoteForIdea:
-      handler: src/handler/idea/revokeVote.revokeVote
-      events:
-        - http:
-#           TODO this should be done using a userId from the token
-            path: idea/{id}/removeVote/{participantId}
-            method: put
-            cors: true
-            authorizer: authorize
+  revokeVoteForIdea:
+    handler: src/handler/idea/revokeVote.revokeVote
+    events:
+      - http:
+#         TODO this should be done using a userId from the token
+          path: idea/{id}/removeVote/{participantId}
+          method: put
+          cors: true
+          authorizer: authorize
+
+  getUploadUrl:
+    handler: src/handler/idea/get-presigned-url.getUploadUrl
+    events:
+      - http:
+          path: /idea/{id}/upload-url
+          method: GET
+          cors: true
+          authorizer: authorize
+  getDownloadUrl:
+    handler: src/handler/idea/get-presigned-url.getDownloadUrl
+    events:
+      - http:
+          path: /idea/{id}/download-url
+          method: GET
+          cors: true
+          authorizer: authorize
 
   createUser:
     handler: src/handler/user/create.create

@@ -1,8 +1,9 @@
-import { Badge, Container, Grid, Text, Title } from '@mantine/core'
+import { Badge, Container, Center, Title, Alert } from '@mantine/core'
 import React, { useEffect, useState } from 'react'
 import { Idea } from '../common/types'
 import { checkIfVideoExists } from '../actions/IdeaActions'
 import ReactPlayer from 'react-player'
+import { AlertCircle } from 'tabler-icons-react'
 
 type IProps = {
   idea: Idea
@@ -11,7 +12,7 @@ type IProps = {
 
 const VIDEO_URL = process.env.REACT_APP_PRESENTATION_MEDIA_URL
 
-export default function FinalPresentations({ idea, classes }: IProps) {
+export default function FinalPresentationsSlide({ idea, classes }: IProps) {
   const [videoUrl, setVideoUrl] = useState('')
 
   useEffect(() => {
@@ -30,8 +31,8 @@ export default function FinalPresentations({ idea, classes }: IProps) {
       <Badge
         fullWidth={false}
         color={'gray'}
-        my={20}
-        size={'lg'}
+        my={10}
+        size={'md'}
         variant={'outline'}
       >
         {idea.category?.title}
@@ -39,13 +40,23 @@ export default function FinalPresentations({ idea, classes }: IProps) {
       <Title className={classes.title} mb={10}>
         {idea.title}
       </Title>
-      <Title
-        order={2}
-        className={classes.name}
-      >{`by ${idea.owner?.firstName} ${idea.owner?.lastName}`}</Title>
-      {(videoUrl && (
-        <ReactPlayer url={videoUrl} width={'100%'} height={'70%'} />
-      )) || <Title>No video provided</Title>}
+      <Container p={0} fluid>
+        {videoUrl ? (
+          <Center>
+            <ReactPlayer url={videoUrl} controls />
+          </Center>
+        ) : (
+          <Alert
+            mt={20}
+            icon={<AlertCircle size={16} />}
+            title='No video provided!'
+            color='red'
+          >
+            There is no video for this idea. The presenter needs to upload a
+            video or present manually.
+          </Alert>
+        )}
+      </Container>
     </Container>
   )
 }
