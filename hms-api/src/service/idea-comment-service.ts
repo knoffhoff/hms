@@ -19,8 +19,8 @@ import IdeaCommentListResponse from '../rest/ideaComment/IdeaCommentListResponse
 import ideaComment from '../repository/domain/IdeaComment';
 
 export async function createIdeaComment(
-  ideaId: Uuid,
   userId: Uuid,
+  ideaId: Uuid,
   text: string,
   parentCommentId?: Uuid,
 ): Promise<IdeaComment> {

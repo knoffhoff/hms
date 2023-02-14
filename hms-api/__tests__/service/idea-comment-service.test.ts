@@ -51,19 +51,19 @@ describe('Create Idea Comment without parentComment', () => {
     const expected = randomIdeaComment();
 
     expect(
-      await createIdeaComment(expected.ideaId, expected.userId, expected.text),
+      await createIdeaComment(expected.userId, expected.ideaId, expected.text),
     ).toEqual(
       expect.objectContaining({
-        ideaId: expected.ideaId,
         userId: expected.userId,
+        ideaId: expected.ideaId,
         text: expected.text,
       }),
     );
 
     expect(mockPutIdeaComment).toHaveBeenCalledWith(
       expect.objectContaining({
-        ideaId: expected.ideaId,
         userId: expected.userId,
+        ideaId: expected.ideaId,
         text: expected.text,
       }),
     );
