@@ -17,15 +17,15 @@ export const getIdeaCommentList = async (
 
 export const createIdeaComment = async (
   instance: IPublicClientApplication,
+  userId: string,
   ideaID: string,
   ideaCommentText: string,
-  userId: string,
   parentIdeaCommentId?: string
 ) => {
   const idToken = await getIdToken(instance)
   const options = buildFetchOptions('POST', idToken, {
-    ideaId: ideaID,
     userId: userId,
+    ideaId: ideaID,
     text: ideaCommentText,
     parentIdeaCommentId: parentIdeaCommentId ? parentIdeaCommentId : '',
   })

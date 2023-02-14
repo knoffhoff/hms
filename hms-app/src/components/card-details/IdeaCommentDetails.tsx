@@ -110,7 +110,7 @@ export default function IdeaCommentDetails(props: IProps) {
       autoClose: false,
       disallowClose: false,
     })
-    createIdeaComment(instance, ideaId, ideaCommentText, user?.id || '').then(
+    createIdeaComment(instance, user?.id || '', ideaId, ideaCommentText).then(
       (response) => {
         if (JSON.stringify(response).toString().includes('error')) {
           updateNotification({

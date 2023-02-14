@@ -9,8 +9,8 @@ export async function create(event, context, callback) {
     const request = IdeaCommentCreateRequest.parse(event.body);
     const ideaId = event.pathParameters.id;
     const ideaComment = await createIdeaComment(
-      ideaId,
       request.userId,
+      ideaId,
       request.text,
       request.parentIdeaCommentId,
     );
