@@ -8,50 +8,47 @@ import {
 } from '../../src/service/skill-service';
 import {uuid} from '../../src/util/Uuid';
 import Skill from '../../src/repository/domain/Skill';
-import SkillResponse from '../../src/rest/SkillResponse';
+import SkillResponse from '../../src/rest/skill/SkillResponse';
 import NotFoundError from '../../src/error/NotFoundError';
-import SkillListResponse from '../../src/rest/SkillListResponse';
-import SkillDeleteResponse from '../../src/rest/SkillDeleteResponse';
+import SkillListResponse from '../../src/rest/skill/SkillListResponse';
+import SkillDeleteResponse from '../../src/rest/skill/SkillDeleteResponse';
 import * as skillRepository from '../../src/repository/skill-repository';
 import ValidationResult from '../../src/error/ValidationResult';
 import {randomCategory} from '../repository/domain/category-maker';
 import ValidationError from '../../src/error/ValidationError';
 
 const mockPutSkill = jest.fn();
-jest.spyOn(skillRepository, 'putSkill')
-    .mockImplementation(mockPutSkill);
+jest.spyOn(skillRepository, 'putSkill').mockImplementation(mockPutSkill);
 const mockGetSkill = jest.fn();
-jest.spyOn(skillRepository, 'getSkill')
-    .mockImplementation(mockGetSkill);
+jest.spyOn(skillRepository, 'getSkill').mockImplementation(mockGetSkill);
 const mockListSkills = jest.fn();
-jest.spyOn(skillRepository, 'listSkills')
-    .mockImplementation(mockListSkills);
+jest.spyOn(skillRepository, 'listSkills').mockImplementation(mockListSkills);
 const mockDeleteSkill = jest.fn();
-jest.spyOn(skillRepository, 'deleteSkill')
-    .mockImplementation(mockDeleteSkill);
+jest.spyOn(skillRepository, 'deleteSkill').mockImplementation(mockDeleteSkill);
 
 describe('Create Skill', () => {
   test('Happy Path', async () => {
     const expected = randomSkill();
 
-    expect(await createSkill(
-        expected.name,
-        expected.description,
-    )).toEqual(expect.objectContaining({
-      name: expected.name,
-      description: expected.description,
-    }));
+    expect(await createSkill(expected.name, expected.description)).toEqual(
+      expect.objectContaining({
+        name: expected.name,
+        description: expected.description,
+      }),
+    );
 
-    expect(mockPutSkill).toHaveBeenCalledWith(expect.objectContaining({
-      name: expected.name,
-      description: expected.description,
-    }));
+    expect(mockPutSkill).toHaveBeenCalledWith(
+      expect.objectContaining({
+        name: expected.name,
+        description: expected.description,
+      }),
+    );
   });
 
   test('Validation Error', async () => {
-    await expect(createSkill('', 'descriiiiption'))
-        .rejects
-        .toThrow(ValidationError);
+    await expect(createSkill('', 'descriiiiption')).rejects.toThrow(
+      ValidationError,
+    );
   });
 });
 
@@ -60,10 +57,7 @@ describe('Edit Skill', () => {
     const oldSkill = randomSkill();
     const title = 'Worst Skill Ever';
     const description = 'Best description ever!';
-    const expected = new Skill(
-        title,
-        description,
-        oldSkill.id);
+    const expected = new Skill(title, description, oldSkill.id);
 
     mockGetSkill.mockResolvedValue(oldSkill);
 
@@ -77,13 +71,12 @@ describe('Edit Skill', () => {
     failedValidation.addFailure('FAILURE');
 
     const mockSkill = randomCategory();
-    jest.spyOn(mockSkill, 'validate')
-        .mockReturnValue(failedValidation);
+    jest.spyOn(mockSkill, 'validate').mockReturnValue(failedValidation);
     mockGetSkill.mockResolvedValue(mockSkill);
 
-    await expect(editSkill(uuid(), 'naaaaaaame', 'descriiiiption'))
-        .rejects
-        .toThrow(ValidationError);
+    await expect(
+      editSkill(uuid(), 'naaaaaaame', 'descriiiiption'),
+    ).rejects.toThrow(ValidationError);
   });
 
   test('Skill is missing', async () => {
@@ -93,12 +86,9 @@ describe('Edit Skill', () => {
       throw new Error('Uh oh');
     });
 
-    await expect(editSkill(
-        id,
-        'Anything',
-        'There once was a man from Nantucket...'))
-        .rejects
-        .toThrow(NotFoundError);
+    await expect(
+      editSkill(id, 'Anything', 'There once was a man from Nantucket...'),
+    ).rejects.toThrow(NotFoundError);
     expect(mockPutSkill).not.toHaveBeenCalled();
     expect(mockGetSkill).toHaveBeenCalledWith(id);
   });
@@ -112,8 +102,7 @@ describe('Get Skill Response', () => {
 
     mockGetSkill.mockResolvedValue(skill);
 
-    expect(await getSkillResponse(skill.id))
-        .toStrictEqual(expected);
+    expect(await getSkillResponse(skill.id)).toStrictEqual(expected);
     expect(mockGetSkill).toHaveBeenCalledWith(skill.id);
   });
 
@@ -124,9 +113,7 @@ describe('Get Skill Response', () => {
       throw new NotFoundError('Nope nope nope');
     });
 
-    await expect(getSkillResponse(id))
-        .rejects
-        .toThrow(NotFoundError);
+    await expect(getSkillResponse(id)).rejects.toThrow(NotFoundError);
     expect(mockGetSkill).toHaveBeenCalledWith(id);
   });
 });
@@ -136,9 +123,7 @@ describe('Get Skill List Response', () => {
     const skill1 = randomSkill();
     const skill2 = randomSkill();
     const skill3 = randomSkill();
-    const expected = SkillListResponse.from(
-        [skill1, skill2, skill3],
-    );
+    const expected = SkillListResponse.from([skill1, skill2, skill3]);
 
     mockListSkills.mockResolvedValue([skill1, skill2, skill3]);
 

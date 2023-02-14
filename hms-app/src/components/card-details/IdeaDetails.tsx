@@ -46,6 +46,7 @@ import FinalVideoUploadModal from '../FinalVideoUploadModal'
 import { getCategoryDetails } from '../../actions/CategoryActions'
 import { getSkillDetails } from '../../actions/SkillActions'
 import MoveIdeaModal from '../MoveIdeaModal'
+import IdeaCommentDetails from './IdeaCommentDetails'
 
 type IProps = {
   idea: Idea
@@ -507,6 +508,9 @@ export default function IdeaDetails(props: IProps) {
             </Accordion.Panel>
           </Accordion.Item>
         </Accordion>
+        <Card.Section className={classes.borderSection}>
+          <IdeaCommentDetails ideaId={ideaData.id} />
+        </Card.Section>
       </Card>
     )
   }
@@ -685,6 +689,9 @@ export default function IdeaDetails(props: IProps) {
                   </Accordion.Panel>
                 </Accordion.Item>
               </Accordion>
+              <Card.Section className={classes.borderSection}>
+                <IdeaCommentDetails ideaId={ideaData.id} />
+              </Card.Section>
             </>
           )}
         </Card>

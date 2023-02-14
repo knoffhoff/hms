@@ -1,12 +1,13 @@
 import {randomSkill} from '../../repository/domain/skill-maker';
 import {list} from '../../../src/handler/skill/list';
 import NotFoundError from '../../../src/error/NotFoundError';
-import SkillListResponse from '../../../src/rest/SkillListResponse';
+import SkillListResponse from '../../../src/rest/skill/SkillListResponse';
 import * as skillService from '../../../src/service/skill-service';
 
 const mockGetSkillListResponse = jest.fn();
-jest.spyOn(skillService, 'getSkillListResponse')
-    .mockImplementation(mockGetSkillListResponse);
+jest
+  .spyOn(skillService, 'getSkillListResponse')
+  .mockImplementation(mockGetSkillListResponse);
 
 describe('List Skills', () => {
   test('Happy Path', async () => {
@@ -14,9 +15,7 @@ describe('List Skills', () => {
     const skill2 = randomSkill();
     const skill3 = randomSkill();
     const skill4 = randomSkill();
-    const expected = SkillListResponse.from(
-        [skill1, skill2, skill3, skill4],
-    );
+    const expected = SkillListResponse.from([skill1, skill2, skill3, skill4]);
 
     mockGetSkillListResponse.mockResolvedValue(expected);
     const callback = jest.fn();

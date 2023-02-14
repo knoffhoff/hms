@@ -1,8 +1,8 @@
 import {buildResponse} from '../../rest/responses';
 import {wrapHandler} from '../handler-wrapper';
 import {createCategory} from '../../service/category-service';
-import CategoryCreateRequest from '../../rest/CategoryCreateRequest';
-import CategoryCreateResponse from '../../rest/CategoryCreateResponse';
+import CategoryCreateRequest from '../../rest/category/CategoryCreateRequest';
+import CategoryCreateResponse from '../../rest/category/CategoryCreateResponse';
 
 // eslint-disable-next-line require-jsdoc
 export async function create(event, context, callback) {

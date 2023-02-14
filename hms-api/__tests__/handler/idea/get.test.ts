@@ -3,7 +3,7 @@ import NotFoundError from '../../../src/error/NotFoundError';
 import * as ideaService from '../../../src/service/idea-service';
 import Uuid, {uuid} from '../../../src/util/Uuid';
 import {randomIdea} from '../../repository/domain/idea-maker';
-import IdeaResponse from '../../../src/rest/IdeaResponse';
+import IdeaResponse from '../../../src/rest/idea/IdeaResponse';
 import ReferenceNotFoundError from '../../../src/error/ReferenceNotFoundError';
 import {randomUser} from '../../repository/domain/user-maker';
 import {

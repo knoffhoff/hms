@@ -10,74 +10,67 @@ import {
 } from '../../src/service/user-service';
 import {uuid} from '../../src/util/Uuid';
 import {makeUser, randomUser, UserData} from '../repository/domain/user-maker';
-import {makeParticipant, ParticipantData, randomParticipant,} from '../repository/domain/participant-maker';
+import {
+  makeParticipant,
+  ParticipantData,
+  randomParticipant,
+} from '../repository/domain/participant-maker';
 import ReferenceNotFoundError from '../../src/error/ReferenceNotFoundError';
 
 import * as skillRepository from '../../src/repository/skill-repository';
 import * as userRepository from '../../src/repository/user-repository';
 import {randomSkill} from '../repository/domain/skill-maker';
 import NotFoundError from '../../src/error/NotFoundError';
-import UserResponse from '../../src/rest/UserResponse';
-import UserListResponse from '../../src/rest/UserListResponse';
-import UserDeleteResponse from '../../src/rest/UserDeleteResponse';
+import UserResponse from '../../src/rest/user/UserResponse';
+import UserListResponse from '../../src/rest/user/UserListResponse';
+import UserDeleteResponse from '../../src/rest/user/UserDeleteResponse';
 import User from '../../src/repository/domain/User';
 import ValidationResult from '../../src/error/ValidationResult';
 import {randomCategory} from '../repository/domain/category-maker';
 import ValidationError from '../../src/error/ValidationError';
-import UserExistsResponse from '../../src/rest/UserExistsResponse';
+import UserExistsResponse from '../../src/rest/user/UserExistsResponse';
 
 const mockGetSkills = jest.fn();
-jest.spyOn(skillRepository, 'getSkills')
-    .mockImplementation(mockGetSkills);
+jest.spyOn(skillRepository, 'getSkills').mockImplementation(mockGetSkills);
 const mockSkillExists = jest.fn();
-jest.spyOn(skillRepository, 'skillExists')
-    .mockImplementation(mockSkillExists);
+jest.spyOn(skillRepository, 'skillExists').mockImplementation(mockSkillExists);
 
 const mockPutUser = jest.fn();
-jest.spyOn(userRepository, 'putUser')
-    .mockImplementation(mockPutUser);
+jest.spyOn(userRepository, 'putUser').mockImplementation(mockPutUser);
 const mockGetUser = jest.fn();
-jest.spyOn(userRepository, 'getUser')
-    .mockImplementation(mockGetUser);
+jest.spyOn(userRepository, 'getUser').mockImplementation(mockGetUser);
 const mockGetUsers = jest.fn();
-jest.spyOn(userRepository, 'getUsers')
-    .mockImplementation(mockGetUsers);
+jest.spyOn(userRepository, 'getUsers').mockImplementation(mockGetUsers);
 const mockUserExistsByEmail = jest.fn();
-jest.spyOn(userRepository, 'userExistsByEmail')
-    .mockImplementation(mockUserExistsByEmail);
+jest
+  .spyOn(userRepository, 'userExistsByEmail')
+  .mockImplementation(mockUserExistsByEmail);
 const mockListUsers = jest.fn();
-jest.spyOn(userRepository, 'listUsers')
-    .mockImplementation(mockListUsers);
+jest.spyOn(userRepository, 'listUsers').mockImplementation(mockListUsers);
 const mockDeleteUser = jest.fn();
-jest.spyOn(userRepository, 'deleteUser')
-    .mockImplementation(mockDeleteUser);
+jest.spyOn(userRepository, 'deleteUser').mockImplementation(mockDeleteUser);
 
 describe('Create User', () => {
   test('Validation Error', async () => {
     mockSkillExists.mockResolvedValue(true);
 
     await expect(
-        createUser(
-            'lastNaaaaaame',
-            '',
-            'e.m@i.l',
-            [uuid()],
-            'image.url'))
-        .rejects
-        .toThrow(ValidationError);
+      createUser('lastNaaaaaame', '', 'e.m@i.l', [uuid()], 'image.url'),
+    ).rejects.toThrow(ValidationError);
   });
 
   test('Missing Skill', async () => {
     mockSkillExists.mockResolvedValue(false);
 
-    await expect(createUser(
+    await expect(
+      createUser(
         'lastName',
         'firstName',
         'em@il.com',
         [uuid()],
-        'https://image.jpg/img.png'))
-        .rejects
-        .toThrow(ReferenceNotFoundError);
+        'https://image.jpg/img.png',
+      ),
+    ).rejects.toThrow(ReferenceNotFoundError);
 
     expect(mockPutUser).not.toHaveBeenCalled();
   });
@@ -87,27 +80,33 @@ describe('Create User', () => {
 
     const expected = randomUser();
 
-    expect(await createUser(
+    expect(
+      await createUser(
         expected.lastName,
         expected.firstName,
         expected.emailAddress,
         expected.skills,
-        expected.imageUrl))
-        .toEqual(expect.objectContaining({
-          lastName: expected.lastName,
-          firstName: expected.firstName,
-          emailAddress: expected.emailAddress,
-          skills: expected.skills,
-          imageUrl: expected.imageUrl,
-        }));
+        expected.imageUrl,
+      ),
+    ).toEqual(
+      expect.objectContaining({
+        lastName: expected.lastName,
+        firstName: expected.firstName,
+        emailAddress: expected.emailAddress,
+        skills: expected.skills,
+        imageUrl: expected.imageUrl,
+      }),
+    );
 
-    expect(mockPutUser).toHaveBeenCalledWith(expect.objectContaining({
-      lastName: expected.lastName,
-      firstName: expected.firstName,
-      emailAddress: expected.emailAddress,
-      skills: expected.skills,
-      imageUrl: expected.imageUrl,
-    }));
+    expect(mockPutUser).toHaveBeenCalledWith(
+      expect.objectContaining({
+        lastName: expected.lastName,
+        firstName: expected.firstName,
+        emailAddress: expected.emailAddress,
+        skills: expected.skills,
+        imageUrl: expected.imageUrl,
+      }),
+    );
   });
 });
 
@@ -119,14 +118,15 @@ describe('Edit User', () => {
     const skills = [uuid(), uuid()];
     const imageUrl = 'www.a.new.image.com/img.png';
     const expected = new User(
-        lastName,
-        firstName,
-        oldUser.emailAddress,
-        oldUser.roles,
-        skills,
-        imageUrl,
-        oldUser.id,
-        oldUser.creationDate);
+      lastName,
+      firstName,
+      oldUser.emailAddress,
+      oldUser.roles,
+      skills,
+      imageUrl,
+      oldUser.id,
+      oldUser.creationDate,
+    );
 
     mockGetUser.mockResolvedValue(oldUser);
 
@@ -140,19 +140,18 @@ describe('Edit User', () => {
     failedValidation.addFailure('FAILURE');
 
     const mockUser = randomCategory();
-    jest.spyOn(mockUser, 'validate')
-        .mockReturnValue(failedValidation);
+    jest.spyOn(mockUser, 'validate').mockReturnValue(failedValidation);
     mockGetUser.mockResolvedValue(mockUser);
 
     await expect(
-        editUser(
-            uuid(),
-            'lastNaaaaaame',
-            'fiiiiiiirstName',
-            [uuid()],
-            'image.url'))
-        .rejects
-        .toThrow(ValidationError);
+      editUser(
+        uuid(),
+        'lastNaaaaaame',
+        'fiiiiiiirstName',
+        [uuid()],
+        'image.url',
+      ),
+    ).rejects.toThrow(ValidationError);
   });
 
   test('User is missing', async () => {
@@ -162,14 +161,9 @@ describe('Edit User', () => {
       throw new Error('Uh oh');
     });
 
-    await expect(editUser(
-        id,
-        'Nach',
-        'Vor',
-        [uuid()],
-        'www.aol.com/img.png'))
-        .rejects
-        .toThrow(NotFoundError);
+    await expect(
+      editUser(id, 'Nach', 'Vor', [uuid()], 'www.aol.com/img.png'),
+    ).rejects.toThrow(NotFoundError);
     expect(mockPutUser).not.toHaveBeenCalled();
     expect(mockGetUser).toHaveBeenCalledWith(id);
   });
@@ -187,8 +181,7 @@ describe('Get User Response', () => {
     mockGetUser.mockResolvedValue(user);
     mockGetSkills.mockResolvedValue([skill1, skill2, skill3]);
 
-    expect(await getUserResponse(user.id))
-        .toStrictEqual(expected);
+    expect(await getUserResponse(user.id)).toStrictEqual(expected);
     expect(mockGetUser).toHaveBeenCalledWith(user.id);
     expect(mockGetSkills).toHaveBeenCalledWith(user.skills);
   });
@@ -201,9 +194,9 @@ describe('Get User Response', () => {
       throw new NotFoundError('Not a chance');
     });
 
-    await expect(getUserResponse(user.id))
-        .rejects
-        .toThrow(ReferenceNotFoundError);
+    await expect(getUserResponse(user.id)).rejects.toThrow(
+      ReferenceNotFoundError,
+    );
     expect(mockGetUser).toHaveBeenCalledWith(user.id);
     expect(mockGetSkills).toHaveBeenCalledWith(user.skills);
   });
@@ -215,9 +208,7 @@ describe('Get User Response', () => {
       throw new NotFoundError('Not a chance');
     });
 
-    await expect(getUserResponse(id))
-        .rejects
-        .toThrow(NotFoundError);
+    await expect(getUserResponse(id)).rejects.toThrow(NotFoundError);
     expect(mockGetUser).toHaveBeenCalledWith(id);
     expect(mockGetSkills).not.toHaveBeenCalled();
   });
@@ -225,26 +216,24 @@ describe('Get User Response', () => {
 
 describe('Get User Exists Response', () => {
   test('User Exists', async () => {
-    const id = uuid()
+    const id = uuid();
     const email = 'eee.mmm@iii.ll';
     const expected = UserExistsResponse.from(id, email, true);
 
     mockUserExistsByEmail.mockResolvedValue({id: id, exists: true});
 
-    expect(await getUserExistsResponse(email))
-        .toStrictEqual(expected);
+    expect(await getUserExistsResponse(email)).toStrictEqual(expected);
     expect(mockUserExistsByEmail).toHaveBeenCalledWith(email);
   });
 
   test('User Does Not Exist', async () => {
-    const id = uuid()
+    const id = uuid();
     const email = 'eee.mmm@iii.ll';
     const expected = UserExistsResponse.from(id, email, false);
 
     mockUserExistsByEmail.mockResolvedValue({id: id, exists: false});
 
-    expect(await getUserExistsResponse(email))
-        .toStrictEqual(expected);
+    expect(await getUserExistsResponse(email)).toStrictEqual(expected);
     expect(mockUserExistsByEmail).toHaveBeenCalledWith(email);
   });
 });
@@ -254,9 +243,7 @@ describe('Get User List Response', () => {
     const user1 = randomUser();
     const user2 = randomUser();
     const user3 = randomUser();
-    const expected = UserListResponse.from(
-        [user1, user2, user3],
-    );
+    const expected = UserListResponse.from([user1, user2, user3]);
 
     mockListUsers.mockResolvedValue([user1, user2, user3]);
 
@@ -283,10 +270,9 @@ describe('Extract User For Participant', () => {
     const user = makeUser({} as UserData);
     const participant = makeParticipant({userId: user.id} as ParticipantData);
 
-    expect(extractUser(
-        [randomUser(), user, randomUser()],
-        participant,
-    )).toStrictEqual(user);
+    expect(
+      extractUser([randomUser(), user, randomUser()], participant),
+    ).toStrictEqual(user);
   });
 });
 

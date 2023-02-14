@@ -1,11 +1,12 @@
 import * as ideaService from '../../../src/service/idea-service';
 import Uuid, {uuid} from '../../../src/util/Uuid';
 import {leave} from '../../../src/handler/idea/leave';
-import IdeaLeaveResponse from '../../../src/rest/IdeaLeaveResponse';
+import IdeaLeaveResponse from '../../../src/rest/idea/IdeaLeaveResponse';
 
 const mockRemoveParticipant = jest.fn();
-jest.spyOn(ideaService, 'removeParticipant')
-    .mockImplementation(mockRemoveParticipant);
+jest
+  .spyOn(ideaService, 'removeParticipant')
+  .mockImplementation(mockRemoveParticipant);
 
 describe('Leave Idea', () => {
   test('Happy Path', async () => {

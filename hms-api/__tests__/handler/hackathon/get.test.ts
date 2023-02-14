@@ -3,16 +3,20 @@ import NotFoundError from '../../../src/error/NotFoundError';
 import * as hackathonService from '../../../src/service/hackathon-service';
 import Uuid, {uuid} from '../../../src/util/Uuid';
 import {randomHackathon} from '../../repository/domain/hackathon-maker';
-import HackathonResponse from '../../../src/rest/HackathonResponse';
+import HackathonResponse from '../../../src/rest/hackathon/HackathonResponse';
 import ReferenceNotFoundError from '../../../src/error/ReferenceNotFoundError';
-import {makeParticipant, ParticipantData,} from '../../repository/domain/participant-maker';
+import {
+  makeParticipant,
+  ParticipantData,
+} from '../../repository/domain/participant-maker';
 import {randomUser} from '../../repository/domain/user-maker';
 import {randomCategory} from '../../repository/domain/category-maker';
 import {randomIdea} from '../../repository/domain/idea-maker';
 
 const mockGetHackathon = jest.fn();
-jest.spyOn(hackathonService, 'getHackathonResponse')
-    .mockImplementation((mockGetHackathon));
+jest
+  .spyOn(hackathonService, 'getHackathonResponse')
+  .mockImplementation(mockGetHackathon);
 
 describe('Get Hackathon', () => {
   test('Happy Path', async () => {
@@ -22,11 +26,11 @@ describe('Get Hackathon', () => {
     const user2 = randomUser();
     const participant2 = makeParticipant({userId: user2.id} as ParticipantData);
     const expected = HackathonResponse.from(
-        hackathon,
-        [participant1, participant2],
-        [user1, user2],
-        [randomCategory()],
-        [randomIdea(), randomIdea()],
+      hackathon,
+      [participant1, participant2],
+      [user1, user2],
+      [randomCategory()],
+      [randomIdea(), randomIdea()],
     );
 
     mockGetHackathon.mockResolvedValue(expected);

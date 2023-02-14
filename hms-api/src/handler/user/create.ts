@@ -3,8 +3,8 @@
 import {buildResponse} from '../../rest/responses';
 import {createUser} from '../../service/user-service';
 import {wrapHandler} from '../handler-wrapper';
-import UserCreateRequest from '../../rest/UserCreateRequest';
-import UserCreateResponse from '../../rest/UserCreateResponse';
+import UserCreateRequest from '../../rest/user/UserCreateRequest';
+import UserCreateResponse from '../../rest/user/UserCreateResponse';
 
 export async function create(event, context, callback) {
   await wrapHandler(async () => {

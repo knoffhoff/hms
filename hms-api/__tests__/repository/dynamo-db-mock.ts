@@ -47,6 +47,12 @@ process.env.USER_TABLE = userTable;
 export const userByEmailAddress = 'user-by-email-address-index';
 process.env.USER_BY_EMAIL_ADDRESS_INDEX = userByEmailAddress;
 
+export const ideaCommentTable = 'idea-comment-table';
+process.env.IDEA_COMMENT_TABLE = ideaCommentTable;
+
+export const ideaCommentByIdeaIdIndex = 'ideaComment-by-idea-id-index';
+process.env.IDEA_COMMENT_BY_IDEA_ID_INDEX = ideaCommentByIdeaIdIndex;
+
 export const mockSend = jest.fn();
 beforeEach(mockSend.mockReset);
 
@@ -56,25 +62,23 @@ jest.spyOn(dynamoDb, 'getClient').mockImplementation(() => {
   } as unknown as DynamoDBClient;
 });
 
-export function mockGetItem(item: { [key: string]: AttributeValue }): void {
+export function mockGetItem(item: {[key: string]: AttributeValue}): void {
   mockSend.mockResolvedValue({Item: item} as GetItemCommandOutput);
 }
 
-export function mockGetItemOnce(item: { [key: string]: AttributeValue }): void {
+export function mockGetItemOnce(item: {[key: string]: AttributeValue}): void {
   mockSend.mockResolvedValueOnce({Item: item} as GetItemCommandOutput);
 }
 
-export function mockScan(items: { [key: string]: AttributeValue }[]): void {
+export function mockScan(items: {[key: string]: AttributeValue}[]): void {
   mockSend.mockResolvedValue({Items: items} as ScanCommandOutput);
 }
 
-export function mockQuery(items: { [key: string]: AttributeValue }[]): void {
+export function mockQuery(items: {[key: string]: AttributeValue}[]): void {
   mockSend.mockResolvedValue({Items: items} as QueryCommandOutput);
 }
 
-export function mockQueryOnce(
-    items: { [key: string]: AttributeValue }[],
-): void {
+export function mockQueryOnce(items: {[key: string]: AttributeValue}[]): void {
   mockSend.mockResolvedValueOnce({Items: items} as QueryCommandOutput);
 }
 
@@ -86,9 +90,10 @@ export function mockPutItemOnce(): void {
   mockSend.mockResolvedValueOnce({} as PutItemCommandOutput);
 }
 
-export function mockDeleteItem(
-    attributes: { [key: string]: AttributeValue },
-): void {
-  mockSend.mockResolvedValue(
-      {Attributes: attributes} as DeleteItemCommandOutput);
+export function mockDeleteItem(attributes: {
+  [key: string]: AttributeValue;
+}): void {
+  mockSend.mockResolvedValue({
+    Attributes: attributes,
+  } as DeleteItemCommandOutput);
 }

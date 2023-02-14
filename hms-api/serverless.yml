@@ -32,6 +32,8 @@ custom:
             rawsources: [./dev/init/user-seed.json]
           - table: skill
             rawsources: [./dev/init/skill-seed.json]
+          - table: ideaComment
+            rawsources: [./dev/init/ideaComment-seed.json]
 
 provider:
   name: aws
@@ -56,6 +58,8 @@ provider:
     PARTICIPANT_TABLE: participant
     PARTICIPANT_BY_HACKATHON_ID_INDEX: participant-by-hackathonId
     PARTICIPANT_BY_HACKATHON_ID_USER_ID_INDEX: participant-by-hackathonId-userId
+    IDEA_COMMENT_TABLE: ideaComment
+    IDEA_COMMENT_BY_IDEA_ID_INDEX: ideaComment-by-ideaId
     ADMIN_USERS: ${file(./secrets.json):ADMIN_USERS}
   iam:
     role:
@@ -80,6 +84,8 @@ provider:
             - arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.IDEA_TABLE}/index/*
             - arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.PARTICIPANT_TABLE}
             - arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.PARTICIPANT_TABLE}/index/*
+            - arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.IDEA_COMMENT_TABLE}
+            - arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.IDEA_COMMENT_TABLE}/index/*
 
 functions:
   authorize:
@@ -289,6 +295,47 @@ functions:
       - http:
           path: participant/{id}
           method: delete
+          cors: true
+          authorizer: authorize
+
+  listIdeaCommentsForIdea:
+    handler: src/handler/ideaComment/list.list
+    events:
+      - http:
+          path: idea/{id}/ideaComments
+          method: get
+          cors: true
+          authorizer: authorize
+  createIdeaComment:
+    handler: src/handler/ideaComment/create.create
+    events:
+      - http:
+          path: idea/{id}/ideaComment
+          method: post
+          cors: true
+          authorizer: authorize
+  deleteIdeaComment:
+    handler: src/handler/ideaComment/remove.remove
+    events:
+      - http:
+          path: idea/ideaComment/{id}
+          method: delete
+          cors: true
+          authorizer: authorize
+  editIdeaComment:
+    handler: src/handler/ideaComment/edit.edit
+    events:
+      - http:
+          path: idea/ideaComment/{id}
+          method: put
+          cors: true
+          authorizer: authorize
+  getIdeaComment:
+    handler: src/handler/ideaComment/get.get
+    events:
+      - http:
+          path: idea/ideaComment/{id}
+          method: get
           cors: true
           authorizer: authorize
 

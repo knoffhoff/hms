@@ -1,0 +1,50 @@
+[
+  {
+  "id": {"S": "16a43590-c7ba-4bb1-81d0-b726dea47b7a"},
+    "userId": {"S": "629f52c9-df29-491b-82a4-bdd80806338d"},
+    "ideaId": {"S": "e64163a6-d20e-40d7-a69a-aba4ee82410e"},
+    "text": {"S": "this is a first level test comment with no replyTo id"},
+    "creationDate": {"S": "2023-01-10"},
+    "parentIdeaCommentId": {"NULL": true}
+  },
+  {
+    "id": {"S": "16a43590-c7ba-4bb1-81d0-b726dea47b8b"},
+    "userId": {"S": "629f52c9-df29-491b-82a4-bdd80806338d"},
+    "ideaId": {"S": "e64163a6-d20e-40d7-a69a-aba4ee82410e"},
+    "text": {"S": "this is a second level test answer comment with replyTo id"},
+    "creationDate": {"S": "2023-01-10"},
+    "parentIdeaCommentId": {"S": "16a43590-c7ba-4bb1-81d0-b726dea47b7a"}
+  },
+  {
+    "id": {"S": "16a43590-c7ba-4bb1-81d0-b726dea47b8c"},
+    "userId": {"S": "c3480d57-5670-4364-b0cc-9038a83de628"},
+    "ideaId": {"S": "e64163a6-d20e-40d7-a69a-aba4ee82410e"},
+    "text": {"S": "this is a second level test answer comment with replyTo id"},
+    "creationDate": {"S": "2023-01-10"},
+    "parentIdeaCommentId": {"S": "16a43590-c7ba-4bb1-81d0-b726dea47b7a"}
+  },
+  {
+    "id": {"S": "16a43590-c7ba-4bb1-81d0-b726dea47b9c"},
+    "userId": {"S": "629f52c9-df29-491b-82a4-bdd80806338d"},
+    "ideaId": {"S": "e64163a6-d20e-40d7-a69a-aba4ee82410e"},
+    "text": {"S": "this is a third level test answer comment with replyTo id"},
+    "creationDate": {"S": "2023-01-10"},
+    "parentIdeaCommentId": {"S": "16a43590-c7ba-4bb1-81d0-b726dea47b8b"}
+  },
+  {
+    "id": {"S": "16a43590-c7ba-4bb1-81d0-b726dea47b1d"},
+    "userId": {"S": "c3480d57-5670-4364-b0cc-9038a83de628"},
+    "ideaId": {"S": "e64163a6-d20e-40d7-a69a-aba4ee82410e"},
+    "text": {"S": "this is a first level test comment with no replyTo id"},
+    "creationDate": {"S": "2023-01-10"},
+    "parentIdeaCommentId": {"NULL": true}
+  },
+  {
+    "id": {"S": "26a43590-c7ba-4bb1-81d0-b726dea47b1d"},
+    "userId": {"S": "c3480d57-5670-4364-b0cc-9038a83de628"},
+    "ideaId": {"S": "e64163a6-d20e-40d7-a69a-aba4ee82410e"},
+    "text": {"S": "this is a first level test comment with no replyTo id"},
+    "creationDate": {"S": "2023-01-23"},
+    "parentIdeaCommentId": {"NULL": true}
+  }
+]

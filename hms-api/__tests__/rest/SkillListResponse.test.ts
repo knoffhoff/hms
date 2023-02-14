@@ -1,6 +1,6 @@
-import SkillListResponse from '../../src/rest/SkillListResponse';
+import SkillListResponse from '../../src/rest/skill/SkillListResponse';
 import {makeSkill, SkillData} from '../repository/domain/skill-maker';
-import SkillPreviewResponse from '../../src/rest/SkillPreviewResponse';
+import SkillPreviewResponse from '../../src/rest/skill/SkillPreviewResponse';
 
 describe('Convert From', () => {
   test('Categories are sorted', () => {
@@ -10,12 +10,12 @@ describe('Convert From', () => {
 
     const response = SkillListResponse.from([user3, user1, user2]);
 
-    expect(response).toEqual(new SkillListResponse(
-        [
-          SkillPreviewResponse.from(user1),
-          SkillPreviewResponse.from(user2),
-          SkillPreviewResponse.from(user3),
-        ],
-    ));
+    expect(response).toEqual(
+      new SkillListResponse([
+        SkillPreviewResponse.from(user1),
+        SkillPreviewResponse.from(user2),
+        SkillPreviewResponse.from(user3),
+      ]),
+    );
   });
 });

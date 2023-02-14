@@ -1,12 +1,13 @@
 import {randomUser} from '../../repository/domain/user-maker';
 import {list} from '../../../src/handler/user/list';
 import NotFoundError from '../../../src/error/NotFoundError';
-import UserListResponse from '../../../src/rest/UserListResponse';
+import UserListResponse from '../../../src/rest/user/UserListResponse';
 import * as userService from '../../../src/service/user-service';
 
 const mockGetUserListResponse = jest.fn();
-jest.spyOn(userService, 'getUserListResponse')
-    .mockImplementation(mockGetUserListResponse);
+jest
+  .spyOn(userService, 'getUserListResponse')
+  .mockImplementation(mockGetUserListResponse);
 
 describe('List Users', () => {
   test('Happy Path', async () => {
@@ -14,9 +15,7 @@ describe('List Users', () => {
     const user2 = randomUser();
     const user3 = randomUser();
     const user4 = randomUser();
-    const expected = UserListResponse.from(
-        [user1, user2, user3, user4],
-    );
+    const expected = UserListResponse.from([user1, user2, user3, user4]);
 
     mockGetUserListResponse.mockResolvedValue(expected);
     const callback = jest.fn();

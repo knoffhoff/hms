@@ -1,14 +1,13 @@
 import * as skillService from '../../../src/service/skill-service';
 import {create} from '../../../src/handler/skill/create';
 import {randomSkill} from '../../repository/domain/skill-maker';
-import SkillCreateResponse from '../../../src/rest/SkillCreateResponse';
+import SkillCreateResponse from '../../../src/rest/skill/SkillCreateResponse';
 import ReferenceNotFoundError from '../../../src/error/ReferenceNotFoundError';
 import Skill from '../../../src/repository/domain/Skill';
-import SkillCreateRequest from '../../../src/rest/SkillCreateRequest';
+import SkillCreateRequest from '../../../src/rest/skill/SkillCreateRequest';
 
 const mockCreateSkill = jest.fn();
-jest.spyOn(skillService, 'createSkill')
-    .mockImplementation(mockCreateSkill);
+jest.spyOn(skillService, 'createSkill').mockImplementation(mockCreateSkill);
 
 describe('Create Skill', () => {
   test('Happy Path', async () => {
@@ -19,8 +18,8 @@ describe('Create Skill', () => {
     await create(toEvent(expected), null, callback);
 
     expect(mockCreateSkill).toHaveBeenCalledWith(
-        expected.name,
-        expected.description,
+      expected.name,
+      expected.description,
     );
     expect(callback).toHaveBeenCalledWith(null, {
       statusCode: 201,
@@ -73,8 +72,5 @@ describe('Create Skill', () => {
 });
 
 const toEvent = (skill: Skill): object => ({
-  body: JSON.stringify(new SkillCreateRequest(
-      skill.name,
-      skill.description,
-  )),
+  body: JSON.stringify(new SkillCreateRequest(skill.name, skill.description)),
 });

@@ -3,21 +3,17 @@ import {get} from '../../../src/handler/user/get';
 import NotFoundError from '../../../src/error/NotFoundError';
 import * as userService from '../../../src/service/user-service';
 import Uuid, {uuid} from '../../../src/util/Uuid';
-import UserResponse from '../../../src/rest/UserResponse';
+import UserResponse from '../../../src/rest/user/UserResponse';
 import {randomSkill} from '../../repository/domain/skill-maker';
 import ReferenceNotFoundError from '../../../src/error/ReferenceNotFoundError';
 
 const mockGetUser = jest.fn();
-jest.spyOn(userService, 'getUserResponse')
-    .mockImplementation(mockGetUser);
+jest.spyOn(userService, 'getUserResponse').mockImplementation(mockGetUser);
 
 describe('Get User', () => {
   test('Happy Path', async () => {
     const user = randomUser();
-    const expected = UserResponse.from(
-        user,
-        [randomSkill(), randomSkill()],
-    );
+    const expected = UserResponse.from(user, [randomSkill(), randomSkill()]);
 
     mockGetUser.mockResolvedValue(expected);
     const event = toEvent(user.id);

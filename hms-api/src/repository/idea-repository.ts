@@ -156,6 +156,16 @@ export async function getIdea(id: Uuid): Promise<Idea> {
   throw new NotFoundError(`Idea with id: ${id} not found`);
 }
 
+export async function ideaExists(id: Uuid): Promise<boolean> {
+  const output = await dynamoDBClient.send(
+    new GetItemCommand({
+      TableName: process.env.IDEA_TABLE,
+      Key: {id: {S: id}},
+    }),
+  );
+  return !!output.Item;
+}
+
 export async function deleteIdea(id: Uuid): Promise<Idea> {
   const output = await dynamoDBClient.send(
     new DeleteItemCommand({

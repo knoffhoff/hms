@@ -2,7 +2,7 @@ import {
   HackathonData,
   makeHackathon,
 } from '../repository/domain/hackathon-maker';
-import HackathonPreviewResponse from '../../src/rest/HackathonPreviewResponse';
+import HackathonPreviewResponse from '../../src/rest/hackathon/HackathonPreviewResponse';
 
 describe('Compare', () => {
   test('All values different', () => {
