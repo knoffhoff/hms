@@ -17,7 +17,7 @@ const useStyles = createStyles((theme) => ({
 
   switch: {
     position: 'absolute',
-    bottom: -17,
+    bottom: -11,
     left: -50,
   },
 
@@ -29,7 +29,7 @@ const useStyles = createStyles((theme) => ({
   },
 
   iconLight: {
-    left: -45,
+    left: -48,
     color: theme.white,
   },
 
