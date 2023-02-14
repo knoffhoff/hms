@@ -1,16 +1,19 @@
-import {makeParticipant, ParticipantData,} from '../../repository/domain/participant-maker';
+import {
+  makeParticipant,
+  ParticipantData,
+} from '../../repository/domain/participant-maker';
 import {list} from '../../../src/handler/participant/list';
 import {randomUser} from '../../repository/domain/user-maker';
 import Uuid, {uuid} from '../../../src/util/Uuid';
 import NotFoundError from '../../../src/error/NotFoundError';
-import ParticipantListResponse from '../../../src/rest/ParticipantListResponse';
+import ParticipantListResponse from '../../../src/rest/participant/ParticipantListResponse';
 import ReferenceNotFoundError from '../../../src/error/ReferenceNotFoundError';
 import * as participantService from '../../../src/service/participant-service';
 
 const mockGetParticipantListResponse = jest.fn();
 jest
-.spyOn(participantService, 'getParticipantListResponse')
-.mockImplementation(mockGetParticipantListResponse);
+  .spyOn(participantService, 'getParticipantListResponse')
+  .mockImplementation(mockGetParticipantListResponse);
 
 describe('List Participants', () => {
   test('Happy Path', async () => {
@@ -30,7 +33,7 @@ describe('List Participants', () => {
     const expected = ParticipantListResponse.from(
       [participant1, participant2, participant3],
       [user1, user2, user3],
-      hackathonId
+      hackathonId,
     );
 
     mockGetParticipantListResponse.mockResolvedValue(expected);
@@ -103,7 +106,7 @@ describe('List Participants', () => {
         'Access-Control-Allow-Credentials': true,
         'content-type': 'application/json',
       },
-      body: JSON.stringify({ errorMessage: errorMessage }),
+      body: JSON.stringify({errorMessage: errorMessage}),
     });
   });
 });

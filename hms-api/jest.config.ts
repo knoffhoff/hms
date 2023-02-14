@@ -1,6 +1,7 @@
 export default {
   clearMocks: true,
   collectCoverage: true,
+  collectCoverageFrom: ['./src/**'],
   coverageDirectory: 'coverage',
   coverageProvider: 'v8',
   transform: {

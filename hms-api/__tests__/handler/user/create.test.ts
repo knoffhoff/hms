@@ -1,14 +1,13 @@
 import * as userService from '../../../src/service/user-service';
 import {create} from '../../../src/handler/user/create';
 import {randomUser} from '../../repository/domain/user-maker';
-import UserCreateResponse from '../../../src/rest/UserCreateResponse';
+import UserCreateResponse from '../../../src/rest/user/UserCreateResponse';
 import ReferenceNotFoundError from '../../../src/error/ReferenceNotFoundError';
 import User from '../../../src/repository/domain/User';
-import UserCreateRequest from '../../../src/rest/UserCreateRequest';
+import UserCreateRequest from '../../../src/rest/user/UserCreateRequest';
 
 const mockCreateUser = jest.fn();
-jest.spyOn(userService, 'createUser')
-    .mockImplementation(mockCreateUser);
+jest.spyOn(userService, 'createUser').mockImplementation(mockCreateUser);
 
 describe('Create User', () => {
   test('Happy Path', async () => {
@@ -20,11 +19,11 @@ describe('Create User', () => {
     await create(event, null, callback);
 
     expect(mockCreateUser).toHaveBeenCalledWith(
-        expected.lastName,
-        expected.firstName,
-        expected.emailAddress,
-        expected.skills,
-        expected.imageUrl,
+      expected.lastName,
+      expected.firstName,
+      expected.emailAddress,
+      expected.skills,
+      expected.imageUrl,
     );
     expect(callback).toHaveBeenCalledWith(null, {
       statusCode: 201,
@@ -77,11 +76,13 @@ describe('Create User', () => {
 });
 
 const toEvent = (user: User): object => ({
-  body: JSON.stringify(new UserCreateRequest(
+  body: JSON.stringify(
+    new UserCreateRequest(
       user.lastName,
       user.firstName,
       user.emailAddress,
       user.skills,
       user.imageUrl,
-  )),
+    ),
+  ),
 });

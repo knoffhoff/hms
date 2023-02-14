@@ -2,7 +2,7 @@ import {buildResponse} from '../../rest/responses';
 import {removeIdea} from '../../service/idea-service';
 import {wrapHandler} from '../handler-wrapper';
 import Uuid from '../../util/Uuid';
-import IdeaDeletionResponse from '../../rest/IdeaDeleteResponse';
+import IdeaDeletionResponse from '../../rest/idea/IdeaDeleteResponse';
 
 // eslint-disable-next-line require-jsdoc
 export async function remove(event, context, callback) {

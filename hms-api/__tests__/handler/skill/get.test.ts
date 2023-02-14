@@ -3,11 +3,10 @@ import {get} from '../../../src/handler/skill/get';
 import NotFoundError from '../../../src/error/NotFoundError';
 import * as skillService from '../../../src/service/skill-service';
 import Uuid, {uuid} from '../../../src/util/Uuid';
-import SkillResponse from '../../../src/rest/SkillResponse';
+import SkillResponse from '../../../src/rest/skill/SkillResponse';
 
 const mockGetSkill = jest.fn();
-jest.spyOn(skillService, 'getSkillResponse')
-    .mockImplementation((mockGetSkill));
+jest.spyOn(skillService, 'getSkillResponse').mockImplementation(mockGetSkill);
 
 describe('Get Skill', () => {
   test('Happy Path', async () => {

@@ -1,14 +1,15 @@
 import * as categoryService from '../../../src/service/category-service';
 import {create} from '../../../src/handler/category/create';
 import {randomCategory} from '../../repository/domain/category-maker';
-import CategoryCreateResponse from '../../../src/rest/CategoryCreateResponse';
+import CategoryCreateResponse from '../../../src/rest/category/CategoryCreateResponse';
 import ReferenceNotFoundError from '../../../src/error/ReferenceNotFoundError';
 import Category from '../../../src/repository/domain/Category';
-import CategoryCreateRequest from '../../../src/rest/CategoryCreateRequest';
+import CategoryCreateRequest from '../../../src/rest/category/CategoryCreateRequest';
 
 const mockCreateCategory = jest.fn();
-jest.spyOn(categoryService, 'createCategory')
-    .mockImplementation(mockCreateCategory);
+jest
+  .spyOn(categoryService, 'createCategory')
+  .mockImplementation(mockCreateCategory);
 
 describe('Create Category', () => {
   test('Happy Path', async () => {
@@ -20,9 +21,9 @@ describe('Create Category', () => {
     await create(event, null, callback);
 
     expect(mockCreateCategory).toHaveBeenCalledWith(
-        expected.title,
-        expected.description,
-        expected.hackathonId,
+      expected.title,
+      expected.description,
+      expected.hackathonId,
     );
     expect(callback).toHaveBeenCalledWith(null, {
       statusCode: 201,
@@ -76,9 +77,10 @@ describe('Create Category', () => {
 
 const toEvent = (category: Category): object => ({
   body: JSON.stringify(
-      new CategoryCreateRequest(
-          category.title,
-          category.description,
-          category.hackathonId),
+    new CategoryCreateRequest(
+      category.title,
+      category.description,
+      category.hackathonId,
+    ),
   ),
 });

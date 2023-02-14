@@ -4,12 +4,13 @@ import NotFoundError from '../../../src/error/NotFoundError';
 import * as categoryService from '../../../src/service/category-service';
 import Uuid, {uuid} from '../../../src/util/Uuid';
 import {randomHackathon} from '../../repository/domain/hackathon-maker';
-import CategoryResponse from '../../../src/rest/CategoryResponse';
+import CategoryResponse from '../../../src/rest/category/CategoryResponse';
 import ReferenceNotFoundError from '../../../src/error/ReferenceNotFoundError';
 
 const mockGetCategory = jest.fn();
-jest.spyOn(categoryService, 'getCategoryResponse')
-    .mockImplementation((mockGetCategory));
+jest
+  .spyOn(categoryService, 'getCategoryResponse')
+  .mockImplementation(mockGetCategory);
 
 describe('Get Category', () => {
   test('Happy Path', async () => {

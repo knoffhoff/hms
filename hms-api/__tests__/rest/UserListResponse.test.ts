@@ -1,6 +1,6 @@
-import UserListResponse from '../../src/rest/UserListResponse';
+import UserListResponse from '../../src/rest/user/UserListResponse';
 import {makeUser, UserData} from '../repository/domain/user-maker';
-import UserPreviewResponse from '../../src/rest/UserPreviewResponse';
+import UserPreviewResponse from '../../src/rest/user/UserPreviewResponse';
 
 describe('Convert From', () => {
   test('Categories are sorted', () => {
@@ -10,12 +10,12 @@ describe('Convert From', () => {
 
     const response = UserListResponse.from([user3, user1, user2]);
 
-    expect(response).toEqual(new UserListResponse(
-        [
-          UserPreviewResponse.from(user1),
-          UserPreviewResponse.from(user2),
-          UserPreviewResponse.from(user3),
-        ],
-    ));
+    expect(response).toEqual(
+      new UserListResponse([
+        UserPreviewResponse.from(user1),
+        UserPreviewResponse.from(user2),
+        UserPreviewResponse.from(user3),
+      ]),
+    );
   });
 });

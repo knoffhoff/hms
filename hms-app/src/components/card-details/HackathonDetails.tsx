@@ -30,7 +30,6 @@ import HackathonForm from '../input-forms/HackathonForm'
 import CategoryDetails from './CategoryDetails'
 import { Link } from 'react-router-dom'
 import { styles } from '../../common/styles'
-import { RichTextEditor } from '@mantine/rte'
 import { NULL_DATE } from '../../common/constants'
 import HackathonHeader from '../HackathonHeader'
 import { useMsal } from '@azure/msal-react'
@@ -41,6 +40,7 @@ import {
 } from '../../common/colors'
 import { showNotification, updateNotification } from '@mantine/notifications'
 import { Check, X } from 'tabler-icons-react'
+import { RichTextEditor } from '@mantine/rte'
 
 type IProps = {
   hackathonId: string
@@ -59,7 +59,6 @@ export default function HackathonDetails(props: IProps) {
   const [hackathonData, setHackathonData] = useState({} as Hackathon)
   const [ideaData, setIdeaData] = useState<Idea>()
   const [relevantIdeaList, setRelevantIdeaList] = useState([] as Idea[])
-  const [value, onChange] = useState(hackathonData.description)
   const [votingOpened, setVotingOpened] = useState<boolean>(false)
 
   const loadSelectedHackathon = () => {
@@ -67,7 +66,6 @@ export default function HackathonDetails(props: IProps) {
       (data) => {
         setHackathonData(data)
         setVotingOpened(data.votingOpened)
-        onChange(data.description)
         setIsHackathonLoading(false)
         setIsHackathonError(false)
       },
@@ -297,9 +295,11 @@ export default function HackathonDetails(props: IProps) {
 
             {type === HackathonDetailsType.Archive && hackathonId !== '' && (
               <Container mb={25}>
-                <RichTextEditor readOnly value={value!} onChange={onChange}>
-                  {hackathonData.description}
-                </RichTextEditor>
+                <RichTextEditor
+                  readOnly
+                  value={hackathonData.description || ''}
+                  id='hackathonDescriptionEditor'
+                />
               </Container>
             )}
 
@@ -347,9 +347,11 @@ export default function HackathonDetails(props: IProps) {
 
             <Card.Section className={classes.borderSection}>
               <Text className={classes.title}>Description:</Text>
-              <RichTextEditor readOnly value={value!} onChange={onChange}>
-                {hackathonData.description}
-              </RichTextEditor>
+              <RichTextEditor
+                readOnly
+                value={hackathonData.description || ''}
+                id='hackathonDescriptionEditor'
+              />
             </Card.Section>
 
             <Accordion chevronPosition={'left'}>

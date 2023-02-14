@@ -1,8 +1,8 @@
 import {buildResponse} from '../../rest/responses';
 import {createParticipant} from '../../service/participant-service';
 import {wrapHandler} from '../handler-wrapper';
-import ParticipantCreateRequest from '../../rest/ParticipantCreateRequest';
-import ParticipantCreateResponse from '../../rest/ParticipantCreateResponse';
+import ParticipantCreateRequest from '../../rest/participant/ParticipantCreateRequest';
+import ParticipantCreateResponse from '../../rest/participant/ParticipantCreateResponse';
 
 // eslint-disable-next-line require-jsdoc
 export async function create(event, context, callback) {

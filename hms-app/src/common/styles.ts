@@ -46,6 +46,12 @@ export const styles = createStyles((theme) => ({
     lineHeight: '1.5em',
   },
 
+  smallText: {
+    fontSize: theme.fontSizes.xs,
+    lineHeight: '1.5em',
+    color: theme.colors.gray[6],
+  },
+
   presentationText: {
     fontSize: theme.fontSizes.md,
     marginTop: '1vh',

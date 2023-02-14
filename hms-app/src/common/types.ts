@@ -164,6 +164,15 @@ export type Participant = {
   creationDate: Date
 }
 
+export type IdeaComment = {
+  id: string
+  user: User
+  ideaId: string
+  text: string
+  creationDate: Date
+  parentIdeaCommentId?: string
+}
+
 export type UserPreview = {
   id: string
   lastName?: string

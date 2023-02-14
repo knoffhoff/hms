@@ -1,11 +1,10 @@
 import * as ideaService from '../../../src/service/idea-service';
 import {remove} from '../../../src/handler/idea/remove';
-import IdeaDeleteResponse from '../../../src/rest/IdeaDeleteResponse';
+import IdeaDeleteResponse from '../../../src/rest/idea/IdeaDeleteResponse';
 import Uuid, {uuid} from '../../../src/util/Uuid';
 
 const mockRemoveIdea = jest.fn();
-jest.spyOn(ideaService, 'removeIdea')
-    .mockImplementation(mockRemoveIdea);
+jest.spyOn(ideaService, 'removeIdea').mockImplementation(mockRemoveIdea);
 
 describe('Delete Idea', () => {
   test('Happy Path', async () => {
