@@ -2,21 +2,19 @@ import {
   Badge,
   Center,
   Container,
-  Text,
   Title,
   useMantineColorScheme,
 } from '@mantine/core'
 import React from 'react'
-import { styles } from '../common/styles'
 import { Hackathon } from '../common/types'
 import { MAX_DATE } from '../common/constants'
+import { RichTextEditor } from '@mantine/rte'
 
 type IProps = {
   hackathonData: Hackathon
 }
 
 export default function HackathonHeader(props: IProps) {
-  const { classes } = styles()
   const theme = useMantineColorScheme()
   const { hackathonData } = props
   const isHackathonWithoutDate = () =>
@@ -28,6 +26,15 @@ export default function HackathonHeader(props: IProps) {
         <Center>
           <Title>{hackathonData.title}</Title>
         </Center>
+        {hackathonData.description && (
+          <Center>
+            <RichTextEditor
+              readOnly
+              value={hackathonData.description || ''}
+              id='hackathonDescriptionEditor'
+            />
+          </Center>
+        )}
         <Center mt={10}>
           <Badge
             size={'lg'}

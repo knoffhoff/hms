@@ -110,6 +110,8 @@ const HeroHeader = (props: { nextHackathon: HackathonSerializable }) => {
   const { classes } = useStyles()
   const today = new Date()
   today.setHours(0, 0, 0, 0)
+  const isHackathonWithoutDate = () =>
+    new Date(props.nextHackathon.startDate) > MAX_DATE
 
   return (
     <Container className={classes.wrapper} size={1400}>
@@ -119,7 +121,8 @@ const HeroHeader = (props: { nextHackathon: HackathonSerializable }) => {
       <Dots className={classes.dots} style={{ right: 0, top: 60 }} />
 
       <div className={classes.inner}>
-        {new Date(props.nextHackathon.startDate) > today && (
+        {new Date(props.nextHackathon.startDate) > today &&
+        !isHackathonWithoutDate() ? (
           <Title className={classes.title}>
             Upcoming{' '}
             <Text component='span' className={classes.highlight} inherit>
@@ -131,6 +134,13 @@ const HeroHeader = (props: { nextHackathon: HackathonSerializable }) => {
                 <Countdown date={props.nextHackathon.startDate} />
               )}
             </Center>
+          </Title>
+        ) : (
+          <Title className={classes.title}>
+            Upcoming{' '}
+            <Text component='span' className={classes.highlight} inherit>
+              {props.nextHackathon.title}
+            </Text>
           </Title>
         )}
 
@@ -159,7 +169,7 @@ const HeroHeader = (props: { nextHackathon: HackathonSerializable }) => {
             }
             radius={'xs'}
           >
-            {new Date(props.nextHackathon.startDate) > MAX_DATE
+            {isHackathonWithoutDate()
               ? 'To be announced'
               : `${new Date(
                   props.nextHackathon.startDate

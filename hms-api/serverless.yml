@@ -162,14 +162,14 @@ functions:
           method: get
           cors: true
           authorizer: authorize
-    listAllIdeasForHackathon:
-      handler: src/handler/idea/list.listHackathonIdeas
-      events:
-        - http:
-            path: ideas/hackathon/{id}
-            method: get
-            cors: true
-            authorizer: authorize
+  listAllIdeasForHackathon:
+    handler: src/handler/idea/list.listHackathonIdeas
+    events:
+      - http:
+          path: ideas/hackathon/{id}
+          method: get
+          cors: true
+          authorizer: authorize
   getIdea:
     handler: src/handler/idea/get.get
     events:
@@ -204,6 +204,7 @@ functions:
           method: put
           cors: true
           authorizer: authorize
+
   voteForIdea:
     handler: src/handler/idea/vote.vote
     events:

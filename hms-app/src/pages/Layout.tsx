@@ -25,12 +25,20 @@ import { useIsAuthenticated, useMsal } from '@azure/msal-react'
 import Login from './Login'
 import { PAGE_BACKGROUND_DARK, PAGE_BACKGROUND_LIGHT } from '../common/colors'
 import { getProfile } from '../common/actionAuth'
-import { ActiveDirectoryUser, User, UserPreview } from '../common/types'
+import {
+  ActiveDirectoryUser,
+  HackathonPreview,
+  User,
+  UserPreview,
+} from '../common/types'
 import { setUserState, UserSerializable } from '../common/redux/userSlice'
 
 const USE_AUTH = process.env.REACT_APP_USE_AZURE_AUTH === 'true'
 
 export const UserContext = createContext({} as UserPreview | undefined)
+export const CurrentHackathonContext = createContext(
+  {} as HackathonPreview | undefined
+)
 const defaultColorSchemeLocalStorageKey = 'color-scheme'
 const defaultColorScheme: ColorScheme = 'light'
 const toggleColorScheme = (colorScheme: ColorScheme) =>
@@ -45,6 +53,7 @@ const Layout = () => {
     defaultColorSchemeLocalStorageKey,
     defaultColorScheme
   )
+  const [currentHackathon, setCurrentHackathon] = useState<HackathonPreview>()
   const stateUser = useAppSelector((state) => state.user.user)
   const [menuLinks, setMenuLinks] = useState<{ link: string; label: string }[]>(
     []
@@ -143,9 +152,17 @@ const Layout = () => {
       const hackathons = await getListOfHackathons(instance)
       dispatch(setHackathonList(hackathons.map(mapHackathonToSerializable)))
 
+      const today = new Date()
       const nextHackathon = hackathons.find((hackathon) => {
-        return new Date(hackathon.endDate) > new Date()
+        return new Date(hackathon.startDate) > today
       })
+
+      const current = hackathons.find((hackathon) => {
+        const endDatePlus1 = new Date(hackathon.endDate)
+        endDatePlus1.setDate(endDatePlus1.getDate() + 1)
+        return new Date(hackathon.startDate) <= today && endDatePlus1 >= today
+      })
+      setCurrentHackathon(current)
 
       if (nextHackathon)
         dispatch(setNextHackathon(mapHackathonToSerializable(nextHackathon)))
@@ -162,28 +179,30 @@ const Layout = () => {
       <MantineProvider theme={{ colorScheme }} withGlobalStyles>
         {((isAuthenticated && user !== undefined) || !USE_AUTH) && (
           <UserContext.Provider value={user}>
-            <AppShell
-              header={
-                <HeaderMenu
-                  links={menuLinks}
-                  hackathonLinks={hackLinks}
-                  adminLinks={adminLinks}
-                />
-              }
-              styles={(theme) => ({
-                main: {
-                  backgroundColor:
-                    theme.colorScheme === 'light'
-                      ? PAGE_BACKGROUND_LIGHT
-                      : PAGE_BACKGROUND_DARK,
-                  minHeight: 'calc(100vh - 56px)',
-                },
-              })}
-            >
-              <Container size={'xl'} pt={50} pb={100}>
-                <Outlet />
-              </Container>
-            </AppShell>
+            <CurrentHackathonContext.Provider value={currentHackathon}>
+              <AppShell
+                header={
+                  <HeaderMenu
+                    links={menuLinks}
+                    hackathonLinks={hackLinks}
+                    adminLinks={adminLinks}
+                  />
+                }
+                styles={(theme) => ({
+                  main: {
+                    backgroundColor:
+                      theme.colorScheme === 'light'
+                        ? PAGE_BACKGROUND_LIGHT
+                        : PAGE_BACKGROUND_DARK,
+                    minHeight: 'calc(100vh - 56px)',
+                  },
+                })}
+              >
+                <Container size={'xl'} pt={50} pb={100}>
+                  <Outlet />
+                </Container>
+              </AppShell>
+            </CurrentHackathonContext.Provider>
           </UserContext.Provider>
         )}
         {(!isAuthenticated || !user) && USE_AUTH && (
