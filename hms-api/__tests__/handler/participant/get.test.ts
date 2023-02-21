@@ -22,7 +22,7 @@ describe('Get Participant', () => {
       randomHackathon(),
     );
 
-    mockGetParticipant.mockResolvedValue(expected);
+    mockGetParticipant.mockResolvedValueOnce(expected);
     const event = toEvent(participant.id);
     const callback = jest.fn();
 

@@ -12,7 +12,7 @@ jest.spyOn(userService, 'createUser').mockImplementation(mockCreateUser);
 describe('Create User', () => {
   test('Happy Path', async () => {
     const expected = randomUser();
-    mockCreateUser.mockResolvedValue(expected);
+    mockCreateUser.mockResolvedValueOnce(expected);
     const event = toEvent(expected);
     const callback = jest.fn();
 

@@ -13,7 +13,7 @@ describe('Get Skill', () => {
     const skill = randomSkill();
     const expected = SkillResponse.from(skill);
 
-    mockGetSkill.mockResolvedValue(expected);
+    mockGetSkill.mockResolvedValueOnce(expected);
     const event = toEvent(skill.id);
     const callback = jest.fn();
 

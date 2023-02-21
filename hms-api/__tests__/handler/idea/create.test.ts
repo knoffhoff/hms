@@ -12,7 +12,7 @@ jest.spyOn(ideaService, 'createIdea').mockImplementation(mockCreateIdea);
 describe('Create Idea', () => {
   test('Happy Path', async () => {
     const expected = randomIdea();
-    mockCreateIdea.mockResolvedValue(expected);
+    mockCreateIdea.mockResolvedValueOnce(expected);
     const callback = jest.fn();
 
     await create(toEvent(expected), null, callback);

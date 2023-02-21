@@ -17,7 +17,7 @@ describe('List Skills', () => {
     const skill4 = randomSkill();
     const expected = SkillListResponse.from([skill1, skill2, skill3, skill4]);
 
-    mockGetSkillListResponse.mockResolvedValue(expected);
+    mockGetSkillListResponse.mockResolvedValueOnce(expected);
     const callback = jest.fn();
 
     await list({}, null, callback);

@@ -22,7 +22,7 @@ describe('List Categories', () => {
       hackathonId,
     );
 
-    mockGetCategoryListResponse.mockResolvedValue(expected);
+    mockGetCategoryListResponse.mockResolvedValueOnce(expected);
     const callback = jest.fn();
 
     await list(toEvent(hackathonId), null, callback);
