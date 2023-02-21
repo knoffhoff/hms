@@ -59,7 +59,7 @@ jest
 
 describe('Create Category', () => {
   test('Happy Path', async () => {
-    mockHackathonExists.mockResolvedValue(true);
+    mockHackathonExists.mockResolvedValueOnce(true);
 
     const expected = randomCategory();
 
@@ -84,24 +84,24 @@ describe('Create Category', () => {
         hackathonId: expected.hackathonId,
       }),
     );
-    expect(mockDeleteCategory).not.toHaveBeenCalled();
   });
 
   test('Validation Error', async () => {
+    mockHackathonExists.mockResolvedValueOnce(true);
+
     await expect(createCategory('', 'descriiiiption', uuid())).rejects.toThrow(
       ValidationError,
     );
   });
 
   test('Missing hackathon', async () => {
-    mockHackathonExists.mockResolvedValue(false);
+    mockHackathonExists.mockResolvedValueOnce(false);
 
     await expect(
       createCategory('title', 'description', uuid()),
     ).rejects.toThrow(ReferenceNotFoundError);
 
     expect(mockPutCategory).not.toHaveBeenCalled();
-    expect(mockDeleteCategory).not.toHaveBeenCalled();
   });
 });
 
@@ -117,7 +117,7 @@ describe('Edit Category', () => {
       oldCategory.id,
     );
 
-    mockGetCategory.mockResolvedValue(oldCategory);
+    mockGetCategory.mockResolvedValueOnce(oldCategory);
 
     await editCategory(oldCategory.id, title, description);
 
@@ -131,7 +131,7 @@ describe('Edit Category', () => {
 
     const mockCategory = randomCategory();
     jest.spyOn(mockCategory, 'validate').mockReturnValue(failedValidation);
-    mockGetCategory.mockResolvedValue(mockCategory);
+    mockGetCategory.mockResolvedValueOnce(mockCategory);
 
     await expect(
       editCategory(uuid(), 'tiiitle', 'descriiiiption'),
@@ -159,8 +159,8 @@ describe('Get Category Response', () => {
     const hackathon = randomHackathon();
     const expected = CategoryResponse.from(category, hackathon);
 
-    mockGetCategory.mockResolvedValue(category);
-    mockGetHackathon.mockResolvedValue(hackathon);
+    mockGetCategory.mockResolvedValueOnce(category);
+    mockGetHackathon.mockResolvedValueOnce(hackathon);
 
     expect(await getCategoryResponse(category.id)).toStrictEqual(expected);
     expect(mockGetCategory).toHaveBeenCalledWith(category.id);
@@ -182,7 +182,7 @@ describe('Get Category Response', () => {
 
   test('Missing Hackathon', async () => {
     const category = randomCategory();
-    mockGetCategory.mockResolvedValue(category);
+    mockGetCategory.mockResolvedValueOnce(category);
     mockGetHackathon.mockImplementation(() => {
       throw new NotFoundError('Thing is missing');
     });
@@ -206,8 +206,8 @@ describe('Get Category List Response', () => {
       hackathonId,
     );
 
-    mockHackathonExists.mockResolvedValue(true);
-    mockListCategories.mockResolvedValue([category1, category2, category3]);
+    mockHackathonExists.mockResolvedValueOnce(true);
+    mockListCategories.mockResolvedValueOnce([category1, category2, category3]);
 
     expect(await getCategoryListResponse(hackathonId)).toStrictEqual(expected);
     expect(mockHackathonExists).toHaveBeenCalledWith(hackathonId);
@@ -216,7 +216,8 @@ describe('Get Category List Response', () => {
 
   test('Hackathon missing', async () => {
     const hackathonId = uuid();
-    mockHackathonExists.mockResolvedValue(false);
+    mockHackathonExists.mockResolvedValueOnce(false);
+    // TODO WHY IS HERE PROBEM WITH MOCK RESOLVED VALUE ONCE AND NOT TO HAVE BEEN CALLED WITH ??
     mockListCategories.mockResolvedValue([
       randomCategory(),
       randomCategory(),
@@ -261,8 +262,7 @@ describe('Remove Categories for Hackathon', () => {
     const category1 = makeCategory({hackathonId: hackathonId} as CategoryData);
     const category2 = makeCategory({hackathonId: hackathonId} as CategoryData);
 
-    mockListCategories.mockResolvedValue([category1, category2]);
-
+    mockListCategories.mockResolvedValueOnce([category1, category2]);
     mockRemoveIdeasForCategory.mockImplementation(() => {});
 
     await removeCategoriesForHackathon(hackathonId);

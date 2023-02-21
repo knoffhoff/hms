@@ -97,7 +97,7 @@ describe('Create Hackathon', () => {
 
     const expected = randomHackathon();
 
-    mockCreateCategory.mockResolvedValue(randomCategory());
+    mockCreateCategory.mockResolvedValueOnce(randomCategory());
 
     const actual = await createHackathon(
       expected.title,
@@ -189,7 +189,7 @@ describe('Edit Hackathon', () => {
       votingOpened,
     );
 
-    mockGetHackathon.mockResolvedValue(oldHackathon);
+    mockGetHackathon.mockResolvedValueOnce(oldHackathon);
 
     await editHackathon(
       oldHackathon.id,
@@ -210,7 +210,7 @@ describe('Edit Hackathon', () => {
 
     const mockHackathon = randomHackathon();
     jest.spyOn(mockHackathon, 'validate').mockReturnValue(failedValidation);
-    mockGetHackathon.mockResolvedValue(mockHackathon);
+    mockGetHackathon.mockResolvedValueOnce(mockHackathon);
 
     await expect(
       editHackathon(
@@ -227,6 +227,7 @@ describe('Edit Hackathon', () => {
 
   test('StartDate > EndDate', async () => {
     const expected = randomHackathon();
+    mockGetHackathon.mockResolvedValueOnce(expected);
 
     await expect(
       editHackathon(
@@ -245,6 +246,7 @@ describe('Edit Hackathon', () => {
 
   test('StartDate === EndDate', async () => {
     const expected = randomHackathon();
+    mockGetHackathon.mockResolvedValueOnce(expected);
 
     await expect(
       editHackathon(
@@ -305,11 +307,11 @@ describe('Get Hackathon Response', () => {
       [idea1, idea2, idea3],
     );
 
-    mockListParticipants.mockResolvedValue([participant1, participant2]);
-    mockGetUsers.mockResolvedValue([user1, user2]);
-    mockListCategories.mockResolvedValue([category1, category2]);
-    mockListIdeas.mockResolvedValue([idea1, idea2, idea3]);
-    mockGetHackathon.mockResolvedValue(hackathon);
+    mockListParticipants.mockResolvedValueOnce([participant1, participant2]);
+    mockGetUsers.mockResolvedValueOnce([user1, user2]);
+    mockListCategories.mockResolvedValueOnce([category1, category2]);
+    mockListIdeas.mockResolvedValueOnce([idea1, idea2, idea3]);
+    mockGetHackathon.mockResolvedValueOnce(hackathon);
 
     expect(await getHackathonResponse(hackathon.id)).toStrictEqual(expected);
     expect(mockListParticipants).toHaveBeenCalledWith(hackathon.id);
@@ -326,9 +328,12 @@ describe('Get Hackathon Response', () => {
     const user2 = randomUser();
     const participant2 = makeParticipant({userId: user2.id} as ParticipantData);
 
-    mockListParticipants.mockResolvedValue([participant1, participant2]);
-    mockGetUsers.mockResolvedValue([user1, user2]);
-    mockListCategories.mockResolvedValue([randomCategory(), randomCategory()]);
+    mockListParticipants.mockResolvedValueOnce([participant1, participant2]);
+    mockGetUsers.mockResolvedValueOnce([user1, user2]);
+    mockListCategories.mockResolvedValueOnce([
+      randomCategory(),
+      randomCategory(),
+    ]);
     mockListIdeas.mockImplementation(() => {
       throw new NotFoundError('Missing the things');
     });
@@ -350,8 +355,8 @@ describe('Get Hackathon Response', () => {
     const user2 = randomUser();
     const participant2 = makeParticipant({userId: user2.id} as ParticipantData);
 
-    mockListParticipants.mockResolvedValue([participant1, participant2]);
-    mockGetUsers.mockResolvedValue([user1, user2]);
+    mockListParticipants.mockResolvedValueOnce([participant1, participant2]);
+    mockGetUsers.mockResolvedValueOnce([user1, user2]);
     mockListCategories.mockImplementation(() => {
       throw new NotFoundError('Missing the things');
     });
@@ -371,7 +376,7 @@ describe('Get Hackathon Response', () => {
     const participant1 = randomParticipant();
     const participant2 = randomParticipant();
 
-    mockListParticipants.mockResolvedValue([participant1, participant2]);
+    mockListParticipants.mockResolvedValueOnce([participant1, participant2]);
     mockGetUsers.mockImplementation(() => {
       throw new NotFoundError('Missing the things');
     });
@@ -417,7 +422,11 @@ describe('Get Hackathon List Response', () => {
       hackathon3,
     ]);
 
-    mockListHackathons.mockResolvedValue([hackathon1, hackathon2, hackathon3]);
+    mockListHackathons.mockResolvedValueOnce([
+      hackathon1,
+      hackathon2,
+      hackathon3,
+    ]);
 
     expect(await getHackathonListResponse()).toStrictEqual(expected);
     expect(mockListHackathons).toHaveBeenCalled();

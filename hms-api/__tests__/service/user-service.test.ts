@@ -52,7 +52,7 @@ jest.spyOn(userRepository, 'deleteUser').mockImplementation(mockDeleteUser);
 
 describe('Create User', () => {
   test('Validation Error', async () => {
-    mockSkillExists.mockResolvedValue(true);
+    mockSkillExists.mockResolvedValueOnce(true);
 
     await expect(
       createUser('lastNaaaaaame', '', 'e.m@i.l', [uuid()], 'image.url'),
@@ -60,7 +60,7 @@ describe('Create User', () => {
   });
 
   test('Missing Skill', async () => {
-    mockSkillExists.mockResolvedValue(false);
+    mockSkillExists.mockResolvedValueOnce(false);
 
     await expect(
       createUser(
@@ -76,7 +76,7 @@ describe('Create User', () => {
   });
 
   test('Happy Path', async () => {
-    mockSkillExists.mockResolvedValue(true);
+    mockSkillExists.mockResolvedValueOnce(true);
 
     const expected = randomUser();
 
@@ -128,7 +128,7 @@ describe('Edit User', () => {
       oldUser.creationDate,
     );
 
-    mockGetUser.mockResolvedValue(oldUser);
+    mockGetUser.mockResolvedValueOnce(oldUser);
 
     await editUser(oldUser.id, lastName, firstName, skills, imageUrl);
 
@@ -141,7 +141,7 @@ describe('Edit User', () => {
 
     const mockUser = randomCategory();
     jest.spyOn(mockUser, 'validate').mockReturnValue(failedValidation);
-    mockGetUser.mockResolvedValue(mockUser);
+    mockGetUser.mockResolvedValueOnce(mockUser);
 
     await expect(
       editUser(
@@ -178,8 +178,8 @@ describe('Get User Response', () => {
 
     const expected = UserResponse.from(user, [skill1, skill2, skill3]);
 
-    mockGetUser.mockResolvedValue(user);
-    mockGetSkills.mockResolvedValue([skill1, skill2, skill3]);
+    mockGetUser.mockResolvedValueOnce(user);
+    mockGetSkills.mockResolvedValueOnce([skill1, skill2, skill3]);
 
     expect(await getUserResponse(user.id)).toStrictEqual(expected);
     expect(mockGetUser).toHaveBeenCalledWith(user.id);
@@ -189,7 +189,7 @@ describe('Get User Response', () => {
   test('Missing Skills', async () => {
     const user = randomUser();
 
-    mockGetUser.mockResolvedValue(user);
+    mockGetUser.mockResolvedValueOnce(user);
     mockGetSkills.mockImplementation(() => {
       throw new NotFoundError('Not a chance');
     });
@@ -220,7 +220,7 @@ describe('Get User Exists Response', () => {
     const email = 'eee.mmm@iii.ll';
     const expected = UserExistsResponse.from(id, email, true);
 
-    mockUserExistsByEmail.mockResolvedValue({id: id, exists: true});
+    mockUserExistsByEmail.mockResolvedValueOnce({id: id, exists: true});
 
     expect(await getUserExistsResponse(email)).toStrictEqual(expected);
     expect(mockUserExistsByEmail).toHaveBeenCalledWith(email);
@@ -231,7 +231,7 @@ describe('Get User Exists Response', () => {
     const email = 'eee.mmm@iii.ll';
     const expected = UserExistsResponse.from(id, email, false);
 
-    mockUserExistsByEmail.mockResolvedValue({id: id, exists: false});
+    mockUserExistsByEmail.mockResolvedValueOnce({id: id, exists: false});
 
     expect(await getUserExistsResponse(email)).toStrictEqual(expected);
     expect(mockUserExistsByEmail).toHaveBeenCalledWith(email);
@@ -245,7 +245,7 @@ describe('Get User List Response', () => {
     const user3 = randomUser();
     const expected = UserListResponse.from([user1, user2, user3]);
 
-    mockListUsers.mockResolvedValue([user1, user2, user3]);
+    mockListUsers.mockResolvedValueOnce([user1, user2, user3]);
 
     expect(await getUserListResponse()).toStrictEqual(expected);
     expect(mockListUsers).toHaveBeenCalled();
@@ -290,7 +290,7 @@ describe('Users For', () => {
     const participant3 = makeParticipant({userId: userId3} as ParticipantData);
     const user3 = makeUser({id: userId3} as UserData);
 
-    mockGetUsers.mockResolvedValue([user1, user2, user3]);
+    mockGetUsers.mockResolvedValueOnce([user1, user2, user3]);
 
     const users = await usersFor([participant1, participant2, participant3]);
 
