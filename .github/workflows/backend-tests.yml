@@ -1,6 +1,7 @@
 name: Backend (HMS API) Tests
 
 on: pull_request
+    push
 
 defaults:
   run:
