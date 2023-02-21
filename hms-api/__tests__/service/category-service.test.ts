@@ -217,7 +217,7 @@ describe('Get Category List Response', () => {
   test('Hackathon missing', async () => {
     const hackathonId = uuid();
     mockHackathonExists.mockResolvedValueOnce(false);
-    // TODO WHY IS HERE PROBEM WITH MOCK RESOLVED VALUE ONCE AND NOT TO HAVE BEEN CALLED WITH ??
+    // TODO WHY IS HERE PROBEM WITH MOCK RESOLVED VALUE ONCE AND NOT TO HAVE BEEN CALLED WITH ?
     mockListCategories.mockResolvedValueOnce([
       randomCategory(),
       randomCategory(),
