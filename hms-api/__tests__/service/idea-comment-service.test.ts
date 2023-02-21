@@ -112,7 +112,7 @@ describe('Get Idea Comment', () => {
 
     mockGetIdeaComment.mockResolvedValueOnce(ideaComment);
     // TODO WHY PROBLEM HERE WITH MOCKING THE GET IDEA
-    mockGetIdea.mockResolvedValue(idea);
+    mockGetIdea.mockResolvedValueOnce(idea);
     mockGetUser.mockImplementation(() => {
       throw new NotFoundError('User not found');
     });

@@ -246,7 +246,7 @@ describe('Get Participant List Response', () => {
 
     mockHackathonExists.mockResolvedValueOnce(false);
     // TODO WHY IS HERE PROBEM WITH MOCK RESOLVED VALUE ONCE AND NOT TO HAVE BEEN CALLED WITH ??
-    mockListParticipants.mockResolvedValue([participant1, participant2]);
+    mockListParticipants.mockResolvedValueOnce([participant1, participant2]);
 
     await expect(getParticipantListResponse(hackathonId)).rejects.toThrow(
       NotFoundError,
