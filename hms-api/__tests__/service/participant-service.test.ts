@@ -245,7 +245,6 @@ describe('Get Participant List Response', () => {
     const participant2 = randomParticipant();
 
     mockHackathonExists.mockResolvedValueOnce(false);
-    // TODO WHY IS HERE PROBEM WITH MOCK RESOLVED VALUE ONCE AND NOT TO HAVE BEEN CALLED WITH ??
     mockListParticipants.mockResolvedValueOnce([participant1, participant2]);
 
     await expect(getParticipantListResponse(hackathonId)).rejects.toThrow(
@@ -253,6 +252,7 @@ describe('Get Participant List Response', () => {
     );
     expect(mockHackathonExists).toHaveBeenCalledWith(hackathonId);
     expect(mockListParticipants).not.toHaveBeenCalled();
+    mockListParticipants.mockReset();
   });
 });
 

@@ -111,7 +111,6 @@ describe('Get Idea Comment', () => {
     const ideaComment = makeIdeaComment({ideaId: idea.id} as IdeaCommentData);
 
     mockGetIdeaComment.mockResolvedValueOnce(ideaComment);
-    // TODO WHY PROBLEM HERE WITH MOCKING THE GET IDEA
     mockGetIdea.mockResolvedValueOnce(idea);
     mockGetUser.mockImplementation(() => {
       throw new NotFoundError('User not found');
@@ -128,6 +127,7 @@ describe('Get Idea Comment', () => {
 
     mockGetUser.mockResolvedValueOnce(user);
     mockGetIdeaComment.mockResolvedValueOnce(ideaComment);
+    mockGetIdea.mockReset();
     mockGetIdea.mockImplementation(() => {
       throw new NotFoundError('Idea not found');
     });
