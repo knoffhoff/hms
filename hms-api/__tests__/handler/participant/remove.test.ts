@@ -12,7 +12,7 @@ jest
 describe('Delete Participant', () => {
   test('Happy Path', async () => {
     const id = uuid();
-    mockRemoveParticipant.mockResolvedValue(new UserDeleteResponse(id));
+    mockRemoveParticipant.mockResolvedValueOnce(new UserDeleteResponse(id));
     const event = toEvent(id);
     const callback = jest.fn();
 

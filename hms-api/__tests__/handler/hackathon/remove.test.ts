@@ -11,7 +11,7 @@ jest
 describe('Delete Hackathon', () => {
   test('Happy Path', async () => {
     const id = uuid();
-    mockRemoveHackathon.mockResolvedValue(new HackathonDeleteResponse(id));
+    mockRemoveHackathon.mockResolvedValueOnce(new HackathonDeleteResponse(id));
     const event = toEvent(id);
     const callback = jest.fn();
 

@@ -9,7 +9,7 @@ jest.spyOn(skillService, 'removeSkill').mockImplementation(mockRemoveSkill);
 describe('Delete Skill', () => {
   test('Happy Path', async () => {
     const id = uuid();
-    mockRemoveSkill.mockResolvedValue(new SkillDeleteResponse(id));
+    mockRemoveSkill.mockResolvedValueOnce(new SkillDeleteResponse(id));
     const event = toEvent(id);
     const callback = jest.fn();
 

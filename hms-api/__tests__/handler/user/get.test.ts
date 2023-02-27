@@ -15,7 +15,7 @@ describe('Get User', () => {
     const user = randomUser();
     const expected = UserResponse.from(user, [randomSkill(), randomSkill()]);
 
-    mockGetUser.mockResolvedValue(expected);
+    mockGetUser.mockResolvedValueOnce(expected);
     const event = toEvent(user.id);
     const callback = jest.fn();
 

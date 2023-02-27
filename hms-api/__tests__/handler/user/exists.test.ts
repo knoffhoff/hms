@@ -14,7 +14,7 @@ describe('User Exists', () => {
     const email = 'lame@ema.il';
     const expected = UserExistsResponse.from(id, email, true);
 
-    mockGetUserExistsResponse.mockResolvedValue(expected);
+    mockGetUserExistsResponse.mockResolvedValueOnce(expected);
     const event = toEvent(email);
     const callback = jest.fn();
 
