@@ -26,36 +26,29 @@ import * as ideaService from '../../src/service/idea-service';
 import ValidationError from '../../src/error/ValidationError';
 import ValidationResult from '../../src/error/ValidationResult';
 
-const mockHackathonExists = jest.fn();
-jest
+const mockHackathonExists = jest
   .spyOn(hackathonRepository, 'hackathonExists')
-  .mockImplementation(mockHackathonExists);
-const mockGetHackathon = jest.fn();
-jest
+  .mockImplementation();
+const mockGetHackathon = jest
   .spyOn(hackathonRepository, 'getHackathon')
-  .mockImplementation(mockGetHackathon);
+  .mockImplementation();
 
-const mockPutCategory = jest.fn();
-jest
+const mockPutCategory = jest
   .spyOn(categoryRepository, 'putCategory')
-  .mockImplementation(mockPutCategory);
-const mockGetCategory = jest.fn();
-jest
+  .mockImplementation();
+const mockGetCategory = jest
   .spyOn(categoryRepository, 'getCategory')
-  .mockImplementation(mockGetCategory);
-const mockListCategories = jest.fn();
-jest
+  .mockImplementation();
+const mockListCategories = jest
   .spyOn(categoryRepository, 'listCategories')
-  .mockImplementation(mockListCategories);
-const mockDeleteCategory = jest.fn();
-jest
+  .mockImplementation();
+const mockDeleteCategory = jest
   .spyOn(categoryRepository, 'deleteCategory')
-  .mockImplementation(mockDeleteCategory);
+  .mockImplementation();
 
-const mockRemoveIdeasForCategory = jest.fn();
-jest
+const mockRemoveIdeasForCategory = jest
   .spyOn(ideaService, 'removeIdeasForCategory')
-  .mockImplementation(mockRemoveIdeasForCategory);
+  .mockImplementation();
 
 describe('Create Category', () => {
   test('Happy Path', async () => {
@@ -235,7 +228,7 @@ describe('Get Category List Response', () => {
 describe('Delete Category', () => {
   test('Happy Path', async () => {
     const id = uuid();
-    mockRemoveIdeasForCategory.mockImplementation(() => {});
+    mockRemoveIdeasForCategory.mockImplementation();
 
     expect(await removeCategory(id)).toStrictEqual(
       new CategoryDeleteResponse(id),
@@ -263,7 +256,7 @@ describe('Remove Categories for Hackathon', () => {
     const category2 = makeCategory({hackathonId: hackathonId} as CategoryData);
 
     mockListCategories.mockResolvedValueOnce([category1, category2]);
-    mockRemoveIdeasForCategory.mockImplementation(() => {});
+    mockRemoveIdeasForCategory.mockImplementation();
 
     await removeCategoriesForHackathon(hackathonId);
 

@@ -25,31 +25,25 @@ import * as userRepository from '../../src/repository/user-repository';
 import * as ideaService from '../../src/service/idea-service';
 import ValidationError from '../../src/error/ValidationError';
 
-const mockPutParticipant = jest.fn();
-jest
+const mockPutParticipant = jest
   .spyOn(participantRepository, 'putParticipant')
-  .mockImplementation(mockPutParticipant);
-const mockGetParticipant = jest.fn();
-jest
+  .mockImplementation();
+const mockGetParticipant = jest
   .spyOn(participantRepository, 'getParticipant')
-  .mockImplementation(mockGetParticipant);
-const mockListParticipants = jest.fn();
-jest
+  .mockImplementation();
+const mockListParticipants = jest
   .spyOn(participantRepository, 'listParticipants')
-  .mockImplementation(mockListParticipants);
-const mockDeleteParticipant = jest.fn();
-jest
+  .mockImplementation();
+const mockDeleteParticipant = jest
   .spyOn(participantRepository, 'deleteParticipant')
-  .mockImplementation(mockDeleteParticipant);
+  .mockImplementation();
 
-const mockGetHackathon = jest.fn();
-jest
+const mockGetHackathon = jest
   .spyOn(hackathonRepository, 'getHackathon')
-  .mockImplementation(mockGetHackathon);
-const mockHackathonExists = jest.fn();
-jest
+  .mockImplementation();
+const mockHackathonExists = jest
   .spyOn(hackathonRepository, 'hackathonExists')
-  .mockImplementation(mockHackathonExists);
+  .mockImplementation();
 
 const mockGetUser = jest.fn();
 jest.spyOn(userRepository, 'getUser').mockImplementation(mockGetUser);

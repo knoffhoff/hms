@@ -26,29 +26,30 @@ import UserListResponse from '../../src/rest/user/UserListResponse';
 import UserDeleteResponse from '../../src/rest/user/UserDeleteResponse';
 import User from '../../src/repository/domain/User';
 import ValidationResult from '../../src/error/ValidationResult';
-import {randomCategory} from '../repository/domain/category-maker';
 import ValidationError from '../../src/error/ValidationError';
 import UserExistsResponse from '../../src/rest/user/UserExistsResponse';
 
-const mockGetSkills = jest.fn();
-jest.spyOn(skillRepository, 'getSkills').mockImplementation(mockGetSkills);
-const mockSkillExists = jest.fn();
-jest.spyOn(skillRepository, 'skillExists').mockImplementation(mockSkillExists);
+const mockGetSkills = jest
+  .spyOn(skillRepository, 'getSkills')
+  .mockImplementation();
+const mockSkillExists = jest
+  .spyOn(skillRepository, 'skillExists')
+  .mockImplementation();
 
-const mockPutUser = jest.fn();
-jest.spyOn(userRepository, 'putUser').mockImplementation(mockPutUser);
-const mockGetUser = jest.fn();
-jest.spyOn(userRepository, 'getUser').mockImplementation(mockGetUser);
-const mockGetUsers = jest.fn();
-jest.spyOn(userRepository, 'getUsers').mockImplementation(mockGetUsers);
-const mockUserExistsByEmail = jest.fn();
-jest
+const mockPutUser = jest.spyOn(userRepository, 'putUser').mockImplementation();
+const mockGetUser = jest.spyOn(userRepository, 'getUser').mockImplementation();
+const mockGetUsers = jest
+  .spyOn(userRepository, 'getUsers')
+  .mockImplementation();
+const mockUserExistsByEmail = jest
   .spyOn(userRepository, 'userExistsByEmail')
-  .mockImplementation(mockUserExistsByEmail);
-const mockListUsers = jest.fn();
-jest.spyOn(userRepository, 'listUsers').mockImplementation(mockListUsers);
-const mockDeleteUser = jest.fn();
-jest.spyOn(userRepository, 'deleteUser').mockImplementation(mockDeleteUser);
+  .mockImplementation();
+const mockListUsers = jest
+  .spyOn(userRepository, 'listUsers')
+  .mockImplementation();
+const mockDeleteUser = jest
+  .spyOn(userRepository, 'deleteUser')
+  .mockImplementation();
 
 describe('Create User', () => {
   test('Validation Error', async () => {
@@ -139,7 +140,7 @@ describe('Edit User', () => {
     const failedValidation = new ValidationResult();
     failedValidation.addFailure('FAILURE');
 
-    const mockUser = randomCategory();
+    const mockUser = randomUser();
     jest.spyOn(mockUser, 'validate').mockReturnValue(failedValidation);
     mockGetUser.mockResolvedValueOnce(mockUser);
 
