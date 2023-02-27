@@ -150,6 +150,7 @@ export class HmsInfrastructureStack extends Stack {
       ),
       managedPolicies: [
         iam.ManagedPolicy.fromAwsManagedPolicyName("AmazonS3FullAccess"),
+        iam.ManagedPolicy.fromAwsManagedPolicyName("CloudFrontFullAccess"),
       ],
     });
     new CfnOutput(this, "GithubOidcRoleArn", {
@@ -157,7 +158,7 @@ export class HmsInfrastructureStack extends Stack {
     });
 
     // Backend Infrastructure
-    new dynamodb.Table(this, "HackathonTable", {
+    const hackathonTable = new dynamodb.Table(this, "HackathonTable", {
       removalPolicy: RemovalPolicy.RETAIN,
       tableName: "hackathon",
       billingMode: dynamodb.BillingMode.PAY_PER_REQUEST,
@@ -165,6 +166,18 @@ export class HmsInfrastructureStack extends Stack {
         name: "id",
         type: dynamodb.AttributeType.STRING,
       },
+    });
+    hackathonTable.addGlobalSecondaryIndex({
+      indexName: "hackathonBySlug",
+      partitionKey: {
+        name: "slug",
+        type: dynamodb.AttributeType.STRING,
+      },
+      sortKey: {
+        name: "id",
+        type: dynamodb.AttributeType.STRING,
+      },
+      projectionType: dynamodb.ProjectionType.ALL,
     });
 
     const userTable = new dynamodb.Table(this, "UserTable", {
@@ -296,6 +309,28 @@ export class HmsInfrastructureStack extends Stack {
       },
       sortKey: {
         name: "userId",
+        type: dynamodb.AttributeType.STRING,
+      },
+      projectionType: dynamodb.ProjectionType.ALL,
+    });
+
+    const ideaCommentTable = new dynamodb.Table(this, "IdeaCommentTable", {
+      removalPolicy: RemovalPolicy.RETAIN,
+      tableName: "ideaComment",
+      billingMode: dynamodb.BillingMode.PAY_PER_REQUEST,
+      partitionKey: {
+        name: "id",
+        type: dynamodb.AttributeType.STRING,
+      },
+    });
+    ideaCommentTable.addGlobalSecondaryIndex({
+      indexName: "ideaComment-by-ideaId",
+      partitionKey: {
+        name: "ideaId",
+        type: dynamodb.AttributeType.STRING,
+      },
+      sortKey: {
+        name: "id",
         type: dynamodb.AttributeType.STRING,
       },
       projectionType: dynamodb.ProjectionType.ALL,

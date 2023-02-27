@@ -25,13 +25,13 @@ function App() {
     <Routes>
       <Route path='/' element={<Layout />}>
         <Route index element={<Home />} />
+        <Route path='ideation' element={<IdeationPortal />} />
         <Route path='hackathons' element={<AllIdeas />} />
         <Route path='hackathons/:slug' element={<AllIdeas />} />
         <Route path='my-ideas' element={<MyIdeas />} />
         <Route path='archive' element={<Archive />} />
         {isAdmin(stateUser) && (
           <>
-            <Route path='ideation' element={<IdeationPortal />} />
             <Route path='voting' element={<Voting />} />
             <Route path='admin' element={<Admin />} />
             <Route path={'presentations'} element={<Presentations />} />

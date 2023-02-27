@@ -110,6 +110,8 @@ const HeroHeader = (props: { nextHackathon: HackathonSerializable }) => {
   const { classes } = useStyles()
   const today = new Date()
   today.setHours(0, 0, 0, 0)
+  const isHackathonWithoutDate = () =>
+    new Date(props.nextHackathon.startDate) > MAX_DATE
 
   return (
     <Container className={classes.wrapper} size={1400}>
@@ -119,34 +121,34 @@ const HeroHeader = (props: { nextHackathon: HackathonSerializable }) => {
       <Dots className={classes.dots} style={{ right: 0, top: 60 }} />
 
       <div className={classes.inner}>
-        {new Date(props.nextHackathon.startDate) > today && (
-          <Title className={classes.title}>
-            Upcoming{' '}
-            <Text component='span' className={classes.highlight} inherit>
-              {props.nextHackathon.title}
-            </Text>{' '}
-            starts in
-            <Center styles={{ color: 'red' }}>
-              {today < new Date(props.nextHackathon.startDate) && (
-                <Countdown date={props.nextHackathon.startDate} />
-              )}
-            </Center>
-          </Title>
-        )}
-
-        {new Date(props.nextHackathon.startDate) < today && (
-          <Title className={classes.title}>
-            <Text component='span' className={classes.highlight} inherit>
-              {props.nextHackathon.title}
-            </Text>{' '}
-            ends in
-            <Center styles={{ color: 'red' }}>
-              {today < new Date(props.nextHackathon.endDate) && (
-                <Countdown date={props.nextHackathon.endDate} />
-              )}
-            </Center>
-          </Title>
-        )}
+        <Title className={classes.title}>
+          Upcoming{' '}
+          <Text component='span' className={classes.highlight} inherit>
+            {props.nextHackathon.title}
+          </Text>
+          {new Date(props.nextHackathon.startDate) > today &&
+          !isHackathonWithoutDate() ? (
+            <>
+              {' '}
+              starts in
+              <Center styles={{ color: 'red' }}>
+                {today < new Date(props.nextHackathon.startDate) && (
+                  <Countdown date={props.nextHackathon.startDate} />
+                )}
+              </Center>
+            </>
+          ) : (
+            <>
+              {' '}
+              ends in
+              <Center styles={{ color: 'red' }}>
+                {today < new Date(props.nextHackathon.endDate) && (
+                  <Countdown date={props.nextHackathon.endDate} />
+                )}
+              </Center>
+            </>
+          )}
+        </Title>
 
         <Center my={25}>
           <Badge
@@ -159,7 +161,7 @@ const HeroHeader = (props: { nextHackathon: HackathonSerializable }) => {
             }
             radius={'xs'}
           >
-            {new Date(props.nextHackathon.startDate) > MAX_DATE
+            {isHackathonWithoutDate()
               ? 'To be announced'
               : `${new Date(
                   props.nextHackathon.startDate
