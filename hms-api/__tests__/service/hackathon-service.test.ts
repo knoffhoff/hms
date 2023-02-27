@@ -33,6 +33,7 @@ import * as ideaService from '../../src/service/idea-service';
 import DeletionError from '../../src/error/DeletionError';
 import ValidationError from '../../src/error/ValidationError';
 import ValidationResult from '../../src/error/ValidationResult';
+import InvalidStateError from '../../src/error/InvalidStateError';
 
 const mockPutHackathon = jest.fn();
 jest
@@ -89,6 +90,11 @@ jest
   .spyOn(ideaService, 'removeIdeasForHackathon')
   .mockImplementation(mockRemoveIdeasForHackathon);
 
+const mockSlugExists = jest.fn();
+jest
+  .spyOn(hackathonRepository, 'hackathonSlugExists')
+  .mockImplementation(mockSlugExists);
+
 beforeAll(() => {});
 
 describe('Create Hackathon', () => {
@@ -134,6 +140,23 @@ describe('Create Hackathon', () => {
     await expect(
       createHackathon('', 'descriiiiption', 'slug', new Date(), new Date()),
     ).rejects.toThrow(ValidationError);
+  });
+
+  test('Slug already exists', async () => {
+    const expected = randomHackathon();
+
+    mockSlugExists.mockResolvedValueOnce(true);
+
+    await expect(
+      createHackathon(
+        expected.title,
+        expected.description,
+        expected.slug,
+        expected.startDate,
+        expected.endDate,
+      ),
+    ).rejects.toThrow(InvalidStateError);
+    expect(mockPutHackathon).not.toHaveBeenCalled();
   });
 
   test('StartDate > EndDate', async () => {
