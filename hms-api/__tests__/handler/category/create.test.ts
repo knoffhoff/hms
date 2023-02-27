@@ -6,10 +6,9 @@ import ReferenceNotFoundError from '../../../src/error/ReferenceNotFoundError';
 import Category from '../../../src/repository/domain/Category';
 import CategoryCreateRequest from '../../../src/rest/category/CategoryCreateRequest';
 
-const mockCreateCategory = jest.fn();
-jest
+const mockCreateCategory = jest
   .spyOn(categoryService, 'createCategory')
-  .mockImplementation(mockCreateCategory);
+  .mockImplementation();
 
 describe('Create Category', () => {
   test('Happy Path', async () => {

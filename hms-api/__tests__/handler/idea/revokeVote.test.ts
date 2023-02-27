@@ -3,8 +3,9 @@ import Uuid, {uuid} from '../../../src/util/Uuid';
 import {revokeVote} from '../../../src/handler/idea/revokeVote';
 import IdeaVoteResponse from '../../../src/rest/idea/IdeaVoteResponse';
 
-const mockRemoveVoter = jest.fn();
-jest.spyOn(ideaService, 'removeVoter').mockImplementation(mockRemoveVoter);
+const mockRemoveVoter = jest
+  .spyOn(ideaService, 'removeVoter')
+  .mockImplementation();
 
 describe('Remove vote from Idea', () => {
   test('Happy Path', async () => {

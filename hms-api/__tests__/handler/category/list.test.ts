@@ -5,10 +5,9 @@ import NotFoundError from '../../../src/error/NotFoundError';
 import CategoryListResponse from '../../../src/rest/category/CategoryListResponse';
 import * as categoryService from '../../../src/service/category-service';
 
-const mockGetCategoryListResponse = jest.fn();
-jest
+const mockGetCategoryListResponse = jest
   .spyOn(categoryService, 'getCategoryListResponse')
-  .mockImplementation(mockGetCategoryListResponse);
+  .mockImplementation();
 
 describe('List Categories', () => {
   test('Happy Path', async () => {

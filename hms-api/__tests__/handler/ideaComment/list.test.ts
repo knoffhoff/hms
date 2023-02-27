@@ -10,10 +10,9 @@ import IdeaCommentListResponse from '../../../src/rest/ideaComment/IdeaCommentLi
 import ReferenceNotFoundError from '../../../src/error/ReferenceNotFoundError';
 import * as ideaCommentService from '../../../src/service/idea-comment-service';
 
-const mockGetIdeaCommentListResponse = jest.fn();
-jest
+const mockGetIdeaCommentListResponse = jest
   .spyOn(ideaCommentService, 'getIdeaCommentListResponse')
-  .mockImplementation(mockGetIdeaCommentListResponse);
+  .mockImplementation();
 
 describe('List Comments', () => {
   test('Happy Path', async () => {

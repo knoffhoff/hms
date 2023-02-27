@@ -7,10 +7,9 @@ import IdeaCommentResponse from '../../../src/rest/ideaComment/IdeaCommentRespon
 import ReferenceNotFoundError from '../../../src/error/ReferenceNotFoundError';
 import {randomUser} from '../../repository/domain/user-maker';
 
-const mockGetIdeaComment = jest.fn();
-jest
+const mockGetIdeaComment = jest
   .spyOn(ideaCommentService, 'getIdeaCommentResponse')
-  .mockImplementation(mockGetIdeaComment);
+  .mockImplementation();
 
 describe('Get Comment', () => {
   test('Happy Path', async () => {

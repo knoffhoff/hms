@@ -3,8 +3,7 @@ import Uuid, {uuid} from '../../../src/util/Uuid';
 import {vote} from '../../../src/handler/idea/vote';
 import IdeaVoteResponse from '../../../src/rest/idea/IdeaVoteResponse';
 
-const mockAddVoter = jest.fn();
-jest.spyOn(ideaService, 'addVoter').mockImplementation(mockAddVoter);
+const mockAddVoter = jest.spyOn(ideaService, 'addVoter').mockImplementation();
 
 describe('Vote for Idea', () => {
   test('Happy Path', async () => {

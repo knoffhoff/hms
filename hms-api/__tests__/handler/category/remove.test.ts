@@ -3,10 +3,9 @@ import {remove} from '../../../src/handler/category/remove';
 import CategoryDeleteResponse from '../../../src/rest/category/CategoryDeleteResponse';
 import Uuid, {uuid} from '../../../src/util/Uuid';
 
-const mockRemoveCategory = jest.fn();
-jest
+const mockRemoveCategory = jest
   .spyOn(categoryService, 'removeCategory')
-  .mockImplementation(mockRemoveCategory);
+  .mockImplementation();
 
 describe('Delete Category', () => {
   test('Happy Path', async () => {

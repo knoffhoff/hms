@@ -3,10 +3,9 @@ import Uuid, {uuid} from '../../../src/util/Uuid';
 import IdeaJoinResponse from '../../../src/rest/idea/IdeaJoinResponse';
 import {join} from '../../../src/handler/idea/join';
 
-const mockAddParticipant = jest.fn();
-jest
+const mockAddParticipant = jest
   .spyOn(ideaService, 'addParticipant')
-  .mockImplementation(mockAddParticipant);
+  .mockImplementation();
 
 describe('Join Idea', () => {
   test('Happy Path', async () => {

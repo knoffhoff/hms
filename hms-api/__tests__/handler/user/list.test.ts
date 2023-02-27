@@ -4,10 +4,9 @@ import NotFoundError from '../../../src/error/NotFoundError';
 import UserListResponse from '../../../src/rest/user/UserListResponse';
 import * as userService from '../../../src/service/user-service';
 
-const mockGetUserListResponse = jest.fn();
-jest
+const mockGetUserListResponse = jest
   .spyOn(userService, 'getUserListResponse')
-  .mockImplementation(mockGetUserListResponse);
+  .mockImplementation();
 
 describe('List Users', () => {
   test('Happy Path', async () => {
