@@ -8,6 +8,7 @@ import {
   HackathonDropdownMode,
   IdeaCardType,
   ParticipantPreview,
+  IdeaFormType,
 } from '../common/types'
 import {
   createHackathonParticipant,
@@ -22,6 +23,7 @@ import { useMsal } from '@azure/msal-react'
 import { JOIN_BUTTON_COLOR, LEAVE_BUTTON_COLOR } from '../common/colors'
 import { UserContext } from './Layout'
 import { styles } from '../common/styles'
+import IdeaForm from '../components/input-forms/IdeaForm'
 
 export const HackathonParticipantContext = createContext('')
 export const HackathonVotingContext = createContext(false)
@@ -49,6 +51,13 @@ function AllIdeas() {
   } as Hackathon)
   const [removeParticipantModalOpened, setRemoveParticipantModalOpened] =
     useState(false)
+  const [opened, setOpened] = useState(false)
+
+  const closeModal = () => {
+    if (hackathonData.id !== undefined) {
+      setOpened(false)
+    }
+  }
 
   useEffect(() => {
     if (user) {
@@ -241,7 +250,24 @@ function AllIdeas() {
             hackathonData.startDate !== NULL_DATE &&
             hackathonData.startDate.toString() !== 'Invalid Date' && (
               <>
+                <Modal
+                  opened={opened}
+                  onClose={() => setOpened(false)}
+                  size={'70%'}
+                  title='Create New Idea!'
+                >
+                  <IdeaForm
+                    ideaId={'null'}
+                    hackathon={hackathonData}
+                    ownerId={user?.id}
+                    context={IdeaFormType.New}
+                    reload={closeModal}
+                  />
+                </Modal>
+                <Button onClick={() => setOpened(true)}>New Idea</Button>
+
                 <Button
+                  ml={10}
                   disabled={buttonIsDisabled}
                   onClick={
                     participantCheck
@@ -256,6 +282,9 @@ function AllIdeas() {
                 >
                   {participantCheck ? 'Leave Hackathon' : 'Join Hackathon'}
                 </Button>
+                <Text className={classes.smallText}>
+                  please join the Hackathon before submitting ideas
+                </Text>
 
                 <HackathonHeader hackathonData={hackathonData} />
 

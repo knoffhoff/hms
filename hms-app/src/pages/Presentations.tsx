@@ -42,6 +42,7 @@ import {
   PAGE_BACKGROUND_DARK,
 } from '../common/colors'
 import PitchTimer from '../components/PitchTimer'
+import { CurrentHackathonContext } from './Layout'
 
 const useStyles = createStyles((_theme, _params, getRef) => ({
   controls: {
@@ -124,6 +125,7 @@ const useStyles = createStyles((_theme, _params, getRef) => ({
 export default function Presentations() {
   const { classes } = useStyles()
   const { instance } = useMsal()
+  const currentHackathon = useContext(CurrentHackathonContext)
   const nextHackathon = useAppSelector(
     (state) => state.hackathons.nextHackathon
   )
@@ -133,8 +135,11 @@ export default function Presentations() {
 
   useEffect(() => {
     const fetchIdeas = async () => {
-      if (nextHackathon && nextHackathon.id) {
-        const ideasResult = await getIdeaList(instance, nextHackathon.id)
+      // TODO: need to seperate into 2 versions
+      // if (nextHackathon && nextHackathon.id) {
+      //   const ideasResult = await getIdeaList(instance, nextHackathon.id)
+      if (currentHackathon && currentHackathon.id) {
+        const ideasResult = await getIdeaList(instance, currentHackathon.id)
         const ideaDetailsResult = await Promise.all(
           ideasResult.ideas.map(async (idea: IdeaPreview) => {
             return await getIdeaDetails(instance, idea.id)

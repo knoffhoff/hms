@@ -4,10 +4,9 @@ import NotFoundError from '../../../src/error/NotFoundError';
 import HackathonListResponse from '../../../src/rest/hackathon/HackathonListResponse';
 import * as hackathonService from '../../../src/service/hackathon-service';
 
-const mockGetHackathonListResponse = jest.fn();
-jest
+const mockGetHackathonListResponse = jest
   .spyOn(hackathonService, 'getHackathonListResponse')
-  .mockImplementation(mockGetHackathonListResponse);
+  .mockImplementation();
 
 describe('List Hackathons', () => {
   test('Happy Path', async () => {
@@ -22,7 +21,7 @@ describe('List Hackathons', () => {
       hackathon4,
     ]);
 
-    mockGetHackathonListResponse.mockResolvedValue(expected);
+    mockGetHackathonListResponse.mockResolvedValueOnce(expected);
     const callback = jest.fn();
 
     await list({}, null, callback);

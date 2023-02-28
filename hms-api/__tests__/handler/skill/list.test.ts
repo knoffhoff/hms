@@ -4,10 +4,9 @@ import NotFoundError from '../../../src/error/NotFoundError';
 import SkillListResponse from '../../../src/rest/skill/SkillListResponse';
 import * as skillService from '../../../src/service/skill-service';
 
-const mockGetSkillListResponse = jest.fn();
-jest
+const mockGetSkillListResponse = jest
   .spyOn(skillService, 'getSkillListResponse')
-  .mockImplementation(mockGetSkillListResponse);
+  .mockImplementation();
 
 describe('List Skills', () => {
   test('Happy Path', async () => {
@@ -17,7 +16,7 @@ describe('List Skills', () => {
     const skill4 = randomSkill();
     const expected = SkillListResponse.from([skill1, skill2, skill3, skill4]);
 
-    mockGetSkillListResponse.mockResolvedValue(expected);
+    mockGetSkillListResponse.mockResolvedValueOnce(expected);
     const callback = jest.fn();
 
     await list({}, null, callback);

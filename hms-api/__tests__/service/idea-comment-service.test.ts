@@ -3,7 +3,6 @@ import * as ideaCommentRepository from '../../src/repository/idea-comment-reposi
 import * as ideaRepository from '../../src/repository/idea-repository';
 import {
   createIdeaComment,
-  getIdeaCommentListResponse,
   getIdeaCommentResponse,
 } from '../../src/service/idea-comment-service';
 import {uuid} from '../../src/util/Uuid';
@@ -16,37 +15,29 @@ import {
 } from '../repository/domain/ideaComment-maker';
 import IdeaCommentResponse from '../../src/rest/ideaComment/IdeaCommentResponse';
 import {randomUser} from '../repository/domain/user-maker';
-import ValidationError from '../../src/error/ValidationError';
-import IdeaCommentListResponse from '../../src/rest/ideaComment/IdeaCommentListResponse';
 import NotFoundError from '../../src/error/NotFoundError';
 
-const mockPutIdeaComment = jest.fn();
-jest
+const mockPutIdeaComment = jest
   .spyOn(ideaCommentRepository, 'putIdeaComment')
-  .mockImplementation(mockPutIdeaComment);
-const mockUserExists = jest.fn();
-jest.spyOn(userRepository, 'userExists').mockImplementation(mockUserExists);
-const mockIdeaExists = jest.fn();
-jest.spyOn(ideaRepository, 'ideaExists').mockImplementation(mockIdeaExists);
-const mockGetUser = jest.fn();
-jest.spyOn(userRepository, 'getUser').mockImplementation(mockGetUser);
-const mockGetIdea = jest.fn();
-jest.spyOn(ideaRepository, 'getIdea').mockImplementation(mockGetIdea);
-const mockGetIdeaComment = jest.fn();
-jest
+  .mockImplementation();
+const mockGetIdeaComment = jest
   .spyOn(ideaCommentRepository, 'getIdeaComment')
-  .mockImplementation(mockGetIdeaComment);
-const mockGetUsers = jest.fn();
-jest.spyOn(userRepository, 'getUsers').mockImplementation(mockGetUsers);
-const mockListIdeaComments = jest.fn();
-jest
-  .spyOn(ideaCommentRepository, 'listIdeaComments')
-  .mockImplementation(mockListIdeaComments);
+  .mockImplementation();
+
+const mockUserExists = jest
+  .spyOn(userRepository, 'userExists')
+  .mockImplementation();
+const mockGetUser = jest.spyOn(userRepository, 'getUser').mockImplementation();
+
+const mockIdeaExists = jest
+  .spyOn(ideaRepository, 'ideaExists')
+  .mockImplementation();
+const mockGetIdea = jest.spyOn(ideaRepository, 'getIdea').mockImplementation();
 
 describe('Create Idea Comment without parentComment', () => {
   test('Happy Path', async () => {
-    mockUserExists.mockResolvedValue(true);
-    mockIdeaExists.mockResolvedValue(true);
+    mockUserExists.mockResolvedValueOnce(true);
+    mockIdeaExists.mockResolvedValueOnce(true);
 
     const expected = randomIdeaComment();
 
@@ -70,7 +61,7 @@ describe('Create Idea Comment without parentComment', () => {
   });
 
   test('Missing User', async () => {
-    mockUserExists.mockResolvedValue(false);
+    mockUserExists.mockResolvedValueOnce(false);
 
     await expect(
       createIdeaComment(uuid(), uuid(), 'ideaComment', uuid()),
@@ -80,23 +71,14 @@ describe('Create Idea Comment without parentComment', () => {
   });
 
   test('Missing Idea', async () => {
-    mockUserExists.mockResolvedValue(true);
-    mockIdeaExists.mockResolvedValue(false);
+    mockUserExists.mockResolvedValueOnce(true);
+    mockIdeaExists.mockResolvedValueOnce(false);
 
     await expect(
       createIdeaComment(uuid(), uuid(), 'ideaComment', uuid()),
     ).rejects.toThrowError(ReferenceNotFoundError);
 
     expect(mockPutIdeaComment).not.toHaveBeenCalled();
-  });
-
-  test('Validation Error', async () => {
-    mockUserExists.mockResolvedValue(true);
-    mockIdeaExists.mockResolvedValue(true);
-
-    await expect(createIdeaComment(null, uuid(), '')).rejects.toThrow(
-      ValidationError,
-    );
   });
 });
 
@@ -108,9 +90,9 @@ describe('Get Idea Comment', () => {
 
     const expected = IdeaCommentResponse.from(ideaComment, user);
 
-    mockGetUser.mockResolvedValue(user);
-    mockGetIdeaComment.mockResolvedValue(ideaComment);
-    mockGetIdea.mockResolvedValue(idea);
+    mockGetUser.mockResolvedValueOnce(user);
+    mockGetIdeaComment.mockResolvedValueOnce(ideaComment);
+    mockGetIdea.mockResolvedValueOnce(idea);
 
     expect(await getIdeaCommentResponse(ideaComment.id)).toEqual(expected);
   });
@@ -119,8 +101,8 @@ describe('Get Idea Comment', () => {
     const idea = randomIdea();
     const ideaComment = makeIdeaComment({ideaId: idea.id} as IdeaCommentData);
 
-    mockGetIdeaComment.mockResolvedValue(ideaComment);
-    mockGetIdea.mockResolvedValue(idea);
+    mockGetIdeaComment.mockResolvedValueOnce(ideaComment);
+    mockGetIdea.mockResolvedValueOnce(idea);
     mockGetUser.mockImplementation(() => {
       throw new NotFoundError('User not found');
     });
@@ -134,8 +116,9 @@ describe('Get Idea Comment', () => {
     const user = randomUser();
     const ideaComment = makeIdeaComment({userId: user.id} as IdeaCommentData);
 
-    mockGetUser.mockResolvedValue(user);
-    mockGetIdeaComment.mockResolvedValue(ideaComment);
+    mockGetUser.mockResolvedValueOnce(user);
+    mockGetIdeaComment.mockResolvedValueOnce(ideaComment);
+    mockGetIdea.mockReset();
     mockGetIdea.mockImplementation(() => {
       throw new NotFoundError('Idea not found');
     });

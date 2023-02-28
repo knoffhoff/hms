@@ -14,17 +14,20 @@ import SkillListResponse from '../../src/rest/skill/SkillListResponse';
 import SkillDeleteResponse from '../../src/rest/skill/SkillDeleteResponse';
 import * as skillRepository from '../../src/repository/skill-repository';
 import ValidationResult from '../../src/error/ValidationResult';
-import {randomCategory} from '../repository/domain/category-maker';
 import ValidationError from '../../src/error/ValidationError';
 
-const mockPutSkill = jest.fn();
-jest.spyOn(skillRepository, 'putSkill').mockImplementation(mockPutSkill);
-const mockGetSkill = jest.fn();
-jest.spyOn(skillRepository, 'getSkill').mockImplementation(mockGetSkill);
-const mockListSkills = jest.fn();
-jest.spyOn(skillRepository, 'listSkills').mockImplementation(mockListSkills);
-const mockDeleteSkill = jest.fn();
-jest.spyOn(skillRepository, 'deleteSkill').mockImplementation(mockDeleteSkill);
+const mockPutSkill = jest
+  .spyOn(skillRepository, 'putSkill')
+  .mockImplementation();
+const mockGetSkill = jest
+  .spyOn(skillRepository, 'getSkill')
+  .mockImplementation();
+const mockListSkills = jest
+  .spyOn(skillRepository, 'listSkills')
+  .mockImplementation();
+const mockDeleteSkill = jest
+  .spyOn(skillRepository, 'deleteSkill')
+  .mockImplementation();
 
 describe('Create Skill', () => {
   test('Happy Path', async () => {
@@ -59,7 +62,7 @@ describe('Edit Skill', () => {
     const description = 'Best description ever!';
     const expected = new Skill(title, description, oldSkill.id);
 
-    mockGetSkill.mockResolvedValue(oldSkill);
+    mockGetSkill.mockResolvedValueOnce(oldSkill);
 
     await editSkill(oldSkill.id, title, description);
 
@@ -70,9 +73,9 @@ describe('Edit Skill', () => {
     const failedValidation = new ValidationResult();
     failedValidation.addFailure('FAILURE');
 
-    const mockSkill = randomCategory();
+    const mockSkill = randomSkill();
     jest.spyOn(mockSkill, 'validate').mockReturnValue(failedValidation);
-    mockGetSkill.mockResolvedValue(mockSkill);
+    mockGetSkill.mockResolvedValueOnce(mockSkill);
 
     await expect(
       editSkill(uuid(), 'naaaaaaame', 'descriiiiption'),
@@ -100,7 +103,7 @@ describe('Get Skill Response', () => {
 
     const expected = SkillResponse.from(skill);
 
-    mockGetSkill.mockResolvedValue(skill);
+    mockGetSkill.mockResolvedValueOnce(skill);
 
     expect(await getSkillResponse(skill.id)).toStrictEqual(expected);
     expect(mockGetSkill).toHaveBeenCalledWith(skill.id);
@@ -125,7 +128,7 @@ describe('Get Skill List Response', () => {
     const skill3 = randomSkill();
     const expected = SkillListResponse.from([skill1, skill2, skill3]);
 
-    mockListSkills.mockResolvedValue([skill1, skill2, skill3]);
+    mockListSkills.mockResolvedValueOnce([skill1, skill2, skill3]);
 
     expect(await getSkillListResponse()).toStrictEqual(expected);
     expect(mockListSkills).toHaveBeenCalled();

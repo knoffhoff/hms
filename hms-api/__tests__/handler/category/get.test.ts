@@ -7,17 +7,16 @@ import {randomHackathon} from '../../repository/domain/hackathon-maker';
 import CategoryResponse from '../../../src/rest/category/CategoryResponse';
 import ReferenceNotFoundError from '../../../src/error/ReferenceNotFoundError';
 
-const mockGetCategory = jest.fn();
-jest
+const mockGetCategory = jest
   .spyOn(categoryService, 'getCategoryResponse')
-  .mockImplementation(mockGetCategory);
+  .mockImplementation();
 
 describe('Get Category', () => {
   test('Happy Path', async () => {
     const category = randomCategory();
     const expected = CategoryResponse.from(category, randomHackathon());
 
-    mockGetCategory.mockResolvedValue(expected);
+    mockGetCategory.mockResolvedValueOnce(expected);
     const event = toEvent(category.id);
     const callback = jest.fn();
 

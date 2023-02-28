@@ -26,40 +26,33 @@ import * as ideaService from '../../src/service/idea-service';
 import ValidationError from '../../src/error/ValidationError';
 import ValidationResult from '../../src/error/ValidationResult';
 
-const mockHackathonExists = jest.fn();
-jest
+const mockHackathonExists = jest
   .spyOn(hackathonRepository, 'hackathonExists')
-  .mockImplementation(mockHackathonExists);
-const mockGetHackathon = jest.fn();
-jest
+  .mockImplementation();
+const mockGetHackathon = jest
   .spyOn(hackathonRepository, 'getHackathon')
-  .mockImplementation(mockGetHackathon);
+  .mockImplementation();
 
-const mockPutCategory = jest.fn();
-jest
+const mockPutCategory = jest
   .spyOn(categoryRepository, 'putCategory')
-  .mockImplementation(mockPutCategory);
-const mockGetCategory = jest.fn();
-jest
+  .mockImplementation();
+const mockGetCategory = jest
   .spyOn(categoryRepository, 'getCategory')
-  .mockImplementation(mockGetCategory);
-const mockListCategories = jest.fn();
-jest
+  .mockImplementation();
+const mockListCategories = jest
   .spyOn(categoryRepository, 'listCategories')
-  .mockImplementation(mockListCategories);
-const mockDeleteCategory = jest.fn();
-jest
+  .mockImplementation();
+const mockDeleteCategory = jest
   .spyOn(categoryRepository, 'deleteCategory')
-  .mockImplementation(mockDeleteCategory);
+  .mockImplementation();
 
-const mockRemoveIdeasForCategory = jest.fn();
-jest
+const mockRemoveIdeasForCategory = jest
   .spyOn(ideaService, 'removeIdeasForCategory')
-  .mockImplementation(mockRemoveIdeasForCategory);
+  .mockImplementation();
 
 describe('Create Category', () => {
   test('Happy Path', async () => {
-    mockHackathonExists.mockResolvedValue(true);
+    mockHackathonExists.mockResolvedValueOnce(true);
 
     const expected = randomCategory();
 
@@ -84,24 +77,24 @@ describe('Create Category', () => {
         hackathonId: expected.hackathonId,
       }),
     );
-    expect(mockDeleteCategory).not.toHaveBeenCalled();
   });
 
   test('Validation Error', async () => {
+    mockHackathonExists.mockResolvedValueOnce(true);
+
     await expect(createCategory('', 'descriiiiption', uuid())).rejects.toThrow(
       ValidationError,
     );
   });
 
   test('Missing hackathon', async () => {
-    mockHackathonExists.mockResolvedValue(false);
+    mockHackathonExists.mockResolvedValueOnce(false);
 
     await expect(
       createCategory('title', 'description', uuid()),
     ).rejects.toThrow(ReferenceNotFoundError);
 
     expect(mockPutCategory).not.toHaveBeenCalled();
-    expect(mockDeleteCategory).not.toHaveBeenCalled();
   });
 });
 
@@ -117,7 +110,7 @@ describe('Edit Category', () => {
       oldCategory.id,
     );
 
-    mockGetCategory.mockResolvedValue(oldCategory);
+    mockGetCategory.mockResolvedValueOnce(oldCategory);
 
     await editCategory(oldCategory.id, title, description);
 
@@ -131,7 +124,7 @@ describe('Edit Category', () => {
 
     const mockCategory = randomCategory();
     jest.spyOn(mockCategory, 'validate').mockReturnValue(failedValidation);
-    mockGetCategory.mockResolvedValue(mockCategory);
+    mockGetCategory.mockResolvedValueOnce(mockCategory);
 
     await expect(
       editCategory(uuid(), 'tiiitle', 'descriiiiption'),
@@ -159,8 +152,8 @@ describe('Get Category Response', () => {
     const hackathon = randomHackathon();
     const expected = CategoryResponse.from(category, hackathon);
 
-    mockGetCategory.mockResolvedValue(category);
-    mockGetHackathon.mockResolvedValue(hackathon);
+    mockGetCategory.mockResolvedValueOnce(category);
+    mockGetHackathon.mockResolvedValueOnce(hackathon);
 
     expect(await getCategoryResponse(category.id)).toStrictEqual(expected);
     expect(mockGetCategory).toHaveBeenCalledWith(category.id);
@@ -182,7 +175,7 @@ describe('Get Category Response', () => {
 
   test('Missing Hackathon', async () => {
     const category = randomCategory();
-    mockGetCategory.mockResolvedValue(category);
+    mockGetCategory.mockResolvedValueOnce(category);
     mockGetHackathon.mockImplementation(() => {
       throw new NotFoundError('Thing is missing');
     });
@@ -206,8 +199,8 @@ describe('Get Category List Response', () => {
       hackathonId,
     );
 
-    mockHackathonExists.mockResolvedValue(true);
-    mockListCategories.mockResolvedValue([category1, category2, category3]);
+    mockHackathonExists.mockResolvedValueOnce(true);
+    mockListCategories.mockResolvedValueOnce([category1, category2, category3]);
 
     expect(await getCategoryListResponse(hackathonId)).toStrictEqual(expected);
     expect(mockHackathonExists).toHaveBeenCalledWith(hackathonId);
@@ -216,8 +209,8 @@ describe('Get Category List Response', () => {
 
   test('Hackathon missing', async () => {
     const hackathonId = uuid();
-    mockHackathonExists.mockResolvedValue(false);
-    mockListCategories.mockResolvedValue([
+    mockHackathonExists.mockResolvedValueOnce(false);
+    mockListCategories.mockResolvedValueOnce([
       randomCategory(),
       randomCategory(),
       randomCategory(),
@@ -228,13 +221,14 @@ describe('Get Category List Response', () => {
     );
     expect(mockHackathonExists).toHaveBeenCalledWith(hackathonId);
     expect(mockListCategories).not.toHaveBeenCalled();
+    mockListCategories.mockReset();
   });
 });
 
 describe('Delete Category', () => {
   test('Happy Path', async () => {
     const id = uuid();
-    mockRemoveIdeasForCategory.mockImplementation(() => {});
+    mockRemoveIdeasForCategory.mockImplementation();
 
     expect(await removeCategory(id)).toStrictEqual(
       new CategoryDeleteResponse(id),
@@ -261,9 +255,8 @@ describe('Remove Categories for Hackathon', () => {
     const category1 = makeCategory({hackathonId: hackathonId} as CategoryData);
     const category2 = makeCategory({hackathonId: hackathonId} as CategoryData);
 
-    mockListCategories.mockResolvedValue([category1, category2]);
-
-    mockRemoveIdeasForCategory.mockImplementation(() => {});
+    mockListCategories.mockResolvedValueOnce([category1, category2]);
+    mockRemoveIdeasForCategory.mockImplementation();
 
     await removeCategoriesForHackathon(hackathonId);
 

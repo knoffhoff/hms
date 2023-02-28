@@ -8,10 +8,9 @@ import ParticipantResponse from '../../../src/rest/participant/ParticipantRespon
 import ReferenceNotFoundError from '../../../src/error/ReferenceNotFoundError';
 import {randomUser} from '../../repository/domain/user-maker';
 
-const mockGetParticipant = jest.fn();
-jest
+const mockGetParticipant = jest
   .spyOn(participantService, 'getParticipantResponse')
-  .mockImplementation(mockGetParticipant);
+  .mockImplementation();
 
 describe('Get Participant', () => {
   test('Happy Path', async () => {
@@ -22,7 +21,7 @@ describe('Get Participant', () => {
       randomHackathon(),
     );
 
-    mockGetParticipant.mockResolvedValue(expected);
+    mockGetParticipant.mockResolvedValueOnce(expected);
     const event = toEvent(participant.id);
     const callback = jest.fn();
 

@@ -1,5 +1,6 @@
 export default {
-  clearMocks: true,
+  // clearMocks: true,
+  resetMocks: true,
   collectCoverage: true,
   collectCoverageFrom: ['./src/**'],
   coverageDirectory: 'coverage',

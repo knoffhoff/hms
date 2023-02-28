@@ -6,15 +6,14 @@ import ReferenceNotFoundError from '../../../src/error/ReferenceNotFoundError';
 import Participant from '../../../src/repository/domain/Participant';
 import ParticipantCreateRequest from '../../../src/rest/participant/ParticipantCreateRequest';
 
-const mockCreateParticipant = jest.fn();
-jest
+const mockCreateParticipant = jest
   .spyOn(participantService, 'createParticipant')
-  .mockImplementation(mockCreateParticipant);
+  .mockImplementation();
 
 describe('Create Participant', () => {
   test('Happy Path', async () => {
     const expected = randomParticipant();
-    mockCreateParticipant.mockResolvedValue(expected);
+    mockCreateParticipant.mockResolvedValueOnce(expected);
     const callback = jest.fn();
 
     await create(toEvent(expected), null, callback);

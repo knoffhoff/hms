@@ -6,15 +6,13 @@ import IdeaListResponse from '../../../src/rest/idea/IdeaListResponse';
 import * as ideaService from '../../../src/service/idea-service';
 import IdeaListAllResponse from '../../../src/rest/idea/IdeaListAllResponse';
 
-const mockGetIdeaListResponse = jest.fn();
-jest
+const mockGetIdeaListResponse = jest
   .spyOn(ideaService, 'getIdeasForHackathonListResponse')
-  .mockImplementation(mockGetIdeaListResponse);
+  .mockImplementation();
 
-const mockGetAllIdeasResponse = jest.fn();
-jest
+const mockGetAllIdeasResponse = jest
   .spyOn(ideaService, 'getAllIdeasResponse')
-  .mockImplementation(mockGetAllIdeasResponse);
+  .mockImplementation();
 
 describe('List Hackathon Ideas', () => {
   test('Happy Path', async () => {
@@ -28,7 +26,7 @@ describe('List Hackathon Ideas', () => {
       hackathonId,
     );
 
-    mockGetIdeaListResponse.mockResolvedValue(expected);
+    mockGetIdeaListResponse.mockResolvedValueOnce(expected);
     const callback = jest.fn();
 
     await listHackathonIdeas(toEvent(hackathonId), null, callback);
@@ -92,7 +90,7 @@ describe('List All Ideas', () => {
     const idea4 = randomIdea();
     const expected = IdeaListAllResponse.from([idea1, idea2, idea3, idea4]);
 
-    mockGetAllIdeasResponse.mockResolvedValue(expected);
+    mockGetAllIdeasResponse.mockResolvedValueOnce(expected);
     const callback = jest.fn();
 
     await listAllIdeas(toEvent(null), null, callback);

@@ -7,13 +7,14 @@ import {
 } from '../common/types'
 import IdeaCardList from '../components/lists/IdeaCardList'
 import React, { useContext, useEffect, useState } from 'react'
-import { Modal, Button, Group, Title, Checkbox } from '@mantine/core'
+import { Modal, Button, Group, Title, Checkbox, Center } from '@mantine/core'
 import { getIdeaDetails, getIdeaList } from '../actions/IdeaActions'
 import { useMsal } from '@azure/msal-react'
 import { UserContext } from './Layout'
 import { getListOfHackathons } from '../actions/HackathonActions'
 import IdeaForm from '../components/input-forms/IdeaForm'
 import { MIN_DATE } from '../common/constants'
+import { RichTextEditor } from '@mantine/rte'
 
 function IdeationPortal() {
   const { instance } = useMsal()
@@ -91,7 +92,16 @@ function IdeationPortal() {
 
   return (
     <>
-      <Title order={1}>Ideation Portal</Title>
+      <Center>
+        <Title order={1}>Ideation Portal</Title>
+      </Center>
+      <Center>
+        <RichTextEditor
+          readOnly
+          value={hackathon.description || ''}
+          id='hackathonDescriptionEditor'
+        />
+      </Center>
 
       <Modal
         opened={opened}
@@ -108,7 +118,7 @@ function IdeationPortal() {
         />
       </Modal>
 
-      <Group position='left'>
+      <Group position='left' mt={10}>
         <Button onClick={() => setOpened(true)}>New Idea</Button>
 
         <Checkbox

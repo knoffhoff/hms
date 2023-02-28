@@ -3,13 +3,14 @@ import {remove} from '../../../src/handler/skill/remove';
 import SkillDeleteResponse from '../../../src/rest/skill/SkillDeleteResponse';
 import Uuid, {uuid} from '../../../src/util/Uuid';
 
-const mockRemoveSkill = jest.fn();
-jest.spyOn(skillService, 'removeSkill').mockImplementation(mockRemoveSkill);
+const mockRemoveSkill = jest
+  .spyOn(skillService, 'removeSkill')
+  .mockImplementation();
 
 describe('Delete Skill', () => {
   test('Happy Path', async () => {
     const id = uuid();
-    mockRemoveSkill.mockResolvedValue(new SkillDeleteResponse(id));
+    mockRemoveSkill.mockResolvedValueOnce(new SkillDeleteResponse(id));
     const event = toEvent(id);
     const callback = jest.fn();
 

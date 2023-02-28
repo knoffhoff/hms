@@ -5,10 +5,9 @@ import ideaCommentEditRequest from '../../../src/rest/ideaComment/IdeaCommentEdi
 import ideaCommentEditResponse from '../../../src/rest/ideaComment/IdeaCommentEditResponse';
 import NotFoundError from '../../../src/error/NotFoundError';
 
-const mockEditIdeaComment = jest.fn();
-jest
+const mockEditIdeaComment = jest
   .spyOn(ideaCommentServive, 'editIdeaComment')
-  .mockImplementation(mockEditIdeaComment);
+  .mockImplementation();
 
 describe('Edit Idea Comment', () => {
   test('Happy Path', async () => {
@@ -16,7 +15,7 @@ describe('Edit Idea Comment', () => {
     const id = uuid();
     const callback = jest.fn();
 
-    mockEditIdeaComment.mockImplementation(() => {});
+    mockEditIdeaComment.mockImplementation();
 
     await edit(toEvent(id, text), null, callback);
 

@@ -66,7 +66,7 @@ export default function MoveIdeaModal({ idea }: IProps) {
   ])
 
   const mapSkills = idea.requiredSkills
-    ? idea.requiredSkills.map((skill) => skill.name)
+    ? idea.requiredSkills.map((skill) => skill.id)
     : []
 
   function editThisIdea(event: React.MouseEvent<HTMLButtonElement>) {

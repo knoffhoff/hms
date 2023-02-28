@@ -6,10 +6,9 @@ import InvalidStateError from '../../../src/error/InvalidStateError';
 import NotFoundError from '../../../src/error/NotFoundError';
 import HackathonEditRequest from '../../../src/rest/hackathon/HackathonEditRequest';
 
-const mockEditHackathon = jest.fn();
-jest
+const mockEditHackathon = jest
   .spyOn(hackathonService, 'editHackathon')
-  .mockImplementation(mockEditHackathon);
+  .mockImplementation();
 
 describe('Edit Hackathon', () => {
   test('Happy Path', async () => {
@@ -22,7 +21,7 @@ describe('Edit Hackathon', () => {
     const votingOpened = true;
     const callback = jest.fn();
 
-    mockEditHackathon.mockImplementation(() => {});
+    mockEditHackathon.mockImplementation();
 
     await edit(
       toEvent(title, description, slug, startDate, endDate, id, votingOpened),

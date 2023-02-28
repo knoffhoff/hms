@@ -1,15 +1,13 @@
 import * as ideaCommentService from '../../../src/service/idea-comment-service';
-import ideaCommentCreateResponse from '../../../src/rest/ideaComment/IdeaCommentCreateResponse';
 import {create} from '../../../src/handler/ideaComment/create';
 import {randomIdeaComment} from '../../repository/domain/ideaComment-maker';
 import ideaComment from '../../../src/repository/domain/IdeaComment';
 import IdeaCommentCreateRequest from '../../../src/rest/ideaComment/IdeaCommentCreateRequest';
 import ReferenceNotFoundError from '../../../src/error/ReferenceNotFoundError';
 
-const mockCreateIdeaComment = jest.fn();
-jest
+const mockCreateIdeaComment = jest
   .spyOn(ideaCommentService, 'createIdeaComment')
-  .mockImplementation(mockCreateIdeaComment);
+  .mockImplementation();
 
 describe('Create Comment', () => {
   // test('Happy Path', async () => {

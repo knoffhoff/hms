@@ -10,10 +10,9 @@ import ParticipantListResponse from '../../../src/rest/participant/ParticipantLi
 import ReferenceNotFoundError from '../../../src/error/ReferenceNotFoundError';
 import * as participantService from '../../../src/service/participant-service';
 
-const mockGetParticipantListResponse = jest.fn();
-jest
+const mockGetParticipantListResponse = jest
   .spyOn(participantService, 'getParticipantListResponse')
-  .mockImplementation(mockGetParticipantListResponse);
+  .mockImplementation();
 
 describe('List Participants', () => {
   test('Happy Path', async () => {
@@ -36,7 +35,7 @@ describe('List Participants', () => {
       hackathonId,
     );
 
-    mockGetParticipantListResponse.mockResolvedValue(expected);
+    mockGetParticipantListResponse.mockResolvedValueOnce(expected);
     const callback = jest.fn();
 
     await list(toEvent(hackathonId), null, callback);

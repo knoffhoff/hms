@@ -6,15 +6,14 @@ import ReferenceNotFoundError from '../../../src/error/ReferenceNotFoundError';
 import Hackathon from '../../../src/repository/domain/Hackathon';
 import HackathonCreateRequest from '../../../src/rest/hackathon/HackathonCreateRequest';
 
-const mockCreateHackathon = jest.fn();
-jest
+const mockCreateHackathon = jest
   .spyOn(hackathonService, 'createHackathon')
-  .mockImplementation(mockCreateHackathon);
+  .mockImplementation();
 
 describe('Create Hackathon', () => {
   test('Happy Path', async () => {
     const expected = randomHackathon();
-    mockCreateHackathon.mockResolvedValue(expected);
+    mockCreateHackathon.mockResolvedValueOnce(expected);
     const callback = jest.fn();
 
     await create(toEvent(expected), null, callback);

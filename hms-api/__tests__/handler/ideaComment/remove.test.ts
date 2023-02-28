@@ -3,15 +3,16 @@ import {remove} from '../../../src/handler/ideaComment/remove';
 import IdeaCommentDeleteResponse from '../../../src/rest/ideaComment/IdeaCommentDeleteResponse';
 import Uuid, {uuid} from '../../../src/util/Uuid';
 
-const mockRemoveIdeaComment = jest.fn();
-jest
+const mockRemoveIdeaComment = jest
   .spyOn(ideaCommentService, 'removeIdeaComment')
-  .mockImplementation(mockRemoveIdeaComment);
+  .mockImplementation();
 
 describe('Delete Comment', () => {
   test('Happy Path', async () => {
     const id = uuid();
-    mockRemoveIdeaComment.mockResolvedValue(new IdeaCommentDeleteResponse(id));
+    mockRemoveIdeaComment.mockResolvedValueOnce(
+      new IdeaCommentDeleteResponse(id),
+    );
     const event = toEvent(id);
     const callback = jest.fn();
 

@@ -13,10 +13,9 @@ import {randomUser} from '../../repository/domain/user-maker';
 import {randomCategory} from '../../repository/domain/category-maker';
 import {randomIdea} from '../../repository/domain/idea-maker';
 
-const mockGetHackathon = jest.fn();
-jest
+const mockGetHackathon = jest
   .spyOn(hackathonService, 'getHackathonResponse')
-  .mockImplementation(mockGetHackathon);
+  .mockImplementation();
 
 describe('Get Hackathon', () => {
   test('Happy Path', async () => {
@@ -33,7 +32,7 @@ describe('Get Hackathon', () => {
       [randomIdea(), randomIdea()],
     );
 
-    mockGetHackathon.mockResolvedValue(expected);
+    mockGetHackathon.mockResolvedValueOnce(expected);
     const event = toEvent(hackathon.id);
     const callback = jest.fn();
 

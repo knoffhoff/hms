@@ -6,13 +6,14 @@ import ReferenceNotFoundError from '../../../src/error/ReferenceNotFoundError';
 import Idea from '../../../src/repository/domain/Idea';
 import IdeaCreateRequest from '../../../src/rest/idea/IdeaCreateRequest';
 
-const mockCreateIdea = jest.fn();
-jest.spyOn(ideaService, 'createIdea').mockImplementation(mockCreateIdea);
+const mockCreateIdea = jest
+  .spyOn(ideaService, 'createIdea')
+  .mockImplementation();
 
 describe('Create Idea', () => {
   test('Happy Path', async () => {
     const expected = randomIdea();
-    mockCreateIdea.mockResolvedValue(expected);
+    mockCreateIdea.mockResolvedValueOnce(expected);
     const callback = jest.fn();
 
     await create(toEvent(expected), null, callback);

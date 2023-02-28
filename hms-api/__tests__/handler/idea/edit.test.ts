@@ -6,8 +6,7 @@ import NotFoundError from '../../../src/error/NotFoundError';
 import IdeaEditRequest from '../../../src/rest/idea/IdeaEditRequest';
 import ReferenceNotFoundError from '../../../src/error/ReferenceNotFoundError';
 
-const mockEditIdea = jest.fn();
-jest.spyOn(ideaService, 'editIdea').mockImplementation(mockEditIdea);
+const mockEditIdea = jest.spyOn(ideaService, 'editIdea').mockImplementation();
 
 describe('Edit Idea', () => {
   test('Happy Path', async () => {
@@ -21,7 +20,7 @@ describe('Edit Idea', () => {
     const id = uuid();
     const callback = jest.fn();
 
-    mockEditIdea.mockImplementation(() => {});
+    mockEditIdea.mockImplementation();
 
     await edit(
       toEvent(
