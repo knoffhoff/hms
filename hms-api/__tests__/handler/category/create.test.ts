@@ -13,9 +13,10 @@ const mockCreateCategory = jest
 describe('Create Category', () => {
   test('Happy Path', async () => {
     const expected = randomCategory();
-    mockCreateCategory.mockResolvedValueOnce(expected);
     const event = toEvent(expected);
     const callback = jest.fn();
+
+    mockCreateCategory.mockResolvedValueOnce(expected);
 
     await create(event, null, callback);
 

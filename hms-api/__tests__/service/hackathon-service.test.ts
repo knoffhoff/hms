@@ -76,10 +76,9 @@ const mockRemoveIdeasForHackathon = jest
   .spyOn(ideaService, 'removeIdeasForHackathon')
   .mockImplementation();
 
-const mockSlugExists = jest.fn();
-jest
+const mockSlugExists = jest
   .spyOn(hackathonRepository, 'hackathonSlugExists')
-  .mockImplementation(mockSlugExists);
+  .mockImplementation();
 
 beforeAll(() => {});
 
