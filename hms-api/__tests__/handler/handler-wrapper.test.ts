@@ -17,7 +17,7 @@ describe('Wrap Handler', () => {
   });
 
   test('Catches NotFoundError', async () => {
-    const message = 'We couldn\'t find that thing you wanted';
+    const message = "We couldn't find that thing you wanted";
     const callback = jest.fn();
 
     await wrapHandler(() => {
@@ -36,7 +36,7 @@ describe('Wrap Handler', () => {
   });
 
   test('Catches ReferenceNotFoundError', async () => {
-    const message = 'We couldn\'t find that thing your thing wanted';
+    const message = "We couldn't find that thing your thing wanted";
     const callback = jest.fn();
 
     await wrapHandler(() => {
@@ -55,7 +55,7 @@ describe('Wrap Handler', () => {
   });
 
   test('Catches InvalidStateError', async () => {
-    const message = 'We couldn\'t find that thing your thing wanted';
+    const message = "We couldn't find that thing your thing wanted";
     const callback = jest.fn();
 
     await wrapHandler(() => {
@@ -86,7 +86,7 @@ describe('Wrap Handler', () => {
     }, callback);
 
     expect(callback).toHaveBeenCalledWith(null, {
-      statusCode: 400,
+      statusCode: 422,
       headers: {
         'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Credentials': true,

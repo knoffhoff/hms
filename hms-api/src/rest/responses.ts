@@ -4,6 +4,7 @@ import NotFoundError from '../error/NotFoundError';
 import ReferenceNotFoundError from '../error/ReferenceNotFoundError';
 import InvalidStateError from '../error/InvalidStateError';
 import ValidationError from '../error/ValidationError';
+import DeletionError from '../error/DeletionError';
 
 const headers = {
   'Access-Control-Allow-Origin': '*',
@@ -40,6 +41,12 @@ export function buildInvalidStateErrorResponse(error: InvalidStateError): any {
 }
 
 export function buildValidationErrorResponse(error: ValidationError): any {
+  return buildResponse(422, {
+    errorMessage: error.message,
+  });
+}
+
+export function buildDeletionErrorResponse(error: DeletionError): any {
   return buildResponse(400, {
     errorMessage: error.message,
   });
