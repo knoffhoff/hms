@@ -5,6 +5,9 @@ import HackathonCreateResponse from '../../../src/rest/hackathon/HackathonCreate
 import ReferenceNotFoundError from '../../../src/error/ReferenceNotFoundError';
 import Hackathon from '../../../src/repository/domain/Hackathon';
 import HackathonCreateRequest from '../../../src/rest/hackathon/HackathonCreateRequest';
+import ValidationError from '../../../src/error/ValidationError';
+import ValidationResult from '../../../src/error/ValidationResult';
+import InvalidStateError from '../../../src/error/InvalidStateError';
 
 const mockCreateHackathon = jest
   .spyOn(hackathonService, 'createHackathon')
@@ -13,8 +16,9 @@ const mockCreateHackathon = jest
 describe('Create Hackathon', () => {
   test('Happy Path', async () => {
     const expected = randomHackathon();
-    mockCreateHackathon.mockResolvedValueOnce(expected);
     const callback = jest.fn();
+
+    mockCreateHackathon.mockResolvedValueOnce(expected);
 
     await create(toEvent(expected), null, callback);
 
@@ -36,12 +40,33 @@ describe('Create Hackathon', () => {
     });
   });
 
-  test('Throws ReferenceNotFoundError', async () => {
-    const errorMessage = 'reference error message';
-    mockCreateHackathon.mockImplementation(() => {
-      throw new ReferenceNotFoundError(errorMessage);
-    });
+  test('Throws ValidationError', async () => {
+    const errorMessage = 'validation error message';
     const callback = jest.fn();
+
+    mockCreateHackathon.mockImplementation(() => {
+      throw new ValidationError(errorMessage, new ValidationResult());
+    });
+
+    await create(toEvent(randomHackathon()), null, callback);
+    expect(callback).toHaveBeenCalledWith(null, {
+      statusCode: 422,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Credentials': true,
+        'content-type': 'application/json',
+      },
+      body: JSON.stringify({errorMessage: errorMessage}),
+    });
+  });
+
+  test('Throws InvalidStateError', async () => {
+    const errorMessage = 'invalid state error message';
+    const callback = jest.fn();
+
+    mockCreateHackathon.mockImplementation(() => {
+      throw new InvalidStateError(errorMessage);
+    });
 
     await create(toEvent(randomHackathon()), null, callback);
     expect(callback).toHaveBeenCalledWith(null, {

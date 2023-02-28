@@ -2,6 +2,7 @@ import * as hackathonService from '../../../src/service/hackathon-service';
 import {remove} from '../../../src/handler/hackathon/remove';
 import HackathonDeleteResponse from '../../../src/rest/hackathon/HackathonDeleteResponse';
 import Uuid, {uuid} from '../../../src/util/Uuid';
+import DeletionError from '../../../src/error/DeletionError';
 
 const mockRemoveHackathon = jest
   .spyOn(hackathonService, 'removeHackathon')
@@ -10,9 +11,10 @@ const mockRemoveHackathon = jest
 describe('Delete Hackathon', () => {
   test('Happy Path', async () => {
     const id = uuid();
-    mockRemoveHackathon.mockResolvedValueOnce(new HackathonDeleteResponse(id));
     const event = toEvent(id);
     const callback = jest.fn();
+
+    mockRemoveHackathon.mockResolvedValueOnce(new HackathonDeleteResponse(id));
 
     await remove(event, null, callback);
 
@@ -28,14 +30,36 @@ describe('Delete Hackathon', () => {
     });
   });
 
+  test('Throws DeletionError', async () => {
+    const errorMessage = 'deletion error message';
+    const callback = jest.fn();
+
+    mockRemoveHackathon.mockImplementation(() => {
+      throw new DeletionError(errorMessage);
+    });
+
+    await remove(toEvent(uuid()), null, callback);
+    expect(callback).toHaveBeenCalledWith(null, {
+      statusCode: 400,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Credentials': true,
+        'content-type': 'application/json',
+      },
+      body: JSON.stringify({errorMessage: errorMessage}),
+    });
+  });
+
   test('Throws Error', async () => {
     const errorMessage = 'generic error message';
+    const callback = jest.fn();
+
     mockRemoveHackathon.mockImplementation(() => {
       throw new Error(errorMessage);
     });
-    const callback = jest.fn();
 
     await remove(toEvent(uuid()), null, callback);
+
     expect(callback).toHaveBeenCalledWith(null, {
       statusCode: 500,
       headers: {

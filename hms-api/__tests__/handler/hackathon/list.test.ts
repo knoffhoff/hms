@@ -20,9 +20,9 @@ describe('List Hackathons', () => {
       hackathon3,
       hackathon4,
     ]);
+    const callback = jest.fn();
 
     mockGetHackathonListResponse.mockResolvedValueOnce(expected);
-    const callback = jest.fn();
 
     await list({}, null, callback);
 
@@ -40,12 +40,14 @@ describe('List Hackathons', () => {
 
   test('Throws NotFoundError', async () => {
     const errorMessage = 'reference error message';
+    const callback = jest.fn();
+
     mockGetHackathonListResponse.mockImplementation(() => {
       throw new NotFoundError(errorMessage);
     });
-    const callback = jest.fn();
 
     await list({}, null, callback);
+
     expect(callback).toHaveBeenCalledWith(null, {
       statusCode: 404,
       headers: {
@@ -59,12 +61,14 @@ describe('List Hackathons', () => {
 
   test('Throws Error', async () => {
     const errorMessage = 'generic error message';
+    const callback = jest.fn();
+
     mockGetHackathonListResponse.mockImplementation(() => {
       throw new Error(errorMessage);
     });
-    const callback = jest.fn();
 
     await list({}, null, callback);
+
     expect(callback).toHaveBeenCalledWith(null, {
       statusCode: 500,
       headers: {
