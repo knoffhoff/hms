@@ -2,6 +2,7 @@ import * as categoryService from '../../../src/service/category-service';
 import {remove} from '../../../src/handler/category/remove';
 import CategoryDeleteResponse from '../../../src/rest/category/CategoryDeleteResponse';
 import Uuid, {uuid} from '../../../src/util/Uuid';
+import DeletionError from '../../../src/error/DeletionError';
 
 const mockRemoveCategory = jest
   .spyOn(categoryService, 'removeCategory')
@@ -29,12 +30,33 @@ describe('Delete Category', () => {
     });
   });
 
+  test('Throws DeletionError', async () => {
+    const errorMessage = 'deletion error message';
+    const callback = jest.fn();
+
+    mockRemoveCategory.mockImplementation(() => {
+      throw new DeletionError(errorMessage);
+    });
+
+    await remove(toEvent(uuid()), null, callback);
+    expect(callback).toHaveBeenCalledWith(null, {
+      statusCode: 400,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Credentials': true,
+        'content-type': 'application/json',
+      },
+      body: JSON.stringify({errorMessage: errorMessage}),
+    });
+  });
+
   test('Throws Error', async () => {
     const errorMessage = 'generic error message';
+    const callback = jest.fn();
+
     mockRemoveCategory.mockImplementation(() => {
       throw new Error(errorMessage);
     });
-    const callback = jest.fn();
 
     await remove(toEvent(uuid()), null, callback);
     expect(callback).toHaveBeenCalledWith(null, {
