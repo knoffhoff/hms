@@ -53,16 +53,37 @@ export async function editSkill(
 }
 
 export async function getSkillResponse(id: Uuid): Promise<SkillResponse> {
-  const skill = await getSkill(id);
+  let skill;
+  try {
+    skill = await getSkill(id);
+  } catch (e) {
+    throw new NotFoundError(`Cannot find Skill with id: ${id}`);
+  }
+
   return SkillResponse.from(skill);
 }
 
 export async function getSkillListResponse(): Promise<SkillListResponse> {
-  const skills = await listSkills();
+  let skills;
+  try {
+    skills = await listSkills();
+  } catch (e) {
+    throw new NotFoundError(`Cannot find Skills`);
+  }
+
   return SkillListResponse.from(skills);
 }
 
 export async function removeSkill(id: Uuid): Promise<SkillDeleteResponse> {
+  try {
+    await getSkill(id);
+  } catch (e) {
+    throw new NotFoundError(
+      `Cannot delete Skill with id: ${id}, it does not exist`,
+    );
+  }
+
   await deleteSkill(id);
+
   return new SkillDeleteResponse(id);
 }
