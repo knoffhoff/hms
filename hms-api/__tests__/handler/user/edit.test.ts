@@ -4,17 +4,19 @@ import * as userService from '../../../src/service/user-service';
 import UserEditResponse from '../../../src/rest/user/UserEditResponse';
 import NotFoundError from '../../../src/error/NotFoundError';
 import UserEditRequest from '../../../src/rest/user/UserEditRequest';
-import ReferenceNotFoundError from '../../../src/error/ReferenceNotFoundError';
+import ValidationError from '../../../src/error/ValidationError';
+import ValidationResult from '../../../src/error/ValidationResult';
 
 const mockEditUser = jest.spyOn(userService, 'editUser').mockImplementation();
 
 describe('Edit User', () => {
+  const lastName = 'McLasty';
+  const firstName = 'First';
+  const skills = [uuid()];
+  const imageUrl = 'www.anywhere.com/image.png';
+  const id = uuid();
+
   test('Happy Path', async () => {
-    const lastName = 'McLasty';
-    const firstName = 'First';
-    const skills = [uuid()];
-    const imageUrl = 'www.anywhere.com/image.png';
-    const id = uuid();
     const callback = jest.fn();
 
     mockEditUser.mockImplementation();
@@ -44,14 +46,9 @@ describe('Edit User', () => {
   });
 
   test('Throws NotFoundError', async () => {
-    const lastName = 'McLasty';
-    const firstName = 'First';
-    const skills = [uuid()];
-    const imageUrl = 'www.anywhere.com/image.png';
-    const id = uuid();
     const callback = jest.fn();
-
     const errorMessage = 'Where is it????';
+
     mockEditUser.mockImplementation(() => {
       throw new NotFoundError(errorMessage);
     });
@@ -80,17 +77,12 @@ describe('Edit User', () => {
     });
   });
 
-  test('Throws ReferenceNotFoundError', async () => {
-    const lastName = 'McLasty';
-    const firstName = 'First';
-    const skills = [uuid()];
-    const imageUrl = 'www.anywhere.com/image.png';
-    const id = uuid();
+  test('Throws ValidationError', async () => {
     const callback = jest.fn();
+    const errorMessage = 'validation error message';
 
-    const errorMessage = 'Where is it????';
     mockEditUser.mockImplementation(() => {
-      throw new ReferenceNotFoundError(errorMessage);
+      throw new ValidationError(errorMessage, new ValidationResult());
     });
 
     await edit(
@@ -107,7 +99,7 @@ describe('Edit User', () => {
       imageUrl,
     );
     expect(callback).toHaveBeenCalledWith(null, {
-      statusCode: 400,
+      statusCode: 422,
       headers: {
         'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Credentials': true,
@@ -118,14 +110,9 @@ describe('Edit User', () => {
   });
 
   test('Throws Error', async () => {
-    const lastName = 'McLasty';
-    const firstName = 'First';
-    const skills = [uuid()];
-    const imageUrl = 'www.anywhere.com/image.png';
-    const id = uuid();
     const callback = jest.fn();
-
     const errorMessage = 'Boring old error';
+
     mockEditUser.mockImplementation(() => {
       throw new Error(errorMessage);
     });

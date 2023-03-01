@@ -15,9 +15,9 @@ describe('List Users', () => {
     const user3 = randomUser();
     const user4 = randomUser();
     const expected = UserListResponse.from([user1, user2, user3, user4]);
+    const callback = jest.fn();
 
     mockGetUserListResponse.mockResolvedValueOnce(expected);
-    const callback = jest.fn();
 
     await list({}, null, callback);
 
@@ -35,12 +35,14 @@ describe('List Users', () => {
 
   test('Throws NotFoundError', async () => {
     const errorMessage = 'reference error message';
+    const callback = jest.fn();
+
     mockGetUserListResponse.mockImplementation(() => {
       throw new NotFoundError(errorMessage);
     });
-    const callback = jest.fn();
 
     await list({}, null, callback);
+
     expect(callback).toHaveBeenCalledWith(null, {
       statusCode: 404,
       headers: {
@@ -54,12 +56,14 @@ describe('List Users', () => {
 
   test('Throws Error', async () => {
     const errorMessage = 'generic error message';
+    const callback = jest.fn();
+
     mockGetUserListResponse.mockImplementation(() => {
       throw new Error(errorMessage);
     });
-    const callback = jest.fn();
 
     await list({}, null, callback);
+
     expect(callback).toHaveBeenCalledWith(null, {
       statusCode: 500,
       headers: {

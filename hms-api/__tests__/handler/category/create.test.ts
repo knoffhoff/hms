@@ -47,6 +47,7 @@ describe('Create Category', () => {
     });
 
     await create(toEvent(randomCategory()), null, callback);
+
     expect(callback).toHaveBeenCalledWith(null, {
       statusCode: 400,
       headers: {
@@ -67,6 +68,7 @@ describe('Create Category', () => {
     });
 
     await create(toEvent(randomCategory()), null, callback);
+
     expect(callback).toHaveBeenCalledWith(null, {
       statusCode: 422,
       headers: {
@@ -87,6 +89,7 @@ describe('Create Category', () => {
     });
 
     await create(toEvent(randomCategory()), null, callback);
+
     expect(callback).toHaveBeenCalledWith(null, {
       statusCode: 500,
       headers: {

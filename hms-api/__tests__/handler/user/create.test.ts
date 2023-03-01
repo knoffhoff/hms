@@ -5,6 +5,8 @@ import UserCreateResponse from '../../../src/rest/user/UserCreateResponse';
 import ReferenceNotFoundError from '../../../src/error/ReferenceNotFoundError';
 import User from '../../../src/repository/domain/User';
 import UserCreateRequest from '../../../src/rest/user/UserCreateRequest';
+import ValidationError from '../../../src/error/ValidationError';
+import ValidationResult from '../../../src/error/ValidationResult';
 
 const mockCreateUser = jest
   .spyOn(userService, 'createUser')
@@ -13,9 +15,10 @@ const mockCreateUser = jest
 describe('Create User', () => {
   test('Happy Path', async () => {
     const expected = randomUser();
-    mockCreateUser.mockResolvedValueOnce(expected);
     const event = toEvent(expected);
     const callback = jest.fn();
+
+    mockCreateUser.mockResolvedValueOnce(expected);
 
     await create(event, null, callback);
 
@@ -37,16 +40,18 @@ describe('Create User', () => {
     });
   });
 
-  test('Throws ReferenceNotFoundError', async () => {
-    const errorMessage = 'reference error message';
-    mockCreateUser.mockImplementation(() => {
-      throw new ReferenceNotFoundError(errorMessage);
-    });
+  test('Validation Error', async () => {
+    const errorMessage = 'validation error message';
     const callback = jest.fn();
 
+    mockCreateUser.mockRejectedValueOnce(
+      new ValidationError(errorMessage, new ValidationResult()),
+    );
+
     await create(toEvent(randomUser()), null, callback);
+
     expect(callback).toHaveBeenCalledWith(null, {
-      statusCode: 400,
+      statusCode: 422,
       headers: {
         'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Credentials': true,
@@ -58,12 +63,14 @@ describe('Create User', () => {
 
   test('Throws Error', async () => {
     const errorMessage = 'generic error message';
+    const callback = jest.fn();
+
     mockCreateUser.mockImplementation(() => {
       throw new Error(errorMessage);
     });
-    const callback = jest.fn();
 
     await create(toEvent(randomUser()), null, callback);
+
     expect(callback).toHaveBeenCalledWith(null, {
       statusCode: 500,
       headers: {

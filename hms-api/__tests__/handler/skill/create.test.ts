@@ -2,7 +2,6 @@ import * as skillService from '../../../src/service/skill-service';
 import {create} from '../../../src/handler/skill/create';
 import {randomSkill} from '../../repository/domain/skill-maker';
 import SkillCreateResponse from '../../../src/rest/skill/SkillCreateResponse';
-import ReferenceNotFoundError from '../../../src/error/ReferenceNotFoundError';
 import Skill from '../../../src/repository/domain/Skill';
 import SkillCreateRequest from '../../../src/rest/skill/SkillCreateRequest';
 import ValidationError from '../../../src/error/ValidationError';
@@ -38,19 +37,14 @@ describe('Create Skill', () => {
 
   test('Validation Error', async () => {
     const errorMessage = 'validation error message';
-    const expected = randomSkill();
     const callback = jest.fn();
 
     mockCreateSkill.mockImplementation(() => {
       throw new ValidationError(errorMessage, new ValidationResult());
     });
 
-    await create(toEvent(expected), null, callback);
+    await create(toEvent(randomSkill()), null, callback);
 
-    expect(mockCreateSkill).toHaveBeenCalledWith(
-      expected.name,
-      expected.description,
-    );
     expect(callback).toHaveBeenCalledWith(null, {
       statusCode: 422,
       headers: {
