@@ -5,6 +5,8 @@ import ideaComment from '../../../src/repository/domain/IdeaComment';
 import IdeaCommentCreateRequest from '../../../src/rest/ideaComment/IdeaCommentCreateRequest';
 import ReferenceNotFoundError from '../../../src/error/ReferenceNotFoundError';
 import ideaCommentCreateResponse from '../../../src/rest/ideaComment/IdeaCommentCreateResponse';
+import ValidationError from '../../../src/error/ValidationError';
+import ValidationResult from '../../../src/error/ValidationResult';
 
 const mockCreateIdeaComment = jest
   .spyOn(ideaCommentService, 'createIdeaComment')
@@ -39,12 +41,14 @@ describe('Create Comment', () => {
 
   test('Throws ReferenceNotFoundError', async () => {
     const errorMessage = 'reference error message';
+    const callback = jest.fn();
+
     mockCreateIdeaComment.mockImplementation(() => {
       throw new ReferenceNotFoundError(errorMessage);
     });
-    const callback = jest.fn();
 
     await create(toEvent(randomIdeaComment()), null, callback);
+
     expect(callback).toHaveBeenCalledWith(null, {
       statusCode: 400,
       headers: {
@@ -56,14 +60,37 @@ describe('Create Comment', () => {
     });
   });
 
+  test('Throws ValidationError', async () => {
+    const errorMessage = 'validation error message';
+    const callback = jest.fn();
+
+    mockCreateIdeaComment.mockImplementation(() => {
+      throw new ValidationError(errorMessage, new ValidationResult());
+    });
+
+    await create(toEvent(randomIdeaComment()), null, callback);
+
+    expect(callback).toHaveBeenCalledWith(null, {
+      statusCode: 422,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Credentials': true,
+        'content-type': 'application/json',
+      },
+      body: JSON.stringify({errorMessage: errorMessage}),
+    });
+  });
+
   test('Throws Error', async () => {
     const errorMessage = 'generic error message';
+    const callback = jest.fn();
+
     mockCreateIdeaComment.mockImplementation(() => {
       throw new Error(errorMessage);
     });
-    const callback = jest.fn();
 
     await create(toEvent(randomIdeaComment()), null, callback);
+
     expect(callback).toHaveBeenCalledWith(null, {
       statusCode: 500,
       headers: {

@@ -52,7 +52,12 @@ export async function createIdeaComment(
 export async function getIdeaCommentResponse(
   id: Uuid,
 ): Promise<IdeaCommentResponse> {
-  const ideaComment = await getIdeaComment(id);
+  let ideaComment;
+  try {
+    ideaComment = await getIdeaComment(id);
+  } catch (e) {
+    throw new NotFoundError(`IdeaComment with id: ${id} not found`);
+  }
 
   let user;
   try {
