@@ -10,12 +10,17 @@ import {
   deleteHackathon,
   getHackathon,
   hackathonExists,
+  hackathonSlugExists,
   listHackathons,
   putHackathon,
 } from '../../src/repository/hackathon-repository';
 import Uuid, {uuid} from '../../src/util/Uuid';
 import NotFoundError from '../../src/error/NotFoundError';
-import {randomHackathon} from './domain/hackathon-maker';
+import {
+  HackathonData,
+  makeHackathon,
+  randomHackathon,
+} from './domain/hackathon-maker';
 import Hackathon from '../../src/repository/domain/Hackathon';
 import {AttributeValue} from '@aws-sdk/client-dynamodb';
 
@@ -145,6 +150,43 @@ describe('Hackathon Exists', () => {
     expect(await hackathonExists(id)).toBe(false);
 
     getExpected(id);
+  });
+});
+
+describe('Hackathon Slug Exists', () => {
+  test('Item is non-null', async () => {
+    const slug = 'slug';
+    const hackathon = makeHackathon({slug: slug} as HackathonData);
+    mockQuery([itemFromHackathon(hackathon)]);
+
+    expect(await hackathonSlugExists(slug)).toBe(true);
+
+    expect(mockSend).toHaveBeenCalledWith(
+      expect.objectContaining({
+        input: expect.objectContaining({
+          TableName: hackathonTable,
+          KeyConditionExpression: 'slug = :slug',
+          ExpressionAttributeValues: {':slug': {S: slug}},
+        }),
+      }),
+    );
+  });
+
+  test('Item is null', async () => {
+    const slug = 'slug';
+    mockQuery(null);
+
+    expect(await hackathonSlugExists(slug)).toBe(false);
+
+    expect(mockSend).toHaveBeenCalledWith(
+      expect.objectContaining({
+        input: expect.objectContaining({
+          TableName: hackathonTable,
+          KeyConditionExpression: 'slug = :slug',
+          ExpressionAttributeValues: {':slug': {S: slug}},
+        }),
+      }),
+    );
   });
 });
 

@@ -17,6 +17,7 @@ import {
   deleteParticipantFromIdea,
   deleteVoterFromIdea,
   getIdea,
+  ideaExists,
   listIdeasAll,
   listIdeasForCategory,
   listIdeasForHackathon,
@@ -48,6 +49,26 @@ describe('Get Idea', () => {
     expect(await getIdea(expected.id)).toStrictEqual(expected);
 
     getExpected(expected.id);
+  });
+});
+
+describe('Idea Exists', () => {
+  test('Idea exists', async () => {
+    const expected = randomIdea();
+    mockGetItem(itemFromIdea(expected));
+
+    expect(await ideaExists(expected.id)).toStrictEqual(true);
+
+    getExpected(expected.id);
+  });
+
+  test("Idea doesn't exist", async () => {
+    const id = uuid();
+    mockGetItem(null);
+
+    expect(await ideaExists(id)).toStrictEqual(false);
+
+    getExpected(id);
   });
 });
 

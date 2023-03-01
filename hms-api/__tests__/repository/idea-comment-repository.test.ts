@@ -15,11 +15,17 @@ import {
   getIdeaComment,
   getIdeaComments,
   putIdeaComment,
+  listIdeaComments,
 } from '../../src/repository/idea-comment-repository';
 import NotFoundError from '../../src/error/NotFoundError';
-import {randomIdeaComment} from './domain/ideaComment-maker';
+import {
+  IdeaCommentData,
+  makeIdeaComment,
+  randomIdeaComment,
+} from './domain/ideaComment-maker';
 import {AttributeValue} from '@aws-sdk/client-dynamodb';
 import IdeaComment from '../../src/repository/domain/IdeaComment';
+import {randomIdea} from './domain/idea-maker';
 
 describe('Get Idea Comment', () => {
   test('Idea Comment does not exist', async () => {
@@ -38,6 +44,34 @@ describe('Get Idea Comment', () => {
     expect(await getIdeaComment(expected.id)).toStrictEqual(expected);
 
     getExpected(expected.id);
+  });
+});
+describe('List Idea Comments', () => {
+  const idea = randomIdea();
+  const ideaComment = makeIdeaComment({ideaId: idea.id} as IdeaCommentData);
+
+  test('Happy Path', async () => {
+    mockQuery([itemFromIdeaComment(ideaComment)]);
+
+    expect(await listIdeaComments(idea.id)).toStrictEqual([ideaComment]);
+
+    listExpected();
+  });
+
+  test('Empty Array Response', async () => {
+    mockQuery([]);
+
+    expect(await listIdeaComments(idea.id)).toStrictEqual([]);
+
+    listExpected();
+  });
+
+  test('Null Response', async () => {
+    mockQuery(null);
+
+    await expect(listIdeaComments(idea.id)).rejects.toThrow(NotFoundError);
+
+    listExpected();
   });
 });
 
@@ -123,7 +157,7 @@ describe('Delete Idea Comment', () => {
   });
 });
 
-describe('Get Idea Comment', () => {
+describe('Get Idea Comments', () => {
   test('All Idea comments missing', async () => {
     mockGetItemOnce(null);
     mockGetItemOnce(null);
@@ -177,6 +211,15 @@ const getExpected = (id: Uuid) =>
       input: expect.objectContaining({
         TableName: ideaCommentTable,
         Key: {id: {S: id}},
+      }),
+    }),
+  );
+
+const listExpected = () =>
+  expect(mockSend).toHaveBeenCalledWith(
+    expect.objectContaining({
+      input: expect.objectContaining({
+        TableName: ideaCommentTable,
       }),
     }),
   );

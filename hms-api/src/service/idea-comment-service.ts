@@ -8,7 +8,6 @@ import {
   putIdeaComment,
   deleteIdeaComment,
   listIdeaComments,
-  parentCommentIdIdeaExists,
 } from '../repository/idea-comment-repository';
 import ValidationError from '../error/ValidationError';
 import IdeaComment from '../repository/domain/IdeaComment';
@@ -30,12 +29,6 @@ export async function createIdeaComment(
 
   if (!(await userExists(userId))) {
     throw new ReferenceNotFoundError(`User with id: ${userId} not found`);
-  }
-
-  if (parentCommentId && !(await parentCommentIdIdeaExists(parentCommentId))) {
-    throw new ReferenceNotFoundError(
-      `Parent comment with id: ${parentCommentId} not found`,
-    );
   }
 
   const ideaComment = new IdeaComment(userId, ideaId, text, parentCommentId);
