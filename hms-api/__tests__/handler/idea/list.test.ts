@@ -25,9 +25,9 @@ describe('List Hackathon Ideas', () => {
       [idea1, idea2, idea3, idea4],
       hackathonId,
     );
+    const callback = jest.fn();
 
     mockGetIdeaListResponse.mockResolvedValueOnce(expected);
-    const callback = jest.fn();
 
     await listHackathonIdeas(toEvent(hackathonId), null, callback);
 
@@ -45,12 +45,14 @@ describe('List Hackathon Ideas', () => {
 
   test('Throws NotFoundError', async () => {
     const errorMessage = 'reference error message';
+    const callback = jest.fn();
+
     mockGetIdeaListResponse.mockImplementation(() => {
       throw new NotFoundError(errorMessage);
     });
-    const callback = jest.fn();
 
     await listHackathonIdeas(toEvent(uuid()), null, callback);
+
     expect(callback).toHaveBeenCalledWith(null, {
       statusCode: 404,
       headers: {
@@ -64,12 +66,14 @@ describe('List Hackathon Ideas', () => {
 
   test('Throws Error', async () => {
     const errorMessage = 'generic error message';
+    const callback = jest.fn();
+
     mockGetIdeaListResponse.mockImplementation(() => {
       throw new Error(errorMessage);
     });
-    const callback = jest.fn();
 
     await listHackathonIdeas(toEvent(uuid()), null, callback);
+
     expect(callback).toHaveBeenCalledWith(null, {
       statusCode: 500,
       headers: {
@@ -89,9 +93,9 @@ describe('List All Ideas', () => {
     const idea3 = randomIdea();
     const idea4 = randomIdea();
     const expected = IdeaListAllResponse.from([idea1, idea2, idea3, idea4]);
+    const callback = jest.fn();
 
     mockGetAllIdeasResponse.mockResolvedValueOnce(expected);
-    const callback = jest.fn();
 
     await listAllIdeas(toEvent(null), null, callback);
 
@@ -109,12 +113,14 @@ describe('List All Ideas', () => {
 
   test('Throws Error', async () => {
     const errorMessage = 'generic error message';
+    const callback = jest.fn();
+
     mockGetAllIdeasResponse.mockImplementation(() => {
       throw new Error(errorMessage);
     });
-    const callback = jest.fn();
 
     await listAllIdeas(toEvent(null), null, callback);
+
     expect(callback).toHaveBeenCalledWith(null, {
       statusCode: 500,
       headers: {

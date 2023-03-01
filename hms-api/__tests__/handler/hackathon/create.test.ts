@@ -69,6 +69,7 @@ describe('Create Hackathon', () => {
     });
 
     await create(toEvent(randomHackathon()), null, callback);
+
     expect(callback).toHaveBeenCalledWith(null, {
       statusCode: 400,
       headers: {
@@ -82,12 +83,14 @@ describe('Create Hackathon', () => {
 
   test('Throws Error', async () => {
     const errorMessage = 'generic error message';
+    const callback = jest.fn();
+
     mockCreateHackathon.mockImplementation(() => {
       throw new Error(errorMessage);
     });
-    const callback = jest.fn();
 
     await create(toEvent(randomHackathon()), null, callback);
+
     expect(callback).toHaveBeenCalledWith(null, {
       statusCode: 500,
       headers: {

@@ -141,7 +141,14 @@ export async function editIdea(
 }
 
 export async function getIdeaResponse(id: Uuid): Promise<IdeaResponse> {
-  const idea = await getIdea(id);
+  let idea;
+  try {
+    idea = await getIdea(id);
+  } catch (e) {
+    throw new NotFoundError(
+      `Cannot get Idea with id: ${id}, it does not exist`,
+    );
+  }
 
   let ownerUser;
   try {
@@ -263,6 +270,27 @@ export async function removeParticipant(
   ideaId: Uuid,
   participantId: Uuid,
 ): Promise<void> {
+  let idea;
+  try {
+    idea = await getIdea(ideaId);
+  } catch (e) {
+    throw new NotFoundError(
+      `Cannot remove Participant with id: ${participantId} ` +
+        `from Idea with id ${ideaId}, ` +
+        'Idea does not exist',
+    );
+  }
+
+  let participant;
+  try {
+    participant = await getParticipant(participantId);
+  } catch (e) {
+    throw new NotFoundError(
+      `Cannot remove Participant with id: ${participantId} ` +
+        `from Idea with id ${ideaId}, Participant does not exist`,
+    );
+  }
+
   await deleteParticipantFromIdea(ideaId, participantId);
 }
 
@@ -346,7 +374,14 @@ export async function addVoter(
 }
 
 export async function removeIdea(id: Uuid): Promise<IdeaDeleteResponse> {
-  await deleteIdea(id);
+  try {
+    await deleteIdea(id);
+  } catch (e) {
+    throw new DeletionError(
+      `Cannot delete Idea with id: ${id}, failed to delete`,
+    );
+  }
+
   return new IdeaDeleteResponse(id);
 }
 

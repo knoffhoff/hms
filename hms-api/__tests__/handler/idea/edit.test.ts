@@ -5,19 +5,22 @@ import IdeaEditResponse from '../../../src/rest/idea/IdeaEditResponse';
 import NotFoundError from '../../../src/error/NotFoundError';
 import IdeaEditRequest from '../../../src/rest/idea/IdeaEditRequest';
 import ReferenceNotFoundError from '../../../src/error/ReferenceNotFoundError';
+import ValidationError from '../../../src/error/ValidationError';
+import ValidationResult from '../../../src/error/ValidationResult';
 
 const mockEditIdea = jest.spyOn(ideaService, 'editIdea').mockImplementation();
 
 describe('Edit Idea', () => {
+  const hackathonId = uuid();
+  const title = 'New fancy title';
+  const description = 'Well this is awkward';
+  const problem = '1 + 1 = X';
+  const goal = 'What does Y equal?';
+  const requiredSkills = [uuid(), uuid()];
+  const categoryId = uuid();
+  const id = uuid();
+
   test('Happy Path', async () => {
-    const hackathonId = uuid();
-    const title = 'New fancy title';
-    const description = 'Well this is awkward';
-    const problem = '1 + 1 = X';
-    const goal = 'What does Y equal?';
-    const requiredSkills = [uuid(), uuid()];
-    const categoryId = uuid();
-    const id = uuid();
     const callback = jest.fn();
 
     mockEditIdea.mockImplementation();
@@ -59,17 +62,9 @@ describe('Edit Idea', () => {
   });
 
   test('Throws NotFoundError', async () => {
-    const hackathonId = uuid();
-    const title = 'New fancy title';
-    const description = 'Well this is awkward';
-    const problem = '1 + 1 = X';
-    const goal = 'What does Y equal?';
-    const requiredSkills = [uuid(), uuid()];
-    const categoryId = uuid();
-    const id = uuid();
     const callback = jest.fn();
-
     const errorMessage = 'Where is it????';
+
     mockEditIdea.mockImplementation(() => {
       throw new NotFoundError(errorMessage);
     });
@@ -111,17 +106,9 @@ describe('Edit Idea', () => {
   });
 
   test('Throws ReferenceNotFoundError', async () => {
-    const hackathonId = uuid();
-    const title = 'New fancy title';
-    const description = 'Well this is awkward';
-    const problem = '1 + 1 = X';
-    const goal = 'What does Y equal?';
-    const requiredSkills = [uuid(), uuid()];
-    const categoryId = uuid();
-    const id = uuid();
     const callback = jest.fn();
-
     const errorMessage = 'Where is it????';
+
     mockEditIdea.mockImplementation(() => {
       throw new ReferenceNotFoundError(errorMessage);
     });
@@ -162,18 +149,54 @@ describe('Edit Idea', () => {
     });
   });
 
-  test('Throws Error', async () => {
-    const hackathonId = uuid();
-    const title = 'New fancy title';
-    const description = 'Well this is awkward';
-    const problem = '1 + 1 = X';
-    const goal = 'What does Y equal?';
-    const requiredSkills = [uuid(), uuid()];
-    const categoryId = uuid();
-    const id = uuid();
+  test('Throws ValidationError', async () => {
     const callback = jest.fn();
+    const errorMessage = 'validation error message';
 
+    mockEditIdea.mockImplementation(() => {
+      throw new ValidationError(errorMessage, new ValidationResult());
+    });
+
+    await edit(
+      toEvent(
+        hackathonId,
+        title,
+        description,
+        problem,
+        goal,
+        requiredSkills,
+        categoryId,
+        id,
+      ),
+      null,
+      callback,
+    );
+
+    expect(mockEditIdea).toHaveBeenCalledWith(
+      id,
+      hackathonId,
+      title,
+      description,
+      problem,
+      goal,
+      requiredSkills,
+      categoryId,
+    );
+    expect(callback).toHaveBeenCalledWith(null, {
+      statusCode: 422,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Credentials': true,
+        'content-type': 'application/json',
+      },
+      body: JSON.stringify({errorMessage: errorMessage}),
+    });
+  });
+
+  test('Throws Error', async () => {
+    const callback = jest.fn();
     const errorMessage = 'Boring old error';
+
     mockEditIdea.mockImplementation(() => {
       throw new Error(errorMessage);
     });
