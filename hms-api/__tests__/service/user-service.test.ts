@@ -251,6 +251,15 @@ describe('Get User List Response', () => {
     expect(await getUserListResponse()).toStrictEqual(expected);
     expect(mockListUsers).toHaveBeenCalled();
   });
+
+  test('Missing Users', async () => {
+    mockListUsers.mockImplementation(() => {
+      throw new Error('Uh oh');
+    });
+
+    await expect(getUserListResponse()).rejects.toThrow(NotFoundError);
+    expect(mockListUsers).toHaveBeenCalled();
+  });
 });
 
 describe('Extract User For Participant', () => {
@@ -302,8 +311,23 @@ describe('Users For', () => {
 
 describe('Delete User', () => {
   test('Happy Path', async () => {
+    const user = randomUser();
+    mockGetUser.mockResolvedValueOnce(user);
+    expect(await removeUser(user.id)).toStrictEqual(
+      new UserDeleteResponse(user.id),
+    );
+    expect(mockDeleteUser).toHaveBeenCalledWith(user.id);
+  });
+
+  test('User is missing', async () => {
     const id = uuid();
-    expect(await removeUser(id)).toStrictEqual(new UserDeleteResponse(id));
-    expect(mockDeleteUser).toHaveBeenCalledWith(id);
+
+    mockGetUser.mockImplementation(() => {
+      throw new Error('Uh oh');
+    });
+
+    await expect(removeUser(id)).rejects.toThrow(NotFoundError);
+    expect(mockDeleteUser).not.toHaveBeenCalled();
+    expect(mockGetUser).toHaveBeenCalledWith(id);
   });
 });

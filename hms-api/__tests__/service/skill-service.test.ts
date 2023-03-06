@@ -133,6 +133,15 @@ describe('Get Skill List Response', () => {
     expect(await getSkillListResponse()).toStrictEqual(expected);
     expect(mockListSkills).toHaveBeenCalled();
   });
+
+  test('Missing Skills', async () => {
+    mockListSkills.mockImplementation(() => {
+      throw new NotFoundError('Nope nope nope');
+    });
+
+    await expect(getSkillListResponse()).rejects.toThrow(NotFoundError);
+    expect(mockListSkills).toHaveBeenCalled();
+  });
 });
 
 describe('Delete Skill', () => {

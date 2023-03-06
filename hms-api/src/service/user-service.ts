@@ -149,7 +149,7 @@ export async function removeUser(id: Uuid): Promise<UserDeleteResponse> {
     );
   }
 
-  await deleteUser(id);
+  await deleteUser(existing.id);
 
   return new UserDeleteResponse(id);
 }
