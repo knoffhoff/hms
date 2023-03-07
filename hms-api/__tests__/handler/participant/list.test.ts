@@ -36,7 +36,7 @@ describe('List Participants', () => {
       hackathonId,
     );
 
-    mockGetParticipantListResponse.mockResolvedValue(expected);
+    mockGetParticipantListResponse.mockResolvedValueOnce(expected);
     const callback = jest.fn();
 
     await list(toEvent(hackathonId), null, callback);

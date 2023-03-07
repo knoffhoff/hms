@@ -28,7 +28,7 @@ describe('List Hackathon Ideas', () => {
       hackathonId,
     );
 
-    mockGetIdeaListResponse.mockResolvedValue(expected);
+    mockGetIdeaListResponse.mockResolvedValueOnce(expected);
     const callback = jest.fn();
 
     await listHackathonIdeas(toEvent(hackathonId), null, callback);
@@ -92,7 +92,7 @@ describe('List All Ideas', () => {
     const idea4 = randomIdea();
     const expected = IdeaListAllResponse.from([idea1, idea2, idea3, idea4]);
 
-    mockGetAllIdeasResponse.mockResolvedValue(expected);
+    mockGetAllIdeasResponse.mockResolvedValueOnce(expected);
     const callback = jest.fn();
 
     await listAllIdeas(toEvent(null), null, callback);

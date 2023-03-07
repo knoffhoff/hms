@@ -132,100 +132,13 @@ const mockSkillExists = jest.fn();
 jest.spyOn(skillRepository, 'skillExists').mockImplementation(mockSkillExists);
 
 describe('Create Idea', () => {
-  test('Validation Error', async () => {
-    mockParticipantExists.mockResolvedValue(true);
-    mockHackathonExists.mockResolvedValue(true);
-    mockCategoryExists.mockResolvedValue(true);
-    mockSkillExists.mockResolvedValue(true);
-
-    await expect(
-      createIdea(
-        uuid(),
-        uuid(),
-        '',
-        'descriiiiption',
-        '1 + 1 = x',
-        'toooooorrr',
-        [uuid()],
-        uuid(),
-      ),
-    ).rejects.toThrow(ValidationError);
-  });
-
-  test('Missing Hackathon', async () => {
-    mockParticipantExists.mockResolvedValue(true);
-    mockHackathonExists.mockResolvedValue(false);
-    mockCategoryExists.mockResolvedValue(true);
-    mockSkillExists.mockResolvedValue(true);
-
-    await expect(
-      createIdea(
-        uuid(),
-        uuid(),
-        'title',
-        'description',
-        'problem',
-        'goal',
-        [uuid()],
-        uuid(),
-      ),
-    ).rejects.toThrow(ReferenceNotFoundError);
-
-    expect(mockPutIdea).not.toHaveBeenCalled();
-    expect(mockDeleteIdea).not.toHaveBeenCalled();
-  });
-
-  test('Missing Category', async () => {
-    mockParticipantExists.mockResolvedValue(true);
-    mockHackathonExists.mockResolvedValue(true);
-    mockCategoryExists.mockResolvedValue(false);
-    mockSkillExists.mockResolvedValue(true);
-
-    await expect(
-      createIdea(
-        uuid(),
-        uuid(),
-        'title',
-        'description',
-        'problem',
-        'goal',
-        [uuid()],
-        uuid(),
-      ),
-    ).rejects.toThrow(ReferenceNotFoundError);
-
-    expect(mockPutIdea).not.toHaveBeenCalled();
-    expect(mockDeleteIdea).not.toHaveBeenCalled();
-  });
-
-  test('Missing Skill', async () => {
-    mockParticipantExists.mockResolvedValue(true);
-    mockHackathonExists.mockResolvedValue(true);
-    mockCategoryExists.mockResolvedValue(true);
-    mockSkillExists.mockResolvedValue(false);
-
-    await expect(
-      createIdea(
-        uuid(),
-        uuid(),
-        'title',
-        'description',
-        'problem',
-        'goal',
-        [uuid()],
-        uuid(),
-      ),
-    ).rejects.toThrow(ReferenceNotFoundError);
-
-    expect(mockPutIdea).not.toHaveBeenCalled();
-    expect(mockDeleteIdea).not.toHaveBeenCalled();
-  });
-
   test('Happy Path', async () => {
-    mockParticipantExists.mockResolvedValue(true);
-    mockHackathonExists.mockResolvedValue(true);
-    mockCategoryExists.mockResolvedValue(true);
-    mockSkillExists.mockResolvedValue(true);
+    mockHackathonExists.mockReset();
+    mockCategoryExists.mockReset();
+    mockSkillExists.mockReset();
+    mockHackathonExists.mockResolvedValueOnce(true);
+    mockCategoryExists.mockResolvedValueOnce(true);
+    mockSkillExists.mockResolvedValueOnce(true);
 
     const expected = randomIdea();
 
@@ -266,6 +179,103 @@ describe('Create Idea', () => {
       }),
     );
   });
+
+  test('Validation Error', async () => {
+    mockHackathonExists.mockReset();
+    mockCategoryExists.mockReset();
+    mockSkillExists.mockReset();
+    mockHackathonExists.mockResolvedValueOnce(true);
+    mockCategoryExists.mockResolvedValueOnce(true);
+    mockSkillExists.mockResolvedValueOnce(true);
+
+    await expect(
+      createIdea(
+        uuid(),
+        uuid(),
+        '',
+        'descriiiiption',
+        '1 + 1 = x',
+        'toooooorrr',
+        [uuid()],
+        uuid(),
+      ),
+    ).rejects.toThrow(ValidationError);
+  });
+
+  test('Missing Hackathon', async () => {
+    mockHackathonExists.mockReset();
+    mockCategoryExists.mockReset();
+    mockSkillExists.mockReset();
+    mockHackathonExists.mockResolvedValueOnce(false);
+    mockCategoryExists.mockResolvedValueOnce(true);
+    mockSkillExists.mockResolvedValueOnce(true);
+
+    await expect(
+      createIdea(
+        uuid(),
+        uuid(),
+        'title',
+        'description',
+        'problem',
+        'goal',
+        [uuid()],
+        uuid(),
+      ),
+    ).rejects.toThrow(ReferenceNotFoundError);
+
+    expect(mockPutIdea).not.toHaveBeenCalled();
+    expect(mockDeleteIdea).not.toHaveBeenCalled();
+  });
+
+  test('Missing Category', async () => {
+    mockHackathonExists.mockReset();
+    mockCategoryExists.mockReset();
+    mockSkillExists.mockReset();
+    mockHackathonExists.mockResolvedValueOnce(true);
+    mockCategoryExists.mockResolvedValueOnce(false);
+    mockSkillExists.mockResolvedValueOnce(true);
+
+    await expect(
+      createIdea(
+        uuid(),
+        uuid(),
+        'title',
+        'description',
+        'problem',
+        'goal',
+        [uuid()],
+        uuid(),
+      ),
+    ).rejects.toThrow(ReferenceNotFoundError);
+
+    expect(mockPutIdea).not.toHaveBeenCalled();
+    expect(mockDeleteIdea).not.toHaveBeenCalled();
+  });
+
+  test('Missing Skill', async () => {
+    mockHackathonExists.mockReset();
+    mockCategoryExists.mockReset();
+    mockSkillExists.mockReset();
+    mockHackathonExists.mockResolvedValueOnce(true);
+    mockCategoryExists.mockResolvedValueOnce(true);
+    mockSkillExists.mockResolvedValueOnce(false);
+
+    await expect(
+      createIdea(
+        uuid(),
+        uuid(),
+        'title',
+        'description',
+        'problem',
+        'goal',
+        [uuid()],
+        uuid(),
+      ),
+    ).rejects.toThrow(ReferenceNotFoundError);
+
+    expect(mockPutIdea).not.toHaveBeenCalled();
+    expect(mockDeleteIdea).not.toHaveBeenCalled();
+  });
 });
 
 describe('Edit Idea', () => {
@@ -276,7 +286,7 @@ describe('Edit Idea', () => {
     const description = 'Best description ever!';
     const problem = 'A simple problem';
     const goal = 'An overly complicated goal';
-    const requiredSkills = [uuid(), uuid()];
+    const requiredSkills = [uuid()];
     const categoryId = uuid();
     const expected = new Idea(
       oldIdea.ownerId,
@@ -293,9 +303,12 @@ describe('Edit Idea', () => {
       oldIdea.voterIds,
     );
 
-    mockGetIdea.mockResolvedValue(oldIdea);
-    mockCategoryExists.mockResolvedValue(true);
-    mockSkillExists.mockResolvedValue(true);
+    mockGetIdea.mockReset();
+    mockCategoryExists.mockReset();
+    mockSkillExists.mockReset();
+    mockGetIdea.mockResolvedValueOnce(oldIdea);
+    mockCategoryExists.mockResolvedValueOnce(true);
+    mockSkillExists.mockResolvedValueOnce(true);
 
     await editIdea(
       oldIdea.id,
@@ -314,21 +327,24 @@ describe('Edit Idea', () => {
       oldIdea.hackathonId,
     );
     expect(mockSkillExists).toHaveBeenCalledWith(requiredSkills[0]);
-    expect(mockSkillExists).toHaveBeenCalledWith(requiredSkills[1]);
     expect(mockPutIdea).toHaveBeenCalledWith(expected);
   });
 
   test('Validation Error', async () => {
-    mockGetIdea.mockResolvedValue(randomIdea());
-    mockCategoryExists.mockResolvedValue(true);
-    mockSkillExists.mockResolvedValue(true);
+    mockGetIdea.mockReset();
+    mockCategoryExists.mockReset();
+    mockSkillExists.mockReset();
+    mockGetIdea.mockResolvedValueOnce(randomIdea());
+    mockCategoryExists.mockResolvedValueOnce(true);
+    mockSkillExists.mockResolvedValueOnce(true);
 
     const failedValidation = new ValidationResult();
     failedValidation.addFailure('FAILURE');
 
-    const mockIdea = randomHackathon();
+    const mockIdea = randomIdea();
     jest.spyOn(mockIdea, 'validate').mockReturnValue(failedValidation);
-    mockGetIdea.mockResolvedValue(mockIdea);
+    mockGetIdea.mockReset();
+    mockGetIdea.mockResolvedValueOnce(mockIdea);
 
     await expect(
       editIdea(
@@ -350,8 +366,10 @@ describe('Edit Idea', () => {
     mockGetIdea.mockImplementation(() => {
       throw new Error('Uh oh');
     });
-    mockCategoryExists.mockResolvedValue(true);
-    mockSkillExists.mockResolvedValue(true);
+    mockCategoryExists.mockReset();
+    mockSkillExists.mockReset();
+    mockCategoryExists.mockResolvedValueOnce(true);
+    mockSkillExists.mockResolvedValueOnce(true);
 
     await expect(
       editIdea(
@@ -376,9 +394,12 @@ describe('Edit Idea', () => {
     const hackathonId = uuid();
 
     const oldIdea = randomIdea();
-    mockGetIdea.mockResolvedValue(oldIdea);
-    mockCategoryExists.mockResolvedValue(false);
-    mockSkillExists.mockResolvedValue(true);
+    mockGetIdea.mockReset();
+    mockCategoryExists.mockReset();
+    mockSkillExists.mockReset();
+    mockGetIdea.mockResolvedValueOnce(oldIdea);
+    mockCategoryExists.mockResolvedValueOnce(false);
+    mockSkillExists.mockResolvedValueOnce(true);
 
     const categoryId = uuid();
     await expect(
@@ -404,9 +425,12 @@ describe('Edit Idea', () => {
     const hackathonId = uuid();
 
     const oldIdea = randomIdea();
-    mockGetIdea.mockResolvedValue(oldIdea);
-    mockCategoryExists.mockResolvedValue(true);
-    mockSkillExists.mockResolvedValue(false);
+    mockGetIdea.mockReset();
+    mockCategoryExists.mockReset();
+    mockSkillExists.mockReset();
+    mockGetIdea.mockResolvedValueOnce(oldIdea);
+    mockCategoryExists.mockResolvedValueOnce(true);
+    mockSkillExists.mockResolvedValueOnce(false);
 
     const categoryId = uuid();
     const skillId1 = uuid();
@@ -794,7 +818,7 @@ describe('Get Idea Response', () => {
   test('Missing Owner Participant', async () => {
     const idea = randomIdea();
 
-    mockGetIdea.mockResolvedValue(idea);
+    mockGetIdea.mockResolvedValueOnce(idea);
     mockGetUser.mockImplementation(() => {
       throw new NotFoundError('That thing is missing');
     });
@@ -822,8 +846,8 @@ describe('Get Hackathon Idea List Response', () => {
     const idea3 = randomIdea();
     const expected = IdeaListResponse.from([idea1, idea2, idea3], hackathonId);
 
-    mockHackathonExists.mockResolvedValue(true);
-    mockListIdeasForHackathon.mockResolvedValue([idea1, idea2, idea3]);
+    mockHackathonExists.mockResolvedValueOnce(true);
+    mockListIdeasForHackathon.mockResolvedValueOnce([idea1, idea2, idea3]);
 
     expect(await getIdeasForHackathonListResponse(hackathonId)).toStrictEqual(
       expected,
@@ -835,8 +859,8 @@ describe('Get Hackathon Idea List Response', () => {
   test('Hackathon Missing', async () => {
     const hackathonId = uuid();
 
-    mockHackathonExists.mockResolvedValue(false);
-    mockListIdeasForHackathon.mockResolvedValue([
+    mockHackathonExists.mockResolvedValueOnce(false);
+    mockListIdeasForHackathon.mockResolvedValueOnce([
       randomIdea(),
       randomIdea(),
       randomIdea(),
@@ -857,7 +881,7 @@ describe('Get All Ideas Response', () => {
     const idea3 = randomIdea();
     const expected = IdeaListAllResponse.from([idea1, idea2, idea3]);
 
-    mockAllIdeas.mockResolvedValue([idea1, idea2, idea3]);
+    mockAllIdeas.mockResolvedValueOnce([idea1, idea2, idea3]);
 
     expect(await getAllIdeasResponse()).toStrictEqual(expected);
     expect(mockAllIdeas).toHaveBeenCalled();
@@ -882,11 +906,11 @@ describe('Add Participant', () => {
   test('Happy Path', async () => {
     const hackathonId = uuid();
     const idea = makeIdea({hackathonId: hackathonId} as IdeaData);
-    mockGetIdea.mockResolvedValue(idea);
+    mockGetIdea.mockResolvedValueOnce(idea);
     const participant = makeParticipant({
       hackathonId: hackathonId,
     } as ParticipantData);
-    mockGetParticipant.mockResolvedValue(participant);
+    mockGetParticipant.mockResolvedValueOnce(participant);
 
     await addParticipant(idea.id, participant.id);
 
@@ -900,7 +924,7 @@ describe('Add Participant', () => {
 
   test('Missing Participant', async () => {
     const idea = randomIdea();
-    mockGetIdea.mockResolvedValue(idea);
+    mockGetIdea.mockResolvedValueOnce(idea);
     const participantId = uuid();
     mockGetParticipant.mockImplementation(() => {
       throw new Error();
@@ -920,7 +944,7 @@ describe('Add Participant', () => {
       throw new Error();
     });
     const participant = randomParticipant();
-    mockGetParticipant.mockResolvedValue(participant);
+    mockGetParticipant.mockResolvedValueOnce(participant);
 
     await expect(addParticipant(ideaId, participant.id)).rejects.toThrow(
       NotFoundError,
@@ -934,11 +958,11 @@ describe('Add Participant', () => {
     const hackathonId1 = uuid();
     const hackathonId2 = uuid();
     const idea = makeIdea({hackathonId: hackathonId1} as IdeaData);
-    mockGetIdea.mockResolvedValue(idea);
+    mockGetIdea.mockResolvedValueOnce(idea);
     const participant = makeParticipant({
       hackathonId: hackathonId2,
     } as ParticipantData);
-    mockGetParticipant.mockResolvedValue(participant);
+    mockGetParticipant.mockResolvedValueOnce(participant);
 
     await expect(addParticipant(idea.id, participant.id)).rejects.toThrow(
       InvalidStateError,
@@ -953,11 +977,13 @@ describe('Add Voter', () => {
   test('Happy Path', async () => {
     const hackathonId = uuid();
     const idea = makeIdea({hackathonId: hackathonId} as IdeaData);
-    mockGetIdea.mockResolvedValue(idea);
+    mockGetIdea.mockReset();
+    mockGetIdea.mockResolvedValueOnce(idea);
     const participant = makeParticipant({
       hackathonId: hackathonId,
     } as ParticipantData);
-    mockGetParticipant.mockResolvedValue(participant);
+    mockGetParticipant.mockReset();
+    mockGetParticipant.mockResolvedValueOnce(participant);
 
     await addVoter(idea.id, participant.id);
 
@@ -968,7 +994,7 @@ describe('Add Voter', () => {
 
   test('Missing Participant', async () => {
     const idea = randomIdea();
-    mockGetIdea.mockResolvedValue(idea);
+    mockGetIdea.mockResolvedValueOnce(idea);
     const participantId = uuid();
     mockGetParticipant.mockImplementation(() => {
       throw new Error();
@@ -988,7 +1014,7 @@ describe('Add Voter', () => {
       throw new Error();
     });
     const participant = randomParticipant();
-    mockGetParticipant.mockResolvedValue(participant);
+    mockGetParticipant.mockResolvedValueOnce(participant);
 
     await expect(addVoter(ideaId, participant.id)).rejects.toThrow(
       NotFoundError,
@@ -1002,11 +1028,11 @@ describe('Add Voter', () => {
     const hackathonId1 = uuid();
     const hackathonId2 = uuid();
     const idea = makeIdea({hackathonId: hackathonId1} as IdeaData);
-    mockGetIdea.mockResolvedValue(idea);
+    mockGetIdea.mockResolvedValueOnce(idea);
     const participant = makeParticipant({
       hackathonId: hackathonId2,
     } as ParticipantData);
-    mockGetParticipant.mockResolvedValue(participant);
+    mockGetParticipant.mockResolvedValueOnce(participant);
 
     await expect(addVoter(idea.id, participant.id)).rejects.toThrow(
       InvalidStateError,
@@ -1036,7 +1062,7 @@ describe('Remove Ideas for Category', () => {
     const categoryId = uuid();
     const idea1 = randomIdea();
     const idea2 = randomIdea();
-    mockListIdeasForCategory.mockResolvedValue([idea1, idea2]);
+    mockListIdeasForCategory.mockResolvedValueOnce([idea1, idea2]);
     mockDeleteIdea.mockImplementation(() => {
       const ignored = null;
     });
@@ -1050,7 +1076,7 @@ describe('Remove Ideas for Category', () => {
     const categoryId = uuid();
     const idea1 = randomIdea();
     const idea2 = randomIdea();
-    mockListIdeasForCategory.mockResolvedValue([idea1, idea2]);
+    mockListIdeasForCategory.mockResolvedValueOnce([idea1, idea2]);
     mockDeleteIdea.mockImplementation(() => {
       throw new DeletionError('Well this stinks');
     });
@@ -1067,7 +1093,8 @@ describe('Remove Ideas for Hackathon', () => {
     const hackathonId = uuid();
     const idea1 = randomIdea();
     const idea2 = randomIdea();
-    mockListIdeasForHackathon.mockResolvedValue([idea1, idea2]);
+    mockListIdeasForHackathon.mockReset();
+    mockListIdeasForHackathon.mockResolvedValueOnce([idea1, idea2]);
     mockDeleteIdea.mockImplementation(() => {
       const ignored = null;
     });
@@ -1081,7 +1108,7 @@ describe('Remove Ideas for Hackathon', () => {
     const hackathonId = uuid();
     const idea1 = randomIdea();
     const idea2 = randomIdea();
-    mockListIdeasForHackathon.mockResolvedValue([idea1, idea2]);
+    mockListIdeasForHackathon.mockResolvedValueOnce([idea1, idea2]);
     mockDeleteIdea.mockImplementation(() => {
       throw new DeletionError('Well this stinks');
     });
@@ -1098,7 +1125,7 @@ describe('Remove Ideas for Owner', () => {
     const ownerId = uuid();
     const idea1 = randomIdea();
     const idea2 = randomIdea();
-    mockListIdeasForOwner.mockResolvedValue([idea1, idea2]);
+    mockListIdeasForOwner.mockResolvedValueOnce([idea1, idea2]);
     mockDeleteIdea.mockImplementation(() => {
       const ignored = null;
     });
@@ -1112,7 +1139,7 @@ describe('Remove Ideas for Owner', () => {
     const ownerId = uuid();
     const idea1 = randomIdea();
     const idea2 = randomIdea();
-    mockListIdeasForOwner.mockResolvedValue([idea1, idea2]);
+    mockListIdeasForOwner.mockResolvedValueOnce([idea1, idea2]);
     mockDeleteIdea.mockImplementation(() => {
       throw new DeletionError('Well this stinks');
     });
@@ -1127,7 +1154,7 @@ describe('Remove Participant from Ideas', () => {
     const participantId = uuid();
     const idea1 = randomIdea();
     const idea2 = randomIdea();
-    mockListIdeasForParticipant.mockResolvedValue([idea1, idea2]);
+    mockListIdeasForParticipant.mockResolvedValueOnce([idea1, idea2]);
     mockDeleteParticipantFromIdea.mockImplementation(() => {
       const ignored = null;
     });
@@ -1147,7 +1174,7 @@ describe('Remove Participant from Ideas', () => {
     const participantId = uuid();
     const idea1 = randomIdea();
     const idea2 = randomIdea();
-    mockListIdeasForParticipant.mockResolvedValue([idea1, idea2]);
+    mockListIdeasForParticipant.mockResolvedValueOnce([idea1, idea2]);
     mockDeleteParticipantFromIdea.mockImplementation(() => {
       throw new DeletionError('Well this stinks');
     });

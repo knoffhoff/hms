@@ -9,7 +9,7 @@ jest.spyOn(userService, 'removeUser').mockImplementation(mockRemoveUser);
 describe('Delete User', () => {
   test('Happy Path', async () => {
     const id = uuid();
-    mockRemoveUser.mockResolvedValue(new UserDeleteResponse(id));
+    mockRemoveUser.mockResolvedValueOnce(new UserDeleteResponse(id));
     const event = toEvent(id);
     const callback = jest.fn();
 

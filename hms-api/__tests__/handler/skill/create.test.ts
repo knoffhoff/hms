@@ -12,7 +12,7 @@ jest.spyOn(skillService, 'createSkill').mockImplementation(mockCreateSkill);
 describe('Create Skill', () => {
   test('Happy Path', async () => {
     const expected = randomSkill();
-    mockCreateSkill.mockResolvedValue(expected);
+    mockCreateSkill.mockResolvedValueOnce(expected);
     const callback = jest.fn();
 
     await create(toEvent(expected), null, callback);

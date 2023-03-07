@@ -11,7 +11,9 @@ jest
 describe('Delete Comment', () => {
   test('Happy Path', async () => {
     const id = uuid();
-    mockRemoveIdeaComment.mockResolvedValue(new IdeaCommentDeleteResponse(id));
+    mockRemoveIdeaComment.mockResolvedValueOnce(
+      new IdeaCommentDeleteResponse(id),
+    );
     const event = toEvent(id);
     const callback = jest.fn();
 

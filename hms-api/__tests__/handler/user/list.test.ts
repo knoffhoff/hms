@@ -17,7 +17,7 @@ describe('List Users', () => {
     const user4 = randomUser();
     const expected = UserListResponse.from([user1, user2, user3, user4]);
 
-    mockGetUserListResponse.mockResolvedValue(expected);
+    mockGetUserListResponse.mockResolvedValueOnce(expected);
     const callback = jest.fn();
 
     await list({}, null, callback);

@@ -14,7 +14,7 @@ jest
 describe('Create Hackathon', () => {
   test('Happy Path', async () => {
     const expected = randomHackathon();
-    mockCreateHackathon.mockResolvedValue(expected);
+    mockCreateHackathon.mockResolvedValueOnce(expected);
     const callback = jest.fn();
 
     await create(toEvent(expected), null, callback);

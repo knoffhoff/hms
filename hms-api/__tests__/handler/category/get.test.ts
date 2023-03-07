@@ -17,7 +17,7 @@ describe('Get Category', () => {
     const category = randomCategory();
     const expected = CategoryResponse.from(category, randomHackathon());
 
-    mockGetCategory.mockResolvedValue(expected);
+    mockGetCategory.mockResolvedValueOnce(expected);
     const event = toEvent(category.id);
     const callback = jest.fn();
 

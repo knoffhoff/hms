@@ -36,7 +36,7 @@ describe('List Comments', () => {
       ideaId,
     );
 
-    mockGetIdeaCommentListResponse.mockResolvedValue(expected);
+    mockGetIdeaCommentListResponse.mockResolvedValueOnce(expected);
     const callback = jest.fn();
 
     await list(toEvent(ideaId), null, callback);

@@ -17,7 +17,7 @@ describe('Get Comment', () => {
     const ideaComment = randomIdeaComment();
     const expected = IdeaCommentResponse.from(ideaComment, randomUser());
 
-    mockGetIdeaComment.mockResolvedValue(expected);
+    mockGetIdeaComment.mockResolvedValueOnce(expected);
     const event = toEvent(ideaComment.id);
     const callback = jest.fn();
 

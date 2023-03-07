@@ -40,7 +40,7 @@ describe('Get Idea', () => {
       randomCategory(),
     );
 
-    mockGetIdea.mockResolvedValue(expected);
+    mockGetIdea.mockResolvedValueOnce(expected);
     const event = toEvent(idea.id);
     const callback = jest.fn();
 

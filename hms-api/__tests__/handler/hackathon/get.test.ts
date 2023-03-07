@@ -33,7 +33,7 @@ describe('Get Hackathon', () => {
       [randomIdea(), randomIdea()],
     );
 
-    mockGetHackathon.mockResolvedValue(expected);
+    mockGetHackathon.mockResolvedValueOnce(expected);
     const event = toEvent(hackathon.id);
     const callback = jest.fn();
 

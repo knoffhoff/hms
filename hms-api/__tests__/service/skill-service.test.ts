@@ -59,7 +59,7 @@ describe('Edit Skill', () => {
     const description = 'Best description ever!';
     const expected = new Skill(title, description, oldSkill.id);
 
-    mockGetSkill.mockResolvedValue(oldSkill);
+    mockGetSkill.mockResolvedValueOnce(oldSkill);
 
     await editSkill(oldSkill.id, title, description);
 
@@ -72,7 +72,7 @@ describe('Edit Skill', () => {
 
     const mockSkill = randomCategory();
     jest.spyOn(mockSkill, 'validate').mockReturnValue(failedValidation);
-    mockGetSkill.mockResolvedValue(mockSkill);
+    mockGetSkill.mockResolvedValueOnce(mockSkill);
 
     await expect(
       editSkill(uuid(), 'naaaaaaame', 'descriiiiption'),
@@ -100,7 +100,7 @@ describe('Get Skill Response', () => {
 
     const expected = SkillResponse.from(skill);
 
-    mockGetSkill.mockResolvedValue(skill);
+    mockGetSkill.mockResolvedValueOnce(skill);
 
     expect(await getSkillResponse(skill.id)).toStrictEqual(expected);
     expect(mockGetSkill).toHaveBeenCalledWith(skill.id);
@@ -125,7 +125,7 @@ describe('Get Skill List Response', () => {
     const skill3 = randomSkill();
     const expected = SkillListResponse.from([skill1, skill2, skill3]);
 
-    mockListSkills.mockResolvedValue([skill1, skill2, skill3]);
+    mockListSkills.mockResolvedValueOnce([skill1, skill2, skill3]);
 
     expect(await getSkillListResponse()).toStrictEqual(expected);
     expect(mockListSkills).toHaveBeenCalled();
