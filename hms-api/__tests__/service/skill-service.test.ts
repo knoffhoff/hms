@@ -14,17 +14,20 @@ import SkillListResponse from '../../src/rest/skill/SkillListResponse';
 import SkillDeleteResponse from '../../src/rest/skill/SkillDeleteResponse';
 import * as skillRepository from '../../src/repository/skill-repository';
 import ValidationResult from '../../src/error/ValidationResult';
-import {randomCategory} from '../repository/domain/category-maker';
 import ValidationError from '../../src/error/ValidationError';
 
-const mockPutSkill = jest.fn();
-jest.spyOn(skillRepository, 'putSkill').mockImplementation(mockPutSkill);
-const mockGetSkill = jest.fn();
-jest.spyOn(skillRepository, 'getSkill').mockImplementation(mockGetSkill);
-const mockListSkills = jest.fn();
-jest.spyOn(skillRepository, 'listSkills').mockImplementation(mockListSkills);
-const mockDeleteSkill = jest.fn();
-jest.spyOn(skillRepository, 'deleteSkill').mockImplementation(mockDeleteSkill);
+const mockPutSkill = jest
+  .spyOn(skillRepository, 'putSkill')
+  .mockImplementation();
+const mockGetSkill = jest
+  .spyOn(skillRepository, 'getSkill')
+  .mockImplementation();
+const mockListSkills = jest
+  .spyOn(skillRepository, 'listSkills')
+  .mockImplementation();
+const mockDeleteSkill = jest
+  .spyOn(skillRepository, 'deleteSkill')
+  .mockImplementation();
 
 describe('Create Skill', () => {
   test('Happy Path', async () => {
@@ -70,7 +73,7 @@ describe('Edit Skill', () => {
     const failedValidation = new ValidationResult();
     failedValidation.addFailure('FAILURE');
 
-    const mockSkill = randomCategory();
+    const mockSkill = randomSkill();
     jest.spyOn(mockSkill, 'validate').mockReturnValue(failedValidation);
     mockGetSkill.mockResolvedValueOnce(mockSkill);
 

@@ -6,8 +6,9 @@ import ReferenceNotFoundError from '../../../src/error/ReferenceNotFoundError';
 import User from '../../../src/repository/domain/User';
 import UserCreateRequest from '../../../src/rest/user/UserCreateRequest';
 
-const mockCreateUser = jest.fn();
-jest.spyOn(userService, 'createUser').mockImplementation(mockCreateUser);
+const mockCreateUser = jest
+  .spyOn(userService, 'createUser')
+  .mockImplementation();
 
 describe('Create User', () => {
   test('Happy Path', async () => {

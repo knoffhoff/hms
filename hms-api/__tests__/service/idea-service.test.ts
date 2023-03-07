@@ -18,7 +18,6 @@ import {IdeaData, makeIdea, randomIdea} from '../repository/domain/idea-maker';
 import {
   HackathonData,
   makeHackathon,
-  randomHackathon,
 } from '../repository/domain/hackathon-maker';
 
 import {randomUser} from '../repository/domain/user-maker';
@@ -52,84 +51,69 @@ import Hackathon from '../../src/repository/domain/Hackathon';
 import Category from '../../src/repository/domain/Category';
 import Skill from '../../src/repository/domain/Skill';
 
-const mockPutIdea = jest.fn();
-jest.spyOn(ideaRepository, 'putIdea').mockImplementation(mockPutIdea);
-const mockGetIdea = jest.fn();
-jest.spyOn(ideaRepository, 'getIdea').mockImplementation(mockGetIdea);
-const mockListIdeasForHackathon = jest.fn();
-jest
+const mockPutIdea = jest.spyOn(ideaRepository, 'putIdea').mockImplementation();
+const mockGetIdea = jest.spyOn(ideaRepository, 'getIdea').mockImplementation();
+
+const mockListIdeasForHackathon = jest
   .spyOn(ideaRepository, 'listIdeasForHackathon')
-  .mockImplementation(mockListIdeasForHackathon);
-const mockAllIdeas = jest.fn();
-jest.spyOn(ideaRepository, 'listIdeasAll').mockImplementation(mockAllIdeas);
-const mockListIdeasForOwner = jest.fn();
-jest
+  .mockImplementation();
+const mockAllIdeas = jest
+  .spyOn(ideaRepository, 'listIdeasAll')
+  .mockImplementation();
+const mockListIdeasForOwner = jest
   .spyOn(ideaRepository, 'listIdeasForOwner')
-  .mockImplementation(mockListIdeasForOwner);
-const mockListIdeasForCategory = jest.fn();
-jest
+  .mockImplementation();
+const mockListIdeasForCategory = jest
   .spyOn(ideaRepository, 'listIdeasForCategory')
-  .mockImplementation(mockListIdeasForCategory);
-const mockListIdeasForParticipant = jest.fn();
-jest
+  .mockImplementation();
+const mockListIdeasForParticipant = jest
   .spyOn(ideaRepository, 'listIdeasForParticipant')
-  .mockImplementation(mockListIdeasForParticipant);
-const mockAddParticipantToIdea = jest.fn();
-jest
+  .mockImplementation();
+
+const mockAddParticipantToIdea = jest
   .spyOn(ideaRepository, 'addParticipantToIdea')
-  .mockImplementation(mockAddParticipantToIdea);
-const mockAddVoterToIdea = jest.fn();
-jest
+  .mockImplementation();
+const mockAddVoterToIdea = jest
   .spyOn(ideaRepository, 'addVoterToIdea')
-  .mockImplementation(mockAddVoterToIdea);
-const mockDeleteParticipantFromIdea = jest.fn();
-jest
+  .mockImplementation();
+
+const mockDeleteParticipantFromIdea = jest
   .spyOn(ideaRepository, 'deleteParticipantFromIdea')
-  .mockImplementation(mockDeleteParticipantFromIdea);
-const mockDeleteIdea = jest.fn();
-jest.spyOn(ideaRepository, 'deleteIdea').mockImplementation(mockDeleteIdea);
+  .mockImplementation();
+const mockDeleteIdea = jest
+  .spyOn(ideaRepository, 'deleteIdea')
+  .mockImplementation();
 
-const mockGetParticipant = jest.fn();
-jest
+const mockGetParticipant = jest
   .spyOn(participantRepository, 'getParticipant')
-  .mockImplementation(mockGetParticipant);
-const mockGetParticipants = jest.fn();
-jest
+  .mockImplementation();
+const mockGetParticipants = jest
   .spyOn(participantRepository, 'getParticipants')
-  .mockImplementation(mockGetParticipants);
-const mockParticipantExists = jest.fn();
-jest
-  .spyOn(participantRepository, 'participantExistsForHackathon')
-  .mockImplementation(mockParticipantExists);
+  .mockImplementation();
 
-const mockGetUser = jest.fn();
-jest.spyOn(userRepository, 'getUser').mockImplementation(mockGetUser);
+const mockGetUser = jest.spyOn(userRepository, 'getUser').mockImplementation();
+const mockUsersFor = jest.spyOn(userService, 'usersFor').mockImplementation();
 
-const mockUsersFor = jest.fn();
-jest.spyOn(userService, 'usersFor').mockImplementation(mockUsersFor);
-
-const mockGetHackathon = jest.fn();
-jest
+const mockGetHackathon = jest
   .spyOn(hackathonRepository, 'getHackathon')
-  .mockImplementation(mockGetHackathon);
-const mockHackathonExists = jest.fn();
-jest
+  .mockImplementation();
+const mockHackathonExists = jest
   .spyOn(hackathonRepository, 'hackathonExists')
-  .mockImplementation(mockHackathonExists);
+  .mockImplementation();
 
-const mockGetCategory = jest.fn();
-jest
+const mockGetCategory = jest
   .spyOn(categoryRepository, 'getCategory')
-  .mockImplementation(mockGetCategory);
-const mockCategoryExists = jest.fn();
-jest
+  .mockImplementation();
+const mockCategoryExists = jest
   .spyOn(categoryRepository, 'categoryExists')
-  .mockImplementation(mockCategoryExists);
+  .mockImplementation();
 
-const mockGetSkills = jest.fn();
-jest.spyOn(skillRepository, 'getSkills').mockImplementation(mockGetSkills);
-const mockSkillExists = jest.fn();
-jest.spyOn(skillRepository, 'skillExists').mockImplementation(mockSkillExists);
+const mockGetSkills = jest
+  .spyOn(skillRepository, 'getSkills')
+  .mockImplementation();
+const mockSkillExists = jest
+  .spyOn(skillRepository, 'skillExists')
+  .mockImplementation();
 
 describe('Create Idea', () => {
   test('Happy Path', async () => {
@@ -1063,9 +1047,7 @@ describe('Remove Ideas for Category', () => {
     const idea1 = randomIdea();
     const idea2 = randomIdea();
     mockListIdeasForCategory.mockResolvedValueOnce([idea1, idea2]);
-    mockDeleteIdea.mockImplementation(() => {
-      const ignored = null;
-    });
+    mockDeleteIdea.mockImplementation();
 
     await removeIdeasForCategory(categoryId);
     expect(mockDeleteIdea).toHaveBeenCalledWith(idea1.id);
@@ -1095,9 +1077,7 @@ describe('Remove Ideas for Hackathon', () => {
     const idea2 = randomIdea();
     mockListIdeasForHackathon.mockReset();
     mockListIdeasForHackathon.mockResolvedValueOnce([idea1, idea2]);
-    mockDeleteIdea.mockImplementation(() => {
-      const ignored = null;
-    });
+    mockDeleteIdea.mockImplementation();
 
     await removeIdeasForHackathon(hackathonId);
     expect(mockDeleteIdea).toHaveBeenCalledWith(idea1.id);
@@ -1126,9 +1106,7 @@ describe('Remove Ideas for Owner', () => {
     const idea1 = randomIdea();
     const idea2 = randomIdea();
     mockListIdeasForOwner.mockResolvedValueOnce([idea1, idea2]);
-    mockDeleteIdea.mockImplementation(() => {
-      const ignored = null;
-    });
+    mockDeleteIdea.mockImplementation();
 
     await removeIdeasForOwner(ownerId);
     expect(mockDeleteIdea).toHaveBeenCalledWith(idea1.id);
@@ -1155,9 +1133,7 @@ describe('Remove Participant from Ideas', () => {
     const idea1 = randomIdea();
     const idea2 = randomIdea();
     mockListIdeasForParticipant.mockResolvedValueOnce([idea1, idea2]);
-    mockDeleteParticipantFromIdea.mockImplementation(() => {
-      const ignored = null;
-    });
+    mockDeleteParticipantFromIdea.mockImplementation();
 
     await removeParticipantFromIdeas(participantId);
     expect(mockDeleteParticipantFromIdea).toHaveBeenCalledWith(

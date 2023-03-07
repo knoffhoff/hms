@@ -6,15 +6,13 @@ import IdeaListResponse from '../../../src/rest/idea/IdeaListResponse';
 import * as ideaService from '../../../src/service/idea-service';
 import IdeaListAllResponse from '../../../src/rest/idea/IdeaListAllResponse';
 
-const mockGetIdeaListResponse = jest.fn();
-jest
+const mockGetIdeaListResponse = jest
   .spyOn(ideaService, 'getIdeasForHackathonListResponse')
-  .mockImplementation(mockGetIdeaListResponse);
+  .mockImplementation();
 
-const mockGetAllIdeasResponse = jest.fn();
-jest
+const mockGetAllIdeasResponse = jest
   .spyOn(ideaService, 'getAllIdeasResponse')
-  .mockImplementation(mockGetAllIdeasResponse);
+  .mockImplementation();
 
 describe('List Hackathon Ideas', () => {
   test('Happy Path', async () => {

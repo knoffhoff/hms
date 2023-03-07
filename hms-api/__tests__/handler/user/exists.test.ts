@@ -3,10 +3,9 @@ import * as userService from '../../../src/service/user-service';
 import UserExistsResponse from '../../../src/rest/user/UserExistsResponse';
 import {uuid} from '../../../src/util/Uuid';
 
-const mockGetUserExistsResponse = jest.fn();
-jest
+const mockGetUserExistsResponse = jest
   .spyOn(userService, 'getUserExistsResponse')
-  .mockImplementation(mockGetUserExistsResponse);
+  .mockImplementation();
 
 describe('User Exists', () => {
   test('Happy Path', async () => {

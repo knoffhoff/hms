@@ -3,10 +3,9 @@ import {remove} from '../../../src/handler/hackathon/remove';
 import HackathonDeleteResponse from '../../../src/rest/hackathon/HackathonDeleteResponse';
 import Uuid, {uuid} from '../../../src/util/Uuid';
 
-const mockRemoveHackathon = jest.fn();
-jest
+const mockRemoveHackathon = jest
   .spyOn(hackathonService, 'removeHackathon')
-  .mockImplementation(mockRemoveHackathon);
+  .mockImplementation();
 
 describe('Delete Hackathon', () => {
   test('Happy Path', async () => {

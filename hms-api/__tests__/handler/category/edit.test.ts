@@ -5,10 +5,9 @@ import CategoryEditResponse from '../../../src/rest/category/CategoryEditRespons
 import NotFoundError from '../../../src/error/NotFoundError';
 import CategoryEditRequest from '../../../src/rest/category/CategoryEditRequest';
 
-const mockEditCategory = jest.fn();
-jest
+const mockEditCategory = jest
   .spyOn(categoryService, 'editCategory')
-  .mockImplementation(mockEditCategory);
+  .mockImplementation();
 
 describe('Edit Category', () => {
   test('Happy Path', async () => {
@@ -17,7 +16,7 @@ describe('Edit Category', () => {
     const id = uuid();
     const callback = jest.fn();
 
-    mockEditCategory.mockImplementation(() => {});
+    mockEditCategory.mockImplementation();
 
     await edit(toEvent(title, description, id), null, callback);
 

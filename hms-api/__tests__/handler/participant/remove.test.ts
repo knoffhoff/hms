@@ -4,10 +4,9 @@ import ParticipantDeleteResponse from '../../../src/rest/participant/Participant
 import Uuid, {uuid} from '../../../src/util/Uuid';
 import UserDeleteResponse from '../../../src/rest/user/UserDeleteResponse';
 
-const mockRemoveParticipant = jest.fn();
-jest
+const mockRemoveParticipant = jest
   .spyOn(participantService, 'removeParticipant')
-  .mockImplementation(mockRemoveParticipant);
+  .mockImplementation();
 
 describe('Delete Participant', () => {
   test('Happy Path', async () => {

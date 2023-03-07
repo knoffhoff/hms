@@ -5,8 +5,9 @@ import NotFoundError from '../../../src/error/NotFoundError';
 import SkillEditRequest from '../../../src/rest/skill/SkillEditRequest';
 import * as skillService from '../../../src/service/skill-service';
 
-const mockEditSkill = jest.fn();
-jest.spyOn(skillService, 'editSkill').mockImplementation(mockEditSkill);
+const mockEditSkill = jest
+  .spyOn(skillService, 'editSkill')
+  .mockImplementation();
 
 describe('Edit Skill', () => {
   test('Happy Path', async () => {
@@ -15,7 +16,7 @@ describe('Edit Skill', () => {
     const id = uuid();
     const callback = jest.fn();
 
-    mockEditSkill.mockImplementation(() => {});
+    mockEditSkill.mockImplementation();
 
     await edit(toEvent(title, description, id), null, callback);
 

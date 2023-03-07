@@ -14,8 +14,9 @@ import {randomHackathon} from '../../repository/domain/hackathon-maker';
 import {randomCategory} from '../../repository/domain/category-maker';
 import {randomSkill} from '../../repository/domain/skill-maker';
 
-const mockGetIdea = jest.fn();
-jest.spyOn(ideaService, 'getIdeaResponse').mockImplementation(mockGetIdea);
+const mockGetIdea = jest
+  .spyOn(ideaService, 'getIdeaResponse')
+  .mockImplementation();
 
 describe('Get Idea', () => {
   test('Happy Path', async () => {

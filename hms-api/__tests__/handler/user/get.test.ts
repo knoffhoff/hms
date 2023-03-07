@@ -7,8 +7,9 @@ import UserResponse from '../../../src/rest/user/UserResponse';
 import {randomSkill} from '../../repository/domain/skill-maker';
 import ReferenceNotFoundError from '../../../src/error/ReferenceNotFoundError';
 
-const mockGetUser = jest.fn();
-jest.spyOn(userService, 'getUserResponse').mockImplementation(mockGetUser);
+const mockGetUser = jest
+  .spyOn(userService, 'getUserResponse')
+  .mockImplementation();
 
 describe('Get User', () => {
   test('Happy Path', async () => {

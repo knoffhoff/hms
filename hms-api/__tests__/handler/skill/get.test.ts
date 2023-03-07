@@ -5,8 +5,9 @@ import * as skillService from '../../../src/service/skill-service';
 import Uuid, {uuid} from '../../../src/util/Uuid';
 import SkillResponse from '../../../src/rest/skill/SkillResponse';
 
-const mockGetSkill = jest.fn();
-jest.spyOn(skillService, 'getSkillResponse').mockImplementation(mockGetSkill);
+const mockGetSkill = jest
+  .spyOn(skillService, 'getSkillResponse')
+  .mockImplementation();
 
 describe('Get Skill', () => {
   test('Happy Path', async () => {

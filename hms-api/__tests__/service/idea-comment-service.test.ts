@@ -3,7 +3,6 @@ import * as ideaCommentRepository from '../../src/repository/idea-comment-reposi
 import * as ideaRepository from '../../src/repository/idea-repository';
 import {
   createIdeaComment,
-  getIdeaCommentListResponse,
   getIdeaCommentResponse,
 } from '../../src/service/idea-comment-service';
 import {uuid} from '../../src/util/Uuid';
@@ -16,32 +15,24 @@ import {
 } from '../repository/domain/ideaComment-maker';
 import IdeaCommentResponse from '../../src/rest/ideaComment/IdeaCommentResponse';
 import {randomUser} from '../repository/domain/user-maker';
-import ValidationError from '../../src/error/ValidationError';
-import IdeaCommentListResponse from '../../src/rest/ideaComment/IdeaCommentListResponse';
 import NotFoundError from '../../src/error/NotFoundError';
 
-const mockPutIdeaComment = jest.fn();
-jest
+const mockPutIdeaComment = jest
   .spyOn(ideaCommentRepository, 'putIdeaComment')
-  .mockImplementation(mockPutIdeaComment);
-const mockUserExists = jest.fn();
-jest.spyOn(userRepository, 'userExists').mockImplementation(mockUserExists);
-const mockIdeaExists = jest.fn();
-jest.spyOn(ideaRepository, 'ideaExists').mockImplementation(mockIdeaExists);
-const mockGetUser = jest.fn();
-jest.spyOn(userRepository, 'getUser').mockImplementation(mockGetUser);
-const mockGetIdea = jest.fn();
-jest.spyOn(ideaRepository, 'getIdea').mockImplementation(mockGetIdea);
-const mockGetIdeaComment = jest.fn();
-jest
+  .mockImplementation();
+const mockGetIdeaComment = jest
   .spyOn(ideaCommentRepository, 'getIdeaComment')
-  .mockImplementation(mockGetIdeaComment);
-const mockGetUsers = jest.fn();
-jest.spyOn(userRepository, 'getUsers').mockImplementation(mockGetUsers);
-const mockListIdeaComments = jest.fn();
-jest
-  .spyOn(ideaCommentRepository, 'listIdeaComments')
-  .mockImplementation(mockListIdeaComments);
+  .mockImplementation();
+
+const mockUserExists = jest
+  .spyOn(userRepository, 'userExists')
+  .mockImplementation();
+const mockGetUser = jest.spyOn(userRepository, 'getUser').mockImplementation();
+
+const mockIdeaExists = jest
+  .spyOn(ideaRepository, 'ideaExists')
+  .mockImplementation();
+const mockGetIdea = jest.spyOn(ideaRepository, 'getIdea').mockImplementation();
 
 describe('Create Idea Comment without parentComment', () => {
   test('Happy Path', async () => {

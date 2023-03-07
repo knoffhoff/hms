@@ -6,8 +6,7 @@ import NotFoundError from '../../../src/error/NotFoundError';
 import UserEditRequest from '../../../src/rest/user/UserEditRequest';
 import ReferenceNotFoundError from '../../../src/error/ReferenceNotFoundError';
 
-const mockEditUser = jest.fn();
-jest.spyOn(userService, 'editUser').mockImplementation(mockEditUser);
+const mockEditUser = jest.spyOn(userService, 'editUser').mockImplementation();
 
 describe('Edit User', () => {
   test('Happy Path', async () => {
@@ -18,7 +17,7 @@ describe('Edit User', () => {
     const id = uuid();
     const callback = jest.fn();
 
-    mockEditUser.mockImplementation(() => {});
+    mockEditUser.mockImplementation();
 
     await edit(
       toEvent(lastName, firstName, skills, imageUrl, id),

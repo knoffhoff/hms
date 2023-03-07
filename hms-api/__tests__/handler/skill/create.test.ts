@@ -6,8 +6,9 @@ import ReferenceNotFoundError from '../../../src/error/ReferenceNotFoundError';
 import Skill from '../../../src/repository/domain/Skill';
 import SkillCreateRequest from '../../../src/rest/skill/SkillCreateRequest';
 
-const mockCreateSkill = jest.fn();
-jest.spyOn(skillService, 'createSkill').mockImplementation(mockCreateSkill);
+const mockCreateSkill = jest
+  .spyOn(skillService, 'createSkill')
+  .mockImplementation();
 
 describe('Create Skill', () => {
   test('Happy Path', async () => {
