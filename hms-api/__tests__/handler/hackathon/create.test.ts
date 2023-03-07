@@ -2,7 +2,6 @@ import * as hackathonService from '../../../src/service/hackathon-service';
 import {create} from '../../../src/handler/hackathon/create';
 import {randomHackathon} from '../../repository/domain/hackathon-maker';
 import HackathonCreateResponse from '../../../src/rest/hackathon/HackathonCreateResponse';
-import ReferenceNotFoundError from '../../../src/error/ReferenceNotFoundError';
 import Hackathon from '../../../src/repository/domain/Hackathon';
 import HackathonCreateRequest from '../../../src/rest/hackathon/HackathonCreateRequest';
 import ValidationError from '../../../src/error/ValidationError';
