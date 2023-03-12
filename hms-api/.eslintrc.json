@@ -18,7 +18,14 @@
         "prettier"
     ],
     "rules": {
+        "comma-dangle": ["error", "always"],
+        "indent": ["error", 2],
+        "semi": ["error", "always"],
         "quotes": ["error", "single"],
+        "jsx-quotes": ["error", "prefer-single"],
+        // "space-in-brackets": ["error", "never"], deprecated
+        "object-curly-spacing": ["error", "never"],
+        "array-bracket-spacing": ["error", "never"],
         "no-duplicate-imports": "error"
     }
 }
