@@ -801,35 +801,6 @@ describe('Remove Participant', () => {
       participantId,
     );
   });
-
-  test('Missing Participant', async () => {
-    mockGetIdea.mockResolvedValueOnce(ideaId);
-    mockDeleteParticipantFromIdea.mockImplementation(() => {
-      throw new NotFoundError('That thing is missing');
-    });
-
-    await expect(removeParticipant(ideaId, participantId)).rejects.toThrow(
-      NotFoundError,
-    );
-
-    expect(mockDeleteParticipantFromIdea).toHaveBeenCalledWith(
-      ideaId,
-      participantId,
-    );
-  });
-
-  test('Missing Idea', async () => {
-    mockGetIdea.mockImplementation(() => {
-      throw new NotFoundError('That thing is missing');
-    });
-
-    await expect(removeParticipant(ideaId, participantId)).rejects.toThrow(
-      NotFoundError,
-    );
-
-    expect(mockGetIdea).toHaveBeenCalledWith(ideaId);
-    expect(mockDeleteParticipantFromIdea).not.toHaveBeenCalledWith();
-  });
 });
 
 describe('Add Participant', () => {

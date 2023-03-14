@@ -91,14 +91,7 @@ export async function getHackathonResponse(
     );
   }
 
-  let hackathon;
-  try {
-    hackathon = await getHackathon(id);
-  } catch (e) {
-    throw new NotFoundError(
-      `Cannot get Hackathon with id: ${id}, it does not exist`,
-    );
-  }
+  const hackathon = await getHackathon(id);
 
   return HackathonResponse.from(
     hackathon,
@@ -110,14 +103,7 @@ export async function getHackathonResponse(
 }
 
 export async function getHackathonListResponse(): Promise<HackathonListResponse> {
-  let hackathons;
-  try {
-    hackathons = await listHackathons();
-  } catch (e) {
-    throw new NotFoundError(
-      `Cannot get Hackathon list, unable to list Hackathons`,
-    );
-  }
+  const hackathons = await listHackathons();
 
   return HackathonListResponse.from(hackathons);
 }

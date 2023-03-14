@@ -53,14 +53,7 @@ export async function createParticipant(
 export async function getParticipantResponse(
   id: Uuid,
 ): Promise<ParticipantResponse> {
-  let participant;
-  try {
-    participant = await getParticipant(id);
-  } catch (e) {
-    throw new NotFoundError(
-      `Cannot get Participant with id ${id}, it does not exist`,
-    );
-  }
+  const participant = await getParticipant(id);
 
   let user;
   try {

@@ -59,14 +59,7 @@ export async function createUser(
 }
 
 export async function getUserResponse(id: Uuid): Promise<UserResponse> {
-  let user: User;
-  try {
-    user = await getUser(id);
-  } catch (e) {
-    throw new NotFoundError(
-      `Cannot get User with id: ${id}, it does not exist`,
-    );
-  }
+  const user = await getUser(id);
 
   let skills;
   try {
@@ -84,29 +77,13 @@ export async function getUserResponse(id: Uuid): Promise<UserResponse> {
 export async function getUserExistsResponse(
   email: string,
 ): Promise<UserExistsResponse> {
-  let id: Uuid;
-  let exists: boolean;
-  try {
-    ({id, exists} = await userExistsByEmail(email));
-  } catch (e) {
-    throw new NotFoundError(
-      `Cannot get User with email: ${email}, ` +
-        `unable to get User with email: ${email}`,
-    );
-  }
+  const {id, exists} = await userExistsByEmail(email);
 
   return UserExistsResponse.from(id, email, exists);
 }
 
 export async function getUserListResponse(): Promise<UserListResponse> {
-  let users: User[];
-  try {
-    users = await listUsers();
-  } catch (e) {
-    throw new NotFoundError(
-      `Cannot get User list, ` + `unable to get User list`,
-    );
-  }
+  const users = await listUsers();
 
   return UserListResponse.from(users);
 }
@@ -140,16 +117,7 @@ export async function editUser(
 }
 
 export async function removeUser(id: Uuid): Promise<UserDeleteResponse> {
-  let existing: User;
-  try {
-    existing = await getUser(id);
-  } catch (e) {
-    throw new NotFoundError(
-      `Cannot delete User with id: ${id}, it does not exist`,
-    );
-  }
-
-  await deleteUser(existing.id);
+  await deleteUser(id);
 
   return new UserDeleteResponse(id);
 }

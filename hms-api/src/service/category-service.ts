@@ -68,14 +68,7 @@ export async function editCategory(
 }
 
 export async function getCategoryResponse(id: Uuid): Promise<CategoryResponse> {
-  let category: Category;
-  try {
-    category = await getCategory(id);
-  } catch (e) {
-    throw new NotFoundError(
-      `Cannot get Category with id: ${id}, it does not exist`,
-    );
-  }
+  const category = await getCategory(id);
 
   let hackathon;
   try {

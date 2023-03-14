@@ -3,7 +3,6 @@ import NotFoundError from '../error/NotFoundError';
 import {getIdea, ideaExists} from '../repository/idea-repository';
 import {getUser, userExists} from '../repository/user-repository';
 import {
-  ideaCommentAlreadyExists,
   getIdeaComment,
   putIdeaComment,
   deleteIdeaComment,
@@ -45,12 +44,7 @@ export async function createIdeaComment(
 export async function getIdeaCommentResponse(
   id: Uuid,
 ): Promise<IdeaCommentResponse> {
-  let ideaComment;
-  try {
-    ideaComment = await getIdeaComment(id);
-  } catch (e) {
-    throw new NotFoundError(`IdeaComment with id: ${id} not found`);
-  }
+  const ideaComment = await getIdeaComment(id);
 
   let user;
   try {
