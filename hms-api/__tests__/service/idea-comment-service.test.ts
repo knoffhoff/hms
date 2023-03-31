@@ -48,11 +48,15 @@ const mockIdeaExists = jest
 const mockGetIdea = jest.spyOn(ideaRepository, 'getIdea').mockImplementation();
 
 describe('Create Idea Comment without parentComment', () => {
+  const parentComment = randomIdeaComment();
+  const expected = makeIdeaComment({
+    parentIdeaCommentId: parentComment.id,
+  } as IdeaCommentData);
+
   test('Happy Path', async () => {
     mockUserExists.mockResolvedValueOnce(true);
     mockIdeaExists.mockResolvedValueOnce(true);
-
-    const expected = randomIdeaComment();
+    mockGetIdeaComment.mockResolvedValueOnce(parentComment);
 
     expect(
       await createIdeaComment(expected.userId, expected.ideaId, expected.text),
@@ -98,6 +102,7 @@ describe('Create Idea Comment without parentComment', () => {
   test('Validation Error', async () => {
     mockUserExists.mockResolvedValueOnce(true);
     mockIdeaExists.mockResolvedValueOnce(true);
+    mockGetIdeaComment.mockResolvedValueOnce(parentComment);
 
     await expect(
       createIdeaComment(uuid(), uuid(), '', uuid()),

@@ -30,6 +30,12 @@ export async function createIdeaComment(
     throw new ReferenceNotFoundError(`User with id: ${userId} not found`);
   }
 
+  if (parentCommentId && !(await getIdeaComment(parentCommentId))) {
+    throw new ReferenceNotFoundError(
+      `Parent comment with id: ${parentCommentId} not found`,
+    );
+  }
+
   const ideaComment = new IdeaComment(userId, ideaId, text, parentCommentId);
   const result = ideaComment.validate();
   if (result.hasFailed()) {

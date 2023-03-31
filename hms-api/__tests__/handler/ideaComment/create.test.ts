@@ -104,6 +104,9 @@ describe('Create Comment', () => {
 });
 
 const toEvent = (ideaComment: ideaComment): object => ({
+  pathParameters: {
+    id: ideaComment.id,
+  },
   body: JSON.stringify(
     new IdeaCommentCreateRequest(
       ideaComment.userId,
