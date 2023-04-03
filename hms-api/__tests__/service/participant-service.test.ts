@@ -95,6 +95,7 @@ describe('Create Participant', () => {
 
   test('Missing Hackathon', async () => {
     mockHackathonExists.mockResolvedValueOnce(false);
+    mockUserExists.mockResolvedValueOnce(true);
 
     await expect(createParticipant(uuid(), uuid())).rejects.toThrow(
       ReferenceNotFoundError,
@@ -104,6 +105,7 @@ describe('Create Participant', () => {
   });
 
   test('Missing User', async () => {
+    mockHackathonExists.mockResolvedValueOnce(true);
     mockUserExists.mockResolvedValueOnce(false);
 
     await expect(createParticipant(uuid(), uuid())).rejects.toThrow(

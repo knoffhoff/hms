@@ -10,20 +10,22 @@ describe('Hackathon Validation', () => {
     ['Empty ID', makeHackathon({id: ''} as HackathonData), true],
     ['Null Title', makeHackathon({title: null} as HackathonData), true],
     ['Empty Title', makeHackathon({title: ''} as HackathonData), true],
-    ['Null Start Date',
+    [
+      'Null Start Date',
       makeHackathon({startDate: null} as HackathonData),
-      true],
-    ['Null End Date',
-      makeHackathon({endDate: null} as HackathonData),
-      true],
-    ['Start Date === End Date',
+      true,
+    ],
+    ['Null End Date', makeHackathon({endDate: null} as HackathonData), true],
+    [
+      'Start Date === End Date',
       makeHackathon({
         startDate: earlyDate,
         endDate: earlyDate,
       } as HackathonData),
       true,
     ],
-    ['Start Date > End Date',
+    [
+      'Start Date > End Date',
       makeHackathon({
         startDate: lateDate,
         endDate: earlyDate,
@@ -40,6 +42,8 @@ describe('Hackathon Validation', () => {
       makeHackathon({description: ''} as HackathonData),
       false,
     ],
+    ['Null Slug', makeHackathon({slug: null} as HackathonData), true],
+    ['Empty Slug', makeHackathon({slug: ''} as HackathonData), true],
   ])('%s', (testName, hackathon, failed) => {
     expect(hackathon.validate().hasFailed()).toBe(failed);
   });

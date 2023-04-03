@@ -5,6 +5,8 @@ import ParticipantCreateResponse from '../../../src/rest/participant/Participant
 import ReferenceNotFoundError from '../../../src/error/ReferenceNotFoundError';
 import Participant from '../../../src/repository/domain/Participant';
 import ParticipantCreateRequest from '../../../src/rest/participant/ParticipantCreateRequest';
+import ValidationError from '../../../src/error/ValidationError';
+import ValidationResult from '../../../src/error/ValidationResult';
 
 const mockCreateParticipant = jest
   .spyOn(participantService, 'createParticipant')
@@ -13,8 +15,9 @@ const mockCreateParticipant = jest
 describe('Create Participant', () => {
   test('Happy Path', async () => {
     const expected = randomParticipant();
-    mockCreateParticipant.mockResolvedValueOnce(expected);
     const callback = jest.fn();
+
+    mockCreateParticipant.mockResolvedValueOnce(expected);
 
     await create(toEvent(expected), null, callback);
 
@@ -35,12 +38,14 @@ describe('Create Participant', () => {
 
   test('Throws ReferenceNotFoundError', async () => {
     const errorMessage = 'reference error message';
+    const callback = jest.fn();
+
     mockCreateParticipant.mockImplementation(() => {
       throw new ReferenceNotFoundError(errorMessage);
     });
-    const callback = jest.fn();
 
     await create(toEvent(randomParticipant()), null, callback);
+
     expect(callback).toHaveBeenCalledWith(null, {
       statusCode: 400,
       headers: {
@@ -52,14 +57,37 @@ describe('Create Participant', () => {
     });
   });
 
+  test('Throws ValidationError', async () => {
+    const errorMessage = 'validation error message';
+    const callback = jest.fn();
+
+    mockCreateParticipant.mockImplementation(() => {
+      throw new ValidationError(errorMessage, new ValidationResult());
+    });
+
+    await create(toEvent(randomParticipant()), null, callback);
+
+    expect(callback).toHaveBeenCalledWith(null, {
+      statusCode: 422,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Credentials': true,
+        'content-type': 'application/json',
+      },
+      body: JSON.stringify({errorMessage: errorMessage}),
+    });
+  });
+
   test('Throws Error', async () => {
     const errorMessage = 'generic error message';
+    const callback = jest.fn();
+
     mockCreateParticipant.mockImplementation(() => {
       throw new Error(errorMessage);
     });
-    const callback = jest.fn();
 
     await create(toEvent(randomParticipant()), null, callback);
+
     expect(callback).toHaveBeenCalledWith(null, {
       statusCode: 500,
       headers: {

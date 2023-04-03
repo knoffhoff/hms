@@ -103,22 +103,6 @@ export async function ideaCommentAlreadyExists(
   return Array.isArray(items) && items.length > 0;
 }
 
-export async function parentCommentIdIdeaExists(
-  parentCommentId: string,
-): Promise<boolean> {
-  const output = await dynamoDbClient.send(
-    new QueryCommand({
-      TableName: process.env.IDEA_COMMENT_TABLE,
-      IndexName: process.env.IDEA_COMMENT_BY_IDEA_ID_INDEX,
-      KeyConditionExpression: 'parentCommentId = :iId',
-      ExpressionAttributeValues: {':iId': {S: parentCommentId}},
-    }),
-  );
-
-  const items = output.Items;
-  return Array.isArray(items) && items.length > 0;
-}
-
 function itemToIdeaComment(item: {[key: string]: AttributeValue}): IdeaComment {
   return new IdeaComment(
     item.userId.S,

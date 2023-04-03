@@ -84,6 +84,7 @@ export async function getUserExistsResponse(
 
 export async function getUserListResponse(): Promise<UserListResponse> {
   const users = await listUsers();
+
   return UserListResponse.from(users);
 }
 
@@ -117,6 +118,7 @@ export async function editUser(
 
 export async function removeUser(id: Uuid): Promise<UserDeleteResponse> {
   await deleteUser(id);
+
   return new UserDeleteResponse(id);
 }
 

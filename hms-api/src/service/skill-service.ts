@@ -54,15 +54,18 @@ export async function editSkill(
 
 export async function getSkillResponse(id: Uuid): Promise<SkillResponse> {
   const skill = await getSkill(id);
+
   return SkillResponse.from(skill);
 }
 
 export async function getSkillListResponse(): Promise<SkillListResponse> {
   const skills = await listSkills();
+
   return SkillListResponse.from(skills);
 }
 
 export async function removeSkill(id: Uuid): Promise<SkillDeleteResponse> {
   await deleteSkill(id);
+
   return new SkillDeleteResponse(id);
 }

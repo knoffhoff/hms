@@ -9,7 +9,7 @@ import {
 } from '../repository/hackathon-repository';
 import {listParticipants} from '../repository/participant-repository';
 import {usersFor} from './user-service';
-import {listCategories, putCategory} from '../repository/category-repository';
+import {listCategories} from '../repository/category-repository';
 import {listIdeasForHackathon} from '../repository/idea-repository';
 import Uuid from '../util/Uuid';
 import Hackathon from '../repository/domain/Hackathon';
@@ -23,7 +23,6 @@ import DeletionError from '../error/DeletionError';
 import {createCategory, removeCategoriesForHackathon} from './category-service';
 import {removeParticipantsForHackathon} from './participant-service';
 import ValidationError from '../error/ValidationError';
-import Category from '../repository/domain/Category';
 import InvalidStateError from '../error/InvalidStateError';
 
 export async function createHackathon(
@@ -93,6 +92,7 @@ export async function getHackathonResponse(
   }
 
   const hackathon = await getHackathon(id);
+
   return HackathonResponse.from(
     hackathon,
     participants,
@@ -104,6 +104,7 @@ export async function getHackathonResponse(
 
 export async function getHackathonListResponse(): Promise<HackathonListResponse> {
   const hackathons = await listHackathons();
+
   return HackathonListResponse.from(hackathons);
 }
 

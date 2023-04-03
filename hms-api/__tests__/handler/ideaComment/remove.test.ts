@@ -10,11 +10,12 @@ const mockRemoveIdeaComment = jest
 describe('Delete Comment', () => {
   test('Happy Path', async () => {
     const id = uuid();
+    const event = toEvent(id);
+    const callback = jest.fn();
+
     mockRemoveIdeaComment.mockResolvedValueOnce(
       new IdeaCommentDeleteResponse(id),
     );
-    const event = toEvent(id);
-    const callback = jest.fn();
 
     await remove(event, null, callback);
 
@@ -32,12 +33,14 @@ describe('Delete Comment', () => {
 
   test('Throws Error', async () => {
     const errorMessage = 'generic error message';
+    const callback = jest.fn();
+
     mockRemoveIdeaComment.mockImplementation(() => {
       throw new Error(errorMessage);
     });
-    const callback = jest.fn();
 
     await remove(toEvent(uuid()), null, callback);
+
     expect(callback).toHaveBeenCalledWith(null, {
       statusCode: 500,
       headers: {

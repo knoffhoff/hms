@@ -34,9 +34,9 @@ describe('List Comments', () => {
       [user1, user2, user3],
       ideaId,
     );
+    const callback = jest.fn();
 
     mockGetIdeaCommentListResponse.mockResolvedValueOnce(expected);
-    const callback = jest.fn();
 
     await list(toEvent(ideaId), null, callback);
 
@@ -54,10 +54,11 @@ describe('List Comments', () => {
 
   test('Throws NotFoundError', async () => {
     const errorMessage = 'reference error message';
+    const callback = jest.fn();
+
     mockGetIdeaCommentListResponse.mockImplementation(() => {
       throw new NotFoundError(errorMessage);
     });
-    const callback = jest.fn();
 
     await list(toEvent(uuid()), null, callback);
 
@@ -76,10 +77,11 @@ describe('List Comments', () => {
 
   test('Throws ReferenceNotFoundError', async () => {
     const errorMessage = 'reference error message';
+    const callback = jest.fn();
+
     mockGetIdeaCommentListResponse.mockImplementation(() => {
       throw new ReferenceNotFoundError(errorMessage);
     });
-    const callback = jest.fn();
 
     await list(toEvent(uuid()), null, callback);
 
@@ -98,10 +100,11 @@ describe('List Comments', () => {
 
   test('Throws Error', async () => {
     const errorMessage = 'error message';
+    const callback = jest.fn();
+
     mockGetIdeaCommentListResponse.mockImplementation(() => {
       throw new Error(errorMessage);
     });
-    const callback = jest.fn();
 
     await list(toEvent(uuid()), null, callback);
 

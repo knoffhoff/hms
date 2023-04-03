@@ -4,6 +4,7 @@ import ReferenceNotFoundError from '../../src/error/ReferenceNotFoundError';
 import InvalidStateError from '../../src/error/InvalidStateError';
 import ValidationError from '../../src/error/ValidationError';
 import ValidationResult from '../../src/error/ValidationResult';
+import DeletionError from '../../src/error/DeletionError';
 
 describe('Wrap Handler', () => {
   test('Calls provided function', async () => {
@@ -17,7 +18,7 @@ describe('Wrap Handler', () => {
   });
 
   test('Catches NotFoundError', async () => {
-    const message = 'We couldn\'t find that thing you wanted';
+    const message = "We couldn't find that thing you wanted";
     const callback = jest.fn();
 
     await wrapHandler(() => {
@@ -36,7 +37,7 @@ describe('Wrap Handler', () => {
   });
 
   test('Catches ReferenceNotFoundError', async () => {
-    const message = 'We couldn\'t find that thing your thing wanted';
+    const message = "We couldn't find that thing your thing wanted";
     const callback = jest.fn();
 
     await wrapHandler(() => {
@@ -55,7 +56,7 @@ describe('Wrap Handler', () => {
   });
 
   test('Catches InvalidStateError', async () => {
-    const message = 'We couldn\'t find that thing your thing wanted';
+    const message = "We couldn't find that thing your thing wanted";
     const callback = jest.fn();
 
     await wrapHandler(() => {
@@ -74,15 +75,30 @@ describe('Wrap Handler', () => {
   });
 
   test('Catches Validation Error', async () => {
-    const result = new ValidationResult();
-    result.addFailure('Failure #1');
-    result.addFailure('Failure #2');
-    const message = 'That object was a bit too ugly';
-    const validationError = new ValidationError(message, result);
+    const errorMessage = 'That object was a bit too ugly';
     const callback = jest.fn();
 
     await wrapHandler(() => {
-      throw validationError;
+      throw new ValidationError(errorMessage, new ValidationResult());
+    }, callback);
+
+    expect(callback).toHaveBeenCalledWith(null, {
+      statusCode: 422,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Credentials': true,
+        'content-type': 'application/json',
+      },
+      body: JSON.stringify({errorMessage: errorMessage}),
+    });
+  });
+
+  test('Catches DeletionError', async () => {
+    const message = 'Something does not want to be deleted';
+    const callback = jest.fn();
+
+    await wrapHandler(() => {
+      throw new DeletionError(message);
     }, callback);
 
     expect(callback).toHaveBeenCalledWith(null, {
@@ -92,7 +108,7 @@ describe('Wrap Handler', () => {
         'Access-Control-Allow-Credentials': true,
         'content-type': 'application/json',
       },
-      body: JSON.stringify({errorMessage: validationError.message}),
+      body: JSON.stringify({errorMessage: message}),
     });
   });
 

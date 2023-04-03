@@ -3,12 +3,10 @@ import NotFoundError from '../error/NotFoundError';
 import {getIdea, ideaExists} from '../repository/idea-repository';
 import {getUser, userExists} from '../repository/user-repository';
 import {
-  ideaCommentAlreadyExists,
   getIdeaComment,
   putIdeaComment,
   deleteIdeaComment,
   listIdeaComments,
-  parentCommentIdIdeaExists,
 } from '../repository/idea-comment-repository';
 import ValidationError from '../error/ValidationError';
 import IdeaComment from '../repository/domain/IdeaComment';
@@ -32,7 +30,7 @@ export async function createIdeaComment(
     throw new ReferenceNotFoundError(`User with id: ${userId} not found`);
   }
 
-  if (parentCommentId && !(await parentCommentIdIdeaExists(parentCommentId))) {
+  if (parentCommentId && !(await getIdeaComment(parentCommentId))) {
     throw new ReferenceNotFoundError(
       `Parent comment with id: ${parentCommentId} not found`,
     );

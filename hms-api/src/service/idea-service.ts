@@ -347,6 +347,7 @@ export async function addVoter(
 
 export async function removeIdea(id: Uuid): Promise<IdeaDeleteResponse> {
   await deleteIdea(id);
+
   return new IdeaDeleteResponse(id);
 }
 

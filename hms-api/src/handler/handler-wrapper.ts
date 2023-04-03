@@ -1,4 +1,5 @@
 import {
+  buildDeletionErrorResponse,
   buildErrorResponse,
   buildInvalidStateErrorResponse,
   buildNotFoundErrorResponse,
@@ -9,6 +10,7 @@ import NotFoundError from '../error/NotFoundError';
 import ReferenceNotFoundError from '../error/ReferenceNotFoundError';
 import InvalidStateError from '../error/InvalidStateError';
 import ValidationError from '../error/ValidationError';
+import DeletionError from '../error/DeletionError';
 
 // eslint-disable-next-line require-jsdoc
 export async function wrapHandler(
@@ -26,6 +28,8 @@ export async function wrapHandler(
       callback(null, buildInvalidStateErrorResponse(e));
     } else if (e instanceof ValidationError) {
       callback(null, buildValidationErrorResponse(e));
+    } else if (e instanceof DeletionError) {
+      callback(null, buildDeletionErrorResponse(e));
     } else {
       callback(null, buildErrorResponse(e));
     }

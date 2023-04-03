@@ -27,6 +27,27 @@ describe('Remove vote from Idea', () => {
       body: JSON.stringify(new IdeaVoteResponse(ideaId, participantId)),
     });
   });
+
+  test('Throws Error', async () => {
+    const errorMessage = 'generic error message';
+    const callback = jest.fn();
+
+    mockRemoveVoter.mockImplementation(() => {
+      throw new Error(errorMessage);
+    });
+
+    await revokeVote(toEvent(uuid(), uuid()), null, callback);
+
+    expect(callback).toHaveBeenCalledWith(null, {
+      statusCode: 500,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Credentials': true,
+        'content-type': 'application/json',
+      },
+      body: JSON.stringify({errorMessage: errorMessage}),
+    });
+  });
 });
 
 const toEvent = (ideaId: Uuid, participantId: Uuid): any => ({

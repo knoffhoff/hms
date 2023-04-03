@@ -303,6 +303,7 @@ describe('Users For', () => {
 describe('Delete User', () => {
   test('Happy Path', async () => {
     const id = uuid();
+
     expect(await removeUser(id)).toStrictEqual(new UserDeleteResponse(id));
     expect(mockDeleteUser).toHaveBeenCalledWith(id);
   });

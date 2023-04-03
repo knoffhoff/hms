@@ -15,10 +15,10 @@ describe('Get User', () => {
   test('Happy Path', async () => {
     const user = randomUser();
     const expected = UserResponse.from(user, [randomSkill(), randomSkill()]);
-
-    mockGetUser.mockResolvedValueOnce(expected);
     const event = toEvent(user.id);
     const callback = jest.fn();
+
+    mockGetUser.mockResolvedValueOnce(expected);
 
     await get(event, null, callback);
 
@@ -36,12 +36,14 @@ describe('Get User', () => {
 
   test('Throws NotFoundError', async () => {
     const errorMessage = 'reference error message';
+    const callback = jest.fn();
+
     mockGetUser.mockImplementation(() => {
       throw new NotFoundError(errorMessage);
     });
-    const callback = jest.fn();
 
     await get(toEvent(uuid()), null, callback);
+
     expect(callback).toHaveBeenCalledWith(null, {
       statusCode: 404,
       headers: {
@@ -55,12 +57,14 @@ describe('Get User', () => {
 
   test('Throws ReferenceNotFoundError', async () => {
     const errorMessage = 'reference error message';
+    const callback = jest.fn();
+
     mockGetUser.mockImplementation(() => {
       throw new ReferenceNotFoundError(errorMessage);
     });
-    const callback = jest.fn();
 
     await get(toEvent(uuid()), null, callback);
+
     expect(callback).toHaveBeenCalledWith(null, {
       statusCode: 400,
       headers: {
@@ -74,12 +78,14 @@ describe('Get User', () => {
 
   test('Throws Error', async () => {
     const errorMessage = 'generic error message';
+    const callback = jest.fn();
+
     mockGetUser.mockImplementation(() => {
       throw new Error(errorMessage);
     });
-    const callback = jest.fn();
 
     await get(toEvent(uuid()), null, callback);
+
     expect(callback).toHaveBeenCalledWith(null, {
       statusCode: 500,
       headers: {

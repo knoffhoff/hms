@@ -15,9 +15,9 @@ describe('List Skills', () => {
     const skill3 = randomSkill();
     const skill4 = randomSkill();
     const expected = SkillListResponse.from([skill1, skill2, skill3, skill4]);
+    const callback = jest.fn();
 
     mockGetSkillListResponse.mockResolvedValueOnce(expected);
-    const callback = jest.fn();
 
     await list({}, null, callback);
 
@@ -35,12 +35,14 @@ describe('List Skills', () => {
 
   test('Throws NotFoundError', async () => {
     const errorMessage = 'reference error message';
+    const callback = jest.fn();
+
     mockGetSkillListResponse.mockImplementation(() => {
       throw new NotFoundError(errorMessage);
     });
-    const callback = jest.fn();
 
     await list({}, null, callback);
+
     expect(callback).toHaveBeenCalledWith(null, {
       statusCode: 404,
       headers: {
@@ -54,12 +56,14 @@ describe('List Skills', () => {
 
   test('Throws Error', async () => {
     const errorMessage = 'generic error message';
+    const callback = jest.fn();
+
     mockGetSkillListResponse.mockImplementation(() => {
       throw new Error(errorMessage);
     });
-    const callback = jest.fn();
 
     await list({}, null, callback);
+
     expect(callback).toHaveBeenCalledWith(null, {
       statusCode: 500,
       headers: {

@@ -7,10 +7,9 @@ import IdeaCommentCreateResponse from '../../rest/ideaComment/IdeaCommentCreateR
 export async function create(event, context, callback) {
   await wrapHandler(async () => {
     const request = IdeaCommentCreateRequest.parse(event.body);
-    const ideaId = event.pathParameters.id;
     const ideaComment = await createIdeaComment(
       request.userId,
-      ideaId,
+      request.ideaId,
       request.text,
       request.parentIdeaCommentId,
     );

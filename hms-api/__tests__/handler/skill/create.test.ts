@@ -2,9 +2,10 @@ import * as skillService from '../../../src/service/skill-service';
 import {create} from '../../../src/handler/skill/create';
 import {randomSkill} from '../../repository/domain/skill-maker';
 import SkillCreateResponse from '../../../src/rest/skill/SkillCreateResponse';
-import ReferenceNotFoundError from '../../../src/error/ReferenceNotFoundError';
 import Skill from '../../../src/repository/domain/Skill';
 import SkillCreateRequest from '../../../src/rest/skill/SkillCreateRequest';
+import ValidationError from '../../../src/error/ValidationError';
+import ValidationResult from '../../../src/error/ValidationResult';
 
 const mockCreateSkill = jest
   .spyOn(skillService, 'createSkill')
@@ -13,8 +14,9 @@ const mockCreateSkill = jest
 describe('Create Skill', () => {
   test('Happy Path', async () => {
     const expected = randomSkill();
-    mockCreateSkill.mockResolvedValueOnce(expected);
     const callback = jest.fn();
+
+    mockCreateSkill.mockResolvedValueOnce(expected);
 
     await create(toEvent(expected), null, callback);
 
@@ -33,16 +35,18 @@ describe('Create Skill', () => {
     });
   });
 
-  test('Throws ReferenceNotFoundError', async () => {
-    const errorMessage = 'reference error message';
-    mockCreateSkill.mockImplementation(() => {
-      throw new ReferenceNotFoundError(errorMessage);
-    });
+  test('Validation Error', async () => {
+    const errorMessage = 'validation error message';
     const callback = jest.fn();
 
+    mockCreateSkill.mockImplementation(() => {
+      throw new ValidationError(errorMessage, new ValidationResult());
+    });
+
     await create(toEvent(randomSkill()), null, callback);
+
     expect(callback).toHaveBeenCalledWith(null, {
-      statusCode: 400,
+      statusCode: 422,
       headers: {
         'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Credentials': true,
@@ -54,12 +58,14 @@ describe('Create Skill', () => {
 
   test('Throws Error', async () => {
     const errorMessage = 'generic error message';
+    const callback = jest.fn();
+
     mockCreateSkill.mockImplementation(() => {
       throw new Error(errorMessage);
     });
-    const callback = jest.fn();
 
     await create(toEvent(randomSkill()), null, callback);
+
     expect(callback).toHaveBeenCalledWith(null, {
       statusCode: 500,
       headers: {
