@@ -1,5 +1,5 @@
-import Uuid, {uuid} from '../../../src/util/Uuid';
-import Idea from '../../../src/repository/domain/Idea';
+import Uuid, { uuid } from '../../../src/util/Uuid'
+import Idea from '../../../src/repository/domain/Idea'
 
 export interface IdeaData {
   id: Uuid;
@@ -43,6 +43,6 @@ export const makeIdea = ({
     creationDate,
     participantIds,
     voterIds,
-  );
+  )
 
-export const randomIdea = (): Idea => makeIdea({} as IdeaData);
+export const randomIdea = (): Idea => makeIdea({} as IdeaData)

@@ -1,29 +1,29 @@
-import {edit} from '../../../src/handler/idea/edit';
-import Uuid, {uuid} from '../../../src/util/Uuid';
-import * as ideaService from '../../../src/service/idea-service';
-import IdeaEditResponse from '../../../src/rest/idea/IdeaEditResponse';
-import NotFoundError from '../../../src/error/NotFoundError';
-import IdeaEditRequest from '../../../src/rest/idea/IdeaEditRequest';
-import ReferenceNotFoundError from '../../../src/error/ReferenceNotFoundError';
-import ValidationError from '../../../src/error/ValidationError';
-import ValidationResult from '../../../src/error/ValidationResult';
+import { edit } from '../../../src/handler/idea/edit'
+import Uuid, { uuid } from '../../../src/util/Uuid'
+import * as ideaService from '../../../src/service/idea-service'
+import IdeaEditResponse from '../../../src/rest/idea/IdeaEditResponse'
+import NotFoundError from '../../../src/error/NotFoundError'
+import IdeaEditRequest from '../../../src/rest/idea/IdeaEditRequest'
+import ReferenceNotFoundError from '../../../src/error/ReferenceNotFoundError'
+import ValidationError from '../../../src/error/ValidationError'
+import ValidationResult from '../../../src/error/ValidationResult'
 
-const mockEditIdea = jest.spyOn(ideaService, 'editIdea').mockImplementation();
+const mockEditIdea = jest.spyOn(ideaService, 'editIdea').mockImplementation()
 
 describe('Edit Idea', () => {
-  const hackathonId = uuid();
-  const title = 'New fancy title';
-  const description = 'Well this is awkward';
-  const problem = '1 + 1 = X';
-  const goal = 'What does Y equal?';
-  const requiredSkills = [uuid(), uuid()];
-  const categoryId = uuid();
-  const id = uuid();
+  const hackathonId = uuid()
+  const title = 'New fancy title'
+  const description = 'Well this is awkward'
+  const problem = '1 + 1 = X'
+  const goal = 'What does Y equal?'
+  const requiredSkills = [uuid(), uuid()]
+  const categoryId = uuid()
+  const id = uuid()
 
   test('Happy Path', async () => {
-    const callback = jest.fn();
+    const callback = jest.fn()
 
-    mockEditIdea.mockImplementation();
+    mockEditIdea.mockImplementation()
 
     await edit(
       toEvent(
@@ -38,7 +38,7 @@ describe('Edit Idea', () => {
       ),
       null,
       callback,
-    );
+    )
 
     expect(mockEditIdea).toHaveBeenCalledWith(
       id,
@@ -49,7 +49,7 @@ describe('Edit Idea', () => {
       goal,
       requiredSkills,
       categoryId,
-    );
+    )
     expect(callback).toHaveBeenCalledWith(null, {
       statusCode: 200,
       headers: {
@@ -58,16 +58,16 @@ describe('Edit Idea', () => {
         'content-type': 'application/json',
       },
       body: JSON.stringify(new IdeaEditResponse(id)),
-    });
-  });
+    })
+  })
 
   test('Throws NotFoundError', async () => {
-    const callback = jest.fn();
-    const errorMessage = 'Where is it????';
+    const callback = jest.fn()
+    const errorMessage = 'Where is it????'
 
     mockEditIdea.mockImplementation(() => {
-      throw new NotFoundError(errorMessage);
-    });
+      throw new NotFoundError(errorMessage)
+    })
 
     await edit(
       toEvent(
@@ -82,7 +82,7 @@ describe('Edit Idea', () => {
       ),
       null,
       callback,
-    );
+    )
 
     expect(mockEditIdea).toHaveBeenCalledWith(
       id,
@@ -93,7 +93,7 @@ describe('Edit Idea', () => {
       goal,
       requiredSkills,
       categoryId,
-    );
+    )
     expect(callback).toHaveBeenCalledWith(null, {
       statusCode: 404,
       headers: {
@@ -101,17 +101,17 @@ describe('Edit Idea', () => {
         'Access-Control-Allow-Credentials': true,
         'content-type': 'application/json',
       },
-      body: JSON.stringify({errorMessage: errorMessage}),
-    });
-  });
+      body: JSON.stringify({ errorMessage: errorMessage }),
+    })
+  })
 
   test('Throws ReferenceNotFoundError', async () => {
-    const callback = jest.fn();
-    const errorMessage = 'Where is it????';
+    const callback = jest.fn()
+    const errorMessage = 'Where is it????'
 
     mockEditIdea.mockImplementation(() => {
-      throw new ReferenceNotFoundError(errorMessage);
-    });
+      throw new ReferenceNotFoundError(errorMessage)
+    })
 
     await edit(
       toEvent(
@@ -126,7 +126,7 @@ describe('Edit Idea', () => {
       ),
       null,
       callback,
-    );
+    )
 
     expect(mockEditIdea).toHaveBeenCalledWith(
       id,
@@ -137,7 +137,7 @@ describe('Edit Idea', () => {
       goal,
       requiredSkills,
       categoryId,
-    );
+    )
     expect(callback).toHaveBeenCalledWith(null, {
       statusCode: 400,
       headers: {
@@ -145,17 +145,17 @@ describe('Edit Idea', () => {
         'Access-Control-Allow-Credentials': true,
         'content-type': 'application/json',
       },
-      body: JSON.stringify({errorMessage: errorMessage}),
-    });
-  });
+      body: JSON.stringify({ errorMessage: errorMessage }),
+    })
+  })
 
   test('Throws ValidationError', async () => {
-    const callback = jest.fn();
-    const errorMessage = 'validation error message';
+    const callback = jest.fn()
+    const errorMessage = 'validation error message'
 
     mockEditIdea.mockImplementation(() => {
-      throw new ValidationError(errorMessage, new ValidationResult());
-    });
+      throw new ValidationError(errorMessage, new ValidationResult())
+    })
 
     await edit(
       toEvent(
@@ -170,7 +170,7 @@ describe('Edit Idea', () => {
       ),
       null,
       callback,
-    );
+    )
 
     expect(mockEditIdea).toHaveBeenCalledWith(
       id,
@@ -181,7 +181,7 @@ describe('Edit Idea', () => {
       goal,
       requiredSkills,
       categoryId,
-    );
+    )
     expect(callback).toHaveBeenCalledWith(null, {
       statusCode: 422,
       headers: {
@@ -189,17 +189,17 @@ describe('Edit Idea', () => {
         'Access-Control-Allow-Credentials': true,
         'content-type': 'application/json',
       },
-      body: JSON.stringify({errorMessage: errorMessage}),
-    });
-  });
+      body: JSON.stringify({ errorMessage: errorMessage }),
+    })
+  })
 
   test('Throws Error', async () => {
-    const callback = jest.fn();
-    const errorMessage = 'Boring old error';
+    const callback = jest.fn()
+    const errorMessage = 'Boring old error'
 
     mockEditIdea.mockImplementation(() => {
-      throw new Error(errorMessage);
-    });
+      throw new Error(errorMessage)
+    })
 
     await edit(
       toEvent(
@@ -214,7 +214,7 @@ describe('Edit Idea', () => {
       ),
       null,
       callback,
-    );
+    )
 
     expect(mockEditIdea).toHaveBeenCalledWith(
       id,
@@ -225,7 +225,7 @@ describe('Edit Idea', () => {
       goal,
       requiredSkills,
       categoryId,
-    );
+    )
     expect(callback).toHaveBeenCalledWith(null, {
       statusCode: 500,
       headers: {
@@ -233,10 +233,10 @@ describe('Edit Idea', () => {
         'Access-Control-Allow-Credentials': true,
         'content-type': 'application/json',
       },
-      body: JSON.stringify({errorMessage: errorMessage}),
-    });
-  });
-});
+      body: JSON.stringify({ errorMessage: errorMessage }),
+    })
+  })
+})
 
 const toEvent = (
   hackathonId: Uuid,
@@ -262,4 +262,4 @@ const toEvent = (
   pathParameters: {
     id: id,
   },
-});
+})

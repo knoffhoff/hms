@@ -34,8 +34,8 @@ import { NULL_DATE } from '../../common/constants'
 import HackathonHeader from '../HackathonHeader'
 import { useMsal } from '@azure/msal-react'
 import {
-  JOIN_BUTTON_COLOR,
   DELETE_BUTTON_COLOR,
+  JOIN_BUTTON_COLOR,
   RELOAD_BUTTON_COLOR,
 } from '../../common/colors'
 import { showNotification, updateNotification } from '@mantine/notifications'

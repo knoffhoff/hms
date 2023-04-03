@@ -1,21 +1,18 @@
-import HackathonListResponse from '../../src/rest/hackathon/HackathonListResponse';
-import {
-  HackathonData,
-  makeHackathon,
-} from '../repository/domain/hackathon-maker';
-import HackathonPreviewResponse from '../../src/rest/hackathon/HackathonPreviewResponse';
+import HackathonListResponse from '../../src/rest/hackathon/HackathonListResponse'
+import { HackathonData, makeHackathon, } from '../repository/domain/hackathon-maker'
+import HackathonPreviewResponse from '../../src/rest/hackathon/HackathonPreviewResponse'
 
 describe('Convert From', () => {
   test('Categories are sorted', () => {
-    const hackathon1 = makeHackathon({startDate: new Date(0)} as HackathonData);
-    const hackathon2 = makeHackathon({startDate: new Date(1)} as HackathonData);
-    const hackathon3 = makeHackathon({startDate: new Date(2)} as HackathonData);
+    const hackathon1 = makeHackathon({ startDate: new Date(0) } as HackathonData)
+    const hackathon2 = makeHackathon({ startDate: new Date(1) } as HackathonData)
+    const hackathon3 = makeHackathon({ startDate: new Date(2) } as HackathonData)
 
     const response = HackathonListResponse.from([
       hackathon3,
       hackathon1,
       hackathon2,
-    ]);
+    ])
 
     expect(response).toEqual(
       new HackathonListResponse([
@@ -23,6 +20,6 @@ describe('Convert From', () => {
         HackathonPreviewResponse.from(hackathon2),
         HackathonPreviewResponse.from(hackathon3),
       ]),
-    );
-  });
-});
+    )
+  })
+})

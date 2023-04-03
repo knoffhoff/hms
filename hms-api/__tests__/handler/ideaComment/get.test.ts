@@ -1,28 +1,28 @@
-import {randomIdeaComment} from '../../repository/domain/ideaComment-maker';
-import {get} from '../../../src/handler/ideaComment/get';
-import NotFoundError from '../../../src/error/NotFoundError';
-import * as ideaCommentService from '../../../src/service/idea-comment-service';
-import Uuid, {uuid} from '../../../src/util/Uuid';
-import IdeaCommentResponse from '../../../src/rest/ideaComment/IdeaCommentResponse';
-import ReferenceNotFoundError from '../../../src/error/ReferenceNotFoundError';
-import {randomUser} from '../../repository/domain/user-maker';
+import { randomIdeaComment } from '../../repository/domain/ideaComment-maker'
+import { get } from '../../../src/handler/ideaComment/get'
+import NotFoundError from '../../../src/error/NotFoundError'
+import * as ideaCommentService from '../../../src/service/idea-comment-service'
+import Uuid, { uuid } from '../../../src/util/Uuid'
+import IdeaCommentResponse from '../../../src/rest/ideaComment/IdeaCommentResponse'
+import ReferenceNotFoundError from '../../../src/error/ReferenceNotFoundError'
+import { randomUser } from '../../repository/domain/user-maker'
 
 const mockGetIdeaComment = jest
   .spyOn(ideaCommentService, 'getIdeaCommentResponse')
-  .mockImplementation();
+  .mockImplementation()
 
 describe('Get Comment', () => {
   test('Happy Path', async () => {
-    const ideaComment = randomIdeaComment();
-    const expected = IdeaCommentResponse.from(ideaComment, randomUser());
-    const event = toEvent(ideaComment.id);
-    const callback = jest.fn();
+    const ideaComment = randomIdeaComment()
+    const expected = IdeaCommentResponse.from(ideaComment, randomUser())
+    const event = toEvent(ideaComment.id)
+    const callback = jest.fn()
 
-    mockGetIdeaComment.mockResolvedValueOnce(expected);
+    mockGetIdeaComment.mockResolvedValueOnce(expected)
 
-    await get(event, null, callback);
+    await get(event, null, callback)
 
-    expect(mockGetIdeaComment).toHaveBeenCalledWith(ideaComment.id);
+    expect(mockGetIdeaComment).toHaveBeenCalledWith(ideaComment.id)
     expect(callback).toHaveBeenCalledWith(null, {
       statusCode: 200,
       headers: {
@@ -31,18 +31,18 @@ describe('Get Comment', () => {
         'content-type': 'application/json',
       },
       body: JSON.stringify(expected),
-    });
-  });
+    })
+  })
 
   test('Throws NotFoundError', async () => {
-    const errorMessage = 'reference error message';
-    const callback = jest.fn();
+    const errorMessage = 'reference error message'
+    const callback = jest.fn()
 
     mockGetIdeaComment.mockImplementation(() => {
-      throw new NotFoundError(errorMessage);
-    });
+      throw new NotFoundError(errorMessage)
+    })
 
-    await get(toEvent(uuid()), null, callback);
+    await get(toEvent(uuid()), null, callback)
 
     expect(callback).toHaveBeenCalledWith(null, {
       statusCode: 404,
@@ -51,19 +51,19 @@ describe('Get Comment', () => {
         'Access-Control-Allow-Credentials': true,
         'content-type': 'application/json',
       },
-      body: JSON.stringify({errorMessage: errorMessage}),
-    });
-  });
+      body: JSON.stringify({ errorMessage: errorMessage }),
+    })
+  })
 
   test('Throws ReferenceNotFoundError', async () => {
-    const errorMessage = 'reference error message';
-    const callback = jest.fn();
+    const errorMessage = 'reference error message'
+    const callback = jest.fn()
 
     mockGetIdeaComment.mockImplementation(() => {
-      throw new ReferenceNotFoundError(errorMessage);
-    });
+      throw new ReferenceNotFoundError(errorMessage)
+    })
 
-    await get(toEvent(uuid()), null, callback);
+    await get(toEvent(uuid()), null, callback)
 
     expect(callback).toHaveBeenCalledWith(null, {
       statusCode: 400,
@@ -72,19 +72,19 @@ describe('Get Comment', () => {
         'Access-Control-Allow-Credentials': true,
         'content-type': 'application/json',
       },
-      body: JSON.stringify({errorMessage: errorMessage}),
-    });
-  });
+      body: JSON.stringify({ errorMessage: errorMessage }),
+    })
+  })
 
   test('Throws Error', async () => {
-    const errorMessage = 'error message';
-    const callback = jest.fn();
+    const errorMessage = 'error message'
+    const callback = jest.fn()
 
     mockGetIdeaComment.mockImplementation(() => {
-      throw new Error(errorMessage);
-    });
+      throw new Error(errorMessage)
+    })
 
-    await get(toEvent(uuid()), null, callback);
+    await get(toEvent(uuid()), null, callback)
 
     expect(callback).toHaveBeenCalledWith(null, {
       statusCode: 500,
@@ -93,13 +93,13 @@ describe('Get Comment', () => {
         'Access-Control-Allow-Credentials': true,
         'content-type': 'application/json',
       },
-      body: JSON.stringify({errorMessage: errorMessage}),
-    });
-  });
-});
+      body: JSON.stringify({ errorMessage: errorMessage }),
+    })
+  })
+})
 
 const toEvent = (id: Uuid): object => ({
   pathParameters: {
     id: id,
   },
-});
+})

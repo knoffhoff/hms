@@ -5,9 +5,9 @@ import {
   Button,
   createStyles,
   Group,
+  NumberInput,
   Text,
   Title,
-  NumberInput,
 } from '@mantine/core'
 import { useFullscreen } from '@mantine/hooks'
 import { Idea, IdeaPreview } from '../common/types'
@@ -19,7 +19,6 @@ import { ArrowLeft, PlayerPlay } from 'tabler-icons-react'
 import { blue4, orange3, PAGE_BACKGROUND_DARK } from '../common/colors'
 import PitchTimer from '../components/PitchTimer'
 import FinalPresentationSlide from '../components/FinalPresentationSlide'
-import VideoDropzone from '../components/VideoDropzone'
 
 const useStyles = createStyles((_theme, _params, getRef) => ({
   controls: {

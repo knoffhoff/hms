@@ -1,15 +1,15 @@
-import {wrapHandler} from '../handler-wrapper';
-import {buildResponse} from '../../rest/responses';
-import {editIdea} from '../../service/idea-service';
-import IdeaEditRequest from '../../rest/idea/IdeaEditRequest';
-import IdeaEditResponse from '../../rest/idea/IdeaEditResponse';
-import Uuid from '../../util/Uuid';
+import { wrapHandler } from '../handler-wrapper'
+import { buildResponse } from '../../rest/responses'
+import { editIdea } from '../../service/idea-service'
+import IdeaEditRequest from '../../rest/idea/IdeaEditRequest'
+import IdeaEditResponse from '../../rest/idea/IdeaEditResponse'
+import Uuid from '../../util/Uuid'
 
 // eslint-disable-next-line require-jsdoc
 export async function edit(event, context, callback) {
   await wrapHandler(async () => {
-    const id: Uuid = event.pathParameters.id;
-    const request = IdeaEditRequest.parse(event.body);
+    const id: Uuid = event.pathParameters.id
+    const request = IdeaEditRequest.parse(event.body)
 
     await editIdea(
       id,
@@ -20,8 +20,8 @@ export async function edit(event, context, callback) {
       request.goal,
       request.requiredSkills,
       request.categoryId,
-    );
+    )
 
-    callback(null, buildResponse(200, new IdeaEditResponse(id)));
-  }, callback);
+    callback(null, buildResponse(200, new IdeaEditResponse(id)))
+  }, callback)
 }

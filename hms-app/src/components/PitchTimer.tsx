@@ -5,18 +5,10 @@ import {
   Group,
   Progress,
   Text,
-  Title,
 } from '@mantine/core'
 import Countdown, { CountdownApi } from 'react-countdown'
-import {
-  ArrowBackUp,
-  PlayerPause,
-  PlayerPlay,
-  PlayerSkipBack,
-  PlayerStop,
-} from 'tabler-icons-react'
+import { PlayerPause, PlayerPlay, PlayerStop } from 'tabler-icons-react'
 import { useEffect, useReducer, useState } from 'react'
-import { orange4 } from '../common/colors'
 
 type PitchTimerProps = {
   minutes: number

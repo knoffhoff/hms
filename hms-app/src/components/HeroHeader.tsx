@@ -1,11 +1,11 @@
 import {
-  createStyles,
-  Title,
-  Text,
-  Button,
-  Container,
-  Center,
   Badge,
+  Button,
+  Center,
+  Container,
+  createStyles,
+  Text,
+  Title,
   useMantineColorScheme,
 } from '@mantine/core'
 import { Dots } from './Dots'

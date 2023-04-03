@@ -1,28 +1,28 @@
 /* eslint-disable require-jsdoc */
 
-import Uuid from '../../util/Uuid';
-import ParticipantPreviewResponse from '../participant/ParticipantPreviewResponse';
-import CategoryPreviewResponse from '../category/CategoryPreviewResponse';
-import IdeaPreviewResponse from '../idea/IdeaPreviewResponse';
-import Hackathon from '../../repository/domain/Hackathon';
-import Category from '../../repository/domain/Category';
-import Participant from '../../repository/domain/Participant';
-import Idea from '../../repository/domain/Idea';
-import User from '../../repository/domain/User';
+import Uuid from '../../util/Uuid'
+import ParticipantPreviewResponse from '../participant/ParticipantPreviewResponse'
+import CategoryPreviewResponse from '../category/CategoryPreviewResponse'
+import IdeaPreviewResponse from '../idea/IdeaPreviewResponse'
+import Hackathon from '../../repository/domain/Hackathon'
+import Category from '../../repository/domain/Category'
+import Participant from '../../repository/domain/Participant'
+import Idea from '../../repository/domain/Idea'
+import User from '../../repository/domain/User'
 
 class HackathonResponse {
-  id: Uuid;
-  title: string;
-  description: string;
-  slug: string;
-  startDate: Date;
-  endDate: Date;
-  creationDate: Date;
+  id: Uuid
+  title: string
+  description: string
+  slug: string
+  startDate: Date
+  endDate: Date
+  creationDate: Date
   // Just going to set all of these as Uuids for right now
-  participants: ParticipantPreviewResponse[];
-  categories: CategoryPreviewResponse[];
-  ideas: IdeaPreviewResponse[];
-  votingOpened: boolean;
+  participants: ParticipantPreviewResponse[]
+  categories: CategoryPreviewResponse[]
+  ideas: IdeaPreviewResponse[]
+  votingOpened: boolean
 
   constructor(
     id: Uuid,
@@ -36,16 +36,16 @@ class HackathonResponse {
     ideas: IdeaPreviewResponse[],
     votingOpened: boolean,
   ) {
-    this.id = id;
-    this.title = title;
-    this.description = description;
-    this.slug = slug;
-    this.startDate = startDate;
-    this.endDate = endDate;
-    this.participants = participants;
-    this.categories = categories;
-    this.ideas = ideas;
-    this.votingOpened = votingOpened;
+    this.id = id
+    this.title = title
+    this.description = description
+    this.slug = slug
+    this.startDate = startDate
+    this.endDate = endDate
+    this.participants = participants
+    this.categories = categories
+    this.ideas = ideas
+    this.votingOpened = votingOpened
   }
 
   static from = (
@@ -66,7 +66,7 @@ class HackathonResponse {
       CategoryPreviewResponse.fromArray(categories),
       IdeaPreviewResponse.fromArray(ideas),
       hackathon.votingOpened,
-    );
+    )
 }
 
-export default HackathonResponse;
+export default HackathonResponse

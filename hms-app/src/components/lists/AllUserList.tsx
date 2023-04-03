@@ -1,4 +1,4 @@
-import { Group, Button, Card, Accordion } from '@mantine/core'
+import { Accordion, Button, Card, Group } from '@mantine/core'
 import React, { useEffect, useState } from 'react'
 import { UserPreview } from '../../common/types'
 import { getListOfUsers } from '../../actions/UserActions'

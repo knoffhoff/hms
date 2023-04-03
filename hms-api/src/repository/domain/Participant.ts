@@ -1,7 +1,7 @@
 /* eslint-disable require-jsdoc */
 
-import Uuid, {uuid} from '../../util/Uuid';
-import ValidationResult from '../../error/ValidationResult';
+import Uuid, { uuid } from '../../util/Uuid'
+import ValidationResult from '../../error/ValidationResult'
 
 /**
  * A Participant represents a single User participating in a single Hackathon
@@ -16,42 +16,27 @@ export default class {
    *
    * Generated upon creation
    */
-  id: Uuid;
+  id: Uuid
 
   /**
    * The ID of the User which the Participant represents
    */
-  userId: Uuid;
+  userId: Uuid
 
   /**
    * The ID of the Hackathon to which the Participant belongs
    */
-  hackathonId: Uuid;
+  hackathonId: Uuid
 
   /**
    * The Date on which the Participant was created
    *
    * Generated upon creation
    */
-  creationDate: Date;
-
-  validate(): ValidationResult {
-    const result = new ValidationResult();
-    if (!this.id) {
-      result.addFailure('id is null or empty');
-    }
-
-    if (!this.userId) {
-      result.addFailure('userId is null or empty');
-    }
-
-    if (!this.hackathonId) {
-      result.addFailure('hackathonId is null or empty');
-    }
-    return result;
-  }
+  creationDate: Date
 
   constructor(userId: Uuid, hackathonId: Uuid);
+
   constructor(userId: Uuid, hackathonId: Uuid, id: Uuid, creationDate: Date);
 
   constructor(
@@ -60,9 +45,25 @@ export default class {
     id: Uuid = uuid(),
     creationDate: Date = new Date(),
   ) {
-    this.id = id;
-    this.userId = userId;
-    this.hackathonId = hackathonId;
-    this.creationDate = creationDate;
+    this.id = id
+    this.userId = userId
+    this.hackathonId = hackathonId
+    this.creationDate = creationDate
+  }
+
+  validate(): ValidationResult {
+    const result = new ValidationResult()
+    if (!this.id) {
+      result.addFailure('id is null or empty')
+    }
+
+    if (!this.userId) {
+      result.addFailure('userId is null or empty')
+    }
+
+    if (!this.hackathonId) {
+      result.addFailure('hackathonId is null or empty')
+    }
+    return result
   }
 }

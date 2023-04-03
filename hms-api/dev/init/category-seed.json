@@ -1,44 +1,100 @@
 [
   {
-    "id": {"S": "7f38993d-073a-4932-af79-07440012f268"},
-    "title": {"S": "Bears and Bees"},
-    "description": {"S": "Just cool bears and bee focused projects"},
-    "hackathonId": {"S": "e955fe4b-7ce7-4904-ae6f-22a8985f74a8"}
+    "id": {
+      "S": "7f38993d-073a-4932-af79-07440012f268"
+    },
+    "title": {
+      "S": "Bears and Bees"
+    },
+    "description": {
+      "S": "Just cool bears and bee focused projects"
+    },
+    "hackathonId": {
+      "S": "e955fe4b-7ce7-4904-ae6f-22a8985f74a8"
+    }
   },
   {
-    "id": {"S": "a8ce5468-ec97-4b99-acea-511c54817956"},
-    "title": {"S": "Tech stuff"},
-    "description": {"S": "Generic tech stuff projects"},
-    "hackathonId": {"S": "e955fe4b-7ce7-4904-ae6f-22a8985f74a8"}
+    "id": {
+      "S": "a8ce5468-ec97-4b99-acea-511c54817956"
+    },
+    "title": {
+      "S": "Tech stuff"
+    },
+    "description": {
+      "S": "Generic tech stuff projects"
+    },
+    "hackathonId": {
+      "S": "e955fe4b-7ce7-4904-ae6f-22a8985f74a8"
+    }
   },
   {
-    "id": {"S": "52c0bbde-6360-451c-bf50-b56694f56053"},
-    "title": {"S": "All in one bucket"},
-    "description": {"S": "Just a single category for everything in this hackathon"},
-    "hackathonId": {"S": "4eb2d486-c786-431e-a4fd-4c093ed30642"}
+    "id": {
+      "S": "52c0bbde-6360-451c-bf50-b56694f56053"
+    },
+    "title": {
+      "S": "All in one bucket"
+    },
+    "description": {
+      "S": "Just a single category for everything in this hackathon"
+    },
+    "hackathonId": {
+      "S": "4eb2d486-c786-431e-a4fd-4c093ed30642"
+    }
   },
   {
-    "id": {"S": "e499b34e-fda9-4f66-949a-46e0300b9d08"},
-    "title": {"S": "Another fun category"},
-    "description": {"S": "For just fun stuff, you know like shoes and knives"},
-    "hackathonId": {"S": "a1c60aba-f846-4208-b4b8-1caaec031aea"}
+    "id": {
+      "S": "e499b34e-fda9-4f66-949a-46e0300b9d08"
+    },
+    "title": {
+      "S": "Another fun category"
+    },
+    "description": {
+      "S": "For just fun stuff, you know like shoes and knives"
+    },
+    "hackathonId": {
+      "S": "a1c60aba-f846-4208-b4b8-1caaec031aea"
+    }
   },
   {
-    "id": {"S": "c9897c51-2e0b-47d7-b9a7-5572e990d02b"},
-    "title": {"S": "An even BETTER category"},
-    "description": {"S": "Filling out this information really takes a long time"},
-    "hackathonId": {"S": "a1c60aba-f846-4208-b4b8-1caaec031aea"}
+    "id": {
+      "S": "c9897c51-2e0b-47d7-b9a7-5572e990d02b"
+    },
+    "title": {
+      "S": "An even BETTER category"
+    },
+    "description": {
+      "S": "Filling out this information really takes a long time"
+    },
+    "hackathonId": {
+      "S": "a1c60aba-f846-4208-b4b8-1caaec031aea"
+    }
   },
   {
-    "id": {"S": "4be5c953-b871-40e3-b0cc-d2a7c929b519"},
-    "title": {"S": "A pretty bland category"},
-    "description": {"S": "Oh good, the last category to write a description for"},
-    "hackathonId": {"S": "a1c60aba-f846-4208-b4b8-1caaec031aea"}
+    "id": {
+      "S": "4be5c953-b871-40e3-b0cc-d2a7c929b519"
+    },
+    "title": {
+      "S": "A pretty bland category"
+    },
+    "description": {
+      "S": "Oh good, the last category to write a description for"
+    },
+    "hackathonId": {
+      "S": "a1c60aba-f846-4208-b4b8-1caaec031aea"
+    }
   },
   {
-    "id": {"S": "a1c60aba-f846-4208-b4b8-1caaec031aea"},
-    "title": {"S": "Ideation"},
-    "description": {"S": "General category for all ideas"},
-    "hackathonId": {"S": "e955fe4b-7ce7-4904-ae6f-22a8985f74a9"}
+    "id": {
+      "S": "a1c60aba-f846-4208-b4b8-1caaec031aea"
+    },
+    "title": {
+      "S": "Ideation"
+    },
+    "description": {
+      "S": "General category for all ideas"
+    },
+    "hackathonId": {
+      "S": "e955fe4b-7ce7-4904-ae6f-22a8985f74a9"
+    }
   }
 ]

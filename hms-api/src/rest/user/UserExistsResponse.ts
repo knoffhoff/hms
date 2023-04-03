@@ -1,21 +1,21 @@
 /* eslint-disable require-jsdoc */
 
 class UserExistsResponse {
-  id: string;
-  emailAddress: string;
-  exists: boolean;
+  id: string
+  emailAddress: string
+  exists: boolean
 
   constructor(id: string, emailAddress: string, exists: boolean) {
-    this.id = id;
-    this.emailAddress = emailAddress;
-    this.exists = exists;
+    this.id = id
+    this.emailAddress = emailAddress
+    this.exists = exists
   }
 
   static from = (
     id: string,
     emailAddress: string,
     exists: boolean
-  ): UserExistsResponse => new UserExistsResponse(id, emailAddress, exists);
+  ): UserExistsResponse => new UserExistsResponse(id, emailAddress, exists)
 }
 
-export default UserExistsResponse;
+export default UserExistsResponse

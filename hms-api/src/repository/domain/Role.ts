@@ -6,9 +6,9 @@ enum Role {
 }
 
 export const mapRolesToStrings = (roles: Role[]): string[] =>
-  roles.map((role) => role.toString());
+  roles.map((role) => role.toString())
 
 export const mapStringToRoles = (roles: string[]): Role[] =>
-  roles.map((role) => Role[role]);
+  roles.map((role) => Role[role])
 
-export default Role;
+export default Role

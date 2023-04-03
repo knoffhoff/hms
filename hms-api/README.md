@@ -26,7 +26,8 @@ the [Serverless](https://www.serverless.com/framework/docs) framework.
 ### Running Locally
 
 When running on the HMS API locally for development and testing purposes, the AWS resources are mocked
-using the Plugins: [Serverless Offline](https://www.serverless.com/plugins/serverless-offline/) and [Serverless DynamoDB Local](https://www.serverless.com/plugins/serverless-dynamodb-local). This allows for
+using the Plugins: [Serverless Offline](https://www.serverless.com/plugins/serverless-offline/)
+and [Serverless DynamoDB Local](https://www.serverless.com/plugins/serverless-dynamodb-local). This allows for
 developers to work and test in a local environment without occurring any additional costs.
 
 ## Application Structure
@@ -58,6 +59,7 @@ Node.js packages. This can be accomplished by running the following from within 
 ```shell
 npm install
 ```
+
 followed by:
 
 ```shell
@@ -103,7 +105,6 @@ sls invoke local --function <function_name>
 
 To make HTTP requests to the HMS API while using a Jetbrains IDE you can make use of the `xxx.http` files in
 the [dev](dev) folder in this repository.
-
 
 ##### Mock Data
 

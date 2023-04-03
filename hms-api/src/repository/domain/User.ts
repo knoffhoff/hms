@@ -1,8 +1,8 @@
 /* eslint-disable require-jsdoc */
 
-import Uuid, {uuid} from '../../util/Uuid';
-import Role from './Role';
-import ValidationResult from '../../error/ValidationResult';
+import Uuid, { uuid } from '../../util/Uuid'
+import Role from './Role'
+import ValidationResult from '../../error/ValidationResult'
 
 /**
  * A User is a representation of a person within the HMS
@@ -17,21 +17,21 @@ export default class {
    *
    * Generated upon creation
    */
-  id: Uuid;
+  id: Uuid
 
   /**
    * The last name of the User
    *
    * May be null
    */
-  lastName?: string;
+  lastName?: string
 
   /**
    * The first name of the User
    *
    * Must have text (cannot be empty)
    */
-  firstName: string;
+  firstName: string
 
   /**
    * The email address of the User
@@ -40,21 +40,21 @@ export default class {
    *
    * TODO validate the email address
    */
-  emailAddress: string;
+  emailAddress: string
 
   /**
    * The roles which the User has
    *
    * Should have at least 1 value
    */
-  roles: Role[];
+  roles: Role[]
 
   /**
    * The skills which the User has
    *
    * May be empty
    */
-  skills: Uuid[];
+  skills: Uuid[]
 
   /**
    * An image depicting the user, or anything else of their choosing
@@ -63,38 +63,14 @@ export default class {
    *
    * TODO this could be a URL
    */
-  imageUrl?: string;
+  imageUrl?: string
 
   /**
    * The date on which the User was created
    *
    * Generated upon creation
    */
-  creationDate: Date;
-
-  validate(): ValidationResult {
-    const result = new ValidationResult();
-    if (!this.id) {
-      result.addFailure('id is null or empty');
-    }
-
-    if (!this.firstName) {
-      result.addFailure('firstName is null or empty');
-    }
-
-    if (!this.emailAddress) {
-      result.addFailure('emailAddress is null or empty');
-    }
-
-    if (!this.roles || this.roles.length === 0) {
-      result.addFailure('roles is null or empty');
-    }
-
-    if (!this.skills) {
-      result.addFailure('skills is null');
-    }
-    return result;
-  }
+  creationDate: Date
 
   constructor(
     lastName: string,
@@ -104,6 +80,7 @@ export default class {
     skills: Uuid[],
     imageUrl: string,
   );
+
   constructor(
     lastName: string,
     firstName: string,
@@ -125,13 +102,37 @@ export default class {
     id: Uuid = uuid(),
     creationDate: Date = new Date(),
   ) {
-    this.lastName = lastName;
-    this.firstName = firstName;
-    this.emailAddress = emailAddress;
-    this.roles = roles;
-    this.skills = skills;
-    this.imageUrl = imageUrl;
-    this.id = id;
-    this.creationDate = creationDate;
+    this.lastName = lastName
+    this.firstName = firstName
+    this.emailAddress = emailAddress
+    this.roles = roles
+    this.skills = skills
+    this.imageUrl = imageUrl
+    this.id = id
+    this.creationDate = creationDate
+  }
+
+  validate(): ValidationResult {
+    const result = new ValidationResult()
+    if (!this.id) {
+      result.addFailure('id is null or empty')
+    }
+
+    if (!this.firstName) {
+      result.addFailure('firstName is null or empty')
+    }
+
+    if (!this.emailAddress) {
+      result.addFailure('emailAddress is null or empty')
+    }
+
+    if (!this.roles || this.roles.length === 0) {
+      result.addFailure('roles is null or empty')
+    }
+
+    if (!this.skills) {
+      result.addFailure('skills is null')
+    }
+    return result
   }
 }

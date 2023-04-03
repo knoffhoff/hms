@@ -1,12 +1,12 @@
 import { Idea } from '../common/types'
 import {
-  Modal,
   Button,
-  Title,
-  Text,
-  Stack,
   Center,
   Collapse,
+  Modal,
+  Stack,
+  Text,
+  Title,
 } from '@mantine/core'
 import { createContext, useEffect, useState } from 'react'
 import VideoDropzone from './VideoDropzone'

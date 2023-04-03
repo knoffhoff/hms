@@ -1,6 +1,6 @@
-import {v4 as uuid} from 'uuid';
+import { v4 as uuid } from 'uuid'
 
 type Uuid = string;
 
-export default Uuid;
-export {uuid};
+export default Uuid
+export { uuid }

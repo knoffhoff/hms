@@ -1,23 +1,9 @@
-import {
-  CategoryPreview,
-  HackathonDropdownMode,
-  Idea,
-  SkillPreview,
-} from '../common/types'
-import {
-  Button,
-  Card,
-  Checkbox,
-  Modal,
-  Radio,
-  Text,
-  Title,
-} from '@mantine/core'
+import { CategoryPreview, HackathonDropdownMode, Idea } from '../common/types'
+import { Button, Card, Modal, Radio, Text, Title } from '@mantine/core'
 import React, { useEffect, useState } from 'react'
 import HackathonSelectDropdown from './HackathonSelectDropdown'
 import { ArrowDown, Check, X } from 'tabler-icons-react'
 import { useMsal } from '@azure/msal-react'
-import { getListOfSkills } from '../actions/SkillActions'
 import { getListOfCategories } from '../actions/CategoryActions'
 import { styles } from '../common/styles'
 import { showNotification, updateNotification } from '@mantine/notifications'

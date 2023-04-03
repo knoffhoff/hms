@@ -1,4 +1,4 @@
-import { Textarea, Group, Button, Card, Checkbox } from '@mantine/core'
+import { Button, Card, Checkbox, Group, Textarea } from '@mantine/core'
 import React, { useEffect, useState } from 'react'
 import { showNotification, updateNotification } from '@mantine/notifications'
 import { editUser, getUserDetails } from '../../actions/UserActions'

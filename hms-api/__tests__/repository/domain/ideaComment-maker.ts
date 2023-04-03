@@ -1,5 +1,5 @@
-import Uuid, {uuid} from '../../../src/util/Uuid';
-import IdeaComment from '../../../src/repository/domain/IdeaComment';
+import Uuid, { uuid } from '../../../src/util/Uuid'
+import IdeaComment from '../../../src/repository/domain/IdeaComment'
 
 export interface IdeaCommentData {
   id: Uuid;
@@ -18,7 +18,7 @@ export const makeIdeaComment = ({
   parentIdeaCommentId = uuid(),
   creationDate = new Date(),
 }: IdeaCommentData): IdeaComment =>
-  new IdeaComment(id, userId, ideaId, text, parentIdeaCommentId, creationDate);
+  new IdeaComment(id, userId, ideaId, text, parentIdeaCommentId, creationDate)
 
 export const randomIdeaComment = (): IdeaComment =>
-  makeIdeaComment({} as IdeaCommentData);
+  makeIdeaComment({} as IdeaCommentData)

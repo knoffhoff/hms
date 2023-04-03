@@ -1,5 +1,5 @@
-import Uuid, {uuid} from '../../../src/util/Uuid';
-import Skill from '../../../src/repository/domain/Skill';
+import Uuid, { uuid } from '../../../src/util/Uuid'
+import Skill from '../../../src/repository/domain/Skill'
 
 export interface SkillData {
   id: Uuid;
@@ -8,10 +8,10 @@ export interface SkillData {
 }
 
 export const makeSkill = (
-    {
-      id = uuid(),
-      name = 'Testing',
-      description = 'Just being wicked good at testing',
-    }: SkillData): Skill => new Skill(name, description, id);
+  {
+    id = uuid(),
+    name = 'Testing',
+    description = 'Just being wicked good at testing',
+  }: SkillData): Skill => new Skill(name, description, id)
 
-export const randomSkill = (): Skill => makeSkill({} as SkillData);
+export const randomSkill = (): Skill => makeSkill({} as SkillData)

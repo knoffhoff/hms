@@ -8,7 +8,7 @@ import {
 import CategoryForm from '../input-forms/CategoryForm'
 import { styles } from '../../common/styles'
 import { useMsal } from '@azure/msal-react'
-import { JOIN_BUTTON_COLOR, DELETE_BUTTON_COLOR } from '../../common/colors'
+import { DELETE_BUTTON_COLOR, JOIN_BUTTON_COLOR } from '../../common/colors'
 
 type IProps = {
   categoryId: string

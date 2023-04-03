@@ -1,7 +1,7 @@
 /* eslint-disable require-jsdoc */
 
-import Uuid, {uuid} from '../../util/Uuid';
-import ValidationResult from '../../error/ValidationResult';
+import Uuid, { uuid } from '../../util/Uuid'
+import ValidationResult from '../../error/ValidationResult'
 
 /**
  * A Hackathon is collection of Participants, Categories, and Ideas.
@@ -21,91 +21,56 @@ class Hackathon {
    *
    * Generated upon creation
    */
-  id: Uuid;
+  id: Uuid
 
   /**
    * The title of the Hackathon
    *
    * Must have text (cannot be empty)
    */
-  title: string;
+  title: string
 
   /**
    * The description of the Hackathon
    *
    * May be empty
    */
-  description: string;
+  description: string
 
   /**
    * The slug of the Hackathon
    *
    * must have text and be unique
    */
-  slug: string;
+  slug: string
 
   /**
    * The start Date of the Hackathon
    *
    * Must be before than the endDate
    */
-  startDate: Date;
+  startDate: Date
 
   /**
    * The end Date of the Hackathon
    *
    * Must be after the startDate
    */
-  endDate: Date;
+  endDate: Date
 
   /**
    * The Date on which the Hackathon was created
    *
    * Generated upon creation
    */
-  creationDate: Date;
+  creationDate: Date
 
   /**
    * Boolean that indicates if Voting is allowed or not
    *
    * Manually set on Admin Page
    */
-  votingOpened: boolean;
-
-  validate(): ValidationResult {
-    const result = new ValidationResult();
-    if (!this.id) {
-      result.addFailure('id is null or empty');
-    }
-
-    if (!this.title) {
-      result.addFailure('title is null or empty');
-    }
-
-    if (this.description === null || this.description === undefined) {
-      result.addFailure('description is null');
-    }
-
-    if (!this.slug) {
-      result.addFailure('slug is null or empty');
-    }
-
-    if (!this.startDate) {
-      result.addFailure('startDate is null');
-    }
-
-    if (!this.endDate) {
-      result.addFailure('endDate is null');
-    }
-
-    if (this.startDate >= this.endDate) {
-      result.addFailure(
-        `startDate (${this.startDate}) is after endDate (${this.endDate})`,
-      );
-    }
-
-    return result;
-  }
+  votingOpened: boolean
 
   constructor(
     title: string,
@@ -114,6 +79,7 @@ class Hackathon {
     startDate: Date,
     endDate: Date,
   );
+
   constructor(
     title: string,
     description: string,
@@ -135,15 +101,50 @@ class Hackathon {
     creationDate: Date = new Date(),
     votingOpened: boolean = false,
   ) {
-    this.title = title;
-    this.description = description;
-    this.slug = slug;
-    this.startDate = startDate;
-    this.endDate = endDate;
-    this.id = id;
-    this.creationDate = creationDate;
-    this.votingOpened = votingOpened;
+    this.title = title
+    this.description = description
+    this.slug = slug
+    this.startDate = startDate
+    this.endDate = endDate
+    this.id = id
+    this.creationDate = creationDate
+    this.votingOpened = votingOpened
+  }
+
+  validate(): ValidationResult {
+    const result = new ValidationResult()
+    if (!this.id) {
+      result.addFailure('id is null or empty')
+    }
+
+    if (!this.title) {
+      result.addFailure('title is null or empty')
+    }
+
+    if (this.description === null || this.description === undefined) {
+      result.addFailure('description is null')
+    }
+
+    if (!this.slug) {
+      result.addFailure('slug is null or empty')
+    }
+
+    if (!this.startDate) {
+      result.addFailure('startDate is null')
+    }
+
+    if (!this.endDate) {
+      result.addFailure('endDate is null')
+    }
+
+    if (this.startDate >= this.endDate) {
+      result.addFailure(
+        `startDate (${this.startDate}) is after endDate (${this.endDate})`,
+      )
+    }
+
+    return result
   }
 }
 
-export default Hackathon;
+export default Hackathon

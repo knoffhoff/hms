@@ -7,7 +7,7 @@ import {
 } from '../common/types'
 import IdeaCardList from '../components/lists/IdeaCardList'
 import React, { useContext, useEffect, useState } from 'react'
-import { Modal, Button, Group, Title, Checkbox, Center } from '@mantine/core'
+import { Button, Center, Checkbox, Group, Modal, Title } from '@mantine/core'
 import { getIdeaDetails, getIdeaList } from '../actions/IdeaActions'
 import { useMsal } from '@azure/msal-react'
 import { UserContext } from './Layout'

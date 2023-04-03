@@ -1,9 +1,9 @@
-import Uuid from '../../util/Uuid';
+import Uuid from '../../util/Uuid'
 
 export default class {
-  id: Uuid;
+  id: Uuid
 
   constructor(id: Uuid) {
-    this.id = id;
+    this.id = id
   }
 }

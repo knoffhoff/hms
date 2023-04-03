@@ -1,5 +1,5 @@
 import { Dropzone, MIME_TYPES } from '@mantine/dropzone'
-import { Group, Text, useMantineTheme, Center } from '@mantine/core'
+import { Group, Text, useMantineTheme } from '@mantine/core'
 import { Movie, Upload, X } from 'tabler-icons-react'
 import React, { useContext } from 'react'
 import { showNotification } from '@mantine/notifications'

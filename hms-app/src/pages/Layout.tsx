@@ -1,10 +1,10 @@
 import { Outlet } from 'react-router-dom'
 import {
   AppShell,
+  ColorScheme,
+  ColorSchemeProvider,
   Container,
   MantineProvider,
-  ColorSchemeProvider,
-  ColorScheme,
 } from '@mantine/core'
 import HeaderMenu from '../components/HeaderMenu'
 import { useLocalStorage } from '../common/localStorage'
@@ -14,7 +14,7 @@ import {
   setHackathonList,
   setNextHackathon,
 } from '../common/redux/hackathonSlice'
-import React, { useEffect, useState, createContext } from 'react'
+import React, { createContext, useEffect, useState } from 'react'
 import { getListOfHackathons } from '../actions/HackathonActions'
 import {
   createUser,
@@ -28,7 +28,6 @@ import { getProfile } from '../common/actionAuth'
 import {
   ActiveDirectoryUser,
   HackathonPreview,
-  User,
   UserPreview,
 } from '../common/types'
 import { setUserState, UserSerializable } from '../common/redux/userSlice'

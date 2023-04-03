@@ -1,5 +1,5 @@
-import Uuid, {uuid} from '../../../src/util/Uuid';
-import Category from '../../../src/repository/domain/Category';
+import Uuid, { uuid } from '../../../src/util/Uuid'
+import Category from '../../../src/repository/domain/Category'
 
 export interface CategoryData {
   id: Uuid;
@@ -9,17 +9,17 @@ export interface CategoryData {
 }
 
 export const makeCategory = (
-    {
-      id = uuid(),
-      title = 'Fancy Hats',
-      description = 'Anything you wanna build so long as it is a fancy hat',
-      hackathonId = uuid(),
-    }: CategoryData): Category => new Category(
-    title,
-    description,
-    hackathonId,
-    id,
-);
+  {
+    id = uuid(),
+    title = 'Fancy Hats',
+    description = 'Anything you wanna build so long as it is a fancy hat',
+    hackathonId = uuid(),
+  }: CategoryData): Category => new Category(
+  title,
+  description,
+  hackathonId,
+  id,
+)
 
 export const randomCategory = ()
-    : Category => makeCategory({} as CategoryData);
+  : Category => makeCategory({} as CategoryData)

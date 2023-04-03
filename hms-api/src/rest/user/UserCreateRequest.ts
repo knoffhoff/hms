@@ -1,13 +1,13 @@
 /* eslint-disable require-jsdoc */
 
-import Uuid from '../../util/Uuid';
+import Uuid from '../../util/Uuid'
 
 class UserCreateRequest {
-  lastName?: string;
-  firstName: string;
-  emailAddress: string;
-  skills: Uuid[];
-  imageUrl?: string;
+  lastName?: string
+  firstName: string
+  emailAddress: string
+  skills: Uuid[]
+  imageUrl?: string
 
   constructor(
     lastName: string,
@@ -16,23 +16,23 @@ class UserCreateRequest {
     skills: Uuid[],
     imageUrl: string,
   ) {
-    this.lastName = lastName;
-    this.firstName = firstName;
-    this.emailAddress = emailAddress;
-    this.skills = skills;
-    this.imageUrl = imageUrl;
+    this.lastName = lastName
+    this.firstName = firstName
+    this.emailAddress = emailAddress
+    this.skills = skills
+    this.imageUrl = imageUrl
   }
 
   static parse(body: string): UserCreateRequest {
-    const json = JSON.parse(body);
+    const json = JSON.parse(body)
     return new UserCreateRequest(
       json.lastName,
       json.firstName,
       json.emailAddress,
       json.skills,
       json.imageUrl,
-    );
+    )
   }
 }
 
-export default UserCreateRequest;
+export default UserCreateRequest

@@ -1,4 +1,4 @@
-import { Accordion, Group, Text, Title, Alert, Center } from '@mantine/core'
+import { Accordion, Alert, Center, Group, Text, Title } from '@mantine/core'
 import {
   Hackathon,
   HackathonDropdownMode,
@@ -7,13 +7,13 @@ import {
   IdeaFormType,
 } from '../common/types'
 import IdeaCardList from '../components/lists/IdeaCardList'
-import React, { useEffect, useState, useContext } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import IdeaForm from '../components/input-forms/IdeaForm'
 import { styles } from '../common/styles'
 import HackathonSelectDropdown from '../components/HackathonSelectDropdown'
 import { NULL_DATE } from '../common/constants'
 import HackathonHeader from '../components/HackathonHeader'
-import { ArrowUp, AlertCircle } from 'tabler-icons-react'
+import { AlertCircle, ArrowUp } from 'tabler-icons-react'
 import { UserContext } from './Layout'
 import { getIdeaDetails } from '../actions/IdeaActions'
 import { useMsal } from '@azure/msal-react'

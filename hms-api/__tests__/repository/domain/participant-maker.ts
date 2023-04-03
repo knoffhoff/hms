@@ -1,5 +1,5 @@
-import Uuid, {uuid} from '../../../src/util/Uuid';
-import Participant from '../../../src/repository/domain/Participant';
+import Uuid, { uuid } from '../../../src/util/Uuid'
+import Participant from '../../../src/repository/domain/Participant'
 
 export interface ParticipantData {
   id: Uuid;
@@ -9,17 +9,17 @@ export interface ParticipantData {
 }
 
 export const makeParticipant = (
-    {
-      id = uuid(),
-      userId = uuid(),
-      hackathonId = uuid(),
-      creationDate = new Date(),
-    }: ParticipantData): Participant => new Participant(
-    userId,
-    hackathonId,
-    id,
-    creationDate,
-);
+  {
+    id = uuid(),
+    userId = uuid(),
+    hackathonId = uuid(),
+    creationDate = new Date(),
+  }: ParticipantData): Participant => new Participant(
+  userId,
+  hackathonId,
+  id,
+  creationDate,
+)
 
 export const randomParticipant = ()
-    : Participant => makeParticipant({} as ParticipantData);
+  : Participant => makeParticipant({} as ParticipantData)

@@ -1,37 +1,37 @@
-import {randomIdea} from '../../repository/domain/idea-maker';
-import {listAllIdeas, listHackathonIdeas} from '../../../src/handler/idea/list';
-import Uuid, {uuid} from '../../../src/util/Uuid';
-import NotFoundError from '../../../src/error/NotFoundError';
-import IdeaListResponse from '../../../src/rest/idea/IdeaListResponse';
-import * as ideaService from '../../../src/service/idea-service';
-import IdeaListAllResponse from '../../../src/rest/idea/IdeaListAllResponse';
+import { randomIdea } from '../../repository/domain/idea-maker'
+import { listAllIdeas, listHackathonIdeas } from '../../../src/handler/idea/list'
+import Uuid, { uuid } from '../../../src/util/Uuid'
+import NotFoundError from '../../../src/error/NotFoundError'
+import IdeaListResponse from '../../../src/rest/idea/IdeaListResponse'
+import * as ideaService from '../../../src/service/idea-service'
+import IdeaListAllResponse from '../../../src/rest/idea/IdeaListAllResponse'
 
 const mockGetIdeaListResponse = jest
   .spyOn(ideaService, 'getIdeasForHackathonListResponse')
-  .mockImplementation();
+  .mockImplementation()
 
 const mockGetAllIdeasResponse = jest
   .spyOn(ideaService, 'getAllIdeasResponse')
-  .mockImplementation();
+  .mockImplementation()
 
 describe('List Hackathon Ideas', () => {
   test('Happy Path', async () => {
-    const hackathonId = uuid();
-    const idea1 = randomIdea();
-    const idea2 = randomIdea();
-    const idea3 = randomIdea();
-    const idea4 = randomIdea();
+    const hackathonId = uuid()
+    const idea1 = randomIdea()
+    const idea2 = randomIdea()
+    const idea3 = randomIdea()
+    const idea4 = randomIdea()
     const expected = IdeaListResponse.from(
       [idea1, idea2, idea3, idea4],
       hackathonId,
-    );
-    const callback = jest.fn();
+    )
+    const callback = jest.fn()
 
-    mockGetIdeaListResponse.mockResolvedValueOnce(expected);
+    mockGetIdeaListResponse.mockResolvedValueOnce(expected)
 
-    await listHackathonIdeas(toEvent(hackathonId), null, callback);
+    await listHackathonIdeas(toEvent(hackathonId), null, callback)
 
-    expect(mockGetIdeaListResponse).toHaveBeenCalled();
+    expect(mockGetIdeaListResponse).toHaveBeenCalled()
     expect(callback).toHaveBeenCalledWith(null, {
       statusCode: 200,
       headers: {
@@ -40,18 +40,18 @@ describe('List Hackathon Ideas', () => {
         'content-type': 'application/json',
       },
       body: JSON.stringify(expected),
-    });
-  });
+    })
+  })
 
   test('Throws NotFoundError', async () => {
-    const errorMessage = 'reference error message';
-    const callback = jest.fn();
+    const errorMessage = 'reference error message'
+    const callback = jest.fn()
 
     mockGetIdeaListResponse.mockImplementation(() => {
-      throw new NotFoundError(errorMessage);
-    });
+      throw new NotFoundError(errorMessage)
+    })
 
-    await listHackathonIdeas(toEvent(uuid()), null, callback);
+    await listHackathonIdeas(toEvent(uuid()), null, callback)
 
     expect(callback).toHaveBeenCalledWith(null, {
       statusCode: 404,
@@ -60,19 +60,19 @@ describe('List Hackathon Ideas', () => {
         'Access-Control-Allow-Credentials': true,
         'content-type': 'application/json',
       },
-      body: JSON.stringify({errorMessage: errorMessage}),
-    });
-  });
+      body: JSON.stringify({ errorMessage: errorMessage }),
+    })
+  })
 
   test('Throws Error', async () => {
-    const errorMessage = 'generic error message';
-    const callback = jest.fn();
+    const errorMessage = 'generic error message'
+    const callback = jest.fn()
 
     mockGetIdeaListResponse.mockImplementation(() => {
-      throw new Error(errorMessage);
-    });
+      throw new Error(errorMessage)
+    })
 
-    await listHackathonIdeas(toEvent(uuid()), null, callback);
+    await listHackathonIdeas(toEvent(uuid()), null, callback)
 
     expect(callback).toHaveBeenCalledWith(null, {
       statusCode: 500,
@@ -81,25 +81,25 @@ describe('List Hackathon Ideas', () => {
         'Access-Control-Allow-Credentials': true,
         'content-type': 'application/json',
       },
-      body: JSON.stringify({errorMessage: errorMessage}),
-    });
-  });
-});
+      body: JSON.stringify({ errorMessage: errorMessage }),
+    })
+  })
+})
 
 describe('List All Ideas', () => {
   test('Happy Path', async () => {
-    const idea1 = randomIdea();
-    const idea2 = randomIdea();
-    const idea3 = randomIdea();
-    const idea4 = randomIdea();
-    const expected = IdeaListAllResponse.from([idea1, idea2, idea3, idea4]);
-    const callback = jest.fn();
+    const idea1 = randomIdea()
+    const idea2 = randomIdea()
+    const idea3 = randomIdea()
+    const idea4 = randomIdea()
+    const expected = IdeaListAllResponse.from([idea1, idea2, idea3, idea4])
+    const callback = jest.fn()
 
-    mockGetAllIdeasResponse.mockResolvedValueOnce(expected);
+    mockGetAllIdeasResponse.mockResolvedValueOnce(expected)
 
-    await listAllIdeas(toEvent(null), null, callback);
+    await listAllIdeas(toEvent(null), null, callback)
 
-    expect(mockGetAllIdeasResponse).toHaveBeenCalled();
+    expect(mockGetAllIdeasResponse).toHaveBeenCalled()
     expect(callback).toHaveBeenCalledWith(null, {
       statusCode: 200,
       headers: {
@@ -108,18 +108,18 @@ describe('List All Ideas', () => {
         'content-type': 'application/json',
       },
       body: JSON.stringify(expected),
-    });
-  });
+    })
+  })
 
   test('Throws Error', async () => {
-    const errorMessage = 'generic error message';
-    const callback = jest.fn();
+    const errorMessage = 'generic error message'
+    const callback = jest.fn()
 
     mockGetAllIdeasResponse.mockImplementation(() => {
-      throw new Error(errorMessage);
-    });
+      throw new Error(errorMessage)
+    })
 
-    await listAllIdeas(toEvent(null), null, callback);
+    await listAllIdeas(toEvent(null), null, callback)
 
     expect(callback).toHaveBeenCalledWith(null, {
       statusCode: 500,
@@ -128,13 +128,13 @@ describe('List All Ideas', () => {
         'Access-Control-Allow-Credentials': true,
         'content-type': 'application/json',
       },
-      body: JSON.stringify({errorMessage: errorMessage}),
-    });
-  });
-});
+      body: JSON.stringify({ errorMessage: errorMessage }),
+    })
+  })
+})
 
 const toEvent = (id: Uuid): object => ({
   pathParameters: {
     id: id,
   },
-});
+})

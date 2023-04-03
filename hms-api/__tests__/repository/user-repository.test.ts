@@ -7,7 +7,7 @@ import {
   mockSend,
   userByEmailAddress,
   userTable,
-} from './dynamo-db-mock';
+} from './dynamo-db-mock'
 import {
   deleteUser,
   getUser,
@@ -16,259 +16,259 @@ import {
   putUser,
   userExists,
   userExistsByEmail,
-} from '../../src/repository/user-repository';
-import Uuid, {uuid} from '../../src/util/Uuid';
-import NotFoundError from '../../src/error/NotFoundError';
-import {randomUser} from './domain/user-maker';
-import User from '../../src/repository/domain/User';
-import {AttributeValue} from '@aws-sdk/client-dynamodb';
-import {mapRolesToStrings} from '../../src/repository/domain/Role';
+} from '../../src/repository/user-repository'
+import Uuid, { uuid } from '../../src/util/Uuid'
+import NotFoundError from '../../src/error/NotFoundError'
+import { randomUser } from './domain/user-maker'
+import User from '../../src/repository/domain/User'
+import { AttributeValue } from '@aws-sdk/client-dynamodb'
+import { mapRolesToStrings } from '../../src/repository/domain/Role'
 
 describe('Get User', () => {
   test('User doesn\'t exist', async () => {
-    const id = uuid();
-    mockGetItem(null);
+    const id = uuid()
+    mockGetItem(null)
 
-    await expect(getUser(id)).rejects.toThrow(NotFoundError);
+    await expect(getUser(id)).rejects.toThrow(NotFoundError)
 
-    getExpected(id);
-  });
+    getExpected(id)
+  })
 
   test('User exists', async () => {
-    const expected = randomUser();
-    mockGetItem(itemFromUser(expected));
+    const expected = randomUser()
+    mockGetItem(itemFromUser(expected))
 
-    expect(await getUser(expected.id)).toStrictEqual(expected);
+    expect(await getUser(expected.id)).toStrictEqual(expected)
 
-    getExpected(expected.id);
-  });
-});
+    getExpected(expected.id)
+  })
+})
 
 describe('Put User', () => {
   test('Happy Path', async () => {
-    mockPutItem();
-    const expected = randomUser();
+    mockPutItem()
+    const expected = randomUser()
 
-    await putUser(expected);
+    await putUser(expected)
 
     expect(mockSend).toHaveBeenCalledWith(
-        expect.objectContaining({
-          input: expect.objectContaining({
-            TableName: userTable,
-            Item: itemFromUser(expected),
-          }),
-        }));
-  });
-});
+      expect.objectContaining({
+        input: expect.objectContaining({
+          TableName: userTable,
+          Item: itemFromUser(expected),
+        }),
+      }))
+  })
+})
 
 describe('Delete User', () => {
   test('Happy Path', async () => {
-    const expected = randomUser();
-    mockDeleteItem(itemFromUser(expected));
+    const expected = randomUser()
+    mockDeleteItem(itemFromUser(expected))
 
-    expect(await deleteUser(expected.id)).toStrictEqual(expected);
+    expect(await deleteUser(expected.id)).toStrictEqual(expected)
     expect(mockSend).toHaveBeenCalledWith(
-        expect.objectContaining({
-          input: expect.objectContaining({
-            TableName: userTable,
-            Key: {id: {S: expected.id}},
-            ReturnValues: 'ALL_OLD',
-          }),
+      expect.objectContaining({
+        input: expect.objectContaining({
+          TableName: userTable,
+          Key: { id: { S: expected.id } },
+          ReturnValues: 'ALL_OLD',
         }),
-    );
-  });
+      }),
+    )
+  })
 
   test('User not found', async () => {
-    const id = uuid();
-    mockDeleteItem(null);
+    const id = uuid()
+    mockDeleteItem(null)
 
     await expect(deleteUser(id))
-        .rejects
-        .toThrow(NotFoundError);
+      .rejects
+      .toThrow(NotFoundError)
     expect(mockSend).toHaveBeenCalledWith(
-        expect.objectContaining({
-          input: expect.objectContaining({
-            TableName: userTable,
-            Key: {id: {S: id}},
-            ReturnValues: 'ALL_OLD',
-          }),
+      expect.objectContaining({
+        input: expect.objectContaining({
+          TableName: userTable,
+          Key: { id: { S: id } },
+          ReturnValues: 'ALL_OLD',
         }),
-    );
-  });
-});
+      }),
+    )
+  })
+})
 
 describe('Get Users', () => {
   test('All users missing', async () => {
-    mockGetItemOnce(null);
-    mockGetItemOnce(null);
-    const id1 = uuid();
+    mockGetItemOnce(null)
+    mockGetItemOnce(null)
+    const id1 = uuid()
     await expect(getUsers([id1, uuid()]))
-        .rejects
-        .toThrow(NotFoundError);
+      .rejects
+      .toThrow(NotFoundError)
 
-    getExpected(id1);
-  });
+    getExpected(id1)
+  })
 
   test('1 user missing', async () => {
-    const user1 = randomUser();
-    mockGetItemOnce(itemFromUser(user1));
-    mockGetItemOnce(null);
-    const id2 = uuid();
+    const user1 = randomUser()
+    mockGetItemOnce(itemFromUser(user1))
+    mockGetItemOnce(null)
+    const id2 = uuid()
     await expect(getUsers([user1.id, id2]))
-        .rejects
-        .toThrow(NotFoundError);
+      .rejects
+      .toThrow(NotFoundError)
 
-    getExpected(user1.id);
-    getExpected(id2);
-  });
+    getExpected(user1.id)
+    getExpected(id2)
+  })
 
   test('0 users missing', async () => {
-    const user1 = randomUser();
-    mockGetItemOnce(itemFromUser(user1));
-    const user2 = randomUser();
-    mockGetItemOnce(itemFromUser(user2));
+    const user1 = randomUser()
+    mockGetItemOnce(itemFromUser(user1))
+    const user2 = randomUser()
+    mockGetItemOnce(itemFromUser(user2))
     expect(await getUsers([user1.id, user2.id]))
-        .toStrictEqual([user1, user2]);
+      .toStrictEqual([user1, user2])
 
-    getExpected(user1.id);
-    getExpected(user2.id);
-  });
-});
+    getExpected(user1.id)
+    getExpected(user2.id)
+  })
+})
 
 describe('List Users', () => {
   test('Query returns null', async () => {
-    mockQuery(null);
+    mockQuery(null)
 
-    await expect(listUsers()).rejects.toThrow(NotFoundError);
+    await expect(listUsers()).rejects.toThrow(NotFoundError)
 
-    listExpected();
-  });
+    listExpected()
+  })
 
   test('0 Users exist', async () => {
-    mockQuery([]);
+    mockQuery([])
 
-    expect(await listUsers()).toStrictEqual([]);
+    expect(await listUsers()).toStrictEqual([])
 
-    listExpected();
-  });
+    listExpected()
+  })
 
   test('1 User exists', async () => {
-    const user = randomUser();
-    mockQuery([itemFromUser(user)]);
+    const user = randomUser()
+    mockQuery([itemFromUser(user)])
 
-    expect(await listUsers()).toStrictEqual([user]);
+    expect(await listUsers()).toStrictEqual([user])
 
-    listExpected();
-  });
+    listExpected()
+  })
 
   test('2 Users exist', async () => {
-    const user1 = randomUser();
-    const user2 = randomUser();
+    const user1 = randomUser()
+    const user2 = randomUser()
     mockQuery([
       itemFromUser(user1),
       itemFromUser(user2),
-    ]);
+    ])
 
-    expect(await listUsers()).toStrictEqual([user1, user2]);
+    expect(await listUsers()).toStrictEqual([user1, user2])
 
-    listExpected();
-  });
-});
+    listExpected()
+  })
+})
 
 describe('User Exists', () => {
   test('Item is non-null', async () => {
-    mockGetItem({});
+    mockGetItem({})
 
-    const id = uuid();
-    expect(await userExists(id)).toBe(true);
+    const id = uuid()
+    expect(await userExists(id)).toBe(true)
 
-    getExpected(id);
-  });
+    getExpected(id)
+  })
 
   test('Item is null', async () => {
-    mockGetItem(null);
+    mockGetItem(null)
 
-    const id = uuid();
-    expect(await userExists(id)).toBe(false);
+    const id = uuid()
+    expect(await userExists(id)).toBe(false)
 
-    getExpected(id);
-  });
-});
+    getExpected(id)
+  })
+})
 
 describe('User Exists By Email', () => {
   test('Happy Path', async () => {
-    const user = randomUser();
-    mockQuery([itemFromUser(user)]);
+    const user = randomUser()
+    mockQuery([itemFromUser(user)])
 
-    expect(await userExistsByEmail(user.emailAddress)).toStrictEqual({id: user.id, exists: true});
+    expect(await userExistsByEmail(user.emailAddress)).toStrictEqual({ id: user.id, exists: true })
 
-    queryEmailAddressIndexExpected(user.emailAddress);
-  });
+    queryEmailAddressIndexExpected(user.emailAddress)
+  })
 
   // TODO this hopefully never happens...
   test('Multiple items returned', async () => {
-    const user = randomUser();
-    mockQuery([itemFromUser(user), itemFromUser(randomUser())]);
+    const user = randomUser()
+    mockQuery([itemFromUser(user), itemFromUser(randomUser())])
 
-    expect(await userExistsByEmail(user.emailAddress)).toStrictEqual({id: user.id, exists: true});
+    expect(await userExistsByEmail(user.emailAddress)).toStrictEqual({ id: user.id, exists: true })
 
-    queryEmailAddressIndexExpected(user.emailAddress);
-  });
+    queryEmailAddressIndexExpected(user.emailAddress)
+  })
 
   test('Items is empty array', async () => {
-    mockQuery([]);
+    mockQuery([])
 
-    const email = 'e.m@i.l';
-    expect(await userExistsByEmail(email)).toStrictEqual({id: undefined, exists: false});
+    const email = 'e.m@i.l'
+    expect(await userExistsByEmail(email)).toStrictEqual({ id: undefined, exists: false })
 
-    queryEmailAddressIndexExpected(email);
-  });
+    queryEmailAddressIndexExpected(email)
+  })
 
   test('Items is null', async () => {
-    mockQuery(null);
+    mockQuery(null)
 
-    const email = 'e.m@i.l';
-    expect(await userExistsByEmail(email)).toStrictEqual({id: undefined, exists: false});
+    const email = 'e.m@i.l'
+    expect(await userExistsByEmail(email)).toStrictEqual({ id: undefined, exists: false })
 
-    queryEmailAddressIndexExpected(email);
-  });
-});
+    queryEmailAddressIndexExpected(email)
+  })
+})
 
 const itemFromUser = (user: User): { [key: string]: AttributeValue } => ({
-  lastName: {S: user.lastName},
-  firstName: {S: user.firstName},
-  emailAddress: {S: user.emailAddress},
-  roles: {SS: mapRolesToStrings(user.roles)},
-  skills: {SS: user.skills},
-  imageUrl: {S: user.imageUrl},
-  id: {S: user.id},
-  creationDate: {S: user.creationDate.toISOString()},
-});
+  lastName: { S: user.lastName },
+  firstName: { S: user.firstName },
+  emailAddress: { S: user.emailAddress },
+  roles: { SS: mapRolesToStrings(user.roles) },
+  skills: { SS: user.skills },
+  imageUrl: { S: user.imageUrl },
+  id: { S: user.id },
+  creationDate: { S: user.creationDate.toISOString() },
+})
 
 const getExpected = (id: Uuid) =>
   expect(mockSend).toHaveBeenCalledWith(
-      expect.objectContaining({
-        input: expect.objectContaining({
-          TableName: userTable,
-          Key: {id: {S: id}},
-        }),
-      }));
+    expect.objectContaining({
+      input: expect.objectContaining({
+        TableName: userTable,
+        Key: { id: { S: id } },
+      }),
+    }))
 
 const listExpected = () =>
   expect(mockSend).toHaveBeenCalledWith(
-      expect.objectContaining({
-        input: expect.objectContaining({
-          TableName: userTable,
-        }),
-      }));
+    expect.objectContaining({
+      input: expect.objectContaining({
+        TableName: userTable,
+      }),
+    }))
 
 const queryEmailAddressIndexExpected = (emailAddress: string) =>
   expect(mockSend).toHaveBeenCalledWith(
-      expect.objectContaining({
-        input: expect.objectContaining({
-          TableName: userTable,
-          IndexName: userByEmailAddress,
-          KeyConditionExpression: 'emailAddress = :ea',
-          ExpressionAttributeValues: {':ea': {'S': emailAddress}},
-        }),
-      }));
+    expect.objectContaining({
+      input: expect.objectContaining({
+        TableName: userTable,
+        IndexName: userByEmailAddress,
+        KeyConditionExpression: 'emailAddress = :ea',
+        ExpressionAttributeValues: { ':ea': { 'S': emailAddress } },
+      }),
+    }))

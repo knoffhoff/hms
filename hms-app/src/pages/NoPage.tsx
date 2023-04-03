@@ -1,11 +1,11 @@
 import React from 'react'
 import {
-  createStyles,
-  Title,
-  Text,
   Button,
   Container,
+  createStyles,
   Group,
+  Text,
+  Title,
 } from '@mantine/core'
 import { Link } from 'react-router-dom'
 

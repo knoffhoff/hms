@@ -1,4 +1,4 @@
-import { Badge, Container, Center, Title, Alert } from '@mantine/core'
+import { Alert, Badge, Center, Container, Title } from '@mantine/core'
 import React, { useEffect, useState } from 'react'
 import { Idea } from '../common/types'
 import { checkIfVideoExists } from '../actions/IdeaActions'

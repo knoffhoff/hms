@@ -1,28 +1,28 @@
-import {randomUser} from '../../repository/domain/user-maker';
-import {get} from '../../../src/handler/user/get';
-import NotFoundError from '../../../src/error/NotFoundError';
-import * as userService from '../../../src/service/user-service';
-import Uuid, {uuid} from '../../../src/util/Uuid';
-import UserResponse from '../../../src/rest/user/UserResponse';
-import {randomSkill} from '../../repository/domain/skill-maker';
-import ReferenceNotFoundError from '../../../src/error/ReferenceNotFoundError';
+import { randomUser } from '../../repository/domain/user-maker'
+import { get } from '../../../src/handler/user/get'
+import NotFoundError from '../../../src/error/NotFoundError'
+import * as userService from '../../../src/service/user-service'
+import Uuid, { uuid } from '../../../src/util/Uuid'
+import UserResponse from '../../../src/rest/user/UserResponse'
+import { randomSkill } from '../../repository/domain/skill-maker'
+import ReferenceNotFoundError from '../../../src/error/ReferenceNotFoundError'
 
 const mockGetUser = jest
   .spyOn(userService, 'getUserResponse')
-  .mockImplementation();
+  .mockImplementation()
 
 describe('Get User', () => {
   test('Happy Path', async () => {
-    const user = randomUser();
-    const expected = UserResponse.from(user, [randomSkill(), randomSkill()]);
-    const event = toEvent(user.id);
-    const callback = jest.fn();
+    const user = randomUser()
+    const expected = UserResponse.from(user, [randomSkill(), randomSkill()])
+    const event = toEvent(user.id)
+    const callback = jest.fn()
 
-    mockGetUser.mockResolvedValueOnce(expected);
+    mockGetUser.mockResolvedValueOnce(expected)
 
-    await get(event, null, callback);
+    await get(event, null, callback)
 
-    expect(mockGetUser).toHaveBeenCalledWith(user.id);
+    expect(mockGetUser).toHaveBeenCalledWith(user.id)
     expect(callback).toHaveBeenCalledWith(null, {
       statusCode: 200,
       headers: {
@@ -31,18 +31,18 @@ describe('Get User', () => {
         'content-type': 'application/json',
       },
       body: JSON.stringify(expected),
-    });
-  });
+    })
+  })
 
   test('Throws NotFoundError', async () => {
-    const errorMessage = 'reference error message';
-    const callback = jest.fn();
+    const errorMessage = 'reference error message'
+    const callback = jest.fn()
 
     mockGetUser.mockImplementation(() => {
-      throw new NotFoundError(errorMessage);
-    });
+      throw new NotFoundError(errorMessage)
+    })
 
-    await get(toEvent(uuid()), null, callback);
+    await get(toEvent(uuid()), null, callback)
 
     expect(callback).toHaveBeenCalledWith(null, {
       statusCode: 404,
@@ -51,19 +51,19 @@ describe('Get User', () => {
         'Access-Control-Allow-Credentials': true,
         'content-type': 'application/json',
       },
-      body: JSON.stringify({errorMessage: errorMessage}),
-    });
-  });
+      body: JSON.stringify({ errorMessage: errorMessage }),
+    })
+  })
 
   test('Throws ReferenceNotFoundError', async () => {
-    const errorMessage = 'reference error message';
-    const callback = jest.fn();
+    const errorMessage = 'reference error message'
+    const callback = jest.fn()
 
     mockGetUser.mockImplementation(() => {
-      throw new ReferenceNotFoundError(errorMessage);
-    });
+      throw new ReferenceNotFoundError(errorMessage)
+    })
 
-    await get(toEvent(uuid()), null, callback);
+    await get(toEvent(uuid()), null, callback)
 
     expect(callback).toHaveBeenCalledWith(null, {
       statusCode: 400,
@@ -72,19 +72,19 @@ describe('Get User', () => {
         'Access-Control-Allow-Credentials': true,
         'content-type': 'application/json',
       },
-      body: JSON.stringify({errorMessage: errorMessage}),
-    });
-  });
+      body: JSON.stringify({ errorMessage: errorMessage }),
+    })
+  })
 
   test('Throws Error', async () => {
-    const errorMessage = 'generic error message';
-    const callback = jest.fn();
+    const errorMessage = 'generic error message'
+    const callback = jest.fn()
 
     mockGetUser.mockImplementation(() => {
-      throw new Error(errorMessage);
-    });
+      throw new Error(errorMessage)
+    })
 
-    await get(toEvent(uuid()), null, callback);
+    await get(toEvent(uuid()), null, callback)
 
     expect(callback).toHaveBeenCalledWith(null, {
       statusCode: 500,
@@ -93,13 +93,13 @@ describe('Get User', () => {
         'Access-Control-Allow-Credentials': true,
         'content-type': 'application/json',
       },
-      body: JSON.stringify({errorMessage: errorMessage}),
-    });
-  });
-});
+      body: JSON.stringify({ errorMessage: errorMessage }),
+    })
+  })
+})
 
 const toEvent = (id: Uuid): object => ({
   pathParameters: {
     id: id,
   },
-});
+})

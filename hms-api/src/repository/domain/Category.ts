@@ -1,7 +1,7 @@
 /* eslint-disable require-jsdoc */
 
-import Uuid, {uuid} from '../../util/Uuid';
-import ValidationResult from '../../error/ValidationResult';
+import Uuid, { uuid } from '../../util/Uuid'
+import ValidationResult from '../../error/ValidationResult'
 
 /**
  * A Category is meant to group a number of Ideas for a Hackathon into a group
@@ -16,48 +16,29 @@ class Category {
    *
    * Generated upon creation
    */
-  id: Uuid;
+  id: Uuid
 
   /**
    * Title of the Category
    *
    * Must have text (cannot be empty)
    */
-  title: string;
+  title: string
 
   /**
    * The description of the Category
    *
    * May be empty
    */
-  description: string;
+  description: string
 
   /**
    * The ID of the Hackathon to which the Category belongs
    */
-  hackathonId: Uuid;
-
-  validate(): ValidationResult {
-    const result = new ValidationResult();
-    if (!this.id) {
-      result.addFailure('id is null or empty');
-    }
-
-    if (!this.title) {
-      result.addFailure('title is null or empty');
-    }
-
-    if (this.description === null || this.description === undefined) {
-      result.addFailure('description is null');
-    }
-
-    if (!this.hackathonId) {
-      result.addFailure('hackathonId is null or empty');
-    }
-    return result;
-  }
+  hackathonId: Uuid
 
   constructor(title: string, description: string, hackathonId: Uuid);
+
   constructor(title: string, description: string, hackathonId: Uuid, id: Uuid);
 
   constructor(
@@ -66,11 +47,31 @@ class Category {
     hackathonId: Uuid,
     id: Uuid = uuid(),
   ) {
-    this.id = id;
-    this.title = title;
-    this.description = description;
-    this.hackathonId = hackathonId;
+    this.id = id
+    this.title = title
+    this.description = description
+    this.hackathonId = hackathonId
+  }
+
+  validate(): ValidationResult {
+    const result = new ValidationResult()
+    if (!this.id) {
+      result.addFailure('id is null or empty')
+    }
+
+    if (!this.title) {
+      result.addFailure('title is null or empty')
+    }
+
+    if (this.description === null || this.description === undefined) {
+      result.addFailure('description is null')
+    }
+
+    if (!this.hackathonId) {
+      result.addFailure('hackathonId is null or empty')
+    }
+    return result
   }
 }
 
-export default Category;
+export default Category

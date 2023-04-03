@@ -21,19 +21,19 @@ custom:
       local:
         sources:
           - table: hackathon
-            rawsources: [./dev/init/hackathon-seed.json]
+            rawsources: [ ./dev/init/hackathon-seed.json ]
           - table: category
-            rawsources: [./dev/init/category-seed.json]
+            rawsources: [ ./dev/init/category-seed.json ]
           - table: idea
-            rawsources: [./dev/init/idea-seed.json]
+            rawsources: [ ./dev/init/idea-seed.json ]
           - table: participant
-            rawsources: [./dev/init/participant-seed.json]
+            rawsources: [ ./dev/init/participant-seed.json ]
           - table: user
-            rawsources: [./dev/init/user-seed.json]
+            rawsources: [ ./dev/init/user-seed.json ]
           - table: skill
-            rawsources: [./dev/init/skill-seed.json]
+            rawsources: [ ./dev/init/skill-seed.json ]
           - table: ideaComment
-            rawsources: [./dev/init/ideaComment-seed.json]
+            rawsources: [ ./dev/init/ideaComment-seed.json ]
 
 provider:
   name: aws
@@ -190,7 +190,7 @@ functions:
     handler: src/handler/idea/join.join
     events:
       - http:
-#           TODO this should be done using a userId from the token
+          #           TODO this should be done using a userId from the token
           path: idea/{id}/join/{participantId}
           method: put
           cors: true
@@ -199,7 +199,7 @@ functions:
     handler: src/handler/idea/leave.leave
     events:
       - http:
-#           TODO this should be done using a userId from the token
+          #           TODO this should be done using a userId from the token
           path: idea/{id}/leave/{participantId}
           method: put
           cors: true
@@ -208,7 +208,7 @@ functions:
     handler: src/handler/idea/vote.vote
     events:
       - http:
-#           TODO this should be done using a userId from the token
+          #           TODO this should be done using a userId from the token
           path: idea/{id}/addVote/{participantId}
           method: put
           cors: true
@@ -217,7 +217,7 @@ functions:
     handler: src/handler/idea/revokeVote.revokeVote
     events:
       - http:
-#           TODO this should be done using a userId from the token
+          #           TODO this should be done using a userId from the token
           path: idea/{id}/removeVote/{participantId}
           method: put
           cors: true

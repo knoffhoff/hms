@@ -2,45 +2,24 @@ import React, { useContext, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import {
   ActionIcon,
-  Avatar,
   Badge,
   Button,
-  Card,
+  Container,
   createStyles,
   Grid,
   Group,
-  SimpleGrid,
+  NumberInput,
   Text,
   Title,
-  Stack,
-  Container,
-  NumberInput,
-  List,
-  ThemeIcon,
 } from '@mantine/core'
 import { useFullscreen } from '@mantine/hooks'
-import { Idea, IdeaPreview, UserPreview } from '../common/types'
+import { Idea, IdeaPreview } from '../common/types'
 import Carousel from 'nuka-carousel'
 import { getIdeaDetails, getIdeaList } from '../actions/IdeaActions'
 import { useAppSelector } from '../hooks'
 import { useMsal } from '@azure/msal-react'
-import {
-  ArrowBigRight,
-  ArrowLeft,
-  ArrowNarrowRight,
-  PlayerPlay,
-  User,
-} from 'tabler-icons-react'
-import {
-  blue2,
-  blue3,
-  blue4,
-  dark2,
-  dark3,
-  dark4,
-  orange3,
-  PAGE_BACKGROUND_DARK,
-} from '../common/colors'
+import { ArrowLeft, ArrowNarrowRight, PlayerPlay } from 'tabler-icons-react'
+import { blue4, dark2, orange3, PAGE_BACKGROUND_DARK } from '../common/colors'
 import PitchTimer from '../components/PitchTimer'
 import { CurrentHackathonContext } from './Layout'
 

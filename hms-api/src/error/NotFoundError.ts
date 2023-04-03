@@ -2,10 +2,10 @@
 
 class NotFoundError extends Error {
   constructor(message: string) {
-    super(message);
+    super(message)
 
-    Object.setPrototypeOf(this, NotFoundError.prototype);
+    Object.setPrototypeOf(this, NotFoundError.prototype)
   }
 }
 
-export default NotFoundError;
+export default NotFoundError

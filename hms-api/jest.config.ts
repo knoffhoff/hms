@@ -17,4 +17,4 @@ export default {
     '<rootDir>/__tests__/',
     '<rootDir>/node_modules/',
   ],
-};
+}

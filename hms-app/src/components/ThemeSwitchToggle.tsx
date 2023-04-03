@@ -1,11 +1,11 @@
 import React from 'react'
 import {
   createStyles,
-  Switch,
   Group,
+  Switch,
   useMantineColorScheme,
 } from '@mantine/core'
-import { Sun, MoonStars } from 'tabler-icons-react'
+import { MoonStars, Sun } from 'tabler-icons-react'
 
 const useStyles = createStyles((theme) => ({
   root: {

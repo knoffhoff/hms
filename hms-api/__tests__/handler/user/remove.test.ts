@@ -1,24 +1,24 @@
-import * as userService from '../../../src/service/user-service';
-import {remove} from '../../../src/handler/user/remove';
-import UserDeleteResponse from '../../../src/rest/user/UserDeleteResponse';
-import Uuid, {uuid} from '../../../src/util/Uuid';
-import NotFoundError from '../../../src/error/NotFoundError';
+import * as userService from '../../../src/service/user-service'
+import { remove } from '../../../src/handler/user/remove'
+import UserDeleteResponse from '../../../src/rest/user/UserDeleteResponse'
+import Uuid, { uuid } from '../../../src/util/Uuid'
+import NotFoundError from '../../../src/error/NotFoundError'
 
 const mockRemoveUser = jest
   .spyOn(userService, 'removeUser')
-  .mockImplementation();
+  .mockImplementation()
 
 describe('Delete User', () => {
   test('Happy Path', async () => {
-    const id = uuid();
-    const event = toEvent(id);
-    const callback = jest.fn();
+    const id = uuid()
+    const event = toEvent(id)
+    const callback = jest.fn()
 
-    mockRemoveUser.mockResolvedValueOnce(new UserDeleteResponse(id));
+    mockRemoveUser.mockResolvedValueOnce(new UserDeleteResponse(id))
 
-    await remove(event, null, callback);
+    await remove(event, null, callback)
 
-    expect(mockRemoveUser).toHaveBeenCalledWith(id);
+    expect(mockRemoveUser).toHaveBeenCalledWith(id)
     expect(callback).toHaveBeenCalledWith(null, {
       statusCode: 200,
       headers: {
@@ -27,18 +27,18 @@ describe('Delete User', () => {
         'content-type': 'application/json',
       },
       body: JSON.stringify(new UserDeleteResponse(id)),
-    });
-  });
+    })
+  })
 
   test('Throws NotFoundError', async () => {
-    const errorMessage = 'User not found';
-    const callback = jest.fn();
+    const errorMessage = 'User not found'
+    const callback = jest.fn()
 
     mockRemoveUser.mockImplementation(() => {
-      throw new NotFoundError(errorMessage);
-    });
+      throw new NotFoundError(errorMessage)
+    })
 
-    await remove(toEvent(uuid()), null, callback);
+    await remove(toEvent(uuid()), null, callback)
 
     expect(callback).toHaveBeenCalledWith(null, {
       statusCode: 404,
@@ -47,19 +47,19 @@ describe('Delete User', () => {
         'Access-Control-Allow-Credentials': true,
         'content-type': 'application/json',
       },
-      body: JSON.stringify({errorMessage: errorMessage}),
-    });
-  });
+      body: JSON.stringify({ errorMessage: errorMessage }),
+    })
+  })
 
   test('Throws Error', async () => {
-    const errorMessage = 'generic error message';
-    const callback = jest.fn();
+    const errorMessage = 'generic error message'
+    const callback = jest.fn()
 
     mockRemoveUser.mockImplementation(() => {
-      throw new Error(errorMessage);
-    });
+      throw new Error(errorMessage)
+    })
 
-    await remove(toEvent(uuid()), null, callback);
+    await remove(toEvent(uuid()), null, callback)
 
     expect(callback).toHaveBeenCalledWith(null, {
       statusCode: 500,
@@ -68,13 +68,13 @@ describe('Delete User', () => {
         'Access-Control-Allow-Credentials': true,
         'content-type': 'application/json',
       },
-      body: JSON.stringify({errorMessage: errorMessage}),
-    });
-  });
-});
+      body: JSON.stringify({ errorMessage: errorMessage }),
+    })
+  })
+})
 
 const toEvent = (id: Uuid): object => ({
   pathParameters: {
     id: id,
   },
-});
+})

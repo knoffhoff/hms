@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import HackathonDetails from '../components/card-details/HackathonDetails'
 import HackathonSelectDropdown from '../components/HackathonSelectDropdown'
-import { Group, Text, Title } from '@mantine/core'
+import { Group, Text } from '@mantine/core'
 import { HackathonDetailsType, HackathonDropdownMode } from '../common/types'
 import { ArrowUp } from 'tabler-icons-react'
 

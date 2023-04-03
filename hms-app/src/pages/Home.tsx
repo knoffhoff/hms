@@ -1,5 +1,5 @@
 import React from 'react'
-import { Title, Text, Container, SimpleGrid, Card } from '@mantine/core'
+import { Card, Container, SimpleGrid, Text, Title } from '@mantine/core'
 import { useAppSelector } from '../hooks'
 import { qAndAList } from '../common/HomeQandAContent'
 import HeroHeader from '../components/HeroHeader'

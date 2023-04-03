@@ -1,26 +1,25 @@
 import React, { useEffect, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import {
-  Image,
-  Header,
-  Menu,
-  Group,
-  Burger,
-  Container,
   Avatar,
+  Burger,
   Button,
-  useMantineColorScheme,
+  Container,
+  Group,
+  Header,
+  Image,
+  Menu,
   Text,
+  useMantineColorScheme,
 } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 import { SwitchToggle } from './ThemeSwitchToggle'
 import { styles } from '../common/styles'
 import {
-  HEADER_ACTIVE_COLOR_LIGHT,
   HEADER_ACTIVE_COLOR_DARK,
+  HEADER_ACTIVE_COLOR_LIGHT,
   PRIMARY_COLOR_1,
   TEXT_COLOR_WHITE,
-  PRIMARY_COLOR_2,
 } from '../common/colors'
 import { useMsal } from '@azure/msal-react'
 import { Logout } from 'tabler-icons-react'
@@ -108,10 +107,12 @@ export default function HeaderMenu({
           <Text className={classes.link}>Hackathons</Text>
         </Menu.Target>
 
-        <Menu.Dropdown style={{
-              backgroundColor:
-                  theme.colorScheme === 'light' ? PRIMARY_COLOR_1 : PRIMARY_COLOR_1,
-            }} >
+        <Menu.Dropdown
+          style={{
+            backgroundColor:
+              theme.colorScheme === 'light' ? PRIMARY_COLOR_1 : PRIMARY_COLOR_1,
+          }}
+        >
           {hackathonLinks.map((link) => (
             <Menu.Item
               key={link.label}

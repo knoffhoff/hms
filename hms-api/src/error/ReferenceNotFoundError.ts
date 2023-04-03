@@ -2,10 +2,10 @@
 
 class ReferenceNotFoundError extends Error {
   constructor(message: string) {
-    super(message);
+    super(message)
 
-    Object.setPrototypeOf(this, ReferenceNotFoundError.prototype);
+    Object.setPrototypeOf(this, ReferenceNotFoundError.prototype)
   }
 }
 
-export default ReferenceNotFoundError;
+export default ReferenceNotFoundError

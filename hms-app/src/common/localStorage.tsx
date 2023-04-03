@@ -1,4 +1,4 @@
-import { useState, useEffect, Dispatch, SetStateAction } from 'react'
+import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 
 function getOrDefaultStorageValue<S>(key: string, defaultValue: S): S {
   const initial = localStorage.getItem(key)

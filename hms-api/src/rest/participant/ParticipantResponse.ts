@@ -1,17 +1,17 @@
 /* eslint-disable require-jsdoc */
 
-import Uuid from '../../util/Uuid';
-import UserPreviewResponse from '../user/UserPreviewResponse';
-import HackathonPreviewResponse from '../hackathon/HackathonPreviewResponse';
-import Participant from '../../repository/domain/Participant';
-import User from '../../repository/domain/User';
-import Hackathon from '../../repository/domain/Hackathon';
+import Uuid from '../../util/Uuid'
+import UserPreviewResponse from '../user/UserPreviewResponse'
+import HackathonPreviewResponse from '../hackathon/HackathonPreviewResponse'
+import Participant from '../../repository/domain/Participant'
+import User from '../../repository/domain/User'
+import Hackathon from '../../repository/domain/Hackathon'
 
 class ParticipantResponse {
-  id: Uuid;
-  user: UserPreviewResponse;
-  hackathon: HackathonPreviewResponse;
-  creationDate: Date;
+  id: Uuid
+  user: UserPreviewResponse
+  hackathon: HackathonPreviewResponse
+  creationDate: Date
 
   constructor(
     id: Uuid,
@@ -19,10 +19,10 @@ class ParticipantResponse {
     hackathon: HackathonPreviewResponse,
     creationDate: Date,
   ) {
-    this.id = id;
-    this.user = user;
-    this.hackathon = hackathon;
-    this.creationDate = creationDate;
+    this.id = id
+    this.user = user
+    this.hackathon = hackathon
+    this.creationDate = creationDate
   }
 
   static from = (
@@ -35,7 +35,7 @@ class ParticipantResponse {
       UserPreviewResponse.from(user),
       HackathonPreviewResponse.from(hackathon),
       participant.creationDate,
-    );
+    )
 }
 
-export default ParticipantResponse;
+export default ParticipantResponse

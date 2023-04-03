@@ -1,8 +1,5 @@
-import {
-  HackathonData,
-  makeHackathon,
-} from '../repository/domain/hackathon-maker';
-import HackathonPreviewResponse from '../../src/rest/hackathon/HackathonPreviewResponse';
+import { HackathonData, makeHackathon, } from '../repository/domain/hackathon-maker'
+import HackathonPreviewResponse from '../../src/rest/hackathon/HackathonPreviewResponse'
 
 describe('Compare', () => {
   test('All values different', () => {
@@ -13,7 +10,7 @@ describe('Compare', () => {
         startDate: new Date(0),
         endDate: new Date(Math.random()),
       } as HackathonData),
-    );
+    )
     const b = HackathonPreviewResponse.from(
       makeHackathon({
         title: 'b',
@@ -21,11 +18,11 @@ describe('Compare', () => {
         startDate: new Date(1),
         endDate: new Date(Math.random()),
       } as HackathonData),
-    );
+    )
 
-    expect(HackathonPreviewResponse.compare(a, b)).toBeLessThan(0);
-    expect(HackathonPreviewResponse.compare(b, a)).toBeGreaterThan(0);
-  });
+    expect(HackathonPreviewResponse.compare(a, b)).toBeLessThan(0)
+    expect(HackathonPreviewResponse.compare(b, a)).toBeGreaterThan(0)
+  })
 
   test('Same titles', () => {
     const a = HackathonPreviewResponse.from(
@@ -35,7 +32,7 @@ describe('Compare', () => {
         startDate: new Date(0),
         endDate: new Date(Math.random()),
       } as HackathonData),
-    );
+    )
     const b = HackathonPreviewResponse.from(
       makeHackathon({
         title: 'a',
@@ -43,11 +40,11 @@ describe('Compare', () => {
         startDate: new Date(1),
         endDate: new Date(Math.random()),
       } as HackathonData),
-    );
+    )
 
-    expect(HackathonPreviewResponse.compare(a, b)).toBeLessThan(0);
-    expect(HackathonPreviewResponse.compare(b, a)).toBeGreaterThan(0);
-  });
+    expect(HackathonPreviewResponse.compare(a, b)).toBeLessThan(0)
+    expect(HackathonPreviewResponse.compare(b, a)).toBeGreaterThan(0)
+  })
 
   test('Same titles, start dates', () => {
     const a = HackathonPreviewResponse.from(
@@ -57,7 +54,7 @@ describe('Compare', () => {
         startDate: new Date(0),
         endDate: new Date(2),
       } as HackathonData),
-    );
+    )
     const b = HackathonPreviewResponse.from(
       makeHackathon({
         title: 'a',
@@ -65,11 +62,11 @@ describe('Compare', () => {
         startDate: new Date(0),
         endDate: new Date(3),
       } as HackathonData),
-    );
+    )
 
-    expect(HackathonPreviewResponse.compare(a, b)).toBeLessThan(0);
-    expect(HackathonPreviewResponse.compare(b, a)).toBeGreaterThan(0);
-  });
+    expect(HackathonPreviewResponse.compare(a, b)).toBeLessThan(0)
+    expect(HackathonPreviewResponse.compare(b, a)).toBeGreaterThan(0)
+  })
 
   test('Same titles, start dates, end dates', () => {
     const a = HackathonPreviewResponse.from(
@@ -80,7 +77,7 @@ describe('Compare', () => {
         startDate: new Date(0),
         endDate: new Date(2),
       } as HackathonData),
-    );
+    )
     const b = HackathonPreviewResponse.from(
       makeHackathon({
         id: 'b',
@@ -89,11 +86,11 @@ describe('Compare', () => {
         startDate: new Date(0),
         endDate: new Date(2),
       } as HackathonData),
-    );
+    )
 
-    expect(HackathonPreviewResponse.compare(a, b)).toBeLessThan(0);
-    expect(HackathonPreviewResponse.compare(b, a)).toBeGreaterThan(0);
-  });
+    expect(HackathonPreviewResponse.compare(a, b)).toBeLessThan(0)
+    expect(HackathonPreviewResponse.compare(b, a)).toBeGreaterThan(0)
+  })
 
   test('All values same', () => {
     const a = HackathonPreviewResponse.from(
@@ -104,7 +101,7 @@ describe('Compare', () => {
         startDate: new Date(0),
         endDate: new Date(2),
       } as HackathonData),
-    );
+    )
     const b = HackathonPreviewResponse.from(
       makeHackathon({
         id: 'a',
@@ -113,9 +110,9 @@ describe('Compare', () => {
         startDate: new Date(0),
         endDate: new Date(2),
       } as HackathonData),
-    );
+    )
 
-    expect(HackathonPreviewResponse.compare(a, b)).toBe(0);
-    expect(HackathonPreviewResponse.compare(b, a)).toBe(0);
-  });
-});
+    expect(HackathonPreviewResponse.compare(a, b)).toBe(0)
+    expect(HackathonPreviewResponse.compare(b, a)).toBe(0)
+  })
+})

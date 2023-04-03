@@ -1,25 +1,25 @@
-import * as userService from '../../../src/service/user-service';
-import {create} from '../../../src/handler/user/create';
-import {randomUser} from '../../repository/domain/user-maker';
-import UserCreateResponse from '../../../src/rest/user/UserCreateResponse';
-import User from '../../../src/repository/domain/User';
-import UserCreateRequest from '../../../src/rest/user/UserCreateRequest';
-import ValidationError from '../../../src/error/ValidationError';
-import ValidationResult from '../../../src/error/ValidationResult';
+import * as userService from '../../../src/service/user-service'
+import { create } from '../../../src/handler/user/create'
+import { randomUser } from '../../repository/domain/user-maker'
+import UserCreateResponse from '../../../src/rest/user/UserCreateResponse'
+import User from '../../../src/repository/domain/User'
+import UserCreateRequest from '../../../src/rest/user/UserCreateRequest'
+import ValidationError from '../../../src/error/ValidationError'
+import ValidationResult from '../../../src/error/ValidationResult'
 
 const mockCreateUser = jest
   .spyOn(userService, 'createUser')
-  .mockImplementation();
+  .mockImplementation()
 
 describe('Create User', () => {
   test('Happy Path', async () => {
-    const expected = randomUser();
-    const event = toEvent(expected);
-    const callback = jest.fn();
+    const expected = randomUser()
+    const event = toEvent(expected)
+    const callback = jest.fn()
 
-    mockCreateUser.mockResolvedValueOnce(expected);
+    mockCreateUser.mockResolvedValueOnce(expected)
 
-    await create(event, null, callback);
+    await create(event, null, callback)
 
     expect(mockCreateUser).toHaveBeenCalledWith(
       expected.lastName,
@@ -27,7 +27,7 @@ describe('Create User', () => {
       expected.emailAddress,
       expected.skills,
       expected.imageUrl,
-    );
+    )
     expect(callback).toHaveBeenCalledWith(null, {
       statusCode: 201,
       headers: {
@@ -36,18 +36,18 @@ describe('Create User', () => {
         'content-type': 'application/json',
       },
       body: JSON.stringify(new UserCreateResponse(expected.id)),
-    });
-  });
+    })
+  })
 
   test('Validation Error', async () => {
-    const errorMessage = 'validation error message';
-    const callback = jest.fn();
+    const errorMessage = 'validation error message'
+    const callback = jest.fn()
 
     mockCreateUser.mockRejectedValueOnce(
       new ValidationError(errorMessage, new ValidationResult()),
-    );
+    )
 
-    await create(toEvent(randomUser()), null, callback);
+    await create(toEvent(randomUser()), null, callback)
 
     expect(callback).toHaveBeenCalledWith(null, {
       statusCode: 422,
@@ -56,19 +56,19 @@ describe('Create User', () => {
         'Access-Control-Allow-Credentials': true,
         'content-type': 'application/json',
       },
-      body: JSON.stringify({errorMessage: errorMessage}),
-    });
-  });
+      body: JSON.stringify({ errorMessage: errorMessage }),
+    })
+  })
 
   test('Throws Error', async () => {
-    const errorMessage = 'generic error message';
-    const callback = jest.fn();
+    const errorMessage = 'generic error message'
+    const callback = jest.fn()
 
     mockCreateUser.mockImplementation(() => {
-      throw new Error(errorMessage);
-    });
+      throw new Error(errorMessage)
+    })
 
-    await create(toEvent(randomUser()), null, callback);
+    await create(toEvent(randomUser()), null, callback)
 
     expect(callback).toHaveBeenCalledWith(null, {
       statusCode: 500,
@@ -77,10 +77,10 @@ describe('Create User', () => {
         'Access-Control-Allow-Credentials': true,
         'content-type': 'application/json',
       },
-      body: JSON.stringify({errorMessage: errorMessage}),
-    });
-  });
-});
+      body: JSON.stringify({ errorMessage: errorMessage }),
+    })
+  })
+})
 
 const toEvent = (user: User): object => ({
   body: JSON.stringify(
@@ -92,4 +92,4 @@ const toEvent = (user: User): object => ({
       user.imageUrl,
     ),
   ),
-});
+})

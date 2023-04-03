@@ -1,4 +1,4 @@
-import { Textarea, Group, Button, Card } from '@mantine/core'
+import { Button, Card, Group, Textarea } from '@mantine/core'
 import React, { useEffect, useState } from 'react'
 import {
   addCategory,

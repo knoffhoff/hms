@@ -2,10 +2,10 @@
 
 class DeletionError extends Error {
   constructor(message: string) {
-    super(message);
+    super(message)
 
-    Object.setPrototypeOf(this, DeletionError.prototype);
+    Object.setPrototypeOf(this, DeletionError.prototype)
   }
 }
 
-export default DeletionError;
+export default DeletionError

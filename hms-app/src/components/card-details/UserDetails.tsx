@@ -14,8 +14,8 @@ import EditUserForm from '../input-forms/EditUserForm'
 import { styles } from '../../common/styles'
 import { useMsal } from '@azure/msal-react'
 import {
-  JOIN_BUTTON_COLOR,
   DELETE_BUTTON_COLOR,
+  JOIN_BUTTON_COLOR,
   RELOAD_BUTTON_COLOR,
 } from '../../common/colors'
 

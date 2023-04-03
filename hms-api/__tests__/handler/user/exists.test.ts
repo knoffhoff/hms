@@ -1,26 +1,26 @@
-import {exists} from '../../../src/handler/user/exists';
-import * as userService from '../../../src/service/user-service';
-import UserExistsResponse from '../../../src/rest/user/UserExistsResponse';
-import {uuid} from '../../../src/util/Uuid';
-import NotFoundError from '../../../src/error/NotFoundError';
+import { exists } from '../../../src/handler/user/exists'
+import * as userService from '../../../src/service/user-service'
+import UserExistsResponse from '../../../src/rest/user/UserExistsResponse'
+import { uuid } from '../../../src/util/Uuid'
+import NotFoundError from '../../../src/error/NotFoundError'
 
 const mockGetUserExistsResponse = jest
   .spyOn(userService, 'getUserExistsResponse')
-  .mockImplementation();
+  .mockImplementation()
 
 describe('User Exists', () => {
   test('Happy Path', async () => {
-    const id = uuid();
-    const email = 'lame@ema.il';
-    const expected = UserExistsResponse.from(id, email, true);
-    const event = toEvent(email);
-    const callback = jest.fn();
+    const id = uuid()
+    const email = 'lame@ema.il'
+    const expected = UserExistsResponse.from(id, email, true)
+    const event = toEvent(email)
+    const callback = jest.fn()
 
-    mockGetUserExistsResponse.mockResolvedValueOnce(expected);
+    mockGetUserExistsResponse.mockResolvedValueOnce(expected)
 
-    await exists(event, null, callback);
+    await exists(event, null, callback)
 
-    expect(mockGetUserExistsResponse).toHaveBeenCalledWith(email);
+    expect(mockGetUserExistsResponse).toHaveBeenCalledWith(email)
     expect(callback).toHaveBeenCalledWith(null, {
       statusCode: 200,
       headers: {
@@ -29,18 +29,18 @@ describe('User Exists', () => {
         'content-type': 'application/json',
       },
       body: JSON.stringify(expected),
-    });
-  });
+    })
+  })
 
   test('Throws NotFoundError', async () => {
-    const errorMessage = 'generic error message';
-    const callback = jest.fn();
+    const errorMessage = 'generic error message'
+    const callback = jest.fn()
 
     mockGetUserExistsResponse.mockImplementation(() => {
-      throw new NotFoundError(errorMessage);
-    });
+      throw new NotFoundError(errorMessage)
+    })
 
-    await exists(toEvent('fake@ema.il'), null, callback);
+    await exists(toEvent('fake@ema.il'), null, callback)
 
     expect(callback).toHaveBeenCalledWith(null, {
       statusCode: 404,
@@ -49,19 +49,19 @@ describe('User Exists', () => {
         'Access-Control-Allow-Credentials': true,
         'content-type': 'application/json',
       },
-      body: JSON.stringify({errorMessage: errorMessage}),
-    });
-  });
+      body: JSON.stringify({ errorMessage: errorMessage }),
+    })
+  })
 
   test('Throws Error', async () => {
-    const errorMessage = 'generic error message';
-    const callback = jest.fn();
+    const errorMessage = 'generic error message'
+    const callback = jest.fn()
 
     mockGetUserExistsResponse.mockImplementation(() => {
-      throw new Error(errorMessage);
-    });
+      throw new Error(errorMessage)
+    })
 
-    await exists(toEvent('fake@ema.il'), null, callback);
+    await exists(toEvent('fake@ema.il'), null, callback)
 
     expect(callback).toHaveBeenCalledWith(null, {
       statusCode: 500,
@@ -70,13 +70,13 @@ describe('User Exists', () => {
         'Access-Control-Allow-Credentials': true,
         'content-type': 'application/json',
       },
-      body: JSON.stringify({errorMessage: errorMessage}),
-    });
-  });
-});
+      body: JSON.stringify({ errorMessage: errorMessage }),
+    })
+  })
+})
 
 const toEvent = (email: string): object => ({
   pathParameters: {
     email: email,
   },
-});
+})

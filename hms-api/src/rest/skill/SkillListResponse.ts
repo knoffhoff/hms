@@ -1,17 +1,17 @@
 /* eslint-disable require-jsdoc */
 
-import SkillPreviewResponse from './SkillPreviewResponse';
-import Skill from '../../repository/domain/Skill';
+import SkillPreviewResponse from './SkillPreviewResponse'
+import Skill from '../../repository/domain/Skill'
 
 class SkillListResponse {
-  skills: SkillPreviewResponse[];
+  skills: SkillPreviewResponse[]
 
   constructor(skills: SkillPreviewResponse[]) {
-    this.skills = skills;
+    this.skills = skills
   }
 
   static from = (skills: Skill[]): SkillListResponse =>
-    new SkillListResponse(SkillPreviewResponse.fromArray(skills));
+    new SkillListResponse(SkillPreviewResponse.fromArray(skills))
 }
 
-export default SkillListResponse;
+export default SkillListResponse

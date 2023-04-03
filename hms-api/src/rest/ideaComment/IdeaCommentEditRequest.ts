@@ -1,14 +1,14 @@
 class IdeaCommentEditRequest {
-  text: string;
+  text: string
 
   constructor(text: string) {
-    this.text = text;
+    this.text = text
   }
 
   static parse(body: string): IdeaCommentEditRequest {
-    const json = JSON.parse(body);
-    return new IdeaCommentEditRequest(json.text);
+    const json = JSON.parse(body)
+    return new IdeaCommentEditRequest(json.text)
   }
 }
 
-export default IdeaCommentEditRequest;
+export default IdeaCommentEditRequest

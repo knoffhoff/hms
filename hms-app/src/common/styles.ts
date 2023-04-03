@@ -1,11 +1,7 @@
 import { createStyles } from '@mantine/core'
 import {
-  HEADER_ACTIVE_COLOR_DARK,
-  HEADER_ACTIVE_COLOR_LIGHT,
   HEADER_HOVER_COLOR_DARK,
   HEADER_HOVER_COLOR_LIGHT,
-  TEXT_COLOR_DARK,
-  TEXT_COLOR_LIGHT,
   TEXT_COLOR_WHITE,
 } from './colors'
 

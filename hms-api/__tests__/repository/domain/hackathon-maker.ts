@@ -1,8 +1,8 @@
-import Uuid, {uuid} from '../../../src/util/Uuid';
-import Hackathon from '../../../src/repository/domain/Hackathon';
+import Uuid, { uuid } from '../../../src/util/Uuid'
+import Hackathon from '../../../src/repository/domain/Hackathon'
 
-const fiveDaysInMillis = 5 * 24 * 60 * 60 * 1000;
-const tenDaysInMillis = 10 * 24 * 60 * 60 * 1000;
+const fiveDaysInMillis = 5 * 24 * 60 * 60 * 1000
+const tenDaysInMillis = 10 * 24 * 60 * 60 * 1000
 
 export interface HackathonData {
   id: Uuid;
@@ -34,7 +34,7 @@ export const makeHackathon = ({
     id,
     creationDate,
     votingOpened,
-  );
+  )
 
 export const randomHackathon = (): Hackathon =>
-  makeHackathon({} as HackathonData);
+  makeHackathon({} as HackathonData)

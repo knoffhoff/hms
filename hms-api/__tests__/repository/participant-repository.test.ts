@@ -8,7 +8,7 @@ import {
   mockSend,
   participantByHackathonIdIndex,
   participantTable,
-} from './dynamo-db-mock';
+} from './dynamo-db-mock'
 import {
   deleteParticipant,
   getParticipant,
@@ -17,279 +17,279 @@ import {
   participantAlreadyExists,
   participantExistsForHackathon,
   putParticipant,
-} from '../../src/repository/participant-repository';
-import Uuid, {uuid} from '../../src/util/Uuid';
-import NotFoundError from '../../src/error/NotFoundError';
-import {makeParticipant, ParticipantData, randomParticipant,} from './domain/participant-maker';
-import Participant from '../../src/repository/domain/Participant';
-import {AttributeValue} from '@aws-sdk/client-dynamodb';
-import InvalidStateError from '../../src/error/InvalidStateError';
+} from '../../src/repository/participant-repository'
+import Uuid, { uuid } from '../../src/util/Uuid'
+import NotFoundError from '../../src/error/NotFoundError'
+import { makeParticipant, ParticipantData, randomParticipant, } from './domain/participant-maker'
+import Participant from '../../src/repository/domain/Participant'
+import { AttributeValue } from '@aws-sdk/client-dynamodb'
+import InvalidStateError from '../../src/error/InvalidStateError'
 
 describe('Get Participant', () => {
   test('Participant doesn\'t exist', async () => {
-    const id = uuid();
-    mockGetItem(null);
+    const id = uuid()
+    mockGetItem(null)
 
-    await expect(getParticipant(id)).rejects.toThrow(NotFoundError);
+    await expect(getParticipant(id)).rejects.toThrow(NotFoundError)
 
-    getExpected(id);
-  });
+    getExpected(id)
+  })
 
   test('Participant exists', async () => {
-    const expected = randomParticipant();
-    mockGetItem(itemFromParticipant(expected));
+    const expected = randomParticipant()
+    mockGetItem(itemFromParticipant(expected))
 
-    expect(await getParticipant(expected.id)).toStrictEqual(expected);
+    expect(await getParticipant(expected.id)).toStrictEqual(expected)
 
-    getExpected(expected.id);
-  });
-});
+    getExpected(expected.id)
+  })
+})
 
 describe('Participant Already Exists', () => {
   test('Happy Path', async () => {
-    const participant = randomParticipant();
-    mockQuery([itemFromParticipant(participant)]);
+    const participant = randomParticipant()
+    mockQuery([itemFromParticipant(participant)])
 
     expect(await participantAlreadyExists(participant))
-        .toStrictEqual(true);
-  });
+      .toStrictEqual(true)
+  })
 
   test('Empty Array Response', async () => {
-    mockQuery([]);
+    mockQuery([])
 
     expect(await participantAlreadyExists(randomParticipant()))
-        .toStrictEqual(false);
-  });
+      .toStrictEqual(false)
+  })
 
   test('Null Response', async () => {
-    mockQuery(null);
+    mockQuery(null)
 
     expect(await participantAlreadyExists(randomParticipant()))
-        .toStrictEqual(false);
-  });
-});
+      .toStrictEqual(false)
+  })
+})
 
 describe('Put Participant', () => {
   test('Happy Path', async () => {
-    mockQueryOnce(null);
-    mockPutItemOnce();
+    mockQueryOnce(null)
+    mockPutItemOnce()
 
-    const expected = randomParticipant();
-    await putParticipant(expected);
+    const expected = randomParticipant()
+    await putParticipant(expected)
 
     expect(mockSend).toHaveBeenCalledWith(
-        expect.objectContaining({
-          input: expect.objectContaining({
-            TableName: participantTable,
-            Item: itemFromParticipant(expected),
-          }),
-        }));
-  });
+      expect.objectContaining({
+        input: expect.objectContaining({
+          TableName: participantTable,
+          Item: itemFromParticipant(expected),
+        }),
+      }))
+  })
 
   test('Participant already exists', async () => {
-    const expected = randomParticipant();
-    mockQueryOnce([itemFromParticipant(expected)]);
-    mockPutItemOnce();
+    const expected = randomParticipant()
+    mockQueryOnce([itemFromParticipant(expected)])
+    mockPutItemOnce()
 
     await expect(putParticipant(expected))
-    .rejects
-    .toThrow(InvalidStateError);
+      .rejects
+      .toThrow(InvalidStateError)
 
     expect(mockSend).not.toHaveBeenCalledWith(
-        expect.objectContaining({
-          input: expect.objectContaining({
-            TableName: participantTable,
-            Item: itemFromParticipant(expected),
-          }),
-        }));
-  });
-});
+      expect.objectContaining({
+        input: expect.objectContaining({
+          TableName: participantTable,
+          Item: itemFromParticipant(expected),
+        }),
+      }))
+  })
+})
 
 describe('Delete Participant', () => {
   test('Happy Path', async () => {
-    const expected = randomParticipant();
-    mockDeleteItem(itemFromParticipant(expected));
+    const expected = randomParticipant()
+    mockDeleteItem(itemFromParticipant(expected))
 
-    expect(await deleteParticipant(expected.id)).toStrictEqual(expected);
+    expect(await deleteParticipant(expected.id)).toStrictEqual(expected)
     expect(mockSend).toHaveBeenCalledWith(
-        expect.objectContaining({
-          input: expect.objectContaining({
-            TableName: participantTable,
-            Key: {id: {S: expected.id}},
-            ReturnValues: 'ALL_OLD',
-          }),
+      expect.objectContaining({
+        input: expect.objectContaining({
+          TableName: participantTable,
+          Key: { id: { S: expected.id } },
+          ReturnValues: 'ALL_OLD',
         }),
-    );
-  });
+      }),
+    )
+  })
 
   test('Participant not found', async () => {
-    const id = uuid();
-    mockDeleteItem(null);
+    const id = uuid()
+    mockDeleteItem(null)
 
     await expect(deleteParticipant(id))
-        .rejects
-        .toThrow(NotFoundError);
+      .rejects
+      .toThrow(NotFoundError)
     expect(mockSend).toHaveBeenCalledWith(
-        expect.objectContaining({
-          input: expect.objectContaining({
-            TableName: participantTable,
-            Key: {id: {S: id}},
-            ReturnValues: 'ALL_OLD',
-          }),
+      expect.objectContaining({
+        input: expect.objectContaining({
+          TableName: participantTable,
+          Key: { id: { S: id } },
+          ReturnValues: 'ALL_OLD',
         }),
-    );
-  });
-});
+      }),
+    )
+  })
+})
 
 describe('Get Participants', () => {
   test('All participants missing', async () => {
-    mockGetItemOnce(null);
-    mockGetItemOnce(null);
-    const id1 = uuid();
+    mockGetItemOnce(null)
+    mockGetItemOnce(null)
+    const id1 = uuid()
     await expect(getParticipants([id1, uuid()]))
-        .rejects
-        .toThrow(NotFoundError);
+      .rejects
+      .toThrow(NotFoundError)
 
-    getExpected(id1);
-  });
+    getExpected(id1)
+  })
 
   test('1 participant missing', async () => {
-    const participant1 = randomParticipant();
-    mockGetItemOnce(itemFromParticipant(participant1));
-    mockGetItemOnce(null);
-    const id2 = uuid();
+    const participant1 = randomParticipant()
+    mockGetItemOnce(itemFromParticipant(participant1))
+    mockGetItemOnce(null)
+    const id2 = uuid()
     await expect(getParticipants([participant1.id, id2]))
-        .rejects
-        .toThrow(NotFoundError);
+      .rejects
+      .toThrow(NotFoundError)
 
-    getExpected(participant1.id);
-    getExpected(id2);
-  });
+    getExpected(participant1.id)
+    getExpected(id2)
+  })
 
   test('0 participants missing', async () => {
-    const participant1 = randomParticipant();
-    mockGetItemOnce(itemFromParticipant(participant1));
-    const participant2 = randomParticipant();
-    mockGetItemOnce(itemFromParticipant(participant2));
+    const participant1 = randomParticipant()
+    mockGetItemOnce(itemFromParticipant(participant1))
+    const participant2 = randomParticipant()
+    mockGetItemOnce(itemFromParticipant(participant2))
     expect(await getParticipants([participant1.id, participant2.id]))
-        .toStrictEqual([participant1, participant2]);
+      .toStrictEqual([participant1, participant2])
 
-    getExpected(participant1.id);
-    getExpected(participant2.id);
-  });
-});
+    getExpected(participant1.id)
+    getExpected(participant2.id)
+  })
+})
 
 describe('List Participants', () => {
   test('Query returns null', async () => {
-    const hackathonId = uuid();
-    mockQuery(null);
+    const hackathonId = uuid()
+    mockQuery(null)
 
     await expect(listParticipants(hackathonId))
-        .rejects
-        .toThrow(NotFoundError);
+      .rejects
+      .toThrow(NotFoundError)
 
-    listExpected(hackathonId);
-  });
+    listExpected(hackathonId)
+  })
 
   test('0 Participants exist', async () => {
-    const hackathonId = uuid();
-    mockQuery([]);
+    const hackathonId = uuid()
+    mockQuery([])
 
-    expect(await listParticipants(hackathonId)).toStrictEqual([]);
+    expect(await listParticipants(hackathonId)).toStrictEqual([])
 
-    listExpected(hackathonId);
-  });
+    listExpected(hackathonId)
+  })
 
   test('1 Participant exists', async () => {
-    const hackathonId = uuid();
+    const hackathonId = uuid()
     const participant = makeParticipant(
-        {hackathonId: hackathonId} as ParticipantData);
-    mockQuery([itemFromParticipant(participant)]);
+      { hackathonId: hackathonId } as ParticipantData)
+    mockQuery([itemFromParticipant(participant)])
 
-    expect(await listParticipants(hackathonId)).toStrictEqual([participant]);
+    expect(await listParticipants(hackathonId)).toStrictEqual([participant])
 
-    listExpected(hackathonId);
-  });
+    listExpected(hackathonId)
+  })
 
   test('2 Participants exist', async () => {
-    const hackathonId = uuid();
+    const hackathonId = uuid()
     const participant1 = makeParticipant(
-        {hackathonId: hackathonId} as ParticipantData);
+      { hackathonId: hackathonId } as ParticipantData)
     const participant2 = makeParticipant(
-        {hackathonId: hackathonId} as ParticipantData);
+      { hackathonId: hackathonId } as ParticipantData)
     mockQuery([
       itemFromParticipant(participant1),
       itemFromParticipant(participant2),
-    ]);
+    ])
 
     expect(await listParticipants(hackathonId))
-        .toStrictEqual([participant1, participant2]);
+      .toStrictEqual([participant1, participant2])
 
-    listExpected(hackathonId);
-  });
-});
+    listExpected(hackathonId)
+  })
+})
 
 describe('Participant Exists', () => {
   test('Item is null', async () => {
-    const id = uuid();
-    mockGetItem(null);
+    const id = uuid()
+    mockGetItem(null)
 
-    expect(await participantExistsForHackathon(id, uuid())).toBe(false);
+    expect(await participantExistsForHackathon(id, uuid())).toBe(false)
 
-    getExpected(id);
-  });
+    getExpected(id)
+  })
 
   test('HackathonId does not match', async () => {
-    const id = uuid();
+    const id = uuid()
     mockGetItem({
-      hackathonId: {S: uuid()},
-    });
+      hackathonId: { S: uuid() },
+    })
 
-    expect(await participantExistsForHackathon(id, uuid())).toBe(false);
+    expect(await participantExistsForHackathon(id, uuid())).toBe(false)
 
-    getExpected(id);
-  });
+    getExpected(id)
+  })
 
   test('HackathonId matches', async () => {
-    const id = uuid();
-    const hackathonId = uuid();
+    const id = uuid()
+    const hackathonId = uuid()
     mockGetItem({
-      hackathonId: {S: hackathonId},
-    });
+      hackathonId: { S: hackathonId },
+    })
 
-    expect(await participantExistsForHackathon(id, hackathonId)).toBe(true);
+    expect(await participantExistsForHackathon(id, hackathonId)).toBe(true)
 
-    getExpected(id);
-  });
-});
+    getExpected(id)
+  })
+})
 
 const itemFromParticipant = (
-    participant: Participant,
+  participant: Participant,
 ): { [key: string]: AttributeValue } => ({
-  userId: {S: participant.userId},
-  hackathonId: {S: participant.hackathonId},
-  id: {S: participant.id},
-  creationDate: {S: participant.creationDate.toISOString()},
-});
+  userId: { S: participant.userId },
+  hackathonId: { S: participant.hackathonId },
+  id: { S: participant.id },
+  creationDate: { S: participant.creationDate.toISOString() },
+})
 
 const getExpected = (
-    id: Uuid,
+  id: Uuid,
 ) => expect(mockSend).toHaveBeenCalledWith(
-    expect.objectContaining({
-      input: expect.objectContaining({
-        TableName: participantTable,
-        Key: {id: {S: id}},
-      }),
-    }));
+  expect.objectContaining({
+    input: expect.objectContaining({
+      TableName: participantTable,
+      Key: { id: { S: id } },
+    }),
+  }))
 
 const listExpected = (
-    hackathonId: Uuid,
+  hackathonId: Uuid,
 ) => expect(mockSend).toHaveBeenCalledWith(
-    expect.objectContaining({
-      input: expect.objectContaining({
-        TableName: participantTable,
-        IndexName: participantByHackathonIdIndex,
-        KeyConditionExpression: 'hackathonId = :hId',
-        ExpressionAttributeValues: {':hId': {'S': hackathonId}},
-      }),
-    }));
+  expect.objectContaining({
+    input: expect.objectContaining({
+      TableName: participantTable,
+      IndexName: participantByHackathonIdIndex,
+      KeyConditionExpression: 'hackathonId = :hId',
+      ExpressionAttributeValues: { ':hId': { 'S': hackathonId } },
+    }),
+  }))

@@ -1,19 +1,19 @@
-import CategoryListResponse from '../../src/rest/category/CategoryListResponse';
-import {CategoryData, makeCategory} from '../repository/domain/category-maker';
-import {uuid} from '../../src/util/Uuid';
-import CategoryPreviewResponse from '../../src/rest/category/CategoryPreviewResponse';
+import CategoryListResponse from '../../src/rest/category/CategoryListResponse'
+import { CategoryData, makeCategory } from '../repository/domain/category-maker'
+import { uuid } from '../../src/util/Uuid'
+import CategoryPreviewResponse from '../../src/rest/category/CategoryPreviewResponse'
 
 describe('Convert From', () => {
   test('Categories are sorted', () => {
-    const category1 = makeCategory({title: 'a'} as CategoryData);
-    const category2 = makeCategory({title: 'b'} as CategoryData);
-    const category3 = makeCategory({title: 'c'} as CategoryData);
-    const hackathonId = uuid();
+    const category1 = makeCategory({ title: 'a' } as CategoryData)
+    const category2 = makeCategory({ title: 'b' } as CategoryData)
+    const category3 = makeCategory({ title: 'c' } as CategoryData)
+    const hackathonId = uuid()
 
     const response = CategoryListResponse.from(
       [category3, category1, category2],
       hackathonId,
-    );
+    )
 
     expect(response).toEqual(
       new CategoryListResponse(
@@ -24,6 +24,6 @@ describe('Convert From', () => {
         ],
         hackathonId,
       ),
-    );
-  });
-});
+    )
+  })
+})
