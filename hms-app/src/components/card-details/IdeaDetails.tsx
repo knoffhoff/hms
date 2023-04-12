@@ -661,7 +661,7 @@ export default function IdeaDetails(props: IProps) {
                     )}
 
                     {type === IdeaCardType.Admin ||
-                      type === IdeaCardType.Owner ||
+                      type === IdeaCardType.Owner && // before was '||' 
                       (ideaData.owner?.id === user?.id && (
                         <Group position='left' mt='xl'>
                           {deleteModal}
