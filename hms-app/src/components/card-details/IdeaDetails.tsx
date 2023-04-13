@@ -398,12 +398,12 @@ export default function IdeaDetails(props: IProps) {
               </div>
 
               {type === IdeaCardType.Admin ||
-                type === IdeaCardType.Owner ||
-                (
+                type === IdeaCardType.Owner || (
+                ideaData.owner?.id === user?.id &&(
                   <CardButton
                     idea={props.idea}
                   />
-                )}
+                ))}
             </Accordion.Panel>
           </Accordion.Item>
         </Accordion>
