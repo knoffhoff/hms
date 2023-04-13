@@ -20,8 +20,7 @@ import {
   IdeaFormType,
   Skill,
 } from '../../common/types'
-import { deleteIdea, getIdeaDetails } from '../../actions/IdeaActions'
-import IdeaForm from '../input-forms/IdeaForm'
+import { getIdeaDetails } from '../../actions/IdeaActions'
 import { styles } from '../../common/styles'
 import { showNotification, updateNotification } from '@mantine/notifications'
 import {
@@ -391,10 +390,6 @@ export default function IdeaDetails(props: IProps) {
                   <Text className={classes.text}>{ideaData.goal}</Text>
                 </Card.Section>
 
-                {/* <Card.Section className={classes.borderSection}>
-                  <Text className={classes.label}>Skills</Text>
-                  <Text className={classes.text}>{getSkillDescription(ideaData.id)}</Text>
-                </Card.Section> */}
               </div>
 
               {type === IdeaCardType.Admin ||

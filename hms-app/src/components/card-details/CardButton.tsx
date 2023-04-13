@@ -1,24 +1,13 @@
-import React, { useContext, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import {
-  Accordion,
-  Avatar,
-  Badge,
   Button,
-  Card,
   Group,
   Modal,
-  Spoiler,
-  Stack,
   Text,
-  Tooltip,
-  useMantineTheme,
 } from '@mantine/core'
 import {
-  Category,
   Idea,
-  IdeaCardType,
   IdeaFormType,
-  Skill,
 } from '../../common/types'
 import { deleteIdea, getIdeaDetails } from '../../actions/IdeaActions'
 import IdeaForm from '../input-forms/IdeaForm'
@@ -29,16 +18,9 @@ import { useMsal } from '@azure/msal-react'
 import {
   DELETE_BUTTON_COLOR,
   JOIN_BUTTON_COLOR,
-  LEAVE_BUTTON_COLOR,
 } from '../../common/colors'
-import {
-  HackathonParticipantContext,
-  HackathonVotingContext,
-} from '../../pages/AllIdeas'
-import { UserContext } from '../../pages/Layout'
 import FinalVideoUploadModal from '../FinalVideoUploadModal'
 import MoveIdeaModal from '../MoveIdeaModal'
-import IdeaCommentDetails from './IdeaCommentDetails'
 
 type IProps = {
     idea: Idea
@@ -47,7 +29,7 @@ type IProps = {
 export default function CardButtons(props: IProps) {
   const [deleteModalOpened, setDeleteModalOpened] = useState(false)
   const [editModalOpened, setEditModalOpened] = useState(false)
-  const [participantCheck, setParticipantCheck] = useState(false) // TODO: participantCheck needs to move. Decouple from join button?
+
   const { instance } = useMsal()
   const { classes } = styles()
   const { idea } = props
@@ -67,7 +49,6 @@ export default function CardButtons(props: IProps) {
     deleteIdea(instance, ideaData.id).then((response) => {
       setDeleteModalOpened(false)
       if (JSON.stringify(response).toString().includes('error')) {
-        setParticipantCheck(true) 
         updateNotification({
           id: 'delete-idea-load',
           color: 'red',
@@ -77,7 +58,6 @@ export default function CardButtons(props: IProps) {
           autoClose: 2000,
         })
       } else {
-        setParticipantCheck(false)
         updateNotification({
           id: 'delete-idea-load',
           color: 'teal',
