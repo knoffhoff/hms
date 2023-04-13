@@ -47,6 +47,7 @@ type IProps = {
 export default function CardButtons(props: IProps) {
   const [deleteModalOpened, setDeleteModalOpened] = useState(false)
   const [editModalOpened, setEditModalOpened] = useState(false)
+  const [participantCheck, setParticipantCheck] = useState(false) // TODO: participantCheck needs to move. Decouple from join button?
   const { instance } = useMsal()
   const { classes } = styles()
   const { idea } = props
@@ -66,7 +67,7 @@ export default function CardButtons(props: IProps) {
     deleteIdea(instance, ideaData.id).then((response) => {
       setDeleteModalOpened(false)
       if (JSON.stringify(response).toString().includes('error')) {
-        setParticipantCheck(true)
+        setParticipantCheck(true) 
         updateNotification({
           id: 'delete-idea-load',
           color: 'red',

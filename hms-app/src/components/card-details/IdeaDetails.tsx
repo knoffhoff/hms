@@ -42,10 +42,8 @@ import {
   HackathonVotingContext,
 } from '../../pages/AllIdeas'
 import { UserContext } from '../../pages/Layout'
-import FinalVideoUploadModal from '../FinalVideoUploadModal'
 import { getCategoryDetails } from '../../actions/CategoryActions'
 import { getSkillDetails } from '../../actions/SkillActions'
-import MoveIdeaModal from '../MoveIdeaModal'
 import IdeaCommentDetails from './IdeaCommentDetails'
 import CardButton from './CardButton'
 
@@ -64,8 +62,6 @@ export default function IdeaDetails(props: IProps) {
   const { idea, type, isLoading } = props
   const MAX_TITLE_LENGTH = 100
   const theme = useMantineTheme()
-  const [deleteModalOpened, setDeleteModalOpened] = useState(false)
-  const [editModalOpened, setEditModalOpened] = useState(false)
   const [accordionOpen, setAccordionOpen] = useState(false)
   const [participantAccordionOpen, setParticipantAccordionOpen] =
     useState(false)
@@ -136,91 +132,6 @@ export default function IdeaDetails(props: IProps) {
       </Text>
     </div>
   ))
-
-  // const deleteSelectedIdea = () => {
-  //   showNotification({
-  //     id: 'delete-idea-load',
-  //     loading: true,
-  //     title: `Deleting "${ideaData.title}"`,
-  //     message: undefined,
-  //     autoClose: false,
-  //     disallowClose: false,
-  //   })
-  //   deleteIdea(instance, ideaData.id).then((response) => {
-  //     setDeleteModalOpened(false)
-  //     if (JSON.stringify(response).toString().includes('error')) {
-  //       setParticipantCheck(true)
-  //       updateNotification({
-  //         id: 'delete-idea-load',
-  //         color: 'red',
-  //         title: 'Failed to delete idea',
-  //         message: undefined,
-  //         icon: <X />,
-  //         autoClose: 2000,
-  //       })
-  //     } else {
-  //       setParticipantCheck(false)
-  //       updateNotification({
-  //         id: 'delete-idea-load',
-  //         color: 'teal',
-  //         title: `Deleted "${ideaData.title}"`,
-  //         message: undefined,
-  //         icon: <Check />,
-  //         autoClose: 2000,
-  //       })
-  //     }
-  //   })
-  // }
-
-  // const closeEditModal = (isOpened: boolean) => {
-  //   setEditModalOpened(isOpened)
-  // }
-
-  // const deleteModal = (
-  //   <Modal
-  //     centered
-  //     opened={deleteModalOpened}
-  //     onClose={() => setDeleteModalOpened(false)}
-  //     withCloseButton={false}
-  //   >
-  //     <Text className={classes.text}>
-  //       Are you sure you want to delete this idea?
-  //     </Text>
-  //     <Text className={classes.title}>Title: {ideaData.title}</Text>
-  //     <Button
-  //       style={{ backgroundColor: DELETE_BUTTON_COLOR }}
-  //       onClick={() => deleteSelectedIdea()}
-  //     >
-  //       Yes, delete this idea
-  //     </Button>
-  //     <Text className={classes.text}>
-  //       (This window will automatically close as soon as the idea is deleted)
-  //     </Text>
-  //   </Modal>
-  // )
-
-  // const editModal = (
-  //   <Modal
-  //     centered
-  //     opened={editModalOpened}
-  //     onClose={() => setEditModalOpened(false)}
-  //     withCloseButton={false}
-  //     size='55%'
-  //   >
-  //     <Text className={classes.title}>Edit Idea</Text>
-  //     <IdeaForm
-  //       ideaId={ideaData.id}
-  //       idea={ideaData}
-  //       context={IdeaFormType.Edit}
-  //       ownerId={ideaData.owner ? ideaData.owner.id : ''}
-  //       hackathon={ideaData.hackathon!}
-  //       setOpened={closeEditModal}
-  //     />
-  //     <Text className={classes.text}>
-  //       (This window will automatically close as soon as the idea is changed)
-  //     </Text>
-  //   </Modal>
-  // )
 
   const addParticipant = async (
     action = createIdeaParticipant,
@@ -487,12 +398,12 @@ export default function IdeaDetails(props: IProps) {
               </div>
 
               {type === IdeaCardType.Admin ||
-                type === IdeaCardType.Owner &&
-                (ideaData.owner?.id === user?.id && (
+                type === IdeaCardType.Owner ||
+                (
                   <CardButton
                     idea={props.idea}
                   />
-                ))}
+                )}
             </Accordion.Panel>
           </Accordion.Item>
         </Accordion>
