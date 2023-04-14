@@ -24,10 +24,7 @@
     "prettier"
   ],
   "rules": {
-    "indent": [
-      "error",
-      2
-    ],
+    "indent": "off",
     "semi": [
       "error",
       "never"
