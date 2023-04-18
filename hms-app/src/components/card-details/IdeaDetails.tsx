@@ -339,6 +339,32 @@ export default function IdeaDetails(props: IProps) {
         )
     }
 
+    const skillsRequared = (
+        <div>
+        <Text className={classes.label}>Skills required</Text>
+        <Group spacing={7} mt={5}>
+            {ideaData.requiredSkills?.map((skill) => (
+                <Tooltip
+                    multiline
+                    width={220}
+                    transition='fade'
+                    transitionDuration={200}
+                    color='gray'
+                    label={getSkillDescription(skill.id)}
+                    key={skill.id}
+                >
+                    <Badge
+                        color={theme.colorScheme === 'dark' ? 'dark' : 'gray'}
+                        key={skill.id}
+                    >
+                        {skill.name}
+                    </Badge>
+                </Tooltip>
+            ))}
+        </Group>
+    </div>
+    )
+
     const minimalCard = () => {
         return (
             <Card withBorder className={classes.card}>
@@ -360,6 +386,10 @@ export default function IdeaDetails(props: IProps) {
                             {ideaData.title?.length > MAX_TITLE_LENGTH ? '...' : ''}
                         </Text>
                     </Group>
+                </Card.Section>
+
+                <Card.Section className={classes.borderSection}>
+                    {skillsRequared}
                 </Card.Section>
 
                 <Accordion
@@ -389,31 +419,10 @@ export default function IdeaDetails(props: IProps) {
                                     <Text className={classes.label}>Goal</Text>
                                     <Text className={classes.text}>{ideaData.goal}</Text>
                                 </Card.Section>
-
-
+{/* 
                                 <Card.Section className={classes.borderSection}>
-                                    <Text className={classes.label}>Skills required</Text>
-                                    <Group spacing={7} mt={5}>
-                                        {ideaData.requiredSkills?.map((skill) => (
-                                            <Tooltip
-                                                multiline
-                                                width={220}
-                                                transition='fade'
-                                                transitionDuration={200}
-                                                color='gray'
-                                                label={getSkillDescription(skill.id)}
-                                                key={skill.id}
-                                            >
-                                                <Badge
-                                                    color={theme.colorScheme === 'dark' ? 'dark' : 'gray'}
-                                                    key={skill.id}
-                                                >
-                                                    {skill.name}
-                                                </Badge>
-                                            </Tooltip>
-                                        ))}
-                                    </Group>
-                                </Card.Section>
+                                    {skillsRequared}
+                                </Card.Section> */}
                             </div>
 
                             {type === IdeaCardType.Admin ||
@@ -502,27 +511,7 @@ export default function IdeaDetails(props: IProps) {
                     {type !== IdeaCardType.Voting && (
                         <>
                             <Card.Section className={classes.borderSection}>
-                                <Text className={classes.label}>Skills required</Text>
-                                <Group spacing={7} mt={5}>
-                                    {ideaData.requiredSkills?.map((skill) => (
-                                        <Tooltip
-                                            multiline
-                                            width={220}
-                                            transition='fade'
-                                            transitionDuration={200}
-                                            color='gray'
-                                            label={getSkillDescription(skill.id)}
-                                            key={skill.id}
-                                        >
-                                            <Badge
-                                                color={theme.colorScheme === 'dark' ? 'dark' : 'gray'}
-                                                key={skill.id}
-                                            >
-                                                {skill.name}
-                                            </Badge>
-                                        </Tooltip>
-                                    ))}
-                                </Group>
+                                {skillsRequared}
                             </Card.Section>
 
                             <Accordion
