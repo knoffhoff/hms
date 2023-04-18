@@ -98,7 +98,7 @@ const useStyles = createStyles((_theme, _params, getRef) => ({
   },
 }))
 
-export default function Presentations() {
+export default function FinalPresentations() {
   const { classes } = useStyles()
   const { instance } = useMsal()
   const nextHackathon = useAppSelector(
