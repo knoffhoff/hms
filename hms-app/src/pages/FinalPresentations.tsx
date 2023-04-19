@@ -109,19 +109,15 @@ export default function FinalPresentations() {
   const [timerValue, setTimerValue] = useState({ minutes: 2, seconds: 0 })
 
   useEffect(() => {
-    const fetchIdeas = async () => {
-      if (nextHackathon && nextHackathon.id) {
-        const ideasResult = await getIdeaList(instance, nextHackathon.id)
-        const ideaDetailsResult = await Promise.all(
-          ideasResult.ideas.map(async (idea: IdeaPreview) => {
-            return await getIdeaDetails(instance, idea.id)
-          })
-        )
-        setIdeas(ideaDetailsResult)
+    const ideaLocalStorage = () => {
+      const ideaStorage = localStorage.getItem('ideas')
+      if(ideaStorage){
+        return setIdeas(JSON.parse(ideaStorage))
       }
+      return null
     }
 
-    fetchIdeas()
+    ideaLocalStorage()
   }, [])
 
   const ideaList = ideas?.map((idea) => {
