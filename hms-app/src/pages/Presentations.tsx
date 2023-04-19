@@ -113,22 +113,15 @@ export default function Presentations() {
   const [timerValue, setTimerValue] = useState({ minutes: 2, seconds: 0 })
 
   useEffect(() => {
-    const fetchIdeas = async () => {
-      // TODO: need to seperate into 2 versions
-      // if (nextHackathon && nextHackathon.id) {
-      //   const ideasResult = await getIdeaList(instance, nextHackathon.id)
-      if (currentHackathon && currentHackathon.id) {
-        const ideasResult = await getIdeaList(instance, currentHackathon.id)
-        const ideaDetailsResult = await Promise.all(
-          ideasResult.ideas.map(async (idea: IdeaPreview) => {
-            return await getIdeaDetails(instance, idea.id)
-          })
-        )
-        setIdeas(ideaDetailsResult)
+    const ideaLocalStorage = () => {
+      const ideaList = localStorage.getItem('ideas')
+      if(ideaList){
+        return setIdeas(JSON.parse(ideaList))
       }
+      return null
     }
 
-    fetchIdeas()
+    ideaLocalStorage()
   }, [])
 
   const ideaList = ideas?.map((idea) => {
