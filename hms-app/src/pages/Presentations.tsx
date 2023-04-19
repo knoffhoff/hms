@@ -114,9 +114,9 @@ export default function Presentations() {
 
   useEffect(() => {
     const ideaLocalStorage = () => {
-      const ideaList = localStorage.getItem('ideas')
-      if(ideaList){
-        return setIdeas(JSON.parse(ideaList))
+      const ideaStorage = localStorage.getItem('ideas')
+      if(ideaStorage){
+        return setIdeas(JSON.parse(ideaStorage))
       }
       return null
     }
