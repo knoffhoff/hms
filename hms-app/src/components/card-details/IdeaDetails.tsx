@@ -339,7 +339,7 @@ export default function IdeaDetails(props: IProps) {
     )
   }
 
-  const skillsRequared = (
+  const skillsRequired = (
     <div>
       <Text className={classes.label}>Skills required</Text>
       <Group spacing={7} mt={5}>
@@ -388,10 +388,6 @@ export default function IdeaDetails(props: IProps) {
           </Group>
         </Card.Section>
 
-        <Card.Section className={classes.borderSection}>
-          {skillsRequared}
-        </Card.Section>
-
         <Accordion
           onChange={(value) => setAccordionOpen(value === 'idea-details')}
         >
@@ -419,10 +415,10 @@ export default function IdeaDetails(props: IProps) {
                   <Text className={classes.label}>Goal</Text>
                   <Text className={classes.text}>{ideaData.goal}</Text>
                 </Card.Section>
-                {/* 
-                                <Card.Section className={classes.borderSection}>
-                                    {skillsRequared}
-                                </Card.Section> */}
+                
+                <Card.Section className={classes.borderSection}>
+                    {skillsRequired}
+                </Card.Section>
               </div>
 
               {type === IdeaCardType.Admin ||
@@ -509,7 +505,7 @@ export default function IdeaDetails(props: IProps) {
           {type !== IdeaCardType.Voting && (
             <>
               <Card.Section className={classes.borderSection}>
-                {skillsRequared}
+                {skillsRequired}
               </Card.Section>
 
               <Accordion
