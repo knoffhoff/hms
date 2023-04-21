@@ -310,38 +310,32 @@ function IdeaForm(props: IProps) {
               />
             </Card.Section>
 
-            {context !== IdeaFormType.New && (
-              <>
-                <Card.Section className={classes.borderSection}>
-                  <Checkbox.Group
-                    label='Required skills'
-                    description='chose one or more required skills'
-                    onChange={setSkills}
-                    required
-                    defaultValue={idea?.requiredSkills?.map(
-                      (skill) => skill.id
-                    )}
-                    value={skills}
-                    className={classes.label}
-                  >
-                    {skillsList}
-                  </Checkbox.Group>
-                </Card.Section>
-                <Card.Section className={classes.borderSection}>
-                  <Radio.Group
-                    label='Category'
-                    description='chose one or more categories'
-                    onChange={setCategory}
-                    required
-                    defaultValue={idea?.category?.id}
-                    value={category}
-                    className={classes.label}
-                  >
-                    {categoriesList}
-                  </Radio.Group>
-                </Card.Section>
-              </>
-            )}
+            <Card.Section className={classes.borderSection}>
+              <Checkbox.Group
+                label='Required skills'
+                description='chose one or more required skills'
+                onChange={setSkills}
+                required
+                defaultValue={idea?.requiredSkills?.map((skill) => skill.id)}
+                value={skills}
+                className={classes.label}
+              >
+                {skillsList}
+              </Checkbox.Group>
+            </Card.Section>
+            <Card.Section className={classes.borderSection}>
+              <Radio.Group
+                label='Category'
+                description='chose one or more categories'
+                onChange={setCategory}
+                required
+                defaultValue={idea?.category?.id}
+                value={category}
+                className={classes.label}
+              >
+                {categoriesList}
+              </Radio.Group>
+            </Card.Section>
 
             <Group position='right' mt='xl'>
               {context === IdeaFormType.Edit && (

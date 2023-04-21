@@ -339,6 +339,32 @@ export default function IdeaDetails(props: IProps) {
     )
   }
 
+  const skillsRequired = (
+    <div>
+      <Text className={classes.label}>Skills required</Text>
+      <Group spacing={7} mt={5}>
+        {ideaData.requiredSkills?.map((skill) => (
+          <Tooltip
+            multiline
+            width={220}
+            transition='fade'
+            transitionDuration={200}
+            color='gray'
+            label={getSkillDescription(skill.id)}
+            key={skill.id}
+          >
+            <Badge
+              color={theme.colorScheme === 'dark' ? 'dark' : 'gray'}
+              key={skill.id}
+            >
+              {skill.name}
+            </Badge>
+          </Tooltip>
+        ))}
+      </Group>
+    </div>
+  )
+
   const minimalCard = () => {
     return (
       <Card withBorder className={classes.card}>
@@ -389,15 +415,16 @@ export default function IdeaDetails(props: IProps) {
                   <Text className={classes.label}>Goal</Text>
                   <Text className={classes.text}>{ideaData.goal}</Text>
                 </Card.Section>
-
+                
+                <Card.Section className={classes.borderSection}>
+                    {skillsRequired}
+                </Card.Section>
               </div>
 
               {type === IdeaCardType.Admin ||
-                type === IdeaCardType.Owner || (
-                ideaData.owner?.id === user?.id &&(
-                  <CardButton
-                    idea={props.idea}
-                  />
+                type === IdeaCardType.Owner ||
+                (ideaData.owner?.id === user?.id && (
+                  <CardButton idea={props.idea} />
                 ))}
             </Accordion.Panel>
           </Accordion.Item>
@@ -478,27 +505,7 @@ export default function IdeaDetails(props: IProps) {
           {type !== IdeaCardType.Voting && (
             <>
               <Card.Section className={classes.borderSection}>
-                <Text className={classes.label}>Skills required</Text>
-                <Group spacing={7} mt={5}>
-                  {ideaData.requiredSkills?.map((skill) => (
-                    <Tooltip
-                      multiline
-                      width={220}
-                      transition='fade'
-                      transitionDuration={200}
-                      color='gray'
-                      label={getSkillDescription(skill.id)}
-                      key={skill.id}
-                    >
-                      <Badge
-                        color={theme.colorScheme === 'dark' ? 'dark' : 'gray'}
-                        key={skill.id}
-                      >
-                        {skill.name}
-                      </Badge>
-                    </Tooltip>
-                  ))}
-                </Group>
+                {skillsRequired}
               </Card.Section>
 
               <Accordion
@@ -515,56 +522,52 @@ export default function IdeaDetails(props: IProps) {
                   <Accordion.Panel>
                     <div>{ideaDetails()}</div>
 
-                    {type === IdeaCardType.AllIdeas && (ideaData.owner?.id === user?.id && (
-                      <Group
-                        mt='xs'
-                        position={'right'}
-                        style={{ paddingTop: 5 }}
-                      >
-                        <Button
-                          disabled={buttonIsDisabled}
-                          onClick={
-                            participantCheck
-                              ? removeThisIdeaParticipant
-                              : addIdeaParticipant
-                          }
-                          style={{
-                            backgroundColor: participantCheck
-                              ? LEAVE_BUTTON_COLOR
-                              : JOIN_BUTTON_COLOR,
-                          }}
+                    {type === IdeaCardType.AllIdeas &&
+                      ideaData.owner?.id === user?.id && (
+                        <Group
+                          mt='xs'
+                          position={'right'}
+                          style={{ paddingTop: 5 }}
                         >
-                          {participantCheck ? 'Leave Idea' : 'Join Idea'}
-                        </Button>
-                        {hackathonVotingOpened && (
                           <Button
                             disabled={buttonIsDisabled}
                             onClick={
-                              voteCheck ? removeThisVote : addVoterToIdea
+                              participantCheck
+                                ? removeThisIdeaParticipant
+                                : addIdeaParticipant
                             }
                             style={{
-                              backgroundColor: voteCheck
+                              backgroundColor: participantCheck
                                 ? LEAVE_BUTTON_COLOR
                                 : JOIN_BUTTON_COLOR,
                             }}
                           >
-                            {voteCheck ? 'Remove Vote' : 'Vote for Idea'}
+                            {participantCheck ? 'Leave Idea' : 'Join Idea'}
                           </Button>
-                          
-                        )}
-                        <CardButton
-                          idea={props.idea}
-                        />
-                      </Group>
-                    ))}
+                          {hackathonVotingOpened && (
+                            <Button
+                              disabled={buttonIsDisabled}
+                              onClick={
+                                voteCheck ? removeThisVote : addVoterToIdea
+                              }
+                              style={{
+                                backgroundColor: voteCheck
+                                  ? LEAVE_BUTTON_COLOR
+                                  : JOIN_BUTTON_COLOR,
+                              }}
+                            >
+                              {voteCheck ? 'Remove Vote' : 'Vote for Idea'}
+                            </Button>
+                          )}
+                          <CardButton idea={props.idea} />
+                        </Group>
+                      )}
 
                     {type === IdeaCardType.Admin ||
-                      type === IdeaCardType.Owner && 
-                      (ideaData.owner?.id === user?.id && (
-                        <CardButton
-                          idea={props.idea}
-                        />
-                      ))}
+                      (type === IdeaCardType.Owner &&
+                        ideaData.owner?.id === user?.id && (
+                          <CardButton idea={props.idea} />
+                        ))}
                   </Accordion.Panel>
                 </Accordion.Item>
               </Accordion>
