@@ -310,8 +310,6 @@ function IdeaForm(props: IProps) {
               />
             </Card.Section>
 
-            {/* {context !== IdeaFormType.New && (
-                            <> */}
             <Card.Section className={classes.borderSection}>
               <Checkbox.Group
                 label='Required skills'
@@ -325,21 +323,19 @@ function IdeaForm(props: IProps) {
                 {skillsList}
               </Checkbox.Group>
             </Card.Section>
-            {/* <Card.Section className={classes.borderSection}>
-                            <Radio.Group
-                                label='Category'
-                                description='chose one or more categories'
-                                onChange={setCategory}
-                                required
-                                defaultValue={idea?.category?.id}
-                                value={category}
-                                className={classes.label}
-                            >
-                                {categoriesList}
-                            </Radio.Group>
-                        </Card.Section> */}
-            {/* </>
-                        )} */}
+            <Card.Section className={classes.borderSection}>
+              <Radio.Group
+                label='Category'
+                description='chose one or more categories'
+                onChange={setCategory}
+                required
+                defaultValue={idea?.category?.id}
+                value={category}
+                className={classes.label}
+              >
+                {categoriesList}
+              </Radio.Group>
+            </Card.Section>
 
             <Group position='right' mt='xl'>
               {context === IdeaFormType.Edit && (
