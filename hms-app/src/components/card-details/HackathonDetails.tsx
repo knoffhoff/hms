@@ -37,6 +37,7 @@ import {
   DELETE_BUTTON_COLOR,
   JOIN_BUTTON_COLOR,
   RELOAD_BUTTON_COLOR,
+  PRIMARY_COLOR_2
 } from '../../common/colors'
 import { showNotification, updateNotification } from '@mantine/notifications'
 import { Check, X } from 'tabler-icons-react'
@@ -405,6 +406,21 @@ export default function HackathonDetails(props: IProps) {
                   </Text>
                 </Accordion.Control>
                 <Accordion.Panel>
+                  <Group position='left' mt='xl'>
+                  <Button
+                    style={{ backgroundColor: PRIMARY_COLOR_2 }}
+                    mb={20}
+                    onClick={() =>
+                      localStorage.setItem(
+                        'ideas',
+                        JSON.stringify(relevantIdeaList)
+                      )
+                    }
+                    component={Link}
+                    to='/pitch'
+                  >
+                    Pitch
+                  </Button>
                   <Button
                     style={{ backgroundColor: JOIN_BUTTON_COLOR }}
                     mb={20}
@@ -415,10 +431,11 @@ export default function HackathonDetails(props: IProps) {
                       )
                     }
                     component={Link}
-                    to='/presentations'
+                    to='/finals'
                   >
-                    Presentations
+                    Final
                   </Button>
+                  </Group>
                   <Accordion chevronPosition={'right'}>{allIdeas}</Accordion>
                 </Accordion.Panel>
               </Accordion.Item>

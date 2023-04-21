@@ -34,7 +34,7 @@ function App() {
           <>
             <Route path='voting' element={<Voting />} />
             <Route path='admin' element={<Admin />} />
-            <Route path={'presentations'} element={<Presentations />} />
+            <Route path={'pitch'} element={<Presentations />} />
             <Route path={'finals'} element={<FinalPresentations />} />
           </>
         )}
