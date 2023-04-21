@@ -187,6 +187,17 @@ export default function HeaderMenu({
     </div>
   )
 
+  function userAvatar(profilePhoto: string | null | undefined) {
+   if(profilePhoto){
+      return <Avatar src={profilePhoto} radius={'xl'} />
+   }
+   if(!profilePhoto){
+      return <Avatar color='indigo' radius='xl'>
+      {getInitials(user?.name ?? 'User User')}
+    </Avatar>
+   }
+  }
+
   return (
     <Header
       height={56}
@@ -203,13 +214,8 @@ export default function HeaderMenu({
           </Group>
           <Group spacing={5} className={classes.headerLinks}>
             <SwitchToggle />
-            {fullscreenMenu}
-            {profilePhoto && <Avatar src={profilePhoto} radius={'xl'} />}
-            {!profilePhoto && (
-              <Avatar color='indigo' radius='xl'>
-                {getInitials(user?.name ?? 'User User')}
-              </Avatar>
-            )}
+            {fullscreenMenu}            
+            {userAvatar(profilePhoto)}
             <Button onClick={logout} variant={'subtle'}>
               <Logout />
             </Button>
