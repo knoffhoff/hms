@@ -11,6 +11,8 @@ import {
   Menu,
   Text,
   useMantineColorScheme,
+  Popover,
+  Badge
 } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 import { SwitchToggle } from './ThemeSwitchToggle'
@@ -23,8 +25,10 @@ import {
 } from '../common/colors'
 import { useMsal } from '@azure/msal-react'
 import { Logout } from 'tabler-icons-react'
-import { getProfilePhoto } from '../common/actionAuth'
+import { getProfile, getProfilePhoto } from '../common/actionAuth'
 import { LOGO } from '../common/constants'
+import { ActiveDirectoryUser, User, UserPreview } from '../common/types'
+import { getUserDetails, getUserExists } from '../actions/UserActions'
 
 interface HeaderSearchProps {
   links: {
@@ -58,6 +62,29 @@ export default function HeaderMenu({
   const location = useLocation()
   const { instance, accounts } = useMsal()
   const user = accounts.length > 0 ? accounts[0] : null
+  const [userId, setUserId] = useState('')
+  const [userDetails, setUserDetails] = useState({
+    id: 'string',
+    lastName: 'string',
+    firstName: 'string',
+    emailAddress: 'string',
+    roles: [],
+    skills: [],
+    imageUrl: 'string',
+    creationDate: new Date(),
+  } as User)
+
+  const loadSelectedUser = () => {
+    getUserDetails(instance, userId).then(
+      (data) => {
+        setUserDetails(data)
+      },
+    )
+  }
+
+  useEffect(() => {
+    loadSelectedUser()
+  }, [userId])
 
   useEffect(() => {
     const fetchProfilePhoto = async () => {
@@ -66,6 +93,25 @@ export default function HeaderMenu({
     }
     fetchProfilePhoto()
   }, [instance])
+
+  useEffect(() => {
+    const getProfileDetails = async () => {
+      const profile = await getProfile(instance)
+      const userExists = await userExistsInDb(profile)
+      setUserId(userExists.id)
+
+    } 
+    getProfileDetails()
+  }, [])
+  
+  const userExistsInDb = async (user: ActiveDirectoryUser) => {
+    try {
+      const userExistsResponse = await getUserExists(instance, user)
+      if (userExistsResponse) return userExistsResponse
+    } catch (err) {
+      console.log(err)
+    }
+  }
 
   const logout = () => {
     const logoutRequest = {
@@ -187,6 +233,47 @@ export default function HeaderMenu({
     </div>
   )
 
+  function PopoverProfile() {
+    return (
+      <Popover width='200' position='bottom' withArrow shadow='md'>
+        <Popover.Target>
+          <Button>
+          {userAvatar(profilePhoto)}
+          </Button>
+        </Popover.Target>
+        <Popover.Dropdown>
+          <Text size='sm'>
+            Name: {user?.name}
+          </Text>
+
+          <Text size='sm'>
+          Email: {user?.username}
+          </Text>
+
+          <Text size='sm'>Roles: {userDetails.roles?.map((role, index) => (
+            <Badge
+              color={theme.colorScheme === 'dark' ? 'dark' : 'gray'}
+              key={index}
+            >
+              {role}
+            </Badge>
+          ))}
+          </Text>
+
+          <Text size='sm'>Skills: {userDetails.skills?.map((skill, index) => (
+                <Badge
+                  color={theme.colorScheme === 'dark' ? 'dark' : 'gray'}
+                  key={index}
+                >
+                  {skill.name}
+                </Badge>
+              ))}
+          </Text>
+        </Popover.Dropdown>
+      </Popover>
+    )
+  }
+
   function userAvatar(profilePhoto: string | null | undefined) {
    if(profilePhoto){
       return <Avatar src={profilePhoto} radius={'xl'} />
@@ -214,8 +301,8 @@ export default function HeaderMenu({
           </Group>
           <Group spacing={5} className={classes.headerLinks}>
             <SwitchToggle />
-            {fullscreenMenu}            
-            {userAvatar(profilePhoto)}
+            {fullscreenMenu}
+            {PopoverProfile()}
             <Button onClick={logout} variant={'subtle'}>
               <Logout />
             </Button>

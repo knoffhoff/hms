@@ -140,16 +140,7 @@ export default function UserDetails(props: { userId: string }) {
 
           <Card.Section className={classes.borderSection}>
             <Text className={classes.label}>Roles</Text>
-            <Group spacing={7} mt={5}>
-              {user.roles?.map((role, index) => (
-                <Badge
-                  color={theme.colorScheme === 'dark' ? 'dark' : 'gray'}
-                  key={index}
-                >
-                  {role}
-                </Badge>
-              ))}
-            </Group>
+            
           </Card.Section>
 
           <Card.Section className={classes.borderSection}>
