@@ -24,6 +24,7 @@ import MoveIdeaModal from '../MoveIdeaModal'
 
 type IProps = {
     idea: Idea
+    reloadIdeaDetails?: () => void
 }
 
 export default function CardButtons(props: IProps) {
@@ -32,7 +33,7 @@ export default function CardButtons(props: IProps) {
 
   const { instance } = useMsal()
   const { classes } = styles()
-  const { idea } = props
+  const { idea, reloadIdeaDetails } = props
   const [ideaData, setIdeaData] = useState(idea)
   const [loader, setLoader] = useState(false)
 
@@ -124,6 +125,7 @@ export default function CardButtons(props: IProps) {
         ownerId={ideaData.owner ? ideaData.owner.id : ''}
         hackathon={ideaData.hackathon!}
         setOpened={closeEditModal}
+        reload={reloadIdeaDetails}
       />
       <Text className={classes.text}>
         (This window will automatically close as soon as the idea is changed)

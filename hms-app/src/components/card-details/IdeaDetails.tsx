@@ -424,7 +424,10 @@ export default function IdeaDetails(props: IProps) {
               {type === IdeaCardType.Admin ||
                 type === IdeaCardType.Owner ||
                 (ideaData.owner?.id === user?.id && (
-                  <CardButton idea={props.idea} />
+                  <CardButton 
+                    idea={props.idea}
+                    reloadIdeaDetails={loadIdeaData} 
+                  />
                 ))}
             </Accordion.Panel>
           </Accordion.Item>
