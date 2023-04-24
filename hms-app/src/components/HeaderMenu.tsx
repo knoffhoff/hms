@@ -237,9 +237,13 @@ export default function HeaderMenu({
     return (
       <Popover width='200' position='bottom' withArrow shadow='md'>
         <Popover.Target>
-          <Button>
+          <Button style={{
+            backgroundColor:
+              theme.colorScheme === 'light' ? PRIMARY_COLOR_1 : PRIMARY_COLOR_1,
+              padding: 0, height: 40
+}}>
           {userAvatar(profilePhoto)}
-          </Button>
+          </Button>  
         </Popover.Target>
         <Popover.Dropdown>
           <Text size='sm'>
