@@ -20,6 +20,7 @@ import { styles } from '../common/styles'
 import {
   HEADER_ACTIVE_COLOR_DARK,
   HEADER_ACTIVE_COLOR_LIGHT,
+  JOIN_BUTTON_COLOR,
   PRIMARY_COLOR_1,
   TEXT_COLOR_WHITE,
 } from '../common/colors'
@@ -273,6 +274,15 @@ export default function HeaderMenu({
                 </Badge>
               ))}
           </Text>
+          <Group position='right' mt='xs'>
+          <Button
+              style={{
+                backgroundColor: JOIN_BUTTON_COLOR
+              }}
+            >
+            Edit
+          </Button>
+          </Group>
         </Popover.Dropdown>
       </Popover>
     )
