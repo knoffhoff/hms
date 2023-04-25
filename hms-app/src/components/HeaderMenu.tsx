@@ -12,7 +12,8 @@ import {
   Text,
   useMantineColorScheme,
   Popover,
-  Badge
+  Badge,
+  Modal,
 } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 import { SwitchToggle } from './ThemeSwitchToggle'
@@ -30,6 +31,7 @@ import { getProfile, getProfilePhoto } from '../common/actionAuth'
 import { LOGO } from '../common/constants'
 import { ActiveDirectoryUser, User, UserPreview } from '../common/types'
 import { getUserDetails, getUserExists } from '../actions/UserActions'
+import EditUserForm from './input-forms/EditUserForm'
 
 interface HeaderSearchProps {
   links: {
@@ -66,6 +68,7 @@ export default function HeaderMenu({
   const { instance, accounts } = useMsal()
   const user = accounts.length > 0 ? accounts[0] : null
   const [isLoading, setIsLoading] = useState(true)
+  const [editModalOpened, setEditModalOpened] = useState(false)
   const [userDetails, setUserDetails] = useState({
     id: 'string',
     lastName: 'string',
@@ -218,6 +221,21 @@ export default function HeaderMenu({
     </div>
   )
 
+  const editModal = (
+    <Modal
+      centered
+      opened={editModalOpened}
+      onClose={() => setEditModalOpened(false)}
+      withCloseButton={false}
+    >
+      <Text className={classes.title}>Edit User</Text>
+      <EditUserForm userId={userId}/>
+      <Text className={classes.text}>
+        (This window will automatically close as soon as the user is edited)
+      </Text>
+    </Modal>
+  )
+
   const popoverProfile = (
       <Popover width='200' position='bottom' withArrow shadow='md'>
         <Popover.Target>
@@ -270,12 +288,11 @@ export default function HeaderMenu({
           
           <Group position='right' mt='xs'>
           <Button
-              style={{
-                backgroundColor: JOIN_BUTTON_COLOR
-              }}
-            >
-            Edit
-          </Button>
+                style={{ backgroundColor: JOIN_BUTTON_COLOR }}
+                onClick={() => setEditModalOpened(true)}
+              >
+                Edit
+            </Button>
           </Group>
         </Popover.Dropdown>
       </Popover>
@@ -309,6 +326,7 @@ export default function HeaderMenu({
           <Group spacing={5} className={classes.headerLinks}>
             <SwitchToggle />
             {fullscreenMenu}
+            {editModal}
             {popoverProfile}
             <Button onClick={logout} variant={'subtle'}>
               <Logout />
