@@ -45,6 +45,7 @@ import { getCategoryDetails } from '../../actions/CategoryActions'
 import { getSkillDetails } from '../../actions/SkillActions'
 import IdeaCommentDetails from './IdeaCommentDetails'
 import CardButton from './CardButton'
+import IdeaCard from './IdeaCard'
 
 type IProps = {
   idea: Idea
@@ -270,16 +271,22 @@ export default function IdeaDetails(props: IProps) {
   const ideaDetails = () => {
     return (
       <div>
+        {/* Moved to IdeaCard
+        
         <Card.Section className={classes.borderSection}>
           <Text className={classes.label}>Problem</Text>
           <Text className={classes.text}>{ideaData.problem}</Text>
-        </Card.Section>
+        </Card.Section> */}
 
+        {/* Moved to IdeaCard
+        
         <Card.Section className={classes.borderSection}>
           <Text className={classes.label}>Goal</Text>
           <Text className={classes.text}>{ideaData.goal}</Text>
-        </Card.Section>
+        </Card.Section> */}
 
+        {/* Moved to IdeaCard
+        
         <Card.Section className={classes.borderSection}>
           <Text className={classes.label}>Category</Text>
           <Tooltip
@@ -297,8 +304,10 @@ export default function IdeaDetails(props: IProps) {
               {ideaData.category?.title}
             </Badge>
           </Tooltip>
-        </Card.Section>
+        </Card.Section> */}
 
+        {/* Moved to IdeaCard
+        
         <Accordion
           chevronPosition={'right'}
           onChange={(value) =>
@@ -334,7 +343,7 @@ export default function IdeaDetails(props: IProps) {
             </Accordion.Control>
             <Accordion.Panel>{participantData}</Accordion.Panel>
           </Accordion.Item>
-        </Accordion>
+        </Accordion> */}
       </div>
     )
   }
@@ -465,8 +474,7 @@ export default function IdeaDetails(props: IProps) {
   return (
     <>
       {!isLoading && type === IdeaCardType.IdeaPortal ? (
-        minimalCard()
-      ) : (
+        minimalCard() ) : (
         <Card withBorder className={classes.card}>
           <Spoiler maxHeight={145} showLabel='Show more' hideLabel='Hide'>
             <Card.Section className={classes.borderSection}>
@@ -501,7 +509,7 @@ export default function IdeaDetails(props: IProps) {
                 )}
               </Group>
 
-              <Text className={classes.text}>{ideaData.description}</Text>
+              <Text className={classes.text}> {ideaData.description}</Text>
             </Card.Section>
           </Spoiler>
 
@@ -547,6 +555,7 @@ export default function IdeaDetails(props: IProps) {
                           >
                             {participantCheck ? 'Leave Idea' : 'Join Idea'}
                           </Button>
+
                           {hackathonVotingOpened && (
                             <Button
                               disabled={buttonIsDisabled}
