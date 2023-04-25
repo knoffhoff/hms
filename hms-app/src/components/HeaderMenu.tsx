@@ -65,7 +65,7 @@ export default function HeaderMenu({
   const location = useLocation()
   const { instance, accounts } = useMsal()
   const user = accounts.length > 0 ? accounts[0] : null
-  // const [userId, setUserId] = useState('')
+  const [isLoading, setIsLoading] = useState(true)
   const [userDetails, setUserDetails] = useState({
     id: 'string',
     lastName: 'string',
@@ -81,7 +81,8 @@ export default function HeaderMenu({
     getUserDetails(instance, userId).then(
       (data) => {
         setUserDetails(data)
-      },
+        setIsLoading(false)
+      }
     )
   }
 
@@ -237,25 +238,36 @@ export default function HeaderMenu({
           Email: {user?.username}
           </Text>
 
-          <Text size='sm'>Roles: {userDetails.roles?.map((role, index) => (
-            <Badge
-              color={theme.colorScheme === 'dark' ? 'dark' : 'gray'}
-              key={index}
-            >
-              {role}
-            </Badge>
-          ))}
-          </Text>
+        {isLoading && (
+          <div>
+            <Text className={classes.title}>Loading...</Text>
+          </div>
+        )}
 
-          <Text size='sm'>Skills: {userDetails.skills?.map((skill, index) => (
-                <Badge
-                  color={theme.colorScheme === 'dark' ? 'dark' : 'gray'}
-                  key={index}
-                >
-                  {skill.name}
-                </Badge>
-              ))}
-          </Text>
+        {!isLoading && (
+          <div>
+            <Text size='sm'>Roles: {userDetails.roles?.map((role, index) => (
+              <Badge
+                color={theme.colorScheme === 'dark' ? 'dark' : 'gray'}
+                key={index}
+              >
+              {role}
+              </Badge>
+            ))}
+            </Text>
+
+            <Text size='sm'>Skills: {userDetails.skills?.map((skill, index) => (
+              <Badge
+                color={theme.colorScheme === 'dark' ? 'dark' : 'gray'}
+                key={index}
+              >
+              {skill.name}
+              </Badge>
+            ))}
+            </Text>
+          </div>
+        )}
+          
           <Group position='right' mt='xs'>
           <Button
               style={{
