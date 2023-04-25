@@ -234,8 +234,7 @@ export default function HeaderMenu({
     </div>
   )
 
-  function PopoverProfile() {
-    return (
+  const popoverProfile = (
       <Popover width='200' position='bottom' withArrow shadow='md'>
         <Popover.Target>
           <Button style={{
@@ -286,8 +285,7 @@ export default function HeaderMenu({
         </Popover.Dropdown>
       </Popover>
     )
-  }
-
+  
   function userAvatar(profilePhoto: string | null | undefined) {
    if(profilePhoto){
       return <Avatar src={profilePhoto} radius={'xl'} />
@@ -316,7 +314,7 @@ export default function HeaderMenu({
           <Group spacing={5} className={classes.headerLinks}>
             <SwitchToggle />
             {fullscreenMenu}
-            {PopoverProfile()}
+            {popoverProfile}
             <Button onClick={logout} variant={'subtle'}>
               <Logout />
             </Button>
