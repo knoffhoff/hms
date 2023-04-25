@@ -45,7 +45,7 @@ import { getCategoryDetails } from '../../actions/CategoryActions'
 import { getSkillDetails } from '../../actions/SkillActions'
 import IdeaCommentDetails from './IdeaCommentDetails'
 import CardButton from './CardButton'
-import IdeaCard from './IdeaCard'
+import IdeaCard  from './IdeaCard'
 
 type IProps = {
   idea: Idea
@@ -60,7 +60,7 @@ export default function IdeaDetails(props: IProps) {
   const { instance } = useMsal()
   const { classes } = styles()
   const { idea, type, isLoading } = props
-  const MAX_TITLE_LENGTH = 100
+  // const MAX_TITLE_LENGTH = 100
   const theme = useMantineTheme()
   const [accordionOpen, setAccordionOpen] = useState(false)
   const [participantAccordionOpen, setParticipantAccordionOpen] =
@@ -268,86 +268,6 @@ export default function IdeaDetails(props: IProps) {
     }
   }
 
-  const ideaDetails = () => {
-    return (
-      <div>
-        {/* Moved to IdeaCard
-        
-        <Card.Section className={classes.borderSection}>
-          <Text className={classes.label}>Problem</Text>
-          <Text className={classes.text}>{ideaData.problem}</Text>
-        </Card.Section> */}
-
-        {/* Moved to IdeaCard
-        
-        <Card.Section className={classes.borderSection}>
-          <Text className={classes.label}>Goal</Text>
-          <Text className={classes.text}>{ideaData.goal}</Text>
-        </Card.Section> */}
-
-        {/* Moved to IdeaCard
-        
-        <Card.Section className={classes.borderSection}>
-          <Text className={classes.label}>Category</Text>
-          <Tooltip
-            multiline
-            width={220}
-            transition='fade'
-            transitionDuration={200}
-            color='gray'
-            label={categoryData.description}
-          >
-            <Badge
-              color={theme.colorScheme === 'dark' ? 'dark' : 'gray'}
-              key={ideaData.category?.id}
-            >
-              {ideaData.category?.title}
-            </Badge>
-          </Tooltip>
-        </Card.Section> */}
-
-        {/* Moved to IdeaCard
-        
-        <Accordion
-          chevronPosition={'right'}
-          onChange={(value) =>
-            setParticipantAccordionOpen(value === 'participants')
-          }
-        >
-          <Accordion.Item value={'participants'}>
-            <Accordion.Control>
-              {!participantAccordionOpen ? (
-                <div>
-                  <Text className={classes.label}>Current participants</Text>
-                  <Group spacing={7} mt={5}>
-                    <Avatar.Group>
-                      {ideaData.participants?.map((participant, index) => (
-                        <Avatar
-                          key={index}
-                          color='indigo'
-                          radius='xl'
-                          size='md'
-                        >
-                          {getInitials(
-                            participant.user.firstName,
-                            participant.user.lastName
-                          )}
-                        </Avatar>
-                      ))}
-                    </Avatar.Group>
-                  </Group>
-                </div>
-              ) : (
-                <Text className={classes.label}>Current participants</Text>
-              )}
-            </Accordion.Control>
-            <Accordion.Panel>{participantData}</Accordion.Panel>
-          </Accordion.Item>
-        </Accordion> */}
-      </div>
-    )
-  }
-
   const skillsRequired = (
     <div>
       <Text className={classes.label}>Skills required</Text>
@@ -374,93 +294,10 @@ export default function IdeaDetails(props: IProps) {
     </div>
   )
 
-  const minimalCard = () => {
-    return (
-      <Card withBorder className={classes.card}>
-        <Card.Section className={classes.borderSection}>
-          <Group mt={5} position='left'>
-            <Stack align={'center'} spacing={'xs'}>
-              <Avatar color='indigo' radius='xl' size='md'>
-                {getInitials(
-                  ideaData.owner?.firstName,
-                  ideaData.owner?.lastName
-                )}
-              </Avatar>
-              <Badge size='sm'>
-                {ideaData.owner?.firstName} {ideaData.owner?.lastName}
-              </Badge>
-            </Stack>
-            <Text className={classes.title}>
-              {ideaData.title?.slice(0, MAX_TITLE_LENGTH)}
-              {ideaData.title?.length > MAX_TITLE_LENGTH ? '...' : ''}
-            </Text>
-          </Group>
-        </Card.Section>
-
-        <Accordion
-          onChange={(value) => setAccordionOpen(value === 'idea-details')}
-        >
-          <Accordion.Item
-            className={classes.noBorderAccordion}
-            value={'idea-details'}
-          >
-            <Accordion.Control>
-              {!accordionOpen && 'Show details'}
-              {accordionOpen && 'Hide details'}
-            </Accordion.Control>
-            <Accordion.Panel>
-              <div>
-                <Card.Section className={classes.borderSection}>
-                  <Text className={classes.label}>Description</Text>
-                  <Text className={classes.text}>{ideaData.description}</Text>
-                </Card.Section>
-
-                <Card.Section className={classes.borderSection}>
-                  <Text className={classes.label}>Problem</Text>
-                  <Text className={classes.text}>{ideaData.problem}</Text>
-                </Card.Section>
-
-                <Card.Section className={classes.borderSection}>
-                  <Text className={classes.label}>Goal</Text>
-                  <Text className={classes.text}>{ideaData.goal}</Text>
-                </Card.Section>
-                
-                <Card.Section className={classes.borderSection}>
-                    {skillsRequired}
-                </Card.Section>
-              </div>
-
-              {type === IdeaCardType.Admin ||
-                type === IdeaCardType.Owner ||
-                (ideaData.owner?.id === user?.id && (
-                  <CardButton 
-                    idea={props.idea}
-                    reloadIdeaDetails={loadIdeaData} 
-                  />
-                ))}
-            </Accordion.Panel>
-          </Accordion.Item>
-        </Accordion>
-        <Card.Section className={classes.borderSection}>
-          <IdeaCommentDetails ideaId={ideaData.id} />
-        </Card.Section>
-      </Card>
-    )
-  }
-
   useEffect(() => {
     if (findParticipant()) setParticipantCheck(!!findParticipant())
     if (findVoter()) setVoteCheck(!!findVoter())
   }, [ideaData])
-
-  useEffect(() => {
-    loadCategoryDetails()
-    loadSkillDetails()
-  }, [])
-
-  useEffect(() => {
-    loadIdeaData()
-  }, [loader])
 
   useEffect(() => {
     if (user) {
@@ -472,124 +309,190 @@ export default function IdeaDetails(props: IProps) {
   }, [user, hackathonParticipantId])
 
   return (
-    <>
-      {!isLoading && type === IdeaCardType.IdeaPortal ? (
-        minimalCard() ) : (
-        <Card withBorder className={classes.card}>
-          <Spoiler maxHeight={145} showLabel='Show more' hideLabel='Hide'>
-            <Card.Section className={classes.borderSection}>
-              <Group noWrap mb={5} position='apart'>
-                <Group position='left'>
-                  <Stack align={'center'} spacing={'xs'}>
-                    <Avatar color='indigo' radius='xl' size='md'>
-                      {getInitials(
-                        ideaData.owner?.firstName,
-                        ideaData.owner?.lastName
-                      )}
-                    </Avatar>
-                    <Badge size='sm'>
-                      {ideaData.owner?.firstName} {ideaData.owner?.lastName}
-                    </Badge>
-                  </Stack>
-                  <Text className={classes.title}>
-                    {ideaData.title?.slice(0, MAX_TITLE_LENGTH)}
-                    {ideaData.title?.length > MAX_TITLE_LENGTH ? '...' : ''}
-                  </Text>
-                </Group>
-
-                {hackathonVotingOpened && (
-                  <Card.Section className={classes.noBorderSection}>
-                    <Stack align={'center'} spacing={'xs'}>
-                      <Text className={classes.label}>Votes: </Text>
-                      <Text className={classes.text}>
-                        {ideaData.voters?.length}
-                      </Text>
-                    </Stack>
-                  </Card.Section>
-                )}
-              </Group>
-
-              <Text className={classes.text}> {ideaData.description}</Text>
-            </Card.Section>
-          </Spoiler>
-
-          {type !== IdeaCardType.Voting && (
-            <>
-              <Card.Section className={classes.borderSection}>
-                {skillsRequired}
-              </Card.Section>
-
-              <Accordion
-                onChange={(value) => setAccordionOpen(value === 'idea-details')}
-              >
-                <Accordion.Item
-                  className={classes.noBorderAccordion}
-                  value={'idea-details'}
-                >
-                  <Accordion.Control>
-                    {!accordionOpen && 'Show details'}
-                    {accordionOpen && 'Hide details'}
-                  </Accordion.Control>
-                  <Accordion.Panel>
-                    <div>{ideaDetails()}</div>
-
-                    {type === IdeaCardType.AllIdeas &&
-                      ideaData.owner?.id === user?.id && (
-                        <Group
-                          mt='xs'
-                          position={'right'}
-                          style={{ paddingTop: 5 }}
-                        >
-                          <Button
-                            disabled={buttonIsDisabled}
-                            onClick={
-                              participantCheck
-                                ? removeThisIdeaParticipant
-                                : addIdeaParticipant
-                            }
-                            style={{
-                              backgroundColor: participantCheck
-                                ? LEAVE_BUTTON_COLOR
-                                : JOIN_BUTTON_COLOR,
-                            }}
-                          >
-                            {participantCheck ? 'Leave Idea' : 'Join Idea'}
-                          </Button>
-
-                          {hackathonVotingOpened && (
-                            <Button
-                              disabled={buttonIsDisabled}
-                              onClick={
-                                voteCheck ? removeThisVote : addVoterToIdea
-                              }
-                              style={{
-                                backgroundColor: voteCheck
-                                  ? LEAVE_BUTTON_COLOR
-                                  : JOIN_BUTTON_COLOR,
-                              }}
-                            >
-                              {voteCheck ? 'Remove Vote' : 'Vote for Idea'}
-                            </Button>
-                          )}
-                          <CardButton idea={props.idea} />
-                        </Group>
-                      )}
-
-                    {type === IdeaCardType.Admin ||
-                      (type === IdeaCardType.Owner &&
-                        ideaData.owner?.id === user?.id && (
-                          <CardButton idea={props.idea} />
-                        ))}
-                  </Accordion.Panel>
-                </Accordion.Item>
-              </Accordion>
-              <Card.Section className={classes.borderSection}>
-                <IdeaCommentDetails ideaId={ideaData.id} />
-              </Card.Section>
-            </>
-          )}
-        </Card>
-      )}
-    </>
+    <IdeaCard
+      type={props.type}
+      idea={props.idea}
+      isLoading={props.isLoading}
+    />
   )
 }
+
+ // __DO NOT DELETE FOR NOW (MINIMAL CARD)__
+  //  const minimalCard = () => {
+  //   return (
+  //     <Card withBorder className={classes.card}>
+  //       <Card.Section className={classes.borderSection}>
+  //         <Group mt={5} position='left'>
+  //           <Stack align={'center'} spacing={'xs'}>
+  //             <Avatar color='indigo' radius='xl' size='md'>
+  //               {getInitials(
+  //                 ideaData.owner?.firstName,
+  //                 ideaData.owner?.lastName
+  //               )}
+  //             </Avatar>
+  //             <Badge size='sm'>
+  //               {ideaData.owner?.firstName} {ideaData.owner?.lastName}
+  //             </Badge>
+  //           </Stack>
+  //           <Text className={classes.title}>
+  //             {ideaData.title?.slice(0, MAX_TITLE_LENGTH)}
+  //             {ideaData.title?.length > MAX_TITLE_LENGTH ? '...' : ''}
+  //           </Text>
+  //         </Group>
+  //       </Card.Section>
+
+  //       <Accordion
+  //         onChange={(value) => setAccordionOpen(value === 'idea-details')}
+  //       >
+  //         <Accordion.Item
+  //           className={classes.noBorderAccordion}
+  //           value={'idea-details'}
+  //         >
+  //           <Accordion.Control>
+  //             {!accordionOpen && 'Show details'}
+  //             {accordionOpen && 'Hide details'}
+  //           </Accordion.Control>
+  //           <Accordion.Panel>
+  //             <div>
+  //               <Card.Section className={classes.borderSection}>
+  //                 <Text className={classes.label}>Description</Text>
+  //                 <Text className={classes.text}>{ideaData.description}</Text>
+  //               </Card.Section>
+
+  //               <Card.Section className={classes.borderSection}>
+  //                 <Text className={classes.label}>Problem</Text>
+  //                 <Text className={classes.text}>{ideaData.problem}</Text>
+  //               </Card.Section>
+
+  //               <Card.Section className={classes.borderSection}>
+  //                 <Text className={classes.label}>Goal</Text>
+  //                 <Text className={classes.text}>{ideaData.goal}</Text>
+  //               </Card.Section>
+                
+  //               <Card.Section className={classes.borderSection}>
+  //                   {skillsRequired}
+  //               </Card.Section>
+  //             </div>
+
+  //             {type === IdeaCardType.Admin ||
+  //               type === IdeaCardType.Owner ||
+  //               (ideaData.owner?.id === user?.id && (
+  //                 <CardButton 
+  //                   idea={props.idea}
+  //                   reloadIdeaDetails={loadIdeaData} 
+  //                 />
+  //               ))}
+  //           </Accordion.Panel>
+  //         </Accordion.Item>
+  //       </Accordion>
+  //       <Card.Section className={classes.borderSection}>
+  //         <IdeaCommentDetails ideaId={ideaData.id} />
+  //       </Card.Section>
+  //     </Card>
+  //   )
+  // }
+
+  // __DO NOT DELETE FOR NOW (IDEA DETAILS RETURN)__
+  //  <>
+  //   {!isLoading && type === IdeaCardType.IdeaPortal ? (
+  //     minimalCard() ) : (
+  //     <Card withBorder className={classes.card}>
+  //       <Spoiler maxHeight={145} showLabel='Show more' hideLabel='Hide'>
+  //         <Card.Section className={classes.borderSection}>
+  //           <Group noWrap mb={5} position='apart'>
+  //             {ideaName()}
+
+  //             {hackathonVotingOpened && (
+  //               <Card.Section className={classes.noBorderSection}>
+  //                 <Stack align={'center'} spacing={'xs'}>
+  //                   <Text className={classes.label}>Votes: </Text>
+  //                   <Text className={classes.text}>
+  //                     {ideaData.voters?.length}
+  //                   </Text>
+  //                 </Stack>
+  //               </Card.Section>
+  //             )}
+  //           </Group>
+
+  //           <Text className={classes.text}> {ideaData.description}</Text>
+  //         </Card.Section>
+  //       </Spoiler>
+
+  //       {type !== IdeaCardType.Voting && (
+  //         <>
+  //           <Card.Section className={classes.borderSection}>
+  //             {skillsRequired}
+  //           </Card.Section>
+
+  //           <Accordion
+  //             onChange={(value) => setAccordionOpen(value === 'idea-details')}
+  //           >
+  //             <Accordion.Item
+  //               className={classes.noBorderAccordion}
+  //               value={'idea-details'}
+  //             >
+  //               <Accordion.Control>
+  //                 {!accordionOpen && 'Show details'}
+  //                 {accordionOpen && 'Hide details'}
+  //               </Accordion.Control>
+  //               <Accordion.Panel>
+  //                 <div>{ideaDetails()}</div>
+
+  //                 {type === IdeaCardType.AllIdeas &&
+  //                   ideaData.owner?.id === user?.id && (
+  //                     <Group
+  //                       mt='xs'
+  //                       position={'right'}
+  //                       style={{ paddingTop: 5 }}
+  //                     >
+  //                       <Button
+  //                         disabled={buttonIsDisabled}
+  //                         onClick={
+  //                           participantCheck
+  //                             ? removeThisIdeaParticipant
+  //                             : addIdeaParticipant
+  //                         }
+  //                         style={{
+  //                           backgroundColor: participantCheck
+  //                             ? LEAVE_BUTTON_COLOR
+  //                             : JOIN_BUTTON_COLOR,
+  //                         }}
+  //                       >
+  //                         {participantCheck ? 'Leave Idea' : 'Join Idea'}
+  //                       </Button>
+
+  //                       {hackathonVotingOpened && (
+  //                         <Button
+  //                           disabled={buttonIsDisabled}
+  //                           onClick={
+  //                             voteCheck ? removeThisVote : addVoterToIdea
+  //                           }
+  //                           style={{
+  //                             backgroundColor: voteCheck
+  //                               ? LEAVE_BUTTON_COLOR
+  //                               : JOIN_BUTTON_COLOR,
+  //                           }}
+  //                         >
+  //                           {voteCheck ? 'Remove Vote' : 'Vote for Idea'}
+  //                         </Button>
+  //                       )}
+  //                       <CardButton idea={props.idea} />
+  //                     </Group>
+  //                   )}
+
+  //                 {type === IdeaCardType.Admin ||
+  //                   (type === IdeaCardType.Owner &&
+  //                     ideaData.owner?.id === user?.id && (
+  //                       <CardButton idea={props.idea} />
+  //                     ))}
+  //               </Accordion.Panel>
+  //             </Accordion.Item>
+  //           </Accordion>
+  //           <Card.Section className={classes.borderSection}>
+  //             <IdeaCommentDetails ideaId={ideaData.id} />
+  //           </Card.Section>
+  //         </>
+  //       )}
+  //     </Card>
+  //   )}
+  // </>
