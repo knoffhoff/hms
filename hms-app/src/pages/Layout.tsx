@@ -66,6 +66,7 @@ const Layout = () => {
   const isAdmin = (user: UserSerializable) => {
     return user && user.roles && user.roles.includes('Admin')
   }
+  const [userId, setUserId] = useState('')
 
   useEffect(() => {
     if (isAuthenticated && stateUser) {
@@ -137,6 +138,7 @@ const Layout = () => {
       } else {
         userId = userExists.id
       }
+      setUserId(userId)
       const dbUser = await getDbUser(userId)
       setUser(dbUser)
       dispatch(setUserState(dbUser))
@@ -185,6 +187,7 @@ const Layout = () => {
                     links={menuLinks}
                     hackathonLinks={hackLinks}
                     adminLinks={adminLinks}
+                    userId = {userId}
                   />
                 }
                 styles={(theme) => ({

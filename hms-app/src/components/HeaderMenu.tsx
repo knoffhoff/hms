@@ -44,6 +44,7 @@ interface HeaderSearchProps {
     link: string
     label: string
   }[]
+  userId: string
 }
 
 const AZURE_ACCOUNT_ID = process.env.REACT_APP_AZURE_ACCOUNT_ID || ''
@@ -53,6 +54,7 @@ export default function HeaderMenu({
   links,
   hackathonLinks,
   adminLinks,
+  userId
 }: HeaderSearchProps) {
   const theme = useMantineColorScheme()
   const [profilePhoto, setProfilePhoto] = useState('')
@@ -63,7 +65,7 @@ export default function HeaderMenu({
   const location = useLocation()
   const { instance, accounts } = useMsal()
   const user = accounts.length > 0 ? accounts[0] : null
-  const [userId, setUserId] = useState('')
+  // const [userId, setUserId] = useState('')
   const [userDetails, setUserDetails] = useState({
     id: 'string',
     lastName: 'string',
@@ -94,25 +96,6 @@ export default function HeaderMenu({
     }
     fetchProfilePhoto()
   }, [instance])
-
-  useEffect(() => {
-    const getProfileDetails = async () => {
-      const profile = await getProfile(instance)
-      const userExists = await userExistsInDb(profile)
-      setUserId(userExists.id)
-
-    } 
-    getProfileDetails()
-  }, [])
-  
-  const userExistsInDb = async (user: ActiveDirectoryUser) => {
-    try {
-      const userExistsResponse = await getUserExists(instance, user)
-      if (userExistsResponse) return userExistsResponse
-    } catch (err) {
-      console.log(err)
-    }
-  }
 
   const logout = () => {
     const logoutRequest = {
