@@ -294,16 +294,6 @@ export default function HackathonDetails(props: IProps) {
           <div>
             <HackathonHeader hackathonData={hackathonData} />
 
-            {type === HackathonDetailsType.Archive && hackathonId !== '' && (
-              <Container mb={25}>
-                <RichTextEditor
-                  readOnly
-                  value={hackathonData.description || ''}
-                  id='hackathonDescriptionEditor'
-                />
-              </Container>
-            )}
-
             <IdeaCardList
               ideas={relevantIdeaList}
               columnSize={6}
