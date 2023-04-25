@@ -240,7 +240,7 @@ export default function HeaderMenu({
           <Button style={{
             backgroundColor:
               theme.colorScheme === 'light' ? PRIMARY_COLOR_1 : PRIMARY_COLOR_1,
-              padding: 0, height: 40
+              padding: '0px 0px 0px 10px', height: 40
 }}>
           {userAvatar(profilePhoto)}
           </Button>  
