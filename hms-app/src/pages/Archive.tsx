@@ -68,6 +68,16 @@ export default function Archive() {
       }
   }, [ideaData])
 
+function validHackhaton() {
+  if(hackathonData.startDate !== NULL_DATE &&
+    hackathonData.startDate?.toString() !== 'Invalid Date' &&
+    !isHackathonLoading &&
+    !isHackathonError){
+      return true
+    }
+  return false
+}
+
   return (
     <>
       <Group position={'apart'} my={20}>
@@ -84,10 +94,7 @@ export default function Archive() {
         </>
       )}
 
-      {hackathonData.startDate !== NULL_DATE &&
-        hackathonData.startDate?.toString() !== 'Invalid Date' &&
-        !isHackathonLoading &&
-        !isHackathonError && (
+      {validHackhaton() && (
           <div>
             <HackathonHeader hackathonData={hackathonData} />
 
