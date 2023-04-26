@@ -28,6 +28,7 @@ import { getProfile } from '../common/actionAuth'
 import {
   ActiveDirectoryUser,
   HackathonPreview,
+  User,
   UserPreview,
 } from '../common/types'
 import { setUserState, UserSerializable } from '../common/redux/userSlice'
@@ -48,6 +49,7 @@ const Layout = () => {
   const isAuthenticated = useIsAuthenticated()
   const dispatch = useAppDispatch()
   const [user, setUser] = useState<UserPreview>()
+  const [userDetails, setUserDetails] = useState<User>()
   const [colorScheme, setColorScheme] = useLocalStorage<ColorScheme>(
     defaultColorSchemeLocalStorageKey,
     defaultColorScheme
@@ -66,7 +68,6 @@ const Layout = () => {
   const isAdmin = (user: UserSerializable) => {
     return user && user.roles && user.roles.includes('Admin')
   }
-  const [userId, setUserId] = useState('')
 
   useEffect(() => {
     if (isAuthenticated && stateUser) {
@@ -138,9 +139,9 @@ const Layout = () => {
       } else {
         userId = userExists.id
       }
-      setUserId(userId)
       const dbUser = await getDbUser(userId)
       setUser(dbUser)
+      setUserDetails(dbUser)
       dispatch(setUserState(dbUser))
     }
     if (isAuthenticated) {
@@ -179,6 +180,7 @@ const Layout = () => {
     >
       <MantineProvider theme={{ colorScheme }} withGlobalStyles>
         {((isAuthenticated && user !== undefined) || !USE_AUTH) && (
+          (userDetails !== undefined) && (
           <UserContext.Provider value={user}>
             <CurrentHackathonContext.Provider value={currentHackathon}>
               <AppShell
@@ -187,7 +189,7 @@ const Layout = () => {
                     links={menuLinks}
                     hackathonLinks={hackLinks}
                     adminLinks={adminLinks}
-                    userId = {userId}
+                    userDetails = {userDetails}
                   />
                 }
                 styles={(theme) => ({
@@ -205,7 +207,7 @@ const Layout = () => {
                 </Container>
               </AppShell>
             </CurrentHackathonContext.Provider>
-          </UserContext.Provider>
+          </UserContext.Provider>)
         )}
         {(!isAuthenticated || !user) && USE_AUTH && (
           <Login isAuthenticated={isAuthenticated} user={user} />

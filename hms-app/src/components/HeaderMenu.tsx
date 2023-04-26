@@ -27,10 +27,9 @@ import {
 } from '../common/colors'
 import { useMsal } from '@azure/msal-react'
 import { Logout } from 'tabler-icons-react'
-import { getProfile, getProfilePhoto } from '../common/actionAuth'
+import { getProfilePhoto } from '../common/actionAuth'
 import { LOGO } from '../common/constants'
-import { ActiveDirectoryUser, User, UserPreview } from '../common/types'
-import { getUserDetails, getUserExists } from '../actions/UserActions'
+import { User } from '../common/types'
 import EditUserForm from './input-forms/EditUserForm'
 
 interface HeaderSearchProps {
@@ -46,7 +45,7 @@ interface HeaderSearchProps {
     link: string
     label: string
   }[]
-  userId: string
+  userDetails: User
 }
 
 const AZURE_ACCOUNT_ID = process.env.REACT_APP_AZURE_ACCOUNT_ID || ''
@@ -56,7 +55,7 @@ export default function HeaderMenu({
   links,
   hackathonLinks,
   adminLinks,
-  userId
+  userDetails
 }: HeaderSearchProps) {
   const theme = useMantineColorScheme()
   const [profilePhoto, setProfilePhoto] = useState('')
@@ -69,29 +68,6 @@ export default function HeaderMenu({
   const user = accounts.length > 0 ? accounts[0] : null
   const [isLoading, setIsLoading] = useState(true)
   const [editModalOpened, setEditModalOpened] = useState(false)
-  const [userDetails, setUserDetails] = useState({
-    id: 'string',
-    lastName: 'string',
-    firstName: 'string',
-    emailAddress: 'string',
-    roles: [],
-    skills: [],
-    imageUrl: 'string',
-    creationDate: new Date(),
-  } as User)
-
-  const loadSelectedUser = () => {
-    getUserDetails(instance, userId).then(
-      (data) => {
-        setUserDetails(data)
-        setIsLoading(false)
-      }
-    )
-  }
-
-  useEffect(() => {
-    loadSelectedUser()
-  }, [userId])
 
   useEffect(() => {
     const fetchProfilePhoto = async () => {
@@ -229,7 +205,7 @@ export default function HeaderMenu({
       withCloseButton={false}
     >
       <Text className={classes.title}>Edit User</Text>
-      <EditUserForm userId={userId}/>
+      <EditUserForm userId={userDetails.id}/>
       <Text className={classes.text}>
         (This window will automatically close as soon as the user is edited)
       </Text>
@@ -256,13 +232,6 @@ export default function HeaderMenu({
           Email: {user?.username}
           </Text>
 
-        {isLoading && (
-          <div>
-            <Text className={classes.title}>Loading...</Text>
-          </div>
-        )}
-
-        {!isLoading && (
           <div>
             <Text size='sm'>Roles: {userDetails.roles?.map((role, index) => (
               <Badge
@@ -284,7 +253,6 @@ export default function HeaderMenu({
             ))}
             </Text>
           </div>
-        )}
           
           <Group position='right' mt='xs'>
           <Button
