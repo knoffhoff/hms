@@ -12,12 +12,7 @@ import { getIdeaDetails } from '../actions/IdeaActions'
 
 export default function Archive() {
   const { instance } = useMsal()
-  const [hackathonData, setHackathonData] = useState({
-    id: '',
-    title: '',
-    startDate: NULL_DATE,
-    endDate: NULL_DATE,
-  } as Hackathon)
+  const [hackathonData, setHackathonData] = useState({} as Hackathon)
   const [selectedHackathonId, setSelectedHackathonId] = useState('')
   const [isHackathonError, setIsHackathonError] = useState(false)
   const [isHackathonLoading, setIsHackathonLoading] = useState(true)
