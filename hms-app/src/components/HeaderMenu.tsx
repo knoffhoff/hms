@@ -66,7 +66,6 @@ export default function HeaderMenu({
   const location = useLocation()
   const { instance, accounts } = useMsal()
   const user = accounts.length > 0 ? accounts[0] : null
-  const [isLoading, setIsLoading] = useState(true)
   const [editModalOpened, setEditModalOpened] = useState(false)
 
   useEffect(() => {
@@ -225,11 +224,11 @@ export default function HeaderMenu({
         </Popover.Target>
         <Popover.Dropdown>
           <Text size='sm'>
-            Name: {user?.name}
+            Name: {userDetails?.firstName} {userDetails?.lastName}
           </Text>
 
           <Text size='sm'>
-          Email: {user?.username}
+          Email: {userDetails?.emailAddress}
           </Text>
 
           <div>
@@ -271,8 +270,9 @@ export default function HeaderMenu({
       return <Avatar src={profilePhoto} radius={'xl'} />
    }
    if(!profilePhoto){
+      const fullName = userDetails?.firstName +' '+ userDetails?.lastName
       return <Avatar color='indigo' radius='xl'>
-      {getInitials(user?.name ?? 'User User')}
+      {getInitials(fullName ?? 'User User')}
     </Avatar>
    }
   }
