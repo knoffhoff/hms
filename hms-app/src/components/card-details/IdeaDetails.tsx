@@ -14,27 +14,27 @@ Tooltip,
 useMantineTheme,
 } from '@mantine/core'
 import {
-Category,
-Idea,
-IdeaCardType,
-IdeaFormType,
-Skill,
+  Category,
+  Idea,
+  IdeaCardType,
+  // IdeaFormType,
+  Skill,
 } from '../../common/types'
 import { getIdeaDetails } from '../../actions/IdeaActions'
 import { styles } from '../../common/styles'
 import { showNotification, updateNotification } from '@mantine/notifications'
 import {
-createIdeaParticipant,
-createIdeaVoteParticipant,
-removeIdeaParticipant,
-removeIdeaVoteParticipant,
+  createIdeaParticipant,
+  // createIdeaVoteParticipant,
+  removeIdeaParticipant,
+  // removeIdeaVoteParticipant,
 } from '../../actions/ParticipantActions'
 import { Check, X } from 'tabler-icons-react'
 import { useMsal } from '@azure/msal-react'
 import {
-DELETE_BUTTON_COLOR,
-JOIN_BUTTON_COLOR,
-LEAVE_BUTTON_COLOR,
+  // DELETE_BUTTON_COLOR,
+  JOIN_BUTTON_COLOR,
+  LEAVE_BUTTON_COLOR,
 } from '../../common/colors'
 import {
 HackathonParticipantContext,
@@ -45,6 +45,8 @@ import { getCategoryDetails } from '../../actions/CategoryActions'
 import { getSkillDetails } from '../../actions/SkillActions'
 import IdeaCommentDetails from './IdeaCommentDetails'
 import CardButton from './CardButton'
+import VotingHandler from './VotingHandler'
+
 
 type IProps = {
 idea: Idea
@@ -59,6 +61,7 @@ const user = useContext(UserContext)
 const { instance } = useMsal()
 const { classes } = styles()
 const { idea, type, isLoading } = props
+  const { ideaVoteButton } = VotingHandler
 const MAX_TITLE_LENGTH = 100
 const theme = useMantineTheme()
 const [accordionOpen, setAccordionOpen] = useState(false)
@@ -71,7 +74,7 @@ userId: '',
 participantId: '',
 })
 const [participantCheck, setParticipantCheck] = useState(false)
-const [voteCheck, setVoteCheck] = useState(false)
+// const [voteCheck, setVoteCheck] = useState(false)
 const [categoryData, setCategoryData] = useState({} as Category)
 const [skillData, setSkillData] = useState([] as Skill[])
 const [loader, setLoader] = useState(false)
@@ -136,105 +139,105 @@ const participantData = ideaData.participants?.map((participant, index) => (
 // Idea Card Functions
 const ideaHeader = () => {
 return (
-			<Group position='left'>
-							<Stack align={'center'} spacing={'xs'}>
-							<Avatar color='indigo' radius='xl' size='md'>
-											{getInitials(
-											ideaData.owner?.firstName,
-											ideaData.owner?.lastName
-											)}
-							</Avatar>
-							<Badge size='sm'>
-											{ideaData.owner?.firstName} {ideaData.owner?.lastName}
-							</Badge>
-							</Stack>
-							<Text className={classes.title}>
-							{ideaData.title?.slice(0, MAX_TITLE_LENGTH)}
-							{ideaData.title?.length > MAX_TITLE_LENGTH ? '...' : ''}
-							</Text>
-			</Group> 
+  <Group position='left'>
+    <Stack align={'center'} spacing={'xs'}>
+    <Avatar color='indigo' radius='xl' size='md'>
+      {getInitials(
+      ideaData.owner?.firstName,
+      ideaData.owner?.lastName
+      )}
+    </Avatar>
+    <Badge size='sm'>
+      {ideaData.owner?.firstName} {ideaData.owner?.lastName}
+    </Badge>
+    </Stack>
+    <Text className={classes.title}>
+    {ideaData.title?.slice(0, MAX_TITLE_LENGTH)}
+    {ideaData.title?.length > MAX_TITLE_LENGTH ? '...' : ''}
+    </Text>
+  </Group> 
 )
 			
 }
 
 const ideaDescription = () => {
 	return (
-					<Text className={classes.text}> 
-									{ideaData.description}
-					</Text>
+    <Text className={classes.text}> 
+      {ideaData.description}
+    </Text>
 	)
 }
 
 const ideaProblem = () => {
 	return (
-					<Card.Section className={classes.borderSection}>
-									<Text className={classes.label}>Problem</Text>
-									<Text className={classes.text}>{ideaData.problem}</Text>
-					</Card.Section>
+    <Card.Section className={classes.borderSection}>
+      <Text className={classes.label}>Problem</Text>
+      <Text className={classes.text}>{ideaData.problem}</Text>
+    </Card.Section>
 	)
 	
 }
 
 const ideaGoal = () => {
 	return (
-					<Card.Section className={classes.borderSection}>
-									<Text className={classes.label}>Goal</Text>
-									<Text className={classes.text}>{ideaData.goal}</Text>
-					</Card.Section>
+    <Card.Section className={classes.borderSection}>
+      <Text className={classes.label}>Goal</Text>
+      <Text className={classes.text}>{ideaData.goal}</Text>
+    </Card.Section>
 	)
 	
 }
 
 const ideaCategory = () => {
 	return (
-					<Card.Section className={classes.borderSection}>
-									<Text className={classes.label}>Category</Text>
-									<Tooltip
-													multiline
-													width={220}
-													transition='fade'
-													transitionDuration={200}
-													color='gray'
-													label={categoryData.description}
-									>
-													<Badge
-													color={theme.colorScheme === 'dark' ? 'dark' : 'gray'}
-													key={ideaData.category?.id}
-													>
-													{ideaData.category?.title}
-													</Badge>
-									</Tooltip>
-					</Card.Section>
+    <Card.Section className={classes.borderSection}>
+      <Text className={classes.label}>Category</Text>
+      <Tooltip
+        multiline
+        width={220}
+        transition='fade'
+        transitionDuration={200}
+        color='gray'
+        label={categoryData.description}
+      >
+      <Badge
+      color={theme.colorScheme === 'dark' ? 'dark' : 'gray'}
+      key={ideaData.category?.id}
+      >
+      {ideaData.category?.title}
+      </Badge>
+      </Tooltip>
+    </Card.Section>
 	)
 	
 }
 
 const ideaRequiredSkills = () => {
 	return (
-			<Card.Section className={classes.borderSection}>
-									<Text className={classes.label}>Skills required</Text>
-									<Group spacing={7} mt={5}>
-													{ideaData.requiredSkills?.map((skill) => (
-													<Tooltip
-																	multiline
-																	width={220}
-																	transition='fade'
-																	transitionDuration={200}
-																	color='gray'
-																	label={getSkillDescription(skill.id)}
-																	key={skill.id}
-													>
-																	<Badge
-																	color={theme.colorScheme === 'dark' ? 'dark' : 'gray'}
-																	key={skill.id}
-																	>
-																	{skill.name}
-																	</Badge>
-													</Tooltip>
-													))}
-									</Group>
-							</Card.Section>
-					)
+  <Card.Section className={classes.borderSection}>
+    <Text className={classes.label}>Skills required</Text>
+    <Group spacing={7} mt={5}>
+      {ideaData.requiredSkills?.map((skill) => (
+      <Tooltip
+        multiline
+        width={220}
+        transition='fade'
+        transitionDuration={200}
+        color='gray'
+        label={getSkillDescription(skill.id)}
+        key={skill.id}
+      >
+      <Badge
+        color={theme.colorScheme === 'dark' ? 'dark' : 'gray'}
+        key={skill.id}
+      >
+      {skill.name}
+      </Badge>
+      </Tooltip>
+      ))}
+    </Group>
+    </Card.Section>
+    )
 }
 
 const ideaButtons = () => {
@@ -249,48 +252,46 @@ const ideaButtons = () => {
     )	
 }
 
-
 // Participant Functions
 const ideaParticipants = () => {
-return (
-			<Accordion
-			chevronPosition={'right'}
-			onChange={(value) =>
-			setParticipantAccordionOpen(value === 'participants')
-			}
-			>
-			<Accordion.Item value={'participants'}>
-							<Accordion.Control>
-											{!participantAccordionOpen ? (
-											<div>
-															<Text className={classes.label}>Current participants</Text>
-															<Group spacing={7} mt={5}>
-															<Avatar.Group>
-																			{ideaData.participants?.map((participant, index) => (
-																			<Avatar
-																							key={index}
-																							color='indigo'
-																							radius='xl'
-																							size='md'
-																			>
-																							{getInitials(
-																							participant.user.firstName,
-																							participant.user.lastName
-																							)}
-																			</Avatar>
-																			))}
-															</Avatar.Group>
-															</Group>
-											</div>
-											) : (
-											<Text className={classes.label}>Current participants</Text>
-											)}
-							</Accordion.Control>
-							<Accordion.Panel>{participantData}</Accordion.Panel>
-							</Accordion.Item>
-			</Accordion>
-)
-
+  return (
+    <Accordion
+      chevronPosition={'right'}
+      onChange={(value) =>
+      setParticipantAccordionOpen(value === 'participants')
+      }
+    >
+    <Accordion.Item value={'participants'}>
+      <Accordion.Control>
+        {!participantAccordionOpen ? (
+        <div>
+          <Text className={classes.label}>Current participants</Text>
+          <Group spacing={7} mt={5}>
+          <Avatar.Group>
+            {ideaData.participants?.map((participant, index) => (
+            <Avatar
+              key={index}
+              color='indigo'
+              radius='xl'
+              size='md'
+            >
+            {getInitials(
+            participant.user.firstName,
+            participant.user.lastName
+            )}
+            </Avatar>
+            ))}
+          </Avatar.Group>
+          </Group>
+        </div>
+        ) : (
+        <Text className={classes.label}>Current participants</Text>
+        )}
+      </Accordion.Control>
+      <Accordion.Panel>{participantData}</Accordion.Panel>
+      </Accordion.Item>
+    </Accordion>
+  )
 }
 
 const findParticipant = () => {
@@ -308,27 +309,27 @@ if (ideaData && ideaData.participants && user) {
 
 const ideaParticipateButton = () => {
 	return (    
-					<Group
-									mt='xs'
-									position={'right'}
-									style={{ paddingTop: 5 }}
-					>
-					<Button
-									disabled={buttonIsDisabled}
-									onClick={
-									participantCheck
-													? removeThisIdeaParticipant
-													: addIdeaParticipant
-									}
-									style={{
-									backgroundColor: participantCheck
-													? LEAVE_BUTTON_COLOR
-													: JOIN_BUTTON_COLOR,
-									}}
-					>
-									{participantCheck ? 'Leave Idea' : 'Join Idea'}
-					</Button>
-					</Group>
+    <Group
+      mt='xs'
+      position={'right'}
+      style={{ paddingTop: 5 }}
+    >
+    <Button
+      disabled={buttonIsDisabled}
+      onClick={
+      participantCheck
+              ? removeThisIdeaParticipant
+              : addIdeaParticipant
+      }
+      style={{
+      backgroundColor: participantCheck
+              ? LEAVE_BUTTON_COLOR
+              : JOIN_BUTTON_COLOR,
+      }}
+    >
+    {participantCheck ? 'Leave Idea' : 'Join Idea'}
+    </Button>
+    </Group>
 	)   
 }
 
@@ -436,55 +437,7 @@ removeParticipant(removeIdeaParticipant, setParticipantCheck)
 }
 
 
-// Voting Functions
-const ideaVoting = () => {
-return (
-							<Card.Section className={classes.noBorderSection}>
-											<Stack align={'center'} spacing={'xs'}>
-															<Text className={classes.label}>Votes: </Text>
-															<Text className={classes.text}>
-																			{ideaData.voters?.length}
-															</Text>
-															</Stack>
-							</Card.Section>
-)
-}
-
-const ideaVoteButton = () => {
-	return (
-					<Button
-									disabled={buttonIsDisabled}
-									onClick={
-													voteCheck ? removeThisVote : addVoterToIdea
-									}
-									style={{
-													backgroundColor: voteCheck
-													? LEAVE_BUTTON_COLOR
-													: JOIN_BUTTON_COLOR,
-									}}
-					>
-					</Button>
-	)
-} 
-
-const findVoter = () => {
-if (ideaData && ideaData.voters && user) {
-	const voter = ideaData.voters.find((voter) => voter.user.id === user.id)
-	if (voter) {
-			return voter
-	} else {
-			return null
-	}
-}
-}
-
-const removeThisVote = () => {
-removeParticipant(removeIdeaVoteParticipant, setVoteCheck)
-}
-
-const addVoterToIdea = async () => {
-await addParticipant(createIdeaVoteParticipant, setVoteCheck)
-}
+  
 
 useEffect(() => {
 if (findParticipant()) setParticipantCheck(!!findParticipant())
@@ -549,6 +502,8 @@ return (
 	</>
 	)
 }
+
+
 
 
 // __DO NOT DELETE FOR NOW (MINIMAL CARD)__
