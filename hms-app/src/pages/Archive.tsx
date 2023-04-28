@@ -68,7 +68,7 @@ export default function Archive() {
       }
   }, [ideaData])
 
-function validHackhaton() {
+function validHackathon() {
   if(hackathonData.startDate !== NULL_DATE &&
     hackathonData.startDate?.toString() !== 'Invalid Date' &&
     !isHackathonLoading &&
@@ -94,7 +94,7 @@ function validHackhaton() {
         </>
       )}
 
-      {validHackhaton() && (
+      {validHackathon() && (
           <div>
             <HackathonHeader hackathonData={hackathonData} />
 
