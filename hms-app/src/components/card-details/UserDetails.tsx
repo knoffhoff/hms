@@ -98,7 +98,7 @@ export default function UserDetails(props: { userId: string }) {
       withCloseButton={false}
     >
       <Text className={classes.title}>Edit User</Text>
-      <EditUserForm userId={userId} />
+      <EditUserForm userId={userId} reload={loadSelectedUser} />
       {isUserLoading && <div>Loading...</div>}
       <Text className={classes.text}>
         (This window will automatically close as soon as the user is edited)
