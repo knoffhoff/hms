@@ -11,6 +11,9 @@ import {
   Menu,
   Text,
   useMantineColorScheme,
+  Popover,
+  Badge,
+  Modal,
 } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 import { SwitchToggle } from './ThemeSwitchToggle'
@@ -18,6 +21,7 @@ import { styles } from '../common/styles'
 import {
   HEADER_ACTIVE_COLOR_DARK,
   HEADER_ACTIVE_COLOR_LIGHT,
+  JOIN_BUTTON_COLOR,
   PRIMARY_COLOR_1,
   TEXT_COLOR_WHITE,
 } from '../common/colors'
@@ -25,6 +29,8 @@ import { useMsal } from '@azure/msal-react'
 import { Logout } from 'tabler-icons-react'
 import { getProfilePhoto } from '../common/actionAuth'
 import { LOGO } from '../common/constants'
+import { User } from '../common/types'
+import EditUserForm from './input-forms/EditUserForm'
 
 interface HeaderSearchProps {
   links: {
@@ -39,6 +45,7 @@ interface HeaderSearchProps {
     link: string
     label: string
   }[]
+  userDetails: User
 }
 
 const AZURE_ACCOUNT_ID = process.env.REACT_APP_AZURE_ACCOUNT_ID || ''
@@ -48,6 +55,7 @@ export default function HeaderMenu({
   links,
   hackathonLinks,
   adminLinks,
+  userDetails
 }: HeaderSearchProps) {
   const theme = useMantineColorScheme()
   const [profilePhoto, setProfilePhoto] = useState('')
@@ -58,6 +66,7 @@ export default function HeaderMenu({
   const location = useLocation()
   const { instance, accounts } = useMsal()
   const user = accounts.length > 0 ? accounts[0] : null
+  const [editModalOpened, setEditModalOpened] = useState(false)
 
   useEffect(() => {
     const fetchProfilePhoto = async () => {
@@ -187,6 +196,87 @@ export default function HeaderMenu({
     </div>
   )
 
+  const editModal = (
+    <Modal
+      centered
+      opened={editModalOpened}
+      onClose={() => setEditModalOpened(false)}
+      withCloseButton={false}
+    >
+      <Text className={classes.title}>Edit User</Text>
+      <EditUserForm userId={userDetails.id}/>
+      <Text className={classes.text}>
+        (This window will automatically close as soon as the user is edited)
+      </Text>
+    </Modal>
+  )
+
+  const popoverProfile = (
+      <Popover width='200' position='bottom' withArrow shadow='md'>
+        <Popover.Target>
+          <Button style={{
+            backgroundColor:
+              theme.colorScheme === 'light' ? PRIMARY_COLOR_1 : PRIMARY_COLOR_1,
+              padding: '0px 0px 0px 10px', height: 40
+}}>
+          {userAvatar(profilePhoto)}
+          </Button>  
+        </Popover.Target>
+        <Popover.Dropdown>
+          <Text size='sm'>
+            Name: {userDetails?.firstName} {userDetails?.lastName}
+          </Text>
+
+          <Text size='sm'>
+          Email: {userDetails?.emailAddress}
+          </Text>
+
+          <div>
+            <Text size='sm'>Roles: {userDetails.roles?.map((role, index) => (
+              <Badge
+                color={theme.colorScheme === 'dark' ? 'dark' : 'gray'}
+                key={index}
+              >
+              {role}
+              </Badge>
+            ))}
+            </Text>
+
+            <Text size='sm'>Skills: {userDetails.skills?.map((skill, index) => (
+              <Badge
+                color={theme.colorScheme === 'dark' ? 'dark' : 'gray'}
+                key={index}
+              >
+              {skill.name}
+              </Badge>
+            ))}
+            </Text>
+          </div>
+          
+          <Group position='right' mt='xs'>
+          <Button
+                style={{ backgroundColor: JOIN_BUTTON_COLOR }}
+                onClick={() => setEditModalOpened(true)}
+              >
+                Edit
+            </Button>
+          </Group>
+        </Popover.Dropdown>
+      </Popover>
+    )
+  
+  function userAvatar(profilePhoto: string | null | undefined) {
+   if(profilePhoto){
+      return <Avatar src={profilePhoto} radius={'xl'} />
+   }
+   if(!profilePhoto){
+      const fullName = userDetails?.firstName +' '+ userDetails?.lastName
+      return <Avatar color='indigo' radius='xl'>
+      {getInitials(fullName ?? 'User User')}
+    </Avatar>
+   }
+  }
+
   return (
     <Header
       height={56}
@@ -204,12 +294,8 @@ export default function HeaderMenu({
           <Group spacing={5} className={classes.headerLinks}>
             <SwitchToggle />
             {fullscreenMenu}
-            {profilePhoto && <Avatar src={profilePhoto} radius={'xl'} />}
-            {!profilePhoto && (
-              <Avatar color='indigo' radius='xl'>
-                {getInitials(user?.name ?? 'User User')}
-              </Avatar>
-            )}
+            {editModal}
+            {popoverProfile}
             <Button onClick={logout} variant={'subtle'}>
               <Logout />
             </Button>

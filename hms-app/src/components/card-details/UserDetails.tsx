@@ -101,7 +101,7 @@ export default function UserDetails(props: { userId: string }) {
       <EditUserForm userId={userId} />
       {isUserLoading && <div>Loading...</div>}
       <Text className={classes.text}>
-        (This window will automatically close as soon as the user is deleted)
+        (This window will automatically close as soon as the user is edited)
       </Text>
     </Modal>
   )
