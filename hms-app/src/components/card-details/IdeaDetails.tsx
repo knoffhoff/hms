@@ -55,30 +55,29 @@ type: IdeaCardType
 }
 
 export default function IdeaDetails(props: IProps) {
-const hackathonParticipantId = useContext(HackathonParticipantContext)
-const hackathonVotingOpened = useContext(HackathonVotingContext)
-const user = useContext(UserContext)
-const { instance } = useMsal()
-const { classes } = styles()
-const { idea, type, isLoading } = props
-  const { ideaVoteButton } = VotingHandler
-const MAX_TITLE_LENGTH = 100
-const theme = useMantineTheme()
-const [accordionOpen, setAccordionOpen] = useState(false)
-const [participantAccordionOpen, setParticipantAccordionOpen] =
-useState(false)
-const [buttonIsDisabled, setButtonisDisabled] = useState(false)
-// ToDo replace user and participant id with real data after a "user" endpoint exist
-const [participantInfo, setParticipantInfo] = useState({
-userId: '',
-participantId: '',
-})
-const [participantCheck, setParticipantCheck] = useState(false)
-// const [voteCheck, setVoteCheck] = useState(false)
-const [categoryData, setCategoryData] = useState({} as Category)
-const [skillData, setSkillData] = useState([] as Skill[])
-const [loader, setLoader] = useState(false)
-const [ideaData, setIdeaData] = useState(idea)
+  const hackathonParticipantId = useContext(HackathonParticipantContext)
+  const hackathonVotingOpened = useContext(HackathonVotingContext)
+  const user = useContext(UserContext)
+  const { instance } = useMsal()
+  const { classes } = styles()
+  const { idea, type, isLoading } = props
+  const MAX_TITLE_LENGTH = 100
+  const theme = useMantineTheme()
+  const [accordionOpen, setAccordionOpen] = useState(false)
+  const [participantAccordionOpen, setParticipantAccordionOpen] =
+    useState(false)
+  const [buttonIsDisabled, setButtonisDisabled] = useState(false)
+  // ToDo replace user and participant id with real data after a "user" endpoint exist
+  const [participantInfo, setParticipantInfo] = useState({
+    userId: '',
+    participantId: '',
+  })
+  const [participantCheck, setParticipantCheck] = useState(false)
+  const [voteCheck, setVoteCheck] = useState(false)
+  const [categoryData, setCategoryData] = useState({} as Category)
+  const [skillData, setSkillData] = useState([] as Skill[])
+  const [loader, setLoader] = useState(false)
+  const [ideaData, setIdeaData] = useState(idea)
 
 const loadIdeaData = () => {
 getIdeaDetails(instance, ideaData.id).then((data) => {

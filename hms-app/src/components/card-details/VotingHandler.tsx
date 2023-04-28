@@ -18,7 +18,6 @@ import { IProps } from './IdeaDetails'
 
 
 export default function VotingHandler(props: IProps) {
-
   const { idea } = props
   const { classes } = styles()
   const [ideaData, setIdeaData] = useState(idea)
@@ -78,4 +77,8 @@ export default function VotingHandler(props: IProps) {
     if (findParticipant()) setParticipantCheck(!!findParticipant())
     if (findVoter()) setVoteCheck(!!findVoter())
   }, [ideaData])
+
+  return (
+    //
+  )
 }
