@@ -1,7 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import HackathonSelectDropdown from '../components/HackathonSelectDropdown'
 import { Group, Text } from '@mantine/core'
-import { Hackathon, HackathonDropdownMode, Idea, IdeaCardType } from '../common/types'
+import {
+  Hackathon,
+  HackathonDropdownMode,
+  Idea,
+  IdeaCardType,
+} from '../common/types'
 import { ArrowUp } from 'tabler-icons-react'
 import { NULL_DATE } from '../common/constants'
 import { getHackathonDetails } from '../actions/HackathonActions'
@@ -50,7 +55,7 @@ export default function Archive() {
   }, [selectedHackathonId])
 
   useEffect(() => {
-  loadRelevantIdeaDetails()
+    loadRelevantIdeaDetails()
   }, [hackathonData])
 
   useEffect(() => {
@@ -68,15 +73,14 @@ export default function Archive() {
       }
   }, [ideaData])
 
-function validHackathon() {
-  if(hackathonData.startDate !== NULL_DATE &&
-    hackathonData.startDate?.toString() !== 'Invalid Date' &&
-    !isHackathonLoading &&
-    !isHackathonError){
-      return true
-    }
-  return false
-}
+  function validHackathon() {
+    return (
+      hackathonData.startDate !== NULL_DATE &&
+      hackathonData.startDate?.toString() !== 'Invalid Date' &&
+      !isHackathonLoading &&
+      !isHackathonError
+    )
+  }
 
   return (
     <>
@@ -95,17 +99,17 @@ function validHackathon() {
       )}
 
       {validHackathon() && (
-          <div>
-            <HackathonHeader hackathonData={hackathonData} />
+        <div>
+          <HackathonHeader hackathonData={hackathonData} />
 
-            <IdeaCardList
-              ideas={relevantIdeaList}
-              columnSize={6}
-              type={IdeaCardType.Archive}
-              isLoading={isIdeaLoading}
-            />
-          </div>
-        )}
+          <IdeaCardList
+            ideas={relevantIdeaList}
+            columnSize={6}
+            type={IdeaCardType.Archive}
+            isLoading={isIdeaLoading}
+          />
+        </div>
+      )}
     </>
   )
 }
