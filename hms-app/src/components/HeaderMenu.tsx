@@ -55,7 +55,7 @@ export default function HeaderMenu({
   links,
   hackathonLinks,
   adminLinks,
-  userDetails
+  userDetails,
 }: HeaderSearchProps) {
   const theme = useMantineColorScheme()
   const [profilePhoto, setProfilePhoto] = useState('')
@@ -204,7 +204,7 @@ export default function HeaderMenu({
       withCloseButton={false}
     >
       <Text className={classes.title}>Edit User</Text>
-      <EditUserForm userId={userDetails.id}/>
+      <EditUserForm userId={userDetails.id} />
       <Text className={classes.text}>
         (This window will automatically close as soon as the user is edited)
       </Text>
@@ -212,69 +212,76 @@ export default function HeaderMenu({
   )
 
   const popoverProfile = (
-      <Popover width='200' position='bottom' withArrow shadow='md'>
-        <Popover.Target>
-          <Button style={{
+    <Popover width='200' position='bottom' withArrow shadow='md'>
+      <Popover.Target>
+        <Button
+          style={{
             backgroundColor:
               theme.colorScheme === 'light' ? PRIMARY_COLOR_1 : PRIMARY_COLOR_1,
-              padding: '0px 0px 0px 10px', height: 40
-}}>
+            padding: '0px 0px 0px 10px',
+            height: 40,
+          }}
+        >
           {userAvatar(profilePhoto)}
-          </Button>  
-        </Popover.Target>
-        <Popover.Dropdown>
-          <Text size='sm'>
-            Name: {userDetails?.firstName} {userDetails?.lastName}
-          </Text>
+        </Button>
+      </Popover.Target>
+      <Popover.Dropdown>
+        <Text size='sm'>
+          Name: {userDetails?.firstName} {userDetails?.lastName}
+        </Text>
 
-          <Text size='sm'>
-          Email: {userDetails?.emailAddress}
-          </Text>
+        <Text size='sm'>Email: {userDetails?.emailAddress}</Text>
 
-          <div>
-            <Text size='sm'>Roles: {userDetails.roles?.map((role, index) => (
+        <div>
+          <Text size='sm'>
+            Roles:{' '}
+            {userDetails.roles?.map((role, index) => (
               <Badge
                 color={theme.colorScheme === 'dark' ? 'dark' : 'gray'}
                 key={index}
               >
-              {role}
+                {role}
               </Badge>
             ))}
-            </Text>
+          </Text>
 
-            <Text size='sm'>Skills: {userDetails.skills?.map((skill, index) => (
+          <Text size='sm'>
+            Skills:{' '}
+            {userDetails.skills?.map((skill, index) => (
               <Badge
                 color={theme.colorScheme === 'dark' ? 'dark' : 'gray'}
                 key={index}
               >
-              {skill.name}
+                {skill.name}
               </Badge>
             ))}
-            </Text>
-          </div>
-          
-          <Group position='right' mt='xs'>
+          </Text>
+        </div>
+
+        <Group position='right' mt='xs'>
           <Button
-                style={{ backgroundColor: JOIN_BUTTON_COLOR }}
-                onClick={() => setEditModalOpened(true)}
-              >
-                Edit
-            </Button>
-          </Group>
-        </Popover.Dropdown>
-      </Popover>
-    )
-  
+            style={{ backgroundColor: JOIN_BUTTON_COLOR }}
+            onClick={() => setEditModalOpened(true)}
+          >
+            Edit
+          </Button>
+        </Group>
+      </Popover.Dropdown>
+    </Popover>
+  )
+
   function userAvatar(profilePhoto: string | null | undefined) {
-   if(profilePhoto){
+    if (profilePhoto) {
       return <Avatar src={profilePhoto} radius={'xl'} />
-   }
-   if(!profilePhoto){
-      const fullName = userDetails?.firstName +' '+ userDetails?.lastName
-      return <Avatar color='indigo' radius='xl'>
-      {getInitials(fullName ?? 'User User')}
-    </Avatar>
-   }
+    }
+    if (!profilePhoto) {
+      const fullName = userDetails?.firstName + ' ' + userDetails?.lastName
+      return (
+        <Avatar color='indigo' radius='xl'>
+          {getInitials(fullName ?? 'User User')}
+        </Avatar>
+      )
+    }
   }
 
   return (
