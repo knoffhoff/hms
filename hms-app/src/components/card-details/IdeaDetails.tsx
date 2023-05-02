@@ -26,7 +26,7 @@ import { getCategoryDetails } from '../../actions/CategoryActions'
 import { getSkillDetails } from '../../actions/SkillActions'
 import IdeaCommentDetails from './IdeaCommentDetails'
 import CardButton from './CardButton'
-import { getInitials, setParticipantInfo } from './ParticipantsHandler'
+import ParticipantsHandler from './ParticipantsHandler'
 import { isPropertySignature } from 'typescript'
 
 export type IProps = {
@@ -87,6 +87,17 @@ export default function IdeaDetails(props: IProps) {
       setIdeaData(data)
       setLoader(false)
     })
+  }
+
+  const getInitials = (
+    firstName: string | undefined,
+    lastName: string | undefined
+  ) => {
+    if (firstName && lastName) {
+      return `${firstName.substring(0, 1)}${lastName.substring(0, 1)}`
+    } else {
+      return ''
+    }
   }
 
   // Idea Card Functions

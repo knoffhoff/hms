@@ -1,12 +1,9 @@
 import { useContext, useEffect, useState } from 'react'
 import {
   createIdeaParticipant,
-  // createIdeaVoteParticipant,
   removeIdeaParticipant,
-  // removeIdeaVoteParticipant,
 } from '../../actions/ParticipantActions'
 import { Accordion, Avatar, Button, Group, Text } from '@mantine/core'
-import { Idea } from '../../common/types'
 import { JOIN_BUTTON_COLOR, LEAVE_BUTTON_COLOR } from '../../common/colors'
 import { styles } from '../../common/styles'
 import { UserContext } from '../../pages/Layout'
@@ -16,7 +13,7 @@ import { getIdeaDetails } from '../../actions/IdeaActions'
 import { useMsal } from '@azure/msal-react'
 import { showNotification, updateNotification } from '@mantine/notifications'
 
-export function ParticipantsHandler(props: IProps) {
+export default function ParticipantsHandler(props: IProps) {
   const [participantCheck, setParticipantCheck] = useState(false)
   const [participantInfo, setParticipantInfo] = useState({
     userId: '',
@@ -25,6 +22,12 @@ export function ParticipantsHandler(props: IProps) {
   const [loader, setLoader] = useState(false)
   const user = useContext(UserContext)
   const { instance } = useMsal()
+  const [buttonIsDisabled, setButtonisDisabled] = useState(false)
+  const [participantAccordionOpen, setParticipantAccordionOpen] =
+    useState(false)
+  const { classes } = styles()
+  const { idea, type } = props
+  const [ideaData, setIdeaData] = useState(idea)
 
   const addHackathonParticipant = async (
     action = createIdeaParticipant,
@@ -140,18 +143,6 @@ export function ParticipantsHandler(props: IProps) {
     }
   }
 
-  return <div></div>
-}
-
-export function ideaParticipants(props: IProps) {
-  const [buttonIsDisabled, setButtonisDisabled] = useState(false)
-  const [participantAccordionOpen, setParticipantAccordionOpen] =
-    useState(false)
-  const { classes } = styles()
-  const { idea } = props
-  const { instance } = useMsal()
-  const [ideaData, setIdeaData] = useState(idea)
-
   const loadIdeaData = () => {
     getIdeaDetails(instance, ideaData.id).then((data) => {
       setIdeaData(data)
@@ -192,7 +183,9 @@ export function ideaParticipants(props: IProps) {
         <Button
           disabled={buttonIsDisabled}
           onClick={
-            participantCheck ? removeThisIdeaParticipant : addIdeaParticipant
+            participantCheck
+              ? removeThisIdeaParticipant
+              : addThisIdeaParticipant
           }
           style={{
             backgroundColor: participantCheck
