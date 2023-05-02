@@ -65,7 +65,7 @@ export default function HeaderMenu({
   const today = new Date()
   today.setHours(0, 0, 0, 0)
   const location = useLocation()
-  const { instance, accounts } = useMsal()
+  const { instance } = useMsal()
   const [editModalOpened, setEditModalOpened] = useState(false)
   const [user, setUser] = useState({
     id: 'string',
@@ -265,7 +265,7 @@ export default function HeaderMenu({
         </Button>
       </Popover.Target>
       <Popover.Dropdown>
-        {isUserError && !isUserLoading && (
+        {!isUserLoading && isUserError && (
           <div>
             <Text className={classes.title}>Error loading user</Text>
             <Text className={classes.text}>something went wrong.</Text>

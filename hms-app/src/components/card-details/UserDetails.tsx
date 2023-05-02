@@ -41,7 +41,7 @@ export default function UserDetails(props: IProps) {
   } as User)
 
   const loadSelectedUser = () => {
-    // setIsUserLoading(true)
+    setIsUserLoading(true)
     getUserDetails(instance, userId).then(
       (data) => {
         setUser(data)
@@ -120,7 +120,7 @@ export default function UserDetails(props: IProps) {
 
   return (
     <>
-      {isUserError && !isUserLoading && (
+      {isUserLoading && isUserError && (
         <div>
           <Text className={classes.title}>Error loading user</Text>
           <Text className={classes.text}>something went wrong.</Text>
