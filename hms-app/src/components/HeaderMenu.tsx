@@ -89,6 +89,7 @@ export default function HeaderMenu({
   }, [instance])
 
   const loadSelectedUser = () => {
+    setIsUserLoading(true)
     getUserDetails(instance, userDetails.id).then(
       (data) => {
         setUser(data)
@@ -264,46 +265,61 @@ export default function HeaderMenu({
         </Button>
       </Popover.Target>
       <Popover.Dropdown>
-        <Text size='sm'>
-          Name: {userDetails?.firstName} {userDetails?.lastName}
-        </Text>
+        {isUserError && !isUserLoading && (
+          <div>
+            <Text className={classes.title}>Error loading user</Text>
+            <Text className={classes.text}>something went wrong.</Text>
+          </div>
+        )}
 
-        <Text size='sm'>Email: {userDetails?.emailAddress}</Text>
+        {isUserLoading && !isUserError && (
+          <div>
+            <Text className={classes.title}>User details are loading...</Text>
+          </div>
+        )}
 
-        <div>
-          <Text size='sm'>
-            Roles:{' '}
-            {userDetails.roles?.map((role, index) => (
-              <Badge
-                color={theme.colorScheme === 'dark' ? 'dark' : 'gray'}
-                key={index}
+        {!isUserLoading && !isUserError && (
+          <div>
+            <Text size='sm'>
+              Name: {userDetails?.firstName} {userDetails?.lastName}
+            </Text>
+
+            <Text size='sm'>Email: {userDetails?.emailAddress}</Text>
+
+            <Text size='sm'>
+              Roles:{' '}
+              {userDetails.roles?.map((role, index) => (
+                <Badge
+                  color={theme.colorScheme === 'dark' ? 'dark' : 'gray'}
+                  key={index}
+                >
+                  {role}
+                </Badge>
+              ))}
+            </Text>
+
+            <Text size='sm'>
+              Skills:{' '}
+              {user.skills?.map((skill, index) => (
+                <Badge
+                  color={theme.colorScheme === 'dark' ? 'dark' : 'gray'}
+                  key={index}
+                >
+                  {skill.name}
+                </Badge>
+              ))}
+            </Text>
+
+            <Group position='right' mt='xs'>
+              <Button
+                style={{ backgroundColor: JOIN_BUTTON_COLOR }}
+                onClick={() => setEditModalOpened(true)}
               >
-                {role}
-              </Badge>
-            ))}
-          </Text>
-
-          <Text size='sm'>
-            Skills:{' '}
-            {user.skills?.map((skill, index) => (
-              <Badge
-                color={theme.colorScheme === 'dark' ? 'dark' : 'gray'}
-                key={index}
-              >
-                {skill.name}
-              </Badge>
-            ))}
-          </Text>
-        </div>
-
-        <Group position='right' mt='xs'>
-          <Button
-            style={{ backgroundColor: JOIN_BUTTON_COLOR }}
-            onClick={() => setEditModalOpened(true)}
-          >
-            Edit
-          </Button>
-        </Group>
+                Edit
+              </Button>
+            </Group>
+          </div>
+        )}
       </Popover.Dropdown>
     </Popover>
   )
