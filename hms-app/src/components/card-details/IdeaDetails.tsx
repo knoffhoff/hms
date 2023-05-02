@@ -28,6 +28,7 @@ import IdeaCommentDetails from './IdeaCommentDetails'
 import CardButton from './CardButton'
 import ParticipantsHandler from './ParticipantsHandler'
 import { isPropertySignature } from 'typescript'
+import VotingHandler from './VotingHandler'
 
 export type IProps = {
   idea: Idea
@@ -37,6 +38,7 @@ export type IProps = {
 
 export default function IdeaDetails(props: IProps) {
   const hackathonParticipantId = useContext(HackathonParticipantContext)
+  const hackathonVotingOpened = useContext(HackathonVotingContext)
   const user = useContext(UserContext)
   const { classes } = styles()
   const { idea, type, isLoading } = props
@@ -49,6 +51,10 @@ export default function IdeaDetails(props: IProps) {
   const [skillData, setSkillData] = useState([] as Skill[])
   const [loader, setLoader] = useState(false)
   const [ideaData, setIdeaData] = useState(idea)
+  const [participantInfo, setParticipantInfo] = useState({
+    userId: '',
+    participantId: '',
+  })
 
   const loadCategoryDetails = () => {
     if (ideaData.category)
@@ -202,6 +208,22 @@ export default function IdeaDetails(props: IProps) {
     )
   }
 
+  const votingButton = () => {
+    return (
+      { hackathonVotingOpened } && type === IdeaCardType.AllIdeas && (
+        <VotingHandler idea={props.idea} /> 
+      )
+    )
+  }
+
+  const participateButton = () => {
+    return(
+      type === IdeaCardType.AllIdeas && (
+          <ParticipantsHandler idea={props.idea} />
+        )
+    ) 
+  }
+
   useEffect(() => {
     if (user) {
       setParticipantInfo({
@@ -224,7 +246,7 @@ export default function IdeaDetails(props: IProps) {
               {ideaDescription()}
             </Card.Section>
           </Spoiler>
-
+          {votingButton()}
           <Accordion
             onChange={(value) => setAccordionOpen(value === 'idea-details')}
           >
@@ -244,6 +266,7 @@ export default function IdeaDetails(props: IProps) {
               </Accordion.Panel>
             </Accordion.Item>
           </Accordion>
+          {participateButton()}
           {ideaButtons()}
         </Card>
       ) : (

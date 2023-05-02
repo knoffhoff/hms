@@ -8,26 +8,32 @@ import { JOIN_BUTTON_COLOR, LEAVE_BUTTON_COLOR } from '../../common/colors'
 import { styles } from '../../common/styles'
 import { UserContext } from '../../pages/Layout'
 import { Check, X } from 'tabler-icons-react'
-import { IProps } from './IdeaDetails'
 import { getIdeaDetails } from '../../actions/IdeaActions'
 import { useMsal } from '@azure/msal-react'
 import { showNotification, updateNotification } from '@mantine/notifications'
+import { HackathonParticipantContext } from '../../pages/AllIdeas'
+import { Idea } from '../../common/types'
+
+type IProps = {
+	idea: Idea
+}
 
 export default function ParticipantsHandler(props: IProps) {
+	const hackathonParticipantId = useContext(HackathonParticipantContext)
+  const { classes } = styles()
+  const { instance } = useMsal()
+  const { idea } = props
   const [participantCheck, setParticipantCheck] = useState(false)
   const [participantInfo, setParticipantInfo] = useState({
     userId: '',
     participantId: '',
   })
+  const [ideaData, setIdeaData] = useState(idea)
   const [loader, setLoader] = useState(false)
-  const user = useContext(UserContext)
-  const { instance } = useMsal()
   const [buttonIsDisabled, setButtonisDisabled] = useState(false)
   const [participantAccordionOpen, setParticipantAccordionOpen] =
     useState(false)
-  const { classes } = styles()
-  const { idea, type } = props
-  const [ideaData, setIdeaData] = useState(idea)
+  const user = useContext(UserContext)
 
   const addHackathonParticipant = async (
     action = createIdeaParticipant,
@@ -207,6 +213,15 @@ export default function ParticipantsHandler(props: IProps) {
     if (findParticipant()) setParticipantCheck(!!findParticipant())
   }, [ideaData])
 
+	useEffect(() => {
+    if (user) {
+      setParticipantInfo({
+        userId: user.id,
+        participantId: hackathonParticipantId,
+      })
+    }
+  }, [user, hackathonParticipantId])
+
   return (
     <Accordion
       chevronPosition={'right'}
@@ -236,8 +251,11 @@ export default function ParticipantsHandler(props: IProps) {
             <Text className={classes.label}>Current participants</Text>
           )}
         </Accordion.Control>
-        <Accordion.Panel>{participantData}</Accordion.Panel>
+        <Accordion.Panel>
+					{participantData}
+				</Accordion.Panel>
       </Accordion.Item>
+			{ideaParticipateButton()}
     </Accordion>
   )
 }
