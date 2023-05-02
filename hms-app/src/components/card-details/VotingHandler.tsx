@@ -7,7 +7,9 @@ import { JOIN_BUTTON_COLOR, LEAVE_BUTTON_COLOR } from '../../common/colors'
 import { useContext, useEffect, useState } from 'react'
 import { styles } from '../../common/styles'
 import { UserContext } from '../../pages/Layout'
-import { HackathonParticipantContext, HackathonVotingContext } from '../../pages/AllIdeas'
+import {
+  HackathonParticipantContext,
+} from '../../pages/AllIdeas'
 import { getIdeaDetails } from '../../actions/IdeaActions'
 import { showNotification, updateNotification } from '@mantine/notifications'
 import { useMsal } from '@azure/msal-react'
@@ -173,7 +175,6 @@ export default function VotingHandler(props: IProps) {
   const addThisVote = async () => {
     await addVote(createIdeaVoteParticipant, setVoteCheck)
   }
-
 
   useEffect(() => {
     if (user) {

@@ -15,11 +15,11 @@ import { HackathonParticipantContext } from '../../pages/AllIdeas'
 import { Idea } from '../../common/types'
 
 type IProps = {
-	idea: Idea
+  idea: Idea
 }
 
 export default function ParticipantsHandler(props: IProps) {
-	const hackathonParticipantId = useContext(HackathonParticipantContext)
+  const hackathonParticipantId = useContext(HackathonParticipantContext)
   const { classes } = styles()
   const { instance } = useMsal()
   const { idea } = props
@@ -213,7 +213,7 @@ export default function ParticipantsHandler(props: IProps) {
     if (findParticipant()) setParticipantCheck(!!findParticipant())
   }, [ideaData])
 
-	useEffect(() => {
+  useEffect(() => {
     if (user) {
       setParticipantInfo({
         userId: user.id,
@@ -251,11 +251,9 @@ export default function ParticipantsHandler(props: IProps) {
             <Text className={classes.label}>Current participants</Text>
           )}
         </Accordion.Control>
-        <Accordion.Panel>
-					{participantData}
-				</Accordion.Panel>
+        <Accordion.Panel>{participantData}</Accordion.Panel>
       </Accordion.Item>
-			{ideaParticipateButton()}
+      {ideaParticipateButton()}
     </Accordion>
   )
 }

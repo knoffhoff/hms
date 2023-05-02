@@ -3,10 +3,8 @@ import {
   Accordion,
   Avatar,
   Badge,
-  Button,
   Card,
   Group,
-  Modal,
   Spoiler,
   Stack,
   Text,
@@ -27,7 +25,6 @@ import { getSkillDetails } from '../../actions/SkillActions'
 import IdeaCommentDetails from './IdeaCommentDetails'
 import CardButton from './CardButton'
 import ParticipantsHandler from './ParticipantsHandler'
-import { isPropertySignature } from 'typescript'
 import VotingHandler from './VotingHandler'
 
 export type IProps = {
