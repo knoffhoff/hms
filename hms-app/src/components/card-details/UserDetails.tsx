@@ -40,7 +40,7 @@ export default function UserDetails(props: { userId: string }) {
   } as User)
 
   const loadSelectedUser = () => {
-    setIsUserLoading(true)
+    // setIsUserLoading(true)
     getUserDetails(instance, userId).then(
       (data) => {
         setUser(data)
