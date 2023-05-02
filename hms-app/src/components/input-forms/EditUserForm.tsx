@@ -120,43 +120,6 @@ export default function EditUserForm(props: IProps) {
       {!isLoading && (
         <Card withBorder className={classes.card}>
           <Card.Section className={classes.borderSection}>
-            <Textarea
-              label='First Name'
-              required
-              placeholder='First Name'
-              maxRows={1}
-              autosize
-              onChange={handleChange}
-              name='First Name'
-              value={user.firstName}
-              className={classes.label}
-            />
-          </Card.Section>
-          <Card.Section className={classes.borderSection}>
-            <Textarea
-              label='Last Name'
-              placeholder='Last Name'
-              maxRows={1}
-              autosize
-              onChange={handleChange}
-              name='Last Name'
-              value={user.lastName}
-              className={classes.label}
-            />
-          </Card.Section>
-          <Card.Section className={classes.borderSection}>
-            <Textarea
-              label='E-mail'
-              placeholder='E-mail'
-              maxRows={1}
-              autosize
-              onChange={handleChange}
-              name='E-mail'
-              value={user.emailAddress}
-              className={classes.label}
-            />
-          </Card.Section>
-          <Card.Section className={classes.borderSection}>
             <Checkbox.Group
               label='Skills'
               onChange={setSkills}

@@ -10,15 +10,15 @@
   "license": "ISC",
   "devDependencies": {
     "@types/jest": "27.5.0",
-    "@types/node": "18.15.11",
-    "@typescript-eslint/eslint-plugin": "5.57.0",
-    "@typescript-eslint/parser": "5.57.0",
-    "eslint": "8.37.0",
+    "@types/node": "18.16.3",
+    "@typescript-eslint/eslint-plugin": "5.59.1",
+    "@typescript-eslint/parser": "5.59.1",
+    "eslint": "8.39.0",
     "eslint-config-google": "0.14.0",
     "eslint-config-prettier": "8.8.0",
     "eslint-plugin-prettier": "4.2.1",
     "jest": "27.5.1",
-    "prettier": "2.8.7",
+    "prettier": "2.8.8",
     "serverless-dynamodb-local": "0.2.40",
     "serverless-offline": "12.0.4",
     "serverless-plugin-typescript": "2.1.4",
@@ -28,9 +28,9 @@
     "uuid": "9.0.0"
   },
   "dependencies": {
-    "@aws-sdk/client-dynamodb": "3.303.0",
-    "@aws-sdk/client-s3": "3.304.0",
-    "@aws-sdk/s3-request-presigner": "3.304.0",
+    "@aws-sdk/client-dynamodb": "3.321.1",
+    "@aws-sdk/client-s3": "3.321.1",
+    "@aws-sdk/s3-request-presigner": "3.321.1",
     "jsonwebtoken": "9.0.0",
     "serverless-dynamodb-client": "0.0.2"
   }
