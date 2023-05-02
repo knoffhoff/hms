@@ -1,4 +1,4 @@
-import {
+import { 
   Button,
   Card,
   Stack,
@@ -12,47 +12,26 @@ import {
   JOIN_BUTTON_COLOR,
   LEAVE_BUTTON_COLOR,
 } from '../../common/colors'
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { styles } from '../../common/styles'
 import { IProps } from './IdeaDetails'
-
+import { UserContext } from '../../pages/Layout'
+import { addParticipant, removeParticipant } from './ParticipantsHandler'
+import {
+  Participant,
+  ParticipantPreview,
+} from '../../common/types' 
+import { HackathonVotingContext } from '../../pages/AllIdeas'
 
 export default function VotingHandler(props: IProps) {
+  const hackathonVotingOpened = useContext(HackathonVotingContext)
+  const user = useContext(UserContext)
   const { idea } = props
   const { classes } = styles()
+  // const { ideaDetails } = IdeaDetails(props)
   const [ideaData, setIdeaData] = useState(idea)
   const [voteCheck, setVoteCheck] = useState(false)
   const [buttonIsDisabled, setButtonisDisabled] = useState(false)
-
-  const ideaVoting = () => {
-    return (
-      <Card.Section className={classes.noBorderSection}>
-        <Stack align={'center'} spacing={'xs'}>
-          <Text className={classes.label}>Votes: </Text>
-          <Text className={classes.text}>
-              {ideaData.voters?.length}
-          </Text>
-        </Stack>
-      </Card.Section>
-    )
-  }
-
-  const ideaVoteButton = () => {
-    return (
-      <Button
-        disabled={buttonIsDisabled}
-        onClick={
-          voteCheck ? removeThisVote : addVoterToIdea
-        }
-        style={{
-          backgroundColor: voteCheck
-          ? LEAVE_BUTTON_COLOR
-          : JOIN_BUTTON_COLOR,
-        }}
-      >
-      </Button>
-    )
-  } 
 
   const findVoter = () => {
     if (ideaData && ideaData.voters && user) {
@@ -74,11 +53,30 @@ export default function VotingHandler(props: IProps) {
   }
 
   useEffect(() => {
-    if (findParticipant()) setParticipantCheck(!!findParticipant())
     if (findVoter()) setVoteCheck(!!findVoter())
   }, [ideaData])
 
   return (
-    //
+    <Card.Section className={classes.noBorderSection}>
+      <Stack align={'center'} spacing={'xs'}>
+        <Text className={classes.label}>Votes: </Text>
+        <Text className={classes.text}>
+            {ideaData.voters?.length}
+        </Text>
+      </Stack>
+
+      <Button
+      disabled={buttonIsDisabled}
+      onClick={
+        voteCheck ? removeThisVote : addVoterToIdea
+      }
+      style={{
+        backgroundColor: voteCheck
+        ? LEAVE_BUTTON_COLOR
+        : JOIN_BUTTON_COLOR,
+      }}
+      >
+      </Button>
+    </Card.Section>
   )
 }
