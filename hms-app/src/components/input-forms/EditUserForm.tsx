@@ -19,7 +19,6 @@ export default function EditUserForm(props: IProps) {
   const { instance } = useMsal()
   const { classes } = styles()
   const { userId, reload, setOpened } = props
-  // const { userId } = props
   const [isLoading, setIsLoading] = useState(true)
   const [availableSkills, setAvailableSkills] = useState([] as SkillPreview[])
   const [skills, setSkills] = useState<string[]>([])

@@ -104,7 +104,7 @@ export default function HeaderMenu({
 
   useEffect(() => {
     loadSelectedUser()
-  }, [userDetails.id])
+  }, [])
 
   const logout = () => {
     const logoutRequest = {
