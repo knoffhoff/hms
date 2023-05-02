@@ -57,13 +57,6 @@ export default function EditUserForm(props: IProps) {
     setIsLoading(true)
   }, [])
 
-  function handleChange(event: React.ChangeEvent<HTMLTextAreaElement>) {
-    setUser((prevUser) => ({
-      ...prevUser,
-      [event.target.name]: event.target.value,
-    }))
-  }
-
   function editThisUser(event: React.MouseEvent<HTMLButtonElement>) {
     event.preventDefault()
     showNotification({
@@ -101,7 +94,6 @@ export default function EditUserForm(props: IProps) {
           icon: <Check />,
           autoClose: 2000,
         })
-        // reloadUserDetails()
       }
     })
   }

@@ -13,11 +13,7 @@ import {
 import EditUserForm from '../input-forms/EditUserForm'
 import { styles } from '../../common/styles'
 import { useMsal } from '@azure/msal-react'
-import {
-  DELETE_BUTTON_COLOR,
-  JOIN_BUTTON_COLOR,
-  RELOAD_BUTTON_COLOR,
-} from '../../common/colors'
+import { DELETE_BUTTON_COLOR, JOIN_BUTTON_COLOR } from '../../common/colors'
 
 export default function UserDetails(props: { userId: string }) {
   const { instance } = useMsal()
@@ -189,12 +185,6 @@ export default function UserDetails(props: { userId: string }) {
                 onClick={() => setEditModalOpened(true)}
               >
                 Edit
-              </Button>
-              <Button
-                style={{ backgroundColor: RELOAD_BUTTON_COLOR }}
-                onClick={() => loadSelectedUser()}
-              >
-                Reload
               </Button>
             </Group>
           </Card.Section>
