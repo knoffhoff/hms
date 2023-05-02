@@ -31,6 +31,7 @@ import { getProfilePhoto } from '../common/actionAuth'
 import { LOGO } from '../common/constants'
 import { User } from '../common/types'
 import EditUserForm from './input-forms/EditUserForm'
+import { getUserDetails } from '../actions/UserActions'
 
 interface HeaderSearchProps {
   links: {
@@ -65,8 +66,19 @@ export default function HeaderMenu({
   today.setHours(0, 0, 0, 0)
   const location = useLocation()
   const { instance, accounts } = useMsal()
-  const user = accounts.length > 0 ? accounts[0] : null
   const [editModalOpened, setEditModalOpened] = useState(false)
+  const [user, setUser] = useState({
+    id: 'string',
+    lastName: 'string',
+    firstName: 'string',
+    emailAddress: 'string',
+    roles: [],
+    skills: [],
+    imageUrl: 'string',
+    creationDate: new Date(),
+  } as User)
+  const [isUserError, setIsUserError] = useState(false)
+  const [isUserLoading, setIsUserLoading] = useState(true)
 
   useEffect(() => {
     const fetchProfilePhoto = async () => {
@@ -75,6 +87,24 @@ export default function HeaderMenu({
     }
     fetchProfilePhoto()
   }, [instance])
+
+  const loadSelectedUser = () => {
+    getUserDetails(instance, userDetails.id).then(
+      (data) => {
+        setUser(data)
+        setIsUserLoading(false)
+        setIsUserError(false)
+      },
+      () => {
+        setIsUserLoading(false)
+        setIsUserError(true)
+      }
+    )
+  }
+
+  useEffect(() => {
+    loadSelectedUser()
+  }, [userDetails.id])
 
   const logout = () => {
     const logoutRequest = {
@@ -196,6 +226,10 @@ export default function HeaderMenu({
     </div>
   )
 
+  const closeEditModal = (isOpened: boolean) => {
+    setEditModalOpened(isOpened)
+  }
+
   const editModal = (
     <Modal
       centered
@@ -204,7 +238,11 @@ export default function HeaderMenu({
       withCloseButton={false}
     >
       <Text className={classes.title}>Edit User</Text>
-      <EditUserForm userId={userDetails.id} />
+      <EditUserForm
+        userId={userDetails.id}
+        reload={loadSelectedUser}
+        setOpened={closeEditModal}
+      />
       <Text className={classes.text}>
         (This window will automatically close as soon as the user is edited)
       </Text>
@@ -247,7 +285,7 @@ export default function HeaderMenu({
 
           <Text size='sm'>
             Skills:{' '}
-            {userDetails.skills?.map((skill, index) => (
+            {user.skills?.map((skill, index) => (
               <Badge
                 color={theme.colorScheme === 'dark' ? 'dark' : 'gray'}
                 key={index}
