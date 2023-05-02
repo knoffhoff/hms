@@ -562,7 +562,10 @@ export default function IdeaDetails(props: IProps) {
                               {voteCheck ? 'Remove Vote' : 'Vote for Idea'}
                             </Button>
                           )}
-                          <CardButton idea={props.idea} />
+                          <CardButton 
+                            idea={props.idea}
+                            reloadIdeaDetails={loadIdeaData} 
+                          />
                         </Group>
                       )}
 

@@ -96,6 +96,7 @@ export default function CardButtons(props: IProps) {
 
   const closeEditModal = (isOpened: boolean) => {
     setEditModalOpened(isOpened)
+    loadIdeaData()
   }
 
   const loadIdeaData = () => {
