@@ -24,6 +24,11 @@ function Admin() {
       </Accordion>
     )
   }
+  console.log(openedAccordion, typeof openedAccordion)
+
+  const closeAccordion = () => {
+    setOpenedAccordion(null)
+  }
 
   return (
     <>
@@ -34,7 +39,11 @@ function Admin() {
       {accordion(
         'create-hackathon',
         'Create new hackathon',
-        <HackathonForm hackathonId={null} context={'new'} />
+        <HackathonForm
+          hackathonId={null}
+          context={'new'}
+          closeAccordion={closeAccordion}
+        />
       )}
       {accordion('all-hackathons', 'Hackathon list', <AllHackathonList />)}
       {accordion('users', 'User list', <AllUserList />)}
