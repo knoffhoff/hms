@@ -7,7 +7,7 @@ import { JOIN_BUTTON_COLOR, LEAVE_BUTTON_COLOR } from '../../common/colors'
 import { useContext, useEffect, useState } from 'react'
 import { styles } from '../../common/styles'
 import { UserContext } from '../../pages/Layout'
-import { HackathonVotingContext } from '../../pages/AllIdeas'
+import { HackathonParticipantContext, HackathonVotingContext } from '../../pages/AllIdeas'
 import { getIdeaDetails } from '../../actions/IdeaActions'
 import { showNotification, updateNotification } from '@mantine/notifications'
 import { useMsal } from '@azure/msal-react'
@@ -19,6 +19,7 @@ type IProps = {
 }
 
 export default function VotingHandler(props: IProps) {
+  const hackathonParticipantId = useContext(HackathonParticipantContext)
   const { instance } = useMsal()
   const user = useContext(UserContext)
   const { idea } = props
@@ -43,7 +44,7 @@ export default function VotingHandler(props: IProps) {
     }
   }
 
-  const removeThisVote = async (
+  const removeVote = async (
     action = removeIdeaVoteParticipant,
     check = setVoteCheck
   ) => {
@@ -56,6 +57,7 @@ export default function VotingHandler(props: IProps) {
         icon: <X />,
         autoClose: 5000,
       })
+      console.log(check, participantInfo)
       return
     }
     setButtonisDisabled(true)
@@ -96,7 +98,11 @@ export default function VotingHandler(props: IProps) {
     )
   }
 
-  const addVoterToIdea = async (
+  const removeThisVote = () => {
+    removeVote(removeIdeaVoteParticipant, setVoteCheck)
+  }
+
+  const addVote = async (
     action = createIdeaVoteParticipant,
     check = setVoteCheck
   ) => {
@@ -164,6 +170,20 @@ export default function VotingHandler(props: IProps) {
     }, [loader])
   }
 
+  const addThisVote = async () => {
+    await addVote(createIdeaVoteParticipant, setVoteCheck)
+  }
+
+
+  useEffect(() => {
+    if (user) {
+      setParticipantInfo({
+        userId: user.id,
+        participantId: hackathonParticipantId,
+      })
+    }
+  }, [user, hackathonParticipantId])
+
   return (
     <Card.Section className={classes.noBorderSection}>
       <Stack align={'center'} spacing={'xs'}>
@@ -173,7 +193,7 @@ export default function VotingHandler(props: IProps) {
 
       <Button
         disabled={buttonIsDisabled}
-        onClick={voteCheck ? removeThisVote : addVoterToIdea}
+        onClick={voteCheck ? removeThisVote : addThisVote}
         style={{
           backgroundColor: voteCheck ? LEAVE_BUTTON_COLOR : JOIN_BUTTON_COLOR,
         }}
