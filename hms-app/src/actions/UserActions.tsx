@@ -34,7 +34,7 @@ export const deleteUser = async (
 ) => {
   const idToken = await getIdToken(instance)
   const options = buildFetchOptions('DELETE', idToken)
-  return fetch(`${coreUrl}/hackathon/${userID}`, options)
+  return fetch(`${coreUrl}/user/${userID}`, options)
     .then((response) => {
       return response.json()
     })
@@ -52,7 +52,7 @@ export const createUser = async (
     emailAddress: AdUser.mail,
     roles: ['Participant'],
     skills: [],
-    imageUrl: ''
+    imageUrl: '',
   })
   return fetch(`${coreUrl}/user`, options)
     .then((response) => {

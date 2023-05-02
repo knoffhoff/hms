@@ -31,6 +31,7 @@ import { getProfilePhoto } from '../common/actionAuth'
 import { LOGO } from '../common/constants'
 import { User } from '../common/types'
 import EditUserForm from './input-forms/EditUserForm'
+import { getUserDetails } from '../actions/UserActions'
 
 interface HeaderSearchProps {
   links: {
@@ -55,7 +56,7 @@ export default function HeaderMenu({
   links,
   hackathonLinks,
   adminLinks,
-  userDetails
+  userDetails,
 }: HeaderSearchProps) {
   const theme = useMantineColorScheme()
   const [profilePhoto, setProfilePhoto] = useState('')
@@ -64,9 +65,20 @@ export default function HeaderMenu({
   const today = new Date()
   today.setHours(0, 0, 0, 0)
   const location = useLocation()
-  const { instance, accounts } = useMsal()
-  const user = accounts.length > 0 ? accounts[0] : null
+  const { instance } = useMsal()
   const [editModalOpened, setEditModalOpened] = useState(false)
+  const [user, setUser] = useState({
+    id: 'string',
+    lastName: 'string',
+    firstName: 'string',
+    emailAddress: 'string',
+    roles: [],
+    skills: [],
+    imageUrl: 'string',
+    creationDate: new Date(),
+  } as User)
+  const [isUserError, setIsUserError] = useState(false)
+  const [isUserLoading, setIsUserLoading] = useState(true)
 
   useEffect(() => {
     const fetchProfilePhoto = async () => {
@@ -75,6 +87,25 @@ export default function HeaderMenu({
     }
     fetchProfilePhoto()
   }, [instance])
+
+  const loadSelectedUser = () => {
+    setIsUserLoading(true)
+    getUserDetails(instance, userDetails.id).then(
+      (data) => {
+        setUser(data)
+        setIsUserLoading(false)
+        setIsUserError(false)
+      },
+      () => {
+        setIsUserLoading(false)
+        setIsUserError(true)
+      }
+    )
+  }
+
+  useEffect(() => {
+    loadSelectedUser()
+  }, [])
 
   const logout = () => {
     const logoutRequest = {
@@ -196,6 +227,10 @@ export default function HeaderMenu({
     </div>
   )
 
+  const closeEditModal = (isOpened: boolean) => {
+    setEditModalOpened(isOpened)
+  }
+
   const editModal = (
     <Modal
       centered
@@ -204,7 +239,11 @@ export default function HeaderMenu({
       withCloseButton={false}
     >
       <Text className={classes.title}>Edit User</Text>
-      <EditUserForm userId={userDetails.id}/>
+      <EditUserForm
+        userId={userDetails.id}
+        reload={loadSelectedUser}
+        setOpened={closeEditModal}
+      />
       <Text className={classes.text}>
         (This window will automatically close as soon as the user is edited)
       </Text>
@@ -212,69 +251,91 @@ export default function HeaderMenu({
   )
 
   const popoverProfile = (
-      <Popover width='200' position='bottom' withArrow shadow='md'>
-        <Popover.Target>
-          <Button style={{
+    <Popover width='200' position='bottom' withArrow shadow='md'>
+      <Popover.Target>
+        <Button
+          style={{
             backgroundColor:
               theme.colorScheme === 'light' ? PRIMARY_COLOR_1 : PRIMARY_COLOR_1,
-              padding: '0px 0px 0px 10px', height: 40
-}}>
+            padding: '0px 0px 0px 10px',
+            height: 40,
+          }}
+        >
           {userAvatar(profilePhoto)}
-          </Button>  
-        </Popover.Target>
-        <Popover.Dropdown>
-          <Text size='sm'>
-            Name: {userDetails?.firstName} {userDetails?.lastName}
-          </Text>
-
-          <Text size='sm'>
-          Email: {userDetails?.emailAddress}
-          </Text>
-
+        </Button>
+      </Popover.Target>
+      <Popover.Dropdown>
+        {!isUserLoading && isUserError && (
           <div>
-            <Text size='sm'>Roles: {userDetails.roles?.map((role, index) => (
-              <Badge
-                color={theme.colorScheme === 'dark' ? 'dark' : 'gray'}
-                key={index}
-              >
-              {role}
-              </Badge>
-            ))}
+            <Text className={classes.title}>Error loading user</Text>
+            <Text className={classes.text}>something went wrong.</Text>
+          </div>
+        )}
+
+        {isUserLoading && !isUserError && (
+          <div>
+            <Text className={classes.title}>User details are loading...</Text>
+          </div>
+        )}
+
+        {!isUserLoading && !isUserError && (
+          <div>
+            <Text size='sm'>
+              Name: {userDetails?.firstName} {userDetails?.lastName}
             </Text>
 
-            <Text size='sm'>Skills: {userDetails.skills?.map((skill, index) => (
-              <Badge
-                color={theme.colorScheme === 'dark' ? 'dark' : 'gray'}
-                key={index}
-              >
-              {skill.name}
-              </Badge>
-            ))}
+            <Text size='sm'>Email: {userDetails?.emailAddress}</Text>
+
+            <Text size='sm'>
+              Roles:{' '}
+              {userDetails.roles?.map((role, index) => (
+                <Badge
+                  color={theme.colorScheme === 'dark' ? 'dark' : 'gray'}
+                  key={index}
+                >
+                  {role}
+                </Badge>
+              ))}
             </Text>
-          </div>
-          
-          <Group position='right' mt='xs'>
-          <Button
+
+            <Text size='sm'>
+              Skills:{' '}
+              {user.skills?.map((skill, index) => (
+                <Badge
+                  color={theme.colorScheme === 'dark' ? 'dark' : 'gray'}
+                  key={index}
+                >
+                  {skill.name}
+                </Badge>
+              ))}
+            </Text>
+
+            <Group position='right' mt='xs'>
+              <Button
                 style={{ backgroundColor: JOIN_BUTTON_COLOR }}
                 onClick={() => setEditModalOpened(true)}
               >
                 Edit
-            </Button>
-          </Group>
-        </Popover.Dropdown>
-      </Popover>
-    )
-  
+              </Button>
+            </Group>
+          </div>
+        )}
+      </Popover.Dropdown>
+    </Popover>
+  )
+
   function userAvatar(profilePhoto: string | null | undefined) {
-   if(profilePhoto){
+    if (profilePhoto) {
       return <Avatar src={profilePhoto} radius={'xl'} />
-   }
-   if(!profilePhoto){
-      const fullName = userDetails?.firstName +' '+ userDetails?.lastName
-      return <Avatar color='indigo' radius='xl'>
-      {getInitials(fullName ?? 'User User')}
-    </Avatar>
-   }
+    }
+    if (!profilePhoto) {
+      const fullName = userDetails?.firstName + ' ' + userDetails?.lastName
+      return (
+        <Avatar color='indigo' radius='xl'>
+          {getInitials(fullName ?? 'User User')}
+        </Avatar>
+      )
+    }
   }
 
   return (

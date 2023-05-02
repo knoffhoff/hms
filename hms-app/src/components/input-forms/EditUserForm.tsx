@@ -11,12 +11,14 @@ import { Check, X } from 'tabler-icons-react'
 
 type IProps = {
   userId: string
+  reload?: () => void
+  setOpened?: (boolean: boolean) => void
 }
 
 export default function EditUserForm(props: IProps) {
   const { instance } = useMsal()
   const { classes } = styles()
-  const { userId } = props
+  const { userId, reload, setOpened } = props
   const [isLoading, setIsLoading] = useState(true)
   const [availableSkills, setAvailableSkills] = useState([] as SkillPreview[])
   const [skills, setSkills] = useState<string[]>([])
@@ -54,13 +56,6 @@ export default function EditUserForm(props: IProps) {
     setIsLoading(true)
   }, [])
 
-  function handleChange(event: React.ChangeEvent<HTMLTextAreaElement>) {
-    setUser((prevUser) => ({
-      ...prevUser,
-      [event.target.name]: event.target.value,
-    }))
-  }
-
   function editThisUser(event: React.MouseEvent<HTMLButtonElement>) {
     event.preventDefault()
     showNotification({
@@ -72,6 +67,12 @@ export default function EditUserForm(props: IProps) {
       disallowClose: false,
     })
     editUser(instance, user, skills).then((response) => {
+      if (setOpened) {
+        setOpened(false)
+      }
+      if (reload) {
+        reload()
+      }
       if (JSON.stringify(response).toString().includes('error')) {
         updateNotification({
           id: 'user-load',

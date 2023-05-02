@@ -179,36 +179,36 @@ const Layout = () => {
       toggleColorScheme={() => setColorScheme(toggleColorScheme(colorScheme))}
     >
       <MantineProvider theme={{ colorScheme }} withGlobalStyles>
-        {((isAuthenticated && user !== undefined) || !USE_AUTH) && (
-          (userDetails !== undefined) && (
-          <UserContext.Provider value={user}>
-            <CurrentHackathonContext.Provider value={currentHackathon}>
-              <AppShell
-                header={
-                  <HeaderMenu
-                    links={menuLinks}
-                    hackathonLinks={hackLinks}
-                    adminLinks={adminLinks}
-                    userDetails = {userDetails}
-                  />
-                }
-                styles={(theme) => ({
-                  main: {
-                    backgroundColor:
-                      theme.colorScheme === 'light'
-                        ? PAGE_BACKGROUND_LIGHT
-                        : PAGE_BACKGROUND_DARK,
-                    minHeight: 'calc(100vh - 56px)',
-                  },
-                })}
-              >
-                <Container size={'xl'} pt={50} pb={100}>
-                  <Outlet />
-                </Container>
-              </AppShell>
-            </CurrentHackathonContext.Provider>
-          </UserContext.Provider>)
-        )}
+        {((isAuthenticated && user !== undefined) || !USE_AUTH) &&
+          userDetails !== undefined && (
+            <UserContext.Provider value={user}>
+              <CurrentHackathonContext.Provider value={currentHackathon}>
+                <AppShell
+                  header={
+                    <HeaderMenu
+                      links={menuLinks}
+                      hackathonLinks={hackLinks}
+                      adminLinks={adminLinks}
+                      userDetails={userDetails}
+                    />
+                  }
+                  styles={(theme) => ({
+                    main: {
+                      backgroundColor:
+                        theme.colorScheme === 'light'
+                          ? PAGE_BACKGROUND_LIGHT
+                          : PAGE_BACKGROUND_DARK,
+                      minHeight: 'calc(100vh - 56px)',
+                    },
+                  })}
+                >
+                  <Container size={'xl'} pt={50} pb={100}>
+                    <Outlet />
+                  </Container>
+                </AppShell>
+              </CurrentHackathonContext.Provider>
+            </UserContext.Provider>
+          )}
         {(!isAuthenticated || !user) && USE_AUTH && (
           <Login isAuthenticated={isAuthenticated} user={user} />
         )}
