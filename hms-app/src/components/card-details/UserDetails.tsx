@@ -15,11 +15,16 @@ import { styles } from '../../common/styles'
 import { useMsal } from '@azure/msal-react'
 import { DELETE_BUTTON_COLOR, JOIN_BUTTON_COLOR } from '../../common/colors'
 
-export default function UserDetails(props: { userId: string }) {
+type IProps = {
+  userId: string
+  reloadList?: () => void
+}
+
+export default function UserDetails(props: IProps) {
   const { instance } = useMsal()
   const theme = useMantineTheme()
   const { classes } = styles()
-  const { userId } = props
+  const { userId, reloadList } = props
   const [deleteModalOpened, setDeleteModalOpened] = useState(false)
   const [editModalOpened, setEditModalOpened] = useState(false)
   const [isUserError, setIsUserError] = useState(false)
@@ -36,6 +41,7 @@ export default function UserDetails(props: { userId: string }) {
   } as User)
 
   const loadSelectedUser = () => {
+    // setIsUserLoading(true)
     getUserDetails(instance, userId).then(
       (data) => {
         setUser(data)
@@ -52,6 +58,9 @@ export default function UserDetails(props: { userId: string }) {
   const deleteSelectedUser = () => {
     deleteUser(instance, userId).then(() => {
       setDeleteModalOpened(false)
+      if (reloadList) {
+        reloadList()
+      }
     })
   }
 
