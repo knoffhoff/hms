@@ -1,30 +1,25 @@
 import React, { useContext, useEffect, useState } from 'react'
 import {
-Accordion,
-Avatar,
-Badge,
-Button,
-Card,						
-Group,
-Modal,
-Spoiler,
-Stack,
-Text,
-Tooltip,
-useMantineTheme,
+  Accordion,
+  Avatar,
+  Badge,
+  Button,
+  Card,
+  Group,
+  Modal,
+  Spoiler,
+  Stack,
+  Text,
+  Tooltip,
+  useMantineTheme,
 } from '@mantine/core'
-import {
-  Category,
-  Idea,
-  IdeaCardType,
-  Skill,
-} from '../../common/types'
+import { Category, Idea, IdeaCardType, Skill } from '../../common/types'
 import { getIdeaDetails } from '../../actions/IdeaActions'
 import { styles } from '../../common/styles'
 import { useMsal } from '@azure/msal-react'
 import {
-HackathonParticipantContext,
-HackathonVotingContext,
+  HackathonParticipantContext,
+  HackathonVotingContext,
 } from '../../pages/AllIdeas'
 import { UserContext } from '../../pages/Layout'
 import { getCategoryDetails } from '../../actions/CategoryActions'
@@ -56,35 +51,35 @@ export default function IdeaDetails(props: IProps) {
   const [ideaData, setIdeaData] = useState(idea)
 
   const loadCategoryDetails = () => {
-  if (ideaData.category)
-    getCategoryDetails(instance, ideaData.category.id).then((data) => {
+    if (ideaData.category)
+      getCategoryDetails(instance, ideaData.category.id).then((data) => {
         setCategoryData(data)
-    })
+      })
   }
 
   const loadSkillDetails = () => {
-  ideaData.requiredSkills?.map((skills) => {
-    getSkillDetails(instance, skills.id).then((data) => {
+    ideaData.requiredSkills?.map((skills) => {
+      getSkillDetails(instance, skills.id).then((data) => {
         setSkillData((skillData) => [...skillData, data])
+      })
     })
-  })
   }
 
   const getSkillDescription = (id: string) => {
-  const skill = skillData.find((skill) => skill.id === id)
-  if (skill) {
-    return skill.description
-  }
-  return null
+    const skill = skillData.find((skill) => skill.id === id)
+    if (skill) {
+      return skill.description
+    }
+    return null
   }
 
-useEffect(() => {
-  loadCategoryDetails()
-  loadSkillDetails()
+  useEffect(() => {
+    loadCategoryDetails()
+    loadSkillDetails()
   }, [])
 
-useEffect(() => {
-  loadIdeaData()
+  useEffect(() => {
+    loadIdeaData()
   }, [loader])
 
   const loadIdeaData = () => {
@@ -96,34 +91,26 @@ useEffect(() => {
 
   // Idea Card Functions
   const ideaHeader = () => {
-  return (
-    <Group position='left'>
-      <Stack align={'center'} spacing={'xs'}>
-      <Avatar color='indigo' radius='xl' size='md'>
-        {getInitials(
-        ideaData.owner?.firstName,
-        ideaData.owner?.lastName
-        )}
-      </Avatar>
-      <Badge size='sm'>
-        {ideaData.owner?.firstName} {ideaData.owner?.lastName}
-      </Badge>
-      </Stack>
-      <Text className={classes.title}>
-      {ideaData.title?.slice(0, MAX_TITLE_LENGTH)}
-      {ideaData.title?.length > MAX_TITLE_LENGTH ? '...' : ''}
-      </Text>
-    </Group> 
-  )
-        
+    return (
+      <Group position='left'>
+        <Stack align={'center'} spacing={'xs'}>
+          <Avatar color='indigo' radius='xl' size='md'>
+            {getInitials(ideaData.owner?.firstName, ideaData.owner?.lastName)}
+          </Avatar>
+          <Badge size='sm'>
+            {ideaData.owner?.firstName} {ideaData.owner?.lastName}
+          </Badge>
+        </Stack>
+        <Text className={classes.title}>
+          {ideaData.title?.slice(0, MAX_TITLE_LENGTH)}
+          {ideaData.title?.length > MAX_TITLE_LENGTH ? '...' : ''}
+        </Text>
+      </Group>
+    )
   }
 
   const ideaDescription = () => {
-    return (
-      <Text className={classes.text}> 
-        {ideaData.description}
-      </Text>
-    )
+    return <Text className={classes.text}>{ideaData.description}</Text>
   }
 
   const ideaProblem = () => {
@@ -133,7 +120,6 @@ useEffect(() => {
         <Text className={classes.text}>{ideaData.problem}</Text>
       </Card.Section>
     )
-    
   }
 
   const ideaGoal = () => {
@@ -143,7 +129,6 @@ useEffect(() => {
         <Text className={classes.text}>{ideaData.goal}</Text>
       </Card.Section>
     )
-    
   }
 
   const ideaCategory = () => {
@@ -158,104 +143,101 @@ useEffect(() => {
           color='gray'
           label={categoryData.description}
         >
-        <Badge
-        color={theme.colorScheme === 'dark' ? 'dark' : 'gray'}
-        key={ideaData.category?.id}
-        >
-        {ideaData.category?.title}
-        </Badge>
+          <Badge
+            color={theme.colorScheme === 'dark' ? 'dark' : 'gray'}
+            key={ideaData.category?.id}
+          >
+            {ideaData.category?.title}
+          </Badge>
         </Tooltip>
       </Card.Section>
     )
-    
   }
 
   const ideaRequiredSkills = () => {
     return (
-    <Card.Section className={classes.borderSection}>
-      <Text className={classes.label}>Skills required</Text>
-      <Group spacing={7} mt={5}>
-        {ideaData.requiredSkills?.map((skill) => (
-        <Tooltip
-          multiline
-          width={220}
-          transition='fade'
-          transitionDuration={200}
-          color='gray'
-          label={getSkillDescription(skill.id)}
-          key={skill.id}
-        >
-        <Badge
-          color={theme.colorScheme === 'dark' ? 'dark' : 'gray'}
-          key={skill.id}
-        >
-        {skill.name}
-        </Badge>
-        </Tooltip>
-        ))}
-      </Group>
+      <Card.Section className={classes.borderSection}>
+        <Text className={classes.label}>Skills required</Text>
+        <Group spacing={7} mt={5}>
+          {ideaData.requiredSkills?.map((skill) => (
+            <Tooltip
+              multiline
+              width={220}
+              transition='fade'
+              transitionDuration={200}
+              color='gray'
+              label={getSkillDescription(skill.id)}
+              key={skill.id}
+            >
+              <Badge
+                color={theme.colorScheme === 'dark' ? 'dark' : 'gray'}
+                key={skill.id}
+              >
+                {skill.name}
+              </Badge>
+            </Tooltip>
+          ))}
+        </Group>
       </Card.Section>
-      )
+    )
   }
 
   const ideaButtons = () => {
-    return ( 
-      (type === IdeaCardType.Admin) || 
-        (type === IdeaCardType.Owner || ideaData.owner?.id === user?.id) && (
-          <CardButton
-            idea = {props.idea}
-            reloadIdeaDetails={loadIdeaData}
-          />
-        )
-      )	
+    return (
+      type === IdeaCardType.Admin ||
+      ((type === IdeaCardType.Owner || ideaData.owner?.id === user?.id) && (
+        <CardButton idea={props.idea} reloadIdeaDetails={loadIdeaData} />
+      ))
+    )
   }
 
   useEffect(() => {
-  if (user) {
-    setParticipantInfo({
+    if (user) {
+      setParticipantInfo({
         userId: user.id,
         participantId: hackathonParticipantId,
-    })
-  }
+      })
+    }
   }, [user, hackathonParticipantId])
 
   return (
     <>
-      { !isLoading && (type === IdeaCardType.IdeaPortal || type === IdeaCardType.AllIdeas) ? (
+      {!isLoading &&
+      (type === IdeaCardType.IdeaPortal || type === IdeaCardType.AllIdeas) ? (
         <Card withBorder className={classes.card}>
           <Spoiler maxHeight={145} showLabel='Show more' hideLabel='Hide'>
             <Card.Section className={classes.borderSection}>
               <Group noWrap mb={5} position='apart'>
-                { ideaHeader() }
+                {ideaHeader()}
               </Group>
-              { ideaDescription() }
+              {ideaDescription()}
             </Card.Section>
           </Spoiler>
 
-        <Accordion
-          onChange={(value) => setAccordionOpen(value === 'idea-details')}>
-          <Accordion.Item
-            className={classes.noBorderAccordion}
-            value={'idea-details'}
+          <Accordion
+            onChange={(value) => setAccordionOpen(value === 'idea-details')}
           >
-          <Accordion.Control>
-                  {!accordionOpen && 'Show details'}
-                  {accordionOpen && 'Hide details'}
-          </Accordion.Control>
-          <Accordion.Panel>
-                  { ideaCategory() }
-                  { ideaRequiredSkills() }
-                  { ideaProblem() }
-                  { ideaGoal() }
-          </Accordion.Panel>
-          </Accordion.Item>
-        </Accordion>
-            { ideaButtons() }
+            <Accordion.Item
+              className={classes.noBorderAccordion}
+              value={'idea-details'}
+            >
+              <Accordion.Control>
+                {!accordionOpen && 'Show details'}
+                {accordionOpen && 'Hide details'}
+              </Accordion.Control>
+              <Accordion.Panel>
+                {ideaCategory()}
+                {ideaRequiredSkills()}
+                {ideaProblem()}
+                {ideaGoal()}
+              </Accordion.Panel>
+            </Accordion.Item>
+          </Accordion>
+          {ideaButtons()}
         </Card>
-          ) : (
-            'Failed to load ideas.'
-          )
-        } 
+      ) : (
+        'Failed to load ideas.'
+      )}
     </>
-    )
+  )
 }
