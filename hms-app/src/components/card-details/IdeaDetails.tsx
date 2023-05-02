@@ -199,6 +199,10 @@ export default function IdeaDetails(props: IProps) {
     )
   }
 
+  const IdeaComments = () => {
+    return <IdeaCommentDetails ideaId={props.idea.id} />
+  }
+
   const ideaButtons = () => {
     return (
       type === IdeaCardType.Admin ||
@@ -210,18 +214,17 @@ export default function IdeaDetails(props: IProps) {
 
   const votingButton = () => {
     return (
-      { hackathonVotingOpened } && type === IdeaCardType.AllIdeas && (
-        <VotingHandler idea={props.idea} /> 
-      )
+      { hackathonVotingOpened } &&
+      type === IdeaCardType.AllIdeas && <VotingHandler idea={props.idea} />
     )
   }
 
   const participateButton = () => {
-    return(
+    return (
       type === IdeaCardType.AllIdeas && (
-          <ParticipantsHandler idea={props.idea} />
-        )
-    ) 
+        <ParticipantsHandler idea={props.idea} />
+      )
+    )
   }
 
   useEffect(() => {
@@ -266,6 +269,7 @@ export default function IdeaDetails(props: IProps) {
               </Accordion.Panel>
             </Accordion.Item>
           </Accordion>
+          {IdeaComments()}
           {participateButton()}
           {ideaButtons()}
         </Card>
