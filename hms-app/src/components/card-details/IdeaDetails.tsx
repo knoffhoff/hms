@@ -18,6 +18,7 @@ import {
   Idea,
   IdeaCardType,
   // IdeaFormType,
+  // IdeaFormType,
   Skill,
 } from '../../common/types'
 import { getIdeaDetails } from '../../actions/IdeaActions'
@@ -26,12 +27,15 @@ import { showNotification, updateNotification } from '@mantine/notifications'
 import {
   createIdeaParticipant,
   // createIdeaVoteParticipant,
+  // createIdeaVoteParticipant,
   removeIdeaParticipant,
+  // removeIdeaVoteParticipant,
   // removeIdeaVoteParticipant,
 } from '../../actions/ParticipantActions'
 import { Check, X } from 'tabler-icons-react'
 import { useMsal } from '@azure/msal-react'
 import {
+  // DELETE_BUTTON_COLOR,
   // DELETE_BUTTON_COLOR,
   JOIN_BUTTON_COLOR,
   LEAVE_BUTTON_COLOR,
@@ -48,10 +52,10 @@ import CardButton from './CardButton'
 import VotingHandler from './VotingHandler'
 
 
-type IProps = {
-idea: Idea
-isLoading: boolean
-type: IdeaCardType
+export type IProps = {
+  idea: Idea
+  isLoading: boolean
+  type: IdeaCardType
 }
 
 export default function IdeaDetails(props: IProps) {
@@ -61,6 +65,7 @@ export default function IdeaDetails(props: IProps) {
   const { instance } = useMsal()
   const { classes } = styles()
   const { idea, type, isLoading } = props
+  const { ideaVoteButton } = VotingHandler
   const MAX_TITLE_LENGTH = 100
   const theme = useMantineTheme()
   const [accordionOpen, setAccordionOpen] = useState(false)
@@ -73,7 +78,7 @@ export default function IdeaDetails(props: IProps) {
     participantId: '',
   })
   const [participantCheck, setParticipantCheck] = useState(false)
-  const [voteCheck, setVoteCheck] = useState(false)
+  // const [voteCheck, setVoteCheck] = useState(false)
   const [categoryData, setCategoryData] = useState({} as Category)
   const [skillData, setSkillData] = useState([] as Skill[])
   const [loader, setLoader] = useState(false)
@@ -435,9 +440,6 @@ const removeThisIdeaParticipant = () => {
 removeParticipant(removeIdeaParticipant, setParticipantCheck)
 }
 
-
-  
-
 useEffect(() => {
 if (findParticipant()) setParticipantCheck(!!findParticipant())
 if (findVoter()) setVoteCheck(!!findVoter())
@@ -501,8 +503,6 @@ return (
 	</>
 	)
 }
-
-
 
 
 // __DO NOT DELETE FOR NOW (MINIMAL CARD)__
