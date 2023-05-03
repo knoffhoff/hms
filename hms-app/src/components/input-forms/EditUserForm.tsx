@@ -11,8 +11,8 @@ import { Check, X } from 'tabler-icons-react'
 
 type IProps = {
   userId: string
-  reload?: () => void
-  closeEditModal?: () => void
+  reload: () => void
+  closeEditModal: () => void
 }
 
 export default function EditUserForm(props: IProps) {
@@ -87,12 +87,8 @@ export default function EditUserForm(props: IProps) {
           icon: <Check />,
           autoClose: 2000,
         })
-        if (closeEditModal) {
-          closeEditModal()
-        }
-        if (reload) {
-          reload()
-        }
+        closeEditModal()
+        reload()
       }
     })
   }
