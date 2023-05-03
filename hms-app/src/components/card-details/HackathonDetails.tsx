@@ -88,9 +88,7 @@ export default function HackathonDetails(props: IProps) {
   const deleteSelectedHackathon = () => {
     deleteHackathon(instance, hackathonId).then(() => {
       setDeleteModalOpened(false)
-      if (reloadList) {
-        reloadList()
-      }
+      reloadList()
     })
   }
 
