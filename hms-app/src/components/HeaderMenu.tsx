@@ -349,8 +349,10 @@ export default function HeaderMenu({
       <Container size={1300}>
         <div className={classes.header}>
           <Group spacing={1}>
-            <Image height={40} width={120} src={LOGO} />{' '}
-            <h1 style={{ color: TEXT_COLOR_WHITE }}>Ideation Portal</h1>
+            <Link to={'/'}>
+              <Image height={40} width={120} src={LOGO} />{' '}
+            </Link>
+              <h1 style={{ color: TEXT_COLOR_WHITE }}>Ideation Portal</h1>
           </Group>
           <Group spacing={5} className={classes.headerLinks}>
             <SwitchToggle />
