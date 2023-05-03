@@ -30,8 +30,6 @@ function Admin() {
 
   const closeAccordion = () => {
     setOpenedAccordion(null)
-    // after this line, REFRESH hackathon list & CLEAR create form
-
     setRefreshHackathonList(!refreshHackathonList)
   }
 

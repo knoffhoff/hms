@@ -57,6 +57,14 @@ function HackathonForm(props: IProps) {
     setHackathonSlug(event.target.value)
   }
 
+  function clearForm() {
+    setHackathonTitle('')
+    setHackathonSlug('')
+    setStartDateValue(new Date())
+    setEndDateValue(new Date())
+    setDescriptionValue('')
+  }
+
   function createThisHackathon(event: React.MouseEvent<HTMLButtonElement>) {
     event.preventDefault()
     if (startDateValue !== null && endDateValue !== null) {
@@ -100,6 +108,7 @@ function HackathonForm(props: IProps) {
               autoClose: 5000,
             })
           } else {
+            clearForm()
             updateNotification({
               id: 'hackathon-load',
               color: 'teal',
