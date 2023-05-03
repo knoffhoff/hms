@@ -44,7 +44,7 @@ import { RichTextEditor } from '@mantine/rte'
 type IProps = {
   hackathonId: string
   type: HackathonDetailsType
-  reloadList?: () => void
+  reloadList: () => void
 }
 
 export default function HackathonDetails(props: IProps) {
@@ -167,9 +167,7 @@ export default function HackathonDetails(props: IProps) {
   const refreshList = () => {
     setIsHackathonLoading(true)
     loadSelectedHackathon()
-    if (reloadList) {
-      reloadList()
-    }
+    reloadList()
   }
 
   const deleteModal = (
