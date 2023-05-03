@@ -27,14 +27,13 @@ import CardButton from './CardButton'
 import ParticipantsHandler from './ParticipantsHandler'
 import VotingHandler from './VotingHandler'
 
-export type IProps = {
+type IProps = {
   idea: Idea
   isLoading: boolean
   type: IdeaCardType
 }
 
 export default function IdeaDetails(props: IProps) {
-  const hackathonParticipantId = useContext(HackathonParticipantContext)
   const hackathonVotingOpened = useContext(HackathonVotingContext)
   const user = useContext(UserContext)
   const { classes } = styles()
@@ -48,10 +47,6 @@ export default function IdeaDetails(props: IProps) {
   const [skillData, setSkillData] = useState([] as Skill[])
   const [loader, setLoader] = useState(false)
   const [ideaData, setIdeaData] = useState(idea)
-  const [participantInfo, setParticipantInfo] = useState({
-    userId: '',
-    participantId: '',
-  })
 
   const loadCategoryDetails = () => {
     if (ideaData.category)
@@ -224,15 +219,6 @@ export default function IdeaDetails(props: IProps) {
     )
   }
 
-  useEffect(() => {
-    if (user) {
-      setParticipantInfo({
-        userId: user.id,
-        participantId: hackathonParticipantId,
-      })
-    }
-  }, [user, hackathonParticipantId])
-
   return (
     <>
       {!isLoading &&
@@ -242,11 +228,11 @@ export default function IdeaDetails(props: IProps) {
             <Card.Section className={classes.borderSection}>
               <Group noWrap mb={5} position='apart'>
                 {ideaHeader()}
+                {votingButton()}
               </Group>
               {ideaDescription()}
             </Card.Section>
           </Spoiler>
-          {votingButton()}
           <Accordion
             onChange={(value) => setAccordionOpen(value === 'idea-details')}
           >
@@ -263,12 +249,12 @@ export default function IdeaDetails(props: IProps) {
                 {ideaRequiredSkills()}
                 {ideaProblem()}
                 {ideaGoal()}
+                {participateButton()}
+                {ideaButtons()}
               </Accordion.Panel>
             </Accordion.Item>
           </Accordion>
           {IdeaComments()}
-          {participateButton()}
-          {ideaButtons()}
         </Card>
       ) : (
         'Failed to load ideas.'

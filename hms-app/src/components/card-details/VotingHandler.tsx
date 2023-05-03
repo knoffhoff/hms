@@ -7,9 +7,7 @@ import { JOIN_BUTTON_COLOR, LEAVE_BUTTON_COLOR } from '../../common/colors'
 import { useContext, useEffect, useState } from 'react'
 import { styles } from '../../common/styles'
 import { UserContext } from '../../pages/Layout'
-import {
-  HackathonParticipantContext,
-} from '../../pages/AllIdeas'
+import { HackathonParticipantContext } from '../../pages/AllIdeas'
 import { getIdeaDetails } from '../../actions/IdeaActions'
 import { showNotification, updateNotification } from '@mantine/notifications'
 import { useMsal } from '@azure/msal-react'
@@ -29,7 +27,7 @@ export default function VotingHandler(props: IProps) {
   const [ideaData, setIdeaData] = useState(idea)
   const [loader, setLoader] = useState(false)
   const [voteCheck, setVoteCheck] = useState(false)
-  const [buttonIsDisabled, setButtonisDisabled] = useState(false)
+  const [buttonIsDisabled, setButtonIsDisabled] = useState(false)
   const [participantInfo, setParticipantInfo] = useState({
     userId: '',
     participantId: '',
@@ -62,7 +60,7 @@ export default function VotingHandler(props: IProps) {
       console.log(check, participantInfo)
       return
     }
-    setButtonisDisabled(true)
+    setButtonIsDisabled(true)
     showNotification({
       id: 'participant-load',
       loading: true,
@@ -73,7 +71,7 @@ export default function VotingHandler(props: IProps) {
     })
     action(instance, ideaData.id, participantInfo.participantId).then(
       (response) => {
-        setButtonisDisabled(false)
+        setButtonIsDisabled(false)
         setLoader(true)
         if (JSON.stringify(response).toString().includes('error')) {
           check(false)
@@ -119,7 +117,7 @@ export default function VotingHandler(props: IProps) {
       })
       return
     }
-    setButtonisDisabled(true)
+    setButtonIsDisabled(true)
     showNotification({
       id: 'participant-load',
       loading: true,
@@ -130,7 +128,7 @@ export default function VotingHandler(props: IProps) {
     })
     action(instance, ideaData.id, participantInfo.participantId).then(
       (response) => {
-        setButtonisDisabled(false)
+        setButtonIsDisabled(false)
         setLoader(true)
         if (JSON.stringify(response).toString().includes('error')) {
           check(false)
@@ -190,17 +188,16 @@ export default function VotingHandler(props: IProps) {
       <Stack align={'center'} spacing={'xs'}>
         <Text className={classes.label}>Votes: </Text>
         <Text className={classes.text}>{ideaData.voters?.length}</Text>
+        <Button
+          disabled={buttonIsDisabled}
+          onClick={voteCheck ? removeThisVote : addThisVote}
+          style={{
+            backgroundColor: voteCheck ? LEAVE_BUTTON_COLOR : JOIN_BUTTON_COLOR,
+          }}
+        >
+          {voteCheck ? 'Remove Vote' : 'Add Vote'}
+        </Button>
       </Stack>
-
-      <Button
-        disabled={buttonIsDisabled}
-        onClick={voteCheck ? removeThisVote : addThisVote}
-        style={{
-          backgroundColor: voteCheck ? LEAVE_BUTTON_COLOR : JOIN_BUTTON_COLOR,
-        }}
-      >
-        {voteCheck ? 'Remove Vote' : 'Add Vote'}
-      </Button>
     </Card.Section>
   )
 }
