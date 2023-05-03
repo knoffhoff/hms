@@ -70,6 +70,7 @@ export default function UserDetails(props: IProps) {
 
   const closeEditModal = () => {
     setEditModalOpened(false)
+    loadSelectedUser()
   }
 
   const deleteModal = (
@@ -106,11 +107,7 @@ export default function UserDetails(props: IProps) {
       withCloseButton={false}
     >
       <Text className={classes.title}>Edit User</Text>
-      <EditUserForm
-        userId={userId}
-        reload={loadSelectedUser}
-        closeEditModal={closeEditModal}
-      />
+      <EditUserForm userId={userId} onSuccess={closeEditModal} />
       {isUserLoading && <div>Loading...</div>}
       <Text className={classes.text}>
         (This window will automatically close as soon as the user is edited)

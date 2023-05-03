@@ -229,6 +229,7 @@ export default function HeaderMenu({
 
   const closeEditModal = () => {
     setEditModalOpened(false)
+    loadSelectedUser()
   }
 
   const editModal = (
@@ -239,11 +240,7 @@ export default function HeaderMenu({
       withCloseButton={false}
     >
       <Text className={classes.title}>Edit User</Text>
-      <EditUserForm
-        userId={userDetails.id}
-        reload={loadSelectedUser}
-        closeEditModal={closeEditModal}
-      />
+      <EditUserForm userId={userDetails.id} onSuccess={closeEditModal} />
       <Text className={classes.text}>
         (This window will automatically close as soon as the user is edited)
       </Text>
