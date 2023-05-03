@@ -164,9 +164,12 @@ export default function HackathonDetails(props: IProps) {
     </Accordion.Item>
   ))
 
-  function refreshList() {
+  const refreshList = () => {
     setIsHackathonLoading(true)
     loadSelectedHackathon()
+    if (reloadList) {
+      reloadList()
+    }
   }
 
   const deleteModal = (
@@ -201,6 +204,10 @@ export default function HackathonDetails(props: IProps) {
     </Modal>
   )
 
+  const closeEditModal = (isOpened: boolean) => {
+    setEditModalOpened(isOpened)
+  }
+
   const editModal = (
     <Modal
       centered
@@ -210,7 +217,12 @@ export default function HackathonDetails(props: IProps) {
       withCloseButton={false}
     >
       <Text className={classes.title}>Edit Hackathon</Text>
-      <HackathonForm context={'edit'} hackathonId={hackathonData.id} />
+      <HackathonForm
+        context={'edit'}
+        hackathonId={hackathonData.id}
+        reload={refreshList}
+        setOpened={closeEditModal}
+      />
       {isHackathonLoading && <div>Loading...</div>}
       <Text className={classes.text}>
         (This window will automatically closed as soon as the hackathon is
