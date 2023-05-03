@@ -443,14 +443,7 @@ export default function HackathonDetails(props: IProps) {
                 >
                   Edit
                 </Button>
-                {!isHackathonLoading && (
-                  <Button
-                    style={{ backgroundColor: RELOAD_BUTTON_COLOR }}
-                    onClick={() => refreshList()}
-                  >
-                    Reload
-                  </Button>
-                )}
+
                 {isHackathonLoading && <div>Loading...</div>}
               </Group>
             </Card.Section>
