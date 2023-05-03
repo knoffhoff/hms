@@ -6,20 +6,13 @@ import {
   Button,
   Card,
   Group,
-  Modal,
   Spoiler,
   Stack,
   Text,
   Tooltip,
   useMantineTheme,
 } from '@mantine/core'
-import {
-  Category,
-  Idea,
-  IdeaCardType,
-  IdeaFormType,
-  Skill,
-} from '../../common/types'
+import { Category, Idea, IdeaCardType, Skill } from '../../common/types'
 import { getIdeaDetails } from '../../actions/IdeaActions'
 import { styles } from '../../common/styles'
 import { showNotification, updateNotification } from '@mantine/notifications'
@@ -31,11 +24,7 @@ import {
 } from '../../actions/ParticipantActions'
 import { Check, X } from 'tabler-icons-react'
 import { useMsal } from '@azure/msal-react'
-import {
-  DELETE_BUTTON_COLOR,
-  JOIN_BUTTON_COLOR,
-  LEAVE_BUTTON_COLOR,
-} from '../../common/colors'
+import { JOIN_BUTTON_COLOR, LEAVE_BUTTON_COLOR } from '../../common/colors'
 import {
   HackathonParticipantContext,
   HackathonVotingContext,
@@ -415,18 +404,18 @@ export default function IdeaDetails(props: IProps) {
                   <Text className={classes.label}>Goal</Text>
                   <Text className={classes.text}>{ideaData.goal}</Text>
                 </Card.Section>
-                
+
                 <Card.Section className={classes.borderSection}>
-                    {skillsRequired}
+                  {skillsRequired}
                 </Card.Section>
               </div>
 
               {type === IdeaCardType.Admin ||
                 type === IdeaCardType.Owner ||
                 (ideaData.owner?.id === user?.id && (
-                  <CardButton 
+                  <CardButton
                     idea={props.idea}
-                    reloadIdeaDetails={loadIdeaData} 
+                    reloadIdeaDetails={loadIdeaData}
                   />
                 ))}
             </Accordion.Panel>
@@ -562,14 +551,20 @@ export default function IdeaDetails(props: IProps) {
                               {voteCheck ? 'Remove Vote' : 'Vote for Idea'}
                             </Button>
                           )}
-                          <CardButton idea={props.idea} />
+                          <CardButton
+                            idea={props.idea}
+                            reloadIdeaDetails={loadIdeaData}
+                          />
                         </Group>
                       )}
 
                     {type === IdeaCardType.Admin ||
                       (type === IdeaCardType.Owner &&
                         ideaData.owner?.id === user?.id && (
-                          <CardButton idea={props.idea} />
+                          <CardButton
+                            idea={props.idea}
+                            reloadIdeaDetails={loadIdeaData}
+                          />
                         ))}
                   </Accordion.Panel>
                 </Accordion.Item>

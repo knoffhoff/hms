@@ -1,30 +1,19 @@
 import { useEffect, useState } from 'react'
-import {
-  Button,
-  Group,
-  Modal,
-  Text,
-} from '@mantine/core'
-import {
-  Idea,
-  IdeaFormType,
-} from '../../common/types'
+import { Button, Group, Modal, Text } from '@mantine/core'
+import { Idea, IdeaFormType } from '../../common/types'
 import { deleteIdea, getIdeaDetails } from '../../actions/IdeaActions'
 import IdeaForm from '../input-forms/IdeaForm'
 import { styles } from '../../common/styles'
 import { showNotification, updateNotification } from '@mantine/notifications'
 import { Check, X } from 'tabler-icons-react'
 import { useMsal } from '@azure/msal-react'
-import {
-  DELETE_BUTTON_COLOR,
-  JOIN_BUTTON_COLOR,
-} from '../../common/colors'
+import { DELETE_BUTTON_COLOR, JOIN_BUTTON_COLOR } from '../../common/colors'
 import FinalVideoUploadModal from '../FinalVideoUploadModal'
 import MoveIdeaModal from '../MoveIdeaModal'
 
 type IProps = {
-    idea: Idea
-    reloadIdeaDetails?: () => void
+  idea: Idea
+  reloadIdeaDetails?: () => void
 }
 
 export default function CardButtons(props: IProps) {
@@ -36,7 +25,6 @@ export default function CardButtons(props: IProps) {
   const { idea, reloadIdeaDetails } = props
   const [ideaData, setIdeaData] = useState(idea)
   const [loader, setLoader] = useState(false)
-
 
   const deleteSelectedIdea = () => {
     showNotification({
@@ -96,6 +84,7 @@ export default function CardButtons(props: IProps) {
 
   const closeEditModal = (isOpened: boolean) => {
     setEditModalOpened(isOpened)
+    loadIdeaData()
   }
 
   const loadIdeaData = () => {
@@ -104,7 +93,7 @@ export default function CardButtons(props: IProps) {
       setLoader(false)
     })
   }
-  
+
   useEffect(() => {
     loadIdeaData()
   }, [loader])
@@ -118,7 +107,7 @@ export default function CardButtons(props: IProps) {
       size='55%'
     >
       <Text className={classes.title}>Edit Idea</Text>
-      <IdeaForm 
+      <IdeaForm
         ideaId={ideaData.id}
         idea={ideaData}
         context={IdeaFormType.Edit}
@@ -142,7 +131,7 @@ export default function CardButtons(props: IProps) {
         }}
         onClick={() => setDeleteModalOpened(true)}
       >
-            Delete
+        Delete
       </Button>
       {editModal}
       <Button
@@ -151,11 +140,10 @@ export default function CardButtons(props: IProps) {
         }}
         onClick={() => setEditModalOpened(true)}
       >
-            Edit
+        Edit
       </Button>
       <FinalVideoUploadModal idea={ideaData} />
       <MoveIdeaModal idea={ideaData} />
     </Group>
   )
-
 }
