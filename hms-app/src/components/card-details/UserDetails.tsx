@@ -17,7 +17,7 @@ import { DELETE_BUTTON_COLOR, JOIN_BUTTON_COLOR } from '../../common/colors'
 
 type IProps = {
   userId: string
-  reloadList?: () => void
+  reloadList: () => void
 }
 
 export default function UserDetails(props: IProps) {
@@ -58,9 +58,7 @@ export default function UserDetails(props: IProps) {
   const deleteSelectedUser = () => {
     deleteUser(instance, userId).then(() => {
       setDeleteModalOpened(false)
-      if (reloadList) {
-        reloadList()
-      }
+      reloadList()
     })
   }
 
