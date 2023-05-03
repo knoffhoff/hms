@@ -26,7 +26,6 @@ function Admin() {
       </Accordion>
     )
   }
-  console.log(openedAccordion, typeof openedAccordion)
 
   const closeAccordion = () => {
     setOpenedAccordion(null)
