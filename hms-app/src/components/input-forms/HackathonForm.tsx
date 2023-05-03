@@ -17,14 +17,12 @@ import { RichTextEditor } from '@mantine/rte'
 type IProps = {
   context: string
   hackathonId: string | null
-  closeAccordion?: () => void
-  reload?: () => void
-  closeEditModal?: () => void
+  onSuccess: () => void
 }
 
 function HackathonForm(props: IProps) {
   const { instance } = useMsal()
-  const { context, hackathonId, closeAccordion, reload, closeEditModal } = props
+  const { context, hackathonId, onSuccess } = props
   const { classes } = styles()
   const today = new Date()
   const [startDateValue, setStartDateValue] = useState<Date | null>(new Date())
@@ -114,9 +112,7 @@ function HackathonForm(props: IProps) {
               icon: <Check />,
               autoClose: 2000,
             })
-            if (closeAccordion) {
-              closeAccordion()
-            }
+            onSuccess()
             clearForm()
           }
         })
@@ -162,12 +158,7 @@ function HackathonForm(props: IProps) {
           icon: <Check />,
           autoClose: 2000,
         })
-        if (closeEditModal) {
-          closeEditModal()
-        }
-        if (reload) {
-          reload()
-        }
+        onSuccess()
       }
     })
   }

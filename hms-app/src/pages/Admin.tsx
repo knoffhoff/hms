@@ -44,7 +44,7 @@ function Admin() {
         <HackathonForm
           hackathonId={null}
           context={'new'}
-          closeAccordion={closeAccordion}
+          onSuccess={closeAccordion}
         />
       )}
       {accordion(
