@@ -227,8 +227,8 @@ export default function HeaderMenu({
     </div>
   )
 
-  const closeEditModal = (isOpened: boolean) => {
-    setEditModalOpened(isOpened)
+  const closeEditModal = () => {
+    setEditModalOpened(false)
   }
 
   const editModal = (
@@ -242,7 +242,7 @@ export default function HeaderMenu({
       <EditUserForm
         userId={userDetails.id}
         reload={loadSelectedUser}
-        setOpened={closeEditModal}
+        closeEditModal={closeEditModal}
       />
       <Text className={classes.text}>
         (This window will automatically close as soon as the user is edited)
@@ -352,7 +352,7 @@ export default function HeaderMenu({
             <Link to={'/'}>
               <Image height={40} width={120} src={LOGO} />{' '}
             </Link>
-              <h1 style={{ color: TEXT_COLOR_WHITE }}>Ideation Portal</h1>
+            <h1 style={{ color: TEXT_COLOR_WHITE }}>Ideation Portal</h1>
           </Group>
           <Group spacing={5} className={classes.headerLinks}>
             <SwitchToggle />

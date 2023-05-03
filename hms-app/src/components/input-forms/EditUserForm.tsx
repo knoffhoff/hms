@@ -12,13 +12,13 @@ import { Check, X } from 'tabler-icons-react'
 type IProps = {
   userId: string
   reload?: () => void
-  setOpened?: (boolean: boolean) => void
+  closeEditModal?: () => void
 }
 
 export default function EditUserForm(props: IProps) {
   const { instance } = useMsal()
   const { classes } = styles()
-  const { userId, reload, setOpened } = props
+  const { userId, reload, closeEditModal } = props
   const [isLoading, setIsLoading] = useState(true)
   const [availableSkills, setAvailableSkills] = useState([] as SkillPreview[])
   const [skills, setSkills] = useState<string[]>([])
@@ -87,8 +87,8 @@ export default function EditUserForm(props: IProps) {
           icon: <Check />,
           autoClose: 2000,
         })
-        if (setOpened) {
-          setOpened(false)
+        if (closeEditModal) {
+          closeEditModal()
         }
         if (reload) {
           reload()

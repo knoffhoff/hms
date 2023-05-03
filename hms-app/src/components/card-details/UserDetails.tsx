@@ -68,8 +68,8 @@ export default function UserDetails(props: IProps) {
     loadSelectedUser()
   }, [userId])
 
-  const closeEditModal = (isOpened: boolean) => {
-    setEditModalOpened(isOpened)
+  const closeEditModal = () => {
+    setEditModalOpened(false)
   }
 
   const deleteModal = (
@@ -109,7 +109,7 @@ export default function UserDetails(props: IProps) {
       <EditUserForm
         userId={userId}
         reload={loadSelectedUser}
-        setOpened={closeEditModal}
+        closeEditModal={closeEditModal}
       />
       {isUserLoading && <div>Loading...</div>}
       <Text className={classes.text}>
