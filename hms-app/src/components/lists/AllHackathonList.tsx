@@ -6,13 +6,14 @@ import HackathonDetails from '../card-details/HackathonDetails'
 import { styles } from '../../common/styles'
 import { useMsal } from '@azure/msal-react'
 
-function AllHackathonList() {
+function AllHackathonList(props: { refreshHackathonList?: boolean }) {
   const { instance } = useMsal()
   const { classes } = styles()
   const [isLoading, setIsLoading] = useState(true)
   const [hackathonList, setHackathonList] = useState({
     hackathons: [] as HackathonPreview[],
   })
+  const { refreshHackathonList } = props
 
   const loadHackathons = () => {
     getListOfHackathons(instance).then((data) => {
@@ -40,6 +41,10 @@ function AllHackathonList() {
   useEffect(() => {
     loadHackathons()
   }, [])
+
+  useEffect(() => {
+    loadHackathons()
+  }, [refreshHackathonList])
 
   function refreshList() {
     setIsLoading(true)

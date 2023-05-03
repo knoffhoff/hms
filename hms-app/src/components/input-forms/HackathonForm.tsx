@@ -14,11 +14,15 @@ import { dark2, JOIN_BUTTON_COLOR } from '../../common/colors'
 import { Hackathon } from '../../common/types'
 import { RichTextEditor } from '@mantine/rte'
 
-type IProps = { context: string; hackathonId: string | null }
+type IProps = {
+  context: string
+  hackathonId: string | null
+  closeAccordion?: () => void
+}
 
 function HackathonForm(props: IProps) {
   const { instance } = useMsal()
-  const { context, hackathonId } = props
+  const { context, hackathonId, closeAccordion } = props
   const { classes } = styles()
   const today = new Date()
   const [startDateValue, setStartDateValue] = useState<Date | null>(new Date())
@@ -53,6 +57,14 @@ function HackathonForm(props: IProps) {
     setHackathonSlug(event.target.value)
   }
 
+  function clearForm() {
+    setHackathonTitle('')
+    setHackathonSlug('')
+    setStartDateValue(new Date())
+    setEndDateValue(new Date())
+    setDescriptionValue('')
+  }
+
   function createThisHackathon(event: React.MouseEvent<HTMLButtonElement>) {
     event.preventDefault()
     if (startDateValue !== null && endDateValue !== null) {
@@ -82,6 +94,10 @@ function HackathonForm(props: IProps) {
           startDateValue!,
           endDateValue!
         ).then((response) => {
+          if (closeAccordion) {
+            closeAccordion()
+          }
+
           if (JSON.stringify(response).toString().includes('error')) {
             updateNotification({
               id: 'hackathon-load',
@@ -92,6 +108,7 @@ function HackathonForm(props: IProps) {
               autoClose: 5000,
             })
           } else {
+            clearForm()
             updateNotification({
               id: 'hackathon-load',
               color: 'teal',
