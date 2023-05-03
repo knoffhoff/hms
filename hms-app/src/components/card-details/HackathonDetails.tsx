@@ -202,8 +202,8 @@ export default function HackathonDetails(props: IProps) {
     </Modal>
   )
 
-  const closeEditModal = (isOpened: boolean) => {
-    setEditModalOpened(isOpened)
+  const closeEditModal = () => {
+    setEditModalOpened(false)
   }
 
   const editModal = (
@@ -219,7 +219,7 @@ export default function HackathonDetails(props: IProps) {
         context={'edit'}
         hackathonId={hackathonData.id}
         reload={refreshList}
-        setOpened={closeEditModal}
+        closeEditModal={closeEditModal}
       />
       {isHackathonLoading && <div>Loading...</div>}
       <Text className={classes.text}>

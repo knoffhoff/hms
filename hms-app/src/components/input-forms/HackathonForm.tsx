@@ -19,12 +19,12 @@ type IProps = {
   hackathonId: string | null
   closeAccordion?: () => void
   reload?: () => void
-  setOpened?: (boolean: boolean) => void
+  closeEditModal?: () => void
 }
 
 function HackathonForm(props: IProps) {
   const { instance } = useMsal()
-  const { context, hackathonId, closeAccordion, reload, setOpened } = props
+  const { context, hackathonId, closeAccordion, reload, closeEditModal } = props
   const { classes } = styles()
   const today = new Date()
   const [startDateValue, setStartDateValue] = useState<Date | null>(new Date())
@@ -162,8 +162,8 @@ function HackathonForm(props: IProps) {
           icon: <Check />,
           autoClose: 2000,
         })
-        if (setOpened) {
-          setOpened(false)
+        if (closeEditModal) {
+          closeEditModal()
         }
         if (reload) {
           reload()
