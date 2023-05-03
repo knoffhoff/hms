@@ -26,6 +26,7 @@ import IdeaCommentDetails from './IdeaCommentDetails'
 import CardButton from './CardButton'
 import ParticipantsHandler from './ParticipantsHandler'
 import VotingHandler from './VotingHandler'
+import VoteButtons from './VoteButtons'
 
 type IProps = {
   idea: Idea
@@ -207,7 +208,7 @@ export default function IdeaDetails(props: IProps) {
   const votingButton = () => {
     return (
       { hackathonVotingOpened } &&
-      type === IdeaCardType.AllIdeas && <VotingHandler idea={props.idea} />
+      type === IdeaCardType.AllIdeas && <VoteButtons idea={props.idea} />
     )
   }
 

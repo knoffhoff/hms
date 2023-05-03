@@ -3,7 +3,6 @@ import {
   createIdeaVoteParticipant,
   removeIdeaVoteParticipant,
 } from '../../actions/ParticipantActions'
-import { JOIN_BUTTON_COLOR, LEAVE_BUTTON_COLOR } from '../../common/colors'
 import { useContext, useEffect, useState } from 'react'
 import { styles } from '../../common/styles'
 import { UserContext } from '../../pages/Layout'
@@ -16,18 +15,19 @@ import { Idea } from '../../common/types'
 
 type IProps = {
   idea: Idea
+  vote: (boolean: boolean) => void
+  buttonState: (boolean: boolean) => void
 }
 
 export default function VotingHandler(props: IProps) {
   const hackathonParticipantId = useContext(HackathonParticipantContext)
   const { instance } = useMsal()
   const user = useContext(UserContext)
-  const { idea } = props
   const { classes } = styles()
+  const { idea, vote, buttonState } = props
   const [ideaData, setIdeaData] = useState(idea)
   const [loader, setLoader] = useState(false)
   const [voteCheck, setVoteCheck] = useState(false)
-  const [buttonIsDisabled, setButtonIsDisabled] = useState(false)
   const [participantInfo, setParticipantInfo] = useState({
     userId: '',
     participantId: '',
@@ -60,7 +60,7 @@ export default function VotingHandler(props: IProps) {
       console.log(check, participantInfo)
       return
     }
-    setButtonIsDisabled(true)
+    buttonState(true)
     showNotification({
       id: 'participant-load',
       loading: true,
@@ -71,7 +71,7 @@ export default function VotingHandler(props: IProps) {
     })
     action(instance, ideaData.id, participantInfo.participantId).then(
       (response) => {
-        setButtonIsDisabled(false)
+        buttonState(false)
         setLoader(true)
         if (JSON.stringify(response).toString().includes('error')) {
           check(false)
@@ -98,10 +98,6 @@ export default function VotingHandler(props: IProps) {
     )
   }
 
-  const removeThisVote = () => {
-    removeVote(removeIdeaVoteParticipant, setVoteCheck)
-  }
-
   const addVote = async (
     action = createIdeaVoteParticipant,
     check = setVoteCheck
@@ -117,7 +113,7 @@ export default function VotingHandler(props: IProps) {
       })
       return
     }
-    setButtonIsDisabled(true)
+    buttonState(true)
     showNotification({
       id: 'participant-load',
       loading: true,
@@ -128,7 +124,7 @@ export default function VotingHandler(props: IProps) {
     })
     action(instance, ideaData.id, participantInfo.participantId).then(
       (response) => {
-        setButtonIsDisabled(false)
+        buttonState(false)
         setLoader(true)
         if (JSON.stringify(response).toString().includes('error')) {
           check(false)
@@ -170,10 +166,6 @@ export default function VotingHandler(props: IProps) {
     }, [loader])
   }
 
-  const addThisVote = async () => {
-    await addVote(createIdeaVoteParticipant, setVoteCheck)
-  }
-
   useEffect(() => {
     if (user) {
       setParticipantInfo({
@@ -182,22 +174,5 @@ export default function VotingHandler(props: IProps) {
       })
     }
   }, [user, hackathonParticipantId])
-
-  return (
-    <Card.Section className={classes.noBorderSection}>
-      <Stack align={'center'} spacing={'xs'}>
-        <Text className={classes.label}>Votes: </Text>
-        <Text className={classes.text}>{ideaData.voters?.length}</Text>
-        <Button
-          disabled={buttonIsDisabled}
-          onClick={voteCheck ? removeThisVote : addThisVote}
-          style={{
-            backgroundColor: voteCheck ? LEAVE_BUTTON_COLOR : JOIN_BUTTON_COLOR,
-          }}
-        >
-          {voteCheck ? 'Remove Vote' : 'Add Vote'}
-        </Button>
-      </Stack>
-    </Card.Section>
-  )
+  
 }
