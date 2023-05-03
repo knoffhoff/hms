@@ -184,12 +184,10 @@ export default function HackathonDetails(props: IProps) {
       </Text>
       <Text className={classes.title}>Title: {hackathonData.title}</Text>
       <Text className={classes.title}>
-        Start Date:
-        {new Date(hackathonData.startDate).toDateString()}
+        Start Date: {new Date(hackathonData.startDate).toDateString()}
       </Text>
       <Text className={classes.title}>
-        End Date:
-        {new Date(hackathonData.endDate).toDateString()}
+        End Date: {new Date(hackathonData.endDate).toDateString()}
       </Text>
       <Button
         style={{ backgroundColor: DELETE_BUTTON_COLOR }}
@@ -318,17 +316,12 @@ export default function HackathonDetails(props: IProps) {
 
             <Card.Section className={classes.borderSection}>
               <SimpleGrid cols={2} breakpoints={[{ maxWidth: 'sm', cols: 1 }]}>
-                <Card.Section>
-                  <Text className={classes.title}>
-                    Start Date:{' '}
-                    {new Date(hackathonData.startDate).toDateString()}
-                  </Text>
-                </Card.Section>
-                <Card.Section>
-                  <Text className={classes.title}>
-                    End Date: {new Date(hackathonData.endDate).toDateString()}
-                  </Text>
-                </Card.Section>
+                <Text className={classes.title}>
+                  Start Date: {new Date(hackathonData.startDate).toDateString()}
+                </Text>
+                <Text className={classes.title}>
+                  End Date: {new Date(hackathonData.endDate).toDateString()}
+                </Text>
               </SimpleGrid>
             </Card.Section>
 
