@@ -13,17 +13,18 @@ import {
 import EditUserForm from '../input-forms/EditUserForm'
 import { styles } from '../../common/styles'
 import { useMsal } from '@azure/msal-react'
-import {
-  DELETE_BUTTON_COLOR,
-  JOIN_BUTTON_COLOR,
-  RELOAD_BUTTON_COLOR,
-} from '../../common/colors'
+import { DELETE_BUTTON_COLOR, JOIN_BUTTON_COLOR } from '../../common/colors'
 
-export default function UserDetails(props: { userId: string }) {
+type IProps = {
+  userId: string
+  reloadList?: () => void
+}
+
+export default function UserDetails(props: IProps) {
   const { instance } = useMsal()
   const theme = useMantineTheme()
   const { classes } = styles()
-  const { userId } = props
+  const { userId, reloadList } = props
   const [deleteModalOpened, setDeleteModalOpened] = useState(false)
   const [editModalOpened, setEditModalOpened] = useState(false)
   const [isUserError, setIsUserError] = useState(false)
@@ -57,12 +58,19 @@ export default function UserDetails(props: { userId: string }) {
   const deleteSelectedUser = () => {
     deleteUser(instance, userId).then(() => {
       setDeleteModalOpened(false)
+      if (reloadList) {
+        reloadList()
+      }
     })
   }
 
   useEffect(() => {
     loadSelectedUser()
   }, [userId])
+
+  const closeEditModal = (isOpened: boolean) => {
+    setEditModalOpened(isOpened)
+  }
 
   const deleteModal = (
     <Modal
@@ -98,17 +106,21 @@ export default function UserDetails(props: { userId: string }) {
       withCloseButton={false}
     >
       <Text className={classes.title}>Edit User</Text>
-      <EditUserForm userId={userId} />
+      <EditUserForm
+        userId={userId}
+        reload={loadSelectedUser}
+        setOpened={closeEditModal}
+      />
       {isUserLoading && <div>Loading...</div>}
       <Text className={classes.text}>
-        (This window will automatically close as soon as the user is deleted)
+        (This window will automatically close as soon as the user is edited)
       </Text>
     </Modal>
   )
 
   return (
     <>
-      {isUserError && !isUserLoading && (
+      {isUserLoading && isUserError && (
         <div>
           <Text className={classes.title}>Error loading user</Text>
           <Text className={classes.text}>something went wrong.</Text>
@@ -181,12 +193,6 @@ export default function UserDetails(props: { userId: string }) {
                 onClick={() => setEditModalOpened(true)}
               >
                 Edit
-              </Button>
-              <Button
-                style={{ backgroundColor: RELOAD_BUTTON_COLOR }}
-                onClick={() => loadSelectedUser()}
-              >
-                Reload
               </Button>
             </Group>
           </Card.Section>

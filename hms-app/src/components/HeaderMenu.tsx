@@ -11,6 +11,9 @@ import {
   Menu,
   Text,
   useMantineColorScheme,
+  Popover,
+  Badge,
+  Modal,
 } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 import { SwitchToggle } from './ThemeSwitchToggle'
@@ -18,6 +21,7 @@ import { styles } from '../common/styles'
 import {
   HEADER_ACTIVE_COLOR_DARK,
   HEADER_ACTIVE_COLOR_LIGHT,
+  JOIN_BUTTON_COLOR,
   PRIMARY_COLOR_1,
   TEXT_COLOR_WHITE,
 } from '../common/colors'
@@ -25,6 +29,9 @@ import { useMsal } from '@azure/msal-react'
 import { Logout } from 'tabler-icons-react'
 import { getProfilePhoto } from '../common/actionAuth'
 import { LOGO } from '../common/constants'
+import { User } from '../common/types'
+import EditUserForm from './input-forms/EditUserForm'
+import { getUserDetails } from '../actions/UserActions'
 
 interface HeaderSearchProps {
   links: {
@@ -39,6 +46,7 @@ interface HeaderSearchProps {
     link: string
     label: string
   }[]
+  userDetails: User
 }
 
 const AZURE_ACCOUNT_ID = process.env.REACT_APP_AZURE_ACCOUNT_ID || ''
@@ -48,6 +56,7 @@ export default function HeaderMenu({
   links,
   hackathonLinks,
   adminLinks,
+  userDetails,
 }: HeaderSearchProps) {
   const theme = useMantineColorScheme()
   const [profilePhoto, setProfilePhoto] = useState('')
@@ -56,8 +65,20 @@ export default function HeaderMenu({
   const today = new Date()
   today.setHours(0, 0, 0, 0)
   const location = useLocation()
-  const { instance, accounts } = useMsal()
-  const user = accounts.length > 0 ? accounts[0] : null
+  const { instance } = useMsal()
+  const [editModalOpened, setEditModalOpened] = useState(false)
+  const [user, setUser] = useState({
+    id: 'string',
+    lastName: 'string',
+    firstName: 'string',
+    emailAddress: 'string',
+    roles: [],
+    skills: [],
+    imageUrl: 'string',
+    creationDate: new Date(),
+  } as User)
+  const [isUserError, setIsUserError] = useState(false)
+  const [isUserLoading, setIsUserLoading] = useState(true)
 
   useEffect(() => {
     const fetchProfilePhoto = async () => {
@@ -66,6 +87,25 @@ export default function HeaderMenu({
     }
     fetchProfilePhoto()
   }, [instance])
+
+  const loadSelectedUser = () => {
+    setIsUserLoading(true)
+    getUserDetails(instance, userDetails.id).then(
+      (data) => {
+        setUser(data)
+        setIsUserLoading(false)
+        setIsUserError(false)
+      },
+      () => {
+        setIsUserLoading(false)
+        setIsUserError(true)
+      }
+    )
+  }
+
+  useEffect(() => {
+    loadSelectedUser()
+  }, [])
 
   const logout = () => {
     const logoutRequest = {
@@ -187,6 +227,117 @@ export default function HeaderMenu({
     </div>
   )
 
+  const closeEditModal = (isOpened: boolean) => {
+    setEditModalOpened(isOpened)
+  }
+
+  const editModal = (
+    <Modal
+      centered
+      opened={editModalOpened}
+      onClose={() => setEditModalOpened(false)}
+      withCloseButton={false}
+    >
+      <Text className={classes.title}>Edit User</Text>
+      <EditUserForm
+        userId={userDetails.id}
+        reload={loadSelectedUser}
+        setOpened={closeEditModal}
+      />
+      <Text className={classes.text}>
+        (This window will automatically close as soon as the user is edited)
+      </Text>
+    </Modal>
+  )
+
+  const popoverProfile = (
+    <Popover width='200' position='bottom' withArrow shadow='md'>
+      <Popover.Target>
+        <Button
+          style={{
+            backgroundColor:
+              theme.colorScheme === 'light' ? PRIMARY_COLOR_1 : PRIMARY_COLOR_1,
+            padding: '0px 0px 0px 10px',
+            height: 40,
+          }}
+        >
+          {userAvatar(profilePhoto)}
+        </Button>
+      </Popover.Target>
+      <Popover.Dropdown>
+        {!isUserLoading && isUserError && (
+          <div>
+            <Text className={classes.title}>Error loading user</Text>
+            <Text className={classes.text}>something went wrong.</Text>
+          </div>
+        )}
+
+        {isUserLoading && !isUserError && (
+          <div>
+            <Text className={classes.title}>User details are loading...</Text>
+          </div>
+        )}
+
+        {!isUserLoading && !isUserError && (
+          <div>
+            <Text size='sm'>
+              Name: {userDetails?.firstName} {userDetails?.lastName}
+            </Text>
+
+            <Text size='sm'>Email: {userDetails?.emailAddress}</Text>
+
+            <Text size='sm'>
+              Roles:{' '}
+              {userDetails.roles?.map((role, index) => (
+                <Badge
+                  color={theme.colorScheme === 'dark' ? 'dark' : 'gray'}
+                  key={index}
+                >
+                  {role}
+                </Badge>
+              ))}
+            </Text>
+
+            <Text size='sm'>
+              Skills:{' '}
+              {user.skills?.map((skill, index) => (
+                <Badge
+                  color={theme.colorScheme === 'dark' ? 'dark' : 'gray'}
+                  key={index}
+                >
+                  {skill.name}
+                </Badge>
+              ))}
+            </Text>
+
+            <Group position='right' mt='xs'>
+              <Button
+                style={{ backgroundColor: JOIN_BUTTON_COLOR }}
+                onClick={() => setEditModalOpened(true)}
+              >
+                Edit
+              </Button>
+            </Group>
+          </div>
+        )}
+      </Popover.Dropdown>
+    </Popover>
+  )
+
+  function userAvatar(profilePhoto: string | null | undefined) {
+    if (profilePhoto) {
+      return <Avatar src={profilePhoto} radius={'xl'} />
+    }
+    if (!profilePhoto) {
+      const fullName = userDetails?.firstName + ' ' + userDetails?.lastName
+      return (
+        <Avatar color='indigo' radius='xl'>
+          {getInitials(fullName ?? 'User User')}
+        </Avatar>
+      )
+    }
+  }
+
   return (
     <Header
       height={56}
@@ -198,18 +349,16 @@ export default function HeaderMenu({
       <Container size={1300}>
         <div className={classes.header}>
           <Group spacing={1}>
-            <Image height={40} width={120} src={LOGO} />{' '}
-            <h1 style={{ color: TEXT_COLOR_WHITE }}>Ideation Portal</h1>
+            <Link to={'/'}>
+              <Image height={40} width={120} src={LOGO} />{' '}
+            </Link>
+              <h1 style={{ color: TEXT_COLOR_WHITE }}>Ideation Portal</h1>
           </Group>
           <Group spacing={5} className={classes.headerLinks}>
             <SwitchToggle />
             {fullscreenMenu}
-            {profilePhoto && <Avatar src={profilePhoto} radius={'xl'} />}
-            {!profilePhoto && (
-              <Avatar color='indigo' radius='xl'>
-                {getInitials(user?.name ?? 'User User')}
-              </Avatar>
-            )}
+            {editModal}
+            {popoverProfile}
             <Button onClick={logout} variant={'subtle'}>
               <Logout />
             </Button>

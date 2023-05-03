@@ -4,7 +4,6 @@ import {
   editHackathon,
   getHackathonDetails,
 } from '../../actions/HackathonActions'
-import IdeaCardList from '../lists/IdeaCardList'
 import {
   Hackathon,
   HackathonDetailsType,
@@ -30,7 +29,6 @@ import CategoryDetails from './CategoryDetails'
 import { Link } from 'react-router-dom'
 import { styles } from '../../common/styles'
 import { NULL_DATE } from '../../common/constants'
-import HackathonHeader from '../HackathonHeader'
 import { useMsal } from '@azure/msal-react'
 import {
   DELETE_BUTTON_COLOR,
@@ -283,24 +281,6 @@ export default function HackathonDetails(props: IProps) {
           <Text className={classes.text}>Hackathon details are loading...</Text>
         </div>
       )}
-
-      {hackathonData.startDate !== NULL_DATE &&
-        hackathonData.startDate?.toString() !== 'Invalid Date' &&
-        !isHackathonLoading &&
-        !isHackathonError &&
-        (type === HackathonDetailsType.Header ||
-          type === HackathonDetailsType.Archive) && (
-          <div>
-            <HackathonHeader hackathonData={hackathonData} />
-
-            <IdeaCardList
-              ideas={relevantIdeaList}
-              columnSize={6}
-              type={IdeaCardType.Archive}
-              isLoading={isIdeaLoading}
-            />
-          </div>
-        )}
 
       {hackathonData.startDate !== NULL_DATE &&
         hackathonData.startDate?.toString() !== 'Invalid Date' &&
