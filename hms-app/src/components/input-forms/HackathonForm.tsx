@@ -96,10 +96,6 @@ function HackathonForm(props: IProps) {
           startDateValue!,
           endDateValue!
         ).then((response) => {
-          if (closeAccordion) {
-            closeAccordion()
-          }
-
           if (JSON.stringify(response).toString().includes('error')) {
             updateNotification({
               id: 'hackathon-load',
@@ -110,7 +106,6 @@ function HackathonForm(props: IProps) {
               autoClose: 5000,
             })
           } else {
-            clearForm()
             updateNotification({
               id: 'hackathon-load',
               color: 'teal',
@@ -119,6 +114,10 @@ function HackathonForm(props: IProps) {
               icon: <Check />,
               autoClose: 2000,
             })
+            if (closeAccordion) {
+              closeAccordion()
+            }
+            clearForm()
           }
         })
       }
