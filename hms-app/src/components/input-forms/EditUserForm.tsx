@@ -67,12 +67,6 @@ export default function EditUserForm(props: IProps) {
       disallowClose: false,
     })
     editUser(instance, user, skills).then((response) => {
-      if (setOpened) {
-        setOpened(false)
-      }
-      if (reload) {
-        reload()
-      }
       if (JSON.stringify(response).toString().includes('error')) {
         updateNotification({
           id: 'user-load',
@@ -93,6 +87,12 @@ export default function EditUserForm(props: IProps) {
           icon: <Check />,
           autoClose: 2000,
         })
+        if (setOpened) {
+          setOpened(false)
+        }
+        if (reload) {
+          reload()
+        }
       }
     })
   }

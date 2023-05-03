@@ -35,7 +35,7 @@ import {
   DELETE_BUTTON_COLOR,
   JOIN_BUTTON_COLOR,
   RELOAD_BUTTON_COLOR,
-  PRIMARY_COLOR_2
+  PRIMARY_COLOR_2,
 } from '../../common/colors'
 import { showNotification, updateNotification } from '@mantine/notifications'
 import { Check, X } from 'tabler-icons-react'
@@ -44,12 +44,13 @@ import { RichTextEditor } from '@mantine/rte'
 type IProps = {
   hackathonId: string
   type: HackathonDetailsType
+  reloadList?: () => void
 }
 
 export default function HackathonDetails(props: IProps) {
   const { instance } = useMsal()
   const { classes } = styles()
-  const { hackathonId, type } = props
+  const { hackathonId, type, reloadList } = props
   const [deleteModalOpened, setDeleteModalOpened] = useState(false)
   const [editModalOpened, setEditModalOpened] = useState(false)
   const [isHackathonError, setIsHackathonError] = useState(false)
@@ -87,6 +88,9 @@ export default function HackathonDetails(props: IProps) {
   const deleteSelectedHackathon = () => {
     deleteHackathon(instance, hackathonId).then(() => {
       setDeleteModalOpened(false)
+      if (reloadList) {
+        reloadList()
+      }
     })
   }
 
@@ -160,9 +164,12 @@ export default function HackathonDetails(props: IProps) {
     </Accordion.Item>
   ))
 
-  function refreshList() {
+  const refreshList = () => {
     setIsHackathonLoading(true)
     loadSelectedHackathon()
+    if (reloadList) {
+      reloadList()
+    }
   }
 
   const deleteModal = (
@@ -177,12 +184,10 @@ export default function HackathonDetails(props: IProps) {
       </Text>
       <Text className={classes.title}>Title: {hackathonData.title}</Text>
       <Text className={classes.title}>
-        Start Date:
-        {new Date(hackathonData.startDate).toDateString()}
+        Start Date: {new Date(hackathonData.startDate).toDateString()}
       </Text>
       <Text className={classes.title}>
-        End Date:
-        {new Date(hackathonData.endDate).toDateString()}
+        End Date: {new Date(hackathonData.endDate).toDateString()}
       </Text>
       <Button
         style={{ backgroundColor: DELETE_BUTTON_COLOR }}
@@ -197,6 +202,10 @@ export default function HackathonDetails(props: IProps) {
     </Modal>
   )
 
+  const closeEditModal = (isOpened: boolean) => {
+    setEditModalOpened(isOpened)
+  }
+
   const editModal = (
     <Modal
       centered
@@ -206,7 +215,12 @@ export default function HackathonDetails(props: IProps) {
       withCloseButton={false}
     >
       <Text className={classes.title}>Edit Hackathon</Text>
-      <HackathonForm context={'edit'} hackathonId={hackathonData.id} />
+      <HackathonForm
+        context={'edit'}
+        hackathonId={hackathonData.id}
+        reload={refreshList}
+        setOpened={closeEditModal}
+      />
       {isHackathonLoading && <div>Loading...</div>}
       <Text className={classes.text}>
         (This window will automatically closed as soon as the hackathon is
@@ -302,17 +316,12 @@ export default function HackathonDetails(props: IProps) {
 
             <Card.Section className={classes.borderSection}>
               <SimpleGrid cols={2} breakpoints={[{ maxWidth: 'sm', cols: 1 }]}>
-                <Card.Section>
-                  <Text className={classes.title}>
-                    Start Date:{' '}
-                    {new Date(hackathonData.startDate).toDateString()}
-                  </Text>
-                </Card.Section>
-                <Card.Section>
-                  <Text className={classes.title}>
-                    End Date: {new Date(hackathonData.endDate).toDateString()}
-                  </Text>
-                </Card.Section>
+                <Text className={classes.title}>
+                  Start Date: {new Date(hackathonData.startDate).toDateString()}
+                </Text>
+                <Text className={classes.title}>
+                  End Date: {new Date(hackathonData.endDate).toDateString()}
+                </Text>
               </SimpleGrid>
             </Card.Section>
 
@@ -377,34 +386,34 @@ export default function HackathonDetails(props: IProps) {
                 </Accordion.Control>
                 <Accordion.Panel>
                   <Group position='left' mt='xl'>
-                  <Button
-                    style={{ backgroundColor: PRIMARY_COLOR_2 }}
-                    mb={20}
-                    onClick={() =>
-                      localStorage.setItem(
-                        'ideas',
-                        JSON.stringify(relevantIdeaList)
-                      )
-                    }
-                    component={Link}
-                    to='/pitch'
-                  >
-                    Pitch
-                  </Button>
-                  <Button
-                    style={{ backgroundColor: JOIN_BUTTON_COLOR }}
-                    mb={20}
-                    onClick={() =>
-                      localStorage.setItem(
-                        'ideas',
-                        JSON.stringify(relevantIdeaList)
-                      )
-                    }
-                    component={Link}
-                    to='/finals'
-                  >
-                    Final
-                  </Button>
+                    <Button
+                      style={{ backgroundColor: PRIMARY_COLOR_2 }}
+                      mb={20}
+                      onClick={() =>
+                        localStorage.setItem(
+                          'ideas',
+                          JSON.stringify(relevantIdeaList)
+                        )
+                      }
+                      component={Link}
+                      to='/pitch'
+                    >
+                      Pitch
+                    </Button>
+                    <Button
+                      style={{ backgroundColor: JOIN_BUTTON_COLOR }}
+                      mb={20}
+                      onClick={() =>
+                        localStorage.setItem(
+                          'ideas',
+                          JSON.stringify(relevantIdeaList)
+                        )
+                      }
+                      component={Link}
+                      to='/finals'
+                    >
+                      Final
+                    </Button>
                   </Group>
                   <Accordion chevronPosition={'right'}>{allIdeas}</Accordion>
                 </Accordion.Panel>
@@ -427,14 +436,7 @@ export default function HackathonDetails(props: IProps) {
                 >
                   Edit
                 </Button>
-                {!isHackathonLoading && (
-                  <Button
-                    style={{ backgroundColor: RELOAD_BUTTON_COLOR }}
-                    onClick={() => refreshList()}
-                  >
-                    Reload
-                  </Button>
-                )}
+
                 {isHackathonLoading && <div>Loading...</div>}
               </Group>
             </Card.Section>
