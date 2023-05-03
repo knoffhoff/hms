@@ -35,7 +35,7 @@ import {
   DELETE_BUTTON_COLOR,
   JOIN_BUTTON_COLOR,
   RELOAD_BUTTON_COLOR,
-  PRIMARY_COLOR_2
+  PRIMARY_COLOR_2,
 } from '../../common/colors'
 import { showNotification, updateNotification } from '@mantine/notifications'
 import { Check, X } from 'tabler-icons-react'
@@ -44,12 +44,13 @@ import { RichTextEditor } from '@mantine/rte'
 type IProps = {
   hackathonId: string
   type: HackathonDetailsType
+  reloadList?: () => void
 }
 
 export default function HackathonDetails(props: IProps) {
   const { instance } = useMsal()
   const { classes } = styles()
-  const { hackathonId, type } = props
+  const { hackathonId, type, reloadList } = props
   const [deleteModalOpened, setDeleteModalOpened] = useState(false)
   const [editModalOpened, setEditModalOpened] = useState(false)
   const [isHackathonError, setIsHackathonError] = useState(false)
@@ -87,6 +88,9 @@ export default function HackathonDetails(props: IProps) {
   const deleteSelectedHackathon = () => {
     deleteHackathon(instance, hackathonId).then(() => {
       setDeleteModalOpened(false)
+      if (reloadList) {
+        reloadList()
+      }
     })
   }
 
@@ -377,34 +381,34 @@ export default function HackathonDetails(props: IProps) {
                 </Accordion.Control>
                 <Accordion.Panel>
                   <Group position='left' mt='xl'>
-                  <Button
-                    style={{ backgroundColor: PRIMARY_COLOR_2 }}
-                    mb={20}
-                    onClick={() =>
-                      localStorage.setItem(
-                        'ideas',
-                        JSON.stringify(relevantIdeaList)
-                      )
-                    }
-                    component={Link}
-                    to='/pitch'
-                  >
-                    Pitch
-                  </Button>
-                  <Button
-                    style={{ backgroundColor: JOIN_BUTTON_COLOR }}
-                    mb={20}
-                    onClick={() =>
-                      localStorage.setItem(
-                        'ideas',
-                        JSON.stringify(relevantIdeaList)
-                      )
-                    }
-                    component={Link}
-                    to='/finals'
-                  >
-                    Final
-                  </Button>
+                    <Button
+                      style={{ backgroundColor: PRIMARY_COLOR_2 }}
+                      mb={20}
+                      onClick={() =>
+                        localStorage.setItem(
+                          'ideas',
+                          JSON.stringify(relevantIdeaList)
+                        )
+                      }
+                      component={Link}
+                      to='/pitch'
+                    >
+                      Pitch
+                    </Button>
+                    <Button
+                      style={{ backgroundColor: JOIN_BUTTON_COLOR }}
+                      mb={20}
+                      onClick={() =>
+                        localStorage.setItem(
+                          'ideas',
+                          JSON.stringify(relevantIdeaList)
+                        )
+                      }
+                      component={Link}
+                      to='/finals'
+                    >
+                      Final
+                    </Button>
                   </Group>
                   <Accordion chevronPosition={'right'}>{allIdeas}</Accordion>
                 </Accordion.Panel>
