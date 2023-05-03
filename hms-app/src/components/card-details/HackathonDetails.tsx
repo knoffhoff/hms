@@ -224,7 +224,7 @@ export default function HackathonDetails(props: IProps) {
       {isHackathonLoading && <div>Loading...</div>}
       <Text className={classes.text}>
         (This window will automatically closed as soon as the hackathon is
-        changed)
+        edited)
       </Text>
     </Modal>
   )
