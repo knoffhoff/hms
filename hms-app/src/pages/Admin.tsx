@@ -9,6 +9,8 @@ import SkillsList from '../components/lists/SkillsList'
 function Admin() {
   const { classes } = styles()
   const [openedAccordion, setOpenedAccordion] = useState<string | null>(null)
+  const [refreshHackathonList, setRefreshHackathonList] =
+    useState<boolean>(false)
 
   const accordion = (value: string, title: string, element: JSX.Element) => {
     return (
@@ -28,6 +30,9 @@ function Admin() {
 
   const closeAccordion = () => {
     setOpenedAccordion(null)
+    // after this line, REFRESH hackathon list & CLEAR create form
+
+    setRefreshHackathonList(!refreshHackathonList)
   }
 
   return (
@@ -45,7 +50,11 @@ function Admin() {
           closeAccordion={closeAccordion}
         />
       )}
-      {accordion('all-hackathons', 'Hackathon list', <AllHackathonList />)}
+      {accordion(
+        'all-hackathons',
+        'Hackathon list',
+        <AllHackathonList refreshHackathonList={refreshHackathonList} />
+      )}
       {accordion('users', 'User list', <AllUserList />)}
       {accordion('skills', 'Skill list', <SkillsList />)}
     </>
