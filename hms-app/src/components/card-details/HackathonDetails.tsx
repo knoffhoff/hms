@@ -44,13 +44,13 @@ import { RichTextEditor } from '@mantine/rte'
 type IProps = {
   hackathonId: string
   type: HackathonDetailsType
-  reloadList: () => void
+  onSuccess: () => void
 }
 
 export default function HackathonDetails(props: IProps) {
   const { instance } = useMsal()
   const { classes } = styles()
-  const { hackathonId, type, reloadList } = props
+  const { hackathonId, type, onSuccess } = props
   const [deleteModalOpened, setDeleteModalOpened] = useState(false)
   const [editModalOpened, setEditModalOpened] = useState(false)
   const [isHackathonError, setIsHackathonError] = useState(false)
@@ -88,7 +88,7 @@ export default function HackathonDetails(props: IProps) {
   const deleteSelectedHackathon = () => {
     deleteHackathon(instance, hackathonId).then(() => {
       setDeleteModalOpened(false)
-      reloadList()
+      onSuccess()
     })
   }
 
@@ -196,7 +196,7 @@ export default function HackathonDetails(props: IProps) {
     setEditModalOpened(false)
     setIsHackathonLoading(true)
     loadSelectedHackathon()
-    reloadList()
+    onSuccess()
   }
 
   const editModal = (
@@ -215,8 +215,7 @@ export default function HackathonDetails(props: IProps) {
       />
       {isHackathonLoading && <div>Loading...</div>}
       <Text className={classes.text}>
-        (This window will automatically closed as soon as the hackathon is
-        edited)
+        (This window will automatically close after the hackathon is edited)
       </Text>
     </Modal>
   )

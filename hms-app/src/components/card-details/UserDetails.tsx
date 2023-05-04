@@ -17,14 +17,14 @@ import { DELETE_BUTTON_COLOR, JOIN_BUTTON_COLOR } from '../../common/colors'
 
 type IProps = {
   userId: string
-  reloadList: () => void
+  onUserDeleted: () => void
 }
 
 export default function UserDetails(props: IProps) {
   const { instance } = useMsal()
   const theme = useMantineTheme()
   const { classes } = styles()
-  const { userId, reloadList } = props
+  const { userId, onUserDeleted } = props
   const [deleteModalOpened, setDeleteModalOpened] = useState(false)
   const [editModalOpened, setEditModalOpened] = useState(false)
   const [isUserError, setIsUserError] = useState(false)
@@ -58,7 +58,7 @@ export default function UserDetails(props: IProps) {
   const deleteSelectedUser = () => {
     deleteUser(instance, userId).then(() => {
       setDeleteModalOpened(false)
-      reloadList()
+      onUserDeleted()
     })
   }
 
