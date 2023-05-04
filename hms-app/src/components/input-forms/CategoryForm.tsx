@@ -15,12 +15,13 @@ type IProps = {
   hackathonId: string
   categoryId: string
   context: string
+  onSuccess?: () => void
 }
 
 export default function CategoryForm(props: IProps) {
   const { instance } = useMsal()
   const { classes } = styles()
-  const { hackathonId, categoryId, context } = props
+  const { hackathonId, categoryId, context, onSuccess } = props
   const [isLoading, setIsLoading] = useState(true)
   const [category, setCategory] = useState({
     hackathonID: hackathonId,
@@ -28,6 +29,8 @@ export default function CategoryForm(props: IProps) {
     title: '',
     description: '',
   })
+  const [categoryTitle, setCategoryTitle] = useState('')
+  const [categoryDescription, setCategoryDescription] = useState('')
 
   const loadSelectedCategory = () => {
     getCategoryDetails(instance, categoryId).then(
@@ -39,6 +42,8 @@ export default function CategoryForm(props: IProps) {
           hackathonID: hackathonId,
           categoryID: categoryId,
         })
+        setCategoryTitle(data.title)
+        setCategoryDescription(data.description)
       },
       () => {
         setIsLoading(false)
@@ -91,6 +96,11 @@ export default function CategoryForm(props: IProps) {
     })
   }
 
+  function clearForm() {
+    setCategoryTitle('')
+    setCategoryDescription('')
+  }
+
   function createThisCategory(event: React.MouseEvent<HTMLButtonElement>) {
     event.preventDefault()
     setCategory((prevState) => ({
@@ -124,6 +134,10 @@ export default function CategoryForm(props: IProps) {
           icon: <Check />,
           autoClose: 2000,
         })
+        if (onSuccess) {
+          onSuccess()
+        }
+        clearForm()
       }
     })
   }
@@ -150,7 +164,7 @@ export default function CategoryForm(props: IProps) {
               autosize
               onChange={handleChange}
               name='title'
-              value={category.title}
+              value={categoryTitle}
               className={classes.label}
             />
           </Card.Section>
@@ -163,7 +177,7 @@ export default function CategoryForm(props: IProps) {
               autosize
               onChange={handleChange}
               name='description'
-              value={category.description}
+              value={categoryDescription}
               className={classes.label}
             />
           </Card.Section>

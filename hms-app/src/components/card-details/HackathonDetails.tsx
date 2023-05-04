@@ -34,12 +34,12 @@ import { useMsal } from '@azure/msal-react'
 import {
   DELETE_BUTTON_COLOR,
   JOIN_BUTTON_COLOR,
-  RELOAD_BUTTON_COLOR,
   PRIMARY_COLOR_2,
 } from '../../common/colors'
 import { showNotification, updateNotification } from '@mantine/notifications'
 import { Check, X } from 'tabler-icons-react'
 import { RichTextEditor } from '@mantine/rte'
+import AllCategoryList from '../lists/AllCategoryList'
 
 type IProps = {
   hackathonId: string
@@ -60,6 +60,9 @@ export default function HackathonDetails(props: IProps) {
   const [ideaData, setIdeaData] = useState<Idea>()
   const [relevantIdeaList, setRelevantIdeaList] = useState([] as Idea[])
   const [votingOpened, setVotingOpened] = useState<boolean>(false)
+  const [openedAccordion, setOpenedAccordion] = useState<string | null>(null)
+  const [refreshList, setRefreshList] = useState(false)
+  // const [categoryLength, setCategoryLength] = useState<number>()
 
   const loadSelectedHackathon = () => {
     getHackathonDetails(instance, hackathonId).then(
@@ -116,6 +119,10 @@ export default function HackathonDetails(props: IProps) {
         })
       }
   }, [ideaData])
+
+  // useEffect(() => {
+  //   setCategoryLength(hackathonData.categories?.length)
+  // }, [hackathonData.categories])
 
   const allParticipants = hackathonData.participants?.map(
     (participant, index) => (
@@ -274,6 +281,11 @@ export default function HackathonDetails(props: IProps) {
     })
   }
 
+  const closeAccordion = () => {
+    setOpenedAccordion(null)
+    setRefreshList(!refreshList)
+  }
+
   return (
     <>
       {isHackathonError && (
@@ -330,10 +342,15 @@ export default function HackathonDetails(props: IProps) {
                 <Accordion.Control>
                   <Text className={classes.label}>
                     Categories ( {allCategories?.length} )
+                    {/* Categories ( {categoryLength} ) */}
                   </Text>
                 </Accordion.Control>
                 <Accordion.Panel>
-                  <Accordion chevronPosition={'right'}>
+                  <Accordion
+                    chevronPosition={'right'}
+                    value={openedAccordion}
+                    onChange={setOpenedAccordion}
+                  >
                     <Accordion.Item
                       className={classes.borderAccordion}
                       value={'add-category'}
@@ -344,10 +361,15 @@ export default function HackathonDetails(props: IProps) {
                           hackathonId={hackathonData.id}
                           context={'new'}
                           categoryId={''}
+                          onSuccess={closeAccordion}
                         />
                       </Accordion.Panel>
                     </Accordion.Item>
-                    {allCategories}
+                    <AllCategoryList
+                      hackathonID={hackathonData.id}
+                      refreshCategoryList={refreshList}
+                    />
+                    {/* {allCategories} */}
                   </Accordion>
                 </Accordion.Panel>
               </Accordion.Item>
