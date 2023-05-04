@@ -12,12 +12,13 @@ import { DELETE_BUTTON_COLOR, JOIN_BUTTON_COLOR } from '../../common/colors'
 
 type IProps = {
   categoryId: string
+  onCategoryDeleted?: () => void // nullable will be deleted later
 }
 
 export default function CategoryDetails(props: IProps) {
   const { instance } = useMsal()
   const { classes } = styles()
-  const { categoryId } = props
+  const { categoryId, onCategoryDeleted } = props
   const [deleteModalOpened, setDeleteModalOpened] = useState(false)
   const [editModalOpened, setEditModalOpened] = useState(false)
   const [isError, setIsError] = useState(false)
@@ -51,6 +52,9 @@ export default function CategoryDetails(props: IProps) {
   const deleteSelectedCategory = () => {
     deleteCategory(instance, categoryData.id).then(() => {
       setDeleteModalOpened(false)
+      if (onCategoryDeleted) {
+        onCategoryDeleted()
+      }
     })
   }
 
