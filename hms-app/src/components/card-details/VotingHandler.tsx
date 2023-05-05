@@ -12,36 +12,28 @@ import { showNotification, updateNotification } from '@mantine/notifications'
 import { useMsal } from '@azure/msal-react'
 import { Check, X } from 'tabler-icons-react'
 import { Idea } from '../../common/types'
+import { JOIN_BUTTON_COLOR, LEAVE_BUTTON_COLOR } from '../../common/colors'
 
 type IProps = {
   idea: Idea
-  vote: (boolean: boolean) => void
-  buttonState: (boolean: boolean) => void
 }
 
-export default function VotingHandler(props: IProps) {
-  const hackathonParticipantId = useContext(HackathonParticipantContext)
-  const { instance } = useMsal()
+// Vote Button Only
+export function VoteButtons(props: IProps) {
+  const { idea } = props
   const user = useContext(UserContext)
   const { classes } = styles()
-  const { idea, vote, buttonState } = props
-  const [ideaData, setIdeaData] = useState(idea)
-  const [loader, setLoader] = useState(false)
+  const { instance } = useMsal()
+  const [buttonIsDisabled, setButtonIsDisabled] = useState(false)
   const [voteCheck, setVoteCheck] = useState(false)
+  const [loader, setLoader] = useState(false)
   const [participantInfo, setParticipantInfo] = useState({
     userId: '',
     participantId: '',
   })
 
-  const findVoter = () => {
-    if (ideaData && ideaData.voters && user) {
-      const voter = ideaData.voters.find((voter) => voter.user.id === user.id)
-      if (voter) {
-        return voter
-      } else {
-        return null
-      }
-    }
+  const removeThisVote = () => {
+    removeVote(removeIdeaVoteParticipant, setVoteCheck)
   }
 
   const removeVote = async (
@@ -60,18 +52,18 @@ export default function VotingHandler(props: IProps) {
       console.log(check, participantInfo)
       return
     }
-    buttonState(true)
+    setButtonIsDisabled(true)
     showNotification({
       id: 'participant-load',
       loading: true,
-      title: `Removing vote from: "${ideaData.title}"`,
+      title: `Removing vote from: "${idea.title}"`,
       message: undefined,
       autoClose: false,
       disallowClose: false,
     })
-    action(instance, ideaData.id, participantInfo.participantId).then(
+    action(instance, idea.id, participantInfo.participantId).then(
       (response) => {
-        buttonState(false)
+        setButtonIsDisabled(false)
         setLoader(true)
         if (JSON.stringify(response).toString().includes('error')) {
           check(false)
@@ -88,7 +80,7 @@ export default function VotingHandler(props: IProps) {
           updateNotification({
             id: 'participant-load',
             color: 'teal',
-            title: `Vote removed from: "${ideaData.title}"`,
+            title: `Vote removed from: "${idea.title}"`,
             message: undefined,
             icon: <Check />,
             autoClose: 2000,
@@ -96,6 +88,10 @@ export default function VotingHandler(props: IProps) {
         }
       }
     )
+  }
+
+  const addThisVote = async () => {
+    await addVote(createIdeaVoteParticipant, setVoteCheck)
   }
 
   const addVote = async (
@@ -113,18 +109,18 @@ export default function VotingHandler(props: IProps) {
       })
       return
     }
-    buttonState(true)
+    setButtonIsDisabled(true)
     showNotification({
       id: 'participant-load',
       loading: true,
-      title: `Adding vote to: "${ideaData.title}"`,
+      title: `Adding vote to: "${idea.title}"`,
       message: undefined,
       autoClose: false,
       disallowClose: false,
     })
-    action(instance, ideaData.id, participantInfo.participantId).then(
+    action(instance, idea.id, participantInfo.participantId).then(
       (response) => {
-        buttonState(false)
+        setButtonIsDisabled(false)
         setLoader(true)
         if (JSON.stringify(response).toString().includes('error')) {
           check(false)
@@ -141,7 +137,7 @@ export default function VotingHandler(props: IProps) {
           updateNotification({
             id: 'participant-load',
             color: 'teal',
-            title: `Vote added to: "${ideaData.title}"`,
+            title: `Vote added to: "${idea.title}"`,
             message: undefined,
             icon: <Check />,
             autoClose: 2000,
@@ -150,29 +146,95 @@ export default function VotingHandler(props: IProps) {
       }
     )
 
-    useEffect(() => {
-      if (findVoter()) setVoteCheck(!!findVoter())
-    }, [ideaData])
+    const findVoter = () => {
+      if (idea && idea.voters && user) {
+        const voter = idea.voters.find((voter) => voter.user.id === user.id)
+        if (voter) {
+          return voter
+        } else {
+          return null
+        }
+      }
+    }
 
-    const loadIdeaData = () => {
-      getIdeaDetails(instance, ideaData.id).then((data) => {
-        setIdeaData(data)
-        setLoader(false)
-      })
+    const findParticipant = () => {
+      if (ideaData && idea.participants && user) {
+        const participant = idea.participants.find(
+          (participant) => participant.user.id === user.id
+        )
+        if (participant) {
+          return participant
+        } else {
+          return null
+        }
+      }
     }
 
     useEffect(() => {
-      loadIdeaData()
-    }, [loader])
+      if (findVoter()) setVoteCheck(!!findVoter())
+    }, [idea])
+
+    return (
+      <Card.Section className={classes.noBorderSection}>
+        <Stack align={'center'} spacing={'xs'}>
+          <Button
+            disabled={buttonIsDisabled}
+            onClick={voteCheck ? removeThisVote : addThisVote}
+            style={{
+              backgroundColor: voteCheck
+                ? LEAVE_BUTTON_COLOR
+                : JOIN_BUTTON_COLOR,
+            }}
+          >
+            {voteCheck ? 'Remove Vote' : 'Add Vote'}
+          </Button>
+        </Stack>
+      </Card.Section>
+    )
   }
 
   useEffect(() => {
-    if (user) {
-      setParticipantInfo({
-        userId: user.id,
-        participantId: hackathonParticipantId,
-      })
-    }
-  }, [user, hackathonParticipantId])
-  
+    loadIdeaData()
+  }, [loader])
+
+  const loadIdeaData = () => {
+    getIdeaDetails(instance, idea.id).then((data) => {
+      setIdeaData(data)
+      setLoader(false)
+    })
+  }
+
+  return (
+    <Card.Section className={classes.noBorderSection}>
+      <Stack align={'center'} spacing={'xs'}>
+        <Button
+          disabled={buttonIsDisabled}
+          onClick={voteCheck ? removeThisVote : addThisVote}
+          style={{
+            backgroundColor: voteCheck ? LEAVE_BUTTON_COLOR : JOIN_BUTTON_COLOR,
+          }}
+        >
+          {voteCheck ? 'Remove Vote' : 'Add Vote'}
+        </Button>
+      </Stack>
+    </Card.Section>
+  )
+}
+
+// Vote Logic
+export default function VotingHandler(props: IProps) {
+  const hackathonParticipantId = useContext(HackathonParticipantContext)
+  const { instance } = useMsal()
+  const user = useContext(UserContext)
+  const { classes } = styles()
+  const { idea } = props
+  const [loader, setLoader] = useState(false)
+  const [ideaData, setIdeaData] = useState(idea)
+
+  const loadIdeaData = () => {
+    getIdeaDetails(instance, idea.id).then((data) => {
+      setIdeaData(data)
+      setLoader(false)
+    })
+  }
 }

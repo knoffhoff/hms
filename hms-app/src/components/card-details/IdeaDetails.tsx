@@ -25,8 +25,8 @@ import { getSkillDetails } from '../../actions/SkillActions'
 import IdeaCommentDetails from './IdeaCommentDetails'
 import CardButton from './CardButton'
 import ParticipantsHandler from './ParticipantsHandler'
-import VotingHandler from './VotingHandler'
-import VoteButtons from './VoteButtons'
+import VotingHandler, { VoteButtons } from './VotingHandler'
+import VoteList from './VoteList'
 
 type IProps = {
   idea: Idea
@@ -212,6 +212,13 @@ export default function IdeaDetails(props: IProps) {
     )
   }
 
+  const voterCount = () => {
+    return (
+      { hackathonVotingOpened } &&
+      type === IdeaCardType.AllIdeas && <VoteList idea={props.idea} />
+    )
+  }
+
   const participateButton = () => {
     return (
       type === IdeaCardType.AllIdeas && (
@@ -229,6 +236,7 @@ export default function IdeaDetails(props: IProps) {
             <Card.Section className={classes.borderSection}>
               <Group noWrap mb={5} position='apart'>
                 {ideaHeader()}
+                {voterCount()}
                 {votingButton()}
               </Group>
               {ideaDescription()}
