@@ -293,6 +293,7 @@ function AllIdeas() {
                   columnSize={6}
                   type={IdeaCardType.AllIdeas}
                   isLoading={isLoading}
+                  reloadIdeaList={() => setSelectedHackathonId(selectedHackathonId)}
                 />
               </>
             )}

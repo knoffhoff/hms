@@ -8,16 +8,17 @@ type IProps = {
   isLoading: boolean
   columnSize: number
   type: IdeaCardType
+  reloadIdeaList: () => void
 }
 
 export default function IdeaCardList(props: IProps) {
-  const { ideas, columnSize, type, isLoading } = props
+  const { ideas, columnSize, type, isLoading, reloadIdeaList } = props
 
   const IdeasList = ideas.map((idea, index) => {
     return (
       <Grid.Col key={index} sm={columnSize} lg={columnSize}>
         <div style={{ padding: 10 }}>
-          <IdeaDetails idea={idea} type={type} isLoading={isLoading} />
+          <IdeaDetails idea={idea} type={type} isLoading={isLoading} reloadIdeaList={reloadIdeaList}/>
         </div>
       </Grid.Col>
     )
