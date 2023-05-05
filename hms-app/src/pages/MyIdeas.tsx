@@ -154,8 +154,9 @@ export default function MyIdeas() {
                 ideas={filteredIdeas}
                 columnSize={6}
                 type={IdeaCardType.Owner}
-                isLoading={false}
-              />
+                isLoading={false} reloadIdeaList={function (): void {
+                  throw new Error('Function not implemented.')
+                } }              />
             </>
           )}
           {!isParticipant() && (
