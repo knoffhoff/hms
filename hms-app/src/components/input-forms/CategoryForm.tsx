@@ -56,16 +56,22 @@ export default function CategoryForm(props: IProps) {
     loadSelectedCategory()
   }, [])
 
-  useEffect(() => {
-    setIsLoading(true)
-    loadSelectedCategory()
-  }, [categoryTitle || categoryDescription])
-
-  function handleChange(event: React.ChangeEvent<HTMLTextAreaElement>) {
+  function handleChangeTitle(event: React.ChangeEvent<HTMLTextAreaElement>) {
     setCategory((prevCategoryText) => ({
       ...prevCategoryText,
       [event.target.name]: event.target.value,
     }))
+    setCategoryTitle(event.target.value)
+  }
+
+  function handleChangeDescription(
+    event: React.ChangeEvent<HTMLTextAreaElement>
+  ) {
+    setCategory((prevCategoryText) => ({
+      ...prevCategoryText,
+      [event.target.name]: event.target.value,
+    }))
+    setCategoryDescription(event.target.value)
   }
 
   function editThisCategory(event: React.MouseEvent<HTMLButtonElement>) {
@@ -166,10 +172,9 @@ export default function CategoryForm(props: IProps) {
               placeholder='Title'
               maxRows={1}
               autosize
-              onChange={handleChange}
+              onChange={handleChangeTitle}
               name='title'
-              // value={categoryTitle}
-              value={category.title}
+              value={categoryTitle}
               className={classes.label}
             />
           </Card.Section>
@@ -180,9 +185,9 @@ export default function CategoryForm(props: IProps) {
               placeholder='Description'
               maxRows={1}
               autosize
-              onChange={handleChange}
+              onChange={handleChangeDescription}
               name='description'
-              value={category.description}
+              value={categoryDescription}
               className={classes.label}
             />
           </Card.Section>

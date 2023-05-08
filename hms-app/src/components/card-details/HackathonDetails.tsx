@@ -116,10 +116,6 @@ export default function HackathonDetails(props: IProps) {
       }
   }, [ideaData])
 
-  // useEffect(() => {
-  //   setCategoryLength(hackathonData.categories?.length)
-  // }, [hackathonData.categories])
-
   const allParticipants = hackathonData.participants?.map(
     (participant, index) => (
       <Accordion.Item value={participant.id} key={participant.id}>
