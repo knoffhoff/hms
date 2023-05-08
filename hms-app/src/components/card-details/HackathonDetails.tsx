@@ -24,7 +24,6 @@ import {
 } from '@mantine/core'
 import ParticipantDetails from './ParticipantDetails'
 import IdeaDetails from './IdeaDetails'
-import CategoryForm from '../input-forms/CategoryForm'
 import HackathonForm from '../input-forms/HackathonForm'
 import CategoryDetails from './CategoryDetails'
 import { Link } from 'react-router-dom'
@@ -34,12 +33,12 @@ import { useMsal } from '@azure/msal-react'
 import {
   DELETE_BUTTON_COLOR,
   JOIN_BUTTON_COLOR,
-  RELOAD_BUTTON_COLOR,
   PRIMARY_COLOR_2,
 } from '../../common/colors'
 import { showNotification, updateNotification } from '@mantine/notifications'
 import { Check, X } from 'tabler-icons-react'
 import { RichTextEditor } from '@mantine/rte'
+import AllCategoryList from '../lists/AllCategoryList'
 
 type IProps = {
   hackathonId: string
@@ -135,17 +134,6 @@ export default function HackathonDetails(props: IProps) {
       </Accordion.Item>
     )
   )
-
-  const allCategories = hackathonData.categories?.map((category, index) => (
-    <Accordion.Item key={category.id} value={category.id}>
-      <Accordion.Control>
-        {index + 1}. {category.title}
-      </Accordion.Control>
-      <Accordion.Panel>
-        <CategoryDetails categoryId={category.id.toString()} />
-      </Accordion.Panel>
-    </Accordion.Item>
-  ))
 
   const allIdeas = relevantIdeaList.map((idea, index) => (
     <Accordion.Item key={idea.id} value={idea.id}>
@@ -325,33 +313,7 @@ export default function HackathonDetails(props: IProps) {
               />
             </Card.Section>
 
-            <Accordion chevronPosition={'left'}>
-              <Accordion.Item value={'categories'}>
-                <Accordion.Control>
-                  <Text className={classes.label}>
-                    Categories ( {allCategories?.length} )
-                  </Text>
-                </Accordion.Control>
-                <Accordion.Panel>
-                  <Accordion chevronPosition={'right'}>
-                    <Accordion.Item
-                      className={classes.borderAccordion}
-                      value={'add-category'}
-                    >
-                      <Accordion.Control>Add Category</Accordion.Control>
-                      <Accordion.Panel>
-                        <CategoryForm
-                          hackathonId={hackathonData.id}
-                          context={'new'}
-                          categoryId={''}
-                        />
-                      </Accordion.Panel>
-                    </Accordion.Item>
-                    {allCategories}
-                  </Accordion>
-                </Accordion.Panel>
-              </Accordion.Item>
-            </Accordion>
+            <AllCategoryList hackathonID={hackathonData.id} />
 
             <Accordion chevronPosition={'left'}>
               <Accordion.Item value={'participants'}>
