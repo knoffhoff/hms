@@ -14,7 +14,7 @@ import MoveIdeaModal from '../MoveIdeaModal'
 type IProps = {
   idea: Idea
   reloadIdeaDetails?: () => void
-  reloadIdeaList: () => void
+  reloadIdeaList?: () => void
 }
 
 export default function CardButtons(props: IProps) {
@@ -38,7 +38,7 @@ export default function CardButtons(props: IProps) {
     })
     deleteIdea(instance, ideaData.id).then((response) => {
       setDeleteModalOpened(false)
-      reloadIdeaList()
+      if (reloadIdeaList) reloadIdeaList()
       if (JSON.stringify(response).toString().includes('error')) {
         updateNotification({
           id: 'delete-idea-load',

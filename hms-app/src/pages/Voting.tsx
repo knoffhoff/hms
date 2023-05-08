@@ -128,9 +128,8 @@ export default function Voting() {
               <IdeaDetails
                 idea={item}
                 isLoading={false}
-                type={IdeaCardType.Voting} reloadIdeaList={function (): void {
-                  throw new Error('Function not implemented.')
-                } }              />
+                type={IdeaCardType.Voting} 
+              />
             </div>
           )
         }}

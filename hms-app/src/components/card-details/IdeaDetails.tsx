@@ -39,7 +39,7 @@ type IProps = {
   idea: Idea
   isLoading: boolean
   type: IdeaCardType
-  reloadIdeaList: () => void
+  reloadIdeaList?: () => void
 }
 
 export default function IdeaDetails(props: IProps) {

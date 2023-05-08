@@ -158,9 +158,8 @@ export default function HackathonDetails(props: IProps) {
         <IdeaDetails
           idea={idea}
           type={IdeaCardType.Admin}
-          isLoading={isIdeaLoading} reloadIdeaList={function (): void {
-            throw new Error('Function not implemented.')
-          } }        />
+          isLoading={isIdeaLoading} 
+        />
       </Accordion.Panel>
     </Accordion.Item>
   ))
