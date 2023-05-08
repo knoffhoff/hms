@@ -52,9 +52,14 @@ export default function CategoryForm(props: IProps) {
   }
 
   useEffect(() => {
-    loadSelectedCategory()
     setIsLoading(true)
+    loadSelectedCategory()
   }, [])
+
+  useEffect(() => {
+    setIsLoading(true)
+    loadSelectedCategory()
+  }, [categoryTitle || categoryDescription])
 
   function handleChange(event: React.ChangeEvent<HTMLTextAreaElement>) {
     setCategory((prevCategoryText) => ({
