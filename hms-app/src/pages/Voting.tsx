@@ -128,7 +128,7 @@ export default function Voting() {
               <IdeaDetails
                 idea={item}
                 isLoading={false}
-                type={IdeaCardType.Voting} 
+                type={IdeaCardType.Voting}
               />
             </div>
           )

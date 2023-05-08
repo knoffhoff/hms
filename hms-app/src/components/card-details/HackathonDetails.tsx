@@ -158,7 +158,7 @@ export default function HackathonDetails(props: IProps) {
         <IdeaDetails
           idea={idea}
           type={IdeaCardType.Admin}
-          isLoading={isIdeaLoading} 
+          isLoading={isIdeaLoading}
         />
       </Accordion.Panel>
     </Accordion.Item>

@@ -121,60 +121,60 @@ export default function MyIdeas() {
       {!isLoading &&
         hackathonData.startDate !== NULL_DATE &&
         hackathonData.startDate.toString() !== 'Invalid Date' && (
-        <>
-          <HackathonHeader hackathonData={hackathonData} />
+          <>
+            <HackathonHeader hackathonData={hackathonData} />
 
-          {isParticipant() && (
-            <>
-              {!(hackathonData.endDate < today) && (
-                <Accordion>
-                  <Accordion.Item
-                    value={'createNewIdea'}
-                    className={classes.borderAccordion}
-                  >
-                    <Accordion.Control>Create new idea</Accordion.Control>
-                    <Accordion.Panel>
-                      <IdeaForm
-                        ideaId={'null'}
-                        hackathon={hackathonData}
-                        ownerId={user?.id}
-                        context={IdeaFormType.New}
-                        reload={loadSelectedHackathon}
-                      />
-                    </Accordion.Panel>
-                  </Accordion.Item>
-                </Accordion>
-              )}
-              {filteredIdeas.length > 0 && (
-                <Title order={2} mt={50} mb={30}>
+            {isParticipant() && (
+              <>
+                {!(hackathonData.endDate < today) && (
+                  <Accordion>
+                    <Accordion.Item
+                      value={'createNewIdea'}
+                      className={classes.borderAccordion}
+                    >
+                      <Accordion.Control>Create new idea</Accordion.Control>
+                      <Accordion.Panel>
+                        <IdeaForm
+                          ideaId={'null'}
+                          hackathon={hackathonData}
+                          ownerId={user?.id}
+                          context={IdeaFormType.New}
+                          reload={loadSelectedHackathon}
+                        />
+                      </Accordion.Panel>
+                    </Accordion.Item>
+                  </Accordion>
+                )}
+                {filteredIdeas.length > 0 && (
+                  <Title order={2} mt={50} mb={30}>
                     You have submitted {filteredIdeas.length} ideas:
-                </Title>
-              )}
-              <IdeaCardList
-                ideas={filteredIdeas}
-                columnSize={6}
-                type={IdeaCardType.Owner}
-                isLoading={false} 
-              />
-            </>
-          )}
-          {!isParticipant() && (
-            <Center>
-              <Alert
-                icon={<AlertCircle size={16} />}
-                title='Not a participant!'
-                color='red'
-                style={{ maxWidth: '500px' }}
-              >
+                  </Title>
+                )}
+                <IdeaCardList
+                  ideas={filteredIdeas}
+                  columnSize={6}
+                  type={IdeaCardType.Owner}
+                  isLoading={false}
+                />
+              </>
+            )}
+            {!isParticipant() && (
+              <Center>
+                <Alert
+                  icon={<AlertCircle size={16} />}
+                  title='Not a participant!'
+                  color='red'
+                  style={{ maxWidth: '500px' }}
+                >
                   You are not yet participating in this hackathon. Go to
                   &quot;All ideas&quot; and select the hackathon you want to
                   participate in. Then click on &quot;Participate&quot; to join
                   the hackathon.
-              </Alert>
-            </Center>
-          )}
-        </>
-      )}
+                </Alert>
+              </Center>
+            )}
+          </>
+        )}
       {isLoading && selectedHackathonId && <div>Loading...</div>}
     </>
   )

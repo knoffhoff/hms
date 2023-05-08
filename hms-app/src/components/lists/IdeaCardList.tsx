@@ -18,7 +18,12 @@ export default function IdeaCardList(props: IProps) {
     return (
       <Grid.Col key={index} sm={columnSize} lg={columnSize}>
         <div style={{ padding: 10 }}>
-          <IdeaDetails idea={idea} type={type} isLoading={isLoading} reloadIdeaList={reloadIdeaList}/>
+          <IdeaDetails
+            idea={idea}
+            type={type}
+            isLoading={isLoading}
+            reloadIdeaList={reloadIdeaList}
+          />
         </div>
       </Grid.Col>
     )
