@@ -29,8 +29,6 @@ export default function CategoryForm(props: IProps) {
     title: '',
     description: '',
   })
-  const [categoryTitle, setCategoryTitle] = useState('')
-  const [categoryDescription, setCategoryDescription] = useState('')
 
   const loadSelectedCategory = () => {
     getCategoryDetails(instance, categoryId).then(
@@ -42,8 +40,6 @@ export default function CategoryForm(props: IProps) {
           hackathonID: hackathonId,
           categoryID: categoryId,
         })
-        setCategoryTitle(data.title)
-        setCategoryDescription(data.description)
       },
       () => {
         setIsLoading(false)
@@ -56,22 +52,11 @@ export default function CategoryForm(props: IProps) {
     loadSelectedCategory()
   }, [])
 
-  function handleChangeTitle(event: React.ChangeEvent<HTMLTextAreaElement>) {
+  function handleChange(event: React.ChangeEvent<HTMLTextAreaElement>) {
     setCategory((prevCategoryText) => ({
       ...prevCategoryText,
       [event.target.name]: event.target.value,
     }))
-    setCategoryTitle(event.target.value)
-  }
-
-  function handleChangeDescription(
-    event: React.ChangeEvent<HTMLTextAreaElement>
-  ) {
-    setCategory((prevCategoryText) => ({
-      ...prevCategoryText,
-      [event.target.name]: event.target.value,
-    }))
-    setCategoryDescription(event.target.value)
   }
 
   function editThisCategory(event: React.MouseEvent<HTMLButtonElement>) {
@@ -109,8 +94,11 @@ export default function CategoryForm(props: IProps) {
   }
 
   function clearForm() {
-    setCategoryTitle('')
-    setCategoryDescription('')
+    setCategory((prevState) => ({
+      ...prevState,
+      title: '',
+      description: '',
+    }))
   }
 
   function createThisCategory(event: React.MouseEvent<HTMLButtonElement>) {
@@ -172,9 +160,9 @@ export default function CategoryForm(props: IProps) {
               placeholder='Title'
               maxRows={1}
               autosize
-              onChange={handleChangeTitle}
+              onChange={handleChange}
               name='title'
-              value={categoryTitle}
+              value={category.title}
               className={classes.label}
             />
           </Card.Section>
@@ -185,9 +173,9 @@ export default function CategoryForm(props: IProps) {
               placeholder='Description'
               maxRows={1}
               autosize
-              onChange={handleChangeDescription}
+              onChange={handleChange}
               name='description'
-              value={categoryDescription}
+              value={category.description}
               className={classes.label}
             />
           </Card.Section>
