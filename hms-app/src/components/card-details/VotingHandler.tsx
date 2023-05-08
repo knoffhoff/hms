@@ -20,13 +20,16 @@ type IProps = {
 
 // Vote Button Only
 export function VoteButtons(props: IProps) {
-  const { idea } = props
   const user = useContext(UserContext)
+  const hackathonParticipantId = useContext(HackathonParticipantContext)
+  const { idea } = props
+
   const { classes } = styles()
   const { instance } = useMsal()
   const [buttonIsDisabled, setButtonIsDisabled] = useState(false)
   const [voteCheck, setVoteCheck] = useState(false)
   const [loader, setLoader] = useState(false)
+  const [ideaData, setIdeaData] = useState(idea)
   const [participantInfo, setParticipantInfo] = useState({
     userId: '',
     participantId: '',
@@ -61,7 +64,7 @@ export function VoteButtons(props: IProps) {
       autoClose: false,
       disallowClose: false,
     })
-    action(instance, idea.id, participantInfo.participantId).then(
+    action(instance, ideaData.id, participantInfo.participantId).then(
       (response) => {
         setButtonIsDisabled(false)
         setLoader(true)
@@ -80,7 +83,7 @@ export function VoteButtons(props: IProps) {
           updateNotification({
             id: 'participant-load',
             color: 'teal',
-            title: `Vote removed from: "${idea.title}"`,
+            title: `Vote removed from: "${ideaData.title}"`,
             message: undefined,
             icon: <Check />,
             autoClose: 2000,
@@ -113,12 +116,12 @@ export function VoteButtons(props: IProps) {
     showNotification({
       id: 'participant-load',
       loading: true,
-      title: `Adding vote to: "${idea.title}"`,
+      title: `Adding vote to: "${ideaData.title}"`,
       message: undefined,
       autoClose: false,
       disallowClose: false,
     })
-    action(instance, idea.id, participantInfo.participantId).then(
+    action(instance, ideaData.id, participantInfo.participantId).then(
       (response) => {
         setButtonIsDisabled(false)
         setLoader(true)
@@ -137,7 +140,7 @@ export function VoteButtons(props: IProps) {
           updateNotification({
             id: 'participant-load',
             color: 'teal',
-            title: `Vote added to: "${idea.title}"`,
+            title: `Vote added to: "${ideaData.title}"`,
             message: undefined,
             icon: <Check />,
             autoClose: 2000,
@@ -147,8 +150,8 @@ export function VoteButtons(props: IProps) {
     )
 
     const findVoter = () => {
-      if (idea && idea.voters && user) {
-        const voter = idea.voters.find((voter) => voter.user.id === user.id)
+      if (ideaData && ideaData.voters && user) {
+        const voter = ideaData.voters.find((voter) => voter.user.id === user.id)
         if (voter) {
           return voter
         } else {
@@ -158,8 +161,8 @@ export function VoteButtons(props: IProps) {
     }
 
     const findParticipant = () => {
-      if (ideaData && idea.participants && user) {
-        const participant = idea.participants.find(
+      if (ideaData && ideaData.participants && user) {
+        const participant = ideaData.participants.find(
           (participant) => participant.user.id === user.id
         )
         if (participant) {
@@ -196,6 +199,15 @@ export function VoteButtons(props: IProps) {
   useEffect(() => {
     loadIdeaData()
   }, [loader])
+
+  useEffect(() => {
+    if (user) {
+      setParticipantInfo({
+        userId: user.id,
+        participantId: hackathonParticipantId,
+      })
+    }
+  }, [hackathonParticipantId])
 
   const loadIdeaData = () => {
     getIdeaDetails(instance, idea.id).then((data) => {
