@@ -139,17 +139,6 @@ export default function HackathonDetails(props: IProps) {
     )
   )
 
-  const allCategories = hackathonData.categories?.map((category, index) => (
-    <Accordion.Item key={category.id} value={category.id}>
-      <Accordion.Control>
-        {index + 1}. {category.title}
-      </Accordion.Control>
-      <Accordion.Panel>
-        <CategoryDetails categoryId={category.id.toString()} />
-      </Accordion.Panel>
-    </Accordion.Item>
-  ))
-
   const allIdeas = relevantIdeaList.map((idea, index) => (
     <Accordion.Item key={idea.id} value={idea.id}>
       <Accordion.Control>

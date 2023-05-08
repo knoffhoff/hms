@@ -39,7 +39,7 @@ function AllCategoryList(props: IProps) {
       <Accordion.Panel>
         <CategoryDetails
           categoryId={category.id.toString()}
-          onCategoryDeleted={refreshList}
+          onSuccess={refreshList}
         />
       </Accordion.Panel>
     </Accordion.Item>

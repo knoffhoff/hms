@@ -12,13 +12,13 @@ import { DELETE_BUTTON_COLOR, JOIN_BUTTON_COLOR } from '../../common/colors'
 
 type IProps = {
   categoryId: string
-  onCategoryDeleted?: () => void // nullable will be deleted later
+  onSuccess: () => void
 }
 
 export default function CategoryDetails(props: IProps) {
   const { instance } = useMsal()
   const { classes } = styles()
-  const { categoryId, onCategoryDeleted } = props
+  const { categoryId, onSuccess } = props
   const [deleteModalOpened, setDeleteModalOpened] = useState(false)
   const [editModalOpened, setEditModalOpened] = useState(false)
   const [isError, setIsError] = useState(false)
@@ -52,9 +52,7 @@ export default function CategoryDetails(props: IProps) {
   const deleteSelectedCategory = () => {
     deleteCategory(instance, categoryData.id).then(() => {
       setDeleteModalOpened(false)
-      if (onCategoryDeleted) {
-        onCategoryDeleted()
-      }
+      onSuccess()
     })
   }
 
@@ -89,6 +87,13 @@ export default function CategoryDetails(props: IProps) {
     </Modal>
   )
 
+  const refreshAfterChange = () => {
+    setEditModalOpened(false)
+    setIsLoading(true)
+    loadSelectedCategory()
+    onSuccess()
+  }
+
   const editModal = (
     <Modal
       centered
@@ -101,6 +106,7 @@ export default function CategoryDetails(props: IProps) {
         categoryId={categoryData.id}
         context={'edit'}
         hackathonId={''}
+        onSuccess={refreshAfterChange}
       />
       {isLoading && <div>Loading...</div>}
       <Text className={classes.text}>

@@ -15,7 +15,7 @@ type IProps = {
   hackathonId: string
   categoryId: string
   context: string
-  onSuccess?: () => void
+  onSuccess: () => void
 }
 
 export default function CategoryForm(props: IProps) {
@@ -97,6 +97,7 @@ export default function CategoryForm(props: IProps) {
           icon: <Check />,
           autoClose: 2000,
         })
+        onSuccess()
       }
     })
   }
@@ -139,9 +140,7 @@ export default function CategoryForm(props: IProps) {
           icon: <Check />,
           autoClose: 2000,
         })
-        if (onSuccess) {
-          onSuccess()
-        }
+        onSuccess()
         clearForm()
       }
     })
@@ -169,7 +168,8 @@ export default function CategoryForm(props: IProps) {
               autosize
               onChange={handleChange}
               name='title'
-              value={categoryTitle}
+              // value={categoryTitle}
+              value={category.title}
               className={classes.label}
             />
           </Card.Section>
@@ -182,7 +182,7 @@ export default function CategoryForm(props: IProps) {
               autosize
               onChange={handleChange}
               name='description'
-              value={categoryDescription}
+              value={category.description}
               className={classes.label}
             />
           </Card.Section>
