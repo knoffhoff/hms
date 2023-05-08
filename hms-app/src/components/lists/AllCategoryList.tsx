@@ -9,7 +9,6 @@ import CategoryForm from '../input-forms/CategoryForm'
 
 type IProps = {
   hackathonID: string
-  refreshCategoryList?: boolean
 }
 
 function AllCategoryList(props: IProps) {
@@ -19,7 +18,7 @@ function AllCategoryList(props: IProps) {
   const [categoryList, setCategoryList] = useState({
     categories: [] as CategoryPreview[],
   })
-  const { hackathonID, refreshCategoryList } = props
+  const { hackathonID } = props
   const [openedAccordion, setOpenedAccordion] = useState<string | null>(null)
 
   const loadCategories = () => {
@@ -48,10 +47,6 @@ function AllCategoryList(props: IProps) {
   useEffect(() => {
     loadCategories()
   }, [])
-
-  useEffect(() => {
-    loadCategories()
-  }, [refreshCategoryList])
 
   function refreshList() {
     setIsLoading(true)
