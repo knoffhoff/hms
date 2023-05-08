@@ -41,6 +41,7 @@ function IdeationPortal() {
 
   const loadHackathonIdeas = () => {
     if (hackathon.id !== undefined) {
+      setRelevantIdeaList([])
       getIdeaList(instance, hackathon.id).then((data) => {
         setAllIdeaPreviews(data.ideas)
         setOpened(false)
@@ -145,6 +146,7 @@ function IdeationPortal() {
             columnSize={6}
             type={IdeaCardType.IdeaPortal}
             isLoading={false}
+            reloadIdeaList={loadHackathonIdeas}
           />
         </div>
       )}

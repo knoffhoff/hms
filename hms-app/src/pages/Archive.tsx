@@ -106,7 +106,7 @@ export default function Archive() {
             ideas={relevantIdeaList}
             columnSize={6}
             type={IdeaCardType.Archive}
-            isLoading={isIdeaLoading}
+            isLoading={isIdeaLoading} 
           />
         </div>
       )}
