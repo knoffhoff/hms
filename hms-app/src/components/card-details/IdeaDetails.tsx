@@ -261,7 +261,6 @@ export default function IdeaDetails(props: IProps) {
                 {ideaCategory()}
                 {ideaRequiredSkills()}
                 {participateButton()}
-
                 {ideaButtons()}
               </Accordion.Panel>
             </Accordion.Item>
