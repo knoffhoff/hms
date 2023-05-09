@@ -25,8 +25,7 @@ import { getSkillDetails } from '../../actions/SkillActions'
 import IdeaCommentDetails from './IdeaCommentDetails'
 import CardButton from './CardButton'
 import ParticipantsHandler from './ParticipantsHandler'
-import { VoteButtons } from './VotingHandler'
-import VoteList from './VoteList'
+import { VoteButtons, VoteList } from './VotingHandler'
 
 type IProps = {
   idea: Idea

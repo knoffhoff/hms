@@ -13,7 +13,6 @@ import { useMsal } from '@azure/msal-react'
 import { Check, X } from 'tabler-icons-react'
 import { Idea } from '../../common/types'
 import { JOIN_BUTTON_COLOR, LEAVE_BUTTON_COLOR } from '../../common/colors'
-import VoteList from './VoteList'
 
 type IProps = {
   idea: Idea
@@ -197,6 +196,20 @@ export function VoteButtons(props: IProps) {
         >
           {voteCheck ? 'Remove Vote' : 'Add Vote'}
         </Button>
+      </Stack>
+    </Card.Section>
+  )
+}
+
+export function VoteList(props: IProps) {
+  const { idea } = props
+  const { classes } = styles()
+
+  return (
+    <Card.Section className={classes.noBorderSection}>
+      <Stack align={'center'} spacing={'xs'}>
+        <Text className={classes.label}>Votes: </Text>
+        <Text className={classes.text}>{idea.voters?.length}</Text>
       </Stack>
     </Card.Section>
   )
