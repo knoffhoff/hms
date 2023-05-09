@@ -57,6 +57,7 @@ const SkillsList = (): React.ReactElement => {
 
   return (
     <>
+      {isLoading && <div>Loading...</div>}
       {!isLoading && (
         <Card withBorder className={classes.card}>
           <Card.Section className={classes.borderSection}>

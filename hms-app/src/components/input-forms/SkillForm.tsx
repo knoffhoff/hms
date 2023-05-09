@@ -88,6 +88,7 @@ const SkillForm = (props: IProps): React.ReactElement => {
           icon: <Check />,
           autoClose: 2000,
         })
+        onSuccess()
       }
     })
   }
