@@ -1,6 +1,6 @@
 import { Accordion, Text } from '@mantine/core'
 import React, { useEffect, useState } from 'react'
-import { Hackathon, ParticipantPreview } from '../../common/types'
+import { ParticipantPreview } from '../../common/types'
 import { styles } from '../../common/styles'
 import { useMsal } from '@azure/msal-react'
 import { getParticipantList } from '../../actions/ParticipantActions'
