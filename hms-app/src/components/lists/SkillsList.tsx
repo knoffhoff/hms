@@ -13,6 +13,7 @@ const SkillsList = (): React.ReactElement => {
   const { classes } = styles()
   const [isLoading, setIsLoading] = useState<boolean>(true)
   const [skillsList, setSkillsList] = useState([] as SkillPreview[])
+  const [openedAccordion, setOpenedAccordion] = useState<string | null>(null)
 
   const loadSkills = () => {
     setIsLoading(true)
@@ -34,6 +35,10 @@ const SkillsList = (): React.ReactElement => {
 
   const refreshList = (): void => {
     setIsLoading(true)
+    loadSkills()
+  }
+  const closeAccordion = () => {
+    setOpenedAccordion(null)
     loadSkills()
   }
 
@@ -63,14 +68,22 @@ const SkillsList = (): React.ReactElement => {
             </Group>
           </Card.Section>
           <Card.Section>
-            <Accordion chevronPosition={'right'}>
+            <Accordion
+              chevronPosition={'right'}
+              value={openedAccordion}
+              onChange={setOpenedAccordion}
+            >
               <Accordion.Item
                 className={classes.borderAccordion}
-                value={'ad-skills'}
+                value={'add-skills'}
               >
                 <Accordion.Control>Add Skill</Accordion.Control>
                 <Accordion.Panel>
-                  <SkillForm context={'new'} skillId={''} />
+                  <SkillForm
+                    context={'new'}
+                    skillId={''}
+                    onSuccess={closeAccordion}
+                  />
                 </Accordion.Panel>
               </Accordion.Item>
               {allSkills}
