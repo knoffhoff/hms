@@ -29,7 +29,7 @@ export default function AllUserList() {
         {index + 1}. {user.firstName} {user.lastName}
       </Accordion.Control>
       <Accordion.Panel>
-        <UserDetails userId={user.id} reloadList={refreshList} />
+        <UserDetails userId={user.id} onUserDeleted={refreshList} />
       </Accordion.Panel>
     </Accordion.Item>,
   ])

@@ -21,11 +21,8 @@ import {
   Switch,
   Text,
 } from '@mantine/core'
-import ParticipantDetails from './ParticipantDetails'
 import IdeaDetails from './IdeaDetails'
-import CategoryForm from '../input-forms/CategoryForm'
 import HackathonForm from '../input-forms/HackathonForm'
-import CategoryDetails from './CategoryDetails'
 import { Link } from 'react-router-dom'
 import { styles } from '../../common/styles'
 import { NULL_DATE } from '../../common/constants'
@@ -33,22 +30,24 @@ import { useMsal } from '@azure/msal-react'
 import {
   DELETE_BUTTON_COLOR,
   JOIN_BUTTON_COLOR,
-  RELOAD_BUTTON_COLOR,
   PRIMARY_COLOR_2,
 } from '../../common/colors'
 import { showNotification, updateNotification } from '@mantine/notifications'
 import { Check, X } from 'tabler-icons-react'
 import { RichTextEditor } from '@mantine/rte'
+import AllCategoryList from '../lists/AllCategoryList'
+import AllParticipantList from '../lists/AllParticipantList'
 
 type IProps = {
   hackathonId: string
   type: HackathonDetailsType
+  onSuccess: () => void
 }
 
 export default function HackathonDetails(props: IProps) {
   const { instance } = useMsal()
   const { classes } = styles()
-  const { hackathonId, type } = props
+  const { hackathonId, type, onSuccess } = props
   const [deleteModalOpened, setDeleteModalOpened] = useState(false)
   const [editModalOpened, setEditModalOpened] = useState(false)
   const [isHackathonError, setIsHackathonError] = useState(false)
@@ -86,6 +85,7 @@ export default function HackathonDetails(props: IProps) {
   const deleteSelectedHackathon = () => {
     deleteHackathon(instance, hackathonId).then(() => {
       setDeleteModalOpened(false)
+      onSuccess()
     })
   }
 
@@ -114,36 +114,6 @@ export default function HackathonDetails(props: IProps) {
       }
   }, [ideaData])
 
-  const allParticipants = hackathonData.participants?.map(
-    (participant, index) => (
-      <Accordion.Item value={participant.id} key={participant.id}>
-        <Accordion.Control>
-          <>
-            {index + 1}. {participant.user.firstName}{' '}
-            {participant.user.lastName}
-          </>
-        </Accordion.Control>
-        <Accordion.Panel>
-          <ParticipantDetails
-            participantId={participant.id}
-            user={participant.user}
-          />
-        </Accordion.Panel>
-      </Accordion.Item>
-    )
-  )
-
-  const allCategories = hackathonData.categories?.map((category, index) => (
-    <Accordion.Item key={category.id} value={category.id}>
-      <Accordion.Control>
-        {index + 1}. {category.title}
-      </Accordion.Control>
-      <Accordion.Panel>
-        <CategoryDetails categoryId={category.id.toString()} />
-      </Accordion.Panel>
-    </Accordion.Item>
-  ))
-
   const allIdeas = relevantIdeaList.map((idea, index) => (
     <Accordion.Item key={idea.id} value={idea.id}>
       <Accordion.Control>
@@ -159,11 +129,6 @@ export default function HackathonDetails(props: IProps) {
     </Accordion.Item>
   ))
 
-  function refreshList() {
-    setIsHackathonLoading(true)
-    loadSelectedHackathon()
-  }
-
   const deleteModal = (
     <Modal
       centered
@@ -176,12 +141,10 @@ export default function HackathonDetails(props: IProps) {
       </Text>
       <Text className={classes.title}>Title: {hackathonData.title}</Text>
       <Text className={classes.title}>
-        Start Date:
-        {new Date(hackathonData.startDate).toDateString()}
+        Start Date: {new Date(hackathonData.startDate).toDateString()}
       </Text>
       <Text className={classes.title}>
-        End Date:
-        {new Date(hackathonData.endDate).toDateString()}
+        End Date: {new Date(hackathonData.endDate).toDateString()}
       </Text>
       <Button
         style={{ backgroundColor: DELETE_BUTTON_COLOR }}
@@ -196,6 +159,13 @@ export default function HackathonDetails(props: IProps) {
     </Modal>
   )
 
+  const refreshAfterChange = () => {
+    setEditModalOpened(false)
+    setIsHackathonLoading(true)
+    loadSelectedHackathon()
+    onSuccess()
+  }
+
   const editModal = (
     <Modal
       centered
@@ -205,11 +175,14 @@ export default function HackathonDetails(props: IProps) {
       withCloseButton={false}
     >
       <Text className={classes.title}>Edit Hackathon</Text>
-      <HackathonForm context={'edit'} hackathonId={hackathonData.id} />
+      <HackathonForm
+        context={'edit'}
+        hackathonId={hackathonData.id}
+        onSuccess={refreshAfterChange}
+      />
       {isHackathonLoading && <div>Loading...</div>}
       <Text className={classes.text}>
-        (This window will automatically closed as soon as the hackathon is
-        changed)
+        (This window will automatically close after the hackathon is edited)
       </Text>
     </Modal>
   )
@@ -301,17 +274,12 @@ export default function HackathonDetails(props: IProps) {
 
             <Card.Section className={classes.borderSection}>
               <SimpleGrid cols={2} breakpoints={[{ maxWidth: 'sm', cols: 1 }]}>
-                <Card.Section>
-                  <Text className={classes.title}>
-                    Start Date:{' '}
-                    {new Date(hackathonData.startDate).toDateString()}
-                  </Text>
-                </Card.Section>
-                <Card.Section>
-                  <Text className={classes.title}>
-                    End Date: {new Date(hackathonData.endDate).toDateString()}
-                  </Text>
-                </Card.Section>
+                <Text className={classes.title}>
+                  Start Date: {new Date(hackathonData.startDate).toDateString()}
+                </Text>
+                <Text className={classes.title}>
+                  End Date: {new Date(hackathonData.endDate).toDateString()}
+                </Text>
               </SimpleGrid>
             </Card.Section>
 
@@ -324,48 +292,9 @@ export default function HackathonDetails(props: IProps) {
               />
             </Card.Section>
 
-            <Accordion chevronPosition={'left'}>
-              <Accordion.Item value={'categories'}>
-                <Accordion.Control>
-                  <Text className={classes.label}>
-                    Categories ( {allCategories?.length} )
-                  </Text>
-                </Accordion.Control>
-                <Accordion.Panel>
-                  <Accordion chevronPosition={'right'}>
-                    <Accordion.Item
-                      className={classes.borderAccordion}
-                      value={'add-category'}
-                    >
-                      <Accordion.Control>Add Category</Accordion.Control>
-                      <Accordion.Panel>
-                        <CategoryForm
-                          hackathonId={hackathonData.id}
-                          context={'new'}
-                          categoryId={''}
-                        />
-                      </Accordion.Panel>
-                    </Accordion.Item>
-                    {allCategories}
-                  </Accordion>
-                </Accordion.Panel>
-              </Accordion.Item>
-            </Accordion>
+            <AllCategoryList hackathonID={hackathonData.id} />
 
-            <Accordion chevronPosition={'left'}>
-              <Accordion.Item value={'participants'}>
-                <Accordion.Control>
-                  <Text className={classes.label}>
-                    Participants ( {allParticipants?.length} )
-                  </Text>
-                </Accordion.Control>
-                <Accordion.Panel>
-                  <Accordion chevronPosition={'right'}>
-                    {allParticipants}
-                  </Accordion>
-                </Accordion.Panel>
-              </Accordion.Item>
-            </Accordion>
+            <AllParticipantList hackathonID={hackathonData.id} />
 
             <Accordion chevronPosition={'left'}>
               <Accordion.Item value={'ideas'}>
@@ -426,14 +355,7 @@ export default function HackathonDetails(props: IProps) {
                 >
                   Edit
                 </Button>
-                {!isHackathonLoading && (
-                  <Button
-                    style={{ backgroundColor: RELOAD_BUTTON_COLOR }}
-                    onClick={() => refreshList()}
-                  >
-                    Reload
-                  </Button>
-                )}
+
                 {isHackathonLoading && <div>Loading...</div>}
               </Group>
             </Card.Section>

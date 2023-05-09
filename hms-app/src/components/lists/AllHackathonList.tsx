@@ -33,6 +33,7 @@ function AllHackathonList(props: { refreshHackathonList?: boolean }) {
         <HackathonDetails
           hackathonId={hackathon.id}
           type={HackathonDetailsType.FullInfo}
+          onSuccess={refreshList}
         />
       </Accordion.Panel>
     </Accordion.Item>,

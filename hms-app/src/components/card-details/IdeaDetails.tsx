@@ -32,13 +32,14 @@ type IProps = {
   idea: Idea
   isLoading: boolean
   type: IdeaCardType
+  reloadIdeaList?: () => void
 }
 
 export default function IdeaDetails(props: IProps) {
   const hackathonVotingOpened = useContext(HackathonVotingContext)
   const user = useContext(UserContext)
   const { classes } = styles()
-  const { idea, type, isLoading } = props
+  const { idea, type, isLoading, reloadIdeaList } = props
   const MAX_TITLE_LENGTH = 100
   const theme = useMantineTheme()
   const [accordionOpen, setAccordionOpen] = useState(false)
@@ -200,7 +201,7 @@ export default function IdeaDetails(props: IProps) {
     return (
       type === IdeaCardType.Admin ||
       ((type === IdeaCardType.Owner || ideaData.owner?.id === user?.id) && (
-        <CardButton idea={props.idea} reloadIdeaDetails={loadIdeaData} />
+        <CardButton idea={props.idea} reloadIdeaDetails={loadIdeaData}  reloadIdeaList={reloadIdeaList}/>
       ))
     )
   }

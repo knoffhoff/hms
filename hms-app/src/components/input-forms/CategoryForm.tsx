@@ -15,12 +15,13 @@ type IProps = {
   hackathonId: string
   categoryId: string
   context: string
+  onSuccess: () => void
 }
 
 export default function CategoryForm(props: IProps) {
   const { instance } = useMsal()
   const { classes } = styles()
-  const { hackathonId, categoryId, context } = props
+  const { hackathonId, categoryId, context, onSuccess } = props
   const [isLoading, setIsLoading] = useState(true)
   const [category, setCategory] = useState({
     hackathonID: hackathonId,
@@ -47,8 +48,8 @@ export default function CategoryForm(props: IProps) {
   }
 
   useEffect(() => {
-    loadSelectedCategory()
     setIsLoading(true)
+    loadSelectedCategory()
   }, [])
 
   function handleChange(event: React.ChangeEvent<HTMLTextAreaElement>) {
@@ -87,8 +88,17 @@ export default function CategoryForm(props: IProps) {
           icon: <Check />,
           autoClose: 2000,
         })
+        onSuccess()
       }
     })
+  }
+
+  function clearForm() {
+    setCategory((prevState) => ({
+      ...prevState,
+      title: '',
+      description: '',
+    }))
   }
 
   function createThisCategory(event: React.MouseEvent<HTMLButtonElement>) {
@@ -124,6 +134,8 @@ export default function CategoryForm(props: IProps) {
           icon: <Check />,
           autoClose: 2000,
         })
+        onSuccess()
+        clearForm()
       }
     })
   }

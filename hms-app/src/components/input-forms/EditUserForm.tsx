@@ -11,14 +11,13 @@ import { Check, X } from 'tabler-icons-react'
 
 type IProps = {
   userId: string
-  reload?: () => void
-  setOpened?: (boolean: boolean) => void
+  onSuccess: () => void
 }
 
 export default function EditUserForm(props: IProps) {
   const { instance } = useMsal()
   const { classes } = styles()
-  const { userId, reload, setOpened } = props
+  const { userId, onSuccess } = props
   const [isLoading, setIsLoading] = useState(true)
   const [availableSkills, setAvailableSkills] = useState([] as SkillPreview[])
   const [skills, setSkills] = useState<string[]>([])
@@ -67,12 +66,6 @@ export default function EditUserForm(props: IProps) {
       disallowClose: false,
     })
     editUser(instance, user, skills).then((response) => {
-      if (setOpened) {
-        setOpened(false)
-      }
-      if (reload) {
-        reload()
-      }
       if (JSON.stringify(response).toString().includes('error')) {
         updateNotification({
           id: 'user-load',
@@ -93,6 +86,7 @@ export default function EditUserForm(props: IProps) {
           icon: <Check />,
           autoClose: 2000,
         })
+        onSuccess()
       }
     })
   }
