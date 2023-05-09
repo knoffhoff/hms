@@ -455,6 +455,7 @@ export default function IdeaDetails(props: IProps) {
 
   return (
     <>
+      {/* idea start here   */}
       {!isLoading && type === IdeaCardType.IdeaPortal ? (
         minimalCard()
       ) : (
@@ -516,6 +517,10 @@ export default function IdeaDetails(props: IProps) {
                   <Accordion.Panel>
                     <div>{ideaDetails()}</div>
 
+                    {/* need to figured out from here
+                    and fix from this part */}
+                    {/* no edit or delete button for ideas
+                    in admin page */}
                     {type === IdeaCardType.AllIdeas &&
                       ideaData.owner?.id === user?.id && (
                         <Group

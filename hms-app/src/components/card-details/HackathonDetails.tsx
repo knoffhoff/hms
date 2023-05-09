@@ -22,10 +22,8 @@ import {
   Switch,
   Text,
 } from '@mantine/core'
-import ParticipantDetails from './ParticipantDetails'
 import IdeaDetails from './IdeaDetails'
 import HackathonForm from '../input-forms/HackathonForm'
-import CategoryDetails from './CategoryDetails'
 import { Link } from 'react-router-dom'
 import { styles } from '../../common/styles'
 import { NULL_DATE } from '../../common/constants'
@@ -39,6 +37,7 @@ import { showNotification, updateNotification } from '@mantine/notifications'
 import { Check, X } from 'tabler-icons-react'
 import { RichTextEditor } from '@mantine/rte'
 import AllCategoryList from '../lists/AllCategoryList'
+import AllParticipantList from '../lists/AllParticipantList'
 
 type IProps = {
   hackathonId: string
@@ -115,25 +114,6 @@ export default function HackathonDetails(props: IProps) {
         })
       }
   }, [ideaData])
-
-  const allParticipants = hackathonData.participants?.map(
-    (participant, index) => (
-      <Accordion.Item value={participant.id} key={participant.id}>
-        <Accordion.Control>
-          <>
-            {index + 1}. {participant.user.firstName}{' '}
-            {participant.user.lastName}
-          </>
-        </Accordion.Control>
-        <Accordion.Panel>
-          <ParticipantDetails
-            participantId={participant.id}
-            user={participant.user}
-          />
-        </Accordion.Panel>
-      </Accordion.Item>
-    )
-  )
 
   const allIdeas = relevantIdeaList.map((idea, index) => (
     <Accordion.Item key={idea.id} value={idea.id}>
@@ -315,20 +295,7 @@ export default function HackathonDetails(props: IProps) {
 
             <AllCategoryList hackathonID={hackathonData.id} />
 
-            <Accordion chevronPosition={'left'}>
-              <Accordion.Item value={'participants'}>
-                <Accordion.Control>
-                  <Text className={classes.label}>
-                    Participants ( {allParticipants?.length} )
-                  </Text>
-                </Accordion.Control>
-                <Accordion.Panel>
-                  <Accordion chevronPosition={'right'}>
-                    {allParticipants}
-                  </Accordion>
-                </Accordion.Panel>
-              </Accordion.Item>
-            </Accordion>
+            <AllParticipantList hackathonID={hackathonData.id} />
 
             <Accordion chevronPosition={'left'}>
               <Accordion.Item value={'ideas'}>
