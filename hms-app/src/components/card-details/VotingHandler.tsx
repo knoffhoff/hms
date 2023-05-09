@@ -3,7 +3,6 @@ import {
   createIdeaVoteParticipant,
   removeIdeaVoteParticipant,
 } from '../../actions/ParticipantActions'
-import { JOIN_BUTTON_COLOR, LEAVE_BUTTON_COLOR } from '../../common/colors'
 import { useContext, useEffect, useState } from 'react'
 import { styles } from '../../common/styles'
 import { UserContext } from '../../pages/Layout'
@@ -13,35 +12,31 @@ import { showNotification, updateNotification } from '@mantine/notifications'
 import { useMsal } from '@azure/msal-react'
 import { Check, X } from 'tabler-icons-react'
 import { Idea } from '../../common/types'
+import { JOIN_BUTTON_COLOR, LEAVE_BUTTON_COLOR } from '../../common/colors'
+import VoteList from './VoteList'
 
 type IProps = {
   idea: Idea
 }
 
-export default function VotingHandler(props: IProps) {
-  const hackathonParticipantId = useContext(HackathonParticipantContext)
-  const { instance } = useMsal()
+// Vote Button Only
+export function VoteButtons(props: IProps) {
   const user = useContext(UserContext)
+  const hackathonParticipantId = useContext(HackathonParticipantContext)
   const { idea } = props
   const { classes } = styles()
-  const [ideaData, setIdeaData] = useState(idea)
-  const [loader, setLoader] = useState(false)
+  const { instance } = useMsal()
   const [voteCheck, setVoteCheck] = useState(false)
-  const [buttonIsDisabled, setButtonIsDisabled] = useState(false)
+  const [buttonIsDisabled, setButtonIsDisabled] = useState(voteCheck)
+  const [loader, setLoader] = useState(false)
+  const [ideaData, setIdeaData] = useState(idea)
   const [participantInfo, setParticipantInfo] = useState({
     userId: '',
     participantId: '',
   })
 
-  const findVoter = () => {
-    if (ideaData && ideaData.voters && user) {
-      const voter = ideaData.voters.find((voter) => voter.user.id === user.id)
-      if (voter) {
-        return voter
-      } else {
-        return null
-      }
-    }
+  const removeThisVote = () => {
+    removeVote(removeIdeaVoteParticipant, setVoteCheck)
   }
 
   const removeVote = async (
@@ -57,14 +52,13 @@ export default function VotingHandler(props: IProps) {
         icon: <X />,
         autoClose: 5000,
       })
-      console.log(check, participantInfo)
       return
     }
     setButtonIsDisabled(true)
     showNotification({
       id: 'participant-load',
       loading: true,
-      title: `Removing vote from: "${ideaData.title}"`,
+      title: `Removing vote from: "${idea.title}"`,
       message: undefined,
       autoClose: false,
       disallowClose: false,
@@ -84,7 +78,8 @@ export default function VotingHandler(props: IProps) {
             autoClose: 2000,
           })
         } else {
-          check(true)
+          check(false)
+
           updateNotification({
             id: 'participant-load',
             color: 'teal',
@@ -98,8 +93,8 @@ export default function VotingHandler(props: IProps) {
     )
   }
 
-  const removeThisVote = () => {
-    removeVote(removeIdeaVoteParticipant, setVoteCheck)
+  const addThisVote = async () => {
+    await addVote(createIdeaVoteParticipant, setVoteCheck)
   }
 
   const addVote = async (
@@ -153,26 +148,26 @@ export default function VotingHandler(props: IProps) {
         }
       }
     )
+  }
 
-    useEffect(() => {
-      if (findVoter()) setVoteCheck(!!findVoter())
-    }, [ideaData])
-
-    const loadIdeaData = () => {
-      getIdeaDetails(instance, ideaData.id).then((data) => {
-        setIdeaData(data)
-        setLoader(false)
-      })
+  const findVoter = () => {
+    if (ideaData && ideaData.voters && user) {
+      const voter = ideaData.voters.find((voter) => voter.user.id === user.id)
+      if (voter) {
+        return voter
+      } else {
+        return null
+      }
     }
-
-    useEffect(() => {
-      loadIdeaData()
-    }, [loader])
   }
 
-  const addThisVote = async () => {
-    await addVote(createIdeaVoteParticipant, setVoteCheck)
-  }
+  useEffect(() => {
+    if (findVoter()) setVoteCheck(!!findVoter())
+  }, [ideaData])
+
+  useEffect(() => {
+    loadIdeaData()
+  }, [loader])
 
   useEffect(() => {
     if (user) {
@@ -183,11 +178,16 @@ export default function VotingHandler(props: IProps) {
     }
   }, [user, hackathonParticipantId])
 
+  const loadIdeaData = () => {
+    getIdeaDetails(instance, idea.id).then((data) => {
+      setIdeaData(data)
+      setLoader(false)
+    })
+  }
+
   return (
     <Card.Section className={classes.noBorderSection}>
       <Stack align={'center'} spacing={'xs'}>
-        <Text className={classes.label}>Votes: </Text>
-        <Text className={classes.text}>{ideaData.voters?.length}</Text>
         <Button
           disabled={buttonIsDisabled}
           onClick={voteCheck ? removeThisVote : addThisVote}
