@@ -16,7 +16,6 @@ import { getIdeaDetails } from '../../actions/IdeaActions'
 import { styles } from '../../common/styles'
 import { useMsal } from '@azure/msal-react'
 import {
-  HackathonParticipantContext,
   HackathonVotingContext,
 } from '../../pages/AllIdeas'
 import { UserContext } from '../../pages/Layout'
