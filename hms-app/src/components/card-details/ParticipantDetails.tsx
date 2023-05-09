@@ -10,12 +10,13 @@ import { getUserDetails } from '../../actions/UserActions'
 type IProps = {
   participantId: string
   user: UserPreview
+  onParticipantDeleted: () => void
 }
 
 export default function ParticipantDetails(props: IProps) {
   const { instance } = useMsal()
   const { classes } = styles()
-  const { participantId, user } = props
+  const { participantId, user, onParticipantDeleted } = props
   const [opened, setOpened] = useState(false)
   const [userDetails, setUserDetails] = useState({} as User)
 
@@ -30,6 +31,7 @@ export default function ParticipantDetails(props: IProps) {
   const deleteSelectedParticipant = () => {
     deleteParticipant(instance, participantId).then(() => {
       setOpened(false)
+      onParticipantDeleted()
     })
   }
 

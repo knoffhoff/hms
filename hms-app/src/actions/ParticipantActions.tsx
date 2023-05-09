@@ -102,3 +102,16 @@ export const getParticipantDetails = async (
     })
     .catch((err) => console.log(err))
 }
+
+export const getParticipantList = async (
+  instance: IPublicClientApplication,
+  hackathonId: string
+) => {
+  const idToken = await getIdToken(instance)
+  const options = buildFetchOptions('GET', idToken)
+  return fetch(`${coreUrl}/hackathon/${hackathonId}/participants`, options)
+    .then((data) => {
+      return data.json()
+    })
+    .catch((err) => console.log(err))
+}
