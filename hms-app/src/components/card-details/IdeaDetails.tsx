@@ -34,15 +34,14 @@ type IProps = {
 }
 
 export default function IdeaDetails(props: IProps) {
-  const hackathonVotingOpened = useContext(HackathonVotingContext)
-  const user = useContext(UserContext)
+  const { instance } = useMsal()
   const { classes } = styles()
   const { idea, type, isLoading, reloadIdeaList } = props
+  const hackathonVotingOpened = useContext(HackathonVotingContext)
+  const user = useContext(UserContext)
   const MAX_TITLE_LENGTH = 100
   const theme = useMantineTheme()
   const [accordionOpen, setAccordionOpen] = useState(false)
-
-  const { instance } = useMsal()
   const [categoryData, setCategoryData] = useState({} as Category)
   const [skillData, setSkillData] = useState([] as Skill[])
   const [loader, setLoader] = useState(false)
