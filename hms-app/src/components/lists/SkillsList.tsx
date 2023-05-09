@@ -50,7 +50,7 @@ const SkillsList = (): React.ReactElement => {
         </div>
       </Accordion.Control>
       <Accordion.Panel>
-        <SkillDetails skillId={skill.id.toString()} />
+        <SkillDetails skillId={skill.id.toString()} onSuccess={refreshList} />
       </Accordion.Panel>
     </Accordion.Item>
   ))
