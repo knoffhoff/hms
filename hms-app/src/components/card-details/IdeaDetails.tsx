@@ -4,6 +4,7 @@ import {
   Avatar,
   Badge,
   Card,
+  Center,
   Group,
   Spoiler,
   Stack,
@@ -15,9 +16,7 @@ import { Category, Idea, IdeaCardType, Skill } from '../../common/types'
 import { getIdeaDetails } from '../../actions/IdeaActions'
 import { styles } from '../../common/styles'
 import { useMsal } from '@azure/msal-react'
-import {
-  HackathonVotingContext,
-} from '../../pages/AllIdeas'
+import { HackathonVotingContext } from '../../pages/AllIdeas'
 import { UserContext } from '../../pages/Layout'
 import { getCategoryDetails } from '../../actions/CategoryActions'
 import { getSkillDetails } from '../../actions/SkillActions'
@@ -198,7 +197,11 @@ export default function IdeaDetails(props: IProps) {
     return (
       type === IdeaCardType.Admin ||
       ((type === IdeaCardType.Owner || ideaData.owner?.id === user?.id) && (
-        <CardButton idea={props.idea} reloadIdeaDetails={loadIdeaData}  reloadIdeaList={reloadIdeaList}/>
+        <CardButton
+          idea={props.idea}
+          reloadIdeaDetails={loadIdeaData}
+          reloadIdeaList={reloadIdeaList}
+        />
       ))
     )
   }
@@ -219,7 +222,7 @@ export default function IdeaDetails(props: IProps) {
 
   const participateButton = () => {
     return (
-      type === IdeaCardType.AllIdeas && (
+      (type === IdeaCardType.AllIdeas || type === IdeaCardType.Admin) && (
         <ParticipantsHandler idea={props.idea} />
       )
     )
@@ -227,15 +230,16 @@ export default function IdeaDetails(props: IProps) {
 
   return (
     <>
-      {!isLoading &&
-      (type === IdeaCardType.IdeaPortal || type === IdeaCardType.AllIdeas) ? (
+      {!isLoading && type !== IdeaCardType.Voting ? (
         <Card withBorder className={classes.card}>
           <Spoiler maxHeight={145} showLabel='Show more' hideLabel='Hide'>
             <Card.Section className={classes.borderSection}>
               <Group noWrap mb={5} position='apart'>
                 {ideaHeader()}
-                {voterCount()}
-                {votingButton()}
+                <Stack align={'Center'} spacing={'xs'}>
+                  {voterCount()}
+                  {votingButton()}
+                </Stack>
               </Group>
               {ideaDescription()}
             </Card.Section>
@@ -252,11 +256,12 @@ export default function IdeaDetails(props: IProps) {
                 {accordionOpen && 'Hide details'}
               </Accordion.Control>
               <Accordion.Panel>
-                {ideaCategory()}
-                {ideaRequiredSkills()}
                 {ideaProblem()}
                 {ideaGoal()}
+                {ideaCategory()}
+                {ideaRequiredSkills()}
                 {participateButton()}
+
                 {ideaButtons()}
               </Accordion.Panel>
             </Accordion.Item>
