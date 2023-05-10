@@ -10,12 +10,13 @@ import SkillForm from '../input-forms/SkillForm'
 
 type IProps = {
   skillId: string
+  onSuccess: () => void
 }
 
 const SkillDetails = (props: IProps): React.ReactElement => {
   const { instance } = useMsal()
   const { classes } = styles()
-  const { skillId } = props
+  const { skillId, onSuccess } = props
   const [deleteModalOpened, setDeleteModalOpened] = useState(false)
   const [editModalOpened, setEditModalOpened] = useState(false)
   const [isError, setIsError] = useState(false)
@@ -43,6 +44,7 @@ const SkillDetails = (props: IProps): React.ReactElement => {
   const deleteSelectedSkill = () => {
     removeSkill(instance, skillId).then(() => {
       setDeleteModalOpened(false)
+      onSuccess()
     })
   }
 
@@ -76,6 +78,13 @@ const SkillDetails = (props: IProps): React.ReactElement => {
     </Modal>
   )
 
+  const refreshAfterChange = () => {
+    setEditModalOpened(false)
+    setIsLoading(true)
+    loadSelectedSkill()
+    onSuccess()
+  }
+
   const editModal = (
     <Modal
       centered
@@ -84,7 +93,11 @@ const SkillDetails = (props: IProps): React.ReactElement => {
       withCloseButton={false}
     >
       <Text className={classes.title}>Edit Skill</Text>
-      <SkillForm skillId={skillId} context={'edit'} />
+      <SkillForm
+        skillId={skillId}
+        context={'edit'}
+        onSuccess={refreshAfterChange}
+      />
       {isLoading && <div>Loading...</div>}
       <Text className={classes.text}>
         (This window will automatically close as soon as the skill is changed)
