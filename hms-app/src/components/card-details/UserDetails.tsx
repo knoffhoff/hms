@@ -97,6 +97,8 @@ export default function UserDetails(props: IProps) {
     </Modal>
   )
 
+  const userSkill = user.skills?.map((skill) => skill.id)
+
   const editModal = (
     <Modal
       centered
@@ -105,7 +107,11 @@ export default function UserDetails(props: IProps) {
       withCloseButton={false}
     >
       <Text className={classes.title}>Edit User</Text>
-      <EditUserForm userId={userId} onSuccess={refreshAfterChange} />
+      <EditUserForm
+        userId={userId}
+        onSuccess={refreshAfterChange}
+        passedSkills={userSkill}
+      />
       {isUserLoading && <div>Loading...</div>}
       <Text className={classes.text}>
         (This window will automatically close as soon as the user is edited)
