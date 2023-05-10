@@ -12,13 +12,13 @@ import { Check, X } from 'tabler-icons-react'
 type IProps = {
   userId: string
   onSuccess: () => void
-  passedSkills?: string[]
+  userSkill?: string[]
 }
 
 export default function EditUserForm(props: IProps) {
   const { instance } = useMsal()
   const { classes } = styles()
-  const { userId, onSuccess, passedSkills } = props
+  const { userId, onSuccess, userSkill } = props
   const [isLoading, setIsLoading] = useState(true)
   const [availableSkills, setAvailableSkills] = useState([] as SkillPreview[])
   const [skills, setSkills] = useState<string[]>([])
@@ -118,7 +118,7 @@ export default function EditUserForm(props: IProps) {
           <Card.Section className={classes.borderSection}>
             <Checkbox.Group
               label='Skills'
-              defaultValue={passedSkills}
+              defaultValue={userSkill}
               onChange={setSkills}
               required
               className={classes.label}

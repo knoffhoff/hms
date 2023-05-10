@@ -110,7 +110,7 @@ export default function UserDetails(props: IProps) {
       <EditUserForm
         userId={userId}
         onSuccess={refreshAfterChange}
-        passedSkills={userSkill}
+        userSkill={userSkill}
       />
       {isUserLoading && <div>Loading...</div>}
       <Text className={classes.text}>
