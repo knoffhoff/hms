@@ -249,9 +249,6 @@ function IdeaForm(props: IProps) {
         {!isLoading && (
           <div>
             <Card.Section className={classes.borderSection}>
-              <Text className={classes.title}>Create New Idea</Text>
-            </Card.Section>
-            <Card.Section className={classes.borderSection}>
               <Textarea
                 label='Title'
                 required

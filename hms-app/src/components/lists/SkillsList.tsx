@@ -13,6 +13,7 @@ const SkillsList = (): React.ReactElement => {
   const { classes } = styles()
   const [isLoading, setIsLoading] = useState<boolean>(true)
   const [skillsList, setSkillsList] = useState([] as SkillPreview[])
+  const [openedAccordion, setOpenedAccordion] = useState<string | null>(null)
 
   const loadSkills = () => {
     setIsLoading(true)
@@ -36,6 +37,10 @@ const SkillsList = (): React.ReactElement => {
     setIsLoading(true)
     loadSkills()
   }
+  const closeAccordion = () => {
+    setOpenedAccordion(null)
+    loadSkills()
+  }
 
   const allSkills = skillsList?.map((skill, index) => (
     <Accordion.Item key={index} value={skill.id}>
@@ -45,13 +50,14 @@ const SkillsList = (): React.ReactElement => {
         </div>
       </Accordion.Control>
       <Accordion.Panel>
-        <SkillDetails skillId={skill.id.toString()} />
+        <SkillDetails skillId={skill.id.toString()} onSuccess={refreshList} />
       </Accordion.Panel>
     </Accordion.Item>
   ))
 
   return (
     <>
+      {isLoading && <div>Loading...</div>}
       {!isLoading && (
         <Card withBorder className={classes.card}>
           <Card.Section className={classes.borderSection}>
@@ -63,14 +69,22 @@ const SkillsList = (): React.ReactElement => {
             </Group>
           </Card.Section>
           <Card.Section>
-            <Accordion chevronPosition={'right'}>
+            <Accordion
+              chevronPosition={'right'}
+              value={openedAccordion}
+              onChange={setOpenedAccordion}
+            >
               <Accordion.Item
                 className={classes.borderAccordion}
-                value={'ad-skills'}
+                value={'add-skills'}
               >
                 <Accordion.Control>Add Skill</Accordion.Control>
                 <Accordion.Panel>
-                  <SkillForm context={'new'} skillId={''} />
+                  <SkillForm
+                    context={'new'}
+                    skillId={''}
+                    onSuccess={closeAccordion}
+                  />
                 </Accordion.Panel>
               </Accordion.Item>
               {allSkills}

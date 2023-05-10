@@ -260,8 +260,9 @@ function AllIdeas() {
                   opened={opened}
                   onClose={() => setOpened(false)}
                   size={'70%'}
-                  title='Create New Idea!'
+                  withCloseButton={false}
                 >
+                  <Text className={classes.title}>Create New Idea</Text>
                   <IdeaForm
                     ideaId={'null'}
                     hackathon={hackathonData}

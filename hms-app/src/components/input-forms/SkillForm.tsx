@@ -15,12 +15,13 @@ import { styles } from '../../common/styles'
 type IProps = {
   skillId: string
   context: 'edit' | 'new'
+  onSuccess: () => void
 }
 
 const SkillForm = (props: IProps): React.ReactElement => {
   const { instance } = useMsal()
   const { classes } = styles()
-  const { skillId, context } = props
+  const { skillId, context, onSuccess } = props
   const [isLoading, setIsLoading] = useState(true)
   const [skill, setSkill] = useState({
     id: skillId,
@@ -87,8 +88,17 @@ const SkillForm = (props: IProps): React.ReactElement => {
           icon: <Check />,
           autoClose: 2000,
         })
+        onSuccess()
       }
     })
+  }
+
+  function clearForm() {
+    setSkill((prevState) => ({
+      ...prevState,
+      name: '',
+      description: '',
+    }))
   }
 
   const createThisSkill = (
@@ -122,6 +132,8 @@ const SkillForm = (props: IProps): React.ReactElement => {
           icon: <Check />,
           autoClose: 2000,
         })
+        onSuccess()
+        clearForm()
       }
     })
   }

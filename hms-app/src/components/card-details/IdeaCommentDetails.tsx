@@ -322,7 +322,7 @@ export default function IdeaCommentDetails(props: IProps) {
                 }}
               >
                 <Textarea
-                  placeholder='write a comment'
+                  placeholder='Write a comment'
                   maxRows={2}
                   autosize
                   onChange={handleChange}
@@ -339,7 +339,7 @@ export default function IdeaCommentDetails(props: IProps) {
                     disabled={!submitIsEnabled()}
                     onClick={createThisIdeaComment}
                   >
-                    add comment
+                    Add Comment
                   </Button>
                 </Group>
               </div>
