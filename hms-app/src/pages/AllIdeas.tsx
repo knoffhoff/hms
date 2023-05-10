@@ -77,6 +77,12 @@ function AllIdeas() {
     return item.title?.toLowerCase().includes(searchTerm.toLowerCase())
   })
 
+  const reloadHackathon = () => {
+    const id = selectedHackathonId 
+    setSelectedHackathonId('')
+    setSelectedHackathonId(id)
+  }
+
   const findParticipant = () => {
     let participant: ParticipantPreview
     if (hackathonData.participants) {
@@ -293,7 +299,7 @@ function AllIdeas() {
                   columnSize={6}
                   type={IdeaCardType.AllIdeas}
                   isLoading={isLoading}
-                  reloadIdeaList={() => setSelectedHackathonId(selectedHackathonId)}
+                  reloadIdeaList={reloadHackathon}
                 />
               </>
             )}
