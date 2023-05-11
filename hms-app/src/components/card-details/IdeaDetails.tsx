@@ -37,7 +37,7 @@ type IProps = {
 export default function IdeaDetails(props: IProps) {
   const { instance } = useMsal()
   const { classes } = styles()
-  const { idea, type, isLoading, reloadIdeaData } = props
+  const { idea, type, isLoading, reloadIdeaList, reloadIdeaData } = props
   const hackathonVotingOpened = useContext(HackathonVotingContext)
   const user = useContext(UserContext)
   const MAX_TITLE_LENGTH = 100
@@ -201,7 +201,7 @@ export default function IdeaDetails(props: IProps) {
       ((type === IdeaCardType.Owner || ideaData.owner?.id === user?.id) && (
         <CardButton
           idea={props.idea}
-          // 
+          reloadIdeaList={reloadIdeaList}
         />
       ))
     )
