@@ -1,8 +1,8 @@
-import { Button, Card, Checkbox, Group, Textarea } from '@mantine/core'
+import { Button, Card, Checkbox, Group } from '@mantine/core'
 import React, { useEffect, useState } from 'react'
 import { showNotification, updateNotification } from '@mantine/notifications'
-import { editUser, getUserDetails } from '../../actions/UserActions'
-import { SkillPreview } from '../../common/types'
+import { editUser } from '../../actions/UserActions'
+import { SkillPreview, User } from '../../common/types'
 import { getListOfSkills } from '../../actions/SkillActions'
 import { styles } from '../../common/styles'
 import { useMsal } from '@azure/msal-react'
@@ -10,19 +10,18 @@ import { dark2, JOIN_BUTTON_COLOR } from '../../common/colors'
 import { Check, X } from 'tabler-icons-react'
 
 type IProps = {
-  userId: string
   onSuccess: () => void
-  userSkill?: string[]
+  user: User
 }
 
 export default function EditUserForm(props: IProps) {
   const { instance } = useMsal()
   const { classes } = styles()
-  const { userId, onSuccess, userSkill } = props
+  const { user, onSuccess } = props
   const [isLoading, setIsLoading] = useState(true)
   const [availableSkills, setAvailableSkills] = useState([] as SkillPreview[])
   const [skills, setSkills] = useState<string[]>([])
-  const [user, setUser] = useState({
+  const [userData, setUserData] = useState({
     id: '',
     lastName: '',
     firstName: '',
@@ -32,28 +31,20 @@ export default function EditUserForm(props: IProps) {
   })
 
   const loadSelectedUser = () => {
-    getUserDetails(instance, userId).then(
-      (data) => {
-        setIsLoading(false)
-        setUser({
-          id: userId,
-          lastName: data.lastName,
-          firstName: data.firstName,
-          emailAddress: data.emailAddress,
-          roles: data.roles,
-          imageUrl: data.imageUrl,
-        })
-      },
-      () => {
-        setIsLoading(false)
-      }
-    )
+    setIsLoading(false)
+    setUserData({
+      id: user.id,
+      lastName: user.lastName as any,
+      firstName: user.firstName,
+      emailAddress: user.emailAddress,
+      roles: user.roles as any,
+      imageUrl: user.imageUrl as any,
+    })
   }
 
   useEffect(() => {
     loadSelectedUser()
     loadAvailableSkills()
-    setIsLoading(true)
   }, [])
 
   function editThisUser(event: React.MouseEvent<HTMLButtonElement>) {
@@ -66,7 +57,7 @@ export default function EditUserForm(props: IProps) {
       autoClose: false,
       disallowClose: false,
     })
-    editUser(instance, user, skills).then((response) => {
+    editUser(instance, userData, skills).then((response) => {
       if (JSON.stringify(response).toString().includes('error')) {
         updateNotification({
           id: 'user-load',
@@ -105,6 +96,8 @@ export default function EditUserForm(props: IProps) {
   const skillsList = availableSkills.map((skill, index) => [
     <Checkbox value={skill.id} label={skill.name} key={index} />,
   ])
+
+  const userSkill = user.skills?.map((skill) => skill.id)
 
   return (
     <>
