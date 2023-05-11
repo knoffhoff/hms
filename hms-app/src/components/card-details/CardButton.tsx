@@ -20,7 +20,6 @@ type IProps = {
 export default function CardButtons(props: IProps) {
   const [deleteModalOpened, setDeleteModalOpened] = useState(false)
   const [editModalOpened, setEditModalOpened] = useState(false)
-
   const { instance } = useMsal()
   const { classes } = styles()
   const { idea, reloadIdeaDetails, reloadIdeaList } = props

@@ -13,16 +13,19 @@ import { useMsal } from '@azure/msal-react'
 import { Check, X } from 'tabler-icons-react'
 import { Idea } from '../../common/types'
 import { JOIN_BUTTON_COLOR, LEAVE_BUTTON_COLOR } from '../../common/colors'
+import VoteList from './VoteList'
+import IdeaDetails from './IdeaDetails'
 
 type IProps = {
   idea: Idea
+  reloadIdeaData?: () => void
 }
 
 // Vote Button Only
 export function VoteButtons(props: IProps) {
   const user = useContext(UserContext)
   const hackathonParticipantId = useContext(HackathonParticipantContext)
-  const { idea } = props
+  const { idea, reloadIdeaData } = props
   const { classes } = styles()
   const { instance } = useMsal()
   const [voteCheck, setVoteCheck] = useState(false)
@@ -36,6 +39,7 @@ export function VoteButtons(props: IProps) {
 
   const removeThisVote = () => {
     removeVote(removeIdeaVoteParticipant, setVoteCheck)
+    
   }
 
   const removeVote = async (
@@ -78,7 +82,6 @@ export function VoteButtons(props: IProps) {
           })
         } else {
           check(false)
-
           updateNotification({
             id: 'participant-load',
             color: 'teal',
@@ -87,6 +90,10 @@ export function VoteButtons(props: IProps) {
             icon: <Check />,
             autoClose: 2000,
           })
+          setLoader(true)
+          console.log('Vote removed. Count: ' + ideaData.voters?.length)
+          if (reloadIdeaData) reloadIdeaData()
+          console.log('ReloadIdeaList is: ' + reloadIdeaData)
         }
       }
     )
@@ -144,6 +151,9 @@ export function VoteButtons(props: IProps) {
             icon: <Check />,
             autoClose: 2000,
           })
+          console.log('Vote added. Count: ' + ideaData.voters?.length)
+          if (reloadIdeaData) reloadIdeaData()
+          console.log('ReloadIdeaList is: ' + reloadIdeaData)
         }
       }
     )
@@ -201,16 +211,35 @@ export function VoteButtons(props: IProps) {
   )
 }
 
-export function VoteList(props: IProps) {
-  const { idea } = props
-  const { classes } = styles()
+// export function VoteList(props: IProps) {
+//   const { instance } = useMsal()
+//   const { idea } = props
+//   const { classes } = styles()
+//   const [ideaData, setIdeaData] = useState(idea)
+//   const [loader, setLoader] = useState(false)
 
-  return (
-    <Card.Section className={classes.noBorderSection}>
-      <Stack align={'center'} spacing={'xs'}>
-        <Text className={classes.label}>Votes: </Text>
-        <Text className={classes.text}>{idea.voters?.length}</Text>
-      </Stack>
-    </Card.Section>
-  )
-}
+//   const loadIdeaData = () => {
+//     getIdeaDetails(instance, ideaData.id).then((data) => {
+//       setIdeaData(data)
+//       setLoader(false)
+//     })
+//   }
+
+//   function refreshList() {
+//     setLoader(true)
+//     loadIdeaData()
+//   }
+
+//   useEffect(() => {
+//     loadIdeaData()
+//   }, [loader])
+
+//   return (
+//     <Card.Section className={classes.noBorderSection}>
+//       <Stack align={'center'} spacing={'xs'}>
+//         <Text className={classes.label}>Votes: </Text>
+//         <Text className={classes.text}>{idea.voters?.length}</Text>
+//       </Stack>
+//     </Card.Section>
+//   )
+// }

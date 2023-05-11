@@ -23,19 +23,21 @@ import { getSkillDetails } from '../../actions/SkillActions'
 import IdeaCommentDetails from './IdeaCommentDetails'
 import CardButton from './CardButton'
 import ParticipantsHandler from './ParticipantsHandler'
-import { VoteButtons, VoteList } from './VotingHandler'
+import { VoteButtons } from './VotingHandler'
+import VoteList from './VoteList'
 
 type IProps = {
   idea: Idea
   isLoading: boolean
   type: IdeaCardType
   reloadIdeaList?: () => void
+  reloadIdeaData?: () => void
 }
 
 export default function IdeaDetails(props: IProps) {
   const { instance } = useMsal()
   const { classes } = styles()
-  const { idea, type, isLoading, reloadIdeaList } = props
+  const { idea, type, isLoading, reloadIdeaData } = props
   const hackathonVotingOpened = useContext(HackathonVotingContext)
   const user = useContext(UserContext)
   const MAX_TITLE_LENGTH = 100
@@ -199,8 +201,7 @@ export default function IdeaDetails(props: IProps) {
       ((type === IdeaCardType.Owner || ideaData.owner?.id === user?.id) && (
         <CardButton
           idea={props.idea}
-          reloadIdeaDetails={loadIdeaData}
-          reloadIdeaList={reloadIdeaList}
+          // 
         />
       ))
     )
@@ -209,7 +210,12 @@ export default function IdeaDetails(props: IProps) {
   const votingButton = () => {
     return (
       { hackathonVotingOpened } &&
-      type === IdeaCardType.AllIdeas && <VoteButtons idea={props.idea} />
+      type === IdeaCardType.AllIdeas && (
+        <VoteButtons
+          idea={props.idea}
+          // reloadIdeaList={reloadIdeaList}
+        />
+      )
     )
   }
 
