@@ -147,7 +147,7 @@ export default function CardButtons(props: IProps) {
       <FinalVideoUploadModal idea={ideaData} />
       <MoveIdeaModal 
         idea={ideaData}
-        reloadIdeaList={reloadIdeaList}
+        onSuccess={reloadIdeaList} 
       />
     </Group>
   )

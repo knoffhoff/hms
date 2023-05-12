@@ -12,12 +12,12 @@ import { removeIdeaParticipant } from '../actions/ParticipantActions'
 
 type IProps = {
   idea: Idea
-  reloadIdeaList?: () => void
+  onSuccess?: () => void
 }
 
 export default function MoveIdeaModal(props: IProps) {
   
-  const { idea, reloadIdeaList } = props
+  const { idea, onSuccess } = props
   const { instance } = useMsal()
   const { classes } = styles()
   const [opened, setOpened] = useState(false)
@@ -74,7 +74,7 @@ export default function MoveIdeaModal(props: IProps) {
         if (setOpened) {
           setOpened(false)
         }
-        if (reloadIdeaList) reloadIdeaList()
+        if (onSuccess) onSuccess()
         if (JSON.stringify(response).toString().includes('error')) {
           updateNotification({
             id: 'idea-load',
