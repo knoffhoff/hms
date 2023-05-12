@@ -31,6 +31,7 @@ export default function EditUserForm(props: IProps) {
   }
 
   useEffect(() => {
+    setIsLoading(true)
     loadAvailableSkills()
   }, [])
 
@@ -75,8 +76,8 @@ export default function EditUserForm(props: IProps) {
   }
 
   const loadAvailableSkills = () => {
-    setIsLoading(false)
     getListOfSkills(instance).then((data) => {
+      setIsLoading(false)
       setAvailableSkills(data.skills)
     })
   }
