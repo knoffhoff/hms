@@ -104,6 +104,8 @@ function IdeaForm(props: IProps) {
     <Radio value={category.id} label={category.title} key={category.id} />,
   ])
 
+  const ideaSkill = idea?.requiredSkills?.map((skill) => skill.id)
+
   function handleChange(event: React.ChangeEvent<HTMLTextAreaElement>) {
     setIdeaText((prevIdeaText) => ({
       ...prevIdeaText,
@@ -313,8 +315,7 @@ function IdeaForm(props: IProps) {
                 description='chose one or more required skills'
                 onChange={setSkills}
                 required
-                defaultValue={idea?.requiredSkills?.map((skill) => skill.id)}
-                value={skills}
+                defaultValue={ideaSkill}
                 className={classes.label}
               >
                 {skillsList}
