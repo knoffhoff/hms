@@ -21,29 +21,16 @@ export default function EditUserForm(props: IProps) {
   const [isLoading, setIsLoading] = useState(true)
   const [availableSkills, setAvailableSkills] = useState([] as SkillPreview[])
   const [skills, setSkills] = useState<string[]>([])
-  const [userData, setUserData] = useState({
-    id: '',
-    lastName: '',
-    firstName: '',
-    emailAddress: '',
-    roles: [],
-    imageUrl: '',
-  })
-
-  const loadSelectedUser = () => {
-    setIsLoading(false)
-    setUserData({
-      id: user.id,
-      lastName: user.lastName as any,
-      firstName: user.firstName,
-      emailAddress: user.emailAddress,
-      roles: user.roles as any,
-      imageUrl: user.imageUrl as any,
-    })
+  const userData = {
+    id: user.id,
+    lastName: user.lastName ? user.lastName : '',
+    firstName: user.firstName,
+    emailAddress: user.emailAddress,
+    roles: user.roles,
+    imageUrl: user.imageUrl ? user.imageUrl : '',
   }
 
   useEffect(() => {
-    loadSelectedUser()
     loadAvailableSkills()
   }, [])
 
@@ -88,6 +75,7 @@ export default function EditUserForm(props: IProps) {
   }
 
   const loadAvailableSkills = () => {
+    setIsLoading(false)
     getListOfSkills(instance).then((data) => {
       setAvailableSkills(data.skills)
     })
