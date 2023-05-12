@@ -145,7 +145,10 @@ export default function CardButtons(props: IProps) {
         Edit
       </Button>
       <FinalVideoUploadModal idea={ideaData} />
-      <MoveIdeaModal idea={ideaData} />
+      <MoveIdeaModal 
+        idea={ideaData}
+        reloadIdeaList={reloadIdeaList}
+      />
     </Group>
   )
 }
