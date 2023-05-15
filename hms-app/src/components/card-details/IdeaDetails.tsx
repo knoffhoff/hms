@@ -4,7 +4,6 @@ import {
   Avatar,
   Badge,
   Card,
-  Center,
   Group,
   Spoiler,
   Stack,
@@ -24,20 +23,18 @@ import IdeaCommentDetails from './IdeaCommentDetails'
 import CardButton from './CardButton'
 import ParticipantsHandler from './ParticipantsHandler'
 import { VoteButtons } from './VotingHandler'
-import VoteList from './VoteList'
 
 type IProps = {
   idea: Idea
   isLoading: boolean
   type: IdeaCardType
   reloadIdeaList?: () => void
-  reloadIdeaData?: () => void
 }
 
 export default function IdeaDetails(props: IProps) {
   const { instance } = useMsal()
   const { classes } = styles()
-  const { idea, type, isLoading, reloadIdeaList, reloadIdeaData } = props
+  const { idea, type, isLoading, reloadIdeaList } = props
   const hackathonVotingOpened = useContext(HackathonVotingContext)
   const user = useContext(UserContext)
   const MAX_TITLE_LENGTH = 100
@@ -199,10 +196,7 @@ export default function IdeaDetails(props: IProps) {
     return (
       type === IdeaCardType.Admin ||
       ((type === IdeaCardType.Owner || ideaData.owner?.id === user?.id) && (
-        <CardButton
-          idea={props.idea}
-          reloadIdeaList={reloadIdeaList}
-        />
+        <CardButton idea={props.idea} reloadIdeaList={reloadIdeaList} />
       ))
     )
   }
@@ -213,7 +207,7 @@ export default function IdeaDetails(props: IProps) {
       type === IdeaCardType.AllIdeas && (
         <VoteButtons
           idea={props.idea}
-          // reloadIdeaList={reloadIdeaList}
+          reloadIdeaList={() => setLoader(!loader)}
         />
       )
     )
@@ -222,7 +216,14 @@ export default function IdeaDetails(props: IProps) {
   const voterCount = () => {
     return (
       { hackathonVotingOpened } &&
-      type === IdeaCardType.AllIdeas && <VoteList idea={props.idea} />
+      type === IdeaCardType.AllIdeas && (
+        <Card.Section className={classes.noBorderSection}>
+          <Stack align={'center'} spacing={'xs'}>
+            <Text className={classes.label}>Votes: </Text>
+            <Text className={classes.text}>{ideaData.voters?.length}</Text>
+          </Stack>
+        </Card.Section>
+      )
     )
   }
 
