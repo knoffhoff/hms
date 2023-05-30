@@ -22,7 +22,7 @@ import { getSkillDetails } from '../../actions/SkillActions'
 import IdeaCommentDetails from './IdeaCommentDetails'
 import CardButton from './CardButton'
 import ParticipantsHandler from './ParticipantsHandler'
-import { VoteButtons } from './VotingHandler'
+import { VoteButtons } from './VotingButton'
 
 type IProps = {
   idea: Idea
@@ -196,7 +196,11 @@ export default function IdeaDetails(props: IProps) {
     return (
       type === IdeaCardType.Admin ||
       ((type === IdeaCardType.Owner || ideaData.owner?.id === user?.id) && (
-        <CardButton idea={props.idea} reloadIdeaList={reloadIdeaList} />
+        <CardButton
+          idea={props.idea}
+          reloadIdeaDetails={loadIdeaData}
+          reloadIdeaList={reloadIdeaList}
+        />
       ))
     )
   }
