@@ -197,11 +197,7 @@ export default function IdeaDetails(props: IProps) {
       (type === IdeaCardType.Admin ||
         type === IdeaCardType.Owner ||
         ideaData.owner?.id === user?.id) && (
-        <CardButton
-          idea={props.idea}
-          reloadIdeaDetails={loadIdeaData}
-          reloadIdeaList={reloadIdeaList}
-        />
+        <CardButton idea={props.idea} refresh={refreshAfterChange} />
       )
     )
   }
@@ -238,6 +234,13 @@ export default function IdeaDetails(props: IProps) {
         <ParticipantsHandler idea={props.idea} />
       )
     )
+  }
+
+  const refreshAfterChange = () => {
+    loadIdeaData()
+    if (reloadIdeaList) {
+      reloadIdeaList()
+    }
   }
 
   return (

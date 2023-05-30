@@ -13,8 +13,7 @@ import MoveIdeaModal from '../MoveIdeaModal'
 
 type IProps = {
   idea: Idea
-  reloadIdeaDetails?: () => void
-  reloadIdeaList?: () => void
+  refresh: () => void
 }
 
 export default function CardButtons(props: IProps) {
@@ -22,7 +21,7 @@ export default function CardButtons(props: IProps) {
   const [editModalOpened, setEditModalOpened] = useState(false)
   const { instance } = useMsal()
   const { classes } = styles()
-  const { idea, reloadIdeaDetails, reloadIdeaList } = props
+  const { idea, refresh } = props
   const [ideaData, setIdeaData] = useState(idea)
   const [loader, setLoader] = useState(false)
 
@@ -37,7 +36,6 @@ export default function CardButtons(props: IProps) {
     })
     deleteIdea(instance, ideaData.id).then((response) => {
       setDeleteModalOpened(false)
-      if (reloadIdeaList) reloadIdeaList()
       if (JSON.stringify(response).toString().includes('error')) {
         updateNotification({
           id: 'delete-idea-load',
@@ -56,6 +54,7 @@ export default function CardButtons(props: IProps) {
           icon: <Check />,
           autoClose: 2000,
         })
+        refresh()
       }
     })
   }
@@ -115,7 +114,7 @@ export default function CardButtons(props: IProps) {
         ownerId={ideaData.owner ? ideaData.owner.id : ''}
         hackathon={ideaData.hackathon!}
         setOpened={closeEditModal}
-        reload={reloadIdeaDetails}
+        onSuccess={refresh}
       />
       <Text className={classes.text}>
         (This window will automatically close as soon as the idea is changed)
@@ -144,10 +143,7 @@ export default function CardButtons(props: IProps) {
         Edit
       </Button>
       <FinalVideoUploadModal idea={ideaData} />
-      <MoveIdeaModal 
-        idea={ideaData}
-        onSuccess={reloadIdeaList} 
-      />
+      <MoveIdeaModal idea={ideaData} onSuccess={refresh} />
     </Group>
   )
 }

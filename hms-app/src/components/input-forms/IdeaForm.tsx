@@ -31,12 +31,13 @@ type IProps = {
   ideaId: string | null
   setOpened?: (boolean: boolean) => void
   idea?: Idea
-  reload?: () => void
+  onSuccess: () => void
 }
 
 function IdeaForm(props: IProps) {
   const { instance } = useMsal()
-  const { hackathon, ownerId, context, ideaId, setOpened, idea, reload } = props
+  const { hackathon, ownerId, context, ideaId, setOpened, idea, onSuccess } =
+    props
   const { classes } = styles()
   const [isLoading, setIsLoading] = useState(true)
   const [buttonIsDisabled, setButtonIsDisabled] = useState(true)
@@ -130,9 +131,6 @@ function IdeaForm(props: IProps) {
         setButtonIsDisabled(false)
         setCategory('')
         setSkills([])
-        if (reload) {
-          reload()
-        }
         setIdeaText((prevState) => ({
           ...prevState,
           title: '',
@@ -158,6 +156,7 @@ function IdeaForm(props: IProps) {
             icon: <Check />,
             autoClose: 2000,
           })
+          onSuccess()
         }
       }
     )
@@ -180,9 +179,6 @@ function IdeaForm(props: IProps) {
         if (setOpened) {
           setOpened(false)
         }
-        if (reload) {
-          reload()
-        }
         if (JSON.stringify(response).toString().includes('error')) {
           updateNotification({
             id: 'idea-load',
@@ -201,6 +197,7 @@ function IdeaForm(props: IProps) {
             icon: <Check />,
             autoClose: 2000,
           })
+          onSuccess()
         }
       }
     )

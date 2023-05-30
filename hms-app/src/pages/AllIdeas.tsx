@@ -78,7 +78,7 @@ function AllIdeas() {
   })
 
   const reloadHackathon = () => {
-    const id = selectedHackathonId 
+    const id = selectedHackathonId
     setSelectedHackathonId('')
     setSelectedHackathonId(id)
   }
@@ -268,7 +268,7 @@ function AllIdeas() {
                     hackathon={hackathonData}
                     ownerId={user?.id}
                     context={IdeaFormType.New}
-                    reload={closeModal}
+                    onSuccess={closeModal}
                   />
                 </Modal>
                 <Button onClick={() => setOpened(true)}>New Idea</Button>
