@@ -194,14 +194,15 @@ export default function IdeaDetails(props: IProps) {
 
   const ideaButtons = () => {
     return (
-      type === IdeaCardType.Admin ||
-      ((type === IdeaCardType.Owner || ideaData.owner?.id === user?.id) && (
+      (type === IdeaCardType.Admin ||
+        type === IdeaCardType.Owner ||
+        ideaData.owner?.id === user?.id) && (
         <CardButton
           idea={props.idea}
           reloadIdeaDetails={loadIdeaData}
           reloadIdeaList={reloadIdeaList}
         />
-      ))
+      )
     )
   }
 
