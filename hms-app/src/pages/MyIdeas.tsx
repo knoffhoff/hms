@@ -61,7 +61,8 @@ export default function MyIdeas() {
 
   const filteredIdeas = relevantIdeas.filter((item) => {
     const userId = user?.id || ''
-    return item.owner?.id.includes(userId)
+    const hackathon = hackathonData.id
+    return item.owner?.id.includes(userId) && item.hackathon?.id.includes(hackathon)
   })
 
   const userParticipant = () => {
