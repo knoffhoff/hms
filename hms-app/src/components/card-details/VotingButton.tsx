@@ -1,4 +1,4 @@
-import { Button, Card, Stack, Text } from '@mantine/core'
+import { Button, Card, Stack } from '@mantine/core'
 import {
   createIdeaVoteParticipant,
   removeIdeaVoteParticipant,
@@ -16,13 +16,14 @@ import { JOIN_BUTTON_COLOR, LEAVE_BUTTON_COLOR } from '../../common/colors'
 
 type IProps = {
   idea: Idea
+  reloadIdeaList: () => void
 }
 
 // Vote Button Only
 export function VoteButtons(props: IProps) {
   const user = useContext(UserContext)
   const hackathonParticipantId = useContext(HackathonParticipantContext)
-  const { idea } = props
+  const { idea, reloadIdeaList } = props
   const { classes } = styles()
   const { instance } = useMsal()
   const [voteCheck, setVoteCheck] = useState(false)
@@ -78,7 +79,6 @@ export function VoteButtons(props: IProps) {
           })
         } else {
           check(false)
-
           updateNotification({
             id: 'participant-load',
             color: 'teal',
@@ -87,6 +87,8 @@ export function VoteButtons(props: IProps) {
             icon: <Check />,
             autoClose: 2000,
           })
+          setLoader(true)
+          if (reloadIdeaList) reloadIdeaList()
         }
       }
     )
@@ -144,6 +146,7 @@ export function VoteButtons(props: IProps) {
             icon: <Check />,
             autoClose: 2000,
           })
+          if (reloadIdeaList) reloadIdeaList()
         }
       }
     )
@@ -196,20 +199,6 @@ export function VoteButtons(props: IProps) {
         >
           {voteCheck ? 'Remove Vote' : 'Add Vote'}
         </Button>
-      </Stack>
-    </Card.Section>
-  )
-}
-
-export function VoteList(props: IProps) {
-  const { idea } = props
-  const { classes } = styles()
-
-  return (
-    <Card.Section className={classes.noBorderSection}>
-      <Stack align={'center'} spacing={'xs'}>
-        <Text className={classes.label}>Votes: </Text>
-        <Text className={classes.text}>{idea.voters?.length}</Text>
       </Stack>
     </Card.Section>
   )

@@ -4,7 +4,6 @@ import {
   Avatar,
   Badge,
   Card,
-  Center,
   Group,
   Spoiler,
   Stack,
@@ -23,7 +22,7 @@ import { getSkillDetails } from '../../actions/SkillActions'
 import IdeaCommentDetails from './IdeaCommentDetails'
 import CardButton from './CardButton'
 import ParticipantsHandler from './ParticipantsHandler'
-import { VoteButtons, VoteList } from './VotingHandler'
+import { VoteButtons } from './VotingButton'
 
 type IProps = {
   idea: Idea
@@ -209,14 +208,26 @@ export default function IdeaDetails(props: IProps) {
   const votingButton = () => {
     return (
       { hackathonVotingOpened } &&
-      type === IdeaCardType.AllIdeas && <VoteButtons idea={props.idea} />
+      type === IdeaCardType.AllIdeas && (
+        <VoteButtons
+          idea={props.idea}
+          reloadIdeaList={() => setLoader(!loader)}
+        />
+      )
     )
   }
 
   const voterCount = () => {
     return (
       { hackathonVotingOpened } &&
-      type === IdeaCardType.AllIdeas && <VoteList idea={props.idea} />
+      type === IdeaCardType.AllIdeas && (
+        <Card.Section className={classes.noBorderSection}>
+          <Stack align={'center'} spacing={'xs'}>
+            <Text className={classes.label}>Votes: </Text>
+            <Text className={classes.text}>{ideaData.voters?.length}</Text>
+          </Stack>
+        </Card.Section>
+      )
     )
   }
 
