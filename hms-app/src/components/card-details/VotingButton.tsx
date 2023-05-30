@@ -16,7 +16,7 @@ import { JOIN_BUTTON_COLOR, LEAVE_BUTTON_COLOR } from '../../common/colors'
 
 type IProps = {
   idea: Idea
-  reloadIdeaList?: any
+  reloadIdeaList: () => void
 }
 
 // Vote Button Only
