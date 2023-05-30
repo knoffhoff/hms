@@ -96,5 +96,47 @@
     "hackathonId": {
       "S": "e955fe4b-7ce7-4904-ae6f-22a8985f74a9"
     }
+  },
+  {
+    "id": {
+      "S": "e499b34e-fda9-4f66-949a-46e0300b9123"
+    },
+    "title": {
+      "S": "Another fun category"
+    },
+    "description": {
+      "S": "For just fun stuff, you know like shoes and knives"
+    },
+    "hackathonId": {
+      "S": "a1c60aba-f846-4208-b4b8-1caaec031eae"
+    }
+  },
+  {
+    "id": {
+      "S": "c9897c51-2e0b-47d7-b9a7-5572e990d123"
+    },
+    "title": {
+      "S": "An even BETTER category"
+    },
+    "description": {
+      "S": "Filling out this information really takes a long time"
+    },
+    "hackathonId": {
+      "S": "a1c60aba-f846-4208-b4b8-1caaec031eae"
+    }
+  },
+  {
+    "id": {
+      "S": "4be5c953-b871-40e3-b0cc-d2a7c929b123"
+    },
+    "title": {
+      "S": "A pretty bland category"
+    },
+    "description": {
+      "S": "Oh good, the last category to write a description for"
+    },
+    "hackathonId": {
+      "S": "a1c60aba-f846-4208-b4b8-1caaec031eae"
+    }
   }
 ]
