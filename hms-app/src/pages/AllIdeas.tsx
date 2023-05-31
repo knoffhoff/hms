@@ -57,6 +57,7 @@ function AllIdeas() {
     if (hackathonData.id !== undefined) {
       setOpened(false)
     }
+    reloadHackathon()
   }
 
   useEffect(() => {
