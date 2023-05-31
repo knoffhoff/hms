@@ -22,7 +22,7 @@ export default function IdeaCardList(props: IProps) {
             idea={idea}
             type={type}
             isLoading={isLoading}
-            reloadIdeaList={reloadIdeaList}
+            onSuccess={reloadIdeaList}
           />
         </div>
       </Grid.Col>

@@ -13,7 +13,7 @@ import MoveIdeaModal from '../MoveIdeaModal'
 
 type IProps = {
   idea: Idea
-  refresh: () => void
+  onSuccess: () => void
 }
 
 export default function CardButtons(props: IProps) {
@@ -21,7 +21,7 @@ export default function CardButtons(props: IProps) {
   const [editModalOpened, setEditModalOpened] = useState(false)
   const { instance } = useMsal()
   const { classes } = styles()
-  const { idea, refresh } = props
+  const { idea, onSuccess } = props
   const [ideaData, setIdeaData] = useState(idea)
   const [loader, setLoader] = useState(false)
 
@@ -54,7 +54,7 @@ export default function CardButtons(props: IProps) {
           icon: <Check />,
           autoClose: 2000,
         })
-        refresh()
+        onSuccess()
       }
     })
   }
@@ -114,7 +114,7 @@ export default function CardButtons(props: IProps) {
         ownerId={ideaData.owner ? ideaData.owner.id : ''}
         hackathon={ideaData.hackathon!}
         setOpened={closeEditModal}
-        onSuccess={refresh}
+        onSuccess={onSuccess}
       />
       <Text className={classes.text}>
         (This window will automatically close as soon as the idea is changed)
@@ -143,7 +143,7 @@ export default function CardButtons(props: IProps) {
         Edit
       </Button>
       <FinalVideoUploadModal idea={ideaData} />
-      <MoveIdeaModal idea={ideaData} onSuccess={refresh} />
+      <MoveIdeaModal idea={ideaData} onSuccess={onSuccess} />
     </Group>
   )
 }

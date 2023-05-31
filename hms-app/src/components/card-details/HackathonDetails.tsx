@@ -37,6 +37,7 @@ import { Check, X } from 'tabler-icons-react'
 import { RichTextEditor } from '@mantine/rte'
 import AllCategoryList from '../lists/AllCategoryList'
 import AllParticipantList from '../lists/AllParticipantList'
+import AllIdeaList from '../lists/AllIdeaList'
 
 type IProps = {
   hackathonId: string
@@ -73,14 +74,14 @@ export default function HackathonDetails(props: IProps) {
     )
   }
 
-  const loadRelevantIdeaDetails = () => {
-    hackathonData.ideas?.map((ideaPreviews) => {
-      getIdeaDetails(instance, ideaPreviews.id).then((data) => {
-        setIdeaData(data)
-        setIsIdeaLoading(false)
-      })
-    })
-  }
+  // const loadRelevantIdeaDetails = () => {
+  //   hackathonData.ideas?.map((ideaPreviews) => {
+  //     getIdeaDetails(instance, ideaPreviews.id).then((data) => {
+  //       setIdeaData(data)
+  //       setIsIdeaLoading(false)
+  //     })
+  //   })
+  // }
 
   const deleteSelectedHackathon = () => {
     deleteHackathon(instance, hackathonId).then(() => {
@@ -91,43 +92,44 @@ export default function HackathonDetails(props: IProps) {
 
   useEffect(() => {
     loadSelectedHackathon()
-    setRelevantIdeaList([])
+    // setRelevantIdeaList([])
     setIsHackathonLoading(true)
   }, [hackathonId])
 
-  useEffect(() => {
-    loadRelevantIdeaDetails()
-  }, [hackathonData])
+  // useEffect(() => {
+  //   loadRelevantIdeaDetails()
+  // }, [hackathonData])
 
-  useEffect(() => {
-    if (ideaData)
-      if (
-        !relevantIdeaList
-          .map((relevant) => {
-            return relevant.id
-          })
-          .includes(ideaData.id)
-      ) {
-        setRelevantIdeaList((relevantIdeaList) => {
-          return [...relevantIdeaList, ideaData]
-        })
-      }
-  }, [ideaData])
+  // useEffect(() => {
+  //   if (ideaData)
+  //     if (
+  //       !relevantIdeaList
+  //         .map((relevant) => {
+  //           return relevant.id
+  //         })
+  //         .includes(ideaData.id)
+  //     ) {
+  //       setRelevantIdeaList((relevantIdeaList) => {
+  //         return [...relevantIdeaList, ideaData]
+  //       })
+  //     }
+  // }, [ideaData])
 
-  const allIdeas = relevantIdeaList.map((idea, index) => (
-    <Accordion.Item key={idea.id} value={idea.id}>
-      <Accordion.Control>
-        {index + 1}. {idea.title}
-      </Accordion.Control>
-      <Accordion.Panel>
-        <IdeaDetails
-          idea={idea}
-          type={IdeaCardType.Admin}
-          isLoading={isIdeaLoading}
-        />
-      </Accordion.Panel>
-    </Accordion.Item>
-  ))
+  // const allIdeas = relevantIdeaList.map((idea, index) => (
+  //   <Accordion.Item key={idea.id} value={idea.id}>
+  //     <Accordion.Control>
+  //       {index + 1}. {idea.title}
+  //     </Accordion.Control>
+  //     <Accordion.Panel>
+  //       <IdeaDetails
+  //         idea={idea}
+  //         type={IdeaCardType.Admin}
+  //         isLoading={isIdeaLoading}
+  //         // reloadIdeaList={() => loadRelevantIdeaDetails()}
+  //       />
+  //     </Accordion.Panel>
+  //   </Accordion.Item>
+  // ))
 
   const deleteModal = (
     <Modal
@@ -296,7 +298,9 @@ export default function HackathonDetails(props: IProps) {
 
             <AllParticipantList hackathonID={hackathonData.id} />
 
-            <Accordion chevronPosition={'left'}>
+            <AllIdeaList hackathonID={hackathonData.id} />
+
+            {/* <Accordion chevronPosition={'left'}>
               <Accordion.Item value={'ideas'}>
                 <Accordion.Control>
                   <Text className={classes.label}>
@@ -337,7 +341,7 @@ export default function HackathonDetails(props: IProps) {
                   <Accordion chevronPosition={'right'}>{allIdeas}</Accordion>
                 </Accordion.Panel>
               </Accordion.Item>
-            </Accordion>
+            </Accordion> */}
 
             <Card.Section className={classes.borderSection}>
               <Group position='left' mt='xl'>
