@@ -61,8 +61,9 @@ export default function MyIdeas() {
 
   const filteredIdeas = relevantIdeas.filter((item) => {
     const userId = user?.id || ''
-    const hackathon = hackathonData.id
-    return item.owner?.id.includes(userId) && item.hackathon?.id.includes(hackathon)
+    return (
+      item.owner?.id === userId && item.hackathon?.id === selectedHackathonId
+    )
   })
 
   const userParticipant = () => {
@@ -98,6 +99,7 @@ export default function MyIdeas() {
   }, [ideaData])
 
   useEffect(() => {
+    setRelevantIdeas([])
     const participant = userParticipant()
     if (participant) setParticipantId(participant.id)
     loadIdeaDetails()
@@ -156,6 +158,7 @@ export default function MyIdeas() {
                   columnSize={6}
                   type={IdeaCardType.Owner}
                   isLoading={false}
+                  reloadIdeaList={loadSelectedHackathon}
                 />
               </>
             )}
