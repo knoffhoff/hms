@@ -16,7 +16,7 @@ import IdeaForm from '../components/input-forms/IdeaForm'
 import { MIN_DATE } from '../common/constants'
 import { RichTextEditor } from '@mantine/rte'
 
-function IdeationPortal() {
+function IdeaPool() {
   const { instance } = useMsal()
   const user = useContext(UserContext)
   const [allIdeaPreviews, setAllIdeaPreviews] = useState<IdeaPreview[]>([])
@@ -94,7 +94,7 @@ function IdeationPortal() {
   return (
     <>
       <Center>
-        <Title order={1}>Ideation Portal</Title>
+        <Title order={1}>Idea Pool</Title>
       </Center>
       <Center>
         <RichTextEditor
@@ -154,4 +154,4 @@ function IdeationPortal() {
   )
 }
 
-export default IdeationPortal
+export default IdeaPool
