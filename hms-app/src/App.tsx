@@ -25,7 +25,7 @@ function App() {
     <Routes>
       <Route path='/' element={<Layout />}>
         <Route index element={<Home />} />
-        <Route path='ideation' element={<IdeaPool />} />
+        <Route path='idea-pool' element={<IdeaPool />} />
         <Route path='hackathons' element={<AllIdeas />} />
         <Route path='hackathons/:slug' element={<AllIdeas />} />
         <Route path='my-ideas' element={<MyIdeas />} />
