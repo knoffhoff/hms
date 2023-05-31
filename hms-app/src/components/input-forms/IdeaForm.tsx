@@ -1,12 +1,4 @@
-import {
-  Button,
-  Card,
-  Checkbox,
-  Group,
-  Radio,
-  Text,
-  Textarea,
-} from '@mantine/core'
+import { Button, Card, Checkbox, Group, Radio, Textarea } from '@mantine/core'
 import React, { useEffect, useState } from 'react'
 import {
   CategoryPreview,

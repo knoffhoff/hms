@@ -88,7 +88,9 @@ export function VoteButtons(props: IProps) {
             autoClose: 2000,
           })
           setLoader(true)
-          if (onSuccess) onSuccess()
+          if (onSuccess) {
+            onSuccess()
+          }
         }
       }
     )
@@ -146,7 +148,9 @@ export function VoteButtons(props: IProps) {
             icon: <Check />,
             autoClose: 2000,
           })
-          if (onSuccess) onSuccess()
+          if (onSuccess) {
+            onSuccess()
+          }
         }
       }
     )
