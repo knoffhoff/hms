@@ -158,7 +158,7 @@ export default function MyIdeas() {
                   columnSize={6}
                   type={IdeaCardType.Owner}
                   isLoading={false}
-                  reloadIdeaList={loadSelectedHackathon}
+                  onSuccess={loadSelectedHackathon}
                 />
               </>
             )}
