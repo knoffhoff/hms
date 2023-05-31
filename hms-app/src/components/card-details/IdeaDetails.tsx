@@ -28,7 +28,7 @@ type IProps = {
   idea: Idea
   isLoading: boolean
   type: IdeaCardType
-  onSuccess: () => void
+  onSuccess?: () => void
 }
 
 export default function IdeaDetails(props: IProps) {
