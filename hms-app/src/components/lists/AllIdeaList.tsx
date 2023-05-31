@@ -44,10 +44,6 @@ function AllIdeaList(props: IProps) {
   }, [])
 
   useEffect(() => {
-    loadIdeaList()
-  }, [hackathonID])
-
-  useEffect(() => {
     loadRelevantIdeaDetails()
   }, [allIdeaPreviews])
 
