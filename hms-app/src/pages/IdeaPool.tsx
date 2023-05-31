@@ -146,7 +146,7 @@ function IdeaPool() {
             columnSize={6}
             type={IdeaCardType.IdeaPortal}
             isLoading={false}
-            reloadIdeaList={loadHackathonIdeas}
+            onSuccess={loadHackathonIdeas}
           />
         </div>
       )}
