@@ -185,7 +185,7 @@ const HeroHeader = (props: { nextHackathon: HackathonSerializable }) => {
         <div className={classes.controls}>
           <Button
             component={Link}
-            to='/ideas'
+            to='/hackathons'
             className={classes.control}
             size='lg'
             variant='default'

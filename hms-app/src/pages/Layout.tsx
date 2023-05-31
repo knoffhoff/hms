@@ -73,7 +73,7 @@ const Layout = () => {
     if (isAuthenticated && stateUser) {
       setMenuLinks([
         { link: '', label: 'Home' },
-        { link: 'ideation', label: 'Ideation Portal' },
+        { link: 'idea-pool', label: 'Idea Pool' },
       ])
       setHackLinks([
         {
