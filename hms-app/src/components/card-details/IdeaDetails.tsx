@@ -28,13 +28,13 @@ type IProps = {
   idea: Idea
   isLoading: boolean
   type: IdeaCardType
-  reloadIdeaList?: () => void
+  onSuccess?: () => void
 }
 
 export default function IdeaDetails(props: IProps) {
   const { instance } = useMsal()
   const { classes } = styles()
-  const { idea, type, isLoading, reloadIdeaList } = props
+  const { idea, type, isLoading, onSuccess } = props
   const hackathonVotingOpened = useContext(HackathonVotingContext)
   const user = useContext(UserContext)
   const MAX_TITLE_LENGTH = 100
@@ -194,14 +194,11 @@ export default function IdeaDetails(props: IProps) {
 
   const ideaButtons = () => {
     return (
-      type === IdeaCardType.Admin ||
-      ((type === IdeaCardType.Owner || ideaData.owner?.id === user?.id) && (
-        <CardButton
-          idea={props.idea}
-          reloadIdeaDetails={loadIdeaData}
-          reloadIdeaList={reloadIdeaList}
-        />
-      ))
+      (type === IdeaCardType.Admin ||
+        type === IdeaCardType.Owner ||
+        ideaData.owner?.id === user?.id) && (
+        <CardButton idea={props.idea} onSuccess={refreshAfterChange} />
+      )
     )
   }
 
@@ -209,10 +206,7 @@ export default function IdeaDetails(props: IProps) {
     return (
       { hackathonVotingOpened } &&
       type === IdeaCardType.AllIdeas && (
-        <VoteButtons
-          idea={props.idea}
-          reloadIdeaList={() => setLoader(!loader)}
-        />
+        <VoteButtons idea={props.idea} onSuccess={() => setLoader(!loader)} />
       )
     )
   }
@@ -237,6 +231,13 @@ export default function IdeaDetails(props: IProps) {
         <ParticipantsHandler idea={props.idea} />
       )
     )
+  }
+
+  const refreshAfterChange = () => {
+    loadIdeaData()
+    if (onSuccess) {
+      onSuccess()
+    }
   }
 
   return (

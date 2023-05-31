@@ -16,14 +16,14 @@ import { JOIN_BUTTON_COLOR, LEAVE_BUTTON_COLOR } from '../../common/colors'
 
 type IProps = {
   idea: Idea
-  reloadIdeaList: () => void
+  onSuccess: () => void
 }
 
 // Vote Button Only
 export function VoteButtons(props: IProps) {
   const user = useContext(UserContext)
   const hackathonParticipantId = useContext(HackathonParticipantContext)
-  const { idea, reloadIdeaList } = props
+  const { idea, onSuccess } = props
   const { classes } = styles()
   const { instance } = useMsal()
   const [voteCheck, setVoteCheck] = useState(false)
@@ -88,7 +88,9 @@ export function VoteButtons(props: IProps) {
             autoClose: 2000,
           })
           setLoader(true)
-          if (reloadIdeaList) reloadIdeaList()
+          if (onSuccess) {
+            onSuccess()
+          }
         }
       }
     )
@@ -146,7 +148,9 @@ export function VoteButtons(props: IProps) {
             icon: <Check />,
             autoClose: 2000,
           })
-          if (reloadIdeaList) reloadIdeaList()
+          if (onSuccess) {
+            onSuccess()
+          }
         }
       }
     )

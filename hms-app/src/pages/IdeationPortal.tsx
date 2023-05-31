@@ -115,7 +115,7 @@ function IdeationPortal() {
           hackathon={hackathon}
           ownerId={user?.id}
           context={IdeaFormType.New}
-          reload={loadHackathonIdeas}
+          onSuccess={loadHackathonIdeas}
         />
       </Modal>
 

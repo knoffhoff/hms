@@ -12,11 +12,10 @@ import { removeIdeaParticipant } from '../actions/ParticipantActions'
 
 type IProps = {
   idea: Idea
-  onSuccess?: () => void
+  onSuccess: () => void
 }
 
 export default function MoveIdeaModal(props: IProps) {
-  
   const { idea, onSuccess } = props
   const { instance } = useMsal()
   const { classes } = styles()
@@ -74,7 +73,6 @@ export default function MoveIdeaModal(props: IProps) {
         if (setOpened) {
           setOpened(false)
         }
-        if (onSuccess) onSuccess()
         if (JSON.stringify(response).toString().includes('error')) {
           updateNotification({
             id: 'idea-load',
@@ -105,6 +103,7 @@ export default function MoveIdeaModal(props: IProps) {
             icon: <Check />,
             autoClose: 2000,
           })
+          onSuccess()
         }
       }
     )

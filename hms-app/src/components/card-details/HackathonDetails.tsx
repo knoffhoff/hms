@@ -4,15 +4,8 @@ import {
   editHackathon,
   getHackathonDetails,
 } from '../../actions/HackathonActions'
+import { Hackathon, HackathonDetailsType } from '../../common/types'
 import {
-  Hackathon,
-  HackathonDetailsType,
-  Idea,
-  IdeaCardType,
-} from '../../common/types'
-import { getIdeaDetails } from '../../actions/IdeaActions'
-import {
-  Accordion,
   Button,
   Card,
   Group,
@@ -21,22 +14,17 @@ import {
   Switch,
   Text,
 } from '@mantine/core'
-import IdeaDetails from './IdeaDetails'
 import HackathonForm from '../input-forms/HackathonForm'
-import { Link } from 'react-router-dom'
 import { styles } from '../../common/styles'
 import { NULL_DATE } from '../../common/constants'
 import { useMsal } from '@azure/msal-react'
-import {
-  DELETE_BUTTON_COLOR,
-  JOIN_BUTTON_COLOR,
-  PRIMARY_COLOR_2,
-} from '../../common/colors'
+import { DELETE_BUTTON_COLOR, JOIN_BUTTON_COLOR } from '../../common/colors'
 import { showNotification, updateNotification } from '@mantine/notifications'
 import { Check, X } from 'tabler-icons-react'
 import { RichTextEditor } from '@mantine/rte'
 import AllCategoryList from '../lists/AllCategoryList'
 import AllParticipantList from '../lists/AllParticipantList'
+import AllIdeaList from '../lists/AllIdeaList'
 
 type IProps = {
   hackathonId: string
@@ -52,10 +40,7 @@ export default function HackathonDetails(props: IProps) {
   const [editModalOpened, setEditModalOpened] = useState(false)
   const [isHackathonError, setIsHackathonError] = useState(false)
   const [isHackathonLoading, setIsHackathonLoading] = useState(true)
-  const [isIdeaLoading, setIsIdeaLoading] = useState(true)
   const [hackathonData, setHackathonData] = useState({} as Hackathon)
-  const [ideaData, setIdeaData] = useState<Idea>()
-  const [relevantIdeaList, setRelevantIdeaList] = useState([] as Idea[])
   const [votingOpened, setVotingOpened] = useState<boolean>(false)
 
   const loadSelectedHackathon = () => {
@@ -73,15 +58,6 @@ export default function HackathonDetails(props: IProps) {
     )
   }
 
-  const loadRelevantIdeaDetails = () => {
-    hackathonData.ideas?.map((ideaPreviews) => {
-      getIdeaDetails(instance, ideaPreviews.id).then((data) => {
-        setIdeaData(data)
-        setIsIdeaLoading(false)
-      })
-    })
-  }
-
   const deleteSelectedHackathon = () => {
     deleteHackathon(instance, hackathonId).then(() => {
       setDeleteModalOpened(false)
@@ -91,43 +67,8 @@ export default function HackathonDetails(props: IProps) {
 
   useEffect(() => {
     loadSelectedHackathon()
-    setRelevantIdeaList([])
     setIsHackathonLoading(true)
   }, [hackathonId])
-
-  useEffect(() => {
-    loadRelevantIdeaDetails()
-  }, [hackathonData])
-
-  useEffect(() => {
-    if (ideaData)
-      if (
-        !relevantIdeaList
-          .map((relevant) => {
-            return relevant.id
-          })
-          .includes(ideaData.id)
-      ) {
-        setRelevantIdeaList((relevantIdeaList) => {
-          return [...relevantIdeaList, ideaData]
-        })
-      }
-  }, [ideaData])
-
-  const allIdeas = relevantIdeaList.map((idea, index) => (
-    <Accordion.Item key={idea.id} value={idea.id}>
-      <Accordion.Control>
-        {index + 1}. {idea.title}
-      </Accordion.Control>
-      <Accordion.Panel>
-        <IdeaDetails
-          idea={idea}
-          type={IdeaCardType.Admin}
-          isLoading={isIdeaLoading}
-        />
-      </Accordion.Panel>
-    </Accordion.Item>
-  ))
 
   const deleteModal = (
     <Modal
@@ -296,48 +237,7 @@ export default function HackathonDetails(props: IProps) {
 
             <AllParticipantList hackathonID={hackathonData.id} />
 
-            <Accordion chevronPosition={'left'}>
-              <Accordion.Item value={'ideas'}>
-                <Accordion.Control>
-                  <Text className={classes.label}>
-                    Ideas ( {allIdeas?.length} )
-                  </Text>
-                </Accordion.Control>
-                <Accordion.Panel>
-                  <Group position='left' mt='xl'>
-                    <Button
-                      style={{ backgroundColor: PRIMARY_COLOR_2 }}
-                      mb={20}
-                      onClick={() =>
-                        localStorage.setItem(
-                          'ideas',
-                          JSON.stringify(relevantIdeaList)
-                        )
-                      }
-                      component={Link}
-                      to='/pitch'
-                    >
-                      Pitch
-                    </Button>
-                    <Button
-                      style={{ backgroundColor: JOIN_BUTTON_COLOR }}
-                      mb={20}
-                      onClick={() =>
-                        localStorage.setItem(
-                          'ideas',
-                          JSON.stringify(relevantIdeaList)
-                        )
-                      }
-                      component={Link}
-                      to='/finals'
-                    >
-                      Final
-                    </Button>
-                  </Group>
-                  <Accordion chevronPosition={'right'}>{allIdeas}</Accordion>
-                </Accordion.Panel>
-              </Accordion.Item>
-            </Accordion>
+            <AllIdeaList hackathonID={hackathonData.id} />
 
             <Card.Section className={classes.borderSection}>
               <Group position='left' mt='xl'>

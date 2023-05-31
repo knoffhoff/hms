@@ -139,7 +139,7 @@ export default function MyIdeas() {
                           hackathon={hackathonData}
                           ownerId={user?.id}
                           context={IdeaFormType.New}
-                          reload={loadSelectedHackathon}
+                          onSuccess={loadSelectedHackathon}
                         />
                       </Accordion.Panel>
                     </Accordion.Item>
