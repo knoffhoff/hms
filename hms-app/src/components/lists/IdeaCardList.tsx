@@ -8,7 +8,7 @@ type IProps = {
   isLoading: boolean
   columnSize: number
   type: IdeaCardType
-  onSuccess?: () => void
+  onSuccess: () => void
 }
 
 export default function IdeaCardList(props: IProps) {
