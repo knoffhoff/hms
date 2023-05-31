@@ -13,7 +13,7 @@ import Presentations from './pages/Presentations'
 import FinalPresentations from './pages/FinalPresentations'
 import { useAppSelector } from './hooks'
 import { UserSerializable } from './common/redux/userSlice'
-import IdeationPortal from './pages/IdeationPortal'
+import IdeaPool from './pages/IdeaPool'
 
 function App() {
   const stateUser = useAppSelector((state) => state.user.user)
@@ -25,7 +25,7 @@ function App() {
     <Routes>
       <Route path='/' element={<Layout />}>
         <Route index element={<Home />} />
-        <Route path='ideation' element={<IdeationPortal />} />
+        <Route path='ideation' element={<IdeaPool />} />
         <Route path='hackathons' element={<AllIdeas />} />
         <Route path='hackathons/:slug' element={<AllIdeas />} />
         <Route path='my-ideas' element={<MyIdeas />} />
