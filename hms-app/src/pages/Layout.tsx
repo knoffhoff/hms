@@ -45,7 +45,7 @@ const toggleColorScheme = (colorScheme: ColorScheme) =>
   colorScheme === 'dark' ? 'light' : 'dark'
 
 const Layout = () => {
-  const { instance, accounts } = useMsal()
+  const { instance } = useMsal()
   const isAuthenticated = useIsAuthenticated()
   const dispatch = useAppDispatch()
   const [user, setUser] = useState<UserPreview>()

@@ -204,7 +204,6 @@ export default function IdeaDetails(props: IProps) {
 
   const votingButton = () => {
     return (
-      { hackathonVotingOpened } &&
       type === IdeaCardType.AllIdeas && (
         <VoteButtons idea={props.idea} onSuccess={() => setLoader(!loader)} />
       )
@@ -213,7 +212,6 @@ export default function IdeaDetails(props: IProps) {
 
   const voterCount = () => {
     return (
-      { hackathonVotingOpened } &&
       type === IdeaCardType.AllIdeas && (
         <Card.Section className={classes.noBorderSection}>
           <Stack align={'center'} spacing={'xs'}>
@@ -248,10 +246,12 @@ export default function IdeaDetails(props: IProps) {
             <Card.Section className={classes.borderSection}>
               <Group noWrap mb={5} position='apart'>
                 {ideaHeader()}
-                <Stack align={'Center'} spacing={'xs'}>
-                  {voterCount()}
-                  {votingButton()}
-                </Stack>
+                {hackathonVotingOpened && (
+                  <Stack align={'Center'} spacing={'xs'}>
+                    {voterCount()}
+                    {votingButton()}
+                  </Stack>
+                )}
               </Group>
               {ideaDescription()}
             </Card.Section>

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import {
   ActionIcon,
@@ -13,15 +13,11 @@ import {
   Title,
 } from '@mantine/core'
 import { useFullscreen } from '@mantine/hooks'
-import { Idea, IdeaPreview } from '../common/types'
+import { Idea } from '../common/types'
 import Carousel from 'nuka-carousel'
-import { getIdeaDetails, getIdeaList } from '../actions/IdeaActions'
-import { useAppSelector } from '../hooks'
-import { useMsal } from '@azure/msal-react'
 import { ArrowLeft, ArrowNarrowRight, PlayerPlay } from 'tabler-icons-react'
 import { blue4, dark2, orange3, PAGE_BACKGROUND_DARK } from '../common/colors'
 import PitchTimer from '../components/PitchTimer'
-import { CurrentHackathonContext } from './Layout'
 
 const useStyles = createStyles((_theme, _params, getRef) => ({
   controls: {
@@ -103,11 +99,6 @@ const useStyles = createStyles((_theme, _params, getRef) => ({
 
 export default function Presentations() {
   const { classes } = useStyles()
-  const { instance } = useMsal()
-  const currentHackathon = useContext(CurrentHackathonContext)
-  const nextHackathon = useAppSelector(
-    (state) => state.hackathons.nextHackathon
-  )
   const { ref, toggle, fullscreen } = useFullscreen()
   const [ideas, setIdeas] = useState<Idea[]>([])
   const [timerValue, setTimerValue] = useState({ minutes: 2, seconds: 0 })
@@ -115,7 +106,7 @@ export default function Presentations() {
   useEffect(() => {
     const ideaLocalStorage = () => {
       const ideaStorage = localStorage.getItem('ideas')
-      if(ideaStorage){
+      if (ideaStorage) {
         return setIdeas(JSON.parse(ideaStorage))
       }
       return null

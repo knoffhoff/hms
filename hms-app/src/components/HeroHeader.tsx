@@ -121,34 +121,42 @@ const HeroHeader = (props: { nextHackathon: HackathonSerializable }) => {
       <Dots className={classes.dots} style={{ right: 0, top: 60 }} />
 
       <div className={classes.inner}>
-        <Title className={classes.title}>
-          Upcoming{' '}
-          <Text component='span' className={classes.highlight} inherit>
-            {props.nextHackathon.title}
-          </Text>
-          {new Date(props.nextHackathon.startDate) > today &&
-          !isHackathonWithoutDate() ? (
-            <>
-              {' '}
-              starts in
-              <Center styles={{ color: 'red' }}>
-                {today < new Date(props.nextHackathon.startDate) && (
-                  <Countdown date={props.nextHackathon.startDate} />
-                )}
-              </Center>
-            </>
-          ) : (
-            <>
-              {' '}
-              ends in
-              <Center styles={{ color: 'red' }}>
-                {today < new Date(props.nextHackathon.endDate) && (
-                  <Countdown date={props.nextHackathon.endDate} />
-                )}
-              </Center>
-            </>
-          )}
-        </Title>
+        {!isHackathonWithoutDate() ? (
+          <Title className={classes.title}>
+            Upcoming{' '}
+            <Text component='span' className={classes.highlight} inherit>
+              {props.nextHackathon.title}
+            </Text>
+            {new Date(props.nextHackathon.startDate) > today ? (
+              <>
+                {' '}
+                starts in
+                <Center styles={{ color: 'red' }}>
+                  {today < new Date(props.nextHackathon.startDate) && (
+                    <Countdown date={props.nextHackathon.startDate} />
+                  )}
+                </Center>
+              </>
+            ) : (
+              <>
+                {' '}
+                ends in
+                <Center styles={{ color: 'red' }}>
+                  {today < new Date(props.nextHackathon.endDate) && (
+                    <Countdown date={props.nextHackathon.endDate} />
+                  )}
+                </Center>
+              </>
+            )}
+          </Title>
+        ) : (
+          <Title className={classes.title}>
+            Upcoming{' '}
+            <Text component='span' className={classes.highlight} inherit>
+              {props.nextHackathon.title}
+            </Text>
+          </Title>
+        )}
 
         <Center my={25}>
           <Badge
