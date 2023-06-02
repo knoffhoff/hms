@@ -60,8 +60,8 @@ function IdeaPool() {
   }
 
   const filteredIdeas = relevantIdeaList.filter((item) => {
-    const userId = user?.id || ''
-    return item.owner?.id.includes(userId)
+    const userId = user?.id 
+    return item.owner?.id === userId 
   })
 
   useEffect(() => {
@@ -70,7 +70,7 @@ function IdeaPool() {
 
   useEffect(() => {
     loadHackathonIdeas()
-  }, [hackathon])
+  }, [hackathon, showUserIdeas])
 
   useEffect(() => {
     loadIdeaDetails()
