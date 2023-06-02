@@ -89,7 +89,6 @@ function IdeaPool() {
           return [...relevantIdeaList, ideaData]
         })
       }
-      console.log('ideaData changed: ', relevantIdeaList)
   }, [ideaData])
 
   return (
