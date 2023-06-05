@@ -188,7 +188,7 @@ const SkillForm = (props: IProps): React.ReactElement => {
                 disabled={!submitIsEnabled()}
                 onClick={editThisSkill}
               >
-                Edit
+                Save
               </Button>
             )}
             {context === 'new' && (
