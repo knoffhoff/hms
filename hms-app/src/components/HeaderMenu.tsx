@@ -350,7 +350,7 @@ export default function HeaderMenu({
             </Link>
             <h1 className={classes.headerHeadline}>Ideation Portal</h1>
           </Group>
-          <Group spacing={5} className={classes.headerLinks}>
+          <Group spacing={30} className={classes.headerLinks}>
             <SwitchToggle />
             {fullscreenMenu}
             {editModal}
