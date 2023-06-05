@@ -108,6 +108,11 @@ export const styles = createStyles((theme) => ({
     alignItems: 'center',
   },
 
+  headerHeadline:{
+    color: TEXT_COLOR_WHITE, 
+    fontSize: 30
+  },
+
   borderAccordion: {
     border: '1px solid',
     backgroundColor:
