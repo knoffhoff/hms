@@ -138,6 +138,10 @@ export const styles = createStyles((theme) => ({
   accordionList: {
     marginBottom: 30,
   },
+
+  commentTitle:{
+    fontWeight: 700
+  }
 }))
 
 export const loginStyles = createStyles((theme) => ({
