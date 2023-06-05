@@ -190,7 +190,7 @@ export default function CategoryForm(props: IProps) {
                 disabled={!submitIsEnabled()}
                 onClick={editThisCategory}
               >
-                Edit
+                Save
               </Button>
             )}
             {context === 'new' && (

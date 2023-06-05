@@ -238,7 +238,7 @@ function HackathonForm(props: IProps) {
               disabled={!submitIsEnabled()}
               onClick={editThisHackathon}
             >
-              Edit
+              Save
             </Button>
           )}
           {context === 'new' && (

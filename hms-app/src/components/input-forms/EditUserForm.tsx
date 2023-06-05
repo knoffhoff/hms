@@ -116,7 +116,7 @@ export default function EditUserForm(props: IProps) {
               disabled={!submitIsEnabled()}
               onClick={editThisUser}
             >
-              Edit
+              Save
             </Button>
           </Group>
         </Card>
