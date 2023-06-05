@@ -123,7 +123,7 @@ export default function CardButtons(props: IProps) {
   )
 
   return (
-    <Group position='left' mt='xl'>
+    <Group position='center' mt='xl'>
       {deleteModal}
       <Button
         style={{

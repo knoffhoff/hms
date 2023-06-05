@@ -172,20 +172,18 @@ export default function ParticipateButton(props: IProps) {
   }, [ideaData])
 
   return (
-    <Group mt='xs' position={'right'} style={{ paddingTop: 5 }}>
-      <Button
-        disabled={buttonIsDisabled}
-        onClick={
-          participantCheck ? removeThisIdeaParticipant : addThisIdeaParticipant
-        }
-        style={{
-          backgroundColor: participantCheck
-            ? LEAVE_BUTTON_COLOR
-            : JOIN_BUTTON_COLOR,
-        }}
-      >
-        {participantCheck ? 'Leave Idea' : 'Join Idea'}
-      </Button>
-    </Group>
+    <Button
+      disabled={buttonIsDisabled}
+      onClick={
+        participantCheck ? removeThisIdeaParticipant : addThisIdeaParticipant
+      }
+      style={{
+        backgroundColor: participantCheck
+          ? LEAVE_BUTTON_COLOR
+          : JOIN_BUTTON_COLOR,
+      }}
+    >
+      {participantCheck ? 'Leave Idea' : 'Join Idea'}
+    </Button>
   )
 }

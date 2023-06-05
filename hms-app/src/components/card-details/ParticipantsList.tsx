@@ -9,7 +9,7 @@ type IProps = {
   idea: Idea
 }
 
-export default function ParticipantsHandler(props: IProps) {
+export default function ParticipantsList(props: IProps) {
   const { classes } = styles()
   const { instance } = useMsal()
   const { idea } = props

@@ -192,18 +192,14 @@ export function VoteButtons(props: IProps) {
   }
 
   return (
-    <Card.Section className={classes.noBorderSection}>
-      <Stack align={'center'} spacing={'xs'}>
-        <Button
-          disabled={buttonIsDisabled}
-          onClick={voteCheck ? removeThisVote : addThisVote}
-          style={{
-            backgroundColor: voteCheck ? LEAVE_BUTTON_COLOR : JOIN_BUTTON_COLOR,
-          }}
-        >
-          {voteCheck ? 'Remove Vote' : 'Add Vote'}
-        </Button>
-      </Stack>
-    </Card.Section>
+    <Button
+      disabled={buttonIsDisabled}
+      onClick={voteCheck ? removeThisVote : addThisVote}
+      style={{
+        backgroundColor: voteCheck ? LEAVE_BUTTON_COLOR : JOIN_BUTTON_COLOR,
+      }}
+    >
+      {voteCheck ? 'Remove Vote' : 'Add Vote'}
+    </Button>
   )
 }
