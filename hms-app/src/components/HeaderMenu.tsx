@@ -345,7 +345,7 @@ export default function HeaderMenu({
     >
       <Container size={1300}>
         <div className={classes.header}>
-          <Group spacing={5}>
+          <Group spacing={10}>
             <Link to={'/'}>
               <Image height={40} width={120} src={LOGO} />{' '}
             </Link>
