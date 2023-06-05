@@ -21,7 +21,8 @@ import { getCategoryDetails } from '../../actions/CategoryActions'
 import { getSkillDetails } from '../../actions/SkillActions'
 import IdeaCommentDetails from './IdeaCommentDetails'
 import CardButton from './CardButton'
-import ParticipantsHandler from './ParticipantsHandler'
+import ParticipantsHandler from './ParticipantsList'
+import ParticipateButton from './ParticipateButton'
 import { VoteButtons } from './VotingButton'
 
 type IProps = {
@@ -223,10 +224,18 @@ export default function IdeaDetails(props: IProps) {
     )
   }
 
-  const participateButton = () => {
+  const participantsList = () => {
     return (
       (type === IdeaCardType.AllIdeas || type === IdeaCardType.Admin) && (
         <ParticipantsHandler idea={props.idea} />
+      )
+    )
+  }
+
+  const participateButton = () => {
+    return (
+      (type === IdeaCardType.AllIdeas || type === IdeaCardType.Admin) && (
+        <ParticipateButton idea={props.idea}/>
       )
     )
   }
@@ -272,6 +281,7 @@ export default function IdeaDetails(props: IProps) {
                 {ideaGoal()}
                 {ideaCategory()}
                 {ideaRequiredSkills()}
+                {participantsList()}
                 {participateButton()}
                 {ideaButtons()}
               </Accordion.Panel>

@@ -42,7 +42,7 @@ function AllIdeas() {
     userId: '',
     hackathonId: '',
     participantId: '',
-  })
+  }) 
   const [hackathonData, setHackathonData] = useState({
     id: '',
     title: '',
