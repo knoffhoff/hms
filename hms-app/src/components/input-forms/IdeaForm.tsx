@@ -335,7 +335,7 @@ function IdeaForm(props: IProps) {
                   disabled={buttonIsDisabled}
                   onClick={editThisIdea}
                 >
-                  Edit
+                  Save
                 </Button>
               )}
               {context === IdeaFormType.New && (
