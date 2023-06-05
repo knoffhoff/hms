@@ -240,7 +240,7 @@ export default function IdeaCommentDetails(props: IProps) {
           value={'ideaComment-details'}
         >
           <Accordion.Control>
-            <Text className={classes.title}>
+            <Text style={{ fontWeight: 'bold' }}>
               {getNullIdeaComments.length} Comments:
             </Text>
           </Accordion.Control>
