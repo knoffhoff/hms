@@ -1,4 +1,4 @@
-import { Button, Group } from '@mantine/core'
+import { Button } from '@mantine/core'
 import {
   createIdeaParticipant,
   removeIdeaParticipant,
