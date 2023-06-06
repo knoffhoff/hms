@@ -20,10 +20,10 @@ import { UserContext } from '../../pages/Layout'
 import { getCategoryDetails } from '../../actions/CategoryActions'
 import { getSkillDetails } from '../../actions/SkillActions'
 import IdeaCommentDetails from './IdeaCommentDetails'
-import CardButton from './CardButton'
-import ParticipateButton from './ParticipateButton'
-import { VoteButtons } from './VotingButton'
-import ParticipantsList from './ParticipantsList'
+import CardButton from '../buttons/CardButton'
+import ParticipateButton from '../buttons/ParticipateButton'
+import { VoteButtons } from '../buttons/VotingButton'
+import ParticipantsList from '../lists/ParticipantsList'
 
 type IProps = {
   idea: Idea
