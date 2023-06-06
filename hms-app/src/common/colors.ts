@@ -36,3 +36,4 @@ export const JOIN_BUTTON_COLOR = blue2
 export const DELETE_BUTTON_COLOR = orange4
 export const LEAVE_BUTTON_COLOR = orange4
 export const RELOAD_BUTTON_COLOR = 'green'
+export const DISABLED_BUTTON_COLOR = dark2

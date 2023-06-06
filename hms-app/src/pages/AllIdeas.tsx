@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useEffect, useState } from 'react'
-import { Button, Group, Input, Modal, Text } from '@mantine/core'
+import { Button, Group, Input, Modal, Text, Tooltip } from '@mantine/core'
 import { ArrowUp, Check, Search, X } from 'tabler-icons-react'
 import IdeaCardList from '../components/lists/IdeaCardList'
 import {
@@ -20,7 +20,11 @@ import RelevantIdeasLoader from '../components/RelevantIdeasLoader'
 import { NULL_DATE } from '../common/constants'
 import HackathonHeader from '../components/HackathonHeader'
 import { useMsal } from '@azure/msal-react'
-import { JOIN_BUTTON_COLOR, LEAVE_BUTTON_COLOR } from '../common/colors'
+import {
+  DISABLED_BUTTON_COLOR,
+  JOIN_BUTTON_COLOR,
+  LEAVE_BUTTON_COLOR,
+} from '../common/colors'
 import { UserContext } from './Layout'
 import { styles } from '../common/styles'
 import IdeaForm from '../components/input-forms/IdeaForm'
@@ -42,7 +46,7 @@ function AllIdeas() {
     userId: '',
     hackathonId: '',
     participantId: '',
-  }) 
+  })
   const [hackathonData, setHackathonData] = useState({
     id: '',
     title: '',
@@ -272,7 +276,27 @@ function AllIdeas() {
                     onSuccess={closeModal}
                   />
                 </Modal>
-                <Button onClick={() => setOpened(true)}>New Idea</Button>
+                {participantCheck ? (
+                  <Button
+                    onClick={() => setOpened(true)}
+                    style={{
+                      backgroundColor: JOIN_BUTTON_COLOR,
+                    }}
+                  >
+                    New Idea
+                  </Button>
+                ) : (
+                  <Tooltip label='You must be a participant to create a new idea'>
+                    <Button
+                      onClick={(event) => event.preventDefault()}
+                      style={{
+                        backgroundColor: DISABLED_BUTTON_COLOR,
+                      }}
+                    >
+                      New Idea
+                    </Button>
+                  </Tooltip>
+                )}
 
                 <Button
                   ml={10}
@@ -290,9 +314,6 @@ function AllIdeas() {
                 >
                   {participantCheck ? 'Leave Hackathon' : 'Join Hackathon'}
                 </Button>
-                <Text className={classes.smallText}>
-                  please join the Hackathon before submitting ideas
-                </Text>
 
                 <HackathonHeader hackathonData={hackathonData} />
 
