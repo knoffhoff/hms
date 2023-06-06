@@ -9,10 +9,12 @@ type IProps = {
   columnSize: number
   type: IdeaCardType
   onSuccess?: () => void
+  ishackathonStarted?: boolean
 }
 
 export default function IdeaCardList(props: IProps) {
-  const { ideas, columnSize, type, isLoading, onSuccess } = props
+  const { ideas, columnSize, type, isLoading, onSuccess, ishackathonStarted } =
+    props
 
   const IdeasList = ideas.map((idea, index) => {
     return (
@@ -23,6 +25,7 @@ export default function IdeaCardList(props: IProps) {
             type={type}
             isLoading={isLoading}
             onSuccess={onSuccess}
+            ishackathonStarted={ishackathonStarted}
           />
         </div>
       </Grid.Col>

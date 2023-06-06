@@ -20,22 +20,23 @@ import { UserContext } from '../../pages/Layout'
 import { getCategoryDetails } from '../../actions/CategoryActions'
 import { getSkillDetails } from '../../actions/SkillActions'
 import IdeaCommentDetails from './IdeaCommentDetails'
-import CardButton from './CardButton'
-import ParticipateButton from './ParticipateButton'
-import { VoteButtons } from './VotingButton'
-import ParticipantsList from './ParticipantsList'
+import CardButton from '../buttons/CardButton'
+import ParticipateButton from '../buttons/ParticipateButton'
+import { VoteButtons } from '../buttons/VotingButton'
+import ParticipantsList from '../lists/ParticipantsList'
 
 type IProps = {
   idea: Idea
   isLoading: boolean
   type: IdeaCardType
   onSuccess?: () => void
+  ishackathonStarted?: boolean
 }
 
 export default function IdeaDetails(props: IProps) {
   const { instance } = useMsal()
   const { classes } = styles()
-  const { idea, type, isLoading, onSuccess } = props
+  const { idea, type, isLoading, onSuccess, ishackathonStarted } = props
   const hackathonVotingOpened = useContext(HackathonVotingContext)
   const user = useContext(UserContext)
   const MAX_TITLE_LENGTH = 100
@@ -198,7 +199,12 @@ export default function IdeaDetails(props: IProps) {
       (type === IdeaCardType.Admin ||
         type === IdeaCardType.Owner ||
         ideaData.owner?.id === user?.id) && (
-        <CardButton idea={props.idea} onSuccess={refreshAfterChange} />
+        <CardButton
+          idea={props.idea}
+          onSuccess={refreshAfterChange}
+          type={type}
+          ishackathonStarted={ishackathonStarted}
+        />
       )
     )
   }

@@ -21,8 +21,7 @@ import { NULL_DATE } from '../common/constants'
 import HackathonHeader from '../components/HackathonHeader'
 import { useMsal } from '@azure/msal-react'
 import {
-  JOIN_BUTTON_COLOR,
-  LEAVE_BUTTON_COLOR,
+  JOIN_BUTTON_COLOR, LEAVE_BUTTON_COLOR,
 } from '../common/colors'
 import { UserContext } from './Layout'
 import { styles } from '../common/styles'
@@ -220,6 +219,11 @@ function AllIdeas() {
       setParticipantInfo({ ...participantInfo, participantId: participant.id })
   }, [hackathonData])
 
+  function isHackathonStarted() {
+    const today = new Date()
+    return hackathonData.startDate <= today
+  }
+
   return (
     <>
       <HackathonParticipantContext.Provider
@@ -327,6 +331,7 @@ function AllIdeas() {
                   type={IdeaCardType.AllIdeas}
                   isLoading={isLoading}
                   onSuccess={reloadHackathon}
+                  ishackathonStarted={isHackathonStarted()}
                 />
               </>
             )}
