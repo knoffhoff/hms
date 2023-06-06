@@ -21,9 +21,7 @@ import { NULL_DATE } from '../common/constants'
 import HackathonHeader from '../components/HackathonHeader'
 import { useMsal } from '@azure/msal-react'
 import {
-  DISABLED_BUTTON_COLOR,
-  JOIN_BUTTON_COLOR,
-  LEAVE_BUTTON_COLOR,
+  JOIN_BUTTON_COLOR, LEAVE_BUTTON_COLOR,
 } from '../common/colors'
 import { UserContext } from './Layout'
 import { styles } from '../common/styles'
@@ -291,12 +289,17 @@ function AllIdeas() {
                     New Idea
                   </Button>
                 ) : (
-                  <Tooltip label='You must be a participant to create a new idea'>
+                  <Tooltip
+                    label='You must join the hackathon to create a new idea'
+                    color='orange'
+                    withArrow
+                    arrowPosition='center'
+                  >
                     <Button
+                      variant='default'
+                      data-disabled
+                      sx={{ '&[data-disabled]': { pointerEvents: 'all' } }}
                       onClick={(event) => event.preventDefault()}
-                      style={{
-                        backgroundColor: DISABLED_BUTTON_COLOR,
-                      }}
                     >
                       New Idea
                     </Button>
