@@ -4,7 +4,6 @@ import {
   removeIdeaVoteParticipant,
 } from '../../actions/ParticipantActions'
 import { useContext, useEffect, useState } from 'react'
-import { styles } from '../../common/styles'
 import { UserContext } from '../../pages/Layout'
 import { HackathonParticipantContext } from '../../pages/AllIdeas'
 import { getIdeaDetails } from '../../actions/IdeaActions'
@@ -24,7 +23,6 @@ export function VoteButtons(props: IProps) {
   const user = useContext(UserContext)
   const hackathonParticipantId = useContext(HackathonParticipantContext)
   const { idea, onSuccess } = props
-  const { classes } = styles()
   const { instance } = useMsal()
   const [voteCheck, setVoteCheck] = useState(false)
   const [buttonIsDisabled, setButtonIsDisabled] = useState(voteCheck)
