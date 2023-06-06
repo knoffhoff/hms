@@ -1,7 +1,7 @@
 import { Button } from '@mantine/core'
 import {
-  createIdeaVoteParticipant,
-  removeIdeaVoteParticipant,
+  createIdeaParticipant,
+  removeIdeaParticipant,
 } from '../../actions/ParticipantActions'
 import { useContext, useEffect, useState } from 'react'
 import { UserContext } from '../../pages/Layout'
@@ -15,123 +15,56 @@ import { JOIN_BUTTON_COLOR, LEAVE_BUTTON_COLOR } from '../../common/colors'
 
 type IProps = {
   idea: Idea
-  onSuccess: () => void
 }
 
-// Vote Button Only
-export function VoteButtons(props: IProps) {
-  const user = useContext(UserContext)
+export default function ParticipateButton(props: IProps) {
   const hackathonParticipantId = useContext(HackathonParticipantContext)
-  const { idea, onSuccess } = props
+  const user = useContext(UserContext)
   const { instance } = useMsal()
-  const [voteCheck, setVoteCheck] = useState(false)
-  const [buttonIsDisabled, setButtonIsDisabled] = useState(voteCheck)
-  const [loader, setLoader] = useState(false)
+  const { idea } = props
   const [ideaData, setIdeaData] = useState(idea)
+  const [loader, setLoader] = useState(false)
+  const [participantCheck, setParticipantCheck] = useState(false)
+  const [buttonIsDisabled, setButtonisDisabled] = useState(false)
   const [participantInfo, setParticipantInfo] = useState({
     userId: '',
     participantId: '',
   })
 
-  const removeThisVote = () => {
-    removeVote(removeIdeaVoteParticipant, setVoteCheck)
-  }
-
-  const removeVote = async (
-    action = removeIdeaVoteParticipant,
-    check = setVoteCheck
+  const addHackathonParticipant = async (
+    action = createIdeaParticipant,
+    check = setParticipantCheck
   ) => {
     if (participantInfo.participantId === '') {
       showNotification({
         id: 'participant-load',
         color: 'red',
-        title: 'Not participating in hackathon',
-        message: 'You must join the hackathon first to vote.',
+        title: 'You are not participating in this hackathon!',
+        message: 'You must join the hackathon first to join an idea.',
         icon: <X />,
         autoClose: 5000,
       })
       return
     }
-    setButtonIsDisabled(true)
+    setButtonisDisabled(true)
     showNotification({
       id: 'participant-load',
       loading: true,
-      title: `Removing vote from: "${idea.title}"`,
+      title: `Joining idea "${ideaData.title}"`,
       message: undefined,
       autoClose: false,
       disallowClose: false,
     })
     action(instance, ideaData.id, participantInfo.participantId).then(
       (response) => {
-        setButtonIsDisabled(false)
+        setButtonisDisabled(false)
         setLoader(true)
         if (JSON.stringify(response).toString().includes('error')) {
           check(false)
           updateNotification({
             id: 'participant-load',
             color: 'red',
-            title: 'Failed to remove vote',
-            message: undefined,
-            icon: <X />,
-            autoClose: 2000,
-          })
-        } else {
-          check(false)
-          updateNotification({
-            id: 'participant-load',
-            color: 'teal',
-            title: `Vote removed from: "${ideaData.title}"`,
-            message: undefined,
-            icon: <Check />,
-            autoClose: 2000,
-          })
-          setLoader(true)
-          if (onSuccess) {
-            onSuccess()
-          }
-        }
-      }
-    )
-  }
-
-  const addThisVote = async () => {
-    await addVote(createIdeaVoteParticipant, setVoteCheck)
-  }
-
-  const addVote = async (
-    action = createIdeaVoteParticipant,
-    check = setVoteCheck
-  ) => {
-    if (participantInfo.participantId === '') {
-      showNotification({
-        id: 'participant-load',
-        color: 'red',
-        title: 'Not participating in hackathon',
-        message: 'You must join the hackathon first to vote.',
-        icon: <X />,
-        autoClose: 5000,
-      })
-      return
-    }
-    setButtonIsDisabled(true)
-    showNotification({
-      id: 'participant-load',
-      loading: true,
-      title: `Adding vote to: "${ideaData.title}"`,
-      message: undefined,
-      autoClose: false,
-      disallowClose: false,
-    })
-    action(instance, ideaData.id, participantInfo.participantId).then(
-      (response) => {
-        setButtonIsDisabled(false)
-        setLoader(true)
-        if (JSON.stringify(response).toString().includes('error')) {
-          check(false)
-          updateNotification({
-            id: 'participant-load',
-            color: 'red',
-            title: 'Failed to add vote',
+            title: `Failed to join idea: "${ideaData.title}"`,
             message: undefined,
             icon: <X />,
             autoClose: 2000,
@@ -141,37 +74,85 @@ export function VoteButtons(props: IProps) {
           updateNotification({
             id: 'participant-load',
             color: 'teal',
-            title: `Vote added to: "${ideaData.title}"`,
+            title: `Successfully joined idea: "${ideaData.title}"`,
             message: undefined,
             icon: <Check />,
             autoClose: 2000,
           })
-          if (onSuccess) {
-            onSuccess()
-          }
         }
       }
     )
   }
 
-  const findVoter = () => {
-    if (ideaData && ideaData.voters && user) {
-      const voter = ideaData.voters.find((voter) => voter.user.id === user.id)
-      if (voter) {
-        return voter
+  const addThisIdeaParticipant = async () => {
+    await addHackathonParticipant(createIdeaParticipant, setParticipantCheck)
+  }
+
+  const removeHackathonParticipant = async (
+    action = removeIdeaParticipant,
+    check = setParticipantCheck
+  ) => {
+    setButtonisDisabled(true)
+    showNotification({
+      id: 'participant-load',
+      loading: true,
+      title: `Leaving idea: "${ideaData.title}"`,
+      message: undefined,
+      autoClose: false,
+      disallowClose: false,
+    })
+    action(instance, ideaData.id, participantInfo.participantId).then(
+      (response) => {
+        setButtonisDisabled(false)
+        setLoader(true)
+        if (JSON.stringify(response).toString().includes('error')) {
+          check(true)
+          updateNotification({
+            id: 'participant-load',
+            color: 'red',
+            title: `Failed to leave idea: "${ideaData.title}"`,
+            message: undefined,
+            icon: <X />,
+            autoClose: 2000,
+          })
+        } else {
+          check(false)
+          updateNotification({
+            id: 'participant-load',
+            color: 'teal',
+            title: `Successfully left idea: "${ideaData.title}"`,
+            message: undefined,
+            icon: <Check />,
+            autoClose: 2000,
+          })
+        }
+      }
+    )
+  }
+
+  const removeThisIdeaParticipant = () => {
+    removeHackathonParticipant(removeIdeaParticipant, setParticipantCheck)
+  }
+
+  const findParticipant = () => {
+    if (ideaData && ideaData.participants && user) {
+      const participant = ideaData.participants.find(
+        (participant) => participant.user.id === user.id
+      )
+      if (participant) {
+        return participant
       } else {
         return null
       }
     }
   }
 
-  useEffect(() => {
-    if (findVoter()) setVoteCheck(!!findVoter())
-  }, [ideaData])
-
-  useEffect(() => {
-    loadIdeaData()
-  }, [loader])
+  const loadIdeaData = () => {
+    getIdeaDetails(instance, ideaData.id).then((data) => {
+      setIdeaData(data)
+      setLoader(false)
+    })
+  }
 
   useEffect(() => {
     if (user) {
@@ -182,22 +163,27 @@ export function VoteButtons(props: IProps) {
     }
   }, [user, hackathonParticipantId])
 
-  const loadIdeaData = () => {
-    getIdeaDetails(instance, idea.id).then((data) => {
-      setIdeaData(data)
-      setLoader(false)
-    })
-  }
+  useEffect(() => {
+    loadIdeaData()
+  }, [loader, ideaData.participants])
+
+  useEffect(() => {
+    if (findParticipant()) setParticipantCheck(!!findParticipant())
+  }, [ideaData])
 
   return (
     <Button
       disabled={buttonIsDisabled}
-      onClick={voteCheck ? removeThisVote : addThisVote}
+      onClick={
+        participantCheck ? removeThisIdeaParticipant : addThisIdeaParticipant
+      }
       style={{
-        backgroundColor: voteCheck ? LEAVE_BUTTON_COLOR : JOIN_BUTTON_COLOR,
+        backgroundColor: participantCheck
+          ? LEAVE_BUTTON_COLOR
+          : JOIN_BUTTON_COLOR,
       }}
     >
-      {voteCheck ? 'Remove Vote' : 'Add Vote'}
+      {participantCheck ? 'Leave Idea' : 'Join Idea'}
     </Button>
   )
 }

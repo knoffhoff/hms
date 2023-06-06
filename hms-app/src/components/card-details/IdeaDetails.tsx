@@ -21,8 +21,9 @@ import { getCategoryDetails } from '../../actions/CategoryActions'
 import { getSkillDetails } from '../../actions/SkillActions'
 import IdeaCommentDetails from './IdeaCommentDetails'
 import CardButton from './CardButton'
-import ParticipantsHandler from './ParticipantsHandler'
+import ParticipateButton from './ParticipateButton'
 import { VoteButtons } from './VotingButton'
+import ParticipantsList from './ParticipantsList'
 
 type IProps = {
   idea: Idea
@@ -223,10 +224,18 @@ export default function IdeaDetails(props: IProps) {
     )
   }
 
+  const participantsList = () => {
+    return (
+      (type === IdeaCardType.AllIdeas || type === IdeaCardType.Admin) && (
+        <ParticipantsList idea={props.idea} />
+      )
+    )
+  }
+
   const participateButton = () => {
     return (
       (type === IdeaCardType.AllIdeas || type === IdeaCardType.Admin) && (
-        <ParticipantsHandler idea={props.idea} />
+        <ParticipateButton idea={props.idea} />
       )
     )
   }
@@ -249,7 +258,6 @@ export default function IdeaDetails(props: IProps) {
                 {hackathonVotingOpened && (
                   <Stack align={'Center'} spacing={'xs'}>
                     {voterCount()}
-                    {votingButton()}
                   </Stack>
                 )}
               </Group>
@@ -272,7 +280,11 @@ export default function IdeaDetails(props: IProps) {
                 {ideaGoal()}
                 {ideaCategory()}
                 {ideaRequiredSkills()}
-                {participateButton()}
+                {participantsList()}
+                <Group mt='xs' position={'center'} style={{ paddingTop: 5 }}>
+                  {participateButton()}
+                  {hackathonVotingOpened && votingButton()}
+                </Group>
                 {ideaButtons()}
               </Accordion.Panel>
             </Accordion.Item>
