@@ -3,11 +3,13 @@ import { Card, Container, SimpleGrid, Text, Title } from '@mantine/core'
 import { useAppSelector } from '../hooks'
 import { qAndAList } from '../common/HomeQandAContent'
 import HeroHeader from '../components/HeroHeader'
+import { styles } from '../common/styles'
 
 function Home() {
   const nextHackathon = useAppSelector(
     (state) => state.hackathons.nextHackathon
   )
+  const { classes } = styles()
 
   return (
     <>
@@ -19,7 +21,13 @@ function Home() {
         </Title>
         <SimpleGrid cols={2} pt={20}>
           {qAndAList.map((qAndA, index) => (
-            <Card shadow='sm' p='lg' key={index}>
+            <Card
+              withBorder
+              shadow='sm'
+              p='lg'
+              key={index}
+              className={classes.card}
+            >
               <Text weight={800} pb={10}>
                 {qAndA.question}
               </Text>
