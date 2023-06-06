@@ -126,8 +126,9 @@ export default function CardButtons(props: IProps) {
 
   const uploadButton = () => {
     return (
-      type === IdeaCardType.AllIdeas &&
-      ishackathonStarted && <FinalVideoUploadModal idea={ideaData} />
+      (type === IdeaCardType.Admin || ishackathonStarted) && (
+        <FinalVideoUploadModal idea={ideaData} />
+      )
     )
   }
 
