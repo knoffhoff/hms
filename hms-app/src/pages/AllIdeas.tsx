@@ -21,7 +21,6 @@ import { NULL_DATE } from '../common/constants'
 import HackathonHeader from '../components/HackathonHeader'
 import { useMsal } from '@azure/msal-react'
 import {
-  DISABLED_BUTTON_COLOR,
   JOIN_BUTTON_COLOR,
   LEAVE_BUTTON_COLOR,
 } from '../common/colors'
