@@ -42,7 +42,7 @@ function AllIdeas() {
     userId: '',
     hackathonId: '',
     participantId: '',
-  }) 
+  })
   const [hackathonData, setHackathonData] = useState({
     id: '',
     title: '',
@@ -217,6 +217,13 @@ function AllIdeas() {
       setParticipantInfo({ ...participantInfo, participantId: participant.id })
   }, [hackathonData])
 
+  function isHackathonStarted() {
+    const today = new Date()
+    today.setHours(0, 0, 0, 0)
+
+    return hackathonData.startDate <= today
+  }
+
   return (
     <>
       <HackathonParticipantContext.Provider
@@ -302,6 +309,7 @@ function AllIdeas() {
                   type={IdeaCardType.AllIdeas}
                   isLoading={isLoading}
                   onSuccess={reloadHackathon}
+                  ishackathonStarted={isHackathonStarted()}
                 />
               </>
             )}

@@ -30,12 +30,13 @@ type IProps = {
   isLoading: boolean
   type: IdeaCardType
   onSuccess?: () => void
+  ishackathonStarted: boolean
 }
 
 export default function IdeaDetails(props: IProps) {
   const { instance } = useMsal()
   const { classes } = styles()
-  const { idea, type, isLoading, onSuccess } = props
+  const { idea, type, isLoading, onSuccess, ishackathonStarted } = props
   const hackathonVotingOpened = useContext(HackathonVotingContext)
   const user = useContext(UserContext)
   const MAX_TITLE_LENGTH = 100
@@ -198,7 +199,12 @@ export default function IdeaDetails(props: IProps) {
       (type === IdeaCardType.Admin ||
         type === IdeaCardType.Owner ||
         ideaData.owner?.id === user?.id) && (
-        <CardButton idea={props.idea} onSuccess={refreshAfterChange} />
+        <CardButton
+          idea={props.idea}
+          onSuccess={refreshAfterChange}
+          type={type}
+          ishackathonStarted={ishackathonStarted}
+        />
       )
     )
   }
