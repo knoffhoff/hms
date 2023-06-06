@@ -1,4 +1,4 @@
-import { Button, Card, Stack } from '@mantine/core'
+import { Button } from '@mantine/core'
 import {
   createIdeaVoteParticipant,
   removeIdeaVoteParticipant,
