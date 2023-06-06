@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Button, Group, Modal, Text } from '@mantine/core'
-import { Idea, IdeaFormType } from '../../common/types'
+import { Idea, IdeaCardType, IdeaFormType } from '../../common/types'
 import { deleteIdea, getIdeaDetails } from '../../actions/IdeaActions'
 import IdeaForm from '../input-forms/IdeaForm'
 import { styles } from '../../common/styles'
@@ -14,6 +14,8 @@ import MoveIdeaModal from '../MoveIdeaModal'
 type IProps = {
   idea: Idea
   onSuccess: () => void
+  type: IdeaCardType
+  ishackathonStarted?: boolean
 }
 
 export default function CardButtons(props: IProps) {
@@ -21,7 +23,7 @@ export default function CardButtons(props: IProps) {
   const [editModalOpened, setEditModalOpened] = useState(false)
   const { instance } = useMsal()
   const { classes } = styles()
-  const { idea, onSuccess } = props
+  const { idea, onSuccess, type, ishackathonStarted } = props
   const [ideaData, setIdeaData] = useState(idea)
   const [loader, setLoader] = useState(false)
 
@@ -122,6 +124,14 @@ export default function CardButtons(props: IProps) {
     </Modal>
   )
 
+  const uploadButton = () => {
+    return (
+      (type === IdeaCardType.Admin || ishackathonStarted) && (
+        <FinalVideoUploadModal idea={ideaData} />
+      )
+    )
+  }
+
   return (
     <Group position='center' mt='xl'>
       {deleteModal}
@@ -142,7 +152,7 @@ export default function CardButtons(props: IProps) {
       >
         Edit
       </Button>
-      <FinalVideoUploadModal idea={ideaData} />
+      {uploadButton()}
       <MoveIdeaModal idea={ideaData} onSuccess={onSuccess} />
     </Group>
   )

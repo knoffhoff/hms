@@ -221,6 +221,11 @@ function AllIdeas() {
       setParticipantInfo({ ...participantInfo, participantId: participant.id })
   }, [hackathonData])
 
+  function isHackathonStarted() {
+    const today = new Date()
+    return hackathonData.startDate <= today
+  }
+
   return (
     <>
       <HackathonParticipantContext.Provider
@@ -323,6 +328,7 @@ function AllIdeas() {
                   type={IdeaCardType.AllIdeas}
                   isLoading={isLoading}
                   onSuccess={reloadHackathon}
+                  ishackathonStarted={isHackathonStarted()}
                 />
               </>
             )}
