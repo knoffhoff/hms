@@ -30,7 +30,7 @@ type IProps = {
   isLoading: boolean
   type: IdeaCardType
   onSuccess?: () => void
-  ishackathonStarted: boolean
+  ishackathonStarted?: boolean
 }
 
 export default function IdeaDetails(props: IProps) {

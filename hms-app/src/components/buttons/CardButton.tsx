@@ -15,7 +15,7 @@ type IProps = {
   idea: Idea
   onSuccess: () => void
   type: IdeaCardType
-  ishackathonStarted: boolean
+  ishackathonStarted?: boolean
 }
 
 export default function CardButtons(props: IProps) {

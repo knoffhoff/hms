@@ -9,7 +9,7 @@ type IProps = {
   columnSize: number
   type: IdeaCardType
   onSuccess?: () => void
-  ishackathonStarted: boolean
+  ishackathonStarted?: boolean
 }
 
 export default function IdeaCardList(props: IProps) {
