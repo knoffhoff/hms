@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useEffect, useState } from 'react'
-import { Button, Group, Input, Modal, Text, Tooltip, useMantineColorScheme } from '@mantine/core'
+import { Button, Group, Input, Modal, Text, Tooltip } from '@mantine/core'
 import { ArrowUp, Check, Search, X } from 'tabler-icons-react'
 import IdeaCardList from '../components/lists/IdeaCardList'
 import {
@@ -33,7 +33,6 @@ export const HackathonParticipantContext = createContext('')
 export const HackathonVotingContext = createContext(false)
 
 function AllIdeas() {
-  const theme = useMantineColorScheme()
   const { instance } = useMsal()
   const { classes } = styles()
   const user = useContext(UserContext)
