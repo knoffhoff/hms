@@ -19,11 +19,11 @@ type IProps = {
 
 export default function ParticipateButton(props: IProps) {
   const hackathonParticipantId = useContext(HackathonParticipantContext)
+  const user = useContext(UserContext)
   const { instance } = useMsal()
   const { idea } = props
   const [ideaData, setIdeaData] = useState(idea)
   const [loader, setLoader] = useState(false)
-  const user = useContext(UserContext)
   const [participantCheck, setParticipantCheck] = useState(false)
   const [buttonIsDisabled, setButtonisDisabled] = useState(false)
   const [participantInfo, setParticipantInfo] = useState({
