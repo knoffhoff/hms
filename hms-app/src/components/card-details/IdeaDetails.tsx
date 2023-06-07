@@ -118,7 +118,12 @@ export default function IdeaDetails(props: IProps) {
   }
 
   const ideaDescription = () => {
-    return <Text className={classes.text}>{ideaData.description}</Text>
+    return (
+      <Card.Section className={classes.borderSection}>
+        <Text className={classes.label}>Description</Text>
+        <Text className={classes.text}>{ideaData.description}</Text>
+      </Card.Section>
+    )
   }
 
   const ideaProblem = () => {
