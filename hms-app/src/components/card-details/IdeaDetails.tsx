@@ -256,7 +256,7 @@ export default function IdeaDetails(props: IProps) {
   const ideaCreationDate = () => {
     return (
       <Text className={classes.smallText}>
-        {new Date(idea.creationDate).toDateString()}
+        Creation Date: {new Date(idea.creationDate).toDateString()}
       </Text>
     )
   }
@@ -278,6 +278,7 @@ export default function IdeaDetails(props: IProps) {
               {ideaDescription()}
             </Card.Section>
           </Spoiler>
+          {ideaCreationDate()}
           <Accordion
             onChange={(value) => setAccordionOpen(value === 'idea-details')}
           >
@@ -304,7 +305,6 @@ export default function IdeaDetails(props: IProps) {
             </Accordion.Item>
           </Accordion>
           {IdeaComments()}
-          {ideaCreationDate()}
         </Card>
       ) : (
         'Failed to load ideas.'
