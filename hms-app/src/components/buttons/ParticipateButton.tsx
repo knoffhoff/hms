@@ -15,13 +15,14 @@ import { JOIN_BUTTON_COLOR, LEAVE_BUTTON_COLOR } from '../../common/colors'
 
 type IProps = {
   idea: Idea
+  onSuccess?: () => void
 }
 
 export default function ParticipateButton(props: IProps) {
   const hackathonParticipantId = useContext(HackathonParticipantContext)
   const user = useContext(UserContext)
   const { instance } = useMsal()
-  const { idea } = props
+  const { idea, onSuccess } = props
   const [ideaData, setIdeaData] = useState(idea)
   const [loader, setLoader] = useState(false)
   const [participantCheck, setParticipantCheck] = useState(false)
@@ -79,6 +80,10 @@ export default function ParticipateButton(props: IProps) {
             icon: <Check />,
             autoClose: 2000,
           })
+          setLoader(true)
+          if (onSuccess) {
+            onSuccess()
+          }
         }
       }
     )
@@ -125,6 +130,10 @@ export default function ParticipateButton(props: IProps) {
             icon: <Check />,
             autoClose: 2000,
           })
+          setLoader(true)
+          if (onSuccess) {
+            onSuccess()
+          }
         }
       }
     )
@@ -165,7 +174,7 @@ export default function ParticipateButton(props: IProps) {
 
   useEffect(() => {
     loadIdeaData()
-  }, [loader, ideaData.participants])
+  }, [loader])
 
   useEffect(() => {
     if (findParticipant()) setParticipantCheck(!!findParticipant())

@@ -9,6 +9,7 @@ type IProps = {
   idea: Idea
 }
 
+// Unused until refacoctoring of participants list
 export default function ParticipantsList(props: IProps) {
   const { classes } = styles()
   const { instance } = useMsal()
@@ -33,26 +34,29 @@ export default function ParticipantsList(props: IProps) {
     getIdeaDetails(instance, ideaData.id).then((data) => {
       setIdeaData(data)
       setLoader(false)
+      console.log(participantData?.length)
     })
   }
 
-  const participantData = ideaData.participants?.map((participant, index) => (
-    <div
-      key={index}
-      style={{ display: 'flex', alignItems: 'center', gap: '10px' }}
-    >
-      <Avatar color='indigo' radius='xl' size='md'>
-        {getInitials(participant.user.firstName, participant.user.lastName)}
-      </Avatar>
-      <Text className={classes.text}>
-        {participant.user.firstName} {participant.user.lastName}
-      </Text>
-    </div>
-  ))
+  const participantData = ideaData.participants?.map(
+    (participant, index) => (
+      <div
+        key={index}
+        style={{ display: 'flex', alignItems: 'center', gap: '10px' }}
+      >
+        <Avatar color='indigo' radius='xl' size='md'>
+          {getInitials(participant.user.firstName, participant.user.lastName)}
+        </Avatar>
+        <Text className={classes.text}>
+          {participant.user.firstName} {participant.user.lastName}
+        </Text>
+      </div>
+    )
+  )
 
   useEffect(() => {
     loadIdeaData()
-  }, [loader, participantData])
+  }, [loader])
 
   return (
     <Accordion
