@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from 'react'
 import HackathonSelectDropdown from '../components/HackathonSelectDropdown'
-import { Group, Text, Checkbox } from '@mantine/core'
+import { Group, Text, Checkbox, Title } from '@mantine/core'
 import {
   Hackathon,
   HackathonDropdownMode,
@@ -111,7 +111,16 @@ export default function Archive() {
       {validHackathon() && (
         <div>
           <HackathonHeader hackathonData={hackathonData} />
-          <Group position={'right'} my={20}>
+          <Group position={'apart'} my={20}>
+            {showUserIdeas ? (
+              <Title order={2} mt={50} mb={30}>
+                Your submission
+              </Title>
+            ) : (
+              <Title order={2} mt={50} mb={30}>
+                Ideas submitted
+              </Title>
+            )}
             <Checkbox
               label={'Show my ideas only'}
               checked={showUserIdeas}
