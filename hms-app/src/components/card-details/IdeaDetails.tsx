@@ -253,6 +253,14 @@ export default function IdeaDetails(props: IProps) {
     }
   }
 
+  const ideaCreationDate = () => {
+    return (
+      <Text className={classes.smallText}>
+        Created: {new Date(idea.creationDate).toDateString()}
+      </Text>
+    )
+  }
+
   return (
     <>
       {!isLoading && type !== IdeaCardType.Voting ? (
@@ -267,7 +275,7 @@ export default function IdeaDetails(props: IProps) {
                   </Stack>
                 )}
               </Group>
-              {ideaDescription()}
+              {ideaCreationDate()}
             </Card.Section>
           </Spoiler>
           <Accordion
@@ -282,6 +290,7 @@ export default function IdeaDetails(props: IProps) {
                 {accordionOpen && 'Hide details'}
               </Accordion.Control>
               <Accordion.Panel>
+                {ideaDescription()}
                 {ideaProblem()}
                 {ideaGoal()}
                 {ideaCategory()}
