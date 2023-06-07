@@ -18,23 +18,25 @@ const useStyles = createStyles((theme) => ({
   switch: {
     position: 'absolute',
     bottom: -11,
-    left: -50,
+    right: 15,
   },
 
   icon: {
     pointerEvents: 'none',
     position: 'absolute',
     zIndex: 1,
-    top: -10,
+    // to vertically center the icons:
+    top: '50%', 
+    transform: 'translateY(-50%)',
   },
 
   iconLight: {
-    left: -48,
+    left: -61,
     color: theme.white,
   },
 
   iconDark: {
-    right: 2,
+    right: 20,
     color: theme.colorScheme === 'light' ? theme.colors.gray[6] : theme.white,
   },
 }))
