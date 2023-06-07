@@ -5,7 +5,6 @@ import {
   Badge,
   Card,
   Group,
-  Spoiler,
   Stack,
   Text,
   Tooltip,
