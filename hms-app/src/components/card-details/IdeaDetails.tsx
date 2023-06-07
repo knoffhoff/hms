@@ -5,7 +5,6 @@ import {
   Badge,
   Card,
   Group,
-  Spoiler,
   Stack,
   Text,
   Tooltip,
@@ -117,24 +116,11 @@ export default function IdeaDetails(props: IProps) {
     )
   }
 
-  const ideaDescription = () => {
-    return <Text className={classes.text}>{ideaData.description}</Text>
-  }
-
-  const ideaProblem = () => {
+  const ideaCardText = (label: string, text: string) => {
     return (
       <Card.Section className={classes.borderSection}>
-        <Text className={classes.label}>Problem</Text>
-        <Text className={classes.text}>{ideaData.problem}</Text>
-      </Card.Section>
-    )
-  }
-
-  const ideaGoal = () => {
-    return (
-      <Card.Section className={classes.borderSection}>
-        <Text className={classes.label}>Goal</Text>
-        <Text className={classes.text}>{ideaData.goal}</Text>
+        <Text className={classes.label}>{label}</Text>
+        <Text className={classes.text}>{text}</Text>
       </Card.Section>
     )
   }
@@ -265,19 +251,17 @@ export default function IdeaDetails(props: IProps) {
     <>
       {!isLoading && type !== IdeaCardType.Voting ? (
         <Card withBorder className={classes.card}>
-          <Spoiler maxHeight={145} showLabel='Show more' hideLabel='Hide'>
-            <Card.Section className={classes.borderSection}>
-              <Group noWrap mb={5} position='apart'>
-                {ideaHeader()}
-                {hackathonVotingOpened && (
-                  <Stack align={'Center'} spacing={'xs'}>
-                    {voterCount()}
-                  </Stack>
-                )}
-              </Group>
-              {ideaCreationDate()}
-            </Card.Section>
-          </Spoiler>
+          <Card.Section className={classes.ideaCardHeader}>
+            <Group noWrap mb={5} position='apart'>
+              {ideaHeader()}
+              {hackathonVotingOpened && (
+                <Stack align={'Center'} spacing={'xs'}>
+                  {voterCount()}
+                </Stack>
+              )}
+            </Group>
+            {ideaCreationDate()}
+          </Card.Section>
           <Accordion
             onChange={(value) => setAccordionOpen(value === 'idea-details')}
           >
@@ -290,9 +274,9 @@ export default function IdeaDetails(props: IProps) {
                 {accordionOpen && 'Hide details'}
               </Accordion.Control>
               <Accordion.Panel>
-                {ideaDescription()}
-                {ideaProblem()}
-                {ideaGoal()}
+                {ideaCardText('Description', ideaData.description)}
+                {ideaCardText('Problem', ideaData.problem)}
+                {ideaCardText('Goal', ideaData.goal)}
                 {ideaCategory()}
                 {ideaRequiredSkills()}
                 {participantsList()}
