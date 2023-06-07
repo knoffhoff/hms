@@ -117,29 +117,11 @@ export default function IdeaDetails(props: IProps) {
     )
   }
 
-  const ideaDescription = () => {
+  const ideaCardText = (label: string, text: string) => {
     return (
       <Card.Section className={classes.borderSection}>
-        <Text className={classes.label}>Description</Text>
-        <Text className={classes.text}>{ideaData.description}</Text>
-      </Card.Section>
-    )
-  }
-
-  const ideaProblem = () => {
-    return (
-      <Card.Section className={classes.borderSection}>
-        <Text className={classes.label}>Problem</Text>
-        <Text className={classes.text}>{ideaData.problem}</Text>
-      </Card.Section>
-    )
-  }
-
-  const ideaGoal = () => {
-    return (
-      <Card.Section className={classes.borderSection}>
-        <Text className={classes.label}>Goal</Text>
-        <Text className={classes.text}>{ideaData.goal}</Text>
+        <Text className={classes.label}>{label}</Text>
+        <Text className={classes.text}>{text}</Text>
       </Card.Section>
     )
   }
@@ -295,9 +277,9 @@ export default function IdeaDetails(props: IProps) {
                 {accordionOpen && 'Hide details'}
               </Accordion.Control>
               <Accordion.Panel>
-                {ideaDescription()}
-                {ideaProblem()}
-                {ideaGoal()}
+                {ideaCardText('Description', ideaData.description)}
+                {ideaCardText('Problem', ideaData.problem)}
+                {ideaCardText('Goal', ideaData.goal)}
                 {ideaCategory()}
                 {ideaRequiredSkills()}
                 {participantsList()}
