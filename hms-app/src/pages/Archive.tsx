@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import HackathonSelectDropdown from '../components/HackathonSelectDropdown'
-import { Group, Text } from '@mantine/core'
+import { Group, Text, Checkbox } from '@mantine/core'
 import {
   Hackathon,
   HackathonDropdownMode,
@@ -14,9 +14,11 @@ import { useMsal } from '@azure/msal-react'
 import HackathonHeader from '../components/HackathonHeader'
 import IdeaCardList from '../components/lists/IdeaCardList'
 import { getIdeaDetails } from '../actions/IdeaActions'
+import { UserContext } from './Layout'
 
 export default function Archive() {
   const { instance } = useMsal()
+  const user = useContext(UserContext)
   const [hackathonData, setHackathonData] = useState({} as Hackathon)
   const [selectedHackathonId, setSelectedHackathonId] = useState('')
   const [isHackathonError, setIsHackathonError] = useState(false)
@@ -24,6 +26,8 @@ export default function Archive() {
   const [isIdeaLoading, setIsIdeaLoading] = useState(true)
   const [ideaData, setIdeaData] = useState<Idea>()
   const [relevantIdeaList, setRelevantIdeaList] = useState([] as Idea[])
+  const [userIdeaList, setUserIdeaList] = useState<Idea[]>([])
+  const [showUserIdeas, setShowUserIdeas] = useState(false)
 
   const loadSelectedHackathon = () => {
     getHackathonDetails(instance, selectedHackathonId).then(
@@ -48,6 +52,11 @@ export default function Archive() {
     })
   }
 
+  const userIdea = relevantIdeaList.filter((item) => {
+    const userId = user?.id
+    return item.owner?.id === userId
+  })
+
   useEffect(() => {
     loadSelectedHackathon()
     setRelevantIdeaList([])
@@ -56,6 +65,7 @@ export default function Archive() {
 
   useEffect(() => {
     loadRelevantIdeaDetails()
+    setUserIdeaList(userIdea)
   }, [hackathonData])
 
   useEffect(() => {
@@ -101,12 +111,22 @@ export default function Archive() {
       {validHackathon() && (
         <div>
           <HackathonHeader hackathonData={hackathonData} />
+          <Group position={'right'} my={20}>
+            <Checkbox
+              label={'Show my ideas only'}
+              checked={showUserIdeas}
+              onChange={(event) =>
+                setShowUserIdeas(event.currentTarget.checked)
+              }
+            />
+          </Group>
 
           <IdeaCardList
-            ideas={relevantIdeaList}
+            ideas={showUserIdeas ? userIdeaList : relevantIdeaList}
             columnSize={6}
             type={IdeaCardType.Archive}
-            isLoading={isIdeaLoading} 
+            isLoading={isIdeaLoading}
+            onSuccess={loadSelectedHackathon}
           />
         </div>
       )}
