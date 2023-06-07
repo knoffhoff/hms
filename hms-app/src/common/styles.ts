@@ -145,7 +145,7 @@ export const styles = createStyles((theme) => ({
   },
 
   commentTitle:{
-    fontWeight: 700
+    fontWeight: 600
   }
 }))
 
