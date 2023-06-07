@@ -253,6 +253,14 @@ export default function IdeaDetails(props: IProps) {
     }
   }
 
+  const ideaCreationDate = () => {
+    return (
+      <Text className={classes.smallText}>
+        {new Date(idea.creationDate).toDateString()}
+      </Text>
+    )
+  }
+
   return (
     <>
       {!isLoading && type !== IdeaCardType.Voting ? (
@@ -296,6 +304,7 @@ export default function IdeaDetails(props: IProps) {
             </Accordion.Item>
           </Accordion>
           {IdeaComments()}
+          {ideaCreationDate()}
         </Card>
       ) : (
         'Failed to load ideas.'
