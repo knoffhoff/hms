@@ -37,6 +37,16 @@ export const styles = createStyles((theme) => ({
     paddingBottom: theme.spacing.md,
   },
 
+  ideaCardHeader: {
+    borderBottom: `1px solid ${
+      theme.colorScheme === 'dark' ? theme.colors.dark[4] : theme.colors.gray[3]
+    }`,
+    paddingLeft: theme.spacing.md,
+    paddingRight: theme.spacing.md,
+    paddingBottom: theme.spacing.md,
+    paddingTop: theme.spacing.md,
+  },
+
   text: {
     fontSize: theme.fontSizes.sm,
     lineHeight: '1.5em',

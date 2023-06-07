@@ -252,19 +252,17 @@ export default function IdeaDetails(props: IProps) {
     <>
       {!isLoading && type !== IdeaCardType.Voting ? (
         <Card withBorder className={classes.card}>
-          <Spoiler maxHeight={145} showLabel='Show more' hideLabel='Hide'>
-            <Card.Section className={classes.borderSection}>
-              <Group noWrap mb={5} position='apart'>
-                {ideaHeader()}
-                {hackathonVotingOpened && (
-                  <Stack align={'Center'} spacing={'xs'}>
-                    {voterCount()}
-                  </Stack>
-                )}
-              </Group>
-              {ideaCreationDate()}
-            </Card.Section>
-          </Spoiler>
+          <Card.Section className={classes.ideaCardHeader}>
+            <Group noWrap mb={5} position='apart'>
+              {ideaHeader()}
+              {hackathonVotingOpened && (
+                <Stack align={'Center'} spacing={'xs'}>
+                  {voterCount()}
+                </Stack>
+              )}
+            </Group>
+            {ideaCreationDate()}
+          </Card.Section>
           <Accordion
             onChange={(value) => setAccordionOpen(value === 'idea-details')}
           >
