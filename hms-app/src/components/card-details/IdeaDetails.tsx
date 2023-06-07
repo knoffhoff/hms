@@ -45,6 +45,8 @@ export default function IdeaDetails(props: IProps) {
   const [skillData, setSkillData] = useState([] as Skill[])
   const [loader, setLoader] = useState(false)
   const [ideaData, setIdeaData] = useState(idea)
+  const [participantAccordionOpen, setParticipantAccordionOpen] =
+  useState(false)
 
   const loadCategoryDetails = () => {
     if (ideaData.category)
@@ -216,18 +218,64 @@ export default function IdeaDetails(props: IProps) {
     )
   }
 
+  // Temporary solution for displaying participants
+  const participantData = ideaData.participants?.map((participant, index) => (
+    <div
+      key={index}
+      style={{ display: 'flex', alignItems: 'center', gap: '10px' }}
+    >
+      <Avatar color='indigo' radius='xl' size='md'>
+        {getInitials(participant.user.firstName, participant.user.lastName)}
+      </Avatar>
+      <Text className={classes.text}>
+        {participant.user.firstName} {participant.user.lastName}
+      </Text>
+    </div>
+  ))
+
   const participantsList = () => {
     return (
-      (type === IdeaCardType.AllIdeas || type === IdeaCardType.Admin) && (
-        <ParticipantsList idea={props.idea} />
-      )
+      <Accordion
+        chevronPosition={'right'}
+        onChange={(value) =>
+          setParticipantAccordionOpen(value === 'participants')
+        }
+      >
+        <Accordion.Item value={'participants'}>
+          <Accordion.Control>
+            {!participantAccordionOpen ? (
+              <div>
+                <Text className={classes.label}>Current participants</Text>
+                <Group spacing={7} mt={5}>
+                  <Avatar.Group>
+                    {ideaData.participants?.map((participant, index) => (
+                      <Avatar key={index} color='indigo' radius='xl' size='md'>
+                        {getInitials(
+                          participant.user.firstName,
+                          participant.user.lastName
+                        )}
+                      </Avatar>
+                    ))}
+                  </Avatar.Group>
+                </Group>
+              </div>
+            ) : (
+              <Text className={classes.label}>Current participants</Text>
+            )}
+          </Accordion.Control>
+          <Accordion.Panel>{participantData}</Accordion.Panel>
+        </Accordion.Item>
+      </Accordion>
     )
   }
 
   const participateButton = () => {
     return (
       (type === IdeaCardType.AllIdeas || type === IdeaCardType.Admin) && (
-        <ParticipateButton idea={props.idea} />
+        <ParticipateButton
+          idea={props.idea}
+          onSuccess={() => setLoader(!loader)}
+        />
       )
     )
   }
