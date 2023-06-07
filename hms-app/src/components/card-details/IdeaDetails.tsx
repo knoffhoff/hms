@@ -256,7 +256,7 @@ export default function IdeaDetails(props: IProps) {
   const ideaCreationDate = () => {
     return (
       <Text className={classes.smallText}>
-        Creation Date: {new Date(idea.creationDate).toDateString()}
+        Created: {new Date(idea.creationDate).toDateString()}
       </Text>
     )
   }
@@ -275,10 +275,9 @@ export default function IdeaDetails(props: IProps) {
                   </Stack>
                 )}
               </Group>
-              {ideaDescription()}
+              {ideaCreationDate()}
             </Card.Section>
           </Spoiler>
-          {ideaCreationDate()}
           <Accordion
             onChange={(value) => setAccordionOpen(value === 'idea-details')}
           >
@@ -291,6 +290,7 @@ export default function IdeaDetails(props: IProps) {
                 {accordionOpen && 'Hide details'}
               </Accordion.Control>
               <Accordion.Panel>
+                {ideaDescription()}
                 {ideaProblem()}
                 {ideaGoal()}
                 {ideaCategory()}
