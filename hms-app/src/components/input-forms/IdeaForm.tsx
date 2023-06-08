@@ -303,7 +303,6 @@ function IdeaForm(props: IProps) {
                 label='Required skills'
                 description='chose one or more required skills'
                 onChange={setSkills}
-                required
                 defaultValue={ideaSkill}
                 className={classes.label}
               >
