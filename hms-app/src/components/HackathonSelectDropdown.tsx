@@ -72,19 +72,12 @@ export default function HackathonSelectDropdown({
           .map((hackathon) => mapHackathonToSelectItem(hackathon))
       case HackathonDropdownMode.MoveModal:
         return hackathonList.map((hackathon) =>
-          mapHackathonToSelectItemWithoutDate(hackathon)
+          mapHackathonToSelectItem(hackathon)
         )
     }
     return hackathonList
       .filter((hackathon) => hackathon.endDate > MIN_DATE)
       .map((hackathon) => mapHackathonToSelectItem(hackathon))
-  }
-
-  function mapHackathonToSelectItemWithoutDate(hackathon: HackathonPreview): SelectItem {
-    return {
-      value: hackathon.id,
-      label: hackathon.title,
-    }
   }
 
   function mapHackathonToSelectItem(hackathon: HackathonPreview): SelectItem {
