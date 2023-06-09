@@ -10,22 +10,20 @@ import {
   IdeaFormType,
   ParticipantPreview,
 } from '../common/types'
-import { showNotification } from '@mantine/notifications'
 import HackathonSelectDropdown from '../components/HackathonSelectDropdown'
 import RelevantIdeasLoader from '../components/RelevantIdeasLoader'
 import { NULL_DATE } from '../common/constants'
 import HackathonHeader from '../components/HackathonHeader'
-import { useMsal } from '@azure/msal-react'
 import { UserContext } from './Layout'
 import { styles } from '../common/styles'
 import IdeaForm from '../components/input-forms/IdeaForm'
 import ParticipantManager from '../components/ParticipantManager'
+import { JOIN_BUTTON_COLOR } from '../common/colors'
 
 export const HackathonParticipantContext = createContext('')
 export const HackathonVotingContext = createContext(false)
 
 function AllIdeas() {
-  const { instance } = useMsal()
   const { classes } = styles()
   const user = useContext(UserContext)
   const [searchTerm, setSearchTerm] = useState('')
@@ -161,15 +159,44 @@ function AllIdeas() {
                   />
                 </Modal>
 
-                <ParticipantManager
-                  participantInfo={participantInfo}
-                  setParticipantInfo={setParticipantInfo}
-                  participantCheck={participantCheck}
-                  setParticipantCheck={setParticipantCheck}
-                  buttonIsDisabled={buttonIsDisabled}
-                  setButtonIsDisabled={setButtonIsDisabled}
-                  hackathonData={hackathonData}
-                />
+                <Group>
+                  {participantCheck ? (
+                    <Button
+                      onClick={() => setOpened(true)}
+                      style={{
+                        backgroundColor: JOIN_BUTTON_COLOR,
+                      }}
+                    >
+                      New Idea
+                    </Button>
+                  ) : (
+                    <Tooltip
+                      label='You must join the hackathon to create a new idea'
+                      color='orange'
+                      withArrow
+                      arrowPosition='center'
+                    >
+                      <Button
+                        variant='default'
+                        data-disabled
+                        sx={{ '&[data-disabled]': { pointerEvents: 'all' } }}
+                        onClick={(event) => event.preventDefault()}
+                      >
+                        New Idea
+                      </Button>
+                    </Tooltip>
+                  )}
+
+                  <ParticipantManager
+                    participantInfo={participantInfo}
+                    setParticipantInfo={setParticipantInfo}
+                    participantCheck={participantCheck}
+                    setParticipantCheck={setParticipantCheck}
+                    buttonIsDisabled={buttonIsDisabled}
+                    setButtonIsDisabled={setButtonIsDisabled}
+                    hackathonData={hackathonData}
+                  />
+                </Group>
 
                 <HackathonHeader hackathonData={hackathonData} />
 

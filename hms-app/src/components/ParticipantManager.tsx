@@ -34,6 +34,7 @@ type IProps = {
 export default function ParticipantManager({
   participantInfo,
   setParticipantInfo,
+  participantCheck,
   setParticipantCheck,
   buttonIsDisabled,
   setButtonIsDisabled,
@@ -144,6 +145,7 @@ export default function ParticipantManager({
         })
       }
     })
+    setRemoveParticipantModalOpened(false)
   }
 
   return (
@@ -176,18 +178,20 @@ export default function ParticipantManager({
       </Modal>
 
       <Button
-        style={{ backgroundColor: JOIN_BUTTON_COLOR }}
-        onClick={addHackathonParticipant}
+        ml={10}
         disabled={buttonIsDisabled}
+        onClick={
+          participantCheck
+            ? () => setRemoveParticipantModalOpened(true)
+            : addHackathonParticipant
+        }
+        style={{
+          backgroundColor: participantCheck
+            ? LEAVE_BUTTON_COLOR
+            : JOIN_BUTTON_COLOR,
+        }}
       >
-        Join Hackathon
-      </Button>
-      <Button
-        style={{ backgroundColor: LEAVE_BUTTON_COLOR }}
-        onClick={removeHackathonParticipant}
-        disabled={buttonIsDisabled}
-      >
-        Leave Hackathon
+        {participantCheck ? 'Leave Hackathon' : 'Join Hackathon'}
       </Button>
     </div>
   )
