@@ -184,7 +184,7 @@ export default function MoveIdeaModal(props: IProps) {
       </Modal>
 
       <Button onClick={() => setOpened(true)} color={'yellow'}>
-        Move idea to Hackathon
+        Move idea
       </Button>
     </>
   )
