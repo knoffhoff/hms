@@ -45,6 +45,11 @@ function AllIdeas() {
   const [opened, setOpened] = useState(false)
   const [buttonIsDisabled, setButtonIsDisabled] = useState(false)
 
+  function isHackathonStarted() {
+    const today = new Date()
+    return hackathonData.startDate <= today
+  }
+
   const closeModal = () => {
     if (hackathonData.id !== undefined) {
       setOpened(false)
@@ -52,15 +57,11 @@ function AllIdeas() {
     reloadHackathon()
   }
 
-  useEffect(() => {
-    if (user) {
-      setParticipantInfo({
-        userId: user.id,
-        hackathonId: selectedHackathonId,
-        participantId: participantInfo.participantId,
-      })
-    }
-  }, [user, selectedHackathonId])
+  const reloadHackathon = () => {
+    const id = selectedHackathonId
+    setSelectedHackathonId('')
+    setSelectedHackathonId(id)
+  }
 
   const handleChangeSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value)
@@ -69,12 +70,6 @@ function AllIdeas() {
   const filteredIdeas = relevantIdeaList.filter((item) => {
     return item.title?.toLowerCase().includes(searchTerm.toLowerCase())
   })
-
-  const reloadHackathon = () => {
-    const id = selectedHackathonId
-    setSelectedHackathonId('')
-    setSelectedHackathonId(id)
-  }
 
   const findParticipant = () => {
     let participant: ParticipantPreview
@@ -100,10 +95,15 @@ function AllIdeas() {
       setParticipantInfo({ ...participantInfo, participantId: participant.id })
   }, [hackathonData])
 
-  function isHackathonStarted() {
-    const today = new Date()
-    return hackathonData.startDate <= today
-  }
+  useEffect(() => {
+    if (user) {
+      setParticipantInfo({
+        userId: user.id,
+        hackathonId: selectedHackathonId,
+        participantId: participantInfo.participantId,
+      })
+    }
+  }, [user, selectedHackathonId])
 
   return (
     <>
