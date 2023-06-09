@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from 'react'
 import HackathonSelectDropdown from '../components/HackathonSelectDropdown'
-import { Group, Text, Checkbox, Title } from '@mantine/core'
+import { Group, Text, Checkbox, Title, Stack } from '@mantine/core'
 import {
   Hackathon,
   HackathonDropdownMode,
@@ -58,6 +58,10 @@ export default function Archive() {
   })
 
   useEffect(() => {
+    setUserIdeaList(userIdea)
+  }, [])
+
+  useEffect(() => {
     loadSelectedHackathon()
     setRelevantIdeaList([])
     setIsHackathonLoading(true)
@@ -110,25 +114,29 @@ export default function Archive() {
 
       {validHackathon() && (
         <div>
-          <HackathonHeader hackathonData={hackathonData} />
-          <Group position={'apart'} my={20}>
+          <Stack align='flex-start' justify='flex-start' spacing='sm'>
+            <HackathonHeader hackathonData={hackathonData} />
+
             {showUserIdeas ? (
-              <Title order={2} mt={50} mb={30}>
-                Your submission
+              <Title order={2} mt={50}>
+                Your submission:
               </Title>
             ) : (
-              <Title order={2} mt={50} mb={30}>
+              <Title order={2} mt={50}>
                 Ideas submitted
               </Title>
             )}
+
             <Checkbox
+              mb={15}
+              size='md'
               label={'Show my ideas only'}
               checked={showUserIdeas}
               onChange={(event) =>
                 setShowUserIdeas(event.currentTarget.checked)
               }
             />
-          </Group>
+          </Stack>
 
           <IdeaCardList
             ideas={showUserIdeas ? userIdeaList : relevantIdeaList}
