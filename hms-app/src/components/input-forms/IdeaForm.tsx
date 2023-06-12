@@ -301,7 +301,7 @@ function IdeaForm(props: IProps) {
             <Card.Section className={classes.borderSection}>
               <Checkbox.Group
                 label='Skills'
-                description='Select one or more skills that could help to bring your idea to life'
+                description='Choose one or more skills that could help to bring your idea to life'
                 onChange={setSkills}
                 defaultValue={ideaSkill}
                 className={classes.label}
