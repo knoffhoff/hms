@@ -4,9 +4,13 @@ import { Select, SelectItem } from '@mantine/core'
 import { HackathonDropdownMode, HackathonPreview } from '../common/types'
 import { AlertCircle } from 'tabler-icons-react'
 import { useMsal } from '@azure/msal-react'
-import { useAppSelector } from '../hooks'
+import { useAppDispatch, useAppSelector } from '../hooks'
 import { MAX_DATE, MIN_DATE } from '../common/constants'
 import { useParams } from 'react-router-dom'
+import {
+  mapHackathonToSerializable,
+  setLastSelectedHackathon,
+} from '../common/redux/hackathonSlice'
 
 type Props = {
   setHackathonId: (hackthonID: string) => void
@@ -23,9 +27,12 @@ export default function HackathonSelectDropdown({
   const [isLoading, setIsLoading] = useState(true)
   const [hackathonList, setHackathonList] = useState<HackathonPreview[]>([])
   const [selectedHackathon, setSelectedHackathon] = useState<HackathonPreview>()
-  const nextHackathon = useAppSelector(
-    (state) => state.hackathons.nextHackathon
+
+  const previousSelectedHackathon = useAppSelector(
+    (state) => state.hackathons.lastSelectedHackathon
   )
+  const [lastSelectedID, setLastSelectedID] = useState('')
+  const dispatch = useAppDispatch()
   const today = new Date()
   today.setHours(0, 0, 0, 0)
 
@@ -33,7 +40,10 @@ export default function HackathonSelectDropdown({
     getListOfHackathons(instance).then(
       (data) => {
         setHackathonList(data)
-        const upcomingHackathon = data.find((h) => h.id === nextHackathon.id)
+
+        const lastSelectedHackathon = data.find(
+          (h) => h.id === previousSelectedHackathon.id
+        )
         if (slug) {
           const hackathon = data.find((h) => h.slug === slug)
           if (hackathon) {
@@ -41,11 +51,11 @@ export default function HackathonSelectDropdown({
             setHackathonId(hackathon.id)
           }
         } else if (
-          upcomingHackathon &&
+          lastSelectedHackathon &&
           context !== HackathonDropdownMode.Archive
         ) {
-          setHackathonId(upcomingHackathon.id)
-          setSelectedHackathon(upcomingHackathon)
+          setHackathonId(lastSelectedHackathon.id)
+          setSelectedHackathon(lastSelectedHackathon)
         }
         setIsLoading(false)
         setIsError(false)
@@ -107,9 +117,33 @@ export default function HackathonSelectDropdown({
     }
   }
 
+  const updateLastSelectedHackathon = () => {
+    getListOfHackathons(instance).then((data) => {
+      if (lastSelectedID !== '') {
+        const lastSelectedHackathon = data.find((h) => h.id === lastSelectedID)
+
+        if (lastSelectedHackathon) {
+          dispatch(
+            setLastSelectedHackathon(
+              mapHackathonToSerializable(lastSelectedHackathon)
+            )
+          )
+        }
+      }
+    })
+  }
+
+  const handleHackathonSelect = (selectedId: string) => {
+    setLastSelectedID(selectedId)
+  }
+
   useEffect(() => {
     loadHackathons()
-  }, [])
+  }, [previousSelectedHackathon])
+
+  useEffect(() => {
+    updateLastSelectedHackathon()
+  }, [lastSelectedID])
 
   return (
     <>
@@ -132,7 +166,7 @@ export default function HackathonSelectDropdown({
             defaultValue={selectedHackathon?.id}
             maxDropdownHeight={280}
             data={getHackathonsSelectItems()}
-            onChange={setHackathonId}
+            onChange={handleHackathonSelect}
           />
         </div>
       )}
