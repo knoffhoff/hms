@@ -20,33 +20,26 @@ import {
   IdeaFormType,
   ParticipantPreview,
 } from '../common/types'
-import {
-  createHackathonParticipant,
-  deleteParticipant,
-} from '../actions/ParticipantActions'
-import { showNotification, updateNotification } from '@mantine/notifications'
 import HackathonSelectDropdown from '../components/HackathonSelectDropdown'
 import RelevantIdeasLoader from '../components/RelevantIdeasLoader'
 import { NULL_DATE } from '../common/constants'
 import HackathonHeader from '../components/HackathonHeader'
-import { useMsal } from '@azure/msal-react'
-import { JOIN_BUTTON_COLOR, LEAVE_BUTTON_COLOR } from '../common/colors'
 import { UserContext } from './Layout'
 import { styles } from '../common/styles'
 import IdeaForm from '../components/input-forms/IdeaForm'
+import ParticipantManager from '../components/ParticipantManager'
+import { JOIN_BUTTON_COLOR } from '../common/colors'
 
 export const HackathonParticipantContext = createContext('')
 export const HackathonVotingContext = createContext(false)
 
 function AllIdeas() {
-  const { instance } = useMsal()
   const { classes } = styles()
   const user = useContext(UserContext)
   const [searchTerm, setSearchTerm] = useState('')
   const [isLoading, setIsLoading] = useState(true)
   const [participantCheck, setParticipantCheck] = useState(false)
   const [selectedHackathonId, setSelectedHackathonId] = useState('')
-  const [buttonIsDisabled, setButtonIsDisabled] = useState(false)
   const [relevantIdeaList, setRelevantIdeaList] = useState<Idea[]>([])
   const [userIdeaList, setUserIdeaList] = useState<Idea[]>([])
   const [showUserIdeas, setShowUserIdeas] = useState(false)
@@ -61,15 +54,25 @@ function AllIdeas() {
     startDate: NULL_DATE,
     endDate: NULL_DATE,
   } as Hackathon)
-  const [removeParticipantModalOpened, setRemoveParticipantModalOpened] =
-    useState(false)
   const [opened, setOpened] = useState(false)
+  const [buttonIsDisabled, setButtonIsDisabled] = useState(false)
+
+  function isHackathonStarted() {
+    const today = new Date()
+    return hackathonData.startDate <= today
+  }
 
   const closeModal = () => {
     if (hackathonData.id !== undefined) {
       setOpened(false)
     }
     reloadHackathon()
+  }
+
+  const reloadHackathon = () => {
+    const id = selectedHackathonId
+    setSelectedHackathonId('')
+    setSelectedHackathonId(id)
   }
 
   const handleChangeSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -83,17 +86,8 @@ function AllIdeas() {
 
   const userIdea = relevantIdeaList.filter((item) => {
     const userId = user?.id
-    return (
-      item.owner?.id === userId &&
-      item.title?.toLowerCase().includes(searchTerm.toLowerCase())
-    )
+    return item.owner?.id === userId
   })
-
-  const reloadHackathon = () => {
-    const id = selectedHackathonId
-    setSelectedHackathonId('')
-    setSelectedHackathonId(id)
-  }
 
   const findParticipant = () => {
     let participant: ParticipantPreview
@@ -112,118 +106,9 @@ function AllIdeas() {
     return participant
   }
 
-  const addHackathonParticipant = () => {
-    setButtonIsDisabled(true)
-    showNotification({
-      id: 'participant-load',
-      loading: true,
-      title: 'Join Hackathon',
-      message: undefined,
-      autoClose: false,
-      disallowClose: false,
-    })
-    createHackathonParticipant(
-      instance,
-      participantInfo.userId,
-      participantInfo.hackathonId
-    ).then((response) => {
-      setButtonIsDisabled(false)
-      setParticipantInfo((prevState) => ({
-        ...prevState,
-        participantId: response.id,
-      }))
-      if (JSON.stringify(response).toString().includes('error')) {
-        setParticipantCheck(false)
-        updateNotification({
-          id: 'participant-load',
-          color: 'red',
-          title: 'Failed to join Hackathon',
-          message: undefined,
-          icon: <X />,
-          autoClose: 2000,
-        })
-      } else {
-        setParticipantCheck(true)
-        updateNotification({
-          id: 'participant-load',
-          color: 'teal',
-          title: 'Joined Hackathon',
-          message: undefined,
-          icon: <Check />,
-          autoClose: 2000,
-        })
-      }
-    })
-  }
-
-  const removeHackathonParticipant = () => {
-    setButtonIsDisabled(true)
-    showNotification({
-      id: 'participant-load',
-      loading: true,
-      title: 'Leave Hackathon',
-      message: undefined,
-      autoClose: false,
-      disallowClose: false,
-    })
-    deleteParticipant(instance, findParticipant().id).then((response) => {
-      setButtonIsDisabled(false)
-      if (JSON.stringify(response).toString().includes('error')) {
-        setParticipantCheck(true)
-        updateNotification({
-          id: 'participant-load',
-          color: 'red',
-          title: 'Failed to leave Hackathon',
-          message: undefined,
-          icon: <X />,
-          autoClose: 2000,
-        })
-      } else {
-        setParticipantCheck(false)
-        updateNotification({
-          id: 'participant-load',
-          color: 'teal',
-          title: 'Left Hackathon',
-          message: undefined,
-          icon: <Check />,
-          autoClose: 2000,
-        }),
-          setRemoveParticipantModalOpened(false)
-      }
-    })
-  }
-
-  const removeParticipantModal = (
-    <Modal
-      centered
-      opened={removeParticipantModalOpened}
-      onClose={() => setRemoveParticipantModalOpened(false)}
-      withCloseButton={false}
-    >
-      <Text className={classes.text}>
-        Are you sure you want to leave this hackathon? All your progress and
-        ideas will be lost!
-      </Text>
-      <Text className={classes.title}>Title: {hackathonData.title}</Text>
-      <Text className={classes.title}>
-        Start Date:
-        {new Date(hackathonData.startDate).toDateString()}
-      </Text>
-      <Text className={classes.title}>
-        End Date:
-        {new Date(hackathonData.endDate).toDateString()}
-      </Text>
-      <Button
-        style={{ backgroundColor: LEAVE_BUTTON_COLOR }}
-        onClick={() => removeHackathonParticipant()}
-      >
-        Yes, leave hackathon
-      </Button>
-    </Modal>
-  )
-
   useEffect(() => {
     setUserIdeaList(userIdea)
+    reloadHackathon()
   }, [showUserIdeas])
 
   useEffect(() => {
@@ -243,19 +128,12 @@ function AllIdeas() {
     }
   }, [user, selectedHackathonId])
 
-  function isHackathonStarted() {
-    const today = new Date()
-    return hackathonData.startDate <= today
-  }
-
   return (
     <>
       <HackathonParticipantContext.Provider
         value={participantInfo.participantId}
       >
         <HackathonVotingContext.Provider value={hackathonData.votingOpened}>
-          {removeParticipantModal}
-
           <Group position={'apart'} my={20}>
             <HackathonSelectDropdown
               setHackathonId={setSelectedHackathonId}
@@ -304,49 +182,45 @@ function AllIdeas() {
                     onSuccess={closeModal}
                   />
                 </Modal>
-                {participantCheck ? (
-                  <Button
-                    onClick={() => setOpened(true)}
-                    style={{
-                      backgroundColor: JOIN_BUTTON_COLOR,
-                    }}
-                  >
-                    New Idea
-                  </Button>
-                ) : (
-                  <Tooltip
-                    label='You must join the hackathon to create a new idea'
-                    color='orange'
-                    withArrow
-                    arrowPosition='center'
-                  >
+
+                <Group>
+                  {participantCheck ? (
                     <Button
-                      variant='default'
-                      data-disabled
-                      sx={{ '&[data-disabled]': { pointerEvents: 'all' } }}
-                      onClick={(event) => event.preventDefault()}
+                      onClick={() => setOpened(true)}
+                      style={{
+                        backgroundColor: JOIN_BUTTON_COLOR,
+                      }}
                     >
                       New Idea
                     </Button>
-                  </Tooltip>
-                )}
+                  ) : (
+                    <Tooltip
+                      label='You must join the hackathon to create a new idea'
+                      color='orange'
+                      withArrow
+                      arrowPosition='center'
+                    >
+                      <Button
+                        variant='default'
+                        data-disabled
+                        sx={{ '&[data-disabled]': { pointerEvents: 'all' } }}
+                        onClick={(event) => event.preventDefault()}
+                      >
+                        New Idea
+                      </Button>
+                    </Tooltip>
+                  )}
 
-                <Button
-                  ml={10}
-                  disabled={buttonIsDisabled}
-                  onClick={
-                    participantCheck
-                      ? () => setRemoveParticipantModalOpened(true)
-                      : addHackathonParticipant
-                  }
-                  style={{
-                    backgroundColor: participantCheck
-                      ? LEAVE_BUTTON_COLOR
-                      : JOIN_BUTTON_COLOR,
-                  }}
-                >
-                  {participantCheck ? 'Leave Hackathon' : 'Join Hackathon'}
-                </Button>
+                  <ParticipantManager
+                    participantInfo={participantInfo}
+                    setParticipantInfo={setParticipantInfo}
+                    participantCheck={participantCheck}
+                    setParticipantCheck={setParticipantCheck}
+                    buttonIsDisabled={buttonIsDisabled}
+                    setButtonIsDisabled={setButtonIsDisabled}
+                    hackathonData={hackathonData}
+                  />
+                </Group>
 
                 <HackathonHeader hackathonData={hackathonData} />
 

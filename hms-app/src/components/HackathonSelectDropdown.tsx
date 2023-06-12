@@ -81,7 +81,7 @@ export default function HackathonSelectDropdown({
   }
 
   function mapHackathonToSelectItem(hackathon: HackathonPreview): SelectItem {
-    if (hackathon.endDate > MAX_DATE) {
+    if (hackathon.endDate < MIN_DATE || hackathon.endDate > MAX_DATE) {
       return {
         value: hackathon.id,
         label: hackathon.title,

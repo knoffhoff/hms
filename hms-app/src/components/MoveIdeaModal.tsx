@@ -134,7 +134,8 @@ export default function MoveIdeaModal(props: IProps) {
   useEffect(() => {
     if (selectedCategory) {
       setButtonIsDisabled(false)
-    }
+    } else {
+      setButtonIsDisabled(true)}
   }, [selectedCategory])
 
   return (
