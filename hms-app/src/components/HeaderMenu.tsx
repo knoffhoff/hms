@@ -141,37 +141,7 @@ export default function HeaderMenu({
           </Link>
         </div>
       ))}
-      <Menu>
-        <Menu.Target>
-          <Text className={classes.link}>Hackathons</Text>
-        </Menu.Target>
 
-        <Menu.Dropdown
-          style={{
-            backgroundColor:
-              theme.colorScheme === 'light' ? PRIMARY_COLOR_1 : PRIMARY_COLOR_1,
-          }}
-        >
-          {hackathonLinks.map((link) => (
-            <Menu.Item
-              key={link.label}
-              component={Link}
-              to={link.link}
-              className={classes.link}
-              style={{
-                backgroundColor:
-                  location.pathname.slice(1) === link.link
-                    ? theme.colorScheme === 'light'
-                      ? HEADER_ACTIVE_COLOR_LIGHT
-                      : HEADER_ACTIVE_COLOR_DARK
-                    : undefined,
-              }}
-            >
-              {link.label}
-            </Menu.Item>
-          ))}
-        </Menu.Dropdown>
-      </Menu>
       {adminLinks.map((link) => (
         <div key={link.link}>
           <Link
