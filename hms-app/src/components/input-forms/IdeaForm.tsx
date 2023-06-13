@@ -300,8 +300,8 @@ function IdeaForm(props: IProps) {
 
             <Card.Section className={classes.borderSection}>
               <Checkbox.Group
-                label='Required skills'
-                description='chose one or more required skills'
+                label='Skills'
+                description='Choose one or more skills that could help to bring your idea to life'
                 onChange={setSkills}
                 defaultValue={ideaSkill}
                 className={classes.label}
@@ -312,7 +312,7 @@ function IdeaForm(props: IProps) {
             <Card.Section className={classes.borderSection}>
               <Radio.Group
                 label='Category'
-                description='chose one or more categories'
+                description='Choose one hackathon category for your idea'
                 onChange={setCategory}
                 required
                 defaultValue={idea?.category?.id}

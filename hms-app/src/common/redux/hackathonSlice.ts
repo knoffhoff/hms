@@ -68,10 +68,13 @@ export const hackathonSlice = createSlice({
     setNextHackathon: (state, action: PayloadAction<HackathonSerializable>) => {
       state.nextHackathon = action.payload
     },
+    setLastSelectedHackathon: (state, action: PayloadAction<HackathonSerializable>) => {
+      state.lastSelectedHackathon = action.payload
+    } 
   },
 })
 
 // Action creators are generated for each case reducer function
-export const { setHackathonList, setNextHackathon } = hackathonSlice.actions
+export const { setHackathonList, setNextHackathon,setLastSelectedHackathon } = hackathonSlice.actions
 
 export default hackathonSlice.reducer

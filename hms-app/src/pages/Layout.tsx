@@ -74,26 +74,14 @@ const Layout = () => {
       setMenuLinks([
         { link: '', label: 'Home' },
         { link: 'idea-pool', label: 'Idea Pool' },
-      ])
-      setHackLinks([
         {
           link: 'hackathons',
-          label: 'All Ideas',
+          label: 'Hackathons',
         },
-        { link: 'my-ideas', label: 'My Ideas' },
         { link: 'archive', label: 'Archive' },
       ])
 
       if (isAdmin(stateUser)) {
-        setHackLinks([
-          {
-            link: 'hackathons',
-            label: 'All Ideas',
-          },
-          { link: 'my-ideas', label: 'My Ideas' },
-          { link: 'archive', label: 'Archive' },
-          { link: 'voting', label: 'Voting' },
-        ])
         setAdminLinks([{ link: 'admin', label: 'Admin' }])
       }
     }
