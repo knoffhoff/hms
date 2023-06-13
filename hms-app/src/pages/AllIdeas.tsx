@@ -64,12 +64,10 @@ function AllIdeas() {
   const [buttonIsDisabled, setButtonIsDisabled] = useState(false)
 
   const loadSelectedHackathon = () => {
-    getHackathonDetails(instance, selectedHackathonId).then(
-      (data) => {
-        setHackathonData(data)
-        setIsHackathonLoading(false)
-      }
-    )
+    getHackathonDetails(instance, selectedHackathonId).then((data) => {
+      setHackathonData(data)
+      setIsHackathonLoading(false)
+    })
   }
 
   const loadRelevantIdeaDetails = () => {
@@ -255,15 +253,11 @@ function AllIdeas() {
                 <HackathonHeader hackathonData={hackathonData} />
 
                 <Stack align='flex-start' justify='flex-start' spacing='sm'>
-                  {showUserIdeas ? (
-                    <Title order={2} mt={50}>
-                      Your submission: {userIdeaList.length}
-                    </Title>
-                  ) : (
-                    <Title order={2} mt={50}>
-                      Ideas submitted: {relevantIdeaList.length}
-                    </Title>
-                  )}
+                  <Title order={2} mt={50}>
+                    {showUserIdeas
+                      ? 'My submission: ' + userIdeaList.length
+                      : 'Ideas submitted: ' + relevantIdeaList.length}
+                  </Title>
 
                   <Checkbox
                     mb={15}
