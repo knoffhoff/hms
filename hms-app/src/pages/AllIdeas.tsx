@@ -124,15 +124,13 @@ function AllIdeas() {
     return participant
   }
 
-useEffect(() => {
-  loadSelectedHackathon()
-  setUserIdeaList(userIdea)
-}, [])
-
   useEffect(() => {
-    setUserIdeaList(userIdea)
+    setUserIdeaList([])
+    setRelevantIdeaList([])
     loadSelectedHackathon()
-  }, [showUserIdeas])
+    setUserIdeaList(userIdea)
+    setIsHackathonLoading(true)
+  }, [showUserIdeas, selectedHackathonId])
 
   useEffect(() => {
     if (ideaData)
@@ -158,8 +156,6 @@ useEffect(() => {
   }, [hackathonData])
 
   useEffect(() => {
-    loadSelectedHackathon()
-    setIsHackathonLoading(true)
     if (user) {
       setParticipantInfo({
         userId: user.id,
@@ -167,8 +163,7 @@ useEffect(() => {
         participantId: participantInfo.participantId,
       })
     }
-    setRelevantIdeaList([])
-  }, [user, selectedHackathonId])
+  }, [user])
 
   return (
     <>
