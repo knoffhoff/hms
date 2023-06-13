@@ -64,12 +64,10 @@ function AllIdeas() {
   const [buttonIsDisabled, setButtonIsDisabled] = useState(false)
 
   const loadSelectedHackathon = () => {
-    getHackathonDetails(instance, selectedHackathonId).then(
-      (data) => {
-        setHackathonData(data)
-        setIsHackathonLoading(false)
-      }
-    )
+    getHackathonDetails(instance, selectedHackathonId).then((data) => {
+      setHackathonData(data)
+      setIsHackathonLoading(false)
+    })
   }
 
   const loadRelevantIdeaDetails = () => {
@@ -124,15 +122,15 @@ function AllIdeas() {
     return participant
   }
 
-useEffect(() => {
-  loadSelectedHackathon()
-  setUserIdeaList(userIdea)
-}, [])
-
   useEffect(() => {
-    setUserIdeaList(userIdea)
+    console.log('selected hackathon before:', hackathonData.title)
+    setUserIdeaList([])
+    setRelevantIdeaList([])
     loadSelectedHackathon()
-  }, [showUserIdeas])
+    loadRelevantIdeaDetails()
+    setUserIdeaList(userIdea)
+    console.log('selected hackathon after:', hackathonData.title)
+  }, [showUserIdeas, selectedHackathonId])
 
   useEffect(() => {
     if (ideaData)
@@ -155,11 +153,9 @@ useEffect(() => {
     setParticipantCheck(!!participant)
     if (participant)
       setParticipantInfo({ ...participantInfo, participantId: participant.id })
-  }, [hackathonData])
+  }, [hackathonData, selectedHackathonId])
 
   useEffect(() => {
-    loadSelectedHackathon()
-    setIsHackathonLoading(true)
     if (user) {
       setParticipantInfo({
         userId: user.id,
@@ -167,8 +163,7 @@ useEffect(() => {
         participantId: participantInfo.participantId,
       })
     }
-    setRelevantIdeaList([])
-  }, [user, selectedHackathonId])
+  }, [user])
 
   return (
     <>
