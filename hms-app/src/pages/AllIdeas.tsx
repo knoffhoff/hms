@@ -151,7 +151,7 @@ function AllIdeas() {
     setParticipantCheck(!!participant)
     if (participant)
       setParticipantInfo({ ...participantInfo, participantId: participant.id })
-  }, [hackathonData])
+  }, [hackathonData, selectedHackathonId])
 
   useEffect(() => {
     if (user) {
