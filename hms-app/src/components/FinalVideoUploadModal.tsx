@@ -116,7 +116,7 @@ export default function FinalVideoUploadModal({ idea }: IProps) {
           )}
         </Modal>
 
-        <Button onClick={() => setOpened(true)} color={'green'}>
+        <Button size='xs' onClick={() => setOpened(true)} color={'green'}>
           Upload video
         </Button>
       </UploadLoadingContext.Provider>

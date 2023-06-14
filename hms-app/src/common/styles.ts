@@ -156,7 +156,20 @@ export const styles = createStyles((theme) => ({
 
   commentTitle:{
     fontWeight: 600
-  }
+  },
+
+  arrowButton: {    
+    backgroundColor:
+      theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.white,
+    borderRadius: borderRadius,
+    border: '1px solid',
+    cursor: 'pointer',
+    '&:hover': {
+      backgroundColor: theme.colorScheme === 'dark'
+          ? theme.colors.dark[4]
+          : theme.colors.dark[0],
+    },
+  },
 }))
 
 export const loginStyles = createStyles((theme) => ({

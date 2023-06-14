@@ -22,7 +22,6 @@ import IdeaCommentDetails from './IdeaCommentDetails'
 import CardButton from '../buttons/CardButton'
 import ParticipateButton from '../buttons/ParticipateButton'
 import { VoteButtons } from '../buttons/VotingButton'
-import ParticipantsList from '../lists/ParticipantsList'
 
 type IProps = {
   idea: Idea
@@ -46,7 +45,7 @@ export default function IdeaDetails(props: IProps) {
   const [loader, setLoader] = useState(false)
   const [ideaData, setIdeaData] = useState(idea)
   const [participantAccordionOpen, setParticipantAccordionOpen] =
-  useState(false)
+    useState(false)
 
   const loadCategoryDetails = () => {
     if (ideaData.category)
@@ -205,12 +204,13 @@ export default function IdeaDetails(props: IProps) {
     )
   }
 
-  const voterCount = () => {
+  const voting = () => {
     return (
       type === IdeaCardType.AllIdeas && (
         <Card.Section className={classes.noBorderSection}>
           <Stack align={'center'} spacing={'xs'}>
             <Text className={classes.label}>Votes: </Text>
+            {votingButton()}
             <Text className={classes.text}>{ideaData.voters?.length}</Text>
           </Stack>
         </Card.Section>
@@ -288,10 +288,28 @@ export default function IdeaDetails(props: IProps) {
   }
 
   const ideaCreationDate = () => {
+    const date = new Date(idea.creationDate)
+    const formattedDate = date.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    })
+
     return (
-      <Text className={classes.smallText}>
-        Created: {new Date(idea.creationDate).toDateString()}
+      <Text mt={10} className={classes.smallText}>
+        Created: {formattedDate}
       </Text>
+    )
+  }
+
+  const buttons = () => {
+    return (
+      <>
+        <Group position='apart'>
+          {participateButton()}
+          {ideaButtons()}
+        </Group>
+      </>
     )
   }
 
@@ -304,11 +322,10 @@ export default function IdeaDetails(props: IProps) {
               {ideaHeader()}
               {hackathonVotingOpened && (
                 <Stack align={'Center'} spacing={'xs'}>
-                  {voterCount()}
+                  {voting()}
                 </Stack>
               )}
             </Group>
-            {ideaCreationDate()}
           </Card.Section>
           <Accordion
             onChange={(value) => setAccordionOpen(value === 'idea-details')}
@@ -328,15 +345,18 @@ export default function IdeaDetails(props: IProps) {
                 {ideaCategory()}
                 {ideaRequiredSkills()}
                 {participantsList()}
-                <Group mt='xs' position={'center'} style={{ paddingTop: 5 }}>
-                  {participateButton()}
-                  {hackathonVotingOpened && votingButton()}
-                </Group>
-                {ideaButtons()}
               </Accordion.Panel>
             </Accordion.Item>
           </Accordion>
-          {IdeaComments()}
+
+          <Card.Section className={classes.borderSection}>
+            {IdeaComments()}
+          </Card.Section>
+
+          <Card.Section pt={16} className={classes.borderSection}>
+            {buttons()}
+            {ideaCreationDate()}
+          </Card.Section>
         </Card>
       ) : (
         'Failed to load ideas.'

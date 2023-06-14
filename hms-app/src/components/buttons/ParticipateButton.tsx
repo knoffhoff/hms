@@ -1,4 +1,4 @@
-import { Button } from '@mantine/core'
+import { Group, Text, Switch } from '@mantine/core'
 import {
   createIdeaParticipant,
   removeIdeaParticipant,
@@ -11,7 +11,7 @@ import { showNotification, updateNotification } from '@mantine/notifications'
 import { useMsal } from '@azure/msal-react'
 import { Check, X } from 'tabler-icons-react'
 import { Idea } from '../../common/types'
-import { JOIN_BUTTON_COLOR, LEAVE_BUTTON_COLOR } from '../../common/colors'
+import { styles } from '../../common/styles'
 
 type IProps = {
   idea: Idea
@@ -21,6 +21,7 @@ type IProps = {
 export default function ParticipateButton(props: IProps) {
   const hackathonParticipantId = useContext(HackathonParticipantContext)
   const user = useContext(UserContext)
+  const { classes } = styles()
   const { instance } = useMsal()
   const { idea, onSuccess } = props
   const [ideaData, setIdeaData] = useState(idea)
@@ -181,18 +182,21 @@ export default function ParticipateButton(props: IProps) {
   }, [ideaData])
 
   return (
-    <Button
-      disabled={buttonIsDisabled}
-      onClick={
-        participantCheck ? removeThisIdeaParticipant : addThisIdeaParticipant
-      }
-      style={{
-        backgroundColor: participantCheck
-          ? LEAVE_BUTTON_COLOR
-          : JOIN_BUTTON_COLOR,
-      }}
-    >
-      {participantCheck ? 'Leave Idea' : 'Join Idea'}
-    </Button>
+    <>
+      <Group>
+        <Text className={classes.text}>
+          {participantCheck ? 'Leave Idea' : 'Join Idea'}
+        </Text>
+        <Switch
+          disabled={buttonIsDisabled}
+          checked={participantCheck}
+          onChange={
+            participantCheck
+              ? removeThisIdeaParticipant
+              : addThisIdeaParticipant
+          }
+        />
+      </Group>
+    </>
   )
 }
