@@ -101,6 +101,11 @@ function IdeaPool() {
           readOnly
           value={hackathon.description || ''}
           id='hackathonDescriptionEditor'
+          style={{ 
+            color: 'gray', 
+            backgroundColor: 'transparent', 
+            border: 'none' 
+          }}
         />
       </Center>
 
