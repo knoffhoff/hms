@@ -1,217 +1,165 @@
 import {
-  Badge,
   Button,
-  Center,
+  Card,
   Container,
-  createStyles,
+  SimpleGrid,
   Text,
   Title,
   useMantineColorScheme,
 } from '@mantine/core'
-import { Dots } from './Dots'
-import Countdown from 'react-countdown'
-import React from 'react'
+import React, { useMemo } from 'react'
 import { HackathonSerializable } from '../common/types'
-import { blue3, orange3 } from '../common/colors'
 import { Link } from 'react-router-dom'
-import { MAX_DATE } from '../common/constants'
+import { MIN_DATE } from '../common/constants'
+import { heroHeaderStyles } from '../common/styles'
 
-const useStyles = createStyles((theme) => ({
-  wrapper: {
-    position: 'relative',
-    paddingTop: 120,
-    paddingBottom: 80,
-
-    '@media (max-width: 755px)': {
-      paddingTop: 80,
-      paddingBottom: 60,
-    },
-  },
-
-  inner: {
-    position: 'relative',
-    zIndex: 1,
-  },
-
-  dots: {
-    position: 'absolute',
-    color:
-      theme.colorScheme === 'dark'
-        ? theme.colors.dark[5]
-        : theme.colors.gray[1],
-
-    '@media (max-width: 755px)': {
-      display: 'none',
-    },
-  },
-
-  dotsLeft: {
-    left: 0,
-    top: 0,
-  },
-
-  title: {
-    textAlign: 'center',
-    fontWeight: 800,
-    fontSize: 40,
-    letterSpacing: -1,
-    color: theme.colorScheme === 'dark' ? theme.white : theme.black,
-    marginBottom: theme.spacing.xs,
-    fontFamily: `Greycliff CF, ${theme.fontFamily}`,
-
-    '@media (max-width: 520px)': {
-      fontSize: 28,
-      textAlign: 'left',
-    },
-  },
-
-  highlight: {
-    color: theme.colorScheme === 'dark' ? orange3 : blue3,
-  },
-
-  description: {
-    textAlign: 'center',
-
-    '@media (max-width: 520px)': {
-      textAlign: 'left',
-      fontSize: theme.fontSizes.md,
-    },
-  },
-
-  controls: {
-    marginTop: theme.spacing.lg,
-    display: 'flex',
-    justifyContent: 'center',
-
-    '@media (max-width: 520px)': {
-      flexDirection: 'column',
-    },
-  },
-
-  control: {
-    '&:not(:first-of-type)': {
-      marginLeft: theme.spacing.md,
-    },
-
-    '@media (max-width: 520px)': {
-      height: 42,
-      fontSize: theme.fontSizes.md,
-
-      '&:not(:first-of-type)': {
-        marginTop: theme.spacing.md,
-        marginLeft: 0,
-      },
-    },
-  },
-}))
-
-const HeroHeader = (props: { nextHackathon: HackathonSerializable }) => {
+const InfoCard = (props: {
+  title: string
+  description: string
+  link: string
+  buttonText: string
+}) => {
   const theme = useMantineColorScheme()
-  const { classes } = useStyles()
-  const today = new Date()
-  today.setHours(0, 0, 0, 0)
-  const isHackathonWithoutDate = () =>
-    new Date(props.nextHackathon.startDate) > MAX_DATE
-
+  const { classes } = heroHeaderStyles()
   return (
-    <Container className={classes.wrapper} size={1400}>
-      <Dots className={classes.dots} style={{ left: 0, top: 0 }} />
-      <Dots className={classes.dots} style={{ left: 60, top: 0 }} />
-      <Dots className={classes.dots} style={{ left: 0, top: 140 }} />
-      <Dots className={classes.dots} style={{ right: 0, top: 60 }} />
-
-      <div className={classes.inner}>
-        {!isHackathonWithoutDate() ? (
-          <Title className={classes.title}>
-            Upcoming{' '}
-            <Text component='span' className={classes.highlight} inherit>
-              {props.nextHackathon.title}
-            </Text>
-            {new Date(props.nextHackathon.startDate) > today ? (
-              <>
-                {' '}
-                starts in
-                <Center styles={{ color: 'red' }}>
-                  {today < new Date(props.nextHackathon.startDate) && (
-                    <Countdown date={props.nextHackathon.startDate} />
-                  )}
-                </Center>
-              </>
-            ) : (
-              <>
-                {' '}
-                ends in
-                <Center styles={{ color: 'red' }}>
-                  {today < new Date(props.nextHackathon.endDate) && (
-                    <Countdown date={props.nextHackathon.endDate} />
-                  )}
-                </Center>
-              </>
-            )}
+    <Card withBorder shadow='md' p='lg'>
+      <div className={classes.cardContent}>
+        <div>
+          <Title align={'center'} order={3}>
+            {props.title}
           </Title>
-        ) : (
-          <Title className={classes.title}>
-            Upcoming{' '}
-            <Text component='span' className={classes.highlight} inherit>
-              {props.nextHackathon.title}
-            </Text>
-          </Title>
-        )}
-
-        <Center my={25}>
-          <Badge
-            size={'xl'}
-            variant='gradient'
-            gradient={
-              theme.colorScheme === 'dark'
-                ? { from: 'teal', to: 'blue', deg: 60 }
-                : { from: '#ed6ea0', to: '#ec8c69', deg: 35 }
-            }
-            radius={'xs'}
-          >
-            {isHackathonWithoutDate()
-              ? 'To be announced'
-              : `${new Date(
-                  props.nextHackathon.startDate
-                ).toLocaleDateString()} - ${new Date(
-                  props.nextHackathon.endDate
-                ).toLocaleDateString()}`}
-          </Badge>
-        </Center>
-
-        <Container p={0} size={600}>
-          <Text
-            size='lg'
-            color='dimmed'
-            className={classes.description}
-            dangerouslySetInnerHTML={{
-              __html: props.nextHackathon.description || '',
-            }}
-          />
-        </Container>
-
-        <div className={classes.controls}>
+          <Text align={'center'}>{props.description}</Text>
+        </div>
+        <div className={classes.buttonArea}>
           <Button
+            size='sm'
             component={Link}
-            to='/hackathons'
-            className={classes.control}
-            size='lg'
-            variant='default'
-            color='gray'
-          >
-            Explore ideas
-          </Button>
-          <Button
-            className={classes.control}
-            size='lg'
-            component={Link}
-            to='/my-ideas'
+            to={props.link}
             color={theme.colorScheme === 'dark' ? 'orange' : 'blue'}
           >
-            Submit project idea
+            {props.buttonText}
           </Button>
         </div>
       </div>
+    </Card>
+  )
+}
+
+const HackathonCard = (props: {
+  title: string
+  hackathonTitle: string
+  subtitle: string
+  date: Date
+  actionLink: string
+  actionText: string
+  upcoming?: boolean
+}) => {
+  const theme = useMantineColorScheme()
+  const { classes } = heroHeaderStyles()
+
+  return (
+    <Card withBorder shadow='md' p='lg'>
+      <div className={classes.cardContent}>
+        <div>
+          <Title align={'center'} order={3}>
+            {props.title}
+          </Title>
+          <Title align={'center'} order={3} className={classes.highlight}>
+            {props.hackathonTitle}
+          </Title>
+          <Text align={'center'} size='sm'>
+            {props.upcoming
+              ? 'Starts: ' +
+                props.date.toLocaleDateString('en-US', {
+                  month: 'short',
+                  day: '2-digit',
+                  year: 'numeric',
+                })
+              : 'Ended: ' +
+                props.date.toLocaleDateString('en-US', {
+                  month: 'short',
+                  day: '2-digit',
+                  year: 'numeric',
+                })}
+          </Text>
+          <Text align={'center'}>{props.subtitle}</Text>
+        </div>
+        <div className={classes.buttonArea}>
+          <Button
+            size='sm'
+            component={Link}
+            to={props.actionLink}
+            color={theme.colorScheme === 'dark' ? 'orange' : 'blue'}
+          >
+            {props.actionText}
+          </Button>
+        </div>
+      </div>
+    </Card>
+  )
+}
+
+const HeroHeader = (props: {
+  nextHackathon: HackathonSerializable
+  lastHackathon: HackathonSerializable
+}) => {
+  const { classes } = heroHeaderStyles()
+
+  // Using useMemo for performance
+  const today = useMemo(() => {
+    const date = new Date()
+    date.setHours(0, 0, 0, 0)
+    return date
+  }, [])
+
+  return (
+    <Container className={classes.wrapper} size={1400}>
+      <div>
+        <Title className={classes.title} order={2} align={'center'}>
+          Welcome to the Ideation Portal
+        </Title>
+        <Text align={'center'} mb={20}>
+          Your digital space for collecting, sharing, and exploring ideas
+        </Text>
+      </div>
+
+      <SimpleGrid cols={3} pt={30} spacing='md'>
+        <InfoCard
+          title='Idea Pool'
+          description='Discover the Idea Pool, our space where you can share your ideas.'
+          link='/idea-pool'
+          buttonText='Explore the Idea Pool'
+        />
+
+        {props.nextHackathon &&
+        new Date(props.nextHackathon.startDate) > today ? (
+          <HackathonCard
+            title={'Next Hackathon: '}
+            hackathonTitle={props.nextHackathon.title}
+            subtitle='Find out more about our upcoming hackathon.'
+            date={new Date(props.nextHackathon.startDate)}
+            actionLink='/hackathons'
+            actionText='Join our Hackathons'
+            upcoming={true}
+          />
+        ) : (
+          <div>Something went wrong...</div>
+        )}
+
+        {props.lastHackathon &&
+        new Date(props.lastHackathon.endDate) > MIN_DATE ? (
+          <HackathonCard
+            title={'Last Hackathon: '}
+            hackathonTitle={props.lastHackathon.title}
+            subtitle={'Find out more about our previous hackathon.'}
+            date={new Date(props.lastHackathon.endDate)}
+            actionLink='/archive'
+            actionText='View our Archive'
+          />
+        ) : (
+          <div>Something went wrong...</div>
+        )}
+      </SimpleGrid>
     </Container>
   )
 }

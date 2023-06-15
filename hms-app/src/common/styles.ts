@@ -1,7 +1,9 @@
 import { createStyles } from '@mantine/core'
 import {
+  blue3,
   HEADER_HOVER_COLOR_DARK,
   HEADER_HOVER_COLOR_LIGHT,
+  orange3,
   TEXT_COLOR_WHITE,
 } from './colors'
 
@@ -118,9 +120,9 @@ export const styles = createStyles((theme) => ({
     alignItems: 'center',
   },
 
-  headerHeadline:{
-    color: TEXT_COLOR_WHITE, 
-    fontSize: 30
+  headerHeadline: {
+    color: TEXT_COLOR_WHITE,
+    fontSize: 30,
   },
 
   borderAccordion: {
@@ -154,9 +156,9 @@ export const styles = createStyles((theme) => ({
     marginBottom: 30,
   },
 
-  commentTitle:{
-    fontWeight: 600
-  }
+  commentTitle: {
+    fontWeight: 600,
+  },
 }))
 
 export const loginStyles = createStyles((theme) => ({
@@ -195,5 +197,87 @@ export const loginStyles = createStyles((theme) => ({
     display: 'block',
     marginLeft: 'auto',
     marginRight: 'auto',
+  },
+}))
+
+export const heroHeaderStyles = createStyles((theme) => ({
+  wrapper: {
+    position: 'relative',
+    paddingTop: 80,
+    paddingBottom: 60,
+    backgroundColor:
+      theme.colorScheme === 'dark'
+        ? theme.colors.dark[7]
+        : theme.colors.gray[1],
+    borderRadius: '8px',
+    boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.1)',
+
+    '@media (max-width: 755px)': {
+      paddingTop: 40,
+      paddingBottom: 30,
+    },
+  },
+
+  title: {
+    textAlign: 'center',
+    fontWeight: 800,
+    fontSize: 46,
+    letterSpacing: -1,
+    color: theme.colorScheme === 'dark' ? theme.white : theme.black,
+    marginBottom: theme.spacing.xs,
+    fontFamily: `Greycliff CF, ${theme.fontFamily}`,
+
+    '@media (max-width: 520px)': {
+      fontSize: 32,
+    },
+  },
+
+  smallerText: {
+    textAlign: 'center',
+    fontSize: 20,
+    color: theme.colorScheme === 'dark' ? theme.white : theme.black,
+
+    '@media (max-width: 520px)': {
+      fontSize: 18,
+    },
+  },
+
+  highlight: {
+    color: theme.colorScheme === 'dark' ? orange3 : blue3,
+  },
+
+  controls: {
+    marginTop: theme.spacing.lg,
+    display: 'flex',
+    justifyContent: 'center',
+
+    '@media (max-width: 520px)': {
+      flexDirection: 'column',
+    },
+  },
+
+  centeredText: {
+    textAlign: 'center',
+    marginTop: '20px',
+  },
+
+  hackathonHighlight: {
+    color: theme.colorScheme === 'dark' ? orange3 : blue3,
+    cursor: 'pointer',
+    textDecoration: 'underline',
+  },
+
+  cardContent: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    height: '100%',
+  },
+
+  buttonArea: {
+    display: 'flex',
+    justifyContent: 'center',
+    marginTop: 'auto',
+    paddingTop: theme.spacing.sm,
   },
 }))
