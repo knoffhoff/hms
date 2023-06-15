@@ -14,6 +14,7 @@ import { useMsal } from '@azure/msal-react'
 import HackathonHeader from '../components/HackathonHeader'
 import IdeaCardList from '../components/lists/IdeaCardList'
 import { getIdeaDetails } from '../actions/IdeaActions'
+import { styles } from '../common/styles'
 
 export default function Archive() {
   const { instance } = useMsal()
@@ -24,6 +25,7 @@ export default function Archive() {
   const [isIdeaLoading, setIsIdeaLoading] = useState(true)
   const [ideaData, setIdeaData] = useState<Idea>()
   const [relevantIdeaList, setRelevantIdeaList] = useState([] as Idea[])
+  const { classes } = styles()
 
   const loadSelectedHackathon = () => {
     getHackathonDetails(instance, selectedHackathonId).then(
@@ -84,7 +86,8 @@ export default function Archive() {
 
   return (
     <>
-      <Group position={'apart'} my={20}>
+      <Text className={classes.title}>Hackathon Selection:</Text>
+      <Group position={'apart'} mb={20}>
         <HackathonSelectDropdown
           setHackathonId={setSelectedHackathonId}
           context={HackathonDropdownMode.Archive}
@@ -106,7 +109,7 @@ export default function Archive() {
             ideas={relevantIdeaList}
             columnSize={6}
             type={IdeaCardType.Archive}
-            isLoading={isIdeaLoading} 
+            isLoading={isIdeaLoading}
           />
         </div>
       )}

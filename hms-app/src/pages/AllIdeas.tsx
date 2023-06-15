@@ -111,7 +111,8 @@ function AllIdeas() {
         value={participantInfo.participantId}
       >
         <HackathonVotingContext.Provider value={hackathonData.votingOpened}>
-          <Group position={'apart'} my={20}>
+          <Text className={classes.title}>Hackathon Selection:</Text>
+          <Group position={'apart'} mb={20}>
             <HackathonSelectDropdown
               setHackathonId={setSelectedHackathonId}
               context={HackathonDropdownMode.Hackathons}
