@@ -1,6 +1,6 @@
 export enum HackathonDropdownMode {
   Archive = 'ARCHIVE',
-  IdeaPortal = 'IDEA_PORTAL',
+  Hackathons = 'HACKATHONS',
   Home = 'HOME',
   MyIdeas = 'MY_IDEAS',
   MoveModal = 'MOVE_MODAL',

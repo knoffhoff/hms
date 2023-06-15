@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useMemo } from 'react'
 import { getListOfHackathons } from '../actions/HackathonActions'
 import { Select, SelectItem } from '@mantine/core'
 import { HackathonDropdownMode, HackathonPreview } from '../common/types'
@@ -13,6 +13,60 @@ type Props = {
   context: HackathonDropdownMode
 }
 
+const getHackathonsSelectItems = (
+  hackathonList: HackathonPreview[],
+  context: HackathonDropdownMode,
+  today: Date
+): SelectItem[] => {
+  switch (context) {
+    case HackathonDropdownMode.Archive:
+      return hackathonList
+        .filter(
+          (hackathon) =>
+            hackathon.endDate < today && hackathon.endDate > MIN_DATE
+        )
+        .map((hackathon) => mapHackathonToSelectItem(hackathon))
+    case HackathonDropdownMode.Hackathons:
+      return hackathonList
+        .filter((hackathon) => hackathon.endDate >= today)
+        .map((hackathon) => mapHackathonToSelectItem(hackathon))
+    case HackathonDropdownMode.MoveModal:
+      return hackathonList.map((hackathon) =>
+        mapHackathonToSelectItem(hackathon)
+      )
+  }
+  return hackathonList
+    .filter((hackathon) => hackathon.endDate > MIN_DATE)
+    .map((hackathon) => mapHackathonToSelectItem(hackathon))
+}
+
+const mapHackathonToSelectItem = (hackathon: HackathonPreview): SelectItem => {
+  if (hackathon.endDate < MIN_DATE || hackathon.endDate > MAX_DATE) {
+    return {
+      value: hackathon.id,
+      label: hackathon.title,
+    }
+  } else {
+    return {
+      value: hackathon.id,
+      label:
+        hackathon.title +
+        ' ' +
+        hackathon.startDate.toLocaleString(undefined, {
+          year: 'numeric',
+          month: '2-digit',
+          day: '2-digit',
+        }) +
+        '-' +
+        hackathon.endDate.toLocaleString(undefined, {
+          year: 'numeric',
+          month: '2-digit',
+          day: '2-digit',
+        }),
+    }
+  }
+}
+
 export default function HackathonSelectDropdown({
   setHackathonId,
   context,
@@ -25,6 +79,9 @@ export default function HackathonSelectDropdown({
   const [selectedHackathon, setSelectedHackathon] = useState<HackathonPreview>()
   const nextHackathon = useAppSelector(
     (state) => state.hackathons.nextHackathon
+  )
+  const lastSelectedHackathon = useAppSelector(
+    (state) => state.hackathons.lastSelectedHackathon
   )
   const today = new Date()
   today.setHours(0, 0, 0, 0)
@@ -57,59 +114,14 @@ export default function HackathonSelectDropdown({
     )
   }
 
-  function getHackathonsSelectItems(): SelectItem[] {
-    switch (context) {
-      case HackathonDropdownMode.Archive:
-        return hackathonList
-          .filter(
-            (hackathon) =>
-              hackathon.endDate < today && hackathon.endDate > MIN_DATE
-          )
-          .map((hackathon) => mapHackathonToSelectItem(hackathon))
-      case HackathonDropdownMode.IdeaPortal:
-        return hackathonList
-          .filter((hackathon) => hackathon.endDate >= today)
-          .map((hackathon) => mapHackathonToSelectItem(hackathon))
-      case HackathonDropdownMode.MoveModal:
-        return hackathonList.map((hackathon) =>
-          mapHackathonToSelectItem(hackathon)
-        )
-    }
-    return hackathonList
-      .filter((hackathon) => hackathon.endDate > MIN_DATE)
-      .map((hackathon) => mapHackathonToSelectItem(hackathon))
-  }
-
-  function mapHackathonToSelectItem(hackathon: HackathonPreview): SelectItem {
-    if (hackathon.endDate < MIN_DATE || hackathon.endDate > MAX_DATE) {
-      return {
-        value: hackathon.id,
-        label: hackathon.title,
-      }
-    } else {
-      return {
-        value: hackathon.id,
-        label:
-          hackathon.title +
-          ' ' +
-          hackathon.startDate.toLocaleString(undefined, {
-            year: 'numeric',
-            month: '2-digit',
-            day: '2-digit',
-          }) +
-          '-' +
-          hackathon.endDate.toLocaleString(undefined, {
-            year: 'numeric',
-            month: '2-digit',
-            day: '2-digit',
-          }),
-      }
-    }
-  }
-
   useEffect(() => {
     loadHackathons()
   }, [])
+
+  const selectItems = useMemo(
+    () => getHackathonsSelectItems(hackathonList, context, today),
+    [hackathonList, context, today]
+  )
 
   return (
     <>
@@ -131,7 +143,7 @@ export default function HackathonSelectDropdown({
             placeholder={'Select a hackathon'}
             defaultValue={selectedHackathon?.id}
             maxDropdownHeight={280}
-            data={getHackathonsSelectItems()}
+            data={selectItems}
             onChange={setHackathonId}
           />
         </div>
