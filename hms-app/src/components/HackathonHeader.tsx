@@ -32,11 +32,6 @@ export default function HackathonHeader(props: IProps) {
               readOnly
               value={hackathonData.description || ''}
               id='hackathonDescriptionEditor'
-              style={{ 
-                color: 'gray', 
-                backgroundColor: 'transparent', 
-                border: 'none'
-              }}
             />
           </Center>
         )}

@@ -172,7 +172,7 @@ function AllIdeas() {
           <Group position={'apart'} my={20}>
             <HackathonSelectDropdown
               setHackathonId={setSelectedHackathonId}
-              context={HackathonDropdownMode.Hackathons}
+              context={HackathonDropdownMode.IdeaPortal}
             />
 
             {/* -- Disabled search for now --

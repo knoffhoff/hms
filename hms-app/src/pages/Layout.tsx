@@ -12,7 +12,6 @@ import { useAppDispatch, useAppSelector } from '../hooks'
 import {
   mapHackathonToSerializable,
   setHackathonList,
-  setLastHackathon,
   setNextHackathon,
 } from '../common/redux/hackathonSlice'
 import React, { createContext, useEffect, useState } from 'react'
@@ -144,16 +143,6 @@ const Layout = () => {
       dispatch(setHackathonList(hackathons.map(mapHackathonToSerializable)))
 
       const today = new Date()
-
-      const endedHackathons = hackathons.filter(
-        (hackathon) => new Date(hackathon.endDate) < today
-      )
-      const sortedHackathons = endedHackathons.sort((a, b) => {
-        return new Date(b.endDate).getTime() - new Date(a.endDate).getTime()
-      })
-
-      const lastHackathon = sortedHackathons[0]
-
       const nextHackathon = hackathons.find((hackathon) => {
         return new Date(hackathon.startDate) > today
       })
@@ -167,8 +156,6 @@ const Layout = () => {
 
       if (nextHackathon)
         dispatch(setNextHackathon(mapHackathonToSerializable(nextHackathon)))
-      if (lastHackathon)
-        dispatch(setLastHackathon(mapHackathonToSerializable(lastHackathon)))
     }
 
     getHackathons()
