@@ -1,4 +1,4 @@
-import { Group, Text, Switch, useMantineTheme } from '@mantine/core'
+import { Group, Switch } from '@mantine/core'
 import {
   createIdeaParticipant,
   removeIdeaParticipant,
@@ -12,8 +12,7 @@ import { useMsal } from '@azure/msal-react'
 import { Check, X } from 'tabler-icons-react'
 import { Idea } from '../../common/types'
 import { styles } from '../../common/styles'
-import { IconCheck, IconX } from '@tabler/icons-react'
-import { JOIN_BUTTON_COLOR, LEAVE_BUTTON_COLOR } from '../../common/colors'
+import { LEAVE_BUTTON_COLOR, RELOAD_BUTTON_COLOR } from '../../common/colors'
 
 type IProps = {
   idea: Idea
@@ -34,7 +33,6 @@ export default function ParticipateButton(props: IProps) {
     userId: '',
     participantId: '',
   })
-  const theme = useMantineTheme()
 
   const addHackathonParticipant = async (
     action = createIdeaParticipant,
@@ -188,6 +186,7 @@ export default function ParticipateButton(props: IProps) {
     <>
       <Group>
         <Switch
+          color={RELOAD_BUTTON_COLOR}
           disabled={buttonIsDisabled}
           checked={participantCheck}
           onChange={
@@ -197,9 +196,9 @@ export default function ParticipateButton(props: IProps) {
           }
           thumbIcon={
             participantCheck ? (
-              <IconCheck size='0.8rem' color={JOIN_BUTTON_COLOR} stroke={3} />
+              <Check size='0.8rem' color={RELOAD_BUTTON_COLOR} />
             ) : (
-              <IconX size='0.8rem' color={LEAVE_BUTTON_COLOR} stroke={3} />
+              <X size='0.8rem' color={LEAVE_BUTTON_COLOR} />
             )
           }
           label={<span className={classes.boldText}>Participate</span>}
