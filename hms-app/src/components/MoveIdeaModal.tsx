@@ -135,7 +135,8 @@ export default function MoveIdeaModal(props: IProps) {
     if (selectedCategory) {
       setButtonIsDisabled(false)
     } else {
-      setButtonIsDisabled(true)}
+      setButtonIsDisabled(true)
+    }
   }, [selectedCategory])
 
   return (
@@ -159,7 +160,7 @@ export default function MoveIdeaModal(props: IProps) {
         <Card.Section className={classes.borderSection}>
           <Radio.Group
             label='Category'
-            description='chose one category'
+            description='Choose one hackathon category for your idea'
             onChange={setSelectedCategory}
             required
             defaultValue={idea?.category?.id}
