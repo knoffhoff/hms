@@ -52,6 +52,13 @@ export const styles = createStyles((theme) => ({
     lineHeight: '1.5em',
   },
 
+
+  boldText: {
+    fontWeight: 600,
+    fontSize: theme.fontSizes.sm,
+    lineHeight: '1.5em',
+  },
+
   smallText: {
     fontSize: theme.fontSizes.xs,
     lineHeight: '1.5em',

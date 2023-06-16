@@ -184,8 +184,8 @@ export default function ParticipateButton(props: IProps) {
   return (
     <>
       <Group>
-        <Text className={classes.text}>
-          {participantCheck ? 'Leave Idea' : 'Join Idea'}
+        <Text className={classes.boldText}>
+          {participantCheck ? 'Leave' : 'Participate'}
         </Text>
         <Switch
           disabled={buttonIsDisabled}

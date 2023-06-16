@@ -354,8 +354,17 @@ export default function IdeaDetails(props: IProps) {
           </Card.Section>
 
           <Card.Section pt={16} className={classes.borderSection}>
-            {buttons()}
-            {ideaCreationDate()}
+            <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+              <div style={{ flex: '1 0 33%', maxWidth: '33%' }}>
+                <Stack spacing='xs'>
+                  {participateButton()}
+                  {ideaCreationDate()}
+                </Stack>
+              </div>
+              <div style={{ flex: '2 0 66%', maxWidth: '66%' }}>
+                <Group position='right'>{ideaButtons()}</Group>
+              </div>
+            </div>
           </Card.Section>
         </Card>
       ) : (
