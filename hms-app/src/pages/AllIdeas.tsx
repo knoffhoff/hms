@@ -161,7 +161,7 @@ function AllIdeas() {
         participantId: participantInfo.participantId,
       })
     }
-  }, [user])
+  }, [user, selectedHackathonId])
 
   return (
     <>
