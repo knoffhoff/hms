@@ -8,6 +8,8 @@ import {
   Stack,
   Text,
   Tooltip,
+  Flex,
+  Col,
   useMantineTheme,
 } from '@mantine/core'
 import { Category, Idea, IdeaCardType, Skill } from '../../common/types'
@@ -208,11 +210,19 @@ export default function IdeaDetails(props: IProps) {
     return (
       type === IdeaCardType.AllIdeas && (
         <Card.Section className={classes.noBorderSection}>
-          <Stack align={'center'} spacing={'xs'}>
-            <Text className={classes.label}>Votes: </Text>
-            {votingButton()}
-            <Text className={classes.text}>{ideaData.voters?.length}</Text>
-          </Stack>
+          <Text className={classes.label}>Votes:</Text>
+          <Card.Section>
+            <Stack align={'center'} spacing={'xs'}>
+              <Flex justify='center'>
+                <Col className={classes.votingButton}>{votingButton()}</Col>
+                <Col className={classes.voterCount}>
+                  <Text className={classes.text}>
+                    {ideaData.voters?.length}
+                  </Text>
+                </Col>
+              </Flex>
+            </Stack>
+          </Card.Section>
         </Card.Section>
       )
     )

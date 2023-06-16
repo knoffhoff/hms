@@ -165,7 +165,7 @@ export const styles = createStyles((theme) => ({
     fontWeight: 600
   },
 
-  arrowButton: {    
+  arrowButtonBox: {    
     backgroundColor:
       theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.white,
     borderRadius: borderRadius,
@@ -177,6 +177,26 @@ export const styles = createStyles((theme) => ({
           : theme.colors.dark[0],
     },
   },
+
+  arrowButton: {
+    width:17,
+    height:17
+  },
+
+  voterCount: {
+    display: 'flex',
+    justifyContent: 'flex-start',
+    padding: 0,
+    margin: '10px 10px 10px 0',
+  },
+
+  votingButton: {
+    display: 'flex',
+    justifyContent: 'flex-end',
+  },
+
+  
+
 }))
 
 export const loginStyles = createStyles((theme) => ({

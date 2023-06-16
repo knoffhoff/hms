@@ -11,6 +11,7 @@ import { useMsal } from '@azure/msal-react'
 import { Check, X, ArrowBigUpLine, ArrowBigDownLine } from 'tabler-icons-react'
 import { Idea } from '../../common/types'
 import { styles } from '../../common/styles'
+import { Group } from '@mantine/core'
 
 type IProps = {
   idea: Idea
@@ -193,10 +194,14 @@ export function VoteButtons(props: IProps) {
     <>
       <button
         disabled={buttonIsDisabled}
-        className={classes.arrowButton}
+        className={classes.arrowButtonBox}
         onClick={voteCheck ? removeThisVote : addThisVote}
       >
-        {voteCheck ? <ArrowBigDownLine /> : <ArrowBigUpLine />}
+        {voteCheck ? (
+          <ArrowBigDownLine className={classes.arrowButton} />
+        ) : (
+          <ArrowBigUpLine className={classes.arrowButton} />
+        )}
       </button>
     </>
   )
