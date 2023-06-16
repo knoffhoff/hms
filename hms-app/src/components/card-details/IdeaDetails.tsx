@@ -302,17 +302,6 @@ export default function IdeaDetails(props: IProps) {
     )
   }
 
-  const buttons = () => {
-    return (
-      <>
-        <Group position='apart'>
-          {participateButton()}
-          {ideaButtons()}
-        </Group>
-      </>
-    )
-  }
-
   return (
     <>
       {!isLoading && type !== IdeaCardType.Voting ? (
