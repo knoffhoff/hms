@@ -295,11 +295,7 @@ export default function IdeaDetails(props: IProps) {
       day: 'numeric',
     })
 
-    return (
-      <Text mt={10} className={classes.smallText}>
-        Created: {formattedDate}
-      </Text>
-    )
+    return <Text className={classes.smallText}>Created: {formattedDate}</Text>
   }
 
   return (
@@ -345,7 +341,7 @@ export default function IdeaDetails(props: IProps) {
           <Card.Section pt={16} className={classes.borderSection}>
             <div style={{ display: 'flex', flexWrap: 'wrap' }}>
               <div style={{ flex: '1 0 33%', maxWidth: '33%' }}>
-                <Stack spacing='xs'>
+                <Stack spacing='xs' style={{ paddingLeft: '5%' }}>
                   {participateButton()}
                   {ideaCreationDate()}
                 </Stack>
