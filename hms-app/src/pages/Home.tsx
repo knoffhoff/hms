@@ -6,6 +6,9 @@ import HeroHeader from '../components/HeroHeader'
 import { styles } from '../common/styles'
 
 function Home() {
+  const lastHackathon = useAppSelector(
+    (state) => state.hackathons.lastHackathon
+  )
   const nextHackathon = useAppSelector(
     (state) => state.hackathons.nextHackathon
   )
@@ -13,7 +16,7 @@ function Home() {
 
   return (
     <>
-      <HeroHeader nextHackathon={nextHackathon} />
+      <HeroHeader nextHackathon={nextHackathon} lastHackathon={lastHackathon} />
 
       <Container fluid mb={150} mt={20}>
         <Title align={'center'} mb={20} order={2}>

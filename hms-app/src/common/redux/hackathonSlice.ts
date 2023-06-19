@@ -3,6 +3,7 @@ import { Hackathon, HackathonSerializable } from '../types'
 
 interface HackathonState {
   hackathons: HackathonSerializable[]
+  lastHackathon: HackathonSerializable
   nextHackathon: HackathonSerializable
   lastSelectedHackathon: HackathonSerializable
 }
@@ -19,6 +20,15 @@ const initialState: HackathonState = {
       votingOpened: false,
     },
   ],
+  lastHackathon: {
+    id: '33a892ba-8a9e-4edf-947a-f421c86a14b5',
+    title: 'title',
+    slug: 'slug1.5',
+    startDate: '2020-01-01T00:00:00.000Z',
+    endDate: '2020-01-02T00:00:00.000Z',
+    participants: [],
+    votingOpened: false,
+  },
   nextHackathon: {
     id: '33a892ba-8a9e-4edf-947a-f421c86a14b5',
     title: 'title',
@@ -65,16 +75,27 @@ export const hackathonSlice = createSlice({
     ) => {
       state.hackathons = action.payload
     },
+    setLastHackathon: (state, action: PayloadAction<HackathonSerializable>) => {
+      state.lastHackathon = action.payload
+    },
     setNextHackathon: (state, action: PayloadAction<HackathonSerializable>) => {
       state.nextHackathon = action.payload
     },
-    setLastSelectedHackathon: (state, action: PayloadAction<HackathonSerializable>) => {
+    setLastSelectedHackathon: (
+      state,
+      action: PayloadAction<HackathonSerializable>
+    ) => {
       state.lastSelectedHackathon = action.payload
-    } 
+    },
   },
 })
 
 // Action creators are generated for each case reducer function
-export const { setHackathonList, setNextHackathon,setLastSelectedHackathon } = hackathonSlice.actions
+export const {
+  setHackathonList,
+  setLastHackathon,
+  setNextHackathon,
+  setLastSelectedHackathon,
+} = hackathonSlice.actions
 
 export default hackathonSlice.reducer
