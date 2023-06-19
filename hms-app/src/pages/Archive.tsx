@@ -58,18 +58,21 @@ export default function Archive() {
   })
 
   useEffect(() => {
-    setUserIdeaList(userIdea)
-  }, [])
-
-  useEffect(() => {
-    loadSelectedHackathon()
+    setUserIdeaList([])
     setRelevantIdeaList([])
+    loadSelectedHackathon()
+    setUserIdeaList(userIdea)
     setIsHackathonLoading(true)
-  }, [selectedHackathonId])
+  }, [showUserIdeas, selectedHackathonId])
+
+  // useEffect(() => {
+  //   loadSelectedHackathon()
+  //   setRelevantIdeaList([])
+  //   setIsHackathonLoading(true)
+  // }, [selectedHackathonId])
 
   useEffect(() => {
     loadRelevantIdeaDetails()
-    setUserIdeaList(userIdea)
   }, [hackathonData])
 
   useEffect(() => {
@@ -119,7 +122,7 @@ export default function Archive() {
 
             {showUserIdeas ? (
               <Title order={2} mt={50}>
-                Your submission:
+                Your submissions
               </Title>
             ) : (
               <Title order={2} mt={50}>
