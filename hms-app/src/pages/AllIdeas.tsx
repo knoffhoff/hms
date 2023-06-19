@@ -107,6 +107,7 @@ function AllIdeas() {
 
   return (
     <>
+      <HackathonHeader hackathonData={hackathonData} />
       <HackathonParticipantContext.Provider
         value={participantInfo.participantId}
       >
@@ -158,8 +159,7 @@ function AllIdeas() {
                     onSuccess={closeModal}
                   />
                 </Modal>
-
-                <Group>
+                <Group style={{ marginBottom: '50px' }}>
                   {participantCheck ? (
                     <Button
                       onClick={() => setOpened(true)}
@@ -197,9 +197,6 @@ function AllIdeas() {
                     hackathonData={hackathonData}
                   />
                 </Group>
-
-                <HackathonHeader hackathonData={hackathonData} />
-
                 <IdeaCardList
                   ideas={filteredIdeas}
                   columnSize={6}

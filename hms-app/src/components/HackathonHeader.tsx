@@ -1,5 +1,4 @@
 import {
-  Badge,
   Center,
   Container,
   Title,
@@ -9,6 +8,7 @@ import React from 'react'
 import { Hackathon } from '../common/types'
 import { MAX_DATE } from '../common/constants'
 import { RichTextEditor } from '@mantine/rte'
+import { heroHeaderStyles } from '../common/styles'
 
 type IProps = {
   hackathonData: Hackathon
@@ -19,48 +19,49 @@ export default function HackathonHeader(props: IProps) {
   const { hackathonData } = props
   const isHackathonWithoutDate = () =>
     new Date(hackathonData.startDate) > MAX_DATE
+  const { classes } = heroHeaderStyles()
+
+  const formatHackathonDates = () => {
+    const startDate = hackathonData.startDate.toLocaleDateString('en-US', {
+      month: 'short',
+      day: '2-digit',
+      year: 'numeric',
+    })
+    const endDate = hackathonData.endDate.toLocaleDateString('en-US', {
+      month: 'short',
+      day: '2-digit',
+      year: 'numeric',
+    })
+    return `${startDate} - ${endDate}`
+  }
 
   return (
-    <Container my={30}>
-      <div>
+    <div>
+      <Container className={classes.wrapper} size={1400} style={{ marginBottom: '50px' }}>
         <Center>
-          <Title>{hackathonData.title}</Title>
+          <Title className={classes.title} order={2} align={'center'}>
+            {hackathonData.title}
+          </Title>
         </Center>
-        {hackathonData.description && (
+        {hackathonData.startDate && hackathonData.endDate && (
           <Center>
-            <RichTextEditor
-              readOnly
-              value={hackathonData.description || ''}
-              id='hackathonDescriptionEditor'
-              style={{ 
-                color: 'gray', 
-                backgroundColor: 'transparent', 
-                border: 'none'
-              }}
-            />
+            <div>
+              {formatHackathonDates()}
+            </div>
           </Center>
         )}
-        <Center mt={10}>
-          <Badge
-            size={'lg'}
-            variant={'gradient'}
-            gradient={
-              theme.colorScheme === 'dark'
-                ? { from: 'teal', to: 'blue', deg: 60 }
-                : { from: '#ed6ea0', to: '#ec8c69', deg: 35 }
-            }
-            radius={'xs'}
-          >
-            {isHackathonWithoutDate()
-              ? 'To be announced'
-              : `${new Date(
-                  hackathonData.startDate
-                ).toLocaleDateString()} - ${new Date(
-                  hackathonData.endDate
-                ).toLocaleDateString()}`}
-          </Badge>
-        </Center>
-      </div>
-    </Container>
+        {hackathonData.description && (
+          <RichTextEditor
+            readOnly
+            value={hackathonData.description || ''}
+            id='hackathonDescriptionEditor'
+            style={{
+              backgroundColor: 'transparent',
+              border: 'none'
+            }}
+          />
+        )}
+      </Container>
+    </div>
   )
 }

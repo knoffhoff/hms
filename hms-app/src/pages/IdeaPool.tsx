@@ -7,7 +7,7 @@ import {
 } from '../common/types'
 import IdeaCardList from '../components/lists/IdeaCardList'
 import React, { useContext, useEffect, useState } from 'react'
-import { Button, Center, Checkbox, Group, Modal, Title } from '@mantine/core'
+import { Button, Center, Checkbox, Group, Modal, Title, Container } from '@mantine/core'
 import { getIdeaDetails, getIdeaList } from '../actions/IdeaActions'
 import { useMsal } from '@azure/msal-react'
 import { UserContext } from './Layout'
@@ -15,6 +15,7 @@ import { getListOfHackathons } from '../actions/HackathonActions'
 import IdeaForm from '../components/input-forms/IdeaForm'
 import { MIN_DATE } from '../common/constants'
 import { RichTextEditor } from '@mantine/rte'
+import { heroHeaderStyles } from '../common/styles'
 
 function IdeaPool() {
   const { instance } = useMsal()
@@ -27,6 +28,7 @@ function IdeaPool() {
     {} as HackathonPreview
   )
   const [showUserIdeas, setShowUserIdeas] = useState(false)
+  const { classes } = heroHeaderStyles()
 
   const loadHackathons = () => {
     getListOfHackathons(instance).then((data) => {
@@ -93,21 +95,22 @@ function IdeaPool() {
 
   return (
     <>
-      <Center>
-        <Title order={1}>Idea Pool</Title>
-      </Center>
-      <Center>
-        <RichTextEditor
-          readOnly
-          value={hackathon.description || ''}
-          id='hackathonDescriptionEditor'
-          style={{ 
-            color: 'gray', 
+      <Container className={classes.wrapper} size={1400} style={{ marginBottom: '50px' }}>
+        <Center>
+          <Title className={classes.title} order={2} align={'center'}>Idea Pool</Title>
+        </Center>
+        <Center>
+          <RichTextEditor
+            readOnly
+            value={hackathon.description || ''}
+            id='hackathonDescriptionEditor'
+            style={{
             backgroundColor: 'transparent', 
             border: 'none' 
-          }}
-        />
-      </Center>
+            }}
+          />
+        </Center>
+      </Container>
 
       <Modal
         opened={opened}
