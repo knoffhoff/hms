@@ -54,6 +54,13 @@ export const styles = createStyles((theme) => ({
     lineHeight: '1.5em',
   },
 
+
+  boldText: {
+    fontWeight: 600,
+    fontSize: theme.fontSizes.sm,
+    lineHeight: '1.5em',
+  },
+
   smallText: {
     fontSize: theme.fontSizes.xs,
     lineHeight: '1.5em',
@@ -156,9 +163,40 @@ export const styles = createStyles((theme) => ({
     marginBottom: 30,
   },
 
-  commentTitle: {
-    fontWeight: 600,
+  commentTitle:{
+    fontWeight: 600
   },
+
+  arrowButtonBox: {    
+    backgroundColor:
+      theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.white,
+    borderRadius: borderRadius,
+    border: '1px solid',
+    cursor: 'pointer',
+    '&:hover': {
+      backgroundColor: theme.colorScheme === 'dark'
+          ? theme.colors.dark[4]
+          : theme.colors.dark[0],
+    },
+  },
+
+  arrowButton: {
+    width:17,
+    height:17
+  },
+
+  voterCount: {
+    display: 'flex',
+    justifyContent: 'flex-start',
+    padding: 0,
+    margin: '10px 10px 10px 0',
+  },
+
+  votingButton: {
+    display: 'flex',
+    justifyContent: 'flex-end',
+  },
+
 }))
 
 export const loginStyles = createStyles((theme) => ({

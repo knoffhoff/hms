@@ -133,9 +133,10 @@ export default function CardButtons(props: IProps) {
   }
 
   return (
-    <Group position='center' mt='xl'>
+    <Group position='center'>
       {deleteModal}
       <Button
+        size='xs'
         style={{
           backgroundColor: DELETE_BUTTON_COLOR,
         }}
@@ -145,6 +146,7 @@ export default function CardButtons(props: IProps) {
       </Button>
       {editModal}
       <Button
+        size='xs'
         style={{
           backgroundColor: JOIN_BUTTON_COLOR,
         }}
