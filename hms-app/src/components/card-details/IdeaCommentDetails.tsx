@@ -239,7 +239,7 @@ export default function IdeaCommentDetails(props: IProps) {
           className={classes.noBorderAccordion}
           value={'ideaComment-details'}
         >
-          <Accordion.Control>
+          <Accordion.Control style={{ padding: 0 }}>
             <Text className={classes.commentTitle}>
               {getNullIdeaComments.length} Comments:
             </Text>

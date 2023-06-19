@@ -344,24 +344,19 @@ export default function IdeaDetails(props: IProps) {
             </Accordion.Item>
           </Accordion>
 
-          <Card.Section className={classes.borderSection}>
-            {IdeaComments()}
-          </Card.Section>
-
           <Card.Section pt={16} className={classes.borderSection}>
             <div style={{ display: 'flex', flexWrap: 'wrap' }}>
               <div style={{ flex: '1 0 33%', maxWidth: '33%' }}>
-                <Stack spacing='xs' style={{ paddingLeft: '5%' }}>
+                <Stack spacing='md' style={{ paddingLeft: '5%' }}>
                   {participateButton()}
                   {ideaCreationDate()}
                 </Stack>
               </div>
               <div style={{ flex: '2 0 66%', maxWidth: '66%' }}>
-                <Group position='right'>{ideaButtons()}</Group>
-                {/* <Stack>
+                <Stack spacing={0}>
                   {ideaButtons()}
                   {IdeaComments()}
-                </Stack> */}
+                </Stack>
               </div>
             </div>
           </Card.Section>
