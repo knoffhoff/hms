@@ -315,7 +315,7 @@ export default function IdeaCommentDetails(props: IProps) {
                 </Group>
               </div>
             ))}
-            <Card.Section className={classes.borderSection}>
+            <Card.Section className={classes.noBorderSection}>
               <div
                 style={{
                   marginTop: '10px',

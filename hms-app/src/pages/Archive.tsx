@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import HackathonSelectDropdown from '../components/HackathonSelectDropdown'
-import { Group, Text } from '@mantine/core'
+import { Group, Text, Checkbox, Title, Stack } from '@mantine/core'
 import {
   Hackathon,
   HackathonDropdownMode,
@@ -14,9 +14,11 @@ import { useMsal } from '@azure/msal-react'
 import HackathonHeader from '../components/HackathonHeader'
 import IdeaCardList from '../components/lists/IdeaCardList'
 import { getIdeaDetails } from '../actions/IdeaActions'
+import { UserContext } from './Layout'
 
 export default function Archive() {
   const { instance } = useMsal()
+  const user = useContext(UserContext)
   const [hackathonData, setHackathonData] = useState({} as Hackathon)
   const [selectedHackathonId, setSelectedHackathonId] = useState('')
   const [isHackathonError, setIsHackathonError] = useState(false)
@@ -24,6 +26,8 @@ export default function Archive() {
   const [isIdeaLoading, setIsIdeaLoading] = useState(true)
   const [ideaData, setIdeaData] = useState<Idea>()
   const [relevantIdeaList, setRelevantIdeaList] = useState([] as Idea[])
+  const [userIdeaList, setUserIdeaList] = useState<Idea[]>([])
+  const [showUserIdeas, setShowUserIdeas] = useState(false)
 
   const loadSelectedHackathon = () => {
     getHackathonDetails(instance, selectedHackathonId).then(
@@ -48,11 +52,24 @@ export default function Archive() {
     })
   }
 
+  const userIdea = relevantIdeaList.filter((item) => {
+    const userId = user?.id
+    return item.owner?.id === userId
+  })
+
   useEffect(() => {
-    loadSelectedHackathon()
+    setUserIdeaList([])
     setRelevantIdeaList([])
+    loadSelectedHackathon()
+    setUserIdeaList(userIdea)
     setIsHackathonLoading(true)
-  }, [selectedHackathonId])
+  }, [showUserIdeas, selectedHackathonId])
+
+  // useEffect(() => {
+  //   loadSelectedHackathon()
+  //   setRelevantIdeaList([])
+  //   setIsHackathonLoading(true)
+  // }, [selectedHackathonId])
 
   useEffect(() => {
     loadRelevantIdeaDetails()
@@ -100,13 +117,36 @@ export default function Archive() {
 
       {validHackathon() && (
         <div>
-          <HackathonHeader hackathonData={hackathonData} />
+          <Stack align='flex-start' justify='flex-start' spacing='sm'>
+            <HackathonHeader hackathonData={hackathonData} />
+
+            {showUserIdeas ? (
+              <Title order={2} mt={50}>
+                Your submissions
+              </Title>
+            ) : (
+              <Title order={2} mt={50}>
+                Ideas submitted
+              </Title>
+            )}
+
+            <Checkbox
+              mb={15}
+              size='md'
+              label={'Show my ideas only'}
+              checked={showUserIdeas}
+              onChange={(event) =>
+                setShowUserIdeas(event.currentTarget.checked)
+              }
+            />
+          </Stack>
 
           <IdeaCardList
-            ideas={relevantIdeaList}
+            ideas={showUserIdeas ? userIdeaList : relevantIdeaList}
             columnSize={6}
             type={IdeaCardType.Archive}
             isLoading={isIdeaLoading}
+            onSuccess={loadSelectedHackathon}
           />
         </div>
       )}

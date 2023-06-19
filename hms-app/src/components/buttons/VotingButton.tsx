@@ -1,4 +1,3 @@
-import { Button } from '@mantine/core'
 import {
   createIdeaVoteParticipant,
   removeIdeaVoteParticipant,
@@ -9,9 +8,10 @@ import { HackathonParticipantContext } from '../../pages/AllIdeas'
 import { getIdeaDetails } from '../../actions/IdeaActions'
 import { showNotification, updateNotification } from '@mantine/notifications'
 import { useMsal } from '@azure/msal-react'
-import { Check, X } from 'tabler-icons-react'
+import { Check, X, ArrowBigUpLine, ArrowBigDownLine } from 'tabler-icons-react'
 import { Idea } from '../../common/types'
-import { JOIN_BUTTON_COLOR, LEAVE_BUTTON_COLOR } from '../../common/colors'
+import { styles } from '../../common/styles'
+import { Group } from '@mantine/core'
 
 type IProps = {
   idea: Idea
@@ -32,6 +32,7 @@ export function VoteButtons(props: IProps) {
     userId: '',
     participantId: '',
   })
+  const { classes } = styles()
 
   const removeThisVote = () => {
     removeVote(removeIdeaVoteParticipant, setVoteCheck)
@@ -190,14 +191,18 @@ export function VoteButtons(props: IProps) {
   }
 
   return (
-    <Button
-      disabled={buttonIsDisabled}
-      onClick={voteCheck ? removeThisVote : addThisVote}
-      style={{
-        backgroundColor: voteCheck ? LEAVE_BUTTON_COLOR : JOIN_BUTTON_COLOR,
-      }}
-    >
-      {voteCheck ? 'Remove Vote' : 'Add Vote'}
-    </Button>
+    <>
+      <button
+        disabled={buttonIsDisabled}
+        className={classes.arrowButtonBox}
+        onClick={voteCheck ? removeThisVote : addThisVote}
+      >
+        {voteCheck ? (
+          <ArrowBigDownLine className={classes.arrowButton} />
+        ) : (
+          <ArrowBigUpLine className={classes.arrowButton} />
+        )}
+      </button>
+    </>
   )
 }

@@ -1,4 +1,4 @@
-import { Button } from '@mantine/core'
+import { Group, Switch } from '@mantine/core'
 import {
   createIdeaParticipant,
   removeIdeaParticipant,
@@ -11,7 +11,8 @@ import { showNotification, updateNotification } from '@mantine/notifications'
 import { useMsal } from '@azure/msal-react'
 import { Check, X } from 'tabler-icons-react'
 import { Idea } from '../../common/types'
-import { JOIN_BUTTON_COLOR, LEAVE_BUTTON_COLOR } from '../../common/colors'
+import { styles } from '../../common/styles'
+import { LEAVE_BUTTON_COLOR, RELOAD_BUTTON_COLOR } from '../../common/colors'
 
 type IProps = {
   idea: Idea
@@ -21,6 +22,7 @@ type IProps = {
 export default function ParticipateButton(props: IProps) {
   const hackathonParticipantId = useContext(HackathonParticipantContext)
   const user = useContext(UserContext)
+  const { classes } = styles()
   const { instance } = useMsal()
   const { idea, onSuccess } = props
   const [ideaData, setIdeaData] = useState(idea)
@@ -181,18 +183,28 @@ export default function ParticipateButton(props: IProps) {
   }, [ideaData])
 
   return (
-    <Button
-      disabled={buttonIsDisabled}
-      onClick={
-        participantCheck ? removeThisIdeaParticipant : addThisIdeaParticipant
-      }
-      style={{
-        backgroundColor: participantCheck
-          ? LEAVE_BUTTON_COLOR
-          : JOIN_BUTTON_COLOR,
-      }}
-    >
-      {participantCheck ? 'Leave Idea' : 'Join Idea'}
-    </Button>
+    <>
+      <Group>
+        <Switch
+          color={RELOAD_BUTTON_COLOR}
+          disabled={buttonIsDisabled}
+          checked={participantCheck}
+          onChange={
+            participantCheck
+              ? removeThisIdeaParticipant
+              : addThisIdeaParticipant
+          }
+          thumbIcon={
+            participantCheck ? (
+              <Check size='0.8rem' color={RELOAD_BUTTON_COLOR} />
+            ) : (
+              <X size='0.8rem' color={LEAVE_BUTTON_COLOR} />
+            )
+          }
+          label={<span className={classes.boldText}>Participate</span>}
+          labelPosition='left'
+        />
+      </Group>
+    </>
   )
 }

@@ -72,7 +72,7 @@ export default function ParticipantManager({
     showNotification({
       id: 'participant-load',
       loading: true,
-      title: 'Join Hackathon',
+      title: 'Joining Hackathon',
       message: undefined,
       autoClose: false,
       disallowClose: false,
@@ -116,7 +116,7 @@ export default function ParticipantManager({
     showNotification({
       id: 'participant-load',
       loading: true,
-      title: 'Leave Hackathon',
+      title: 'Leaving Hackathon',
       message: undefined,
       autoClose: false,
       disallowClose: false,
