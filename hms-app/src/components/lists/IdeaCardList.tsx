@@ -16,9 +16,13 @@ export default function IdeaCardList(props: IProps) {
   const { ideas, columnSize, type, isLoading, onSuccess, ishackathonStarted } =
     props
 
-  const IdeasList = ideas.map((idea, index) => {
+  const sortedIdeas = ideas.sort((a, b) => {
+    return a.creationDate > b.creationDate ? -1 : 1
+  })
+
+  const IdeasList = sortedIdeas.map((idea, id) => {
     return (
-      <Grid.Col key={index} sm={columnSize} lg={columnSize}>
+      <Grid.Col key={idea.id} sm={columnSize} lg={columnSize}>
         <div style={{ padding: 10 }}>
           <IdeaDetails
             idea={idea}
