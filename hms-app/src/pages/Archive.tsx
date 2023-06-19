@@ -101,7 +101,7 @@ export default function Archive() {
 
   return (
     <>
-      <Group position={'apart'} my={20}>
+      <Group position={'apart'} mb={20}>
         <HackathonSelectDropdown
           setHackathonId={setSelectedHackathonId}
           context={HackathonDropdownMode.Archive}
