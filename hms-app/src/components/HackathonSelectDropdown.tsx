@@ -164,7 +164,6 @@ export default function HackathonSelectDropdown({
     <>
       <Stack spacing={0}>
         {(context === HackathonDropdownMode.Hackathons ||
-          context === HackathonDropdownMode.MyIdeas ||
           context === HackathonDropdownMode.Archive) && (
           <Text className={classes.title}>Hackathon Selection:</Text>
         )}
