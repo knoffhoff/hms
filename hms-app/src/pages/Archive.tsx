@@ -86,7 +86,6 @@ export default function Archive() {
 
   return (
     <>
-      <Text className={classes.title}>Hackathon Selection:</Text>
       <Group position={'apart'} mb={20}>
         <HackathonSelectDropdown
           setHackathonId={setSelectedHackathonId}

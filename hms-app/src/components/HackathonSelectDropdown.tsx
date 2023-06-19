@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { getListOfHackathons } from '../actions/HackathonActions'
-import { Select, SelectItem } from '@mantine/core'
+import { Select, SelectItem, Text, Stack } from '@mantine/core'
 import { HackathonDropdownMode, HackathonPreview } from '../common/types'
 import { AlertCircle } from 'tabler-icons-react'
 import { useMsal } from '@azure/msal-react'
@@ -11,6 +11,7 @@ import {
   mapHackathonToSerializable,
   setLastSelectedHackathon,
 } from '../common/redux/hackathonSlice'
+import { styles } from '../common/styles'
 
 type Props = {
   setHackathonId: (hackthonID: string) => void
@@ -77,6 +78,7 @@ export default function HackathonSelectDropdown({
 }: Props) {
   const { slug } = useParams()
   const { instance } = useMsal()
+  const { classes } = styles()
   const [isError, setIsError] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
   const [hackathonList, setHackathonList] = useState<HackathonPreview[]>([])
@@ -160,29 +162,37 @@ export default function HackathonSelectDropdown({
 
   return (
     <>
-      {isError && (
-        <Select
-          data={['']}
-          placeholder={'Could not fetch hackathons'}
-          icon={<AlertCircle />}
-          disabled
-          error
-        />
-      )}
-      {isLoading && !isError && (
-        <Select data={['']} placeholder={'Loading...'} disabled />
-      )}
-      {!isLoading && !isError && (
-        <div style={{ width: 385 }}>
+      <Stack spacing={0}>
+        {(context === HackathonDropdownMode.Hackathons ||
+          context === HackathonDropdownMode.MyIdeas ||
+          context === HackathonDropdownMode.Archive) && (
+          <Text className={classes.title}>Hackathon Selection:</Text>
+        )}
+
+        {isError && (
           <Select
-            placeholder={'Select a hackathon'}
-            defaultValue={selectedHackathon?.id}
-            maxDropdownHeight={280}
-            data={selectItems}
-            onChange={handleHackathonSelection}
+            data={['']}
+            placeholder={'Could not fetch hackathons'}
+            icon={<AlertCircle />}
+            disabled
+            error
           />
-        </div>
-      )}
+        )}
+        {isLoading && !isError && (
+          <Select data={['']} placeholder={'Loading...'} disabled />
+        )}
+        {!isLoading && !isError && (
+          <div style={{ width: 385 }}>
+            <Select
+              placeholder={'Select a hackathon'}
+              defaultValue={selectedHackathon?.id}
+              maxDropdownHeight={280}
+              data={selectItems}
+              onChange={handleHackathonSelection}
+            />
+          </div>
+        )}
+      </Stack>
     </>
   )
 }
