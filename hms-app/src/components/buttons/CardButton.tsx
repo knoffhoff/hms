@@ -143,7 +143,7 @@ export default function CardButtons(props: IProps) {
         onClick={() => setDeleteModalOpened(true)}
       >
         Delete
-        <Trash></Trash>
+        <Trash size={20} />
       </Button>
       {editModal}
       <Button
@@ -154,7 +154,7 @@ export default function CardButtons(props: IProps) {
         onClick={() => setEditModalOpened(true)}
       >
         Edit
-        <Edit></Edit>
+        <Edit size={20} />
       </Button>
       {uploadButton()}
       <MoveIdeaModal idea={ideaData} onSuccess={onSuccess} />

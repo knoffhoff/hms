@@ -191,7 +191,7 @@ export default function MoveIdeaModal(props: IProps) {
         color={JOIN_BUTTON_COLOR}
       >
         Move idea
-        <ArrowBigRight />
+        <ArrowBigRight size={20} />
       </Button>
     </>
   )
