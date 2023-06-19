@@ -5,7 +5,7 @@ import { deleteIdea, getIdeaDetails } from '../../actions/IdeaActions'
 import IdeaForm from '../input-forms/IdeaForm'
 import { styles } from '../../common/styles'
 import { showNotification, updateNotification } from '@mantine/notifications'
-import { Check, X } from 'tabler-icons-react'
+import { Check, X, Edit, Trash } from 'tabler-icons-react'
 import { useMsal } from '@azure/msal-react'
 import { DELETE_BUTTON_COLOR, JOIN_BUTTON_COLOR } from '../../common/colors'
 import FinalVideoUploadModal from '../FinalVideoUploadModal'
@@ -143,6 +143,7 @@ export default function CardButtons(props: IProps) {
         onClick={() => setDeleteModalOpened(true)}
       >
         Delete
+        <Trash></Trash>
       </Button>
       {editModal}
       <Button
@@ -153,6 +154,7 @@ export default function CardButtons(props: IProps) {
         onClick={() => setEditModalOpened(true)}
       >
         Edit
+        <Edit></Edit>
       </Button>
       {uploadButton()}
       <MoveIdeaModal idea={ideaData} onSuccess={onSuccess} />
