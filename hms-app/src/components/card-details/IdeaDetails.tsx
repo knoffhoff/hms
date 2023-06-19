@@ -358,6 +358,10 @@ export default function IdeaDetails(props: IProps) {
               </div>
               <div style={{ flex: '2 0 66%', maxWidth: '66%' }}>
                 <Group position='right'>{ideaButtons()}</Group>
+                {/* <Stack>
+                  {ideaButtons()}
+                  {IdeaComments()}
+                </Stack> */}
               </div>
             </div>
           </Card.Section>

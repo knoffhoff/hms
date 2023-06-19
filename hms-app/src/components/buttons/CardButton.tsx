@@ -156,8 +156,8 @@ export default function CardButtons(props: IProps) {
         Edit
         <Edit size={20} />
       </Button>
-      {uploadButton()}
       <MoveIdeaModal idea={ideaData} onSuccess={onSuccess} />
+      {uploadButton()}
     </Group>
   )
 }
