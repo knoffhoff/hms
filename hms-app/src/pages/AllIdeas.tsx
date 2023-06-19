@@ -95,12 +95,11 @@ function AllIdeas() {
     setSearchTerm(event.target.value)
   }
 
-  // Disabled search bar for now
-  // const searchIdea = relevantIdeaList.filter((item) => {
-  //   return item.title?.toLowerCase().includes(searchTerm.toLowerCase())
-  // })
+  const searchIdea = relevantIdeaList.filter((item) => {
+    return item.title?.toLowerCase().includes(searchTerm.toLowerCase())
+  })
 
-  const userIdea = relevantIdeaList.filter((item) => {
+  const userIdea = searchIdea.filter((item) => {
     const userId = user?.id
     return item.owner?.id === userId
   })
@@ -121,6 +120,10 @@ function AllIdeas() {
     }
     return participant
   }
+
+  useEffect(() => {
+    setUserIdeaList(userIdea)
+  }, [searchTerm])
 
   useEffect(() => {
     setUserIdeaList([])
@@ -175,13 +178,12 @@ function AllIdeas() {
               context={HackathonDropdownMode.Hackathons}
             />
 
-            {/* -- Disabled search for now --
             <Input
               variant='default'
               placeholder='Search for idea title...'
               icon={<Search />}
               onChange={handleChangeSearch}
-            /> */}
+            />
           </Group>
 
           {selectedHackathonId === '' && (
@@ -270,7 +272,7 @@ function AllIdeas() {
                   />
                 </Stack>
                 <IdeaCardList
-                  ideas={showUserIdeas ? userIdeaList : relevantIdeaList}
+                  ideas={showUserIdeas ? userIdeaList : searchIdea}
                   columnSize={6}
                   type={IdeaCardType.AllIdeas}
                   isLoading={isIdeaLoading}
