@@ -117,16 +117,14 @@ function AllIdeas() {
   }
 
   useEffect(() => {
-    setUserIdeaList(userIdea)
-  }, [searchTerm])
-
-  useEffect(() => {
-    setUserIdeaList([])
     setRelevantIdeaList([])
     loadSelectedHackathon()
-    setUserIdeaList(userIdea)
     setIsHackathonLoading(true)
-  }, [showUserIdeas, selectedHackathonId])
+  }, [selectedHackathonId])
+
+  useEffect(() => {
+    setUserIdeaList(userIdea)
+  }, [showUserIdeas, searchTerm])
 
   useEffect(() => {
     if (ideaData)
