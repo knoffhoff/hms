@@ -1,13 +1,13 @@
 import React, { useEffect, useState, useContext } from 'react'
 import HackathonSelectDropdown from '../components/HackathonSelectDropdown'
-import { Group, Text, Checkbox, Title, Stack } from '@mantine/core'
+import { Group, Text, Checkbox, Title, Stack, Input } from '@mantine/core'
 import {
   Hackathon,
   HackathonDropdownMode,
   Idea,
   IdeaCardType,
 } from '../common/types'
-import { ArrowUp } from 'tabler-icons-react'
+import { ArrowUp, Search } from 'tabler-icons-react'
 import { NULL_DATE } from '../common/constants'
 import { getHackathonDetails } from '../actions/HackathonActions'
 import { useMsal } from '@azure/msal-react'
@@ -19,6 +19,7 @@ import { UserContext } from './Layout'
 export default function Archive() {
   const { instance } = useMsal()
   const user = useContext(UserContext)
+  const [searchTerm, setSearchTerm] = useState('')
   const [hackathonData, setHackathonData] = useState({} as Hackathon)
   const [selectedHackathonId, setSelectedHackathonId] = useState('')
   const [isHackathonError, setIsHackathonError] = useState(false)
@@ -52,7 +53,15 @@ export default function Archive() {
     })
   }
 
-  const userIdea = relevantIdeaList.filter((item) => {
+  const handleChangeSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(event.target.value)
+  }
+
+  const searchIdea = relevantIdeaList.filter((item) => {
+    return item.title?.toLowerCase().includes(searchTerm.toLowerCase())
+  })
+
+  const userIdea = searchIdea.filter((item) => {
     const userId = user?.id
     return item.owner?.id === userId
   })
@@ -64,12 +73,6 @@ export default function Archive() {
     setUserIdeaList(userIdea)
     setIsHackathonLoading(true)
   }, [showUserIdeas, selectedHackathonId])
-
-  // useEffect(() => {
-  //   loadSelectedHackathon()
-  //   setRelevantIdeaList([])
-  //   setIsHackathonLoading(true)
-  // }, [selectedHackathonId])
 
   useEffect(() => {
     loadRelevantIdeaDetails()
@@ -117,32 +120,41 @@ export default function Archive() {
 
       {validHackathon() && (
         <div>
-          <Stack align='flex-start' justify='flex-start' spacing='sm'>
-            <HackathonHeader hackathonData={hackathonData} />
+          <Group my={20}>
+            <Stack align='flex-start' justify='flex-start' spacing='sm'>
+              <HackathonHeader hackathonData={hackathonData} />
 
-            {showUserIdeas ? (
-              <Title order={2} mt={50}>
-                Your submissions
-              </Title>
-            ) : (
-              <Title order={2} mt={50}>
-                Ideas submitted
-              </Title>
-            )}
+              {showUserIdeas ? (
+                <Title order={2} mt={50}>
+                  Your submissions
+                </Title>
+              ) : (
+                <Title order={2} mt={50}>
+                  Ideas submitted
+                </Title>
+              )}
 
-            <Checkbox
-              mb={15}
-              size='md'
-              label={'Show my ideas only'}
-              checked={showUserIdeas}
-              onChange={(event) =>
-                setShowUserIdeas(event.currentTarget.checked)
-              }
-            />
-          </Stack>
+              <Checkbox
+                mb={15}
+                size='md'
+                label={'Show my ideas only'}
+                checked={showUserIdeas}
+                onChange={(event) =>
+                  setShowUserIdeas(event.currentTarget.checked)
+                }
+              />
+            </Stack>
+
+            <Input
+                variant='default'
+                placeholder='Search for idea title...'
+                icon={<Search />}
+                onChange={handleChangeSearch}
+              />
+          </Group>
 
           <IdeaCardList
-            ideas={showUserIdeas ? userIdeaList : relevantIdeaList}
+            ideas={showUserIdeas ? userIdeaList : searchIdea}
             columnSize={6}
             type={IdeaCardType.Archive}
             isLoading={isIdeaLoading}
