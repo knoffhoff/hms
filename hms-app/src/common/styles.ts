@@ -1,4 +1,4 @@
-import { createStyles } from '@mantine/core'
+import { createStyles, MantineSize, MantineTheme } from '@mantine/core'
 import {
   blue3,
   HEADER_HOVER_COLOR_DARK,
@@ -9,6 +9,23 @@ import {
 
 const borderRadius = 15
 const headerItemBorder = borderRadius / 2
+const applyTheme = (
+  theme: MantineTheme,
+  darkColor: string,
+  lightColor: string
+) =>
+  theme.colorScheme === 'dark'
+    ? theme.colors[darkColor]
+    : theme.colors[lightColor]
+const applyPadding = (theme: MantineTheme) => ({
+  paddingLeft: theme.spacing.md,
+  paddingRight: theme.spacing.md,
+  paddingBottom: theme.spacing.md,
+})
+const applyFontSize = (theme: MantineTheme, size: MantineSize) => ({
+  fontSize: theme.fontSizes[size],
+  lineHeight: '1.5em',
+})
 
 export const styles = createStyles((theme) => ({
   presentationsCards: {
@@ -17,42 +34,28 @@ export const styles = createStyles((theme) => ({
   },
 
   card: {
-    backgroundColor:
-      theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.white,
+    backgroundColor: applyTheme(theme, 'dark[7]', 'white'),
     borderRadius: borderRadius,
   },
 
   noBorderSection: {
-    paddingLeft: theme.spacing.md,
-    paddingRight: theme.spacing.md,
-    paddingBottom: theme.spacing.md,
-    fontSize: theme.fontSizes.md,
+    ...applyPadding(theme),
+    ...applyFontSize(theme, 'md'),
     fontWeight: 500,
   },
 
   borderSection: {
-    borderBottom: `1px solid ${
-      theme.colorScheme === 'dark' ? theme.colors.dark[4] : theme.colors.gray[3]
-    }`,
-    paddingLeft: theme.spacing.md,
-    paddingRight: theme.spacing.md,
-    paddingBottom: theme.spacing.md,
+    ...applyPadding(theme),
+    borderBottom: `1px solid ${applyTheme(theme, 'dark[4]', 'gray[3]')}`,
   },
 
   ideaCardHeader: {
-    borderBottom: `1px solid ${
-      theme.colorScheme === 'dark' ? theme.colors.dark[4] : theme.colors.gray[3]
-    }`,
-    paddingLeft: theme.spacing.md,
-    paddingRight: theme.spacing.md,
-    paddingBottom: theme.spacing.md,
+    ...applyPadding(theme),
     paddingTop: theme.spacing.md,
+    borderBottom: `1px solid ${applyTheme(theme, 'dark[4]', 'gray[3]')}`,
   },
 
-  text: {
-    fontSize: theme.fontSizes.sm,
-    lineHeight: '1.5em',
-  },
+  text: applyFontSize(theme, 'sm'),
 
 
   boldText: {
@@ -62,25 +65,24 @@ export const styles = createStyles((theme) => ({
   },
 
   smallText: {
-    fontSize: theme.fontSizes.xs,
-    lineHeight: '1.5em',
+    ...applyFontSize(theme, 'xs'),
     color: theme.colors.gray[6],
   },
 
   presentationText: {
-    fontSize: theme.fontSizes.md,
+    ...applyFontSize(theme, 'md'),
     marginTop: '1vh',
   },
 
   title: {
-    fontSize: theme.fontSizes.lg,
+    ...applyFontSize(theme, 'lg'),
     fontWeight: 600,
     marginTop: '1vh',
   },
 
   label: {
+    ...applyFontSize(theme, 'md'),
     textTransform: 'uppercase',
-    fontSize: theme.fontSizes.md,
     fontWeight: 700,
     marginTop: '1vh',
     color: theme.colors.gray[6],
@@ -92,12 +94,11 @@ export const styles = createStyles((theme) => ({
 
   link: {
     display: 'block',
-    lineHeight: 1,
     padding: '8px 12px',
     borderRadius: headerItemBorder,
     textDecoration: 'none',
     color: TEXT_COLOR_WHITE,
-    fontSize: theme.fontSizes.sm,
+    ...applyFontSize(theme, 'sm'),
     fontWeight: 500,
 
     '&:hover': {
