@@ -14,7 +14,6 @@ import { useMsal } from '@azure/msal-react'
 import HackathonHeader from '../components/HackathonHeader'
 import IdeaCardList from '../components/lists/IdeaCardList'
 import { getIdeaDetails } from '../actions/IdeaActions'
-import { styles } from '../common/styles'
 
 export default function Archive() {
   const { instance } = useMsal()
@@ -25,7 +24,6 @@ export default function Archive() {
   const [isIdeaLoading, setIsIdeaLoading] = useState(true)
   const [ideaData, setIdeaData] = useState<Idea>()
   const [relevantIdeaList, setRelevantIdeaList] = useState([] as Idea[])
-  const { classes } = styles()
 
   const loadSelectedHackathon = () => {
     getHackathonDetails(instance, selectedHackathonId).then(
