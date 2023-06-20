@@ -211,7 +211,7 @@ function AllIdeas() {
                     onSuccess={closeModal}
                   />
                 </Modal>
-                <Group style={{ marginBottom: '50px' }}>
+                <Group>
                   {participantCheck ? (
                     <Button
                       onClick={() => setOpened(true)}
