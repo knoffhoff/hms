@@ -70,7 +70,11 @@ function IdeaPool() {
     }
   }
 
-  const userIdea = relevantIdeaList.filter((item) => {
+  const searchIdea = relevantIdeaList.filter((item) => {
+    return item.title?.toLowerCase().includes(searchTerm.toLowerCase())
+  })
+
+  const userIdea = searchIdea.filter((item) => {
     const userId = user?.id
     return item.owner?.id === userId
   })
@@ -167,7 +171,7 @@ function IdeaPool() {
           </Group>
 
           <IdeaCardList
-            ideas={showUserIdeas ? userIdeaList : relevantIdeaList}
+            ideas={showUserIdeas ? userIdeaList : searchIdea}
             columnSize={6}
             type={IdeaCardType.IdeaPortal}
             isLoading={false}
