@@ -43,7 +43,7 @@ export const styles = createStyles((theme) => ({
   },
 
   card: {
-    backgroundColor: applyTheme(theme, 'dark','4', 'white', null),
+    backgroundColor: applyTheme(theme, 'dark','7', 'white', null),
     borderRadius: borderRadius,
   },
 
