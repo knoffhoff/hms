@@ -137,9 +137,7 @@ export default function CardButtons(props: IProps) {
       {deleteModal}
       <Button
         size='xs'
-        style={{
-          backgroundColor: DELETE_BUTTON_COLOR,
-        }}
+        color={DELETE_BUTTON_COLOR}
         onClick={() => setDeleteModalOpened(true)}
       >
         Delete
@@ -148,9 +146,7 @@ export default function CardButtons(props: IProps) {
       {editModal}
       <Button
         size='xs'
-        style={{
-          backgroundColor: JOIN_BUTTON_COLOR,
-        }}
+        color={JOIN_BUTTON_COLOR}
         onClick={() => setEditModalOpened(true)}
       >
         Edit
