@@ -101,6 +101,7 @@ export default function Archive() {
 
   return (
     <>
+      <HackathonHeader hackathonData={hackathonData} />
       <Group position={'apart'} mb={20}>
         <HackathonSelectDropdown
           setHackathonId={setSelectedHackathonId}
@@ -118,7 +119,6 @@ export default function Archive() {
       {validHackathon() && (
         <div>
           <Stack align='flex-start' justify='flex-start' spacing='sm'>
-            <HackathonHeader hackathonData={hackathonData} />
 
             {showUserIdeas ? (
               <Title order={2} mt={50}>
