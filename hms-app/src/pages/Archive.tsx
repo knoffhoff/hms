@@ -148,14 +148,14 @@ export default function Archive() {
               />
             </Stack>
             <SearchBar onSearchTermChange={setSearchTerm} />
-            <IdeaCardList
-              ideas={showUserIdeas ? userIdeaList : searchIdea}
-              columnSize={6}
-              type={IdeaCardType.Archive}
-              isLoading={isIdeaLoading}
-              onSuccess={loadSelectedHackathon}
-            />
           </Group>
+          <IdeaCardList
+            ideas={showUserIdeas ? userIdeaList : searchIdea}
+            columnSize={6}
+            type={IdeaCardType.Archive}
+            isLoading={isIdeaLoading}
+            onSuccess={loadSelectedHackathon}
+          />
         </>
       )}
     </>
