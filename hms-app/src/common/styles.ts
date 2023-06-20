@@ -9,23 +9,32 @@ import {
 
 const borderRadius = 15
 const headerItemBorder = borderRadius / 2
+
 const applyTheme = (
   theme: MantineTheme,
   darkColor: string,
-  lightColor: string
+  darkIndex: string | null,
+  lightColor: string,
+  lightIndex: string | null
 ) =>
-  theme.colorScheme === 'dark'
-    ? theme.colors[darkColor]
-    : theme.colors[lightColor]
+{
+  const darkValue = darkIndex ? (theme.colors[darkColor] as any)[darkIndex] : theme.colors[darkColor]
+  const lightValue = lightIndex ? (theme.colors[lightColor] as any)[lightIndex] : theme.colors[lightColor]
+
+  return theme.colorScheme === 'dark' ? darkValue : lightValue
+}
+
 const applyPadding = (theme: MantineTheme) => ({
   paddingLeft: theme.spacing.md,
   paddingRight: theme.spacing.md,
   paddingBottom: theme.spacing.md,
 })
+
 const applyFontSize = (theme: MantineTheme, size: MantineSize) => ({
   fontSize: theme.fontSizes[size],
   lineHeight: '1.5em',
 })
+
 
 export const styles = createStyles((theme) => ({
   presentationsCards: {
@@ -34,7 +43,7 @@ export const styles = createStyles((theme) => ({
   },
 
   card: {
-    backgroundColor: applyTheme(theme, 'dark[7]', 'white'),
+    backgroundColor: applyTheme(theme, 'dark','4', 'white', null),
     borderRadius: borderRadius,
   },
 
@@ -45,14 +54,14 @@ export const styles = createStyles((theme) => ({
   },
 
   borderSection: {
-    ...applyPadding(theme),
-    borderBottom: `1px solid ${applyTheme(theme, 'dark[4]', 'gray[3]')}`,
+    ...applyPadding(theme),      
+    borderBottom: `1px solid ${applyTheme(theme, 'dark', '4', 'gray', '3')}`,
   },
 
   ideaCardHeader: {
     ...applyPadding(theme),
     paddingTop: theme.spacing.md,
-    borderBottom: `1px solid ${applyTheme(theme, 'dark[4]', 'gray[3]')}`,
+    borderBottom: `1px solid ${applyTheme(theme, 'dark', '4', 'gray', '3')}`,
   },
 
   text: applyFontSize(theme, 'sm'),
