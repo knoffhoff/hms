@@ -249,9 +249,6 @@ function AllIdeas() {
                     hackathonData={hackathonData}
                   />
                 </Group>
-
-                <HackathonHeader hackathonData={hackathonData} />
-
                 <Stack align='flex-start' justify='flex-start' spacing='sm'>
                   <Title order={2} mt={50}>
                     {showUserIdeas
