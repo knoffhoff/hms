@@ -67,12 +67,15 @@ export default function Archive() {
   })
 
   useEffect(() => {
-    setUserIdeaList([])
     setRelevantIdeaList([])
     loadSelectedHackathon()
-    setUserIdeaList(userIdea)
     setIsHackathonLoading(true)
-  }, [showUserIdeas, selectedHackathonId])
+  }, [selectedHackathonId])
+
+
+  useEffect(() => {
+    setUserIdeaList(userIdea)
+  }, [showUserIdeas])
 
   useEffect(() => {
     loadRelevantIdeaDetails()

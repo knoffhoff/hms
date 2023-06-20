@@ -2,7 +2,6 @@ import React, { createContext, useContext, useEffect, useState } from 'react'
 import {
   Button,
   Group,
-  Input,
   Modal,
   Text,
   Tooltip,
@@ -10,7 +9,7 @@ import {
   Title,
   Stack,
 } from '@mantine/core'
-import { ArrowUp, Check, Search, X } from 'tabler-icons-react'
+import { ArrowUp } from 'tabler-icons-react'
 import IdeaCardList from '../components/lists/IdeaCardList'
 import {
   Hackathon,
@@ -21,7 +20,6 @@ import {
   ParticipantPreview,
 } from '../common/types'
 import HackathonSelectDropdown from '../components/HackathonSelectDropdown'
-import RelevantIdeasLoader from '../components/RelevantIdeasLoader'
 import { NULL_DATE } from '../common/constants'
 import HackathonHeader from '../components/HackathonHeader'
 import { UserContext } from './Layout'
@@ -32,6 +30,7 @@ import { JOIN_BUTTON_COLOR } from '../common/colors'
 import { getHackathonDetails } from '../actions/HackathonActions'
 import { getIdeaDetails } from '../actions/IdeaActions'
 import { useMsal } from '@azure/msal-react'
+import SearchBar from '../components/SearchBar'
 
 export const HackathonParticipantContext = createContext('')
 export const HackathonVotingContext = createContext(false)
@@ -91,10 +90,6 @@ function AllIdeas() {
     loadSelectedHackathon()
   }
 
-  const handleChangeSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(event.target.value)
-  }
-
   const searchIdea = relevantIdeaList.filter((item) => {
     return item.title?.toLowerCase().includes(searchTerm.toLowerCase())
   })
@@ -122,16 +117,14 @@ function AllIdeas() {
   }
 
   useEffect(() => {
-    setUserIdeaList(userIdea)
-  }, [searchTerm])
-
-  useEffect(() => {
-    setUserIdeaList([])
     setRelevantIdeaList([])
     loadSelectedHackathon()
-    setUserIdeaList(userIdea)
     setIsHackathonLoading(true)
-  }, [showUserIdeas, selectedHackathonId])
+  }, [selectedHackathonId])
+
+  useEffect(() => {
+    setUserIdeaList(userIdea)
+  }, [showUserIdeas, searchTerm])
 
   useEffect(() => {
     if (ideaData)
@@ -178,12 +171,7 @@ function AllIdeas() {
               context={HackathonDropdownMode.Hackathons}
             />
 
-            <Input
-              variant='default'
-              placeholder='Search for idea title...'
-              icon={<Search />}
-              onChange={handleChangeSearch}
-            />
+            <SearchBar onSearchTermChange={setSearchTerm} />
           </Group>
 
           {selectedHackathonId === '' && (

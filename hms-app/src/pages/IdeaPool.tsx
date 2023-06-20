@@ -34,6 +34,7 @@ function IdeaPool() {
   const [hackathon, setHackathon] = useState<HackathonPreview>(
     {} as HackathonPreview
   )
+  const [userIdeaList, setUserIdeaList] = useState<Idea[]>([])
   const [showUserIdeas, setShowUserIdeas] = useState(false)
 
   const loadHackathons = () => {
@@ -67,7 +68,7 @@ function IdeaPool() {
     }
   }
 
-  const filteredIdeas = relevantIdeaList.filter((item) => {
+  const userIdea = relevantIdeaList.filter((item) => {
     const userId = user?.id
     return item.owner?.id === userId
   })
@@ -78,7 +79,11 @@ function IdeaPool() {
 
   useEffect(() => {
     loadHackathonIdeas()
-  }, [hackathon, showUserIdeas])
+  }, [hackathon])
+
+  useEffect(() => {
+    setUserIdeaList(userIdea)
+  }, [showUserIdeas])
 
   useEffect(() => {
     loadIdeaDetails()
@@ -109,10 +114,10 @@ function IdeaPool() {
           readOnly
           value={hackathon.description || ''}
           id='hackathonDescriptionEditor'
-          style={{ 
-            color: 'gray', 
-            backgroundColor: 'transparent', 
-            border: 'none' 
+          style={{
+            color: 'gray',
+            backgroundColor: 'transparent',
+            border: 'none',
           }}
         />
       </Center>
@@ -141,7 +146,7 @@ function IdeaPool() {
           <Stack align='flex-start' justify='flex-start' spacing='sm'>
             {showUserIdeas ? (
               <Title order={2} mt={50} mb={5} ml={15}>
-                your submitted ideas: {filteredIdeas.length}
+                your submitted ideas: {userIdea.length}
               </Title>
             ) : (
               <Title order={2} mt={50} mb={5} ml={15}>
@@ -161,7 +166,7 @@ function IdeaPool() {
           </Stack>
 
           <IdeaCardList
-            ideas={showUserIdeas ? filteredIdeas : relevantIdeaList}
+            ideas={showUserIdeas ? userIdeaList : relevantIdeaList}
             columnSize={6}
             type={IdeaCardType.IdeaPortal}
             isLoading={false}
