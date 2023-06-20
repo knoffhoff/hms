@@ -30,7 +30,7 @@ import { JOIN_BUTTON_COLOR } from '../common/colors'
 import { getHackathonDetails } from '../actions/HackathonActions'
 import { getIdeaDetails } from '../actions/IdeaActions'
 import { useMsal } from '@azure/msal-react'
-import SearchBar from '../components/SearchBar'
+import SearchBar from '../components/searchBar'
 
 export const HackathonParticipantContext = createContext('')
 export const HackathonVotingContext = createContext(false)

@@ -15,6 +15,7 @@ import HackathonHeader from '../components/HackathonHeader'
 import IdeaCardList from '../components/lists/IdeaCardList'
 import { getIdeaDetails } from '../actions/IdeaActions'
 import { UserContext } from './Layout'
+import SearchBar from '../components/searchBar'
 
 export default function Archive() {
   const { instance } = useMsal()
@@ -72,7 +73,6 @@ export default function Archive() {
     setIsHackathonLoading(true)
   }, [selectedHackathonId])
 
-
   useEffect(() => {
     setUserIdeaList(userIdea)
   }, [showUserIdeas])
@@ -122,11 +122,11 @@ export default function Archive() {
       )}
 
       {validHackathon() && (
-        <div>
-          <Group my={20}>
-            <Stack align='flex-start' justify='flex-start' spacing='sm'>
-              <HackathonHeader hackathonData={hackathonData} />
+        <>
+          <HackathonHeader hackathonData={hackathonData} />
 
+          <Group position={'apart'} my={20}>
+            <Stack align='flex-start' justify='flex-start' spacing='sm'>
               {showUserIdeas ? (
                 <Title order={2} mt={50}>
                   Your submissions
@@ -147,23 +147,16 @@ export default function Archive() {
                 }
               />
             </Stack>
-
-            <Input
-                variant='default'
-                placeholder='Search for idea title...'
-                icon={<Search />}
-                onChange={handleChangeSearch}
-              />
+            <SearchBar onSearchTermChange={setSearchTerm} />
+            <IdeaCardList
+              ideas={showUserIdeas ? userIdeaList : searchIdea}
+              columnSize={6}
+              type={IdeaCardType.Archive}
+              isLoading={isIdeaLoading}
+              onSuccess={loadSelectedHackathon}
+            />
           </Group>
-
-          <IdeaCardList
-            ideas={showUserIdeas ? userIdeaList : searchIdea}
-            columnSize={6}
-            type={IdeaCardType.Archive}
-            isLoading={isIdeaLoading}
-            onSuccess={loadSelectedHackathon}
-          />
-        </div>
+        </>
       )}
     </>
   )
