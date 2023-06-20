@@ -1,6 +1,16 @@
 import React, { createContext, useContext, useEffect, useState } from 'react'
-import { Button, Group, Input, Modal, Text, Tooltip } from '@mantine/core'
-import { ArrowUp, Search } from 'tabler-icons-react'
+import {
+  Button,
+  Group,
+  Input,
+  Modal,
+  Text,
+  Tooltip,
+  Checkbox,
+  Title,
+  Stack,
+} from '@mantine/core'
+import { ArrowUp, Check, Search, X } from 'tabler-icons-react'
 import IdeaCardList from '../components/lists/IdeaCardList'
 import {
   Hackathon,
@@ -19,18 +29,26 @@ import { styles } from '../common/styles'
 import IdeaForm from '../components/input-forms/IdeaForm'
 import ParticipantManager from '../components/ParticipantManager'
 import { JOIN_BUTTON_COLOR } from '../common/colors'
+import { getHackathonDetails } from '../actions/HackathonActions'
+import { getIdeaDetails } from '../actions/IdeaActions'
+import { useMsal } from '@azure/msal-react'
 
 export const HackathonParticipantContext = createContext('')
 export const HackathonVotingContext = createContext(false)
 
 function AllIdeas() {
+  const { instance } = useMsal()
   const { classes } = styles()
   const user = useContext(UserContext)
   const [searchTerm, setSearchTerm] = useState('')
-  const [isLoading, setIsLoading] = useState(true)
+  const [isHackathonLoading, setIsHackathonLoading] = useState(true)
   const [participantCheck, setParticipantCheck] = useState(false)
   const [selectedHackathonId, setSelectedHackathonId] = useState('')
-  const [relevantIdeaList, setRelevantIdeas] = useState<Idea[]>([])
+  const [relevantIdeaList, setRelevantIdeaList] = useState<Idea[]>([])
+  const [userIdeaList, setUserIdeaList] = useState<Idea[]>([])
+  const [ideaData, setIdeaData] = useState<Idea>()
+  const [isIdeaLoading, setIsIdeaLoading] = useState(true)
+  const [showUserIdeas, setShowUserIdeas] = useState(false)
   const [participantInfo, setParticipantInfo] = useState({
     userId: '',
     hackathonId: '',
@@ -45,6 +63,22 @@ function AllIdeas() {
   const [opened, setOpened] = useState(false)
   const [buttonIsDisabled, setButtonIsDisabled] = useState(false)
 
+  const loadSelectedHackathon = () => {
+    getHackathonDetails(instance, selectedHackathonId).then((data) => {
+      setHackathonData(data)
+      setIsHackathonLoading(false)
+    })
+  }
+
+  const loadRelevantIdeaDetails = () => {
+    hackathonData.ideas?.map((ideaPreviews) => {
+      getIdeaDetails(instance, ideaPreviews.id).then((data) => {
+        setIdeaData(data)
+        setIsIdeaLoading(false)
+      })
+    })
+  }
+
   function isHackathonStarted() {
     const today = new Date()
     return hackathonData.startDate <= today
@@ -54,21 +88,21 @@ function AllIdeas() {
     if (hackathonData.id !== undefined) {
       setOpened(false)
     }
-    reloadHackathon()
-  }
-
-  const reloadHackathon = () => {
-    const id = selectedHackathonId
-    setSelectedHackathonId('')
-    setSelectedHackathonId(id)
+    loadSelectedHackathon()
   }
 
   const handleChangeSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value)
   }
 
-  const filteredIdeas = relevantIdeaList.filter((item) => {
-    return item.title?.toLowerCase().includes(searchTerm.toLowerCase())
+  // Disabled search bar for now
+  // const searchIdea = relevantIdeaList.filter((item) => {
+  //   return item.title?.toLowerCase().includes(searchTerm.toLowerCase())
+  // })
+
+  const userIdea = relevantIdeaList.filter((item) => {
+    const userId = user?.id
+    return item.owner?.id === userId
   })
 
   const findParticipant = () => {
@@ -89,6 +123,30 @@ function AllIdeas() {
   }
 
   useEffect(() => {
+    setUserIdeaList([])
+    setRelevantIdeaList([])
+    loadSelectedHackathon()
+    setUserIdeaList(userIdea)
+    setIsHackathonLoading(true)
+  }, [showUserIdeas, selectedHackathonId])
+
+  useEffect(() => {
+    if (ideaData)
+      if (
+        !relevantIdeaList
+          .map((relevant) => {
+            return relevant.id
+          })
+          .includes(ideaData.id)
+      ) {
+        setRelevantIdeaList((relevantIdeaList) => {
+          return [...relevantIdeaList, ideaData]
+        })
+      }
+  }, [ideaData])
+
+  useEffect(() => {
+    loadRelevantIdeaDetails()
     const participant = findParticipant()
     setParticipantCheck(!!participant)
     if (participant)
@@ -112,18 +170,19 @@ function AllIdeas() {
         value={participantInfo.participantId}
       >
         <HackathonVotingContext.Provider value={hackathonData.votingOpened}>
-          <Group position={'apart'} my={20}>
+          <Group position={'apart'} mb={20}>
             <HackathonSelectDropdown
               setHackathonId={setSelectedHackathonId}
               context={HackathonDropdownMode.Hackathons}
             />
 
+            {/* -- Disabled search for now --
             <Input
               variant='default'
               placeholder='Search for idea title...'
               icon={<Search />}
               onChange={handleChangeSearch}
-            />
+            /> */}
           </Group>
 
           {selectedHackathonId === '' && (
@@ -133,14 +192,7 @@ function AllIdeas() {
             </>
           )}
 
-          <RelevantIdeasLoader
-            setHackathon={setHackathonData}
-            setRelevantIdeas={setRelevantIdeas}
-            selectedHackathonId={selectedHackathonId}
-            setLoading={setIsLoading}
-          />
-
-          {!isLoading &&
+          {!isHackathonLoading &&
             hackathonData.startDate !== NULL_DATE &&
             hackathonData.startDate.toString() !== 'Invalid Date' && (
               <>
@@ -197,18 +249,38 @@ function AllIdeas() {
                     hackathonData={hackathonData}
                   />
                 </Group>
+
+                <HackathonHeader hackathonData={hackathonData} />
+
+                <Stack align='flex-start' justify='flex-start' spacing='sm'>
+                  <Title order={2} mt={50}>
+                    {showUserIdeas
+                      ? 'My submission: ' + userIdeaList.length
+                      : 'Ideas submitted: ' + relevantIdeaList.length}
+                  </Title>
+
+                  <Checkbox
+                    mb={15}
+                    size='md'
+                    label={'Show my ideas only'}
+                    checked={showUserIdeas}
+                    onChange={(event) =>
+                      setShowUserIdeas(event.currentTarget.checked)
+                    }
+                  />
+                </Stack>
                 <IdeaCardList
-                  ideas={filteredIdeas}
+                  ideas={showUserIdeas ? userIdeaList : relevantIdeaList}
                   columnSize={6}
                   type={IdeaCardType.AllIdeas}
-                  isLoading={isLoading}
-                  onSuccess={reloadHackathon}
+                  isLoading={isIdeaLoading}
+                  onSuccess={loadSelectedHackathon}
                   ishackathonStarted={isHackathonStarted()}
                 />
               </>
             )}
 
-          {isLoading && selectedHackathonId && <div>Loading...</div>}
+          {isHackathonLoading && selectedHackathonId && <div>Loading...</div>}
         </HackathonVotingContext.Provider>
       </HackathonParticipantContext.Provider>
     </>

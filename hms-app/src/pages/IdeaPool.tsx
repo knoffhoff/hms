@@ -7,7 +7,15 @@ import {
 } from '../common/types'
 import IdeaCardList from '../components/lists/IdeaCardList'
 import React, { useContext, useEffect, useState } from 'react'
-import { Button, Center, Checkbox, Group, Modal, Title, Container } from '@mantine/core'
+import {
+  Button,
+  Center,
+  Checkbox,
+  Group,
+  Modal,
+  Stack,
+  Title, Container,
+} from '@mantine/core'
 import { getIdeaDetails, getIdeaList } from '../actions/IdeaActions'
 import { useMsal } from '@azure/msal-react'
 import { UserContext } from './Layout'
@@ -62,8 +70,8 @@ function IdeaPool() {
   }
 
   const filteredIdeas = relevantIdeaList.filter((item) => {
-    const userId = user?.id 
-    return item.owner?.id === userId 
+    const userId = user?.id
+    return item.owner?.id === userId
   })
 
   useEffect(() => {
@@ -127,27 +135,33 @@ function IdeaPool() {
         />
       </Modal>
 
-      <Group position='left' mt={10}>
+      <Group position='left' mt={10} ml={15}>
         <Button onClick={() => setOpened(true)}>New Idea</Button>
-
-        <Checkbox
-          label={'Show my ideas'}
-          checked={showUserIdeas}
-          onChange={(event) => setShowUserIdeas(event.currentTarget.checked)}
-        />
       </Group>
 
       {relevantIdeaList.length != null && (
         <div>
-          {showUserIdeas ? (
-            <Title order={2} mt={50} mb={30}>
-              your submitted ideas: {filteredIdeas.length}
-            </Title>
-          ) : (
-            <Title order={2} mt={50} mb={30}>
-              all submitted ideas: {relevantIdeaList.length}
-            </Title>
-          )}
+          <Stack align='flex-start' justify='flex-start' spacing='sm'>
+            {showUserIdeas ? (
+              <Title order={2} mt={50} mb={5} ml={15}>
+                your submitted ideas: {filteredIdeas.length}
+              </Title>
+            ) : (
+              <Title order={2} mt={50} mb={5} ml={15}>
+                All submitted ideas: {relevantIdeaList.length}
+              </Title>
+            )}
+
+            <Checkbox
+              mb={15}
+              ml={15}
+              label={'Show my ideas'}
+              checked={showUserIdeas}
+              onChange={(event) =>
+                setShowUserIdeas(event.currentTarget.checked)
+              }
+            />
+          </Stack>
 
           <IdeaCardList
             ideas={showUserIdeas ? filteredIdeas : relevantIdeaList}
