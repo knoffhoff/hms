@@ -191,7 +191,7 @@ export default function MoveIdeaModal(props: IProps) {
         color={JOIN_BUTTON_COLOR}
       >
         Move idea
-        <ArrowBigRight size={20} />
+        <ArrowBigRight size={20} style={{ marginLeft: 3 }} />
       </Button>
     </>
   )
