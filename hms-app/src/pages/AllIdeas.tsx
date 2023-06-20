@@ -170,8 +170,6 @@ function AllIdeas() {
               setHackathonId={setSelectedHackathonId}
               context={HackathonDropdownMode.Hackathons}
             />
-
-            <SearchBar onSearchTermChange={setSearchTerm} />
           </Group>
 
           {selectedHackathonId === '' && (
@@ -242,23 +240,26 @@ function AllIdeas() {
 
                 <HackathonHeader hackathonData={hackathonData} />
 
-                <Stack align='flex-start' justify='flex-start' spacing='sm'>
-                  <Title order={2} mt={50}>
-                    {showUserIdeas
-                      ? 'My submission: ' + userIdeaList.length
-                      : 'Ideas submitted: ' + relevantIdeaList.length}
-                  </Title>
+                <Group position='apart' my={20}>
+                  <Stack align='flex-start' justify='flex-start' spacing='sm'>
+                    <Title order={2} mt={50}>
+                      {showUserIdeas
+                        ? 'My submission: ' + userIdeaList.length
+                        : 'Ideas submitted: ' + relevantIdeaList.length}
+                    </Title>
 
-                  <Checkbox
-                    mb={15}
-                    size='md'
-                    label={'Show my ideas only'}
-                    checked={showUserIdeas}
-                    onChange={(event) =>
-                      setShowUserIdeas(event.currentTarget.checked)
-                    }
-                  />
-                </Stack>
+                    <Checkbox
+                      mb={15}
+                      size='md'
+                      label={'Show my ideas only'}
+                      checked={showUserIdeas}
+                      onChange={(event) =>
+                        setShowUserIdeas(event.currentTarget.checked)
+                      }
+                    />
+                  </Stack>
+                  <SearchBar onSearchTermChange={setSearchTerm} />
+                </Group>
                 <IdeaCardList
                   ideas={showUserIdeas ? userIdeaList : searchIdea}
                   columnSize={6}
