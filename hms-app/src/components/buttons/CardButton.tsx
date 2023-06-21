@@ -114,8 +114,8 @@ export default function CardButtons(props: IProps) {
       onClose={() => setEditModalOpened(false)}
       withCloseButton={false}
       size='55%'
+      title='Edit Idea'
     >
-      <Text className={classes.title}>Edit Idea</Text>
       <IdeaForm
         ideaId={ideaData.id}
         idea={ideaData}
@@ -125,9 +125,6 @@ export default function CardButtons(props: IProps) {
         setOpened={closeEditModal}
         onSuccess={onSuccess}
       />
-      <Text className={classes.text}>
-        (This window will automatically close as soon as the idea is changed)
-      </Text>
     </Modal>
   )
 
