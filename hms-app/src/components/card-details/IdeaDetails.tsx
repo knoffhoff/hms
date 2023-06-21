@@ -11,6 +11,7 @@ import {
   Flex,
   Col,
   useMantineTheme,
+  Grid,
 } from '@mantine/core'
 import { Category, Idea, IdeaCardType, Skill } from '../../common/types'
 import { getIdeaDetails } from '../../actions/IdeaActions'
@@ -102,20 +103,24 @@ export default function IdeaDetails(props: IProps) {
   // Idea Card Functions
   const ideaHeader = () => {
     return (
-      <Group position='left'>
-        <Stack align={'center'} spacing={'xs'}>
+      <Stack spacing={'xs'}>
+        <Group>
           <Avatar color='indigo' radius='xl' size='md'>
             {getInitials(ideaData.owner?.firstName, ideaData.owner?.lastName)}
           </Avatar>
+
           <Badge size='sm'>
             {ideaData.owner?.firstName} {ideaData.owner?.lastName}
           </Badge>
-        </Stack>
-        <Text className={classes.title}>
-          {ideaData.title?.slice(0, MAX_TITLE_LENGTH)}
-          {ideaData.title?.length > MAX_TITLE_LENGTH ? '...' : ''}
-        </Text>
-      </Group>
+          {ideaCreationDate()}
+        </Group>
+        <Group>
+          <Text className={classes.title} mt={0}>
+            {ideaData.title?.slice(0, MAX_TITLE_LENGTH)}
+            {ideaData.title?.length > MAX_TITLE_LENGTH ? '...' : ''}
+          </Text>
+        </Group>
+      </Stack>
     )
   }
 
@@ -312,51 +317,48 @@ export default function IdeaDetails(props: IProps) {
     <>
       {!isLoading && type !== IdeaCardType.Voting ? (
         <Card withBorder className={classes.card}>
-          <Card.Section className={classes.ideaCardHeader}>
-            <Accordion
-              onChange={(value) => setAccordionOpen(value === 'idea-details')}
-            >
-              <Accordion.Item
-                className={classes.noBorderAccordion}
-                value={'idea-details'}
+          <Grid columns={8}>
+            <Grid.Col span={7}>
+              <Accordion
+                onChange={(value) => setAccordionOpen(value === 'idea-details')}
               >
-                <Accordion.Control>
-                  <Group noWrap mb={5} position='apart'>
-                    {ideaHeader()}
-                    {hackathonVotingOpened && (
-                      <Stack align={'Center'} spacing={'xs'}>
-                        {voting()}
-                      </Stack>
-                    )}
-                  </Group>
-                </Accordion.Control>
-                <Accordion.Panel>
-                  {ideaCardText('Description', ideaData.description)}
-                  {ideaCardText('Problem', ideaData.problem)}
-                  {ideaCardText('Goal', ideaData.goal)}
-                  {ideaCategory()}
-                  {ideaRequiredSkills()}
-                  {participantsList()}
-                </Accordion.Panel>
-              </Accordion.Item>
-            </Accordion>
-          </Card.Section>
+                <Accordion.Item
+                  className={classes.noBorderAccordion}
+                  value={'idea-details'}
+                >
+                  <Accordion.Control>
+                    <Group noWrap mb={5} position='apart'>
+                      {ideaHeader()}
+                    </Group>
+                  </Accordion.Control>
+                  <Accordion.Panel>
+                    {ideaCardText('Description', ideaData.description)}
+                    {ideaCardText('Problem', ideaData.problem)}
+                    {ideaCardText('Goal', ideaData.goal)}
+                    {ideaCategory()}
+                    {ideaRequiredSkills()}
+                    {participantsList()}
+                  </Accordion.Panel>
+                </Accordion.Item>
+              </Accordion>
+            </Grid.Col>
+            <Grid.Col span={1}>{hackathonVotingOpened && voting()}</Grid.Col>
+          </Grid>
 
           <Card.Section pt={16} className={classes.borderSection}>
             <div style={{ display: 'flex', flexWrap: 'wrap' }}>
               <div style={{ flex: '1 0 33%', maxWidth: '33%' }}>
-                <Stack spacing='md' style={{ paddingLeft: '5%' }}>
+                <Stack spacing='md' style={{ paddingLeft: '16px' }}>
                   {participateButton()}
-                  {ideaCreationDate()}
                 </Stack>
               </div>
               <div style={{ flex: '2 0 66%', maxWidth: '66%' }}>
                 <Stack spacing={0}>
                   <Group position='right'>{ideaButtons()}</Group>
-                  {IdeaComments()}
                 </Stack>
               </div>
             </div>
+            {IdeaComments()}
           </Card.Section>
         </Card>
       ) : (

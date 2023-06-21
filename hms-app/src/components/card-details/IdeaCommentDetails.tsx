@@ -234,7 +234,7 @@ export default function IdeaCommentDetails(props: IProps) {
 
   return (
     <div>
-      <Accordion>
+      <Accordion style={{ paddingLeft: '16px' }}>
         <Accordion.Item
           className={classes.noBorderAccordion}
           value={'ideaComment-details'}
