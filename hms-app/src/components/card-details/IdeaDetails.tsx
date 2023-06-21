@@ -214,20 +214,13 @@ export default function IdeaDetails(props: IProps) {
   const voting = () => {
     return (
       type === IdeaCardType.AllIdeas && (
-        <Card.Section className={classes.noBorderSection}>
-          <Text className={classes.label}>Votes:</Text>
-          <Card.Section>
-            <Stack align={'center'} spacing={'xs'}>
-              <Flex justify='center'>
-                <Col className={classes.votingButton}>{votingButton()}</Col>
-                <Col className={classes.voterCount}>
-                  <Text className={classes.text}>
-                    {ideaData.voters?.length}
-                  </Text>
-                </Col>
-              </Flex>
-            </Stack>
-          </Card.Section>
+        <Card.Section ml={16}>
+          <Group spacing='xs'>
+            <Text className={classes.label} mt={0}>
+              Votes: {ideaData.voters?.length}
+            </Text>
+            {votingButton()}
+          </Group>
         </Card.Section>
       )
     )
@@ -317,45 +310,50 @@ export default function IdeaDetails(props: IProps) {
     <>
       {!isLoading && type !== IdeaCardType.Voting ? (
         <Card withBorder className={classes.card}>
-          <Grid columns={8}>
-            <Grid.Col span={7}>
-              <Accordion
-                onChange={(value) => setAccordionOpen(value === 'idea-details')}
-              >
-                <Accordion.Item
-                  className={classes.noBorderAccordion}
-                  value={'idea-details'}
-                >
-                  <Accordion.Control>
-                    <Group noWrap mb={5} position='apart'>
-                      {ideaHeader()}
-                    </Group>
-                  </Accordion.Control>
-                  <Accordion.Panel>
-                    {ideaCardText('Description', ideaData.description)}
-                    {ideaCardText('Problem', ideaData.problem)}
-                    {ideaCardText('Goal', ideaData.goal)}
-                    {ideaCategory()}
-                    {ideaRequiredSkills()}
-                    {participantsList()}
-                  </Accordion.Panel>
-                </Accordion.Item>
-              </Accordion>
-            </Grid.Col>
-            <Grid.Col span={1}>{hackathonVotingOpened && voting()}</Grid.Col>
-          </Grid>
+          {hackathonVotingOpened && (
+            <Card.Section pt={16} className={classes.borderSection}>
+              {voting()}
+            </Card.Section>
+          )}
+
+          <Accordion
+            onChange={(value) => setAccordionOpen(value === 'idea-details')}
+            className={classes.borderSection}
+            p={0}
+          >
+            <Accordion.Item
+              className={classes.noBorderAccordion}
+              value={'idea-details'}
+            >
+              <Accordion.Control>
+                <Group noWrap mb={5} position='apart'>
+                  {ideaHeader()}
+                </Group>
+              </Accordion.Control>
+              <Accordion.Panel>
+                {ideaCardText('Description', ideaData.description)}
+                {ideaCardText('Problem', ideaData.problem)}
+                {ideaCardText('Goal', ideaData.goal)}
+                {ideaCategory()}
+                {ideaRequiredSkills()}
+                {participantsList()}
+              </Accordion.Panel>
+            </Accordion.Item>
+          </Accordion>
 
           <Card.Section pt={16} className={classes.borderSection}>
             <div style={{ display: 'flex', flexWrap: 'wrap' }}>
-              <div style={{ flex: '1 0 33%', maxWidth: '33%' }}>
-                <Stack spacing='md' style={{ paddingLeft: '16px' }}>
-                  {participateButton()}
-                </Stack>
+              <div
+                style={{
+                  flex: '1 0 33%',
+                  maxWidth: '33%',
+                  paddingLeft: '16px',
+                }}
+              >
+                {participateButton()}
               </div>
               <div style={{ flex: '2 0 66%', maxWidth: '66%' }}>
-                <Stack spacing={0}>
-                  <Group position='right'>{ideaButtons()}</Group>
-                </Stack>
+                <Group position='right'>{ideaButtons()}</Group>
               </div>
             </div>
             {IdeaComments()}

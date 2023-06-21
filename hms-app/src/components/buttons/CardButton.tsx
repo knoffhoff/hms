@@ -1,5 +1,12 @@
 import { useEffect, useState } from 'react'
-import { Button, Group, Modal, Text, UnstyledButton, Stack } from '@mantine/core'
+import {
+  Button,
+  Group,
+  Modal,
+  Text,
+  UnstyledButton,
+  Stack,
+} from '@mantine/core'
 import { Idea, IdeaCardType, IdeaFormType } from '../../common/types'
 import { deleteIdea, getIdeaDetails } from '../../actions/IdeaActions'
 import IdeaForm from '../input-forms/IdeaForm'
@@ -146,14 +153,14 @@ export default function CardButtons(props: IProps) {
         <Edit size={20} style={{ marginLeft: 3 }} />
       </Button>
 
-      {uploadButton()}
-
       {deleteModal}
       <UnstyledButton onClick={() => setDeleteModalOpened(true)}>
         <Text size='sm' color='red' style={{ textDecoration: 'underline' }}>
           Delete
         </Text>
       </UnstyledButton>
+
+      {uploadButton()}
     </Group>
   )
 }

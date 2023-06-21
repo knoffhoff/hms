@@ -11,7 +11,8 @@ import { useMsal } from '@azure/msal-react'
 import { Check, X, ArrowBigUpLine, ArrowBigDownLine } from 'tabler-icons-react'
 import { Idea } from '../../common/types'
 import { styles } from '../../common/styles'
-import { Group } from '@mantine/core'
+import { Group, Switch } from '@mantine/core'
+import { RELOAD_BUTTON_COLOR, LEAVE_BUTTON_COLOR } from '../../common/colors'
 
 type IProps = {
   idea: Idea
@@ -192,17 +193,21 @@ export function VoteButtons(props: IProps) {
 
   return (
     <>
-      <button
-        disabled={buttonIsDisabled}
-        className={classes.arrowButtonBox}
-        onClick={voteCheck ? removeThisVote : addThisVote}
-      >
-        {voteCheck ? (
-          <ArrowBigDownLine className={classes.arrowButton} />
-        ) : (
-          <ArrowBigUpLine className={classes.arrowButton} />
-        )}
-      </button>
+      <Group>
+        <Switch
+          color={RELOAD_BUTTON_COLOR}
+          disabled={buttonIsDisabled}
+          checked={voteCheck}
+          onChange={voteCheck ? removeThisVote : addThisVote}
+          thumbIcon={
+            voteCheck ? (
+              <Check size='0.8rem' color={RELOAD_BUTTON_COLOR} />
+            ) : (
+              <X size='0.8rem' color={LEAVE_BUTTON_COLOR} />
+            )
+          }
+        />
+      </Group>
     </>
   )
 }
