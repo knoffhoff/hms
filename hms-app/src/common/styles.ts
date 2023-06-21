@@ -9,15 +9,18 @@ import {
 
 const borderRadius = 15
 const headerItemBorder = borderRadius / 2
+
 const applyPadding = (theme: MantineTheme) => ({
   paddingLeft: theme.spacing.md,
   paddingRight: theme.spacing.md,
   paddingBottom: theme.spacing.md,
 })
+
 const applyFontSize = (theme: MantineTheme, size: MantineSize) => ({
   fontSize: theme.fontSizes[size],
   lineHeight: '1.5em',
 })
+
 
 export const styles = createStyles((theme) => ({
   presentationsCards: {
