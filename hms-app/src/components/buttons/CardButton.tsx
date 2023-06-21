@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Button, Group, Modal, Text, UnstyledButton } from '@mantine/core'
+import { Button, Group, Modal, Text, UnstyledButton, Stack } from '@mantine/core'
 import { Idea, IdeaCardType, IdeaFormType } from '../../common/types'
 import { deleteIdea, getIdeaDetails } from '../../actions/IdeaActions'
 import IdeaForm from '../input-forms/IdeaForm'
@@ -68,19 +68,19 @@ export default function CardButtons(props: IProps) {
       onClose={() => setDeleteModalOpened(false)}
       withCloseButton={false}
     >
-      <Text className={classes.text}>
-        Are you sure you want to delete this idea?
-      </Text>
-      <Text className={classes.title}>Title: {ideaData.title}</Text>
-      <Button
-        style={{ backgroundColor: DELETE_BUTTON_COLOR }}
-        onClick={() => deleteSelectedIdea()}
-      >
-        Yes, delete this idea
-      </Button>
-      <Text className={classes.text}>
-        (This window will automatically close as soon as the idea is deleted)
-      </Text>
+      <Stack align='center' justify='space-around' spacing='lg'>
+        <Text className={classes.text} fw={700} tt='uppercase' td='underline'>
+          Are you sure you want to delete this idea?
+        </Text>
+
+        <Text className={classes.title}>Title: {ideaData.title}</Text>
+        <Button
+          style={{ backgroundColor: DELETE_BUTTON_COLOR }}
+          onClick={() => deleteSelectedIdea()}
+        >
+          Yes, delete this idea
+        </Button>
+      </Stack>
     </Modal>
   )
 

@@ -15,10 +15,12 @@ import HackathonHeader from '../components/HackathonHeader'
 import IdeaCardList from '../components/lists/IdeaCardList'
 import { getIdeaDetails } from '../actions/IdeaActions'
 import { UserContext } from './Layout'
+import SearchBar from '../components/searchBar'
 
 export default function Archive() {
   const { instance } = useMsal()
   const user = useContext(UserContext)
+  const [searchTerm, setSearchTerm] = useState('')
   const [hackathonData, setHackathonData] = useState({} as Hackathon)
   const [selectedHackathonId, setSelectedHackathonId] = useState('')
   const [isHackathonError, setIsHackathonError] = useState(false)
@@ -52,24 +54,24 @@ export default function Archive() {
     })
   }
 
-  const userIdea = relevantIdeaList.filter((item) => {
+  const searchIdea = relevantIdeaList.filter((item) => {
+    return item.title?.toLowerCase().includes(searchTerm.toLowerCase())
+  })
+
+  const userIdea = searchIdea.filter((item) => {
     const userId = user?.id
     return item.owner?.id === userId
   })
 
   useEffect(() => {
-    setUserIdeaList([])
     setRelevantIdeaList([])
     loadSelectedHackathon()
-    setUserIdeaList(userIdea)
     setIsHackathonLoading(true)
-  }, [showUserIdeas, selectedHackathonId])
+  }, [selectedHackathonId])
 
-  // useEffect(() => {
-  //   loadSelectedHackathon()
-  //   setRelevantIdeaList([])
-  //   setIsHackathonLoading(true)
-  // }, [selectedHackathonId])
+  useEffect(() => {
+    setUserIdeaList(userIdea)
+  }, [showUserIdeas])
 
   useEffect(() => {
     loadRelevantIdeaDetails()
@@ -116,39 +118,37 @@ export default function Archive() {
       )}
 
       {validHackathon() && (
-        <div>
-          <Stack align='flex-start' justify='flex-start' spacing='sm'>
-            <HackathonHeader hackathonData={hackathonData} />
+        <>
+          <HackathonHeader hackathonData={hackathonData} />
 
-            {showUserIdeas ? (
+          <Group position={'apart'} my={20}>
+            <Stack align='flex-start' justify='flex-start' spacing='sm'>
               <Title order={2} mt={50}>
-                Your submissions
+                {showUserIdeas
+                  ? 'My Submissions: ' + userIdeaList.length
+                  : 'Ideas submitted: ' + searchIdea.length}
               </Title>
-            ) : (
-              <Title order={2} mt={50}>
-                Ideas submitted
-              </Title>
-            )}
 
-            <Checkbox
-              mb={15}
-              size='md'
-              label={'Show my ideas only'}
-              checked={showUserIdeas}
-              onChange={(event) =>
-                setShowUserIdeas(event.currentTarget.checked)
-              }
-            />
-          </Stack>
-
+              <Checkbox
+                mb={15}
+                size='md'
+                label={'Show my ideas only'}
+                checked={showUserIdeas}
+                onChange={(event) =>
+                  setShowUserIdeas(event.currentTarget.checked)
+                }
+              />
+            </Stack>
+            <SearchBar onSearchTermChange={setSearchTerm} />
+          </Group>
           <IdeaCardList
-            ideas={showUserIdeas ? userIdeaList : relevantIdeaList}
+            ideas={showUserIdeas ? userIdeaList : searchIdea}
             columnSize={6}
             type={IdeaCardType.Archive}
             isLoading={isIdeaLoading}
             onSuccess={loadSelectedHackathon}
           />
-        </div>
+        </>
       )}
     </>
   )
