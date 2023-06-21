@@ -258,6 +258,7 @@ function AllIdeas() {
                   </Stack>
                   <SearchBar onSearchTermChange={setSearchTerm} />
                 </Group>
+
                 <IdeaCardList
                   ideas={showUserIdeas ? userIdeaList : searchIdea}
                   columnSize={6}
