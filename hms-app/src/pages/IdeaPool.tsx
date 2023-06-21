@@ -154,7 +154,7 @@ function IdeaPool() {
               <Title order={2} mt={50}>
                 {showUserIdeas
                   ? 'My submission: ' + userIdeaList.length
-                  : 'Ideas submitted: ' + relevantIdeaList.length}
+                  : 'Ideas submitted: ' + searchIdea.length}
               </Title>
 
               <Checkbox

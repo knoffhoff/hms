@@ -1,13 +1,13 @@
 import React, { useEffect, useState, useContext } from 'react'
 import HackathonSelectDropdown from '../components/HackathonSelectDropdown'
-import { Group, Text, Checkbox, Title, Stack, Input } from '@mantine/core'
+import { Group, Text, Checkbox, Title, Stack } from '@mantine/core'
 import {
   Hackathon,
   HackathonDropdownMode,
   Idea,
   IdeaCardType,
 } from '../common/types'
-import { ArrowUp, Search } from 'tabler-icons-react'
+import { ArrowUp } from 'tabler-icons-react'
 import { NULL_DATE } from '../common/constants'
 import { getHackathonDetails } from '../actions/HackathonActions'
 import { useMsal } from '@azure/msal-react'
@@ -52,10 +52,6 @@ export default function Archive() {
         setIsIdeaLoading(false)
       })
     })
-  }
-
-  const handleChangeSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(event.target.value)
   }
 
   const searchIdea = relevantIdeaList.filter((item) => {
@@ -127,15 +123,11 @@ export default function Archive() {
 
           <Group position={'apart'} my={20}>
             <Stack align='flex-start' justify='flex-start' spacing='sm'>
-              {showUserIdeas ? (
-                <Title order={2} mt={50}>
-                  Your submissions
-                </Title>
-              ) : (
-                <Title order={2} mt={50}>
-                  Ideas submitted
-                </Title>
-              )}
+              <Title order={2} mt={50}>
+                {showUserIdeas
+                  ? 'My Submissions: ' + userIdeaList.length
+                  : 'Ideas submitted: ' + searchIdea.length}
+              </Title>
 
               <Checkbox
                 mb={15}
