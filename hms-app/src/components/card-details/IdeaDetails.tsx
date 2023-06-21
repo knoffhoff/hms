@@ -212,11 +212,11 @@ export default function IdeaDetails(props: IProps) {
     return (
       type === IdeaCardType.AllIdeas && (
         <Card.Section ml={16}>
-          <Group spacing='xs'>
+          <Group spacing='xs' position={'apart'} mr={16}>
+            {votingButton()}
             <Text className={classes.label} mt={0}>
               Votes: {ideaData.voters?.length}
             </Text>
-            {votingButton()}
           </Group>
         </Card.Section>
       )
@@ -313,30 +313,26 @@ export default function IdeaDetails(props: IProps) {
             </Card.Section>
           )}
 
-          <Accordion
-            onChange={(value) => setAccordionOpen(value === 'idea-details')}
-            className={classes.borderSection}
-            p={0}
-          >
-            <Accordion.Item
-              className={classes.noBorderAccordion}
-              value={'idea-details'}
+          <Card.Section className={classes.borderSection}>
+            <Accordion
+              onChange={(value) => setAccordionOpen(value === 'idea-details')}
             >
-              <Accordion.Control>
-                <Group noWrap mb={5} position='apart'>
-                  {ideaHeader()}
-                </Group>
-              </Accordion.Control>
-              <Accordion.Panel>
-                {ideaCardText('Description', ideaData.description)}
-                {ideaCardText('Problem', ideaData.problem)}
-                {ideaCardText('Goal', ideaData.goal)}
-                {ideaCategory()}
-                {ideaRequiredSkills()}
-                {participantsList()}
-              </Accordion.Panel>
-            </Accordion.Item>
-          </Accordion>
+              <Accordion.Item
+                className={classes.noBorderAccordion}
+                value={'idea-details'}
+              >
+                <Accordion.Control>{ideaHeader()}</Accordion.Control>
+                <Accordion.Panel>
+                  {ideaCardText('Description', ideaData.description)}
+                  {ideaCardText('Problem', ideaData.problem)}
+                  {ideaCardText('Goal', ideaData.goal)}
+                  {ideaCategory()}
+                  {ideaRequiredSkills()}
+                  {participantsList()}
+                </Accordion.Panel>
+              </Accordion.Item>
+            </Accordion>
+          </Card.Section>
 
           <Card.Section pt={16} className={classes.borderSection}>
             <div style={{ display: 'flex', flexWrap: 'wrap' }}>

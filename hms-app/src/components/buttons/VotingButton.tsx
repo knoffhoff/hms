@@ -8,10 +8,10 @@ import { HackathonParticipantContext } from '../../pages/AllIdeas'
 import { getIdeaDetails } from '../../actions/IdeaActions'
 import { showNotification, updateNotification } from '@mantine/notifications'
 import { useMsal } from '@azure/msal-react'
-import { Check, X, ArrowBigUpLine, ArrowBigDownLine } from 'tabler-icons-react'
+import { Check, X } from 'tabler-icons-react'
 import { Idea } from '../../common/types'
 import { styles } from '../../common/styles'
-import { Group, Switch } from '@mantine/core'
+import { Switch } from '@mantine/core'
 import { RELOAD_BUTTON_COLOR, LEAVE_BUTTON_COLOR } from '../../common/colors'
 
 type IProps = {
@@ -192,22 +192,20 @@ export function VoteButtons(props: IProps) {
   }
 
   return (
-    <>
-      <Group>
-        <Switch
-          color={RELOAD_BUTTON_COLOR}
-          disabled={buttonIsDisabled}
-          checked={voteCheck}
-          onChange={voteCheck ? removeThisVote : addThisVote}
-          thumbIcon={
-            voteCheck ? (
-              <Check size='0.8rem' color={RELOAD_BUTTON_COLOR} />
-            ) : (
-              <X size='0.8rem' color={LEAVE_BUTTON_COLOR} />
-            )
-          }
-        />
-      </Group>
-    </>
+    <Switch
+      color={RELOAD_BUTTON_COLOR}
+      disabled={buttonIsDisabled}
+      checked={voteCheck}
+      onChange={voteCheck ? removeThisVote : addThisVote}
+      thumbIcon={
+        voteCheck ? (
+          <Check size='0.8rem' color={RELOAD_BUTTON_COLOR} />
+        ) : (
+          <X size='0.8rem' color={LEAVE_BUTTON_COLOR} />
+        )
+      }
+      label={<span className={classes.boldText}>Vote</span>}
+      labelPosition='left'
+    />
   )
 }
