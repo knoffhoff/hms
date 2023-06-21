@@ -23,10 +23,12 @@ import { getListOfHackathons } from '../actions/HackathonActions'
 import IdeaForm from '../components/input-forms/IdeaForm'
 import { MIN_DATE } from '../common/constants'
 import { RichTextEditor } from '@mantine/rte'
+import SearchBar from '../components/searchBar'
 
 function IdeaPool() {
   const { instance } = useMsal()
   const user = useContext(UserContext)
+  const [searchTerm, setSearchTerm] = useState('')
   const [allIdeaPreviews, setAllIdeaPreviews] = useState<IdeaPreview[]>([])
   const [ideaData, setIdeaData] = useState<Idea>()
   const [relevantIdeaList, setRelevantIdeaList] = useState<Idea[]>([])
@@ -34,6 +36,7 @@ function IdeaPool() {
   const [hackathon, setHackathon] = useState<HackathonPreview>(
     {} as HackathonPreview
   )
+  const [userIdeaList, setUserIdeaList] = useState<Idea[]>([])
   const [showUserIdeas, setShowUserIdeas] = useState(false)
 
   const loadHackathons = () => {
@@ -67,7 +70,11 @@ function IdeaPool() {
     }
   }
 
-  const filteredIdeas = relevantIdeaList.filter((item) => {
+  const searchIdea = relevantIdeaList.filter((item) => {
+    return item.title?.toLowerCase().includes(searchTerm.toLowerCase())
+  })
+
+  const userIdea = searchIdea.filter((item) => {
     const userId = user?.id
     return item.owner?.id === userId
   })
@@ -78,7 +85,11 @@ function IdeaPool() {
 
   useEffect(() => {
     loadHackathonIdeas()
-  }, [hackathon, showUserIdeas])
+  }, [hackathon])
+
+  useEffect(() => {
+    setUserIdeaList(userIdea)
+  }, [showUserIdeas])
 
   useEffect(() => {
     loadIdeaDetails()
@@ -109,10 +120,10 @@ function IdeaPool() {
           readOnly
           value={hackathon.description || ''}
           id='hackathonDescriptionEditor'
-          style={{ 
-            color: 'gray', 
-            backgroundColor: 'transparent', 
-            border: 'none' 
+          style={{
+            color: 'gray',
+            backgroundColor: 'transparent',
+            border: 'none',
           }}
         />
       </Center>
@@ -138,30 +149,29 @@ function IdeaPool() {
 
       {relevantIdeaList.length != null && (
         <div>
-          <Stack align='flex-start' justify='flex-start' spacing='sm'>
-            {showUserIdeas ? (
-              <Title order={2} mt={50} mb={5} ml={15}>
-                your submitted ideas: {filteredIdeas.length}
+          <Group position='apart' my={20}>
+            <Stack align='flex-start' justify='flex-start' spacing='sm'>
+              <Title order={2} mt={50}>
+                {showUserIdeas
+                  ? 'My submission: ' + userIdeaList.length
+                  : 'Ideas submitted: ' + searchIdea.length}
               </Title>
-            ) : (
-              <Title order={2} mt={50} mb={5} ml={15}>
-                All submitted ideas: {relevantIdeaList.length}
-              </Title>
-            )}
 
-            <Checkbox
-              mb={15}
-              ml={15}
-              label={'Show my ideas'}
-              checked={showUserIdeas}
-              onChange={(event) =>
-                setShowUserIdeas(event.currentTarget.checked)
-              }
-            />
-          </Stack>
+              <Checkbox
+                mb={15}
+                size='md'
+                label={'Show my ideas only'}
+                checked={showUserIdeas}
+                onChange={(event) =>
+                  setShowUserIdeas(event.currentTarget.checked)
+                }
+              />
+            </Stack>
+            <SearchBar onSearchTermChange={setSearchTerm} />
+          </Group>
 
           <IdeaCardList
-            ideas={showUserIdeas ? filteredIdeas : relevantIdeaList}
+            ideas={showUserIdeas ? userIdeaList : searchIdea}
             columnSize={6}
             type={IdeaCardType.IdeaPortal}
             isLoading={false}
