@@ -9,14 +9,6 @@ import {
 
 const borderRadius = 15
 const headerItemBorder = borderRadius / 2
-const applyTheme = (
-  theme: MantineTheme,
-  darkColor: string,
-  lightColor: string
-) =>
-  theme.colorScheme === 'dark'
-    ? theme.colors[darkColor]
-    : theme.colors[lightColor]
 const applyPadding = (theme: MantineTheme) => ({
   paddingLeft: theme.spacing.md,
   paddingRight: theme.spacing.md,
@@ -34,7 +26,8 @@ export const styles = createStyles((theme) => ({
   },
 
   card: {
-    backgroundColor: applyTheme(theme, 'dark[7]', 'white'),
+    backgroundColor:
+      theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.white,
     borderRadius: borderRadius,
   },
 
@@ -46,17 +39,20 @@ export const styles = createStyles((theme) => ({
 
   borderSection: {
     ...applyPadding(theme),
-    borderBottom: `1px solid ${applyTheme(theme, 'dark[4]', 'gray[3]')}`,
+    borderBottom: `1px solid ${
+      theme.colorScheme === 'dark' ? theme.colors.dark[4] : theme.colors.gray[3]
+    }`,
   },
 
   ideaCardHeader: {
     ...applyPadding(theme),
     paddingTop: theme.spacing.md,
-    borderBottom: `1px solid ${applyTheme(theme, 'dark[4]', 'gray[3]')}`,
+    borderBottom: `1px solid ${
+      theme.colorScheme === 'dark' ? theme.colors.dark[4] : theme.colors.gray[3]
+    }`,
   },
 
   text: applyFontSize(theme, 'sm'),
-
 
   boldText: {
     fontWeight: 600,
@@ -164,26 +160,27 @@ export const styles = createStyles((theme) => ({
     marginBottom: 30,
   },
 
-  commentTitle:{
-    fontWeight: 600
+  commentTitle: {
+    fontWeight: 600,
   },
 
-  arrowButtonBox: {    
+  arrowButtonBox: {
     backgroundColor:
       theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.white,
     borderRadius: borderRadius,
     border: '1px solid',
     cursor: 'pointer',
     '&:hover': {
-      backgroundColor: theme.colorScheme === 'dark'
+      backgroundColor:
+        theme.colorScheme === 'dark'
           ? theme.colors.dark[4]
           : theme.colors.dark[0],
     },
   },
 
   arrowButton: {
-    width:17,
-    height:17
+    width: 17,
+    height: 17,
   },
 
   voterCount: {
@@ -197,7 +194,6 @@ export const styles = createStyles((theme) => ({
     display: 'flex',
     justifyContent: 'flex-end',
   },
-
 }))
 
 export const loginStyles = createStyles((theme) => ({
