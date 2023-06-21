@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react'
-import { Button, Group, Modal, Text } from '@mantine/core'
+import { Button, Group, Modal, Text, UnstyledButton } from '@mantine/core'
 import { Idea, IdeaCardType, IdeaFormType } from '../../common/types'
 import { deleteIdea, getIdeaDetails } from '../../actions/IdeaActions'
 import IdeaForm from '../input-forms/IdeaForm'
 import { styles } from '../../common/styles'
 import { showNotification, updateNotification } from '@mantine/notifications'
-import { Check, X, Edit, Trash } from 'tabler-icons-react'
+import { Check, X, Edit } from 'tabler-icons-react'
 import { useMsal } from '@azure/msal-react'
-import { DELETE_BUTTON_COLOR, JOIN_BUTTON_COLOR } from '../../common/colors'
+import { DELETE_BUTTON_COLOR } from '../../common/colors'
 import FinalVideoUploadModal from '../FinalVideoUploadModal'
 import MoveIdeaModal from '../MoveIdeaModal'
 
@@ -134,26 +134,26 @@ export default function CardButtons(props: IProps) {
 
   return (
     <Group position='center'>
-      {deleteModal}
-      <Button
-        size='xs'
-        color={DELETE_BUTTON_COLOR}
-        onClick={() => setDeleteModalOpened(true)}
-      >
-        Delete
-        <Trash size={20} style={{ marginLeft: 3 }} />
-      </Button>
+      <MoveIdeaModal idea={ideaData} onSuccess={onSuccess} />
+
       {editModal}
       <Button
         size='xs'
-        color={JOIN_BUTTON_COLOR}
+        variant='outline'
         onClick={() => setEditModalOpened(true)}
       >
         Edit
         <Edit size={20} style={{ marginLeft: 3 }} />
       </Button>
-      <MoveIdeaModal idea={ideaData} onSuccess={onSuccess} />
+
       {uploadButton()}
+
+      {deleteModal}
+      <UnstyledButton onClick={() => setDeleteModalOpened(true)}>
+        <Text size='sm' color='red' style={{ textDecoration: 'underline' }}>
+          Delete
+        </Text>
+      </UnstyledButton>
     </Group>
   )
 }

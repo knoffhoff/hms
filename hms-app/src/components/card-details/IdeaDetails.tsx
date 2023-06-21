@@ -313,36 +313,34 @@ export default function IdeaDetails(props: IProps) {
       {!isLoading && type !== IdeaCardType.Voting ? (
         <Card withBorder className={classes.card}>
           <Card.Section className={classes.ideaCardHeader}>
-            <Group noWrap mb={5} position='apart'>
-              {ideaHeader()}
-              {hackathonVotingOpened && (
-                <Stack align={'Center'} spacing={'xs'}>
-                  {voting()}
-                </Stack>
-              )}
-            </Group>
-          </Card.Section>
-          <Accordion
-            onChange={(value) => setAccordionOpen(value === 'idea-details')}
-          >
-            <Accordion.Item
-              className={classes.noBorderAccordion}
-              value={'idea-details'}
+            <Accordion
+              onChange={(value) => setAccordionOpen(value === 'idea-details')}
             >
-              <Accordion.Control>
-                {!accordionOpen && 'Show details'}
-                {accordionOpen && 'Hide details'}
-              </Accordion.Control>
-              <Accordion.Panel>
-                {ideaCardText('Description', ideaData.description)}
-                {ideaCardText('Problem', ideaData.problem)}
-                {ideaCardText('Goal', ideaData.goal)}
-                {ideaCategory()}
-                {ideaRequiredSkills()}
-                {participantsList()}
-              </Accordion.Panel>
-            </Accordion.Item>
-          </Accordion>
+              <Accordion.Item
+                className={classes.noBorderAccordion}
+                value={'idea-details'}
+              >
+                <Accordion.Control>
+                  <Group noWrap mb={5} position='apart'>
+                    {ideaHeader()}
+                    {hackathonVotingOpened && (
+                      <Stack align={'Center'} spacing={'xs'}>
+                        {voting()}
+                      </Stack>
+                    )}
+                  </Group>
+                </Accordion.Control>
+                <Accordion.Panel>
+                  {ideaCardText('Description', ideaData.description)}
+                  {ideaCardText('Problem', ideaData.problem)}
+                  {ideaCardText('Goal', ideaData.goal)}
+                  {ideaCategory()}
+                  {ideaRequiredSkills()}
+                  {participantsList()}
+                </Accordion.Panel>
+              </Accordion.Item>
+            </Accordion>
+          </Card.Section>
 
           <Card.Section pt={16} className={classes.borderSection}>
             <div style={{ display: 'flex', flexWrap: 'wrap' }}>
@@ -354,7 +352,7 @@ export default function IdeaDetails(props: IProps) {
               </div>
               <div style={{ flex: '2 0 66%', maxWidth: '66%' }}>
                 <Stack spacing={0}>
-                  {ideaButtons()}
+                  <Group position='right'>{ideaButtons()}</Group>
                   {IdeaComments()}
                 </Stack>
               </div>
