@@ -8,10 +8,7 @@ import {
   Stack,
   Text,
   Tooltip,
-  Flex,
-  Col,
   useMantineTheme,
-  Grid,
 } from '@mantine/core'
 import { Category, Idea, IdeaCardType, Skill } from '../../common/types'
 import { getIdeaDetails } from '../../actions/IdeaActions'
