@@ -165,12 +165,10 @@ function AllIdeas() {
         value={participantInfo.participantId}
       >
         <HackathonVotingContext.Provider value={hackathonData.votingOpened}>
-          <Group position={'apart'} mb={20}>
-            <HackathonSelectDropdown
-              setHackathonId={setSelectedHackathonId}
-              context={HackathonDropdownMode.Hackathons}
-            />
-          </Group>
+          <HackathonSelectDropdown
+            setHackathonId={setSelectedHackathonId}
+            context={HackathonDropdownMode.Hackathons}
+          />
 
           {selectedHackathonId === '' && (
             <>
@@ -199,44 +197,15 @@ function AllIdeas() {
                   />
                 </Modal>
 
-                <Group>
-                  {participantCheck ? (
-                    <Button
-                      onClick={() => setOpened(true)}
-                      style={{
-                        backgroundColor: JOIN_BUTTON_COLOR,
-                      }}
-                    >
-                      New Idea
-                    </Button>
-                  ) : (
-                    <Tooltip
-                      label='You must join the hackathon to create a new idea'
-                      color='orange'
-                      withArrow
-                      arrowPosition='center'
-                    >
-                      <Button
-                        variant='default'
-                        data-disabled
-                        sx={{ '&[data-disabled]': { pointerEvents: 'all' } }}
-                        onClick={(event) => event.preventDefault()}
-                      >
-                        New Idea
-                      </Button>
-                    </Tooltip>
-                  )}
-
-                  <ParticipantManager
-                    participantInfo={participantInfo}
-                    setParticipantInfo={setParticipantInfo}
-                    participantCheck={participantCheck}
-                    setParticipantCheck={setParticipantCheck}
-                    buttonIsDisabled={buttonIsDisabled}
-                    setButtonIsDisabled={setButtonIsDisabled}
-                    hackathonData={hackathonData}
-                  />
-                </Group>
+                <ParticipantManager
+                  participantInfo={participantInfo}
+                  setParticipantInfo={setParticipantInfo}
+                  participantCheck={participantCheck}
+                  setParticipantCheck={setParticipantCheck}
+                  buttonIsDisabled={buttonIsDisabled}
+                  setButtonIsDisabled={setButtonIsDisabled}
+                  hackathonData={hackathonData}
+                />
 
                 <HackathonHeader hackathonData={hackathonData} />
 
@@ -248,18 +217,48 @@ function AllIdeas() {
                         : 'Ideas submitted: ' + searchIdea.length}
                     </Title>
 
-                    <Checkbox
-                      mb={15}
-                      size='md'
-                      label={'Show my ideas only'}
-                      checked={showUserIdeas}
-                      onChange={(event) =>
-                        setShowUserIdeas(event.currentTarget.checked)
-                      }
-                    />
+                    <Group>
+                      {participantCheck ? (
+                        <Button
+                          onClick={() => setOpened(true)}
+                          style={{
+                            backgroundColor: JOIN_BUTTON_COLOR,
+                          }}
+                        >
+                          New Idea
+                        </Button>
+                      ) : (
+                        <Tooltip
+                          label='You must join the hackathon to create a new idea'
+                          color='orange'
+                          withArrow
+                          arrowPosition='center'
+                        >
+                          <Button
+                            variant='default'
+                            data-disabled
+                            sx={{
+                              '&[data-disabled]': { pointerEvents: 'all' },
+                            }}
+                            onClick={(event) => event.preventDefault()}
+                          >
+                            New Idea
+                          </Button>
+                        </Tooltip>
+                      )}
+                      <Checkbox
+                        size='md'
+                        label={'Show my ideas only'}
+                        checked={showUserIdeas}
+                        onChange={(event) =>
+                          setShowUserIdeas(event.currentTarget.checked)
+                        }
+                      />
+                    </Group>
                   </Stack>
                   <SearchBar onSearchTermChange={setSearchTerm} />
                 </Group>
+
                 <IdeaCardList
                   ideas={showUserIdeas ? userIdeaList : searchIdea}
                   columnSize={6}

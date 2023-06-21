@@ -15,6 +15,7 @@ import {
   Modal,
   Stack,
   Title,
+  Tooltip,
 } from '@mantine/core'
 import { getIdeaDetails, getIdeaList } from '../actions/IdeaActions'
 import { useMsal } from '@azure/msal-react'
@@ -24,6 +25,7 @@ import IdeaForm from '../components/input-forms/IdeaForm'
 import { MIN_DATE } from '../common/constants'
 import { RichTextEditor } from '@mantine/rte'
 import SearchBar from '../components/searchBar'
+import { JOIN_BUTTON_COLOR } from '../common/colors'
 
 function IdeaPool() {
   const { instance } = useMsal()
@@ -143,12 +145,8 @@ function IdeaPool() {
         />
       </Modal>
 
-      <Group position='left' mt={10} ml={15}>
-        <Button onClick={() => setOpened(true)}>New Idea</Button>
-      </Group>
-
       {relevantIdeaList.length != null && (
-        <div>
+        <>
           <Group position='apart' my={20}>
             <Stack align='flex-start' justify='flex-start' spacing='sm'>
               <Title order={2} mt={50}>
@@ -157,15 +155,24 @@ function IdeaPool() {
                   : 'Ideas submitted: ' + searchIdea.length}
               </Title>
 
-              <Checkbox
-                mb={15}
-                size='md'
-                label={'Show my ideas only'}
-                checked={showUserIdeas}
-                onChange={(event) =>
-                  setShowUserIdeas(event.currentTarget.checked)
-                }
-              />
+              <Group>
+                <Button
+                  onClick={() => setOpened(true)}
+                  style={{
+                    backgroundColor: JOIN_BUTTON_COLOR,
+                  }}
+                >
+                  New Idea
+                </Button>
+                <Checkbox
+                  size='md'
+                  label={'Show my ideas only'}
+                  checked={showUserIdeas}
+                  onChange={(event) =>
+                    setShowUserIdeas(event.currentTarget.checked)
+                  }
+                />
+              </Group>
             </Stack>
             <SearchBar onSearchTermChange={setSearchTerm} />
           </Group>
@@ -177,7 +184,7 @@ function IdeaPool() {
             isLoading={false}
             onSuccess={loadHackathonIdeas}
           />
-        </div>
+        </>
       )}
     </>
   )
