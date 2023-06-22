@@ -6,15 +6,16 @@ import {
   IdeaPreview,
 } from '../common/types'
 import IdeaCardList from '../components/lists/IdeaCardList'
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState, useCallback } from 'react'
 import {
   Button,
   Center,
   Checkbox,
   Group,
   Modal,
-  Stack,
-  Title, Container,
+  Title,
+  Container,
+  Accordion,
 } from '@mantine/core'
 import { getIdeaDetails, getIdeaList } from '../actions/IdeaActions'
 import { useMsal } from '@azure/msal-react'
@@ -24,6 +25,7 @@ import IdeaForm from '../components/input-forms/IdeaForm'
 import { MIN_DATE } from '../common/constants'
 import { RichTextEditor } from '@mantine/rte'
 import { heroHeaderStyles } from '../common/styles'
+import { ChevronDown } from 'tabler-icons-react'
 
 function IdeaPool() {
   const { instance } = useMsal()
@@ -37,6 +39,11 @@ function IdeaPool() {
   )
   const [showUserIdeas, setShowUserIdeas] = useState(false)
   const { classes } = heroHeaderStyles()
+
+  const [isDescriptionOpen, setIsDescriptionOpen] = useState(true)
+  const handleAccordionChange = useCallback((value: string | null) => {
+    setIsDescriptionOpen(value === 'hackathon-details')
+  }, [])
 
   const loadHackathons = () => {
     getListOfHackathons(instance).then((data) => {
@@ -107,17 +114,49 @@ function IdeaPool() {
         <Center>
           <Title className={classes.title} order={2} align={'center'}>Idea Pool</Title>
         </Center>
-        <Center>
-          <RichTextEditor
-            readOnly
-            value={hackathon.description || ''}
-            id='hackathonDescriptionEditor'
-            style={{
-            backgroundColor: 'transparent', 
-            border: 'none' 
-            }}
-          />
-        </Center>
+
+        <Accordion defaultValue='hackathon-details' onChange={handleAccordionChange} chevron={null}
+          styles={{
+            item: { border: 'none' },
+          }}
+        >
+          <Accordion.Item value='hackathon-details'>
+            <Accordion.Panel>
+              <Center>
+                <RichTextEditor
+                  readOnly
+                  value={hackathon.description || ''}
+                  id='hackathonDescriptionEditor'
+                  style={{
+                    backgroundColor: 'transparent',
+                    border: 'none',
+                  }}
+                />
+              </Center>
+            </Accordion.Panel>
+            <Accordion.Control style={{ backgroundColor: 'transparent' }}>
+              <Center>
+                <div>
+                  <div
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                    }}
+                  >
+                    <ChevronDown
+                      size={24}
+                      style={{
+                        transition: 'transform 0.3s ease-in-out',
+                        transform: isDescriptionOpen ? 'rotate(180deg)' : 'none',
+                      }}
+                    />
+                  </div>
+                </div>
+              </Center>
+            </Accordion.Control>
+          </Accordion.Item>
+        </Accordion>
       </Container>
 
       <Modal
@@ -135,33 +174,27 @@ function IdeaPool() {
         />
       </Modal>
 
-      <Group position='left' mt={10} ml={15}>
+      <Group position='left' mt={10}>
         <Button onClick={() => setOpened(true)}>New Idea</Button>
+
+        <Checkbox
+          label={'Show my ideas'}
+          checked={showUserIdeas}
+          onChange={(event) => setShowUserIdeas(event.currentTarget.checked)}
+        />
       </Group>
 
       {relevantIdeaList.length != null && (
         <div>
-          <Stack align='flex-start' justify='flex-start' spacing='sm'>
-            {showUserIdeas ? (
-              <Title order={2} mt={50} mb={5} ml={15}>
-                your submitted ideas: {filteredIdeas.length}
-              </Title>
-            ) : (
-              <Title order={2} mt={50} mb={5} ml={15}>
-                All submitted ideas: {relevantIdeaList.length}
-              </Title>
-            )}
-
-            <Checkbox
-              mb={15}
-              ml={15}
-              label={'Show my ideas'}
-              checked={showUserIdeas}
-              onChange={(event) =>
-                setShowUserIdeas(event.currentTarget.checked)
-              }
-            />
-          </Stack>
+          {showUserIdeas ? (
+            <Title order={2} mt={50} mb={30}>
+              your submitted ideas: {filteredIdeas.length}
+            </Title>
+          ) : (
+            <Title order={2} mt={50} mb={30}>
+              all submitted ideas: {relevantIdeaList.length}
+            </Title>
+          )}
 
           <IdeaCardList
             ideas={showUserIdeas ? filteredIdeas : relevantIdeaList}
