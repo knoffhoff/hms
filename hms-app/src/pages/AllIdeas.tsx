@@ -2,7 +2,6 @@ import React, { createContext, useContext, useEffect, useState } from 'react'
 import {
   Button,
   Group,
-  Input,
   Modal,
   Text,
   Tooltip,
@@ -10,7 +9,7 @@ import {
   Title,
   Stack,
 } from '@mantine/core'
-import { ArrowUp, Check, Search, X } from 'tabler-icons-react'
+import { ArrowUp } from 'tabler-icons-react'
 import IdeaCardList from '../components/lists/IdeaCardList'
 import {
   Hackathon,
@@ -21,7 +20,6 @@ import {
   ParticipantPreview,
 } from '../common/types'
 import HackathonSelectDropdown from '../components/HackathonSelectDropdown'
-import RelevantIdeasLoader from '../components/RelevantIdeasLoader'
 import { NULL_DATE } from '../common/constants'
 import HackathonHeader from '../components/HackathonHeader'
 import { UserContext } from './Layout'
@@ -32,6 +30,7 @@ import { JOIN_BUTTON_COLOR } from '../common/colors'
 import { getHackathonDetails } from '../actions/HackathonActions'
 import { getIdeaDetails } from '../actions/IdeaActions'
 import { useMsal } from '@azure/msal-react'
+import SearchBar from '../components/searchBar'
 
 export const HackathonParticipantContext = createContext('')
 export const HackathonVotingContext = createContext(false)
@@ -91,16 +90,11 @@ function AllIdeas() {
     loadSelectedHackathon()
   }
 
-  const handleChangeSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(event.target.value)
-  }
+  const searchIdea = relevantIdeaList.filter((item) => {
+    return item.title?.toLowerCase().includes(searchTerm.toLowerCase())
+  })
 
-  // Disabled search bar for now
-  // const searchIdea = relevantIdeaList.filter((item) => {
-  //   return item.title?.toLowerCase().includes(searchTerm.toLowerCase())
-  // })
-
-  const userIdea = relevantIdeaList.filter((item) => {
+  const userIdea = searchIdea.filter((item) => {
     const userId = user?.id
     return item.owner?.id === userId
   })
@@ -123,12 +117,14 @@ function AllIdeas() {
   }
 
   useEffect(() => {
-    setUserIdeaList([])
     setRelevantIdeaList([])
     loadSelectedHackathon()
-    setUserIdeaList(userIdea)
     setIsHackathonLoading(true)
-  }, [showUserIdeas, selectedHackathonId])
+  }, [selectedHackathonId])
+
+  useEffect(() => {
+    setUserIdeaList(userIdea)
+  }, [showUserIdeas, searchTerm])
 
   useEffect(() => {
     if (ideaData)
@@ -170,20 +166,10 @@ function AllIdeas() {
         value={participantInfo.participantId}
       >
         <HackathonVotingContext.Provider value={hackathonData.votingOpened}>
-          <Group position={'apart'} mb={20}>
-            <HackathonSelectDropdown
-              setHackathonId={setSelectedHackathonId}
-              context={HackathonDropdownMode.Hackathons}
-            />
-
-            {/* -- Disabled search for now --
-            <Input
-              variant='default'
-              placeholder='Search for idea title...'
-              icon={<Search />}
-              onChange={handleChangeSearch}
-            /> */}
-          </Group>
+          <HackathonSelectDropdown
+            setHackathonId={setSelectedHackathonId}
+            context={HackathonDropdownMode.Hackathons}
+          />
 
           {selectedHackathonId === '' && (
             <>
@@ -200,9 +186,9 @@ function AllIdeas() {
                   opened={opened}
                   onClose={() => setOpened(false)}
                   size={'70%'}
+                  title='Create New Idea!'
                   withCloseButton={false}
                 >
-                  <Text className={classes.title}>Create New Idea</Text>
                   <IdeaForm
                     ideaId={'null'}
                     hackathon={hackathonData}
@@ -211,63 +197,69 @@ function AllIdeas() {
                     onSuccess={closeModal}
                   />
                 </Modal>
-                <Group>
-                  {participantCheck ? (
-                    <Button
-                      onClick={() => setOpened(true)}
-                      style={{
-                        backgroundColor: JOIN_BUTTON_COLOR,
-                      }}
-                    >
-                      New Idea
-                    </Button>
-                  ) : (
-                    <Tooltip
-                      label='You must join the hackathon to create a new idea'
-                      color='orange'
-                      withArrow
-                      arrowPosition='center'
-                    >
-                      <Button
-                        variant='default'
-                        data-disabled
-                        sx={{ '&[data-disabled]': { pointerEvents: 'all' } }}
-                        onClick={(event) => event.preventDefault()}
-                      >
-                        New Idea
-                      </Button>
-                    </Tooltip>
-                  )}
 
-                  <ParticipantManager
-                    participantInfo={participantInfo}
-                    setParticipantInfo={setParticipantInfo}
-                    participantCheck={participantCheck}
-                    setParticipantCheck={setParticipantCheck}
-                    buttonIsDisabled={buttonIsDisabled}
-                    setButtonIsDisabled={setButtonIsDisabled}
-                    hackathonData={hackathonData}
-                  />
+                <ParticipantManager
+                  participantInfo={participantInfo}
+                  setParticipantInfo={setParticipantInfo}
+                  participantCheck={participantCheck}
+                  setParticipantCheck={setParticipantCheck}
+                  buttonIsDisabled={buttonIsDisabled}
+                  setButtonIsDisabled={setButtonIsDisabled}
+                  hackathonData={hackathonData}
+                />
+
+                <Group position='apart' my={20}>
+                  <Stack align='flex-start' justify='flex-start' spacing='sm'>
+                    <Title order={2} mt={50}>
+                      {showUserIdeas
+                        ? 'My submission: ' + userIdeaList.length
+                        : 'Ideas submitted: ' + searchIdea.length}
+                    </Title>
+
+                    <Group>
+                      {participantCheck ? (
+                        <Button
+                          onClick={() => setOpened(true)}
+                          style={{
+                            backgroundColor: JOIN_BUTTON_COLOR,
+                          }}
+                        >
+                          New Idea
+                        </Button>
+                      ) : (
+                        <Tooltip
+                          label='You must join the hackathon to create a new idea'
+                          color='orange'
+                          withArrow
+                          arrowPosition='center'
+                        >
+                          <Button
+                            variant='default'
+                            data-disabled
+                            sx={{
+                              '&[data-disabled]': { pointerEvents: 'all' },
+                            }}
+                            onClick={(event) => event.preventDefault()}
+                          >
+                            New Idea
+                          </Button>
+                        </Tooltip>
+                      )}
+                      <Checkbox
+                        size='md'
+                        label={'Show my ideas only'}
+                        checked={showUserIdeas}
+                        onChange={(event) =>
+                          setShowUserIdeas(event.currentTarget.checked)
+                        }
+                      />
+                    </Group>
+                  </Stack>
+                  <SearchBar onSearchTermChange={setSearchTerm} />
                 </Group>
-                <Stack align='flex-start' justify='flex-start' spacing='sm'>
-                  <Title order={2} mt={50}>
-                    {showUserIdeas
-                      ? 'My submission: ' + userIdeaList.length
-                      : 'Ideas submitted: ' + relevantIdeaList.length}
-                  </Title>
 
-                  <Checkbox
-                    mb={15}
-                    size='md'
-                    label={'Show my ideas only'}
-                    checked={showUserIdeas}
-                    onChange={(event) =>
-                      setShowUserIdeas(event.currentTarget.checked)
-                    }
-                  />
-                </Stack>
                 <IdeaCardList
-                  ideas={showUserIdeas ? userIdeaList : relevantIdeaList}
+                  ideas={showUserIdeas ? userIdeaList : searchIdea}
                   columnSize={6}
                   type={IdeaCardType.AllIdeas}
                   isLoading={isIdeaLoading}

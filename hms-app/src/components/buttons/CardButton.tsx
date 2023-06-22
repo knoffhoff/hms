@@ -1,13 +1,20 @@
 import { useEffect, useState } from 'react'
-import { Button, Group, Modal, Text } from '@mantine/core'
+import {
+  Button,
+  Group,
+  Modal,
+  Text,
+  UnstyledButton,
+  Stack,
+} from '@mantine/core'
 import { Idea, IdeaCardType, IdeaFormType } from '../../common/types'
 import { deleteIdea, getIdeaDetails } from '../../actions/IdeaActions'
 import IdeaForm from '../input-forms/IdeaForm'
 import { styles } from '../../common/styles'
 import { showNotification, updateNotification } from '@mantine/notifications'
-import { Check, X } from 'tabler-icons-react'
+import { Check, X, Edit } from 'tabler-icons-react'
 import { useMsal } from '@azure/msal-react'
-import { DELETE_BUTTON_COLOR, JOIN_BUTTON_COLOR } from '../../common/colors'
+import { DELETE_BUTTON_COLOR } from '../../common/colors'
 import FinalVideoUploadModal from '../FinalVideoUploadModal'
 import MoveIdeaModal from '../MoveIdeaModal'
 
@@ -68,19 +75,19 @@ export default function CardButtons(props: IProps) {
       onClose={() => setDeleteModalOpened(false)}
       withCloseButton={false}
     >
-      <Text className={classes.text}>
-        Are you sure you want to delete this idea?
-      </Text>
-      <Text className={classes.title}>Title: {ideaData.title}</Text>
-      <Button
-        style={{ backgroundColor: DELETE_BUTTON_COLOR }}
-        onClick={() => deleteSelectedIdea()}
-      >
-        Yes, delete this idea
-      </Button>
-      <Text className={classes.text}>
-        (This window will automatically close as soon as the idea is deleted)
-      </Text>
+      <Stack align='center' justify='space-around' spacing='lg'>
+        <Text className={classes.text} fw={700} tt='uppercase' td='underline'>
+          Are you sure you want to delete this idea?
+        </Text>
+
+        <Text className={classes.title}>Title: {ideaData.title}</Text>
+        <Button
+          style={{ backgroundColor: DELETE_BUTTON_COLOR }}
+          onClick={() => deleteSelectedIdea()}
+        >
+          Yes, delete this idea
+        </Button>
+      </Stack>
     </Modal>
   )
 
@@ -107,8 +114,8 @@ export default function CardButtons(props: IProps) {
       onClose={() => setEditModalOpened(false)}
       withCloseButton={false}
       size='55%'
+      title='Edit Idea'
     >
-      <Text className={classes.title}>Edit Idea</Text>
       <IdeaForm
         ideaId={ideaData.id}
         idea={ideaData}
@@ -118,9 +125,6 @@ export default function CardButtons(props: IProps) {
         setOpened={closeEditModal}
         onSuccess={onSuccess}
       />
-      <Text className={classes.text}>
-        (This window will automatically close as soon as the idea is changed)
-      </Text>
     </Modal>
   )
 
@@ -134,28 +138,26 @@ export default function CardButtons(props: IProps) {
 
   return (
     <Group position='center'>
-      {deleteModal}
-      <Button
-        size='xs'
-        style={{
-          backgroundColor: DELETE_BUTTON_COLOR,
-        }}
-        onClick={() => setDeleteModalOpened(true)}
-      >
-        Delete
-      </Button>
+      <MoveIdeaModal idea={ideaData} onSuccess={onSuccess} />
+
       {editModal}
       <Button
         size='xs'
-        style={{
-          backgroundColor: JOIN_BUTTON_COLOR,
-        }}
+        variant='outline'
         onClick={() => setEditModalOpened(true)}
       >
         Edit
+        <Edit size={20} style={{ marginLeft: 3 }} />
       </Button>
+
+      {deleteModal}
+      <UnstyledButton onClick={() => setDeleteModalOpened(true)}>
+        <Text size='sm' color='red' style={{ textDecoration: 'underline' }}>
+          Delete
+        </Text>
+      </UnstyledButton>
+
       {uploadButton()}
-      <MoveIdeaModal idea={ideaData} onSuccess={onSuccess} />
     </Group>
   )
 }

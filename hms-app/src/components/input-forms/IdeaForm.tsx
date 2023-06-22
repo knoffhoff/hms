@@ -309,7 +309,7 @@ function IdeaForm(props: IProps) {
                 {skillsList}
               </Checkbox.Group>
             </Card.Section>
-            <Card.Section className={classes.borderSection}>
+            <Card.Section className={classes.noBorderSection}>
               <Radio.Group
                 label='Category'
                 description='Choose one hackathon category for your idea'
@@ -322,38 +322,33 @@ function IdeaForm(props: IProps) {
                 {categoriesList}
               </Radio.Group>
             </Card.Section>
-
-            <Group position='right' mt='xl'>
-              {context === IdeaFormType.Edit && (
-                <Button
-                  style={{
-                    backgroundColor: !buttonIsDisabled
-                      ? JOIN_BUTTON_COLOR
-                      : dark2,
-                  }}
-                  disabled={buttonIsDisabled}
-                  onClick={editThisIdea}
-                >
-                  Save
-                </Button>
-              )}
-              {context === IdeaFormType.New && (
-                <Button
-                  style={{
-                    backgroundColor: !buttonIsDisabled
-                      ? JOIN_BUTTON_COLOR
-                      : dark2,
-                  }}
-                  disabled={buttonIsDisabled}
-                  onClick={createThisIdea}
-                >
-                  Create
-                </Button>
-              )}
-            </Group>
           </div>
         )}
       </Card>
+      <Group position='right' mt='xl'>
+        {context === IdeaFormType.Edit && (
+          <Button
+            style={{
+              backgroundColor: !buttonIsDisabled ? JOIN_BUTTON_COLOR : dark2,
+            }}
+            disabled={buttonIsDisabled}
+            onClick={editThisIdea}
+          >
+            Save
+          </Button>
+        )}
+        {context === IdeaFormType.New && (
+          <Button
+            style={{
+              backgroundColor: !buttonIsDisabled ? JOIN_BUTTON_COLOR : dark2,
+            }}
+            disabled={buttonIsDisabled}
+            onClick={createThisIdea}
+          >
+            Create
+          </Button>
+        )}
+      </Group>
     </>
   )
 }

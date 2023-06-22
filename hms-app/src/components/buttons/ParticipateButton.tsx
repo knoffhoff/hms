@@ -1,4 +1,4 @@
-import { Group, Switch } from '@mantine/core'
+import { Switch } from '@mantine/core'
 import {
   createIdeaParticipant,
   removeIdeaParticipant,
@@ -183,28 +183,22 @@ export default function ParticipateButton(props: IProps) {
   }, [ideaData])
 
   return (
-    <>
-      <Group>
-        <Switch
-          color={RELOAD_BUTTON_COLOR}
-          disabled={buttonIsDisabled}
-          checked={participantCheck}
-          onChange={
-            participantCheck
-              ? removeThisIdeaParticipant
-              : addThisIdeaParticipant
-          }
-          thumbIcon={
-            participantCheck ? (
-              <Check size='0.8rem' color={RELOAD_BUTTON_COLOR} />
-            ) : (
-              <X size='0.8rem' color={LEAVE_BUTTON_COLOR} />
-            )
-          }
-          label={<span className={classes.boldText}>Participate</span>}
-          labelPosition='left'
-        />
-      </Group>
-    </>
+    <Switch
+      color={RELOAD_BUTTON_COLOR}
+      disabled={buttonIsDisabled}
+      checked={participantCheck}
+      onChange={
+        participantCheck ? removeThisIdeaParticipant : addThisIdeaParticipant
+      }
+      thumbIcon={
+        participantCheck ? (
+          <Check size='0.8rem' color={RELOAD_BUTTON_COLOR} />
+        ) : (
+          <X size='0.8rem' color={LEAVE_BUTTON_COLOR} />
+        )
+      }
+      label={<span className={classes.boldText}>Participate</span>}
+      labelPosition='left'
+    />
   )
 }

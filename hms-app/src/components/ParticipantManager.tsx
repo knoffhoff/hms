@@ -178,7 +178,7 @@ export default function ParticipantManager({
       </Modal>
 
       <Button
-        ml={10}
+        mt={10}
         disabled={buttonIsDisabled}
         onClick={
           participantCheck

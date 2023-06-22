@@ -2,13 +2,14 @@ import { CategoryPreview, HackathonDropdownMode, Idea } from '../common/types'
 import { Button, Card, Modal, Radio, Text, Title } from '@mantine/core'
 import React, { useEffect, useState } from 'react'
 import HackathonSelectDropdown from './HackathonSelectDropdown'
-import { ArrowDown, Check, X } from 'tabler-icons-react'
+import { ArrowDown, Check, X, ArrowBigRight } from 'tabler-icons-react'
 import { useMsal } from '@azure/msal-react'
 import { getListOfCategories } from '../actions/CategoryActions'
 import { styles } from '../common/styles'
 import { showNotification, updateNotification } from '@mantine/notifications'
 import { editIdea } from '../actions/IdeaActions'
 import { removeIdeaParticipant } from '../actions/ParticipantActions'
+import { JOIN_BUTTON_COLOR } from '../common/colors'
 
 type IProps = {
   idea: Idea
@@ -184,8 +185,13 @@ export default function MoveIdeaModal(props: IProps) {
         </Button>
       </Modal>
 
-      <Button size='xs' onClick={() => setOpened(true)} color={'yellow'}>
+      <Button
+        size='xs'
+        onClick={() => setOpened(true)}
+        color={JOIN_BUTTON_COLOR}
+      >
         Move idea
+        <ArrowBigRight size={20} style={{ marginLeft: 3 }} />
       </Button>
     </>
   )

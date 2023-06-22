@@ -14,8 +14,10 @@ import {
   Group,
   Modal,
   Title,
+  Tooltip,
   Container,
   Accordion,
+  Stack,
 } from '@mantine/core'
 import { getIdeaDetails, getIdeaList } from '../actions/IdeaActions'
 import { useMsal } from '@azure/msal-react'
@@ -26,10 +28,13 @@ import { MIN_DATE } from '../common/constants'
 import { RichTextEditor } from '@mantine/rte'
 import { heroHeaderStyles } from '../common/styles'
 import { ChevronDown } from 'tabler-icons-react'
+import SearchBar from '../components/searchBar'
+import { JOIN_BUTTON_COLOR } from '../common/colors'
 
 function IdeaPool() {
   const { instance } = useMsal()
   const user = useContext(UserContext)
+  const [searchTerm, setSearchTerm] = useState('')
   const [allIdeaPreviews, setAllIdeaPreviews] = useState<IdeaPreview[]>([])
   const [ideaData, setIdeaData] = useState<Idea>()
   const [relevantIdeaList, setRelevantIdeaList] = useState<Idea[]>([])
@@ -37,6 +42,7 @@ function IdeaPool() {
   const [hackathon, setHackathon] = useState<HackathonPreview>(
     {} as HackathonPreview
   )
+  const [userIdeaList, setUserIdeaList] = useState<Idea[]>([])
   const [showUserIdeas, setShowUserIdeas] = useState(false)
   const { classes } = heroHeaderStyles()
 
@@ -76,7 +82,11 @@ function IdeaPool() {
     }
   }
 
-  const filteredIdeas = relevantIdeaList.filter((item) => {
+  const searchIdea = relevantIdeaList.filter((item) => {
+    return item.title?.toLowerCase().includes(searchTerm.toLowerCase())
+  })
+
+  const userIdea = searchIdea.filter((item) => {
     const userId = user?.id
     return item.owner?.id === userId
   })
@@ -87,7 +97,11 @@ function IdeaPool() {
 
   useEffect(() => {
     loadHackathonIdeas()
-  }, [hackathon, showUserIdeas])
+  }, [hackathon])
+
+  useEffect(() => {
+    setUserIdeaList(userIdea)
+  }, [showUserIdeas])
 
   useEffect(() => {
     loadIdeaDetails()
@@ -174,36 +188,46 @@ function IdeaPool() {
         />
       </Modal>
 
-      <Group position='left' mt={10}>
-        <Button onClick={() => setOpened(true)}>New Idea</Button>
-
-        <Checkbox
-          label={'Show my ideas'}
-          checked={showUserIdeas}
-          onChange={(event) => setShowUserIdeas(event.currentTarget.checked)}
-        />
-      </Group>
-
       {relevantIdeaList.length != null && (
-        <div>
-          {showUserIdeas ? (
-            <Title order={2} mt={50} mb={30}>
-              your submitted ideas: {filteredIdeas.length}
-            </Title>
-          ) : (
-            <Title order={2} mt={50} mb={30}>
-              all submitted ideas: {relevantIdeaList.length}
-            </Title>
-          )}
+        <>
+          <Group position='apart' my={20}>
+            <Stack align='flex-start' justify='flex-start' spacing='sm'>
+              <Title order={2} mt={50}>
+                {showUserIdeas
+                  ? 'My submission: ' + userIdeaList.length
+                  : 'Ideas submitted: ' + searchIdea.length}
+              </Title>
+
+              <Group>
+                <Button
+                  onClick={() => setOpened(true)}
+                  style={{
+                    backgroundColor: JOIN_BUTTON_COLOR,
+                  }}
+                >
+                  New Idea
+                </Button>
+                <Checkbox
+                  size='md'
+                  label={'Show my ideas only'}
+                  checked={showUserIdeas}
+                  onChange={(event) =>
+                    setShowUserIdeas(event.currentTarget.checked)
+                  }
+                />
+              </Group>
+            </Stack>
+            <SearchBar onSearchTermChange={setSearchTerm} />
+          </Group>
 
           <IdeaCardList
-            ideas={showUserIdeas ? filteredIdeas : relevantIdeaList}
+            ideas={showUserIdeas ? userIdeaList : searchIdea}
             columnSize={6}
             type={IdeaCardType.IdeaPortal}
             isLoading={false}
             onSuccess={loadHackathonIdeas}
           />
-        </div>
+        </>
       )}
     </>
   )

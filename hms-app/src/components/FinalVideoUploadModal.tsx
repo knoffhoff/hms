@@ -18,6 +18,7 @@ import {
 import { useMsal } from '@azure/msal-react'
 import { showNotification } from '@mantine/notifications'
 import { useToggle } from '@mantine/hooks'
+import { Upload } from 'tabler-icons-react'
 
 type IProps = {
   idea: Idea
@@ -117,7 +118,7 @@ export default function FinalVideoUploadModal({ idea }: IProps) {
         </Modal>
 
         <Button size='xs' onClick={() => setOpened(true)} color={'green'}>
-          Upload video
+          <Upload size={20} />
         </Button>
       </UploadLoadingContext.Provider>
     </>
