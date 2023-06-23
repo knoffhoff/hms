@@ -63,7 +63,6 @@ function AllIdeas() {
   const [buttonIsDisabled, setButtonIsDisabled] = useState(false)
 
   const loadSelectedHackathon = () => {
-    console.log('loadSelectedHackathon')
     getHackathonDetails(instance, selectedHackathonId).then((data) => {
       setHackathonData(data)
       setIsHackathonLoading(false)

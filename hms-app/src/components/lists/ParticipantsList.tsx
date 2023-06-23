@@ -34,7 +34,6 @@ export default function ParticipantsList(props: IProps) {
     getIdeaDetails(instance, ideaData.id).then((data) => {
       setIdeaData(data)
       setLoader(false)
-      console.log(participantData?.length)
     })
   }
 
