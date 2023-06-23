@@ -37,8 +37,8 @@ export const HackathonVotingContext = createContext(false)
 
 function AllIdeas() {
   const { instance } = useMsal()
-  const { classes } = styles()
   const user = useContext(UserContext)
+  const [refreshHackathon, setRefreshHackathon] = useState(false)
   const [searchTerm, setSearchTerm] = useState('')
   const [isHackathonLoading, setIsHackathonLoading] = useState(true)
   const [participantCheck, setParticipantCheck] = useState(false)
@@ -63,6 +63,7 @@ function AllIdeas() {
   const [buttonIsDisabled, setButtonIsDisabled] = useState(false)
 
   const loadSelectedHackathon = () => {
+    console.log('loadSelectedHackathon')
     getHackathonDetails(instance, selectedHackathonId).then((data) => {
       setHackathonData(data)
       setIsHackathonLoading(false)
@@ -116,11 +117,16 @@ function AllIdeas() {
     return participant
   }
 
+  // const refreshAfterChange = () => {
+  //   setRefreshHackathon(!refreshHackathon)
+  // }
+
   useEffect(() => {
     setRelevantIdeaList([])
     loadSelectedHackathon()
     setIsHackathonLoading(true)
-  }, [selectedHackathonId])
+    setRefreshHackathon(false)
+  }, [selectedHackathonId, refreshHackathon])
 
   useEffect(() => {
     setUserIdeaList(userIdea)
@@ -264,7 +270,7 @@ function AllIdeas() {
                   columnSize={6}
                   type={IdeaCardType.AllIdeas}
                   isLoading={isIdeaLoading}
-                  onSuccess={loadSelectedHackathon}
+                  onSuccess={() => setRefreshHackathon(true)}
                   ishackathonStarted={isHackathonStarted()}
                 />
               </>
