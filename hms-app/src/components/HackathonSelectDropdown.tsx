@@ -164,8 +164,8 @@ export default function HackathonSelectDropdown({
     <>
       <Stack spacing={0}>
         {(context === HackathonDropdownMode.Hackathons ||
-          context === HackathonDropdownMode.Archive) && (
-          <Text className={classes.title}>Hackathon Selection:</Text>
+          context === HackathonDropdownMode.Archive || context === HackathonDropdownMode.MoveModal) && (
+          <Text className={classes.title}>Select Hackathon:</Text>
         )}
 
         {isError && (
@@ -183,11 +183,13 @@ export default function HackathonSelectDropdown({
         {!isLoading && !isError && (
           <div style={{ width: 385 }}>
             <Select
-              placeholder={'Select a hackathon'}
+              placeholder={'Click here to select a hackathon'}
               defaultValue={selectedHackathon?.id}
               maxDropdownHeight={280}
               data={selectItems}
               onChange={handleHackathonSelection}
+              error={selectedHackathon === undefined ? 'Please select a hackathon' : false}
+              mb={20}
             />
           </div>
         )}
