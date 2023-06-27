@@ -1,11 +1,10 @@
 import { CategoryPreview, HackathonDropdownMode, Idea } from '../common/types'
-import { Button, Card, Modal, Radio, Text, Title } from '@mantine/core'
+import { Button, Modal, Radio, Stack, Title, Tooltip } from '@mantine/core'
 import React, { useEffect, useState } from 'react'
 import HackathonSelectDropdown from './HackathonSelectDropdown'
-import { ArrowDown, Check, X, ArrowBigRight } from 'tabler-icons-react'
+import { Check, X, ArrowBigRight } from 'tabler-icons-react'
 import { useMsal } from '@azure/msal-react'
 import { getListOfCategories } from '../actions/CategoryActions'
-import { styles } from '../common/styles'
 import { showNotification, updateNotification } from '@mantine/notifications'
 import { editIdea } from '../actions/IdeaActions'
 import { removeIdeaParticipant } from '../actions/ParticipantActions'
@@ -19,7 +18,6 @@ type IProps = {
 export default function MoveIdeaModal(props: IProps) {
   const { idea, onSuccess } = props
   const { instance } = useMsal()
-  const { classes } = styles()
   const [opened, setOpened] = useState(false)
   const [buttonIsDisabled, setButtonIsDisabled] = useState(true)
   const [selectedHackathonId, setSelectedHackathonId] = useState('')
@@ -125,6 +123,14 @@ export default function MoveIdeaModal(props: IProps) {
   }, [])
 
   useEffect(() => {
+    setSelectedHackathonId('')
+    setSelectedCategory('')
+    setAvailableCategories({
+      categories: [] as CategoryPreview[],
+    })
+  }, [!opened])
+
+  useEffect(() => {
     loadAvailableCategories()
     setIdeaText({
       ...ideaText,
@@ -140,49 +146,65 @@ export default function MoveIdeaModal(props: IProps) {
     }
   }, [selectedCategory])
 
+  const modalTitle = () => {
+    return (
+      <Title align={'center'} order={3}>
+        Move Idea to Another Hackathon
+      </Title>
+    )
+  }
+
   return (
     <>
-      <Modal opened={opened} onClose={() => setOpened(false)} size={800}>
-        <Title align={'center'} mb={20}>
-          Move Idea to another Hackathon
-        </Title>
-
-        <Text size={'lg'}>Select the target hackathon here</Text>
-        <ArrowDown size={'50px'} />
-
+      <Modal
+        opened={opened}
+        onClose={() => setOpened(false)}
+        size={800}
+        title={modalTitle()}
+        centered
+      >
         <HackathonSelectDropdown
           setHackathonId={setSelectedHackathonId}
           context={HackathonDropdownMode.MoveModal}
         />
 
-        <Text size={'lg'}>Select a Category here</Text>
-        <ArrowDown size={'50px'} />
+        <Stack>
+          {selectedHackathonId !== '' && (
+            <Radio.Group
+              pt={50}
+              label='Select Category'
+              description='Choose one hackathon category for your idea'
+              onChange={setSelectedCategory}
+              required
+              defaultValue={idea?.category?.id}
+              value={selectedCategory}
+            >
+              {categoriesList}
+            </Radio.Group>
+          )}
 
-        <Card.Section className={classes.borderSection}>
-          <Radio.Group
-            label='Category'
-            description='Choose one hackathon category for your idea'
-            onChange={setSelectedCategory}
-            required
-            defaultValue={idea?.category?.id}
-            value={selectedCategory}
-            className={classes.label}
-          >
-            {categoriesList}
-          </Radio.Group>
-        </Card.Section>
-
-        <Text size={'lg'}>Submit your changes here</Text>
-        <ArrowDown size={'50px'} />
-        <div></div>
-        <Button
-          disabled={buttonIsDisabled}
-          onClick={editThisIdea}
-          color='green'
-          size='lg'
-        >
-          Move Idea
-        </Button>
+          {buttonIsDisabled ? (
+            <Tooltip
+              label='Select a hackathon and category first'
+              color='orange'
+              withArrow
+              arrowPosition='center'
+            >
+              <Button
+                mt={50}
+                data-disabled
+                sx={{ '&[data-disabled]': { pointerEvents: 'all' } }}
+                onClick={(event) => event.preventDefault()}
+              >
+                Move Idea
+              </Button>
+            </Tooltip>
+          ) : (
+            <Button onClick={editThisIdea} color='green' size='md' mt={50}>
+              Move Idea
+            </Button>
+          )}
+        </Stack>
       </Modal>
 
       <Button
@@ -190,7 +212,7 @@ export default function MoveIdeaModal(props: IProps) {
         onClick={() => setOpened(true)}
         color={JOIN_BUTTON_COLOR}
       >
-        Move idea
+        Move Idea
         <ArrowBigRight size={20} style={{ marginLeft: 3 }} />
       </Button>
     </>
