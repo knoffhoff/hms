@@ -162,7 +162,7 @@ export default function HackathonSelectDropdown({
 
   return (
     <>
-      <Stack spacing={0} pt={25} pb={25}>
+      <Stack spacing={0} pt={25}>
         {(context === HackathonDropdownMode.Hackathons ||
           context === HackathonDropdownMode.Archive ||
           context === HackathonDropdownMode.MoveModal) && (

@@ -1,19 +1,8 @@
 import { CategoryPreview, HackathonDropdownMode, Idea } from '../common/types'
-import {
-  Button,
-  Card,
-  Flex,
-  Group,
-  Modal,
-  Radio,
-  Stack,
-  Text,
-  Title,
-  Tooltip,
-} from '@mantine/core'
+import { Button, Modal, Radio, Stack, Title, Tooltip } from '@mantine/core'
 import React, { useEffect, useState } from 'react'
 import HackathonSelectDropdown from './HackathonSelectDropdown'
-import { ArrowDown, Check, X, ArrowBigRight, Tool } from 'tabler-icons-react'
+import { Check, X, ArrowBigRight } from 'tabler-icons-react'
 import { useMsal } from '@azure/msal-react'
 import { getListOfCategories } from '../actions/CategoryActions'
 import { styles } from '../common/styles'
@@ -30,9 +19,7 @@ type IProps = {
 export default function MoveIdeaModal(props: IProps) {
   const { idea, onSuccess } = props
   const { instance } = useMsal()
-  const { classes } = styles()
   const [opened, setOpened] = useState(false)
-  const [categoryIsDisabled, setCategoryIsDisabled] = useState(true)
   const [buttonIsDisabled, setButtonIsDisabled] = useState(true)
   const [selectedHackathonId, setSelectedHackathonId] = useState('')
   const [availableCategories, setAvailableCategories] = useState({
@@ -186,6 +173,7 @@ export default function MoveIdeaModal(props: IProps) {
           {selectedHackathonId !== '' && (
             <Radio.Group
               pb={25}
+              pt={25}
               label='Select Category'
               description='Choose one hackathon category for your idea'
               onChange={setSelectedCategory}
@@ -206,6 +194,7 @@ export default function MoveIdeaModal(props: IProps) {
               arrowPosition='center'
             >
               <Button
+                mt={25}
                 data-disabled
                 sx={{ '&[data-disabled]': { pointerEvents: 'all' } }}
                 onClick={(event) => event.preventDefault()}
@@ -214,7 +203,7 @@ export default function MoveIdeaModal(props: IProps) {
               </Button>
             </Tooltip>
           ) : (
-            <Button onClick={editThisIdea} color='green' size='md'>
+            <Button onClick={editThisIdea} color='green' size='md' mt={25}>
               Move Idea
             </Button>
           )}
