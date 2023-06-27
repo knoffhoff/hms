@@ -8,7 +8,6 @@ import {
   IdeaCardType,
 } from '../common/types'
 import { ArrowUp } from 'tabler-icons-react'
-import { NULL_DATE } from '../common/constants'
 import { getHackathonDetails } from '../actions/HackathonActions'
 import { useMsal } from '@azure/msal-react'
 import HackathonHeader from '../components/HackathonHeader'
@@ -16,6 +15,7 @@ import IdeaCardList from '../components/lists/IdeaCardList'
 import { getIdeaDetails } from '../actions/IdeaActions'
 import { UserContext } from './Layout'
 import SearchBar from '../components/searchBar'
+import { NULL_DATE } from '../common/constants'
 
 export default function Archive() {
   const { instance } = useMsal()
@@ -23,8 +23,6 @@ export default function Archive() {
   const [searchTerm, setSearchTerm] = useState('')
   const [hackathonData, setHackathonData] = useState({} as Hackathon)
   const [selectedHackathonId, setSelectedHackathonId] = useState('')
-  const [isHackathonError, setIsHackathonError] = useState(false)
-  const [isHackathonLoading, setIsHackathonLoading] = useState(true)
   const [isIdeaLoading, setIsIdeaLoading] = useState(true)
   const [ideaData, setIdeaData] = useState<Idea>()
   const [relevantIdeaList, setRelevantIdeaList] = useState([] as Idea[])
@@ -32,17 +30,9 @@ export default function Archive() {
   const [showUserIdeas, setShowUserIdeas] = useState(false)
 
   const loadSelectedHackathon = () => {
-    getHackathonDetails(instance, selectedHackathonId).then(
-      (data) => {
-        setHackathonData(data)
-        setIsHackathonLoading(false)
-        setIsHackathonError(false)
-      },
-      () => {
-        setIsHackathonLoading(false)
-        setIsHackathonError(true)
-      }
-    )
+    getHackathonDetails(instance, selectedHackathonId).then((data) => {
+      setHackathonData(data)
+    })
   }
 
   const loadRelevantIdeaDetails = () => {
@@ -66,7 +56,6 @@ export default function Archive() {
   useEffect(() => {
     setRelevantIdeaList([])
     loadSelectedHackathon()
-    setIsHackathonLoading(true)
   }, [selectedHackathonId])
 
   useEffect(() => {
@@ -92,18 +81,9 @@ export default function Archive() {
       }
   }, [ideaData])
 
-  function validHackathon() {
-    return (
-      hackathonData.startDate !== NULL_DATE &&
-      hackathonData.startDate?.toString() !== 'Invalid Date' &&
-      !isHackathonLoading &&
-      !isHackathonError
-    )
-  }
-
   return (
     <>
-    {validHackathon() && <HackathonHeader hackathonData={hackathonData} />}
+      <HackathonHeader hackathonData={hackathonData} />
       <Group position={'apart'} mb={20}>
         <HackathonSelectDropdown
           setHackathonId={setSelectedHackathonId}
@@ -118,38 +98,39 @@ export default function Archive() {
         </>
       )}
 
-      {validHackathon() && (
-        <>
+      {hackathonData.startDate !== undefined &&
+        hackathonData.startDate !== NULL_DATE &&
+        hackathonData.startDate.toString() !== 'Invalid Date' && (
+          <>
+            <Group position={'apart'} my={20}>
+              <Stack align='flex-start' justify='flex-start' spacing='sm'>
+                <Title order={2} mt={50}>
+                  {showUserIdeas
+                    ? 'My Submissions: ' + userIdeaList.length
+                    : 'Ideas submitted: ' + searchIdea.length}
+                </Title>
 
-          <Group position={'apart'} my={20}>
-            <Stack align='flex-start' justify='flex-start' spacing='sm'>
-              <Title order={2} mt={50}>
-                {showUserIdeas
-                  ? 'My Submissions: ' + userIdeaList.length
-                  : 'Ideas submitted: ' + searchIdea.length}
-              </Title>
-
-              <Checkbox
-                mb={15}
-                size='md'
-                label={'Show my ideas only'}
-                checked={showUserIdeas}
-                onChange={(event) =>
-                  setShowUserIdeas(event.currentTarget.checked)
-                }
-              />
-            </Stack>
-            <SearchBar onSearchTermChange={setSearchTerm} />
-          </Group>
-          <IdeaCardList
-            ideas={showUserIdeas ? userIdeaList : searchIdea}
-            columnSize={6}
-            type={IdeaCardType.Archive}
-            isLoading={isIdeaLoading}
-            onSuccess={loadSelectedHackathon}
-          />
-        </>
-      )}
+                <Checkbox
+                  mb={15}
+                  size='md'
+                  label={'Show my ideas only'}
+                  checked={showUserIdeas}
+                  onChange={(event) =>
+                    setShowUserIdeas(event.currentTarget.checked)
+                  }
+                />
+              </Stack>
+              <SearchBar onSearchTermChange={setSearchTerm} />
+            </Group>
+            <IdeaCardList
+              ideas={showUserIdeas ? userIdeaList : searchIdea}
+              columnSize={6}
+              type={IdeaCardType.Archive}
+              isLoading={isIdeaLoading}
+              onSuccess={loadSelectedHackathon}
+            />
+          </>
+        )}
     </>
   )
 }

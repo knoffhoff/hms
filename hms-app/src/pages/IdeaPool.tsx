@@ -6,30 +6,17 @@ import {
   IdeaPreview,
 } from '../common/types'
 import IdeaCardList from '../components/lists/IdeaCardList'
-import React, { useContext, useEffect, useState, useCallback } from 'react'
-import {
-  Button,
-  Center,
-  Checkbox,
-  Group,
-  Modal,
-  Title,
-  Tooltip,
-  Container,
-  Accordion,
-  Stack,
-} from '@mantine/core'
+import React, { useContext, useEffect, useState } from 'react'
+import { Button, Checkbox, Group, Modal, Title, Stack } from '@mantine/core'
 import { getIdeaDetails, getIdeaList } from '../actions/IdeaActions'
 import { useMsal } from '@azure/msal-react'
 import { UserContext } from './Layout'
 import { getListOfHackathons } from '../actions/HackathonActions'
 import IdeaForm from '../components/input-forms/IdeaForm'
 import { MIN_DATE } from '../common/constants'
-import { RichTextEditor } from '@mantine/rte'
-import { heroHeaderStyles } from '../common/styles'
-import { ChevronDown } from 'tabler-icons-react'
 import SearchBar from '../components/searchBar'
 import { JOIN_BUTTON_COLOR } from '../common/colors'
+import HackathonHeader from '../components/HackathonHeader'
 
 function IdeaPool() {
   const { instance } = useMsal()
@@ -44,12 +31,6 @@ function IdeaPool() {
   )
   const [userIdeaList, setUserIdeaList] = useState<Idea[]>([])
   const [showUserIdeas, setShowUserIdeas] = useState(false)
-  const { classes } = heroHeaderStyles()
-
-  const [isDescriptionOpen, setIsDescriptionOpen] = useState(true)
-  const handleAccordionChange = useCallback((value: string | null) => {
-    setIsDescriptionOpen(value === 'hackathon-details')
-  }, [])
 
   const loadHackathons = () => {
     getListOfHackathons(instance).then((data) => {
@@ -124,55 +105,7 @@ function IdeaPool() {
 
   return (
     <>
-      <Container className={classes.wrapper} size={1400} style={{ marginBottom: '50px' }}>
-        <Center>
-          <Title className={classes.title} order={2} align={'center'}>Idea Pool</Title>
-        </Center>
-
-        <Accordion defaultValue='hackathon-details' onChange={handleAccordionChange} chevron={null}
-          styles={{
-            item: { border: 'none' },
-          }}
-        >
-          <Accordion.Item value='hackathon-details'>
-            <Accordion.Panel>
-              <Center>
-                <RichTextEditor
-                  readOnly
-                  value={hackathon.description || ''}
-                  id='hackathonDescriptionEditor'
-                  style={{
-                    backgroundColor: 'transparent',
-                    border: 'none',
-                  }}
-                />
-              </Center>
-            </Accordion.Panel>
-            <Accordion.Control style={{ backgroundColor: 'transparent' }}>
-              <Center>
-                <div>
-                  <div
-                    style={{
-                      display: 'flex',
-                      justifyContent: 'space-between',
-                      alignItems: 'center',
-                    }}
-                  >
-                    <ChevronDown
-                      size={24}
-                      style={{
-                        transition: 'transform 0.3s ease-in-out',
-                        transform: isDescriptionOpen ? 'rotate(180deg)' : 'none',
-                      }}
-                    />
-                  </div>
-                </div>
-              </Center>
-            </Accordion.Control>
-          </Accordion.Item>
-        </Accordion>
-      </Container>
-
+      <HackathonHeader hackathonData={hackathon} />
       <Modal
         opened={opened}
         onClose={() => setOpened(false)}

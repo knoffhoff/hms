@@ -23,7 +23,6 @@ import HackathonSelectDropdown from '../components/HackathonSelectDropdown'
 import { NULL_DATE } from '../common/constants'
 import HackathonHeader from '../components/HackathonHeader'
 import { UserContext } from './Layout'
-import { styles } from '../common/styles'
 import IdeaForm from '../components/input-forms/IdeaForm'
 import ParticipantManager from '../components/ParticipantManager'
 import { JOIN_BUTTON_COLOR } from '../common/colors'
@@ -37,7 +36,6 @@ export const HackathonVotingContext = createContext(false)
 
 function AllIdeas() {
   const { instance } = useMsal()
-  const { classes } = styles()
   const user = useContext(UserContext)
   const [searchTerm, setSearchTerm] = useState('')
   const [isHackathonLoading, setIsHackathonLoading] = useState(true)
