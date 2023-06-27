@@ -5,7 +5,6 @@ import HackathonSelectDropdown from './HackathonSelectDropdown'
 import { Check, X, ArrowBigRight } from 'tabler-icons-react'
 import { useMsal } from '@azure/msal-react'
 import { getListOfCategories } from '../actions/CategoryActions'
-import { styles } from '../common/styles'
 import { showNotification, updateNotification } from '@mantine/notifications'
 import { editIdea } from '../actions/IdeaActions'
 import { removeIdeaParticipant } from '../actions/ParticipantActions'
@@ -129,7 +128,7 @@ export default function MoveIdeaModal(props: IProps) {
     setAvailableCategories({
       categories: [] as CategoryPreview[],
     })
-  }, [opened === false])
+  }, [!opened])
 
   useEffect(() => {
     loadAvailableCategories()
@@ -180,7 +179,6 @@ export default function MoveIdeaModal(props: IProps) {
               required
               defaultValue={idea?.category?.id}
               value={selectedCategory}
-              // className={classes.label}
             >
               {categoriesList}
             </Radio.Group>
