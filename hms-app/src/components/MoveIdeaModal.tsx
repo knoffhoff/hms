@@ -168,8 +168,6 @@ export default function MoveIdeaModal(props: IProps) {
     )
   }
 
-
-
   return (
     <>
       <Modal
@@ -185,20 +183,20 @@ export default function MoveIdeaModal(props: IProps) {
         />
 
         <Stack>
-          {selectedHackathonId !== '' && <Radio.Group
-            mb={30}
-            label='Select Category'
-            description='Choose one hackathon category for your idea'
-            onChange={setSelectedCategory}
-            required
-            defaultValue={idea?.category?.id}
-            value={selectedCategory}
-            // className={classes.label}
-          >
-            {categoriesList}
-          </Radio.Group>
-            }
-          
+          {selectedHackathonId !== '' && (
+            <Radio.Group
+              pb={25}
+              label='Select Category'
+              description='Choose one hackathon category for your idea'
+              onChange={setSelectedCategory}
+              required
+              defaultValue={idea?.category?.id}
+              value={selectedCategory}
+              // className={classes.label}
+            >
+              {categoriesList}
+            </Radio.Group>
+          )}
 
           {buttonIsDisabled ? (
             <Tooltip
