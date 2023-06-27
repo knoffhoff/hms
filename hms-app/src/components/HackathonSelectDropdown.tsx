@@ -163,11 +163,7 @@ export default function HackathonSelectDropdown({
   return (
     <>
       <Stack spacing={0} pt={25}>
-        {(context === HackathonDropdownMode.Hackathons ||
-          context === HackathonDropdownMode.Archive ||
-          context === HackathonDropdownMode.MoveModal) && (
-          <Text className={classes.title}>Select Hackathon:</Text>
-        )}
+      <Text className={classes.title}>Select Hackathon:</Text>
 
         {isError && (
           <Select
@@ -194,7 +190,6 @@ export default function HackathonSelectDropdown({
                   ? 'Please select a hackathon'
                   : false
               }
-              mb={20}
             />
           </div>
         )}

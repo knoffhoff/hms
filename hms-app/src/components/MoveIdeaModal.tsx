@@ -172,8 +172,7 @@ export default function MoveIdeaModal(props: IProps) {
         <Stack>
           {selectedHackathonId !== '' && (
             <Radio.Group
-              pb={25}
-              pt={25}
+              pt={50}
               label='Select Category'
               description='Choose one hackathon category for your idea'
               onChange={setSelectedCategory}
@@ -194,7 +193,7 @@ export default function MoveIdeaModal(props: IProps) {
               arrowPosition='center'
             >
               <Button
-                mt={25}
+                mt={50}
                 data-disabled
                 sx={{ '&[data-disabled]': { pointerEvents: 'all' } }}
                 onClick={(event) => event.preventDefault()}
@@ -203,7 +202,7 @@ export default function MoveIdeaModal(props: IProps) {
               </Button>
             </Tooltip>
           ) : (
-            <Button onClick={editThisIdea} color='green' size='md' mt={25}>
+            <Button onClick={editThisIdea} color='green' size='md' mt={50}>
               Move Idea
             </Button>
           )}
