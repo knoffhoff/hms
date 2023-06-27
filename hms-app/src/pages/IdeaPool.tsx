@@ -7,25 +7,16 @@ import {
 } from '../common/types'
 import IdeaCardList from '../components/lists/IdeaCardList'
 import React, { useContext, useEffect, useState } from 'react'
-import {
-  Button,
-  Center,
-  Checkbox,
-  Group,
-  Modal,
-  Stack,
-  Title,
-  Tooltip,
-} from '@mantine/core'
+import { Button, Checkbox, Group, Modal, Title, Stack } from '@mantine/core'
 import { getIdeaDetails, getIdeaList } from '../actions/IdeaActions'
 import { useMsal } from '@azure/msal-react'
 import { UserContext } from './Layout'
 import { getListOfHackathons } from '../actions/HackathonActions'
 import IdeaForm from '../components/input-forms/IdeaForm'
 import { MIN_DATE } from '../common/constants'
-import { RichTextEditor } from '@mantine/rte'
 import SearchBar from '../components/searchBar'
 import { JOIN_BUTTON_COLOR } from '../common/colors'
+import HackathonHeader from '../components/HackathonHeader'
 
 function IdeaPool() {
   const { instance } = useMsal()
@@ -114,22 +105,7 @@ function IdeaPool() {
 
   return (
     <>
-      <Center>
-        <Title order={1}>Idea Pool</Title>
-      </Center>
-      <Center>
-        <RichTextEditor
-          readOnly
-          value={hackathon.description || ''}
-          id='hackathonDescriptionEditor'
-          style={{
-            color: 'gray',
-            backgroundColor: 'transparent',
-            border: 'none',
-          }}
-        />
-      </Center>
-
+      <HackathonHeader hackathonData={hackathon} />
       <Modal
         opened={opened}
         onClose={() => setOpened(false)}

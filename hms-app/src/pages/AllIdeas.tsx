@@ -23,7 +23,6 @@ import HackathonSelectDropdown from '../components/HackathonSelectDropdown'
 import { NULL_DATE } from '../common/constants'
 import HackathonHeader from '../components/HackathonHeader'
 import { UserContext } from './Layout'
-import { styles } from '../common/styles'
 import IdeaForm from '../components/input-forms/IdeaForm'
 import ParticipantManager from '../components/ParticipantManager'
 import { JOIN_BUTTON_COLOR } from '../common/colors'
@@ -166,6 +165,7 @@ function AllIdeas() {
 
   return (
     <>
+      <HackathonHeader hackathonData={hackathonData} />
       <HackathonParticipantContext.Provider
         value={participantInfo.participantId}
       >
@@ -211,8 +211,6 @@ function AllIdeas() {
                   setButtonIsDisabled={setButtonIsDisabled}
                   hackathonData={hackathonData}
                 />
-
-                <HackathonHeader hackathonData={hackathonData} />
 
                 <Group position='apart' my={20}>
                   <Stack align='flex-start' justify='flex-start' spacing='sm'>

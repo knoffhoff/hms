@@ -21,7 +21,6 @@ const applyFontSize = (theme: MantineTheme, size: MantineSize) => ({
   lineHeight: '1.5em',
 })
 
-
 export const styles = createStyles((theme) => ({
   presentationsCards: {
     backgroundColor: 'lightblue',
@@ -241,8 +240,8 @@ export const loginStyles = createStyles((theme) => ({
 export const heroHeaderStyles = createStyles((theme) => ({
   wrapper: {
     position: 'relative',
-    paddingTop: 80,
-    paddingBottom: 60,
+    paddingTop: 60,
+    paddingBottom: 40,
     backgroundColor:
       theme.colorScheme === 'dark'
         ? theme.colors.dark[7]
