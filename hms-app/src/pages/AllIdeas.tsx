@@ -31,6 +31,7 @@ import { getHackathonDetails } from '../actions/HackathonActions'
 import { getIdeaDetails } from '../actions/IdeaActions'
 import { useMsal } from '@azure/msal-react'
 import SearchBar from '../components/searchBar'
+import CategorySelector from '../components/CategorySelector'
 
 export const HackathonParticipantContext = createContext('')
 export const HackathonVotingContext = createContext(false)
@@ -261,6 +262,7 @@ function AllIdeas() {
                       />
                     </Group>
                   </Stack>
+                  <CategorySelector hackathonId={selectedHackathonId} />
                   <SearchBar onSearchTermChange={setSearchTerm} />
                 </Group>
 
