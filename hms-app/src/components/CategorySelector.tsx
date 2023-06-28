@@ -60,7 +60,7 @@ export default function CategorySelector(props: IProps) {
     console.log('selected hackathon id: ', selectedHackathonId),
     (
       <MultiSelect
-        style={{ maxWidth: 350 }}
+        style={{ maxWidth: 350, maxHeight: 100 }}
         clearable
         searchable
         nothingFound='No categories found'
