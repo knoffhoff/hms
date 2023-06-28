@@ -7,7 +7,7 @@ import {
   Idea,
   IdeaCardType,
 } from '../common/types'
-import { ArrowUp, Category } from 'tabler-icons-react'
+import { ArrowUp } from 'tabler-icons-react'
 import { NULL_DATE } from '../common/constants'
 import { getHackathonDetails } from '../actions/HackathonActions'
 import { useMsal } from '@azure/msal-react'
@@ -147,11 +147,13 @@ export default function Archive() {
                 }
               />
             </Stack>
-            <CategorySelector
-              hackathonId={selectedHackathonId}
-              onSelectedCategory={setSelectedCategory}
-            />
-            <SearchBar onSearchTermChange={setSearchTerm} />
+            <Group position='right' mt={100}>
+              <CategorySelector
+                hackathonId={selectedHackathonId}
+                onSelectedCategory={setSelectedCategory}
+              />
+              <SearchBar onSearchTermChange={setSearchTerm} />
+            </Group>
           </Group>
           <IdeaCardList
             ideas={showUserIdeas ? userIdeaList : searchIdea}

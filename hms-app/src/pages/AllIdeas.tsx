@@ -8,7 +8,6 @@ import {
   Checkbox,
   Title,
   Stack,
-  Container,
 } from '@mantine/core'
 import { ArrowUp } from 'tabler-icons-react'
 import IdeaCardList from '../components/lists/IdeaCardList'
@@ -270,7 +269,7 @@ function AllIdeas() {
                     </Group>
                   </Stack>
 
-                  <Group position ='right' mt={100}>
+                  <Group position='right' mt={100}>
                     <CategorySelector
                       hackathonId={selectedHackathonId}
                       onSelectedCategory={setSelectedCategory}
