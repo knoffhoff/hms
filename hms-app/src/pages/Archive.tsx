@@ -7,7 +7,7 @@ import {
   Idea,
   IdeaCardType,
 } from '../common/types'
-import { ArrowUp } from 'tabler-icons-react'
+import { ArrowUp, Category } from 'tabler-icons-react'
 import { NULL_DATE } from '../common/constants'
 import { getHackathonDetails } from '../actions/HackathonActions'
 import { useMsal } from '@azure/msal-react'
@@ -16,6 +16,7 @@ import IdeaCardList from '../components/lists/IdeaCardList'
 import { getIdeaDetails } from '../actions/IdeaActions'
 import { UserContext } from './Layout'
 import SearchBar from '../components/searchBar'
+import CategorySelector from '../components/CategorySelector'
 
 export default function Archive() {
   const { instance } = useMsal()
@@ -29,6 +30,7 @@ export default function Archive() {
   const [ideaData, setIdeaData] = useState<Idea>()
   const [relevantIdeaList, setRelevantIdeaList] = useState([] as Idea[])
   const [userIdeaList, setUserIdeaList] = useState<Idea[]>([])
+  const [selectedCategory, setSelectedCategory] = useState<string[]>([])
   const [showUserIdeas, setShowUserIdeas] = useState(false)
 
   const loadSelectedHackathon = () => {
@@ -54,7 +56,13 @@ export default function Archive() {
     })
   }
 
-  const searchIdea = relevantIdeaList.filter((item) => {
+  const categoryFilter = relevantIdeaList.filter((item) => {
+    return selectedCategory.length === 0
+      ? item
+      : selectedCategory.some((category) => item.category?.id === category)
+  })
+
+  const searchIdea = categoryFilter.filter((item) => {
     return item.title?.toLowerCase().includes(searchTerm.toLowerCase())
   })
 
@@ -139,6 +147,10 @@ export default function Archive() {
                 }
               />
             </Stack>
+            <CategorySelector
+              hackathonId={selectedHackathonId}
+              onSelectedCategory={setSelectedCategory}
+            />
             <SearchBar onSearchTermChange={setSearchTerm} />
           </Group>
           <IdeaCardList
