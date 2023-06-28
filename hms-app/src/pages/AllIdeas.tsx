@@ -12,6 +12,8 @@ import {
 import { ArrowUp } from 'tabler-icons-react'
 import IdeaCardList from '../components/lists/IdeaCardList'
 import {
+  Category,
+  CategoryPreview,
   Hackathon,
   HackathonDropdownMode,
   Idea,
@@ -46,9 +48,11 @@ function AllIdeas() {
   const [selectedHackathonId, setSelectedHackathonId] = useState('')
   const [relevantIdeaList, setRelevantIdeaList] = useState<Idea[]>([])
   const [userIdeaList, setUserIdeaList] = useState<Idea[]>([])
+  const [ideaCategoriesFilter, setIdeaCategoriesFilter] = useState<Idea[]>([])
   const [ideaData, setIdeaData] = useState<Idea>()
   const [isIdeaLoading, setIsIdeaLoading] = useState(true)
   const [showUserIdeas, setShowUserIdeas] = useState(false)
+  const [selectedCategory, setSelectedCategory] = useState<string[]>([])
   const [participantInfo, setParticipantInfo] = useState({
     userId: '',
     hackathonId: '',
@@ -91,7 +95,13 @@ function AllIdeas() {
     loadSelectedHackathon()
   }
 
-  const searchIdea = relevantIdeaList.filter((item) => {
+  const categoryFilter = relevantIdeaList.filter((item) => {
+    return selectedCategory.length === 0
+      ? item
+      : selectedCategory.some((category) => item.category?.id === category)
+  })
+
+  const searchIdea = categoryFilter.filter((item) => {
     return item.title?.toLowerCase().includes(searchTerm.toLowerCase())
   })
 
@@ -164,6 +174,10 @@ function AllIdeas() {
       })
     }
   }, [user, selectedHackathonId])
+
+  useEffect(() => {
+    console.log('selected Category AllIdeas: ', selectedCategory)
+  }, [selectedCategory])
 
   return (
     <>
@@ -262,7 +276,10 @@ function AllIdeas() {
                       />
                     </Group>
                   </Stack>
-                  <CategorySelector hackathonId={selectedHackathonId} />
+                  <CategorySelector
+                    hackathonId={selectedHackathonId}
+                    onSelectedCategory={setSelectedCategory}
+                  />
                   <SearchBar onSearchTermChange={setSearchTerm} />
                 </Group>
 
