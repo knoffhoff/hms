@@ -64,6 +64,7 @@ export default function CategorySelector(props: IProps) {
         data={categories}
         label='Select categories'
         placeholder='Pick all that apply'
+        maxDropdownHeight={150}
         value={selectedCategory}
         onChange={(value) => setSelectedCategory(value)}
       />
