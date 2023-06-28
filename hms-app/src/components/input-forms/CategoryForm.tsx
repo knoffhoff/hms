@@ -6,10 +6,10 @@ import {
   getCategoryDetails,
 } from '../../actions/CategoryActions'
 import { showNotification, updateNotification } from '@mantine/notifications'
-import { Check, X } from 'tabler-icons-react'
 import { styles } from '../../common/styles'
 import { useMsal } from '@azure/msal-react'
 import { dark2, JOIN_BUTTON_COLOR } from '../../common/colors'
+import { CustomCheckIcon, CustomXIcon } from '../../components/NotificationIcons'
 
 type IProps = {
   hackathonId: string
@@ -76,7 +76,7 @@ export default function CategoryForm(props: IProps) {
           color: 'red',
           title: 'Failed to edit category',
           message: undefined,
-          icon: <X />,
+          icon: <CustomXIcon />,
           autoClose: 5000,
         })
       } else {
@@ -85,7 +85,7 @@ export default function CategoryForm(props: IProps) {
           color: 'teal',
           title: `Edited ${category.title}`,
           message: undefined,
-          icon: <Check />,
+          icon: <CustomCheckIcon />,
           autoClose: 5000,
         })
         onSuccess()
@@ -122,7 +122,7 @@ export default function CategoryForm(props: IProps) {
           color: 'red',
           title: 'Failed to create category',
           message: undefined,
-          icon: <X />,
+          icon: <CustomXIcon />,
           autoClose: 5000,
         })
       } else {
@@ -131,7 +131,7 @@ export default function CategoryForm(props: IProps) {
           color: 'teal',
           title: `Created ${category.title}`,
           message: undefined,
-          icon: <Check />,
+          icon: <CustomCheckIcon />,
           autoClose: 5000,
         })
         onSuccess()

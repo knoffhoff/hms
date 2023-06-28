@@ -10,6 +10,7 @@ import { JOIN_BUTTON_COLOR, LEAVE_BUTTON_COLOR } from '../common/colors'
 import { Hackathon, ParticipantPreview } from '../common/types'
 import { useMsal } from '@azure/msal-react'
 import { styles } from '../common/styles'
+import { CustomCheckIcon, CustomXIcon } from '../components/NotificationIcons'
 
 type IProps = {
   participantInfo: {
@@ -94,7 +95,7 @@ export default function ParticipantManager({
           color: 'red',
           title: 'Failed to join Hackathon',
           message: undefined,
-          icon: <X />,
+          icon: <CustomXIcon />,
           autoClose: 5000,
         })
       } else {
@@ -104,7 +105,7 @@ export default function ParticipantManager({
           color: 'teal',
           title: 'Joined Hackathon',
           message: undefined,
-          icon: <Check />,
+          icon: <CustomCheckIcon />,
           autoClose: 5000,
         })
       }
@@ -130,7 +131,7 @@ export default function ParticipantManager({
           color: 'red',
           title: 'Failed to leave Hackathon',
           message: undefined,
-          icon: <X />,
+          icon: <CustomXIcon />,
           autoClose: 5000,
         })
       } else {
@@ -140,7 +141,7 @@ export default function ParticipantManager({
           color: 'teal',
           title: 'Left Hackathon',
           message: undefined,
-          icon: <Check />,
+          icon: <CustomCheckIcon />,
           autoClose: 5000,
         })
       }

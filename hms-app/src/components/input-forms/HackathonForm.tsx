@@ -7,12 +7,12 @@ import {
   getHackathonDetails,
 } from '../../actions/HackathonActions'
 import { showNotification, updateNotification } from '@mantine/notifications'
-import { Check, X } from 'tabler-icons-react'
 import { styles } from '../../common/styles'
 import { useMsal } from '@azure/msal-react'
 import { dark2, JOIN_BUTTON_COLOR } from '../../common/colors'
 import { Hackathon } from '../../common/types'
 import { RichTextEditor } from '@mantine/rte'
+import { CustomCheckIcon, CustomXIcon } from '../../components/NotificationIcons'
 
 type IProps = {
   context: string
@@ -74,7 +74,7 @@ function HackathonForm(props: IProps) {
           title: 'End date must be after start date',
           message: 'Please select a valid end date',
           autoClose: 5000,
-          icon: <X />,
+          icon: <CustomXIcon />,
           color: 'red',
         })
       } else {
@@ -100,7 +100,7 @@ function HackathonForm(props: IProps) {
               color: 'red',
               title: 'Failed to create hackathon',
               message: JSON.stringify(response).toString(),
-              icon: <X />,
+              icon: <CustomXIcon />,
               autoClose: 5000,
             })
           } else {
@@ -109,7 +109,7 @@ function HackathonForm(props: IProps) {
               color: 'teal',
               title: `Created ${hackathonTitle}`,
               message: undefined,
-              icon: <Check />,
+              icon: <CustomCheckIcon />,
               autoClose: 5000,
             })
             onSuccess()
@@ -146,7 +146,7 @@ function HackathonForm(props: IProps) {
           color: 'red',
           title: 'Failed to edit hackathon',
           message: JSON.stringify(response).toString(),
-          icon: <X />,
+          icon: <CustomXIcon />,
           autoClose: 5000,
         })
       } else {
@@ -155,7 +155,7 @@ function HackathonForm(props: IProps) {
           color: 'teal',
           title: `Edited ${hackathonTitle}`,
           message: undefined,
-          icon: <Check />,
+          icon: <CustomCheckIcon />,
           autoClose: 5000,
         })
         onSuccess()

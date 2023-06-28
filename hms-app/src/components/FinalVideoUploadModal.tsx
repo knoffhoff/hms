@@ -19,6 +19,7 @@ import { useMsal } from '@azure/msal-react'
 import { showNotification } from '@mantine/notifications'
 import { useToggle } from '@mantine/hooks'
 import { Upload } from 'tabler-icons-react'
+import { CustomCheckIcon, CustomXIcon } from '../components/NotificationIcons'
 
 type IProps = {
   idea: Idea
@@ -64,6 +65,7 @@ export default function FinalVideoUploadModal({ idea }: IProps) {
           title: 'Video uploaded',
           message: 'Your video has been uploaded',
           color: 'green',
+          icon: <CustomCheckIcon />,
           autoClose: 5000,
         })
         setTimeout(() => {
@@ -74,6 +76,7 @@ export default function FinalVideoUploadModal({ idea }: IProps) {
           title: 'Video upload failed',
           message: 'Your video has not been uploaded',
           color: 'red',
+          icon: <CustomXIcon />,
           autoClose: 5000,
         })
       }

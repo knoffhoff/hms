@@ -10,11 +10,11 @@ import {
 import { getListOfSkills } from '../../actions/SkillActions'
 import { getListOfCategories } from '../../actions/CategoryActions'
 import { showNotification, updateNotification } from '@mantine/notifications'
-import { Check, X } from 'tabler-icons-react'
 import { createIdea, editIdea } from '../../actions/IdeaActions'
 import { styles } from '../../common/styles'
 import { useMsal } from '@azure/msal-react'
 import { dark2, JOIN_BUTTON_COLOR } from '../../common/colors'
+import { CustomCheckIcon, CustomXIcon } from '../../components/NotificationIcons'
 
 type IProps = {
   hackathon: HackathonPreview
@@ -136,7 +136,7 @@ function IdeaForm(props: IProps) {
             color: 'red',
             title: 'Failed to create idea',
             message: undefined,
-            icon: <X />,
+            icon: <CustomXIcon />,
             autoClose: 5000,
           })
         } else {
@@ -145,7 +145,7 @@ function IdeaForm(props: IProps) {
             color: 'teal',
             title: `Created "${ideaText.title}"`,
             message: undefined,
-            icon: <Check />,
+            icon: <CustomCheckIcon />,
             autoClose: 5000,
           })
           onSuccess()
@@ -177,7 +177,7 @@ function IdeaForm(props: IProps) {
             color: 'red',
             title: 'Failed to Edit idea',
             message: undefined,
-            icon: <X />,
+            icon: <CustomXIcon />,
             autoClose: 5000,
           })
         } else {
@@ -186,7 +186,7 @@ function IdeaForm(props: IProps) {
             color: 'teal',
             title: `Edited "${ideaText.title}"`,
             message: undefined,
-            icon: <Check />,
+            icon: <CustomCheckIcon />,
             autoClose: 5000,
           })
           onSuccess()

@@ -20,11 +20,11 @@ import { NULL_DATE } from '../../common/constants'
 import { useMsal } from '@azure/msal-react'
 import { DELETE_BUTTON_COLOR, JOIN_BUTTON_COLOR } from '../../common/colors'
 import { showNotification, updateNotification } from '@mantine/notifications'
-import { Check, X } from 'tabler-icons-react'
 import { RichTextEditor } from '@mantine/rte'
 import AllCategoryList from '../lists/AllCategoryList'
 import AllParticipantList from '../lists/AllParticipantList'
 import AllIdeaList from '../lists/AllIdeaList'
+import { CustomCheckIcon, CustomXIcon } from '../../components/NotificationIcons'
 
 type IProps = {
   hackathonId: string
@@ -165,7 +165,7 @@ export default function HackathonDetails(props: IProps) {
           color: 'red',
           title: 'Failed to edit hackathon',
           message: undefined,
-          icon: <X />,
+          icon: <CustomXIcon />,
           autoClose: 5000,
         })
       } else {
@@ -175,7 +175,7 @@ export default function HackathonDetails(props: IProps) {
           color: 'teal',
           title: `Edited ${hackathonData.title}`,
           message: undefined,
-          icon: <Check />,
+          icon: <CustomCheckIcon />,
           autoClose: 5000,
         })
       }
