@@ -47,7 +47,6 @@ export default function CategorySelector(props: IProps) {
   }, [selectedHackathonId])
 
   useEffect(() => {
-    console.log(selectedCategory)
     handleCategorySelected({ target: { value: selectedCategory } })
   }, [selectedCategory])
 
@@ -56,8 +55,8 @@ export default function CategorySelector(props: IProps) {
   }, [hackathonId])
 
   return (
-    console.log('available categories: ', availableCategories),
-    console.log('selected hackathon id: ', selectedHackathonId),
+    // console.log('available categories: ', availableCategories),
+    // console.log('selected hackathon id: ', selectedHackathonId),
     (
       <MultiSelect
         style={{ maxWidth: 350, maxHeight: 100 }}

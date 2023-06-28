@@ -167,10 +167,6 @@ function AllIdeas() {
     }
   }, [user, selectedHackathonId])
 
-  useEffect(() => {
-    console.log('selected Category AllIdeas: ', selectedCategory)
-  }, [selectedCategory])
-
   return (
     <>
       <HackathonParticipantContext.Provider
