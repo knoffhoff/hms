@@ -24,6 +24,7 @@ export default function VideoDropzone({ uploadVideo }: IProps) {
       title: 'File rejected',
       message: 'Only video files in mp4 format are allowed',
       color: 'red',
+      autoClose: 5000,
     })
   }
 

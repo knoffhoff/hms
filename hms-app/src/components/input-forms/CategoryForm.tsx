@@ -77,7 +77,7 @@ export default function CategoryForm(props: IProps) {
           title: 'Failed to edit category',
           message: undefined,
           icon: <X />,
-          autoClose: 2000,
+          autoClose: 5000,
         })
       } else {
         updateNotification({
@@ -86,7 +86,7 @@ export default function CategoryForm(props: IProps) {
           title: `Edited ${category.title}`,
           message: undefined,
           icon: <Check />,
-          autoClose: 2000,
+          autoClose: 5000,
         })
         onSuccess()
       }
@@ -123,7 +123,7 @@ export default function CategoryForm(props: IProps) {
           title: 'Failed to create category',
           message: undefined,
           icon: <X />,
-          autoClose: 2000,
+          autoClose: 5000,
         })
       } else {
         updateNotification({
@@ -132,7 +132,7 @@ export default function CategoryForm(props: IProps) {
           title: `Created ${category.title}`,
           message: undefined,
           icon: <Check />,
-          autoClose: 2000,
+          autoClose: 5000,
         })
         onSuccess()
         clearForm()

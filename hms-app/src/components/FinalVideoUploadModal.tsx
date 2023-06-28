@@ -64,6 +64,7 @@ export default function FinalVideoUploadModal({ idea }: IProps) {
           title: 'Video uploaded',
           message: 'Your video has been uploaded',
           color: 'green',
+          autoClose: 5000,
         })
         setTimeout(() => {
           checkAsyncForVideo()
@@ -73,6 +74,7 @@ export default function FinalVideoUploadModal({ idea }: IProps) {
           title: 'Video upload failed',
           message: 'Your video has not been uploaded',
           color: 'red',
+          autoClose: 5000,
         })
       }
     }

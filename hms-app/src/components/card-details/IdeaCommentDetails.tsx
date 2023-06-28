@@ -119,7 +119,7 @@ export default function IdeaCommentDetails(props: IProps) {
             title: 'Failed to create comment',
             message: undefined,
             icon: <X />,
-            autoClose: 2000,
+            autoClose: 5000,
           })
         } else {
           updateNotification({
@@ -156,7 +156,7 @@ export default function IdeaCommentDetails(props: IProps) {
           title: 'Failed to delete comment',
           message: undefined,
           icon: <X />,
-          autoClose: 2000,
+          autoClose: 5000,
         })
       } else {
         updateNotification({
@@ -165,7 +165,7 @@ export default function IdeaCommentDetails(props: IProps) {
           title: 'Deleted comment',
           message: undefined,
           icon: <Check />,
-          autoClose: 2000,
+          autoClose: 5000,
           disallowClose: false,
         })
         setThisIdeaCommentId('')
@@ -192,7 +192,7 @@ export default function IdeaCommentDetails(props: IProps) {
             title: 'Failed to update comment',
             message: undefined,
             icon: <X />,
-            autoClose: 2000,
+            autoClose: 5000,
           })
         } else {
           updateNotification({
@@ -201,7 +201,7 @@ export default function IdeaCommentDetails(props: IProps) {
             title: 'Comment updated',
             message: undefined,
             icon: <Check />,
-            autoClose: 2000,
+            autoClose: 5000,
             disallowClose: false,
           })
           setEditIdeaCommentText('')

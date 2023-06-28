@@ -137,7 +137,7 @@ function IdeaForm(props: IProps) {
             title: 'Failed to create idea',
             message: undefined,
             icon: <X />,
-            autoClose: 2000,
+            autoClose: 5000,
           })
         } else {
           updateNotification({
@@ -146,7 +146,7 @@ function IdeaForm(props: IProps) {
             title: `Created "${ideaText.title}"`,
             message: undefined,
             icon: <Check />,
-            autoClose: 2000,
+            autoClose: 5000,
           })
           onSuccess()
         }
@@ -178,7 +178,7 @@ function IdeaForm(props: IProps) {
             title: 'Failed to Edit idea',
             message: undefined,
             icon: <X />,
-            autoClose: 2000,
+            autoClose: 5000,
           })
         } else {
           updateNotification({
@@ -187,7 +187,7 @@ function IdeaForm(props: IProps) {
             title: `Edited "${ideaText.title}"`,
             message: undefined,
             icon: <Check />,
-            autoClose: 2000,
+            autoClose: 5000,
           })
           onSuccess()
         }

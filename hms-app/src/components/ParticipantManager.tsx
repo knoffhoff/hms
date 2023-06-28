@@ -95,7 +95,7 @@ export default function ParticipantManager({
           title: 'Failed to join Hackathon',
           message: undefined,
           icon: <X />,
-          autoClose: 2000,
+          autoClose: 5000,
         })
       } else {
         setParticipantCheck(true)
@@ -105,7 +105,7 @@ export default function ParticipantManager({
           title: 'Joined Hackathon',
           message: undefined,
           icon: <Check />,
-          autoClose: 2000,
+          autoClose: 5000,
         })
       }
     })
@@ -119,7 +119,7 @@ export default function ParticipantManager({
       title: 'Leaving Hackathon',
       message: undefined,
       autoClose: false,
-      disallowClose: false,
+      // disallowClose: false,
     })
     deleteParticipant(instance, findParticipant().id).then((response) => {
       setButtonIsDisabled(false)
@@ -131,7 +131,7 @@ export default function ParticipantManager({
           title: 'Failed to leave Hackathon',
           message: undefined,
           icon: <X />,
-          autoClose: 2000,
+          autoClose: 5000,
         })
       } else {
         setParticipantCheck(false)
@@ -141,7 +141,7 @@ export default function ParticipantManager({
           title: 'Left Hackathon',
           message: undefined,
           icon: <Check />,
-          autoClose: 2000,
+          autoClose: 5000,
         })
       }
     })

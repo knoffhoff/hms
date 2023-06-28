@@ -110,7 +110,7 @@ function HackathonForm(props: IProps) {
               title: `Created ${hackathonTitle}`,
               message: undefined,
               icon: <Check />,
-              autoClose: 2000,
+              autoClose: 5000,
             })
             onSuccess()
             clearForm()
@@ -156,7 +156,7 @@ function HackathonForm(props: IProps) {
           title: `Edited ${hackathonTitle}`,
           message: undefined,
           icon: <Check />,
-          autoClose: 2000,
+          autoClose: 5000,
         })
         onSuccess()
       }

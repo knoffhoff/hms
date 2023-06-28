@@ -53,7 +53,7 @@ export default function EditUserForm(props: IProps) {
           title: 'Failed to edit user',
           message: undefined,
           icon: <X />,
-          autoClose: 2000,
+          autoClose: 5000,
         })
       } else {
         updateNotification({
@@ -64,7 +64,7 @@ export default function EditUserForm(props: IProps) {
           }`,
           message: undefined,
           icon: <Check />,
-          autoClose: 2000,
+          autoClose: 5000,
         })
         onSuccess()
       }

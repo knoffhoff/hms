@@ -77,7 +77,7 @@ const SkillForm = (props: IProps): React.ReactElement => {
           title: 'Failed to edit skill',
           message: undefined,
           icon: <X />,
-          autoClose: 2000,
+          autoClose: 5000,
         })
       } else {
         updateNotification({
@@ -86,7 +86,7 @@ const SkillForm = (props: IProps): React.ReactElement => {
           title: `Edited ${skill.name}`,
           message: undefined,
           icon: <Check />,
-          autoClose: 2000,
+          autoClose: 5000,
         })
         onSuccess()
       }
@@ -121,7 +121,7 @@ const SkillForm = (props: IProps): React.ReactElement => {
           title: 'Failed to create skill',
           message: undefined,
           icon: <X />,
-          autoClose: 2000,
+          autoClose: 5000,
         })
       } else {
         updateNotification({
@@ -130,7 +130,7 @@ const SkillForm = (props: IProps): React.ReactElement => {
           title: `Created ${skill.name}`,
           message: undefined,
           icon: <Check />,
-          autoClose: 2000,
+          autoClose: 5000,
         })
         onSuccess()
         clearForm()

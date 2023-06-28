@@ -166,7 +166,7 @@ export default function HackathonDetails(props: IProps) {
           title: 'Failed to edit hackathon',
           message: undefined,
           icon: <X />,
-          autoClose: 2000,
+          autoClose: 5000,
         })
       } else {
         setVotingOpened(event)
@@ -176,7 +176,7 @@ export default function HackathonDetails(props: IProps) {
           title: `Edited ${hackathonData.title}`,
           message: undefined,
           icon: <Check />,
-          autoClose: 2000,
+          autoClose: 5000,
         })
       }
     })

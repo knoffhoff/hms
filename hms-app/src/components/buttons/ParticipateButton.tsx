@@ -70,7 +70,7 @@ export default function ParticipateButton(props: IProps) {
             title: `Failed to join idea: "${ideaData.title}"`,
             message: undefined,
             icon: <X />,
-            autoClose: 2000,
+            autoClose: 5000,
           })
         } else {
           check(true)
@@ -80,7 +80,7 @@ export default function ParticipateButton(props: IProps) {
             title: `Successfully joined idea: "${ideaData.title}"`,
             message: undefined,
             icon: <Check />,
-            autoClose: 2000,
+            autoClose: 5000,
           })
           setLoader(true)
           if (onSuccess) {
@@ -120,7 +120,7 @@ export default function ParticipateButton(props: IProps) {
             title: `Failed to leave idea: "${ideaData.title}"`,
             message: undefined,
             icon: <X />,
-            autoClose: 2000,
+            autoClose: 5000,
           })
         } else {
           check(false)
@@ -130,7 +130,7 @@ export default function ParticipateButton(props: IProps) {
             title: `Successfully left idea: "${ideaData.title}"`,
             message: undefined,
             icon: <Check />,
-            autoClose: 2000,
+            autoClose: 5000,
           })
           setLoader(true)
           if (onSuccess) {

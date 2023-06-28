@@ -52,7 +52,7 @@ export default function CardButtons(props: IProps) {
           title: 'Failed to delete idea',
           message: undefined,
           icon: <X />,
-          autoClose: 2000,
+          autoClose: 5000,
         })
       } else {
         updateNotification({
@@ -61,7 +61,7 @@ export default function CardButtons(props: IProps) {
           title: `Deleted "${ideaData.title}"`,
           message: undefined,
           icon: <Check />,
-          autoClose: 2000,
+          autoClose: 5000,
         })
         onSuccess()
       }

@@ -75,7 +75,7 @@ export function VoteButtons(props: IProps) {
             title: 'Failed to remove vote',
             message: undefined,
             icon: <X />,
-            autoClose: 2000,
+            autoClose: 5000,
           })
         } else {
           check(false)
@@ -85,7 +85,7 @@ export function VoteButtons(props: IProps) {
             title: `Vote removed from: "${ideaData.title}"`,
             message: undefined,
             icon: <Check />,
-            autoClose: 2000,
+            autoClose: 5000,
           })
           setLoader(true)
           if (onSuccess) {
@@ -136,7 +136,7 @@ export function VoteButtons(props: IProps) {
             title: 'Failed to add vote',
             message: undefined,
             icon: <X />,
-            autoClose: 2000,
+            autoClose: 5000,
           })
         } else {
           check(true)
@@ -146,7 +146,7 @@ export function VoteButtons(props: IProps) {
             title: `Vote added to: "${ideaData.title}"`,
             message: undefined,
             icon: <Check />,
-            autoClose: 2000,
+            autoClose: 5000,
           })
           if (onSuccess) {
             onSuccess()

@@ -79,7 +79,7 @@ export default function MoveIdeaModal(props: IProps) {
             title: 'Failed to Move idea',
             message: undefined,
             icon: <X />,
-            autoClose: 2000,
+            autoClose: 5000,
           })
         } else {
           removeIdeaParticipants(idea).then((r) => {
@@ -90,7 +90,7 @@ export default function MoveIdeaModal(props: IProps) {
                 title: 'Failed to delete idea participants',
                 message: undefined,
                 icon: <X />,
-                autoClose: 2000,
+                autoClose: 5000,
               })
             }
           })
@@ -100,7 +100,7 @@ export default function MoveIdeaModal(props: IProps) {
             title: `Moved "${ideaText.title}"`,
             message: undefined,
             icon: <Check />,
-            autoClose: 2000,
+            autoClose: 5000,
           })
           onSuccess()
         }
