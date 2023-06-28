@@ -12,8 +12,6 @@ import {
 import { ArrowUp } from 'tabler-icons-react'
 import IdeaCardList from '../components/lists/IdeaCardList'
 import {
-  Category,
-  CategoryPreview,
   Hackathon,
   HackathonDropdownMode,
   Idea,
@@ -25,7 +23,6 @@ import HackathonSelectDropdown from '../components/HackathonSelectDropdown'
 import { NULL_DATE } from '../common/constants'
 import HackathonHeader from '../components/HackathonHeader'
 import { UserContext } from './Layout'
-import { styles } from '../common/styles'
 import IdeaForm from '../components/input-forms/IdeaForm'
 import ParticipantManager from '../components/ParticipantManager'
 import { JOIN_BUTTON_COLOR } from '../common/colors'
@@ -48,7 +45,6 @@ function AllIdeas() {
   const [selectedHackathonId, setSelectedHackathonId] = useState('')
   const [relevantIdeaList, setRelevantIdeaList] = useState<Idea[]>([])
   const [userIdeaList, setUserIdeaList] = useState<Idea[]>([])
-  const [ideaCategoriesFilter, setIdeaCategoriesFilter] = useState<Idea[]>([])
   const [ideaData, setIdeaData] = useState<Idea>()
   const [isIdeaLoading, setIsIdeaLoading] = useState(true)
   const [showUserIdeas, setShowUserIdeas] = useState(false)
@@ -276,11 +272,14 @@ function AllIdeas() {
                       />
                     </Group>
                   </Stack>
-                  <CategorySelector
-                    hackathonId={selectedHackathonId}
-                    onSelectedCategory={setSelectedCategory}
-                  />
-                  <SearchBar onSearchTermChange={setSearchTerm} />
+
+                  <Group position='right' mt={100}>
+                    <CategorySelector
+                      hackathonId={selectedHackathonId}
+                      onSelectedCategory={setSelectedCategory}
+                    />
+                    <SearchBar onSearchTermChange={setSearchTerm} />
+                  </Group>
                 </Group>
 
                 <IdeaCardList

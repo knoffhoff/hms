@@ -3,6 +3,7 @@ import { getListOfCategories } from '../actions/CategoryActions'
 import { useMsal } from '@azure/msal-react'
 import { CategoryPreview } from '../common/types'
 import { useEffect, useState } from 'react'
+import { Filter } from 'tabler-icons-react'
 
 type IProps = {
   hackathonId: string
@@ -60,10 +61,10 @@ export default function CategorySelector(props: IProps) {
     (
       <MultiSelect
         clearable
-        p={5}
+        searchable
         data={categories}
-        label='Select categories'
-        placeholder='Pick all that apply'
+        placeholder='Filter category'
+        icon={<Filter />}
         maxDropdownHeight={150}
         value={selectedCategory}
         onChange={(value) => setSelectedCategory(value)}
