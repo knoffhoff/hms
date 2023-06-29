@@ -55,21 +55,17 @@ export default function CategorySelector(props: IProps) {
   }, [hackathonId])
 
   return (
-    // console.log('available categories: ', availableCategories),
-    // console.log('selected hackathon id: ', selectedHackathonId),
-    (
-      <MultiSelect
-        style={{ maxWidth: 350, maxHeight: 100 }}
-        clearable
-        searchable
-        nothingFound='No categories found'
-        data={categories}
-        placeholder='Filter category'
-        icon={<Filter />}
-        maxDropdownHeight={150}
-        value={selectedCategory}
-        onChange={(value) => setSelectedCategory(value)}
-      />
-    )
+    <MultiSelect
+      style={{ maxWidth: 350, maxHeight: 100 }}
+      clearable
+      searchable
+      nothingFound='No categories found'
+      data={categories}
+      placeholder='Filter category'
+      icon={<Filter />}
+      maxDropdownHeight={150}
+      value={selectedCategory}
+      onChange={(value) => setSelectedCategory(value)}
+    />
   )
 }
