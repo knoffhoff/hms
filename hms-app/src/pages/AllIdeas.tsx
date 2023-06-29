@@ -169,6 +169,7 @@ function AllIdeas() {
 
   return (
     <>
+      <HackathonHeader hackathonData={hackathonData} />
       <HackathonParticipantContext.Provider
         value={participantInfo.participantId}
       >
@@ -214,8 +215,6 @@ function AllIdeas() {
                   setButtonIsDisabled={setButtonIsDisabled}
                   hackathonData={hackathonData}
                 />
-
-                <HackathonHeader hackathonData={hackathonData} />
 
                 <Group position='apart' my={20}>
                   <Stack align='flex-start' justify='flex-start' spacing='sm'>
