@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import { Button, Modal, Text } from '@mantine/core'
-import { X, Check } from 'tabler-icons-react'
 import {
   createHackathonParticipant,
   deleteParticipant,
@@ -10,6 +9,7 @@ import { JOIN_BUTTON_COLOR, LEAVE_BUTTON_COLOR } from '../common/colors'
 import { Hackathon, ParticipantPreview } from '../common/types'
 import { useMsal } from '@azure/msal-react'
 import { styles } from '../common/styles'
+import { CustomCheckIcon, CustomXIcon } from './NotificationIcons'
 
 type IProps = {
   participantInfo: {
@@ -94,8 +94,8 @@ export default function ParticipantManager({
           color: 'red',
           title: 'Failed to join Hackathon',
           message: undefined,
-          icon: <X />,
-          autoClose: 2000,
+          icon: <CustomXIcon />,
+          autoClose: 5000,
         })
       } else {
         setParticipantCheck(true)
@@ -104,8 +104,8 @@ export default function ParticipantManager({
           color: 'teal',
           title: 'Joined Hackathon',
           message: undefined,
-          icon: <Check />,
-          autoClose: 2000,
+          icon: <CustomCheckIcon />,
+          autoClose: 5000,
         })
       }
     })
@@ -119,7 +119,7 @@ export default function ParticipantManager({
       title: 'Leaving Hackathon',
       message: undefined,
       autoClose: false,
-      disallowClose: false,
+      // disallowClose: false,
     })
     deleteParticipant(instance, findParticipant().id).then((response) => {
       setButtonIsDisabled(false)
@@ -130,8 +130,8 @@ export default function ParticipantManager({
           color: 'red',
           title: 'Failed to leave Hackathon',
           message: undefined,
-          icon: <X />,
-          autoClose: 2000,
+          icon: <CustomXIcon />,
+          autoClose: 5000,
         })
       } else {
         setParticipantCheck(false)
@@ -140,8 +140,8 @@ export default function ParticipantManager({
           color: 'teal',
           title: 'Left Hackathon',
           message: undefined,
-          icon: <Check />,
-          autoClose: 2000,
+          icon: <CustomCheckIcon />,
+          autoClose: 5000,
         })
       }
     })

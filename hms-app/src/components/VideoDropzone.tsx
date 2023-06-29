@@ -5,6 +5,7 @@ import React, { useContext } from 'react'
 import { showNotification } from '@mantine/notifications'
 import { FileRejection } from 'react-dropzone'
 import { UploadLoadingContext } from './FinalVideoUploadModal'
+import { CustomXIcon } from './NotificationIcons'
 
 const MAX_FILE_SIZE = 1000 * 1024 ** 2 // 1GB
 
@@ -24,6 +25,8 @@ export default function VideoDropzone({ uploadVideo }: IProps) {
       title: 'File rejected',
       message: 'Only video files in mp4 format are allowed',
       color: 'red',
+      icon: <CustomXIcon />,
+      autoClose: 5000,
     })
   }
 

@@ -7,7 +7,7 @@ import { getListOfSkills } from '../../actions/SkillActions'
 import { styles } from '../../common/styles'
 import { useMsal } from '@azure/msal-react'
 import { dark2, JOIN_BUTTON_COLOR } from '../../common/colors'
-import { Check, X } from 'tabler-icons-react'
+import { CustomCheckIcon, CustomXIcon } from '../NotificationIcons'
 
 type IProps = {
   onSuccess: () => void
@@ -52,8 +52,8 @@ export default function EditUserForm(props: IProps) {
           color: 'red',
           title: 'Failed to edit user',
           message: undefined,
-          icon: <X />,
-          autoClose: 2000,
+          icon: <CustomXIcon />,
+          autoClose: 5000,
         })
       } else {
         updateNotification({
@@ -63,8 +63,8 @@ export default function EditUserForm(props: IProps) {
             user.lastName ? user.lastName : ''
           }`,
           message: undefined,
-          icon: <Check />,
-          autoClose: 2000,
+          icon: <CustomCheckIcon />,
+          autoClose: 5000,
         })
         onSuccess()
       }

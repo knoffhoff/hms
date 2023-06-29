@@ -12,11 +12,12 @@ import { deleteIdea, getIdeaDetails } from '../../actions/IdeaActions'
 import IdeaForm from '../input-forms/IdeaForm'
 import { styles } from '../../common/styles'
 import { showNotification, updateNotification } from '@mantine/notifications'
-import { Check, X, Edit } from 'tabler-icons-react'
+import { Edit } from 'tabler-icons-react'
 import { useMsal } from '@azure/msal-react'
 import { DELETE_BUTTON_COLOR } from '../../common/colors'
 import FinalVideoUploadModal from '../FinalVideoUploadModal'
 import MoveIdeaModal from '../MoveIdeaModal'
+import { CustomCheckIcon, CustomXIcon } from '../NotificationIcons'
 
 type IProps = {
   idea: Idea
@@ -51,8 +52,8 @@ export default function CardButtons(props: IProps) {
           color: 'red',
           title: 'Failed to delete idea',
           message: undefined,
-          icon: <X />,
-          autoClose: 2000,
+          icon: <CustomXIcon />,
+          autoClose: 5000,
         })
       } else {
         updateNotification({
@@ -60,8 +61,8 @@ export default function CardButtons(props: IProps) {
           color: 'teal',
           title: `Deleted "${ideaData.title}"`,
           message: undefined,
-          icon: <Check />,
-          autoClose: 2000,
+          icon: <CustomCheckIcon />,
+          autoClose: 5000,
         })
         onSuccess()
       }

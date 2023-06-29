@@ -13,6 +13,7 @@ import { Idea } from '../../common/types'
 import { styles } from '../../common/styles'
 import { Switch } from '@mantine/core'
 import { RELOAD_BUTTON_COLOR, LEAVE_BUTTON_COLOR } from '../../common/colors'
+import { CustomCheckIcon, CustomXIcon } from '../NotificationIcons'
 
 type IProps = {
   idea: Idea
@@ -49,7 +50,7 @@ export function VoteButtons(props: IProps) {
         color: 'red',
         title: 'Not participating in hackathon',
         message: 'You must join the hackathon first to vote.',
-        icon: <X />,
+        icon: <CustomXIcon />,
         autoClose: 5000,
       })
       return
@@ -74,8 +75,8 @@ export function VoteButtons(props: IProps) {
             color: 'red',
             title: 'Failed to remove vote',
             message: undefined,
-            icon: <X />,
-            autoClose: 2000,
+            icon: <CustomXIcon />,
+            autoClose: 5000,
           })
         } else {
           check(false)
@@ -84,8 +85,8 @@ export function VoteButtons(props: IProps) {
             color: 'teal',
             title: `Vote removed from: "${ideaData.title}"`,
             message: undefined,
-            icon: <Check />,
-            autoClose: 2000,
+            icon: <CustomCheckIcon />,
+            autoClose: 5000,
           })
           setLoader(true)
           if (onSuccess) {
@@ -110,7 +111,7 @@ export function VoteButtons(props: IProps) {
         color: 'red',
         title: 'Not participating in hackathon',
         message: 'You must join the hackathon first to vote.',
-        icon: <X />,
+        icon: <CustomXIcon />,
         autoClose: 5000,
       })
       return
@@ -135,8 +136,8 @@ export function VoteButtons(props: IProps) {
             color: 'red',
             title: 'Failed to add vote',
             message: undefined,
-            icon: <X />,
-            autoClose: 2000,
+            icon: <CustomXIcon />,
+            autoClose: 5000,
           })
         } else {
           check(true)
@@ -145,8 +146,8 @@ export function VoteButtons(props: IProps) {
             color: 'teal',
             title: `Vote added to: "${ideaData.title}"`,
             message: undefined,
-            icon: <Check />,
-            autoClose: 2000,
+            icon: <CustomCheckIcon />,
+            autoClose: 5000,
           })
           if (onSuccess) {
             onSuccess()

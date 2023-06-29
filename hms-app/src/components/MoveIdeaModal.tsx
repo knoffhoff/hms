@@ -2,13 +2,14 @@ import { CategoryPreview, HackathonDropdownMode, Idea } from '../common/types'
 import { Button, Modal, Radio, Stack, Title, Tooltip } from '@mantine/core'
 import React, { useEffect, useState } from 'react'
 import HackathonSelectDropdown from './HackathonSelectDropdown'
-import { Check, X, ArrowBigRight } from 'tabler-icons-react'
+import { ArrowBigRight } from 'tabler-icons-react'
 import { useMsal } from '@azure/msal-react'
 import { getListOfCategories } from '../actions/CategoryActions'
 import { showNotification, updateNotification } from '@mantine/notifications'
 import { editIdea } from '../actions/IdeaActions'
 import { removeIdeaParticipant } from '../actions/ParticipantActions'
 import { JOIN_BUTTON_COLOR } from '../common/colors'
+import { CustomCheckIcon, CustomXIcon } from './NotificationIcons'
 
 type IProps = {
   idea: Idea
@@ -78,8 +79,8 @@ export default function MoveIdeaModal(props: IProps) {
             color: 'red',
             title: 'Failed to Move idea',
             message: undefined,
-            icon: <X />,
-            autoClose: 2000,
+            icon: <CustomXIcon />,
+            autoClose: 5000,
           })
         } else {
           removeIdeaParticipants(idea).then((r) => {
@@ -89,8 +90,8 @@ export default function MoveIdeaModal(props: IProps) {
                 color: 'red',
                 title: 'Failed to delete idea participants',
                 message: undefined,
-                icon: <X />,
-                autoClose: 2000,
+                icon: <CustomXIcon />,
+                autoClose: 5000,
               })
             }
           })
@@ -99,8 +100,8 @@ export default function MoveIdeaModal(props: IProps) {
             color: 'teal',
             title: `Moved "${ideaText.title}"`,
             message: undefined,
-            icon: <Check />,
-            autoClose: 2000,
+            icon: <CustomCheckIcon />,
+            autoClose: 5000,
           })
           onSuccess()
         }

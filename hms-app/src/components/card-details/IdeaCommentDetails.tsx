@@ -25,8 +25,8 @@ import {
   JOIN_BUTTON_COLOR,
 } from '../../common/colors'
 import { showNotification, updateNotification } from '@mantine/notifications'
-import { Check, X } from 'tabler-icons-react'
 import { UserContext } from '../../pages/Layout'
+import { CustomCheckIcon, CustomXIcon } from '../NotificationIcons'
 
 type IProps = {
   ideaId: string
@@ -118,8 +118,8 @@ export default function IdeaCommentDetails(props: IProps) {
             color: 'red',
             title: 'Failed to create comment',
             message: undefined,
-            icon: <X />,
-            autoClose: 2000,
+            icon: <CustomXIcon />,
+            autoClose: 5000,
           })
         } else {
           updateNotification({
@@ -127,7 +127,7 @@ export default function IdeaCommentDetails(props: IProps) {
             color: 'teal',
             title: 'Comment created',
             message: undefined,
-            icon: <Check />,
+            icon: <CustomCheckIcon />,
             autoClose: 5000,
             disallowClose: false,
           })
@@ -155,8 +155,8 @@ export default function IdeaCommentDetails(props: IProps) {
           color: 'red',
           title: 'Failed to delete comment',
           message: undefined,
-          icon: <X />,
-          autoClose: 2000,
+          icon: <CustomXIcon />,
+          autoClose: 5000,
         })
       } else {
         updateNotification({
@@ -164,8 +164,8 @@ export default function IdeaCommentDetails(props: IProps) {
           color: 'teal',
           title: 'Deleted comment',
           message: undefined,
-          icon: <Check />,
-          autoClose: 2000,
+          icon: <CustomCheckIcon />,
+          autoClose: 5000,
           disallowClose: false,
         })
         setThisIdeaCommentId('')
@@ -191,8 +191,8 @@ export default function IdeaCommentDetails(props: IProps) {
             color: 'red',
             title: 'Failed to update comment',
             message: undefined,
-            icon: <X />,
-            autoClose: 2000,
+            icon: <CustomXIcon />,
+            autoClose: 5000,
           })
         } else {
           updateNotification({
@@ -200,8 +200,8 @@ export default function IdeaCommentDetails(props: IProps) {
             color: 'teal',
             title: 'Comment updated',
             message: undefined,
-            icon: <Check />,
-            autoClose: 2000,
+            icon: <CustomCheckIcon />,
+            autoClose: 5000,
             disallowClose: false,
           })
           setEditIdeaCommentText('')

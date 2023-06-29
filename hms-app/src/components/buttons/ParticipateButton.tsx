@@ -13,6 +13,7 @@ import { Check, X } from 'tabler-icons-react'
 import { Idea } from '../../common/types'
 import { styles } from '../../common/styles'
 import { LEAVE_BUTTON_COLOR, RELOAD_BUTTON_COLOR } from '../../common/colors'
+import { CustomCheckIcon, CustomXIcon } from '../NotificationIcons'
 
 type IProps = {
   idea: Idea
@@ -44,7 +45,7 @@ export default function ParticipateButton(props: IProps) {
         color: 'red',
         title: 'You are not participating in this hackathon!',
         message: 'You must join the hackathon first to join an idea.',
-        icon: <X />,
+        icon: <CustomXIcon />,
         autoClose: 5000,
       })
       return
@@ -69,8 +70,8 @@ export default function ParticipateButton(props: IProps) {
             color: 'red',
             title: `Failed to join idea: "${ideaData.title}"`,
             message: undefined,
-            icon: <X />,
-            autoClose: 2000,
+            icon: <CustomXIcon />,
+            autoClose: 5000,
           })
         } else {
           check(true)
@@ -79,8 +80,8 @@ export default function ParticipateButton(props: IProps) {
             color: 'teal',
             title: `Successfully joined idea: "${ideaData.title}"`,
             message: undefined,
-            icon: <Check />,
-            autoClose: 2000,
+            icon: <CustomCheckIcon />,
+            autoClose: 5000,
           })
           setLoader(true)
           if (onSuccess) {
@@ -119,8 +120,8 @@ export default function ParticipateButton(props: IProps) {
             color: 'red',
             title: `Failed to leave idea: "${ideaData.title}"`,
             message: undefined,
-            icon: <X />,
-            autoClose: 2000,
+            icon: <CustomXIcon />,
+            autoClose: 5000,
           })
         } else {
           check(false)
@@ -129,8 +130,8 @@ export default function ParticipateButton(props: IProps) {
             color: 'teal',
             title: `Successfully left idea: "${ideaData.title}"`,
             message: undefined,
-            icon: <Check />,
-            autoClose: 2000,
+            icon: <CustomCheckIcon />,
+            autoClose: 5000,
           })
           setLoader(true)
           if (onSuccess) {

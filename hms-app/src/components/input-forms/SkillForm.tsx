@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { Button, Card, Group, Textarea } from '@mantine/core'
 import { showNotification, updateNotification } from '@mantine/notifications'
-import { Check, X } from 'tabler-icons-react'
 import { useMsal } from '@azure/msal-react'
+import { CustomCheckIcon, CustomXIcon } from '../NotificationIcons'
 
 import {
   addSkill,
@@ -76,8 +76,8 @@ const SkillForm = (props: IProps): React.ReactElement => {
           color: 'red',
           title: 'Failed to edit skill',
           message: undefined,
-          icon: <X />,
-          autoClose: 2000,
+          icon: <CustomXIcon />,
+          autoClose: 5000,
         })
       } else {
         updateNotification({
@@ -85,8 +85,8 @@ const SkillForm = (props: IProps): React.ReactElement => {
           color: 'teal',
           title: `Edited ${skill.name}`,
           message: undefined,
-          icon: <Check />,
-          autoClose: 2000,
+          icon: <CustomCheckIcon />,
+          autoClose: 5000,
         })
         onSuccess()
       }
@@ -120,8 +120,8 @@ const SkillForm = (props: IProps): React.ReactElement => {
           color: 'red',
           title: 'Failed to create skill',
           message: undefined,
-          icon: <X />,
-          autoClose: 2000,
+          icon: <CustomXIcon />,
+          autoClose: 5000,
         })
       } else {
         updateNotification({
@@ -129,8 +129,8 @@ const SkillForm = (props: IProps): React.ReactElement => {
           color: 'teal',
           title: `Created ${skill.name}`,
           message: undefined,
-          icon: <Check />,
-          autoClose: 2000,
+          icon: <CustomCheckIcon />,
+          autoClose: 5000,
         })
         onSuccess()
         clearForm()
