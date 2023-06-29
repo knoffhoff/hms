@@ -16,6 +16,7 @@ import IdeaForm from '../components/input-forms/IdeaForm'
 import { MIN_DATE } from '../common/constants'
 import SearchBar from '../components/searchBar'
 import { JOIN_BUTTON_COLOR } from '../common/colors'
+import CategorySelector from '../components/CategorySelector'
 import HackathonHeader from '../components/HackathonHeader'
 
 function IdeaPool() {
@@ -26,6 +27,7 @@ function IdeaPool() {
   const [ideaData, setIdeaData] = useState<Idea>()
   const [relevantIdeaList, setRelevantIdeaList] = useState<Idea[]>([])
   const [opened, setOpened] = useState(false)
+  const [selectedCategory, setSelectedCategory] = useState<string[]>([])
   const [hackathon, setHackathon] = useState<HackathonPreview>(
     {} as HackathonPreview
   )
@@ -63,7 +65,13 @@ function IdeaPool() {
     }
   }
 
-  const searchIdea = relevantIdeaList.filter((item) => {
+  const categoryFilter = relevantIdeaList.filter((item) => {
+    return selectedCategory === undefined || selectedCategory.length === 0
+      ? item
+      : selectedCategory.some((category) => item.category?.id === category)
+  })
+
+  const searchIdea = categoryFilter.filter((item) => {
     return item.title?.toLowerCase().includes(searchTerm.toLowerCase())
   })
 
@@ -150,7 +158,18 @@ function IdeaPool() {
                 />
               </Group>
             </Stack>
-            <SearchBar onSearchTermChange={setSearchTerm} />
+            <Group position='right' mt={100}>
+              {hackathon.id === undefined ? (
+                'Category Loading'
+              ) : (
+                <CategorySelector
+                  hackathonId={hackathon.id}
+                  onSelectedCategory={setSelectedCategory}
+                />
+              )}
+
+              <SearchBar onSearchTermChange={setSearchTerm} />
+            </Group>
           </Group>
 
           <IdeaCardList

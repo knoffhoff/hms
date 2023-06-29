@@ -30,6 +30,7 @@ import { getHackathonDetails } from '../actions/HackathonActions'
 import { getIdeaDetails } from '../actions/IdeaActions'
 import { useMsal } from '@azure/msal-react'
 import SearchBar from '../components/searchBar'
+import CategorySelector from '../components/CategorySelector'
 
 export const HackathonParticipantContext = createContext('')
 export const HackathonVotingContext = createContext(false)
@@ -47,6 +48,7 @@ function AllIdeas() {
   const [ideaData, setIdeaData] = useState<Idea>()
   const [isIdeaLoading, setIsIdeaLoading] = useState(true)
   const [showUserIdeas, setShowUserIdeas] = useState(false)
+  const [selectedCategory, setSelectedCategory] = useState<string[]>([])
   const [participantInfo, setParticipantInfo] = useState({
     userId: '',
     hackathonId: '',
@@ -89,7 +91,13 @@ function AllIdeas() {
     loadSelectedHackathon()
   }
 
-  const searchIdea = relevantIdeaList.filter((item) => {
+  const categoryFilter = relevantIdeaList.filter((item) => {
+    return selectedCategory.length === 0
+      ? item
+      : selectedCategory.some((category) => item.category?.id === category)
+  })
+
+  const searchIdea = categoryFilter.filter((item) => {
     return item.title?.toLowerCase().includes(searchTerm.toLowerCase())
   })
 
@@ -114,10 +122,6 @@ function AllIdeas() {
     }
     return participant
   }
-
-  // const refreshAfterChange = () => {
-  //   setRefreshHackathon(!refreshHackathon)
-  // }
 
   useEffect(() => {
     setRelevantIdeaList([])
@@ -259,7 +263,14 @@ function AllIdeas() {
                       />
                     </Group>
                   </Stack>
-                  <SearchBar onSearchTermChange={setSearchTerm} />
+
+                  <Group position='right' mt={100}>
+                    <CategorySelector
+                      hackathonId={selectedHackathonId}
+                      onSelectedCategory={setSelectedCategory}
+                    />
+                    <SearchBar onSearchTermChange={setSearchTerm} />
+                  </Group>
                 </Group>
 
                 <IdeaCardList
