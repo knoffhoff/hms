@@ -24,7 +24,7 @@ import { RichTextEditor } from '@mantine/rte'
 import AllCategoryList from '../lists/AllCategoryList'
 import AllParticipantList from '../lists/AllParticipantList'
 import AllIdeaList from '../lists/AllIdeaList'
-import { CustomCheckIcon, CustomXIcon } from '../../components/NotificationIcons'
+import { CustomCheckIcon, CustomXIcon } from '../NotificationIcons'
 
 type IProps = {
   hackathonId: string

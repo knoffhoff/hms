@@ -12,7 +12,7 @@ import { useMsal } from '@azure/msal-react'
 import { dark2, JOIN_BUTTON_COLOR } from '../../common/colors'
 import { Hackathon } from '../../common/types'
 import { RichTextEditor } from '@mantine/rte'
-import { CustomCheckIcon, CustomXIcon } from '../../components/NotificationIcons'
+import { CustomCheckIcon, CustomXIcon } from '../NotificationIcons'
 
 type IProps = {
   context: string

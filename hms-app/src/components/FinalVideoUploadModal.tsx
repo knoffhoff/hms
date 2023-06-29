@@ -19,7 +19,7 @@ import { useMsal } from '@azure/msal-react'
 import { showNotification } from '@mantine/notifications'
 import { useToggle } from '@mantine/hooks'
 import { Upload } from 'tabler-icons-react'
-import { CustomCheckIcon, CustomXIcon } from '../components/NotificationIcons'
+import { CustomCheckIcon, CustomXIcon } from './NotificationIcons'
 
 type IProps = {
   idea: Idea

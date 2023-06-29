@@ -9,7 +9,7 @@ import { showNotification, updateNotification } from '@mantine/notifications'
 import { styles } from '../../common/styles'
 import { useMsal } from '@azure/msal-react'
 import { dark2, JOIN_BUTTON_COLOR } from '../../common/colors'
-import { CustomCheckIcon, CustomXIcon } from '../../components/NotificationIcons'
+import { CustomCheckIcon, CustomXIcon } from '../NotificationIcons'
 
 type IProps = {
   hackathonId: string

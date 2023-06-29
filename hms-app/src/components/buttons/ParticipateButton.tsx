@@ -13,7 +13,7 @@ import { Check, X } from 'tabler-icons-react'
 import { Idea } from '../../common/types'
 import { styles } from '../../common/styles'
 import { LEAVE_BUTTON_COLOR, RELOAD_BUTTON_COLOR } from '../../common/colors'
-import { CustomCheckIcon, CustomXIcon } from '../../components/NotificationIcons'
+import { CustomCheckIcon, CustomXIcon } from '../NotificationIcons'
 
 type IProps = {
   idea: Idea

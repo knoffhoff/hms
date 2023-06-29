@@ -5,7 +5,7 @@ import React, { useContext } from 'react'
 import { showNotification } from '@mantine/notifications'
 import { FileRejection } from 'react-dropzone'
 import { UploadLoadingContext } from './FinalVideoUploadModal'
-import { CustomCheckIcon, CustomXIcon } from '../components/NotificationIcons'
+import { CustomXIcon } from './NotificationIcons'
 
 const MAX_FILE_SIZE = 1000 * 1024 ** 2 // 1GB
 

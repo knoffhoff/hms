@@ -26,7 +26,7 @@ import {
 } from '../../common/colors'
 import { showNotification, updateNotification } from '@mantine/notifications'
 import { UserContext } from '../../pages/Layout'
-import { CustomCheckIcon, CustomXIcon } from '../../components/NotificationIcons'
+import { CustomCheckIcon, CustomXIcon } from '../NotificationIcons'
 
 type IProps = {
   ideaId: string

@@ -17,7 +17,7 @@ import { useMsal } from '@azure/msal-react'
 import { DELETE_BUTTON_COLOR } from '../../common/colors'
 import FinalVideoUploadModal from '../FinalVideoUploadModal'
 import MoveIdeaModal from '../MoveIdeaModal'
-import { CustomCheckIcon, CustomXIcon } from '../../components/NotificationIcons'
+import { CustomCheckIcon, CustomXIcon } from '../NotificationIcons'
 
 type IProps = {
   idea: Idea

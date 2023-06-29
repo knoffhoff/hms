@@ -9,7 +9,7 @@ import { showNotification, updateNotification } from '@mantine/notifications'
 import { editIdea } from '../actions/IdeaActions'
 import { removeIdeaParticipant } from '../actions/ParticipantActions'
 import { JOIN_BUTTON_COLOR } from '../common/colors'
-import { CustomCheckIcon, CustomXIcon } from '../components/NotificationIcons'
+import { CustomCheckIcon, CustomXIcon } from './NotificationIcons'
 
 type IProps = {
   idea: Idea

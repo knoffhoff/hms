@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import { Button, Modal, Text } from '@mantine/core'
-import { X, Check } from 'tabler-icons-react'
 import {
   createHackathonParticipant,
   deleteParticipant,
@@ -10,7 +9,7 @@ import { JOIN_BUTTON_COLOR, LEAVE_BUTTON_COLOR } from '../common/colors'
 import { Hackathon, ParticipantPreview } from '../common/types'
 import { useMsal } from '@azure/msal-react'
 import { styles } from '../common/styles'
-import { CustomCheckIcon, CustomXIcon } from '../components/NotificationIcons'
+import { CustomCheckIcon, CustomXIcon } from './NotificationIcons'
 
 type IProps = {
   participantInfo: {

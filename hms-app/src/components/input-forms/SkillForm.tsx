@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Button, Card, Group, Textarea } from '@mantine/core'
 import { showNotification, updateNotification } from '@mantine/notifications'
 import { useMsal } from '@azure/msal-react'
-import { CustomCheckIcon, CustomXIcon } from '../../components/NotificationIcons'
+import { CustomCheckIcon, CustomXIcon } from '../NotificationIcons'
 
 import {
   addSkill,
