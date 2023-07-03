@@ -1,10 +1,12 @@
-import { useCallback, useState } from 'react'
+import { useState } from 'react'
 import { Center, Container, Title, Accordion } from '@mantine/core'
 import { Hackathon, HackathonPreview } from '../common/types'
 import { MAX_DATE, MIN_DATE, NULL_DATE } from '../common/constants'
 import { RichTextEditor } from '@mantine/rte'
 import { heroHeaderStyles } from '../common/styles'
 import { ChevronDown } from 'tabler-icons-react'
+import { useAppDispatch, useAppSelector } from '../hooks'
+import { setHackathonHeaderOpened } from '../common/redux/hackathonSlice'
 
 type IProps = {
   hackathonData: Hackathon | HackathonPreview
@@ -13,10 +15,13 @@ type IProps = {
 export default function HackathonHeader(props: IProps) {
   const { hackathonData } = props
   const { classes } = heroHeaderStyles()
-  const [isDescriptionOpen, setIsDescriptionOpen] = useState(true)
-  const handleAccordionChange = useCallback((value: string | null) => {
-    setIsDescriptionOpen(value === 'hackathon-details')
-  }, [])
+  const [isDescriptionOpen, setIsDescriptionOpen] = useState<string | null>(
+    'hackathon-details'
+  )
+  const dispatch = useAppDispatch()
+  const hackathonHeaderOpened = useAppSelector(
+    (state) => state.hackathons.hackathonHeaderOpened
+  )
 
   const formatHackathonDates = () => {
     const startDate = hackathonData.startDate.toLocaleDateString('en-US', {
@@ -46,6 +51,16 @@ export default function HackathonHeader(props: IProps) {
     )
   }
 
+  const handleAccordionChange = (value: string | null) => {
+    if (!hackathonHeaderOpened) {
+      setIsDescriptionOpen(value)
+      dispatch(setHackathonHeaderOpened(true))
+    } else {
+      setIsDescriptionOpen(null)
+      dispatch(setHackathonHeaderOpened(false))
+    }
+  }
+
   return (
     <>
       {validHackathon() ? (
@@ -65,7 +80,7 @@ export default function HackathonHeader(props: IProps) {
             )}
           </div>
           <Accordion
-            defaultValue='hackathon-details'
+            value={hackathonHeaderOpened ? 'hackathon-details' : null}
             onChange={handleAccordionChange}
             chevron={null}
             styles={{
@@ -82,7 +97,6 @@ export default function HackathonHeader(props: IProps) {
                     style={{
                       backgroundColor: 'transparent',
                       border: 'none',
-                      // marginBottom: '8px',
                     }}
                   />
                 )}
@@ -101,7 +115,7 @@ export default function HackathonHeader(props: IProps) {
                         size={24}
                         style={{
                           transition: 'transform 0.3s ease-in-out',
-                          transform: isDescriptionOpen
+                          transform: hackathonHeaderOpened
                             ? 'rotate(180deg)'
                             : 'none',
                         }}
