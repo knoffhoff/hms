@@ -52,7 +52,6 @@ export default function HackathonHeader(props: IProps) {
   }
 
   const handleAccordionChange = (value: string | null) => {
-    console.log('before click', hackathonHeaderOpened)
     if (!hackathonHeaderOpened) {
       setIsDescriptionOpen(value)
       dispatch(setHackathonHeaderOpened(true))
@@ -61,8 +60,6 @@ export default function HackathonHeader(props: IProps) {
       dispatch(setHackathonHeaderOpened(false))
     }
   }
-
-  console.log('after click', hackathonHeaderOpened)
 
   return (
     <>
