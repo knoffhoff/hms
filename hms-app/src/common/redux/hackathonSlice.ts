@@ -6,6 +6,7 @@ interface HackathonState {
   lastHackathon: HackathonSerializable
   nextHackathon: HackathonSerializable
   lastSelectedHackathon: HackathonSerializable
+  hackathonHeaderOpened: boolean
 }
 
 const initialState: HackathonState = {
@@ -47,6 +48,7 @@ const initialState: HackathonState = {
     participants: [],
     votingOpened: false,
   },
+  hackathonHeaderOpened: true,
 }
 
 export const mapHackathonToSerializable = (
@@ -87,6 +89,9 @@ export const hackathonSlice = createSlice({
     ) => {
       state.lastSelectedHackathon = action.payload
     },
+    setHackathonHeaderOpened: (state, action: PayloadAction<boolean>) => {
+      state.hackathonHeaderOpened = action.payload
+    }
   },
 })
 
@@ -96,6 +101,7 @@ export const {
   setLastHackathon,
   setNextHackathon,
   setLastSelectedHackathon,
+  setHackathonHeaderOpened,
 } = hackathonSlice.actions
 
 export default hackathonSlice.reducer
