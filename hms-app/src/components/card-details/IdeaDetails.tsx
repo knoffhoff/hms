@@ -307,7 +307,7 @@ export default function IdeaDetails(props: IProps) {
     <>
       {!isLoading && type !== IdeaCardType.Voting ? (
         <Card withBorder className={classes.card}>
-          <Card.Section className={classes.borderSection}>
+          <Card.Section className={classes.noBorderSection}>
             <Accordion
               onChange={(value) => setAccordionOpen(value === 'idea-details')}
             >
@@ -329,7 +329,7 @@ export default function IdeaDetails(props: IProps) {
             </Accordion>
           </Card.Section>
 
-          <Card.Section pt={16} className={classes.borderSection}>
+          <Card.Section className={classes.borderSection}>
             <div style={{ display: 'flex', flexWrap: 'wrap' }}>
               <div
                 style={{
@@ -345,6 +345,8 @@ export default function IdeaDetails(props: IProps) {
                 <Group position='right'>{ideaButtons()}</Group>
               </div>
             </div>
+          </Card.Section>
+          <Card.Section className={classes.borderSection}>
             {IdeaComments()}
           </Card.Section>
         </Card>
