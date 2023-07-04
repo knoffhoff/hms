@@ -186,17 +186,17 @@ export default function IdeaDetails(props: IProps) {
   }
 
   const ideaButtons = () => {
-    return (
-      (type === IdeaCardType.Admin ||
-        type === IdeaCardType.Owner ||
-        ideaData.owner?.id === user?.id) && (
-        <CardButton
-          idea={props.idea}
-          onSuccess={refreshAfterChange}
-          type={type}
-          ishackathonStarted={ishackathonStarted}
-        />
-      )
+    return type === IdeaCardType.Admin ||
+      type === IdeaCardType.Owner ||
+      ideaData.owner?.id === user?.id ? (
+      <CardButton
+        idea={props.idea}
+        onSuccess={refreshAfterChange}
+        type={type}
+        ishackathonStarted={ishackathonStarted}
+      />
+    ) : (
+      <div style={{ height: '30px' }}></div>
     )
   }
 
@@ -212,10 +212,10 @@ export default function IdeaDetails(props: IProps) {
     return (
       type === IdeaCardType.AllIdeas && (
         <Card.Section ml={16}>
-          <Group spacing='xs' position={'apart'} mr={16}>
+          <Group spacing='xs' mr={16}>
             {votingButton()}
             <Text className={classes.label} mt={0}>
-              Votes: {ideaData.voters?.length}
+              {ideaData.voters?.length}
             </Text>
           </Group>
         </Card.Section>
@@ -307,13 +307,7 @@ export default function IdeaDetails(props: IProps) {
     <>
       {!isLoading && type !== IdeaCardType.Voting ? (
         <Card withBorder className={classes.card}>
-          {hackathonVotingOpened && (
-            <Card.Section pt={16} className={classes.borderSection}>
-              {voting()}
-            </Card.Section>
-          )}
-
-          <Card.Section className={classes.borderSection}>
+          <Card.Section className={classes.noBorderSection}>
             <Accordion
               onChange={(value) => setAccordionOpen(value === 'idea-details')}
             >
@@ -329,26 +323,35 @@ export default function IdeaDetails(props: IProps) {
                   {ideaCategory()}
                   {ideaRequiredSkills()}
                   {participantsList()}
+                  {participateButton()}
                 </Accordion.Panel>
               </Accordion.Item>
             </Accordion>
           </Card.Section>
 
-          <Card.Section pt={16} className={classes.borderSection}>
-            <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+          <Card.Section className={classes.borderSection}>
+            <div
+              style={{
+                display: 'flex',
+                flexWrap: 'wrap',
+              }}
+            >
               <div
                 style={{
                   flex: '1 0 33%',
                   maxWidth: '33%',
-                  paddingLeft: '16px',
                 }}
               >
-                {participateButton()}
+                <Group position='left'>
+                  {hackathonVotingOpened && voting()}
+                </Group>
               </div>
               <div style={{ flex: '2 0 66%', maxWidth: '66%' }}>
                 <Group position='right'>{ideaButtons()}</Group>
               </div>
             </div>
+          </Card.Section>
+          <Card.Section className={classes.borderSection}>
             {IdeaComments()}
           </Card.Section>
         </Card>

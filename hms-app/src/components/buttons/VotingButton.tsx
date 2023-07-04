@@ -8,12 +8,10 @@ import { HackathonParticipantContext } from '../../pages/AllIdeas'
 import { getIdeaDetails } from '../../actions/IdeaActions'
 import { showNotification, updateNotification } from '@mantine/notifications'
 import { useMsal } from '@azure/msal-react'
-import { Check, X } from 'tabler-icons-react'
 import { Idea } from '../../common/types'
-import { styles } from '../../common/styles'
-import { Switch } from '@mantine/core'
-import { RELOAD_BUTTON_COLOR, LEAVE_BUTTON_COLOR } from '../../common/colors'
+import { ActionIcon } from '@mantine/core'
 import { CustomCheckIcon, CustomXIcon } from '../NotificationIcons'
+import { IconHeart, IconHeartFilled } from '@tabler/icons-react'
 
 type IProps = {
   idea: Idea
@@ -27,14 +25,12 @@ export function VoteButtons(props: IProps) {
   const { idea, onSuccess } = props
   const { instance } = useMsal()
   const [voteCheck, setVoteCheck] = useState(false)
-  const [buttonIsDisabled, setButtonIsDisabled] = useState(voteCheck)
   const [loader, setLoader] = useState(false)
   const [ideaData, setIdeaData] = useState(idea)
   const [participantInfo, setParticipantInfo] = useState({
     userId: '',
     participantId: '',
   })
-  const { classes } = styles()
 
   const removeThisVote = () => {
     removeVote(removeIdeaVoteParticipant, setVoteCheck)
@@ -55,7 +51,6 @@ export function VoteButtons(props: IProps) {
       })
       return
     }
-    setButtonIsDisabled(true)
     showNotification({
       id: 'participant-load',
       loading: true,
@@ -66,7 +61,6 @@ export function VoteButtons(props: IProps) {
     })
     action(instance, ideaData.id, participantInfo.participantId).then(
       (response) => {
-        setButtonIsDisabled(false)
         setLoader(true)
         if (JSON.stringify(response).toString().includes('error')) {
           check(false)
@@ -116,7 +110,6 @@ export function VoteButtons(props: IProps) {
       })
       return
     }
-    setButtonIsDisabled(true)
     showNotification({
       id: 'participant-load',
       loading: true,
@@ -127,7 +120,6 @@ export function VoteButtons(props: IProps) {
     })
     action(instance, ideaData.id, participantInfo.participantId).then(
       (response) => {
-        setButtonIsDisabled(false)
         setLoader(true)
         if (JSON.stringify(response).toString().includes('error')) {
           check(false)
@@ -193,20 +185,12 @@ export function VoteButtons(props: IProps) {
   }
 
   return (
-    <Switch
-      color={RELOAD_BUTTON_COLOR}
-      disabled={buttonIsDisabled}
-      checked={voteCheck}
-      onChange={voteCheck ? removeThisVote : addThisVote}
-      thumbIcon={
-        voteCheck ? (
-          <Check size='0.8rem' color={RELOAD_BUTTON_COLOR} />
-        ) : (
-          <X size='0.8rem' color={LEAVE_BUTTON_COLOR} />
-        )
-      }
-      label={<span className={classes.boldText}>Vote</span>}
-      labelPosition='left'
-    />
+    <ActionIcon
+      variant='transparent'
+      onClick={voteCheck ? removeThisVote : addThisVote}
+      color='orange.7'
+    >
+      {voteCheck ? <IconHeartFilled size={50} /> : <IconHeart size={50} />}
+    </ActionIcon>
   )
 }
