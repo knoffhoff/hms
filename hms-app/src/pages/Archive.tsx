@@ -51,9 +51,7 @@ export default function Archive() {
   const skillFilter = relevantIdeaList.filter((item) => {
     return selectedSkills.length === 0
       ? item
-      : item.requiredSkills?.some((skill) =>
-          selectedSkills.includes(skill.id)
-        )
+      : item.requiredSkills?.some((skill) => selectedSkills.includes(skill.id))
   })
 
   const categoryFilter = skillFilter.filter((item) => {
@@ -122,7 +120,7 @@ export default function Archive() {
           <>
             <Group position={'apart'} my={20}>
               <Stack align='flex-start' justify='flex-start' spacing='sm'>
-                <Title order={2} mt={50}>
+                <Title order={2} mt={20}>
                   {showUserIdeas
                     ? 'My Submissions: ' + userIdeaList.length
                     : 'Ideas submitted: ' + searchIdea.length}
@@ -138,7 +136,7 @@ export default function Archive() {
                   }
                 />
               </Stack>
-              <Group position='right' mt={100}>
+              <Group position='right' mt={70}>
                 <SkillSelector
                   hackathonId={selectedHackathonId}
                   onSelectedSkills={setSelectedSkills}

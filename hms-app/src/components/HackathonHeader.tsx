@@ -67,7 +67,7 @@ export default function HackathonHeader(props: IProps) {
         <Container
           className={classes.wrapper}
           size={1400}
-          style={{ marginBottom: '50px' }}
+          style={{ marginBottom: '10px' }}
         >
           <div>
             <Title className={classes.title} order={2} align={'center'}>

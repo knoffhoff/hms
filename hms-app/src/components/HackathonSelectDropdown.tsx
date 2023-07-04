@@ -162,8 +162,8 @@ export default function HackathonSelectDropdown({
 
   return (
     <>
-      <Stack spacing={0} pt={25}>
-      <Text className={classes.title}>Select Hackathon:</Text>
+      <Stack spacing={0} pt={20}>
+        <Text className={classes.title}>Select Hackathon:</Text>
 
         {isError && (
           <Select
