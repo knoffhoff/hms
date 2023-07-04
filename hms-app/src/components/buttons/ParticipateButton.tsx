@@ -185,6 +185,7 @@ export default function ParticipateButton(props: IProps) {
 
   return (
     <Switch
+      pt={10}
       color={RELOAD_BUTTON_COLOR}
       disabled={buttonIsDisabled}
       checked={participantCheck}

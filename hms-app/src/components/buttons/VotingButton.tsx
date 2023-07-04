@@ -8,11 +8,15 @@ import { HackathonParticipantContext } from '../../pages/AllIdeas'
 import { getIdeaDetails } from '../../actions/IdeaActions'
 import { showNotification, updateNotification } from '@mantine/notifications'
 import { useMsal } from '@azure/msal-react'
-import { Check, X } from 'tabler-icons-react'
+import { Check, X, Heart, HeartBroken } from 'tabler-icons-react'
 import { Idea } from '../../common/types'
 import { styles } from '../../common/styles'
-import { Switch } from '@mantine/core'
-import { RELOAD_BUTTON_COLOR, LEAVE_BUTTON_COLOR } from '../../common/colors'
+import { Switch, Button } from '@mantine/core'
+import {
+  RELOAD_BUTTON_COLOR,
+  LEAVE_BUTTON_COLOR,
+  JOIN_BUTTON_COLOR,
+} from '../../common/colors'
 import { CustomCheckIcon, CustomXIcon } from '../NotificationIcons'
 
 type IProps = {
@@ -193,20 +197,19 @@ export function VoteButtons(props: IProps) {
   }
 
   return (
-    <Switch
-      color={RELOAD_BUTTON_COLOR}
-      disabled={buttonIsDisabled}
-      checked={voteCheck}
-      onChange={voteCheck ? removeThisVote : addThisVote}
-      thumbIcon={
+    <Button
+      compact
+      color={voteCheck ? LEAVE_BUTTON_COLOR : RELOAD_BUTTON_COLOR}
+      onClick={voteCheck ? removeThisVote : addThisVote}
+      leftIcon={
         voteCheck ? (
-          <Check size='0.8rem' color={RELOAD_BUTTON_COLOR} />
+          <HeartBroken color={'#f2987f'} />
         ) : (
-          <X size='0.8rem' color={LEAVE_BUTTON_COLOR} />
+          <Heart color={'#7fbfbf'} />
         )
       }
-      label={<span className={classes.boldText}>Vote</span>}
-      labelPosition='left'
-    />
+    >
+      {voteCheck ? 'Remove Vote' : 'Vote'}
+    </Button>
   )
 }

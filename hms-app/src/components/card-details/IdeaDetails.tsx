@@ -212,10 +212,10 @@ export default function IdeaDetails(props: IProps) {
     return (
       type === IdeaCardType.AllIdeas && (
         <Card.Section ml={16}>
-          <Group spacing='xs' position={'apart'} mr={16}>
+          <Group spacing='xs' mr={16}>
             {votingButton()}
             <Text className={classes.label} mt={0}>
-              Votes: {ideaData.voters?.length}
+              {ideaData.voters?.length}
             </Text>
           </Group>
         </Card.Section>
@@ -307,12 +307,6 @@ export default function IdeaDetails(props: IProps) {
     <>
       {!isLoading && type !== IdeaCardType.Voting ? (
         <Card withBorder className={classes.card}>
-          {hackathonVotingOpened && (
-            <Card.Section pt={16} className={classes.borderSection}>
-              {voting()}
-            </Card.Section>
-          )}
-
           <Card.Section className={classes.borderSection}>
             <Accordion
               onChange={(value) => setAccordionOpen(value === 'idea-details')}
@@ -329,6 +323,7 @@ export default function IdeaDetails(props: IProps) {
                   {ideaCategory()}
                   {ideaRequiredSkills()}
                   {participantsList()}
+                  {participateButton()}
                 </Accordion.Panel>
               </Accordion.Item>
             </Accordion>
@@ -340,10 +335,11 @@ export default function IdeaDetails(props: IProps) {
                 style={{
                   flex: '1 0 33%',
                   maxWidth: '33%',
-                  paddingLeft: '16px',
                 }}
               >
-                {participateButton()}
+                <Group position='left'>
+                  {hackathonVotingOpened && voting()}
+                </Group>
               </div>
               <div style={{ flex: '2 0 66%', maxWidth: '66%' }}>
                 <Group position='right'>{ideaButtons()}</Group>
