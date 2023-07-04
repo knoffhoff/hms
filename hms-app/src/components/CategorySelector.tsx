@@ -61,7 +61,7 @@ export default function CategorySelector(props: IProps) {
       searchable
       nothingFound='No categories found'
       data={categories}
-      placeholder='Filter category'
+      placeholder='Filter by category'
       icon={<Filter />}
       maxDropdownHeight={150}
       value={selectedCategory}

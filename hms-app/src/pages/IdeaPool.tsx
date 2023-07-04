@@ -17,6 +17,7 @@ import { MIN_DATE } from '../common/constants'
 import SearchBar from '../components/searchBar'
 import { JOIN_BUTTON_COLOR } from '../common/colors'
 import CategorySelector from '../components/CategorySelector'
+import SkillSelector from '../components/SkillSelector'
 import HackathonHeader from '../components/HackathonHeader'
 
 function IdeaPool() {
@@ -28,6 +29,7 @@ function IdeaPool() {
   const [relevantIdeaList, setRelevantIdeaList] = useState<Idea[]>([])
   const [opened, setOpened] = useState(false)
   const [selectedCategory, setSelectedCategory] = useState<string[]>([])
+  const [selectedSkills, setSelectedSkills] = useState<string[]>([])
   const [hackathon, setHackathon] = useState<HackathonPreview>(
     {} as HackathonPreview
   )
@@ -65,7 +67,15 @@ function IdeaPool() {
     }
   }
 
-  const categoryFilter = relevantIdeaList.filter((item) => {
+  const skillFilter = relevantIdeaList.filter((item) => {
+    return selectedSkills.length === 0
+      ? item
+      : item.requiredSkills?.some((skill) =>
+          selectedSkills.includes(skill.id)
+        )
+  })
+
+  const categoryFilter = skillFilter.filter((item) => {
     return selectedCategory === undefined || selectedCategory.length === 0
       ? item
       : selectedCategory.some((category) => item.category?.id === category)
@@ -90,7 +100,7 @@ function IdeaPool() {
 
   useEffect(() => {
     setUserIdeaList(userIdea)
-  }, [showUserIdeas])
+  }, [showUserIdeas, searchTerm])
 
   useEffect(() => {
     loadIdeaDetails()
@@ -158,18 +168,21 @@ function IdeaPool() {
                 />
               </Group>
             </Stack>
-            <Group position='right' mt={100}>
               {hackathon.id === undefined ? (
                 'Category Loading'
               ) : (
+                <Group position='right' mt={100}>
+                <SkillSelector
+                  hackathonId={hackathon.id}
+                  onSelectedSkills={setSelectedSkills}
+                />
                 <CategorySelector
                   hackathonId={hackathon.id}
                   onSelectedCategory={setSelectedCategory}
                 />
-              )}
-
               <SearchBar onSearchTermChange={setSearchTerm} />
             </Group>
+            )}
           </Group>
 
           <IdeaCardList
