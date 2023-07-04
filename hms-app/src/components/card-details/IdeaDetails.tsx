@@ -186,17 +186,17 @@ export default function IdeaDetails(props: IProps) {
   }
 
   const ideaButtons = () => {
-    return (
-      (type === IdeaCardType.Admin ||
-        type === IdeaCardType.Owner ||
-        ideaData.owner?.id === user?.id) && (
-        <CardButton
-          idea={props.idea}
-          onSuccess={refreshAfterChange}
-          type={type}
-          ishackathonStarted={ishackathonStarted}
-        />
-      )
+    return type === IdeaCardType.Admin ||
+      type === IdeaCardType.Owner ||
+      ideaData.owner?.id === user?.id ? (
+      <CardButton
+        idea={props.idea}
+        onSuccess={refreshAfterChange}
+        type={type}
+        ishackathonStarted={ishackathonStarted}
+      />
+    ) : (
+      <div style={{ height: '30px' }}></div>
     )
   }
 
@@ -330,7 +330,12 @@ export default function IdeaDetails(props: IProps) {
           </Card.Section>
 
           <Card.Section className={classes.borderSection}>
-            <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+            <div
+              style={{
+                display: 'flex',
+                flexWrap: 'wrap',
+              }}
+            >
               <div
                 style={{
                   flex: '1 0 33%',
