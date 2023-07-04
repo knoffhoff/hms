@@ -31,6 +31,7 @@ import { getIdeaDetails } from '../actions/IdeaActions'
 import { useMsal } from '@azure/msal-react'
 import SearchBar from '../components/searchBar'
 import CategorySelector from '../components/CategorySelector'
+import SkillSelector from '../components/SkillSelector'
 
 export const HackathonParticipantContext = createContext('')
 export const HackathonVotingContext = createContext(false)
@@ -49,6 +50,7 @@ function AllIdeas() {
   const [isIdeaLoading, setIsIdeaLoading] = useState(true)
   const [showUserIdeas, setShowUserIdeas] = useState(false)
   const [selectedCategory, setSelectedCategory] = useState<string[]>([])
+  const [selectedSkills, setSelectedSkills] = useState<string[]>([])
   const [participantInfo, setParticipantInfo] = useState({
     userId: '',
     hackathonId: '',
@@ -91,7 +93,15 @@ function AllIdeas() {
     loadSelectedHackathon()
   }
 
-  const categoryFilter = relevantIdeaList.filter((item) => {
+  const skillFilter = relevantIdeaList.filter((item) => {
+    return selectedSkills.length === 0
+      ? item
+      : item.requiredSkills?.some((skill) =>
+          selectedSkills.includes(skill.name)
+        )
+  })
+
+  const categoryFilter = skillFilter.filter((item) => {
     return selectedCategory.length === 0
       ? item
       : selectedCategory.some((category) => item.category?.id === category)
@@ -265,6 +275,10 @@ function AllIdeas() {
                   </Stack>
 
                   <Group position='right' mt={100}>
+                  <SkillSelector
+                      hackathonId={selectedHackathonId}
+                      onSelectedSkills={setSelectedSkills}
+                    />
                     <CategorySelector
                       hackathonId={selectedHackathonId}
                       onSelectedCategory={setSelectedCategory}
