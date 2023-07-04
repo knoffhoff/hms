@@ -97,7 +97,7 @@ function AllIdeas() {
     return selectedSkills.length === 0
       ? item
       : item.requiredSkills?.some((skill) =>
-          selectedSkills.includes(skill.name)
+          selectedSkills.includes(skill.id)
         )
   })
 

@@ -30,11 +30,6 @@ export default function SkillSelector(props: IProps) {
     }
   }
 
-  // const handleSkillSelected = (event: React.ChangeEvent<HTMLSelectElement>) => {
-  //   setSelectedSkills([event.target.value])
-  //   props.onSelectedSkills([event.target.value])
-  // }
-
   const handleSkillSelected = (skills: string[]) => {
     setSelectedSkills(skills)
     props.onSelectedSkills(skills)
