@@ -16,6 +16,7 @@ import { getIdeaDetails } from '../actions/IdeaActions'
 import { UserContext } from './Layout'
 import SearchBar from '../components/searchBar'
 import CategorySelector from '../components/CategorySelector'
+import SkillSelector from '../components/SkillSelector'
 import { NULL_DATE } from '../common/constants'
 
 export default function Archive() {
@@ -29,6 +30,7 @@ export default function Archive() {
   const [relevantIdeaList, setRelevantIdeaList] = useState([] as Idea[])
   const [userIdeaList, setUserIdeaList] = useState<Idea[]>([])
   const [selectedCategory, setSelectedCategory] = useState<string[]>([])
+  const [selectedSkills, setSelectedSkills] = useState<string[]>([])
   const [showUserIdeas, setShowUserIdeas] = useState(false)
 
   const loadSelectedHackathon = () => {
@@ -46,7 +48,15 @@ export default function Archive() {
     })
   }
 
-  const categoryFilter = relevantIdeaList.filter((item) => {
+  const skillFilter = relevantIdeaList.filter((item) => {
+    return selectedSkills.length === 0
+      ? item
+      : item.requiredSkills?.some((skill) =>
+          selectedSkills.includes(skill.id)
+        )
+  })
+
+  const categoryFilter = skillFilter.filter((item) => {
     return selectedCategory.length === 0
       ? item
       : selectedCategory.some((category) => item.category?.id === category)
@@ -68,7 +78,7 @@ export default function Archive() {
 
   useEffect(() => {
     setUserIdeaList(userIdea)
-  }, [showUserIdeas])
+  }, [showUserIdeas, searchTerm])
 
   useEffect(() => {
     loadRelevantIdeaDetails()
@@ -129,6 +139,10 @@ export default function Archive() {
                 />
               </Stack>
               <Group position='right' mt={100}>
+                <SkillSelector
+                  hackathonId={selectedHackathonId}
+                  onSelectedSkills={setSelectedSkills}
+                />
                 <CategorySelector
                   hackathonId={selectedHackathonId}
                   onSelectedCategory={setSelectedCategory}
