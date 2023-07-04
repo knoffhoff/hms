@@ -9,7 +9,6 @@ import { getIdeaDetails } from '../../actions/IdeaActions'
 import { showNotification, updateNotification } from '@mantine/notifications'
 import { useMsal } from '@azure/msal-react'
 import { Idea } from '../../common/types'
-import { styles } from '../../common/styles'
 import { ActionIcon } from '@mantine/core'
 import { CustomCheckIcon, CustomXIcon } from '../NotificationIcons'
 import { IconHeart, IconHeartFilled } from '@tabler/icons-react'
@@ -189,9 +188,9 @@ export function VoteButtons(props: IProps) {
     <ActionIcon
       variant='transparent'
       onClick={voteCheck ? removeThisVote : addThisVote}
-      color='orange'
+      color='orange.7'
     >
-      {voteCheck ? <IconHeartFilled color='orange' size={50} /> : <IconHeart color='orange' size={50} />}
+      {voteCheck ? <IconHeartFilled size={50} /> : <IconHeart size={50} />}
     </ActionIcon>
   )
 }
