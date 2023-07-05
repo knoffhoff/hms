@@ -18,7 +18,7 @@ function Home() {
     <>
       <HeroHeader nextHackathon={nextHackathon} lastHackathon={lastHackathon} />
 
-      <Container fluid mb={150} mt={20}>
+      <Container fluid mb={150} mt={50}>
         <Title align={'center'} mb={20} order={2}>
           Frequently Asked Questions
         </Title>

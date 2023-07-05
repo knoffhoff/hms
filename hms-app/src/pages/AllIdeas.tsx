@@ -96,9 +96,7 @@ function AllIdeas() {
   const skillFilter = relevantIdeaList.filter((item) => {
     return selectedSkills.length === 0
       ? item
-      : item.requiredSkills?.some((skill) =>
-          selectedSkills.includes(skill.id)
-        )
+      : item.requiredSkills?.some((skill) => selectedSkills.includes(skill.id))
   })
 
   const categoryFilter = skillFilter.filter((item) => {
@@ -228,7 +226,7 @@ function AllIdeas() {
 
                 <Group position='apart' my={20}>
                   <Stack align='flex-start' justify='flex-start' spacing='sm'>
-                    <Title order={2} mt={50}>
+                    <Title order={2} mt={20}>
                       {showUserIdeas
                         ? 'My submission: ' + userIdeaList.length
                         : 'Ideas submitted: ' + searchIdea.length}
@@ -274,8 +272,8 @@ function AllIdeas() {
                     </Group>
                   </Stack>
 
-                  <Group position='right' mt={100}>
-                  <SkillSelector
+                  <Group position='right' mt={70}>
+                    <SkillSelector
                       hackathonId={selectedHackathonId}
                       onSelectedSkills={setSelectedSkills}
                     />

@@ -13,7 +13,7 @@ const headerItemBorder = borderRadius / 2
 const applyPadding = (theme: MantineTheme) => ({
   paddingLeft: theme.spacing.md,
   paddingRight: theme.spacing.md,
-  paddingBottom: theme.spacing.md,
+  paddingBottom: theme.spacing.xs,
 })
 
 const applyFontSize = (theme: MantineTheme, size: MantineSize) => ({
@@ -48,7 +48,6 @@ export const styles = createStyles((theme) => ({
 
   ideaCardHeader: {
     ...applyPadding(theme),
-    paddingTop: theme.spacing.md,
     borderBottom: `1px solid ${
       theme.colorScheme === 'dark' ? theme.colors.dark[4] : theme.colors.gray[3]
     }`,
@@ -75,7 +74,6 @@ export const styles = createStyles((theme) => ({
   title: {
     ...applyFontSize(theme, 'lg'),
     fontWeight: 600,
-    marginTop: '1vh',
   },
 
   label: {
@@ -240,8 +238,8 @@ export const loginStyles = createStyles((theme) => ({
 export const heroHeaderStyles = createStyles((theme) => ({
   wrapper: {
     position: 'relative',
-    paddingTop: 60,
-    paddingBottom: 40,
+    paddingTop: 45,
+    paddingBottom: 30,
     backgroundColor:
       theme.colorScheme === 'dark'
         ? theme.colors.dark[7]
@@ -250,8 +248,8 @@ export const heroHeaderStyles = createStyles((theme) => ({
     boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.1)',
 
     '@media (max-width: 755px)': {
-      paddingTop: 40,
-      paddingBottom: 30,
+      paddingTop: 30,
+      paddingBottom: 20,
     },
   },
 

@@ -70,9 +70,7 @@ function IdeaPool() {
   const skillFilter = relevantIdeaList.filter((item) => {
     return selectedSkills.length === 0
       ? item
-      : item.requiredSkills?.some((skill) =>
-          selectedSkills.includes(skill.id)
-        )
+      : item.requiredSkills?.some((skill) => selectedSkills.includes(skill.id))
   })
 
   const categoryFilter = skillFilter.filter((item) => {
@@ -143,7 +141,7 @@ function IdeaPool() {
         <>
           <Group position='apart' my={20}>
             <Stack align='flex-start' justify='flex-start' spacing='sm'>
-              <Title order={2} mt={50}>
+              <Title order={2} mt={20}>
                 {showUserIdeas
                   ? 'My submission: ' + userIdeaList.length
                   : 'Ideas submitted: ' + searchIdea.length}
@@ -168,10 +166,10 @@ function IdeaPool() {
                 />
               </Group>
             </Stack>
-              {hackathon.id === undefined ? (
-                'Category Loading'
-              ) : (
-                <Group position='right' mt={100}>
+            {hackathon.id === undefined ? (
+              'Category Loading'
+            ) : (
+              <Group position='right' mt={70}>
                 <SkillSelector
                   hackathonId={hackathon.id}
                   onSelectedSkills={setSelectedSkills}
@@ -180,8 +178,8 @@ function IdeaPool() {
                   hackathonId={hackathon.id}
                   onSelectedCategory={setSelectedCategory}
                 />
-              <SearchBar onSearchTermChange={setSearchTerm} />
-            </Group>
+                <SearchBar onSearchTermChange={setSearchTerm} />
+              </Group>
             )}
           </Group>
 
