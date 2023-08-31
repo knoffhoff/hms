@@ -10,7 +10,7 @@ import {
 import React, { useMemo } from 'react'
 import { HackathonSerializable } from '../common/types'
 import { Link } from 'react-router-dom'
-import { MIN_DATE } from '../common/constants'
+import { MAX_DATE, MIN_DATE } from '../common/constants'
 import { heroHeaderStyles } from '../common/styles'
 
 const InfoCard = (props: {
@@ -69,12 +69,16 @@ const HackathonCard = (props: {
           </Title>
           <Text align={'center'} size='sm'>
             {props.upcoming
-              ? 'Starts: ' +
-                props.date.toLocaleDateString('en-US', {
-                  month: 'short',
-                  day: '2-digit',
-                  year: 'numeric',
-                })
+              ? props.date > MAX_DATE
+                ? 'Starts: TBA'
+                : 'Starts: ' +
+                  props.date.toLocaleDateString('en-US', {
+                    month: 'short',
+                    day: '2-digit',
+                    year: 'numeric',
+                  })
+              : props.date < MIN_DATE
+              ? 'Unknown'
               : 'Ended: ' +
                 props.date.toLocaleDateString('en-US', {
                   month: 'short',

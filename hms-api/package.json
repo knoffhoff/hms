@@ -32,6 +32,7 @@
     "@aws-sdk/client-s3": "3.379.1",
     "@aws-sdk/s3-request-presigner": "3.379.1",
     "jsonwebtoken": "9.0.1",
-    "serverless-dynamodb-client": "0.0.2"
+    "serverless-dynamodb-client": "0.0.2",
+    "uuid": "^9.0.0"
   }
 }
