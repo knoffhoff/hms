@@ -14,7 +14,7 @@
     "@mantine/rte": "^5.10.5",
     "@microsoft/microsoft-graph-types": "^2.38.0",
     "@reduxjs/toolkit": "^1.9.5",
-    "@tabler/icons-react": "^2.30.0",
+    "@tabler/icons-react": "^2.32.0",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^12.1.4",
     "@testing-library/user-event": "^14.4.3",
