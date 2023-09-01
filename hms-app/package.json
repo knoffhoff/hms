@@ -22,7 +22,7 @@
     "@types/node": "^20.4.5",
     "@types/react": "^18.0.8",
     "@types/react-dom": "^18.0.2",
-    "@types/react-redux": "^7.1.25",
+    "@types/react-redux": "^7.1.26",
     "dayjs": "^1.11.9",
     "nuka-carousel": "^5.5.1",
     "react": "^17.0.2",
