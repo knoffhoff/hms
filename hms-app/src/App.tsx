@@ -30,6 +30,7 @@ function App() {
         <Route path='hackathons/:slug' element={<AllIdeas />} />
         <Route path='my-ideas' element={<MyIdeas />} />
         <Route path='archive' element={<Archive />} />
+        <Route path='archive/:slug' element={<Archive />} />
         {isAdmin(stateUser) && (
           <>
             <Route path='voting' element={<Voting />} />
