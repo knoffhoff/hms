@@ -153,10 +153,12 @@ export default function HackathonSelectDropdown({
       if (hackathon) {
         setHackathonId(id)
         setSelectedHackathon(hackathon)
-        if (location.pathname === '/archive') {
-          navigate(`/archive/${hackathon.slug}`)
-        } else {
-          navigate(`/hackathons/${hackathon.slug}`)
+        if (context !== HackathonDropdownMode.MoveModal) {
+          if (location.pathname === '/archive') {
+            navigate(`/archive/${hackathon.slug}`)
+          } else {
+            navigate(`/hackathons/${hackathon.slug}`)
+          }
         }
       }
     }
