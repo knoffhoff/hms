@@ -28,7 +28,7 @@ function SingleIdea() {
   const theme = useMantineTheme()
   const { slug, idHash } = useParams()
   const location = useLocation()
-  const translator = short(process.env.REACT_APP_TRANSLATOR_ALPHABET) // Default alphabet is base58, replace and create secret for this later
+  const translator = short(process.env.REACT_APP_TRANSLATOR_ALPHABET)
   const originalUuid = translator.toUUID(idHash!)
   const [ideaData, setIdeaData] = useState<Idea>({} as Idea)
   const [categoryData, setCategoryData] = useState({} as Category)
@@ -63,7 +63,6 @@ function SingleIdea() {
   const loadIdea = () => {
     getIdeaDetails(instance, originalUuid).then((idea) => {
       setIdeaData(idea)
-      console.log(idea)
     })
   }
 

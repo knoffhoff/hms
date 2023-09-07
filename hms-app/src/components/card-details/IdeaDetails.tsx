@@ -58,7 +58,7 @@ export default function IdeaDetails(props: IProps) {
   const [ideaData, setIdeaData] = useState(idea)
   const [participantAccordionOpen, setParticipantAccordionOpen] =
     useState(false)
-  const translator = short(process.env.REACT_APP_TRANSLATOR_ALPHABET) // Default alphabet is base58, replace and create secret for this later
+  const translator = short(process.env.REACT_APP_TRANSLATOR_ALPHABET)
   const shortUuid = translator.fromUUID(idea.id)
 
   const loadCategoryDetails = () => {
@@ -87,7 +87,6 @@ export default function IdeaDetails(props: IProps) {
   useEffect(() => {
     loadCategoryDetails()
     loadSkillDetails()
-    console.log('IdeaCardType: ', type)
   }, [])
 
   useEffect(() => {
