@@ -1,6 +1,6 @@
 import { Accordion, Button, Group, Text } from '@mantine/core'
 import React, { useEffect, useState } from 'react'
-import { Idea, IdeaCardType, IdeaPreview } from '../../common/types'
+import { Hackathon, Idea, IdeaCardType, IdeaPreview } from '../../common/types'
 import { styles } from '../../common/styles'
 import { useMsal } from '@azure/msal-react'
 import IdeaDetails from '../card-details/IdeaDetails'
@@ -9,7 +9,7 @@ import { Link } from 'react-router-dom'
 import { PRIMARY_COLOR_2, JOIN_BUTTON_COLOR } from '../../common/colors'
 
 type IProps = {
-  hackathonID: string
+  hackathon: Hackathon
 }
 
 function AllIdeaList(props: IProps) {
@@ -19,11 +19,11 @@ function AllIdeaList(props: IProps) {
   const [allIdeaPreviews, setAllIdeaPreviews] = useState<IdeaPreview[]>([])
   const [relevantIdeaList, setRelevantIdeaList] = useState<Idea[]>([])
   const [ideaData, setIdeaData] = useState<Idea>()
-  const { hackathonID } = props
+  const { hackathon } = props
 
   const loadIdeaList = () => {
     setRelevantIdeaList([])
-    getIdeaList(instance, hackathonID).then((data) => {
+    getIdeaList(instance, hackathon.id).then((data) => {
       setIsLoading(false)
       setAllIdeaPreviews(data.ideas)
     })
@@ -73,6 +73,7 @@ function AllIdeaList(props: IProps) {
           type={IdeaCardType.Admin}
           isLoading={isLoading}
           onSuccess={refreshList}
+          hackathon={hackathon}
         />
       </Accordion.Panel>
     </Accordion.Item>

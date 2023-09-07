@@ -4,7 +4,6 @@ import Layout from './pages/Layout'
 import './App.css'
 import Home from './pages/Home'
 import AllIdeas from './pages/AllIdeas'
-import MyIdeas from './pages/MyIdeas'
 import Archive from './pages/Archive'
 import NoPage from './pages/NoPage'
 import Voting from './pages/Voting'
@@ -14,6 +13,7 @@ import FinalPresentations from './pages/FinalPresentations'
 import { useAppSelector } from './hooks'
 import { UserSerializable } from './common/redux/userSlice'
 import IdeaPool from './pages/IdeaPool'
+import SingleIdea from './pages/SingleIdea'
 
 function App() {
   const stateUser = useAppSelector((state) => state.user.user)
@@ -26,9 +26,11 @@ function App() {
       <Route path='/' element={<Layout />}>
         <Route index element={<Home />} />
         <Route path='idea-pool' element={<IdeaPool />} />
+        <Route path='idea-pool/ideas/:idHash' element={<SingleIdea />} />
         <Route path='hackathons' element={<AllIdeas />} />
         <Route path='hackathons/:slug' element={<AllIdeas />} />
-        <Route path='my-ideas' element={<MyIdeas />} />
+        <Route path='hackathons/:slug/ideas/:idHash' element={<SingleIdea />} />
+        <Route path='my-ideas' element={<NoPage />} />
         <Route path='archive' element={<Archive />} />
         <Route path='archive/:slug' element={<Archive />} />
         {isAdmin(stateUser) && (

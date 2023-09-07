@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   Accordion,
   Avatar,
@@ -11,55 +11,31 @@ import {
   UnstyledButton,
   useMantineTheme,
 } from '@mantine/core'
-import {
-  Category,
-  Hackathon,
-  Idea,
-  IdeaCardType,
-  Skill,
-} from '../../common/types'
-import { getIdeaDetails } from '../../actions/IdeaActions'
-import { styles } from '../../common/styles'
+import { Link, useLocation, useParams } from 'react-router-dom'
+import { Category, Idea, Skill } from '../common/types'
+import { getIdeaDetails } from '../actions/IdeaActions'
 import { useMsal } from '@azure/msal-react'
-import { HackathonVotingContext } from '../../pages/AllIdeas'
-import { UserContext } from '../../pages/Layout'
-import { getCategoryDetails } from '../../actions/CategoryActions'
-import { getSkillDetails } from '../../actions/SkillActions'
-import IdeaCommentDetails from './IdeaCommentDetails'
-import CardButton from '../buttons/CardButton'
-import ParticipateButton from '../buttons/ParticipateButton'
-import { VoteButtons } from '../buttons/VotingButton'
-import { Link } from 'react-router-dom'
 import short from 'short-uuid'
-import { ArrowUpRight } from 'tabler-icons-react'
+import { styles } from '../common/styles'
+import IdeaCommentDetails from '../components/card-details/IdeaCommentDetails'
+import { getCategoryDetails } from '../actions/CategoryActions'
+import { getSkillDetails } from '../actions/SkillActions'
+import { ArrowDownLeft } from 'tabler-icons-react'
 
-type IProps = {
-  idea: Idea
-  isLoading: boolean
-  type: IdeaCardType
-  onSuccess?: () => void
-  ishackathonStarted?: boolean
-  hackathon: Hackathon
-}
-
-export default function IdeaDetails(props: IProps) {
+function SingleIdea() {
   const { instance } = useMsal()
   const { classes } = styles()
-  const { idea, type, isLoading, onSuccess, ishackathonStarted, hackathon } =
-    props
-  const hackathonVotingOpened = useContext(HackathonVotingContext)
-  const user = useContext(UserContext)
-  const MAX_TITLE_LENGTH = 100
   const theme = useMantineTheme()
-  const [accordionOpen, setAccordionOpen] = useState(false)
+  const { slug, idHash } = useParams()
+  const location = useLocation()
+  const translator = short('Heizlrckstoßabdmpfung12345') // Default alphabet is base58, replace and create secret for this later
+  const originalUuid = translator.toUUID(idHash!)
+  const [ideaData, setIdeaData] = useState<Idea>({} as Idea)
   const [categoryData, setCategoryData] = useState({} as Category)
   const [skillData, setSkillData] = useState([] as Skill[])
-  const [loader, setLoader] = useState(false)
-  const [ideaData, setIdeaData] = useState(idea)
   const [participantAccordionOpen, setParticipantAccordionOpen] =
     useState(false)
-  const translator = short('Heizlrckstoßabdmpfung12345') // Default alphabet is base58, replace and create secret for this later
-  const shortUuid = translator.fromUUID(idea.id)
+  const MAX_TITLE_LENGTH = 100
 
   const loadCategoryDetails = () => {
     if (ideaData.category)
@@ -84,20 +60,10 @@ export default function IdeaDetails(props: IProps) {
     return null
   }
 
-  useEffect(() => {
-    loadCategoryDetails()
-    loadSkillDetails()
-    console.log('IdeaCardType: ', type)
-  }, [])
-
-  useEffect(() => {
-    loadIdeaData()
-  }, [loader])
-
-  const loadIdeaData = () => {
-    getIdeaDetails(instance, ideaData.id).then((data) => {
-      setIdeaData(data)
-      setLoader(false)
+  const loadIdea = () => {
+    getIdeaDetails(instance, originalUuid).then((idea) => {
+      setIdeaData(idea)
+      console.log(idea)
     })
   }
 
@@ -125,6 +91,18 @@ export default function IdeaDetails(props: IProps) {
             {ideaData.owner?.firstName} {ideaData.owner?.lastName}
           </Badge>
           {ideaCreationDate()}
+
+          <UnstyledButton
+            mt={10}
+            component={Link}
+            to={
+              location.pathname.startsWith('/idea-pool')
+                ? '/idea-pool'
+                : `/hackathons/${slug}`
+            }
+          >
+            <ArrowDownLeft style={{ border: '1px solid black' }} />
+          </UnstyledButton>
         </Group>
         <Group>
           <Text className={classes.title} mt={0}>
@@ -197,44 +175,10 @@ export default function IdeaDetails(props: IProps) {
   }
 
   const IdeaComments = () => {
-    return <IdeaCommentDetails ideaId={props.idea.id} />
-  }
-
-  const ideaButtons = () => {
-    return type === IdeaCardType.Admin ||
-      type === IdeaCardType.Owner ||
-      ideaData.owner?.id === user?.id ? (
-      <CardButton
-        idea={props.idea}
-        onSuccess={refreshAfterChange}
-        type={type}
-        ishackathonStarted={ishackathonStarted}
-      />
+    return ideaData.title ? (
+      <IdeaCommentDetails ideaId={ideaData.id} />
     ) : (
-      <div style={{ height: '30px' }}></div>
-    )
-  }
-
-  const votingButton = () => {
-    return (
-      type === IdeaCardType.AllIdeas && (
-        <VoteButtons idea={props.idea} onSuccess={() => setLoader(!loader)} />
-      )
-    )
-  }
-
-  const voting = () => {
-    return (
-      type === IdeaCardType.AllIdeas && (
-        <Card.Section ml={16}>
-          <Group spacing='xs' mr={16}>
-            {votingButton()}
-            <Text className={classes.label} mt={0}>
-              {ideaData.voters?.length}
-            </Text>
-          </Group>
-        </Card.Section>
-      )
+      'Loading'
     )
   }
 
@@ -289,26 +233,8 @@ export default function IdeaDetails(props: IProps) {
     )
   }
 
-  const participateButton = () => {
-    return (
-      (type === IdeaCardType.AllIdeas || type === IdeaCardType.Admin) && (
-        <ParticipateButton
-          idea={props.idea}
-          onSuccess={() => setLoader(!loader)}
-        />
-      )
-    )
-  }
-
-  const refreshAfterChange = () => {
-    loadIdeaData()
-    if (onSuccess) {
-      onSuccess()
-    }
-  }
-
   const ideaCreationDate = () => {
-    const date = new Date(idea.creationDate)
+    const date = new Date(ideaData.creationDate)
     const formattedDate = date.toLocaleDateString('en-US', {
       year: 'numeric',
       month: 'long',
@@ -318,72 +244,31 @@ export default function IdeaDetails(props: IProps) {
     return <Text className={classes.smallText}>Created: {formattedDate}</Text>
   }
 
+  useEffect(() => {
+    loadIdea()
+  }, [])
+
+  useEffect(() => {
+    loadCategoryDetails()
+    loadSkillDetails()
+  }, [ideaData])
+
   return (
     <>
-      {!isLoading && type !== IdeaCardType.Voting ? (
-        <Card withBorder className={classes.card}>
-          <Card.Section className={classes.noBorderSection}>
-            <Accordion
-              onChange={(value) => setAccordionOpen(value === 'idea-details')}
-            >
-              <Accordion.Item
-                className={classes.noBorderAccordion}
-                value={'idea-details'}
-              >
-                <Accordion.Control>{ideaHeader()}</Accordion.Control>
-                <Accordion.Panel>
-                  {ideaCardText('Description', ideaData.description)}
-                  {ideaCardText('Problem', ideaData.problem)}
-                  {ideaCardText('Goal', ideaData.goal)}
-                  {ideaCategory()}
-                  {ideaRequiredSkills()}
-                  {participantsList()}
-                  {participateButton()}
-                </Accordion.Panel>
-              </Accordion.Item>
-            </Accordion>
-          </Card.Section>
-
-          <Card.Section className={classes.borderSection}>
-            <div
-              style={{
-                display: 'flex',
-                flexWrap: 'wrap',
-              }}
-            >
-              <div
-                style={{
-                  flex: '1 0 33%',
-                  maxWidth: '33%',
-                }}
-              >
-                <Group position='left'>
-                  {hackathonVotingOpened && voting()}
-                  <UnstyledButton
-                    mt={10}
-                    component={Link}
-                    to={
-                      type === IdeaCardType.IdeaPortal
-                        ? `/idea-pool/ideas/${shortUuid}`
-                        : `/hackathons/${hackathon.slug}/ideas/${shortUuid}`
-                    }
-                  >
-                    <ArrowUpRight style={{ border: '1px solid black' }} />
-                  </UnstyledButton>
-                </Group>
-              </div>
-              <div style={{ flex: '2 0 66%', maxWidth: '66%' }}>
-                <Group position='right'>{ideaButtons()}</Group>
-              </div>
-            </div>
-          </Card.Section>
-          <Card.Section className={classes.borderSection}>
-            {IdeaComments()}
-          </Card.Section>
-        </Card>
-      ) : (
-        'Failed to load ideas.'
-      )}
+      <Card withBorder className={classes.card}>
+        {ideaHeader()}
+        {ideaCardText('Description', ideaData.description)}
+        {ideaCardText('Problem', ideaData.problem)}
+        {ideaCardText('Goal', ideaData.goal)}
+        {ideaCategory()}
+        {ideaRequiredSkills()}
+        {participantsList()}
+        <Card.Section className={classes.borderSection}>
+          {IdeaComments()}
+        </Card.Section>
+      </Card>
     </>
   )
 }
+
+export default SingleIdea

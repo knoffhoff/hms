@@ -105,37 +105,37 @@ export default function Voting() {
     console.log(votingState['2'].items)
   }
 
-  const mapIdeaToDraggableIdea = (item: Idea, index: number) => {
-    return (
-      <Draggable
-        key={item.id}
-        draggableId={item.id}
-        index={index}
-        isDragDisabled={!dragEnabled}
-      >
-        {(provided) => {
-          return (
-            <div
-              ref={provided.innerRef}
-              {...provided.draggableProps}
-              {...provided.dragHandleProps}
-              style={{
-                userSelect: 'none',
-                margin: '10px',
-                ...provided.draggableProps.style,
-              }}
-            >
-              <IdeaDetails
-                idea={item}
-                isLoading={false}
-                type={IdeaCardType.Voting}
-              />
-            </div>
-          )
-        }}
-      </Draggable>
-    )
-  }
+  // const mapIdeaToDraggableIdea = (item: Idea, index: number) => {
+  //   return (
+  //     <Draggable
+  //       key={item.id}
+  //       draggableId={item.id}
+  //       index={index}
+  //       isDragDisabled={!dragEnabled}
+  //     >
+  //       {(provided) => {
+  //         return (
+  //           <div
+  //             ref={provided.innerRef}
+  //             {...provided.draggableProps}
+  //             {...provided.dragHandleProps}
+  //             style={{
+  //               userSelect: 'none',
+  //               margin: '10px',
+  //               ...provided.draggableProps.style,
+  //             }}
+  //           >
+  //             <IdeaDetails
+  //               idea={item}
+  //               isLoading={false}
+  //               type={IdeaCardType.Voting}
+  //             />
+  //           </div>
+  //         )
+  //       }}
+  //     </Draggable>
+  //   )
+  // }
 
   return (
     <div>
@@ -251,7 +251,7 @@ export default function Voting() {
                           scrollbarWidth: 'none',
                         }}
                       >
-                        {column.items.map(mapIdeaToDraggableIdea)}
+                        {/* {column.items.map(mapIdeaToDraggableIdea)} */}
                         {provided.placeholder}
                       </div>
                     )}
