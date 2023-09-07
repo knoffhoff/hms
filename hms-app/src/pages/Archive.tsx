@@ -154,6 +154,7 @@ export default function Archive() {
               type={IdeaCardType.Archive}
               isLoading={isIdeaLoading}
               onSuccess={loadSelectedHackathon}
+              hackathon={hackathonData}
             />
           </>
         )}

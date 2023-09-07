@@ -8,9 +8,16 @@ import {
   Stack,
   Text,
   Tooltip,
+  UnstyledButton,
   useMantineTheme,
 } from '@mantine/core'
-import { Category, Idea, IdeaCardType, Skill } from '../../common/types'
+import {
+  Category,
+  Hackathon,
+  Idea,
+  IdeaCardType,
+  Skill,
+} from '../../common/types'
 import { getIdeaDetails } from '../../actions/IdeaActions'
 import { styles } from '../../common/styles'
 import { useMsal } from '@azure/msal-react'
@@ -22,6 +29,9 @@ import IdeaCommentDetails from './IdeaCommentDetails'
 import CardButton from '../buttons/CardButton'
 import ParticipateButton from '../buttons/ParticipateButton'
 import { VoteButtons } from '../buttons/VotingButton'
+import { Link } from 'react-router-dom'
+import short from 'short-uuid'
+import { ArrowUpRight } from 'tabler-icons-react'
 
 type IProps = {
   idea: Idea
@@ -29,12 +39,14 @@ type IProps = {
   type: IdeaCardType
   onSuccess?: () => void
   ishackathonStarted?: boolean
+  hackathon: Hackathon
 }
 
 export default function IdeaDetails(props: IProps) {
   const { instance } = useMsal()
   const { classes } = styles()
-  const { idea, type, isLoading, onSuccess, ishackathonStarted } = props
+  const { idea, type, isLoading, onSuccess, ishackathonStarted, hackathon } =
+    props
   const hackathonVotingOpened = useContext(HackathonVotingContext)
   const user = useContext(UserContext)
   const MAX_TITLE_LENGTH = 100
@@ -46,6 +58,8 @@ export default function IdeaDetails(props: IProps) {
   const [ideaData, setIdeaData] = useState(idea)
   const [participantAccordionOpen, setParticipantAccordionOpen] =
     useState(false)
+  const translator = short(process.env.REACT_APP_TRANSLATOR_ALPHABET)
+  const shortUuid = translator.fromUUID(idea.id)
 
   const loadCategoryDetails = () => {
     if (ideaData.category)
@@ -189,14 +203,37 @@ export default function IdeaDetails(props: IProps) {
     return type === IdeaCardType.Admin ||
       type === IdeaCardType.Owner ||
       ideaData.owner?.id === user?.id ? (
-      <CardButton
-        idea={props.idea}
-        onSuccess={refreshAfterChange}
-        type={type}
-        ishackathonStarted={ishackathonStarted}
-      />
+      <>
+        <CardButton
+          idea={props.idea}
+          onSuccess={refreshAfterChange}
+          type={type}
+          ishackathonStarted={ishackathonStarted}
+        />
+        <UnstyledButton
+          mt={10}
+          component={Link}
+          to={
+            type === IdeaCardType.IdeaPortal
+              ? `/idea-pool/ideas/${shortUuid}`
+              : `/hackathons/${hackathon.slug}/ideas/${shortUuid}`
+          }
+        >
+          <ArrowUpRight style={{ border: '1px solid black' }} />
+        </UnstyledButton>
+      </>
     ) : (
-      <div style={{ height: '30px' }}></div>
+      <UnstyledButton
+        mt={10}
+        component={Link}
+        to={
+          type === IdeaCardType.IdeaPortal
+            ? `/idea-pool/ideas/${shortUuid}`
+            : `/hackathons/${hackathon.slug}/ideas/${shortUuid}`
+        }
+      >
+        <ArrowUpRight style={{ border: '1px solid black' }} />
+      </UnstyledButton>
     )
   }
 

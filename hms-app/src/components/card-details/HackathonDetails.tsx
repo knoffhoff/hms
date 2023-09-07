@@ -237,7 +237,7 @@ export default function HackathonDetails(props: IProps) {
 
             <AllParticipantList hackathonID={hackathonData.id} />
 
-            <AllIdeaList hackathonID={hackathonData.id} />
+            <AllIdeaList hackathon={hackathonData} />
 
             <Card.Section className={classes.borderSection}>
               <Group position='left' mt='xl'>

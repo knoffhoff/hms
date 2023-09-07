@@ -1,5 +1,5 @@
 import React from 'react'
-import { Idea, IdeaCardType } from '../../common/types'
+import { Hackathon, Idea, IdeaCardType } from '../../common/types'
 import { Grid } from '@mantine/core'
 import IdeaDetails from '../card-details/IdeaDetails'
 
@@ -10,11 +10,19 @@ type IProps = {
   type: IdeaCardType
   onSuccess?: () => void
   ishackathonStarted?: boolean
+  hackathon: Hackathon
 }
 
 export default function IdeaCardList(props: IProps) {
-  const { ideas, columnSize, type, isLoading, onSuccess, ishackathonStarted } =
-    props
+  const {
+    ideas,
+    columnSize,
+    type,
+    isLoading,
+    onSuccess,
+    ishackathonStarted,
+    hackathon,
+  } = props
 
   const sortedIdeas = ideas.sort((a, b) => {
     return a.creationDate > b.creationDate ? -1 : 1
@@ -30,6 +38,7 @@ export default function IdeaCardList(props: IProps) {
             isLoading={isLoading}
             onSuccess={onSuccess}
             ishackathonStarted={ishackathonStarted}
+            hackathon={hackathon}
           />
         </div>
       </Grid.Col>

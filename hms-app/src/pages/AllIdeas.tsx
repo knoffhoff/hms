@@ -292,6 +292,7 @@ function AllIdeas() {
                   isLoading={isIdeaLoading}
                   onSuccess={() => setRefreshHackathon(true)}
                   ishackathonStarted={isHackathonStarted()}
+                  hackathon={hackathonData}
                 />
               </>
             )}

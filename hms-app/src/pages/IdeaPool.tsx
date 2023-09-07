@@ -189,6 +189,7 @@ function IdeaPool() {
             type={IdeaCardType.IdeaPortal}
             isLoading={false}
             onSuccess={loadHackathonIdeas}
+            hackathon={hackathon}
           />
         </>
       )}

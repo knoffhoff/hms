@@ -165,6 +165,7 @@ export default function MyIdeas() {
                   isLoading={false}
                   onSuccess={loadSelectedHackathon}
                   ishackathonStarted={isHackathonStarted()}
+                  hackathon={hackathonData}
                 />
               </>
             )}

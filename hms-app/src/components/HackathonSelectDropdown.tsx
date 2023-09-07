@@ -6,7 +6,8 @@ import { AlertCircle } from 'tabler-icons-react'
 import { useMsal } from '@azure/msal-react'
 import { useAppDispatch, useAppSelector } from '../hooks'
 import { MAX_DATE, MIN_DATE } from '../common/constants'
-import { useParams } from 'react-router-dom'
+import { useParams, useNavigate, useLocation } from 'react-router-dom'
+
 import {
   mapHackathonToSerializable,
   setLastSelectedHackathon,
@@ -77,6 +78,8 @@ export default function HackathonSelectDropdown({
   context,
 }: Props) {
   const { slug } = useParams()
+  const navigate = useNavigate()
+  const location = useLocation()
   const { instance } = useMsal()
   const { classes } = styles()
   const [isError, setIsError] = useState(false)
@@ -107,6 +110,15 @@ export default function HackathonSelectDropdown({
           if (hackathon) {
             setSelectedHackathon(hackathon)
             setHackathonId(hackathon.id)
+            if (hackathon.endDate < today) {
+              // If currently in /hackathons, redirect to /archive
+              if (location.pathname.startsWith('/hackathons')) {
+                navigate(`/archive/${hackathon.slug}`)
+                return // Exit the function to avoid further navigation
+              }
+            } else {
+              navigate(`/hackathons/${hackathon.slug}`)
+            }
           }
         } else if (
           TempLastSelectedHackathon &&
@@ -114,6 +126,7 @@ export default function HackathonSelectDropdown({
         ) {
           setHackathonId(TempLastSelectedHackathon.id)
           setSelectedHackathon(TempLastSelectedHackathon)
+          navigate(`/hackathons/${TempLastSelectedHackathon.slug}`)
         } else if (
           upcomingHackathon &&
           context !== HackathonDropdownMode.Archive &&
@@ -121,6 +134,7 @@ export default function HackathonSelectDropdown({
         ) {
           setHackathonId(upcomingHackathon.id)
           setSelectedHackathon(upcomingHackathon)
+          navigate(`/hackathons/${upcomingHackathon.slug}`)
         }
         setIsLoading(false)
         setIsError(false)
@@ -139,6 +153,13 @@ export default function HackathonSelectDropdown({
       if (hackathon) {
         setHackathonId(id)
         setSelectedHackathon(hackathon)
+        if (context !== HackathonDropdownMode.MoveModal) {
+          if (location.pathname === '/archive') {
+            navigate(`/archive/${hackathon.slug}`)
+          } else {
+            navigate(`/hackathons/${hackathon.slug}`)
+          }
+        }
       }
     }
   }

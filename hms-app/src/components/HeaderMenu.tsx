@@ -120,6 +120,16 @@ export default function HeaderMenu({
     return initials
   }
 
+  const isLinkActive = (linkPath: string, currentPath: string) => {
+    // Check if both paths are for the root/landing page
+    if ((linkPath === '/' || linkPath === '') && currentPath === '/')
+      return true
+    // Don't highlight root if we're on a different page
+    if (linkPath === '' || linkPath === '/') return false
+
+    return `${currentPath}/`.includes(`${linkPath}/`)
+  }
+
   const fullscreenMenu = (
     <Group spacing={5}>
       {links.map((link) => (
@@ -129,12 +139,11 @@ export default function HeaderMenu({
             to={link.link}
             className={classes.link}
             style={{
-              backgroundColor:
-                location.pathname.slice(1) === link.link
-                  ? theme.colorScheme === 'light'
-                    ? HEADER_ACTIVE_COLOR_LIGHT
-                    : HEADER_ACTIVE_COLOR_DARK
-                  : undefined,
+              backgroundColor: isLinkActive(link.link, location.pathname)
+                ? theme.colorScheme === 'light'
+                  ? HEADER_ACTIVE_COLOR_LIGHT
+                  : HEADER_ACTIVE_COLOR_DARK
+                : undefined,
             }}
           >
             {link.label}
@@ -149,12 +158,11 @@ export default function HeaderMenu({
             to={link.link}
             className={classes.link}
             style={{
-              backgroundColor:
-                location.pathname.slice(1) === link.link
-                  ? theme.colorScheme === 'light'
-                    ? HEADER_ACTIVE_COLOR_LIGHT
-                    : HEADER_ACTIVE_COLOR_DARK
-                  : undefined,
+              backgroundColor: isLinkActive(link.link, location.pathname)
+                ? theme.colorScheme === 'light'
+                  ? HEADER_ACTIVE_COLOR_LIGHT
+                  : HEADER_ACTIVE_COLOR_DARK
+                : undefined,
             }}
           >
             {link.label}
