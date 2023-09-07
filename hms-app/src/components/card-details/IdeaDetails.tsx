@@ -224,7 +224,6 @@ export default function IdeaDetails(props: IProps) {
         </UnstyledButton>
       </>
     ) : (
-      // <div style={{ height: '30px' }}></div>
       <UnstyledButton
         mt={10}
         component={Link}
