@@ -58,7 +58,7 @@ export default function IdeaDetails(props: IProps) {
   const [ideaData, setIdeaData] = useState(idea)
   const [participantAccordionOpen, setParticipantAccordionOpen] =
     useState(false)
-  const translator = short('Heizlrckstoßabdmpfung12345') // Default alphabet is base58, replace and create secret for this later
+  const translator = short(process.env.REACT_APP_TRANSLATOR_ALPHABET) // Default alphabet is base58, replace and create secret for this later
   const shortUuid = translator.fromUUID(idea.id)
 
   const loadCategoryDetails = () => {
@@ -204,14 +204,38 @@ export default function IdeaDetails(props: IProps) {
     return type === IdeaCardType.Admin ||
       type === IdeaCardType.Owner ||
       ideaData.owner?.id === user?.id ? (
-      <CardButton
-        idea={props.idea}
-        onSuccess={refreshAfterChange}
-        type={type}
-        ishackathonStarted={ishackathonStarted}
-      />
+      <>
+        <CardButton
+          idea={props.idea}
+          onSuccess={refreshAfterChange}
+          type={type}
+          ishackathonStarted={ishackathonStarted}
+        />
+        <UnstyledButton
+          mt={10}
+          component={Link}
+          to={
+            type === IdeaCardType.IdeaPortal
+              ? `/idea-pool/ideas/${shortUuid}`
+              : `/hackathons/${hackathon.slug}/ideas/${shortUuid}`
+          }
+        >
+          <ArrowUpRight style={{ border: '1px solid black' }} />
+        </UnstyledButton>
+      </>
     ) : (
-      <div style={{ height: '30px' }}></div>
+      // <div style={{ height: '30px' }}></div>
+      <UnstyledButton
+        mt={10}
+        component={Link}
+        to={
+          type === IdeaCardType.IdeaPortal
+            ? `/idea-pool/ideas/${shortUuid}`
+            : `/hackathons/${hackathon.slug}/ideas/${shortUuid}`
+        }
+      >
+        <ArrowUpRight style={{ border: '1px solid black' }} />
+      </UnstyledButton>
     )
   }
 
@@ -359,17 +383,6 @@ export default function IdeaDetails(props: IProps) {
               >
                 <Group position='left'>
                   {hackathonVotingOpened && voting()}
-                  <UnstyledButton
-                    mt={10}
-                    component={Link}
-                    to={
-                      type === IdeaCardType.IdeaPortal
-                        ? `/idea-pool/ideas/${shortUuid}`
-                        : `/hackathons/${hackathon.slug}/ideas/${shortUuid}`
-                    }
-                  >
-                    <ArrowUpRight style={{ border: '1px solid black' }} />
-                  </UnstyledButton>
                 </Group>
               </div>
               <div style={{ flex: '2 0 66%', maxWidth: '66%' }}>

@@ -28,7 +28,7 @@ function SingleIdea() {
   const theme = useMantineTheme()
   const { slug, idHash } = useParams()
   const location = useLocation()
-  const translator = short('Heizlrckstoßabdmpfung12345') // Default alphabet is base58, replace and create secret for this later
+  const translator = short(process.env.REACT_APP_TRANSLATOR_ALPHABET) // Default alphabet is base58, replace and create secret for this later
   const originalUuid = translator.toUUID(idHash!)
   const [ideaData, setIdeaData] = useState<Idea>({} as Idea)
   const [categoryData, setCategoryData] = useState({} as Category)
@@ -82,16 +82,17 @@ function SingleIdea() {
   const ideaHeader = () => {
     return (
       <Stack spacing={'xs'}>
-        <Group>
-          <Avatar color='indigo' radius='xl' size='md'>
-            {getInitials(ideaData.owner?.firstName, ideaData.owner?.lastName)}
-          </Avatar>
+        <Group position={'apart'}>
+          <Group>
+            <Avatar color='indigo' radius='xl' size='md'>
+              {getInitials(ideaData.owner?.firstName, ideaData.owner?.lastName)}
+            </Avatar>
 
-          <Badge size='sm'>
-            {ideaData.owner?.firstName} {ideaData.owner?.lastName}
-          </Badge>
-          {ideaCreationDate()}
-
+            <Badge size='sm'>
+              {ideaData.owner?.firstName} {ideaData.owner?.lastName}
+            </Badge>
+            {ideaCreationDate()}
+          </Group>
           <UnstyledButton
             mt={10}
             component={Link}
