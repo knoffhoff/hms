@@ -20,6 +20,6 @@ how to attain public key.
 
 In a nutshell: 
 1. go to https://developer.microsoft.com/de-DE/graph/graph-explorer and login. 
-2. find a JWT token in the localstorage, whose key is `clientInfo`. 
+2. find a JWT token in the localstorage, whose key is `clientInfo`. (might also be credentialType:"AccessToken")
 3. copy the JWT token to https://jwt.io/, and take the decoded `kid`. 
 4. go to https://login.microsoftonline.com/common/discovery/keys, The `x5c`value for the `kid` in your JWT token is the public key.
