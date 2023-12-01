@@ -12,7 +12,7 @@
     "@mantine/hooks": "^5.10.3",
     "@mantine/notifications": "^5.10.5",
     "@mantine/rte": "^5.10.5",
-    "@microsoft/microsoft-graph-types": "^2.38.0",
+    "@microsoft/microsoft-graph-types": "^2.40.0",
     "@reduxjs/toolkit": "^1.9.7",
     "@tabler/icons-react": "^2.42.0",
     "@testing-library/jest-dom": "^5.17.0",
