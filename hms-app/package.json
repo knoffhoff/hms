@@ -36,7 +36,7 @@
     "short-uuid": "^4.2.2",
     "tabler-icons-react": "^1.56.0",
     "typescript": "^5.0.4 || ^4",
-    "web-vitals": "^3.5.1"
+    "web-vitals": "^3.5.2"
   },
   "scripts": {
     "start": "react-scripts start",
