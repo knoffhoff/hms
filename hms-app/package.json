@@ -15,7 +15,7 @@
     "@microsoft/microsoft-graph-types": "^2.40.0",
     "@reduxjs/toolkit": "^1.9.7",
     "@tabler/icons-react": "^2.47.0",
-    "@testing-library/jest-dom": "^5.17.0",
+    "@testing-library/jest-dom": "^6.5.0",
     "@testing-library/react": "^12.1.4",
     "@testing-library/user-event": "^14.5.2",
     "@types/jest": "^29.5.11",
