@@ -8,7 +8,7 @@
     "@mantine/core": "^5.10.5",
     "@mantine/dates": "^5.10.5",
     "@mantine/dropzone": "^5.10.5",
-    "@mantine/form": "^6.0.22",
+    "@mantine/form": "^8.1.2",
     "@mantine/hooks": "^5.10.3",
     "@mantine/notifications": "^5.10.5",
     "@mantine/rte": "^5.10.5",
