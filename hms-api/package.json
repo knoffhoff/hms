@@ -28,7 +28,7 @@
     "uuid": "9.0.1"
   },
   "dependencies": {
-    "@aws-sdk/client-dynamodb": "3.940.0",
+    "@aws-sdk/client-dynamodb": "3.958.0",
     "@aws-sdk/client-s3": "3.940.0",
     "@aws-sdk/s3-request-presigner": "3.940.0",
     "jsonwebtoken": "9.0.2",
