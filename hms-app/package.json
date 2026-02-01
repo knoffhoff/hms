@@ -16,7 +16,7 @@
     "@reduxjs/toolkit": "^1.9.7",
     "@tabler/icons-react": "^2.47.0",
     "@testing-library/jest-dom": "^5.17.0",
-    "@testing-library/react": "^12.1.4",
+    "@testing-library/react": "^16.3.2",
     "@testing-library/user-event": "^14.6.1",
     "@types/jest": "^29.5.14",
     "@types/node": "^20.14.9",
